@@ -1,3 +1,4 @@
 env
 *.pyc
 *~
+dunya/local_settings.py
