@@ -1,8 +1,8 @@
 Django==1.4.2
 Fabric==1.4.3
-MySQL-python==1.2.4b5
 argparse==1.2.1
 distribute==0.6.30
+psycopg2==2.4.5
 pycrypto==2.6
 ssh==1.7.14
 wsgiref==0.1.2
