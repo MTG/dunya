@@ -1,4 +1,4 @@
 from django.http import HttpResponse
 
 def main(request):
-    return HttpResponse("Browser")
+    return HttpResponse("Makam")

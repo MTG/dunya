@@ -100,6 +100,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'docserver',
     'browse',
+    'carnatic',
     'data',
     'rest_framework',
     # Uncomment the next line to enable the admin:
