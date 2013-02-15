@@ -40,11 +40,8 @@ def import_release(mbid):
         for track in medium["track-list"]:
             recordings.append(track["recording"]["id"])
     for recid in recordings:
-        try:
-            rec = Recording.objects.get(pk=recid)
-        except Recording.DoesNotExist:
-            rec = Recording(mbid=recid)
-            mbrec = mb.get_recording_by_id(recid, includes=["tags", "work-rels"])
+        recording = add_and_get_recording(recid)
+        # XXX If recording not in list, add
 
 def add_and_get_artist(artistid):
     try:
@@ -64,9 +61,15 @@ def add_and_get_artist(artistid):
         artist.save()
     return artist
 
-def add_and_get_recording(releaseid, recordingid):
-    # Recording details
-    pass
+def add_and_get_recording(recordingid):
+    try:
+        rec = Recording.objects.get(pk=recid)
+    except Recording.DoesNotExist:
+        rec = Recording(mbid=recid)
+        mbrec = mb.get_recording_by_id(recordingid, includes=["tags", "work-rels"])
+        # title, mbid, length
+        # work (title, raaga, taala, composer)
+        # performers (instrument)
 
 def add_work_for_recording(recordingid):
     # Add work
