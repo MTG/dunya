@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^/?', include('browse.urls')),
-    url(r'^carnatic', include('carnatic.urls')),
+    url(r'^carnatic/', include('carnatic.urls')),
     url(r'^hindustani', include('hindustani.urls')),
     url(r'^makam', include('makam.urls')),
     url(r'^han', include('han.urls')),

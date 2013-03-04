@@ -1,0 +1,10 @@
+{% extends "browse/base.html" %}
+{% load extras %}
+
+{% block wrap %}
+<h2>Artist</h2>
+
+<p>Name: {{artist.name}}
+
+{% include "carnatic/concerts_by_artist_list.html" with artist=artist only %}
+{% endblock %}

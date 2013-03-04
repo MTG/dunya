@@ -1,5 +1,6 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
+from django.core.urlresolvers import reverse
 
 class Artist(models.Model):
     GENDER_CHOICES = (
@@ -21,9 +22,16 @@ class Artist(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('carnatic-artist', args=[str(self.id)])
+
+    def concerts(self):
+        return ""
+
 class Concert(models.Model):
     mbid = UUIDField(blank=True, null=True)
     location = models.ForeignKey('Location', blank=True, null=True)
+    title = models.CharField(max_length=100)
     artists = models.ManyToManyField(Artist)
     tracks = models.ManyToManyField('Recording', related_name='concert')
 
@@ -33,18 +41,27 @@ class Concert(models.Model):
             ret += " at " + unicode(self.location)
         return ret
 
+    def get_absolute_url(self):
+        return reverse('carnatic-concert', args=[str(self.id)])
+
 class Work(models.Model):
     title = models.CharField(max_length=100)
     mbid = UUIDField(blank=True, null=True)
-    composer = models.ForeignKey('Composer')
+    composer = models.ForeignKey('Composer', blank=True, null=True)
     raaga = models.ForeignKey('Raaga', blank=True, null=True)
     taala = models.ForeignKey('Taala', blank=True, null=True)
     form = models.ForeignKey('Form', blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse('carnatic-work', args=[str(self.id)])
 
 class RecordingForms(models.Model):
     recording = models.ForeignKey('Recording')
     form = models.ForeignKey('Form')
     position = models.IntegerField()
+
+    def get_absolute_url(self):
+        return reverse('carnatic-recording', args=[str(self.id)])
 
 class Form(models.Model):
     name = models.CharField(max_length=20)
@@ -52,17 +69,26 @@ class Form(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('carnatic-form', args=[str(self.id)])
+
 class Raaga(models.Model):
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('carnatic-raaga', args=[str(self.id)])
+
 class Taala(models.Model):
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('carnatic-taala', args=[str(self.id)])
 
 class WorkAttribute(models.Model):
     work = models.ForeignKey('Work')
@@ -79,15 +105,27 @@ class WorkAttributeTypeValue(models.Model):
 
 class Recording(models.Model):
     title = models.CharField(max_length=100)
-    work = models.ForeignKey(Work)
+    work = models.ForeignKey(Work, blank=True, null=True)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     #raaga = models.ForeignKey(Raaga)
     #taala = models.ForeignKey(Taala)
     #forms = models.ManyToManyField(Form)
 
+    def __unicode__(self):
+        return title
+
+    def get_absolute_url(self):
+        return reverse('carnatic-recording', args=[str(self.id)])
+
 class Instrument(models.Model):
     name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return name
+
+    def get_absolute_url(self):
+        return reverse('carnatic-instrument', args=[str(self.id)])
 
 class InstrumentPerformance(models.Model):
     recording = models.ForeignKey(Recording)
@@ -105,6 +143,12 @@ class Composer(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     startdate = models.DateField(blank=True, null=True)
     enddate = models.DateField(blank=True, null=True)
+
+    def __unicode__(self):
+        return name
+
+    def get_absolute_url(self):
+        return reverse('carnatic-composer', args=[str(self.id)])
 
 class Location(models.Model):
     name = models.CharField(max_length=200)

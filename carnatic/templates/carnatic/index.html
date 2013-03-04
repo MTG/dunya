@@ -1,1 +1,60 @@
 {% extends "browse/base.html" %}
+{% load extras %}
+
+{% block wrap %}
+<h1>Carnatic collection</h1>
+
+<h3>Statistics:</h3>
+
+<p>Number of artists: {{numartists}}
+
+<p>Number of composers: {{numcomposers}}
+
+<p>Number of recordings: {{numrecordings}}
+
+<p>Number of raagas attached to recordings: {{numraaga}}
+
+<p>Number of taalas attached to recordings: {{numtaala}}
+
+
+<h4>Artists</h4>
+<ul>
+{% for a in artists %}
+   <li>{% inline_artist a %}</li>
+{% endfor %}
+</ul>
+<h4>Composers</h4>
+{% for c in composers %}
+    <li>{% inline_composer c %}
+{% endfor %}
+<h4>Concerts</h4>
+<ul>
+{% for c in concerts %}
+    <li>{% inline_concert c %}</li>
+{% endfor %}
+</ul>
+<h4>Recordings</h4>
+<ul>
+{% for r in recordings %}
+    <li>{% inline_recording r %}</li>
+{% endfor %}
+</ul>
+<h4>Raagas</h4>
+<ul>
+{% for r in raagas %}
+    <li>{% inline_raaga r %}</li>
+{% endfor %}
+</ul>
+<h4>Taalas</h4>
+<ul>
+{% for t in taalas %}
+    <li>{% inline_taala t %}</li>
+{% endfor %}
+</ul>
+<h4>Instruments</h4>
+<ul>
+{% for i in instruments %}
+    <li>{% inline_instrument i %}</li>
+{% endfor %}
+</ul>
+{% endblock %}

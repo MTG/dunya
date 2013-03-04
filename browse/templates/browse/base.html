@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dunya{% if title %} :: {{ title }}{% endif %}</title>
+    <link rel="stylesheet/less" href="{% static 'browse/css/style.less' %}" />
+    <script src="{% static 'browse/js/less.min.js' %}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script src="{% static 'browse/js/underscore.min.js' %}"></script>
+    <script src="{% static 'browse/js/backbone.min.js' %}"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="{% static 'browse/js/dunya.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/smoothness/jquery-ui.css" />
+    {% for stylesheet in extra_stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'browse/css/{{ stylesheet }}.css' %}" />
+    {% endfor %}
+</head>
+<body>
+    <div id="navbar">
+        <ul>
+            <li class="title"><a href="{% url 'home' %}">Dunya</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Log out ({{ user.username }})</a></li>
+            {% else %}
+                <li><a href="{{ login_url }}">Login/register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div id="wrap">
+        {% block wrap %}
+        {% endblock %}
+    </div>
+</body>
+</html>

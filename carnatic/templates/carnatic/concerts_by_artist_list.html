@@ -1,0 +1,8 @@
+<div>
+    <h5>Concerts by {{artist.name}}</h5>
+    <ul>
+        {% for concert in artist.concerts %}
+        <li>{{concert}}</li>
+        {% endfor %}
+    </ul>
+</div>
