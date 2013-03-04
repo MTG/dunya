@@ -39,7 +39,7 @@ class Concert(models.Model):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
         if self.location:
             ret += " at " + unicode(self.location)
-        return ret
+        return "%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
         return reverse('carnatic-concert', args=[str(self.id)])

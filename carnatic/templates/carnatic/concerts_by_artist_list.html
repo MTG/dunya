@@ -1,7 +1,7 @@
 <div>
     <h5>Concerts by {{artist.name}}</h5>
     <ul>
-        {% for concert in artist.concerts %}
+        {% for concert in artist.concert_set.all %}
         <li>{{concert}}</li>
         {% endfor %}
     </ul>
