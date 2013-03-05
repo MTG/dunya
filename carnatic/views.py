@@ -46,8 +46,9 @@ def composer(request, composerid):
 
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
+    ret = {"concert": concert}
 
-    return render(request, "carnatic/concert.html")
+    return render(request, "carnatic/concert.html", ret)
 
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)

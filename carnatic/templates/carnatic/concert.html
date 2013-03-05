@@ -3,4 +3,8 @@
 
 {% block wrap %}
 <h2>Concert</h2>
+
+{{concert.title}} by {% inline_artist concert.artists.all %}<br>
+
+{% include "carnatic/recordings_by_release_list.html" with concert=concert only %}
 {% endblock %}
