@@ -42,6 +42,8 @@ def import_release(mbid):
             recordings.append(track["recording"]["id"])
     for recid in recordings:
         recording = add_and_get_recording(recid)
+        concert.tracks.add(recording)
+
 
 def add_and_get_artist(artistid):
     try:
@@ -89,7 +91,7 @@ def add_and_get_recording(recordingid):
             if work["type"] == "performance":
                 mbwork = add_and_get_work(work["target"], raaga, taala)
         rec = Recording(mbid=recordingid, work=mbwork)
-        rec.length = mbrec["length"]
+        rec.length = mbrec.get("length")
         rec.title = mbrec["title"]
         rec.save()
         for perf in mbrec.get("artist-relation-list", []):
@@ -100,6 +102,7 @@ def add_and_get_recording(recordingid):
                 artistid = perf["target"]
                 inst = perf["attribute-list"][0]
                 add_performance(recordingid, artistid, inst)
+    return rec
 
 def add_and_get_work(workid, raaga, taala):
     try:
