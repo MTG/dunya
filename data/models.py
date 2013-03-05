@@ -25,15 +25,20 @@ class Artist(models.Model):
     def get_absolute_url(self):
         return reverse('carnatic-artist', args=[str(self.id)])
 
-    def concerts(self):
-        return ""
+    def performances(self):
+        concerts = Concert.objects.filter(tracks__instrumentperformance__performer=self).distinct()
+        ret = []
+        for c in concerts:
+            instruments = Instrument.objects.filter(instrumentperformance__performer=self, instrumentperformance__recording__concerts=c).distinct()
+            ret.append((c, instruments))
+        return ret
 
 class Concert(models.Model):
     mbid = UUIDField(blank=True, null=True)
     location = models.ForeignKey('Location', blank=True, null=True)
     title = models.CharField(max_length=100)
     artists = models.ManyToManyField(Artist)
-    tracks = models.ManyToManyField('Recording', related_name='concert')
+    tracks = models.ManyToManyField('Recording', related_name='concerts')
 
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
@@ -108,12 +113,13 @@ class Recording(models.Model):
     work = models.ForeignKey(Work, blank=True, null=True)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
+    performance = models.ManyToManyField(Artist, through="InstrumentPerformance")
     #raaga = models.ForeignKey(Raaga)
     #taala = models.ForeignKey(Taala)
     #forms = models.ManyToManyField(Form)
 
     def __unicode__(self):
-        return title
+        return self.title
 
     def get_absolute_url(self):
         return reverse('carnatic-recording', args=[str(self.id)])
@@ -122,15 +128,15 @@ class Instrument(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return name
+        return self.name
 
     def get_absolute_url(self):
         return reverse('carnatic-instrument', args=[str(self.id)])
 
 class InstrumentPerformance(models.Model):
     recording = models.ForeignKey(Recording)
-    instrument = models.ForeignKey(Instrument)
     performer = models.ForeignKey(Artist)
+    instrument = models.ForeignKey(Instrument)
     lead = models.BooleanField(default=False)
 
 class Composer(models.Model):

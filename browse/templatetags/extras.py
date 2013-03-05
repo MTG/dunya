@@ -2,6 +2,8 @@ from django import template
 from django.conf import settings
 from data.models import *
 
+import collections
+
 register = template.Library()
 
 @register.simple_tag
@@ -42,6 +44,11 @@ def inline_taala(taala):
 
 @register.simple_tag
 def inline_instrument(instrument):
-    if not isinstance(instrument, Instrument):
-        instrument = Instrument.objects.get(pk=instrument)
-    return '<a href="%s">%s</a>' % (instrument.get_absolute_url(), instrument.name)
+    if not isinstance(instrument, collections.Iterable):
+        instrument = [instrument]
+    ret = []
+    for i in instrument:
+        if not isinstance(i, Instrument):
+            instrument = Instrument.objects.get(pk=i)
+        ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
+    return ", ".join(ret)

@@ -1,8 +1,16 @@
+{% load extras %}
 <div>
     <h5>Concerts by {{artist.name}}</h5>
+    As a main performer<br>
     <ul>
         {% for concert in artist.concert_set.all %}
         <li>{{concert}}</li>
+        {% endfor %}
+    </ul>
+    As an accompanying musician<br>
+    <ul>
+        {% for concert, instruments in artist.performances %}
+        <li>{% inline_concert concert %} ({% inline_instrument instruments %})</li>
         {% endfor %}
     </ul>
 </div>
