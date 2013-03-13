@@ -97,11 +97,17 @@ def add_and_get_recording(recordingid):
         for perf in mbrec.get("artist-relation-list", []):
             if perf["type"] == "vocal":
                 artistid = perf["target"]
-                add_performance(recordingid, artistid, "vocal")
+                is_lead = "lead" in perf["attribute-list"]
+                add_performance(recordingid, artistid, "vocal", is_lead)
             elif perf["type"] == "instrument":
                 artistid = perf["target"]
+                attrs = perf.get("attrribute-list", [])
+                is_lead = False
+                if "lead" in attrs:
+                    is_lead = "True"
+                    attrs.remove("lead")
                 inst = perf["attribute-list"][0]
-                add_performance(recordingid, artistid, inst)
+                add_performance(recordingid, artistid, inst, is_lead)
     return rec
 
 def add_and_get_work(workid, raaga, taala):
@@ -113,7 +119,7 @@ def add_and_get_work(workid, raaga, taala):
         mbwork = mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
         w = Work(title=mbwork["title"], mbid=workid, raaga=r, taala=t)
         w.save()
-        for artist in mbwork["artist-relation-list"]:
+        for artist in mbwork.get("artist-relation-list", []):
             if artist["type"] == "composer":
                 composer = add_and_get_composer(artist["target"])
                 w.composer = composer
@@ -158,12 +164,12 @@ def add_and_get_taala(taalaname):
         taala.save()
     return taala
 
-def add_performance(recordingid, artistid, instrument):
+def add_performance(recordingid, artistid, instrument, is_lead):
     logging.info("  Adding performance...")
     artist = add_and_get_artist(artistid)
     instrument = add_and_get_instrument(instrument)
     recording = Recording.objects.get(mbid=recordingid)
-    perf = InstrumentPerformance(recording=recording, instrument=instrument, performer=artist)
+    perf = InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
     perf.save()
 
 def add_and_get_instrument(instname):
