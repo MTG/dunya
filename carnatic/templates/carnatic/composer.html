@@ -3,4 +3,21 @@
 
 {% block wrap %}
 <h2>Composer</h2>
+
+{{composer.name}}
+<p>
+<h3>Works</h3>
+{% for w in composer.work_set.all %}
+<li>{% inline_work w %}
+{% endfor %}
+<h3>Raagas used</h3>
+{% for r in composer.raagas %}
+<li>{% inline_raaga r %}
+{% endfor %}
+
+<h3>Taalas used</h3>
+{% for t in composer.taalas %}
+<li>{% inline_taala t %}
+{% endfor %}
+
 {% endblock %}

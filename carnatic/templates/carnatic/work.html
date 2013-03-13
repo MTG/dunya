@@ -1,0 +1,16 @@
+{% extends "browse/base.html" %}
+{% load extras %}
+
+{% block wrap %}
+<h2>Work</h2>
+
+Work title: {{ work.title }}<br>
+Composed by: {% inline_composer work.composer %}<br>
+Raaga: {% inline_raaga work.raaga %}<br>
+Taala: {% inline_taala work.taala %}<br>
+
+<h3>Concerts</h3>
+{% for c in work.concerts %}
+<li>{% inline_concert c %}
+{% endfor %}
+{% endblock %}

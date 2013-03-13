@@ -31,6 +31,12 @@ def inline_recording(recording):
     return '<a href="%s">%s</a>' % (recording.get_absolute_url(), recording.title)
 
 @register.simple_tag
+def inline_work(work):
+    if not isinstance(work, Work):
+        work = Work.objects.get(pk=work)
+    return '<a href="%s">%s</a>' % (work.get_absolute_url(), work.title)
+
+@register.simple_tag
 def inline_raaga(raaga):
     if not isinstance(raaga, Raaga):
         raaga = Raaga.objects.get(pk=raaga)

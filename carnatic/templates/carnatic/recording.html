@@ -3,4 +3,17 @@
 
 {% block wrap %}
 <h2>Recording</h2>
+
+{{recording.title}}, by {% inline_artist recording.all_artists %}
+
+{% if recording.work %}
+<p>Performance of {% inline_work recording.work %}
+{% endif %}
+
+<p>Played in concert {% inline_concert recording.concerts.all %}
+
+<p>Performers:<br>
+{% for perf in recording.instrumentperformance_set.all %}
+  <li>{% inline_artist perf.performer %}, playing {% inline_instrument perf.instrument %}
+  {% endfor %}
 {% endblock %}

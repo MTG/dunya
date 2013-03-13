@@ -41,8 +41,9 @@ def artist(request, artistid):
 
 def composer(request, composerid):
     composer = get_object_or_404(Composer, pk=composerid)
+    ret = {"composer": composer}
 
-    return render(request, "carnatic/composer.html")
+    return render(request, "carnatic/composer.html", ret)
 
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
@@ -53,19 +54,29 @@ def concert(request, concertid):
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
 
-    return render(request, "carnatic/recording.html")
+    ret = {"recording": recording}
+    return render(request, "carnatic/recording.html", ret)
+
+def work(request, workid):
+    work = get_object_or_404(Work, pk=workid)
+
+    ret = {"work": work}
+    return render(request, "carnatic/work.html", ret)
 
 def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
 
-    return render(request, "carnatic/taala.html")
+    ret = {"taala": taala}
+    return render(request, "carnatic/taala.html", ret)
 
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
 
-    return render(request, "carnatic/raaga.html")
+    ret = {"raaga": raaga}
+    return render(request, "carnatic/raaga.html", ret)
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
+    ret = {"instrument": instrument}
 
-    return render(request, "carnatic/instrument.html")
+    return render(request, "carnatic/instrument.html", ret)

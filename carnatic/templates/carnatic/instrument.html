@@ -2,5 +2,10 @@
 {% load extras %}
 
 {% block wrap %}
-<h2>Instrument</h2>
+<h2>{{instrument.name}}</h2>
+
+<h3>Played by</h3>
+{% for a in instrument.artists %}
+<li>{% inline_artist a %}
+{% endfor %}
 {% endblock %}

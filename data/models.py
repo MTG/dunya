@@ -2,7 +2,16 @@ from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 
-class Artist(models.Model):
+class DataSource(models.Model):
+    name = models.CharField(max_length=100)
+
+class BaseModel(models.Model):
+    #source = models.ForeignKey(DataSource)
+
+    class Meta:
+        abstract = True
+
+class Artist(BaseModel):
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female')
@@ -29,8 +38,8 @@ class Artist(models.Model):
         concerts = Concert.objects.filter(tracks__instrumentperformance__performer=self).distinct()
         ret = []
         for c in concerts:
-            instruments = Instrument.objects.filter(instrumentperformance__performer=self, instrumentperformance__recording__concerts=c).distinct()
-            ret.append((c, instruments))
+            performances = InstrumentPerformance.objects.filter(performer=self, recording__concerts=c).distinct()
+            ret.append((c, performances))
         return ret
 
 class Concert(models.Model):
@@ -49,6 +58,9 @@ class Concert(models.Model):
     def get_absolute_url(self):
         return reverse('carnatic-concert', args=[str(self.id)])
 
+    def performers(self):
+        return Artist.objects.filter(instrumentperformance__recording__in=self.tracks.all()).distinct().all()
+
 class Work(models.Model):
     title = models.CharField(max_length=100)
     mbid = UUIDField(blank=True, null=True)
@@ -57,8 +69,14 @@ class Work(models.Model):
     taala = models.ForeignKey('Taala', blank=True, null=True)
     form = models.ForeignKey('Form', blank=True, null=True)
 
+    def __unicode__(self):
+        return self.title
+
     def get_absolute_url(self):
         return reverse('carnatic-work', args=[str(self.id)])
+
+    def concerts(self):
+        return Concert.objects.filter(tracks__work=self).all()
 
 class RecordingForms(models.Model):
     recording = models.ForeignKey('Recording')
@@ -86,6 +104,15 @@ class Raaga(models.Model):
     def get_absolute_url(self):
         return reverse('carnatic-raaga', args=[str(self.id)])
 
+    def works(self):
+        return self.work_set.all()
+
+    def composers(self):
+        return Composer.objects.filter(work__raaga=self)
+
+    def artists(self):
+        return Artist.objects.filter(concert__tracks__work__raaga=self)
+
 class Taala(models.Model):
     name = models.CharField(max_length=20)
 
@@ -94,6 +121,16 @@ class Taala(models.Model):
 
     def get_absolute_url(self):
         return reverse('carnatic-taala', args=[str(self.id)])
+
+    def works(self):
+        return self.work_set.all()
+
+    def composers(self):
+        return Composer.objects.filter(work__taala=self)
+
+    def artists(self):
+        return Artist.objects.filter(concert__tracks__work__taala=self)
+
 
 class WorkAttribute(models.Model):
     work = models.ForeignKey('Work')
@@ -124,6 +161,9 @@ class Recording(models.Model):
     def get_absolute_url(self):
         return reverse('carnatic-recording', args=[str(self.id)])
 
+    def all_artists(self):
+        return Artist.objects.filter(concert__tracks=self)
+
 class Instrument(models.Model):
     name = models.CharField(max_length=50)
 
@@ -132,6 +172,9 @@ class Instrument(models.Model):
 
     def get_absolute_url(self):
         return reverse('carnatic-instrument', args=[str(self.id)])
+
+    def artists(self):
+        return Artist.objects.filter(instrumentperformance__instrument=self).distinct().all()
 
 class InstrumentPerformance(models.Model):
     recording = models.ForeignKey(Recording)
@@ -151,10 +194,16 @@ class Composer(models.Model):
     enddate = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
-        return name
+        return self.name
 
     def get_absolute_url(self):
         return reverse('carnatic-composer', args=[str(self.id)])
+
+    def raagas(self):
+        return Raaga.objects.filter(work__composer=self).all()
+
+    def taalas(self):
+        return Taala.objects.filter(work__composer=self).all()
 
 class Location(models.Model):
     name = models.CharField(max_length=200)

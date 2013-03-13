@@ -9,8 +9,13 @@
     </ul>
     As an accompanying musician<br>
     <ul>
-        {% for concert, instruments in artist.performances %}
-        <li>{% inline_concert concert %} ({% inline_instrument instruments %})</li>
+        {% for concert, perf in artist.performances %}
+        <li>{% inline_concert concert %} (
+        {% for p in perf %}
+        {% inline_instrument p.instrument %}
+        {% if p.lead %}*{% endif %},
+        {% endfor %}
+        )</li>
         {% endfor %}
     </ul>
 </div>

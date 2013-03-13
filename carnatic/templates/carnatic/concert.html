@@ -5,6 +5,12 @@
 <h2>Concert</h2>
 
 {{concert.title}} by {% inline_artist concert.artists.all %}<br>
+<h3>Performers</h3>
+{% for artist in concert.performers %}
+<li>{% inline_artist artist %}
+{% endfor %}
+
+<h3>Tracks</h3>
 
 {% include "carnatic/recordings_by_release_list.html" with concert=concert only %}
 {% endblock %}

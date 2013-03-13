@@ -2,5 +2,20 @@
 {% load extras %}
 
 {% block wrap %}
-<h2>Raaga</h2>
+<h2>Raaga {{raaga.name}}</h2>
+
+<h3>Artist</h3>
+{% for a in raaga.artists %}
+<li>{% inline_artist a %}
+{% endfor %}
+
+<h3>Composers</h3>
+{% for c in raaga.composers %}
+<li>{% inline_composer c %}
+{% endfor %}
+
+<h3>Works</h3>
+{% for w in raaga.works %}
+<li>{% inline_work w %}
+{% endfor %}
 {% endblock %}
