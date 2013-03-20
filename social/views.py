@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.core.urlresolvers import reverse
 from social.forms import *
 
 
@@ -25,7 +26,7 @@ def user_page(request, username):
 
 def logout_page(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(reverse('social-main'))
 
 def register_page(request):
     if request.method == 'POST':
@@ -42,7 +43,7 @@ def register_page(request):
             
             user.save()
             
-            return HttpResponseRedirect('/register/success')
+            return HttpResponseRedirect(reverse('social-auth-register-success'))
     else:
         form = RegistrationForm()
     variables = RequestContext(request, {
