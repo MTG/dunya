@@ -13,7 +13,7 @@
   {% url 'social-main' as social_main %}
   {% url 'carnatic-main' as carnatic_main %}
   <div id="nav">
-   <a href="/">home</a> |
+   <a href="{{ social_main }}">home</a> |
    {% if user.is_authenticated %}
     welcome {{ user.username }}
     (<a href="{{ logout_url }}">logout</a>)
