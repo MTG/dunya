@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'carnatic',
     'data',
     'rest_framework',
+    'social',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
 )

@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^han', include('han.urls')),
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^social/', include('social.urls')),
 )
 
 #if settings.DEBUG:
