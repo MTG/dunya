@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+  <title>
+   Social Dunya | {% block title %}{% endblock %}
+  </title>
+  <link rel="stylesheet" href="/site_media/style.css" type="text/css"/>
+ </head>
+ <body>
+  {% url 'social-auth-login' as login_url %}
+  {% url 'social-auth-logout' as logout_url %}
+  {% url 'social-auth-register' as register_url %}
+  <div id="nav">
+   <a href="/">home</a> |
+   {% if user.is_authenticated %}
+    welcome {{ user.username }}
+    (<a href="{{ logout_url }}">logout</a>)
+   {% else %}
+    <a href="{{ login_url }}">login</a> |
+    <a href="{{ register_url }}">register</a>
+   {% endif %}
+  </div>
+
+  <h1>{% block head %}{% endblock %}</h1>
+  {% block content %}{% endblock %}
+ </body>
+</html>
+

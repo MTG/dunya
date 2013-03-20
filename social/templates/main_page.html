@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Welcome to Social Dunya{% endblock %}
+{% block head %}Welcome to Social Dunya{% endblock %}
+{% block content %}
+ {% if user.username %}
+  <p>Welcome {{ user.username }}!Here you can listen music!</p>
+ {% else %}
+  <p>Welcome anonymous user!You need to <a href="{{ login_url }}">login</a> before you can navegate for the Web.</p>
+ {% endif %}
+{% endblock %}
+
