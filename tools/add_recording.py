@@ -14,6 +14,7 @@ from data.models import *
 import musicbrainzngs as mb
 mb.set_useragent("Dunya", "0.1")
 mb.set_rate_limit(False)
+mb.set_hostname("sitar.s.upf.edu:8090")
 
 import pprint
 
@@ -84,8 +85,8 @@ def add_and_get_recording(recordingid):
         logging.info("  adding recording %s" % (recordingid,))
         mbrec = mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
         mbrec = mbrec["recording"]
-        raaga = _get_raaga(mbrec["tag-list"])
-        taala = _get_taala(mbrec["tag-list"])
+        raaga = _get_raaga(mbrec.get("tag-list", []))
+        taala = _get_taala(mbrec.get("tag-list", []))
         mbwork = None
         for work in mbrec.get("work-relation-list", []):
             if work["type"] == "performance":
