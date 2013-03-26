@@ -1,0 +1,637 @@
+[
+{
+  "pk": 1, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "abheri"
+  }
+},
+{
+  "pk": 2, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "abhogi"
+  }
+},
+{
+  "pk": 3, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "anandabhairavi"
+  }
+},
+{
+  "pk": 4, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "arabhi"
+  }
+},
+{
+  "pk": 5, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "asaveri"
+  }
+},
+{
+  "pk": 6, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "atana"
+  }
+},
+{
+  "pk": 7, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "bahudari"
+  }
+},
+{
+  "pk": 8, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "begada"
+  }
+},
+{
+  "pk": 9, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "behag"
+  }
+},
+{
+  "pk": 10, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "bhairavi"
+  }
+},
+{
+  "pk": 11, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "bilahari"
+  }
+},
+{
+  "pk": 12, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "darbar"
+  }
+},
+{
+  "pk": 13, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "devagandhari"
+  }
+},
+{
+  "pk": 14, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "devamanohari"
+  }
+},
+{
+  "pk": 15, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "dhanashri"
+  }
+},
+{
+  "pk": 16, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "dhanyasi"
+  }
+},
+{
+  "pk": 17, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "dheerasankarabharanam"
+  }
+},
+{
+  "pk": 18, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "gowla"
+  }
+},
+{
+  "pk": 19, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "hamsadhvani"
+  }
+},
+{
+  "pk": 20, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "hamsanandi"
+  }
+},
+{
+  "pk": 21, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "hari kambhoji"
+  }
+},
+{
+  "pk": 22, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "hindolam"
+  }
+},
+{
+  "pk": 23, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "jaganmohini"
+  }
+},
+{
+  "pk": 24, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "jaunpuri"
+  }
+},
+{
+  "pk": 25, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kaapi"
+  }
+},
+{
+  "pk": 26, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kalyani"
+  }
+},
+{
+  "pk": 27, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kamas"
+  }
+},
+{
+  "pk": 28, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kambhoji"
+  }
+},
+{
+  "pk": 29, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kanada"
+  }
+},
+{
+  "pk": 30, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "karaharapriya"
+  }
+},
+{
+  "pk": 31, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kedaragaula"
+  }
+},
+{
+  "pk": 32, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "kuntalavarali"
+  }
+},
+{
+  "pk": 33, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "madhyamavathi"
+  }
+},
+{
+  "pk": 34, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "manji"
+  }
+},
+{
+  "pk": 35, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "mohanam"
+  }
+},
+{
+  "pk": 36, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "mukhari"
+  }
+},
+{
+  "pk": 37, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "nagasvarali"
+  }
+},
+{
+  "pk": 38, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "natakurinji"
+  }
+},
+{
+  "pk": 39, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "nattai"
+  }
+},
+{
+  "pk": 40, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "pantuvarali"
+  }
+},
+{
+  "pk": 41, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "poorikalyani"
+  }
+},
+{
+  "pk": 42, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "ranjani"
+  }
+},
+{
+  "pk": 43, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "reethi gowlai"
+  }
+},
+{
+  "pk": 44, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "sahana"
+  }
+},
+{
+  "pk": 45, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "saurashtram"
+  }
+},
+{
+  "pk": 46, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "senchurutti"
+  }
+},
+{
+  "pk": 47, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "shanmukhapriya"
+  }
+},
+{
+  "pk": 48, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "shree"
+  }
+},
+{
+  "pk": 49, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "shree ranjani"
+  }
+},
+{
+  "pk": 50, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "shuddha saveri"
+  }
+},
+{
+  "pk": 51, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "sindhu bhairavi"
+  }
+},
+{
+  "pk": 52, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "surati"
+  }
+},
+{
+  "pk": 53, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "thodi"
+  }
+},
+{
+  "pk": 54, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "vachaspati"
+  }
+},
+{
+  "pk": 55, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "varali"
+  }
+},
+{
+  "pk": 56, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "vasanta"
+  }
+},
+{
+  "pk": 57, 
+  "model": "carnatic.raaga", 
+  "fields": {
+    "name": "yadukula kambhoji"
+  }
+},
+{
+  "pk": 1, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "adi"
+  }
+},
+{
+  "pk": 2, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "rupaka"
+  }
+},
+{
+  "pk": 3, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "mishra chapu"
+  }
+},
+{
+  "pk": 4, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "khanda chapu"
+  }
+},
+{
+  "pk": 5, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "eka"
+  }
+},
+{
+  "pk": 6, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "tishra eka"
+  }
+},
+{
+  "pk": 7, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "dhruva"
+  }
+},
+{
+  "pk": 8, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "matya"
+  }
+},
+{
+  "pk": 9, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "mishra jhampe"
+  }
+},
+{
+  "pk": 10, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "tishra triputa"
+  }
+},
+{
+  "pk": 11, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "atta"
+  }
+},
+{
+  "pk": 12, 
+  "model": "carnatic.taala", 
+  "fields": {
+    "name": "adi (tishra nade)"
+  }
+},
+{
+  "pk": 1, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Vocals"
+  }
+},
+{
+  "pk": 2, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Violin"
+  }
+},
+{
+  "pk": 3, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Mridangam"
+  }
+},
+{
+  "pk": 4, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Tambura"
+  }
+},
+{
+  "pk": 5, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Veena"
+  }
+},
+{
+  "pk": 6, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Venu/Flute"
+  }
+},
+{
+  "pk": 7, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Mandolin"
+  }
+},
+{
+  "pk": 8, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Saxophone"
+  }
+},
+{
+  "pk": 9, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Ghatam"
+  }
+},
+{
+  "pk": 10, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Khanjira"
+  }
+},
+{
+  "pk": 11, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Morsing"
+  }
+},
+{
+  "pk": 12, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Konnakol"
+  }
+},
+{
+  "pk": 13, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Gettuvadyam"
+  }
+},
+{
+  "pk": 14, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Jalatarang"
+  }
+},
+{
+  "pk": 15, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Chitraveena (Gotuvadyam)"
+  }
+},
+{
+  "pk": 16, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Chanda"
+  }
+},
+{
+  "pk": 17, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Maddala"
+  }
+},
+{
+  "pk": 18, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Talam"
+  }
+},
+{
+  "pk": 19, 
+  "model": "carnatic.instrument", 
+  "fields": {
+    "source": null, 
+    "name": "Shruti Box"
+  }
+}
+]
