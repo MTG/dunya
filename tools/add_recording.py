@@ -9,7 +9,8 @@ from dunya import settings
 from django.core.management import setup_environ
 setup_environ(settings)
 
-from data.models import *
+from carnatic.models import *
+import data.models
 
 import musicbrainzngs as mb
 mb.set_useragent("Dunya", "0.1")
@@ -21,6 +22,11 @@ import pprint
 import logging
 logging.basicConfig(level=logging.INFO)
 
+def make_mb_source(url):
+    sn = data.models.SourceName.objects.get(name="MusicBrainz")
+    source = data.models.Source.objects.create(source_name=sn, uri=url)
+    return source
+
 def import_release(mbid):
     rel = mb.get_release_by_id(mbid, includes=["artists","recordings"])
     rel = rel["release"]
@@ -31,6 +37,8 @@ def import_release(mbid):
         concert = Concert.objects.get(mbid=mbid)
     except Concert.DoesNotExist:
         concert = Concert(mbid=mbid, title=rel["title"])
+        source = make_mb_source("http://musicbrainz.org/release/%s" % mbid)
+        concert.source = source
         concert.save()
         for a in rel["artist-credit"]:
             artistid = a["artist"]["id"]
@@ -53,6 +61,8 @@ def add_and_get_artist(artistid):
         logging.info("  adding artist %s" % (artistid, ))
         a = mb.get_artist_by_id(artistid)["artist"]
         artist = Artist(name=a["name"], mbid=artistid)
+        source = make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
+        artist.source = source
         if a.get("type") == "Person":
             artist.artist_type = "P"
         elif a.get("type") == "Group":
@@ -92,6 +102,8 @@ def add_and_get_recording(recordingid):
             if work["type"] == "performance":
                 mbwork = add_and_get_work(work["target"], raaga, taala)
         rec = Recording(mbid=recordingid, work=mbwork)
+        source = make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
+        rec.source = source
         rec.length = mbrec.get("length")
         rec.title = mbrec["title"]
         rec.save()
@@ -119,6 +131,8 @@ def add_and_get_work(workid, raaga, taala):
         t = add_and_get_taala(taala)
         mbwork = mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
         w = Work(title=mbwork["title"], mbid=workid, raaga=r, taala=t)
+        source = make_mb_source("http://musicbrainz.org/work/%s" % workid)
+        w.source = source
         w.save()
         for artist in mbwork.get("artist-relation-list", []):
             if artist["type"] == "composer":
@@ -136,6 +150,8 @@ def add_and_get_composer(artistid):
         logging.info("  adding composer %s" % (artistid, ))
         a = mb.get_artist_by_id(artistid)["artist"]
         composer = Composer(name=a["name"], mbid=artistid)
+        source = make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
+        composer.source = source
         if a.get("gender") == "Male":
             composer.gender = "M"
         elif a.get("gender") == "Female":

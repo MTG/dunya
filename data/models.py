@@ -2,16 +2,32 @@ from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 
-class DataSource(models.Model):
+class SourceName(models.Model):
     name = models.CharField(max_length=100)
 
-class BaseModel(models.Model):
-    #source = models.ForeignKey(DataSource)
+class Source(models.Model):
+    source_name = models.ForeignKey(SourceName)
+    uri = models.CharField(max_length=255)
 
+class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    source = models.ForeignKey(Source, blank=True, null=True)
+
+    def get_style(self):
+        raise Exception("need style")
+
+    def get_object_map(self, key):
+        """ Returns a dict with keys 'artist', recording,
+            release, work, performance mapping to 
+            local classes that are the correct type"""
+        raise Exception("need map")
+
 class Artist(BaseModel):
+    class Meta:
+        abstract = True
+
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female')
@@ -32,22 +48,27 @@ class Artist(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('carnatic-artist', args=[str(self.id)])
+        viewname = "%s-artist" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
 
     def performances(self):
-        concerts = Concert.objects.filter(tracks__instrumentperformance__performer=self).distinct()
+        ConcertClass = self.get_object_map("concert")
+        IPClass = self.get_object_map("performance")
+        concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self).distinct()
         ret = []
         for c in concerts:
             performances = InstrumentPerformance.objects.filter(performer=self, recording__concerts=c).distinct()
             ret.append((c, performances))
         return ret
 
-class Concert(models.Model):
+class Concert(BaseModel):
+    class Meta:
+        abstract = True
     mbid = UUIDField(blank=True, null=True)
     location = models.ForeignKey('Location', blank=True, null=True)
     title = models.CharField(max_length=100)
-    artists = models.ManyToManyField(Artist)
-    tracks = models.ManyToManyField('Recording', related_name='concerts')
+    artists = models.ManyToManyField('Artist')
+    tracks = models.ManyToManyField('Recording')
 
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
@@ -56,133 +77,95 @@ class Concert(models.Model):
         return "%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
-        return reverse('carnatic-concert', args=[str(self.id)])
+        viewname = "%s-concert" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
 
     def performers(self):
-        return Artist.objects.filter(instrumentperformance__recording__in=self.tracks.all()).distinct().all()
+        ArtistClass = self.get_object_map()["artist"]
+        return ArtistClass.objects.filter(instrumentperformance__recording__in=self.tracks.all()).distinct().all()
 
-class Work(models.Model):
+class Work(BaseModel):
+    class Meta:
+        abstract = True
     title = models.CharField(max_length=100)
     mbid = UUIDField(blank=True, null=True)
     composer = models.ForeignKey('Composer', blank=True, null=True)
-    raaga = models.ForeignKey('Raaga', blank=True, null=True)
-    taala = models.ForeignKey('Taala', blank=True, null=True)
-    form = models.ForeignKey('Form', blank=True, null=True)
 
     def __unicode__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('carnatic-work', args=[str(self.id)])
+        viewname = "%s-work" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
 
     def concerts(self):
         return Concert.objects.filter(tracks__work=self).all()
 
-class RecordingForms(models.Model):
-    recording = models.ForeignKey('Recording')
-    form = models.ForeignKey('Form')
-    position = models.IntegerField()
-
-    def get_absolute_url(self):
-        return reverse('carnatic-recording', args=[str(self.id)])
-
-class Form(models.Model):
-    name = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('carnatic-form', args=[str(self.id)])
-
-class Raaga(models.Model):
-    name = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id)])
-
-    def works(self):
-        return self.work_set.all()
-
-    def composers(self):
-        return Composer.objects.filter(work__raaga=self)
-
-    def artists(self):
-        return Artist.objects.filter(concert__tracks__work__raaga=self)
-
-class Taala(models.Model):
-    name = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id)])
-
-    def works(self):
-        return self.work_set.all()
-
-    def composers(self):
-        return Composer.objects.filter(work__taala=self)
-
-    def artists(self):
-        return Artist.objects.filter(concert__tracks__work__taala=self)
-
-
 class WorkAttribute(models.Model):
+    class Meta:
+        abstract = True
     work = models.ForeignKey('Work')
     attribute_type = models.ForeignKey('WorkAttributeType')
     attribute_value_free = models.CharField(max_length=100, blank=True, null=True)
     attribute_value = models.ForeignKey('WorkAttributeTypeValue', blank=True, null=True)
 
 class WorkAttributeType(models.Model):
+    class Meta:
+        abstract = True
     type_name = models.CharField(max_length=100)
 
 class WorkAttributeTypeValue(models.Model):
-    attribute_type = models.ForeignKey(WorkAttributeType)
+    class Meta:
+        abstract = True
+    attribute_type = models.ForeignKey('WorkAttributeType')
     value = models.CharField(max_length=100)
 
-class Recording(models.Model):
+class Recording(BaseModel):
+    class Meta:
+        abstract = True
     title = models.CharField(max_length=100)
-    work = models.ForeignKey(Work, blank=True, null=True)
+    work = models.ForeignKey('Work', blank=True, null=True)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
-    performance = models.ManyToManyField(Artist, through="InstrumentPerformance")
-    #raaga = models.ForeignKey(Raaga)
-    #taala = models.ForeignKey(Taala)
-    #forms = models.ManyToManyField(Form)
+    performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
 
     def __unicode__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('carnatic-recording', args=[str(self.id)])
+        viewname = "%s-recording" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
 
     def all_artists(self):
         return Artist.objects.filter(concert__tracks=self)
 
-class Instrument(models.Model):
+class Instrument(BaseModel):
+    class Meta:
+        abstract = True
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('carnatic-instrument', args=[str(self.id)])
+        viewname = "%s-instrument" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
 
     def artists(self):
         return Artist.objects.filter(instrumentperformance__instrument=self).distinct().all()
 
 class InstrumentPerformance(models.Model):
-    recording = models.ForeignKey(Recording)
-    performer = models.ForeignKey(Artist)
-    instrument = models.ForeignKey(Instrument)
+    class Meta:
+        abstract = True
+    recording = models.ForeignKey('Recording')
+    performer = models.ForeignKey('Artist')
+    instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
 
-class Composer(models.Model):
+
+class Composer(BaseModel):
+    class Meta:
+        abstract = True
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female')
@@ -197,7 +180,8 @@ class Composer(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('carnatic-composer', args=[str(self.id)])
+        viewname = "%s-composer" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
 
     def raagas(self):
         return Raaga.objects.filter(work__composer=self).all()
@@ -205,7 +189,9 @@ class Composer(models.Model):
     def taalas(self):
         return Taala.objects.filter(work__composer=self).all()
 
-class Location(models.Model):
+class Location(BaseModel):
+    class Meta:
+        abstract = True
     name = models.CharField(max_length=200)
     city = models.CharField(max_length=100, blank=True, null=True)
     region = models.CharField(max_length=100, blank=True, null=True)
