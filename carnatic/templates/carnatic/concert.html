@@ -1,10 +1,10 @@
 {% extends "browse/base.html" %}
-{% load extras %}
+{% load inline %}
 
 {% block wrap %}
 <h2>Concert</h2>
 
-{{concert.title}} by {% inline_artist concert.artists.all %}<br>
+{{concert.title}} by {% inline_artist concert.artists.get %}<br>
 <h3>Performers</h3>
 {% for artist in concert.performers %}
 <li>{% inline_artist artist %}

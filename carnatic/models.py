@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 import data.models
 
@@ -7,7 +8,11 @@ class CarnaticStyle(object):
         return "carnatic"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "concert": Concert
+                "concert": Concert,
+                "composer": Composer,
+                "artist": Artist,
+                "recording": Recording,
+                "work": Work
                 }[key]
 
 class Artist(CarnaticStyle, data.models.Artist):

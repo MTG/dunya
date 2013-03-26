@@ -19,9 +19,6 @@ class BaseModel(models.Model):
         raise Exception("need style")
 
     def get_object_map(self, key):
-        """ Returns a dict with keys 'artist', recording,
-            release, work, performance mapping to 
-            local classes that are the correct type"""
         raise Exception("need map")
 
 class Artist(BaseModel):
@@ -57,8 +54,15 @@ class Artist(BaseModel):
         concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self).distinct()
         ret = []
         for c in concerts:
-            performances = InstrumentPerformance.objects.filter(performer=self, recording__concerts=c).distinct()
-            ret.append((c, performances))
+            performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
+            # Unique the instrument list
+            instruments = []
+            theperf = []
+            for p in performances:
+                if p.instrument not in instruments:
+                    theperf.append(p)
+                    instruments.append(p.instrument)
+            ret.append((c, theperf))
         return ret
 
 class Concert(BaseModel):
@@ -81,7 +85,7 @@ class Concert(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def performers(self):
-        ArtistClass = self.get_object_map()["artist"]
+        ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(instrumentperformance__recording__in=self.tracks.all()).distinct().all()
 
 class Work(BaseModel):
@@ -99,7 +103,8 @@ class Work(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def concerts(self):
-        return Concert.objects.filter(tracks__work=self).all()
+        ConcertClass = self.get_object_map("concert")
+        return ConcertClass.objects.filter(tracks__work=self).all()
 
 class WorkAttribute(models.Model):
     class Meta:
@@ -137,7 +142,8 @@ class Recording(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def all_artists(self):
-        return Artist.objects.filter(concert__tracks=self)
+        ArtistClass = self.get_object_map("artist")
+        return ArtistClass.objects.filter(concert__tracks=self)
 
 class Instrument(BaseModel):
     class Meta:
@@ -152,7 +158,8 @@ class Instrument(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def artists(self):
-        return Artist.objects.filter(instrumentperformance__instrument=self).distinct().all()
+        ArtistClass = self.get_object_map("artist")
+        return ArtistClass.objects.filter(instrumentperformance__instrument=self).distinct().all()
 
 class InstrumentPerformance(models.Model):
     class Meta:
@@ -161,7 +168,6 @@ class InstrumentPerformance(models.Model):
     performer = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
-
 
 class Composer(BaseModel):
     class Meta:
@@ -182,12 +188,6 @@ class Composer(BaseModel):
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
-
-    def raagas(self):
-        return Raaga.objects.filter(work__composer=self).all()
-
-    def taalas(self):
-        return Taala.objects.filter(work__composer=self).all()
 
 class Location(BaseModel):
     class Meta:

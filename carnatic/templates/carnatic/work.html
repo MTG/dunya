@@ -1,13 +1,17 @@
 {% extends "browse/base.html" %}
-{% load extras %}
+{% load inline %}
 
 {% block wrap %}
 <h2>Work</h2>
 
 Work title: {{ work.title }}<br>
 Composed by: {% inline_composer work.composer %}<br>
+{% if work.raaga %}
 Raaga: {% inline_raaga work.raaga %}<br>
+{% endif %}
+{% if work.taala %}
 Taala: {% inline_taala work.taala %}<br>
+{% endif %}
 
 <h3>Concerts</h3>
 {% for c in work.concerts %}

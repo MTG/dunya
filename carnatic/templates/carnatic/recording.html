@@ -1,16 +1,16 @@
 {% extends "browse/base.html" %}
-{% load extras %}
+{% load inline %}
 
 {% block wrap %}
 <h2>Recording</h2>
 
-{{recording.title}}, by {% inline_artist recording.all_artists %}
+{{recording.title}}, by {% inline_artist recording.all_artists.get %}
 
 {% if recording.work %}
 <p>Performance of {% inline_work recording.work %}
 {% endif %}
 
-<p>Played in concert {% inline_concert recording.concerts.all %}
+<p>Played in concert {% inline_concert recording.concert_set.get %}
 
 <p>Performers:<br>
 {% for perf in recording.instrumentperformance_set.all %}

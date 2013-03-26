@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
-from data.models import *
+from carnatic.models import *
 
 def main(request):
     numartists = Artist.objects.count()
