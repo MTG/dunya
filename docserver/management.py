@@ -12,4 +12,4 @@ def create_docconverters(sender, **kwargs):
         if filetypes.FileType in cl.__bases__:
             inst = cl()
 
-post_syncdb.connect(create_docconverters)
+#post_syncdb.connect(create_docconverters)
