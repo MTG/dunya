@@ -8,6 +8,7 @@ class SourceName(models.Model):
 class Source(models.Model):
     source_name = models.ForeignKey(SourceName)
     uri = models.CharField(max_length=255)
+    last_updated = models.DateTimeField(auto_now_add=True)
 
 class BaseModel(models.Model):
     class Meta:
@@ -36,8 +37,8 @@ class Artist(BaseModel):
     name = models.CharField(max_length=200)
     mbid = UUIDField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
-    startdate = models.DateField(blank=True, null=True)
-    enddate = models.DateField(blank=True, null=True)
+    begin = models.CharField(max_length=10, blank=True, null=True)
+    end = models.CharField(max_length=10, blank=True, null=True)
     artist_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='P')
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
 
@@ -179,8 +180,8 @@ class Composer(BaseModel):
     name = models.CharField(max_length=200)
     mbid = UUIDField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
-    startdate = models.DateField(blank=True, null=True)
-    enddate = models.DateField(blank=True, null=True)
+    begin = models.CharField(max_length=10, blank=True, null=True)
+    end = models.CharField(max_length=10, blank=True, null=True)
 
     def __unicode__(self):
         return self.name

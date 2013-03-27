@@ -71,6 +71,10 @@ def add_and_get_artist(artistid):
             artist.gender = "M"
         elif a.get("gender") == "Female":
             artist.gender = "F"
+        dates = a.get("life-span")
+        if dates:
+            artist.begin = dates.get("begin")
+            artist.end = dates.get("end")
         artist.save()
     return artist
 
@@ -78,14 +82,14 @@ def _get_raaga(taglist):
     for t in taglist:
         name = t["name"].lower()
         if "raaga" in name:
-            return name.replace("raaga", "")
+            return name.replace("raaga", "").strip()
     return None
 
 def _get_taala(taglist):
     for t in taglist:
         name = t["name"].lower()
         if "taala" in name:
-            return name.replace("taala", "")
+            return name.replace("taala", "").strip()
     return None
 
 def add_and_get_recording(recordingid):
@@ -156,7 +160,12 @@ def add_and_get_composer(artistid):
             composer.gender = "M"
         elif a.get("gender") == "Female":
             composer.gender = "F"
+        dates = a.get("life-span")
+        if dates:
+            composer.begin = dates.get("begin")
+            composer.end = dates.get("end")
         composer.save()
+
     return composer
 
 def add_and_get_raaga(raaganame):
@@ -165,9 +174,8 @@ def add_and_get_raaga(raaganame):
     try:
         raaga = Raaga.objects.get(name=raaganame)
     except Raaga.DoesNotExist:
-        raaga = Raaga()
-        raaga.name = raaganame
-        raaga.save()
+        raaga = None
+        logging.warn("Cannot find raaga %s" % raaganame)
     return raaga
 
 def add_and_get_taala(taalaname):
@@ -176,9 +184,8 @@ def add_and_get_taala(taalaname):
     try:
         taala = Taala.objects.get(name=taalaname)
     except Taala.DoesNotExist:
-        taala = Taala()
-        taala.name = taalaname
-        taala.save()
+        taala = None
+        logging.warn("Cannot find taala %s" % taalaname)
     return taala
 
 def add_performance(recordingid, artistid, instrument, is_lead):

@@ -15,8 +15,14 @@ class CarnaticStyle(object):
                 "work": Work
                 }[key]
 
+class GeographicRegion(CarnaticStyle, models.Model):
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
 class Artist(CarnaticStyle, data.models.Artist):
-    pass
+    state = models.ForeignKey(GeographicRegion, blank=True, null=True)
 
 class Concert(CarnaticStyle, data.models.Concert):
     pass
@@ -81,6 +87,7 @@ class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
 
 class Composer(CarnaticStyle, data.models.Composer):
+    state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     def raagas(self):
         return Raaga.objects.filter(work__composer=self).all()
 
