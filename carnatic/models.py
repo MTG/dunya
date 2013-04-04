@@ -2,6 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 
 import data.models
+import managers
 
 class CarnaticStyle(object):
     def get_style(self):
@@ -21,14 +22,30 @@ class GeographicRegion(CarnaticStyle, models.Model):
     def __unicode__(self):
         return self.name
 
+class MusicalSchool(CarnaticStyle, models.Model):
+    name = models.CharField(max_length=100)
+
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
 
+class Sabbah(CarnaticStyle, models.Model):
+    name = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+
 class Concert(CarnaticStyle, data.models.Concert):
-    pass
+    sabbah = models.ForeignKey(Sabbah)
+
+class RaagaAlias(models.Model):
+    name = models.CharField(max_length=50)
+    raaga = models.ForeignKey("Raaga", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
 
 class Raaga(models.Model):
     name = models.CharField(max_length=50)
+
+    objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -45,8 +62,17 @@ class Raaga(models.Model):
     def artists(self):
         return Artist.objects.filter(concert__tracks__work__raaga=self)
 
+class TaalaAlias(models.Model):
+    name = models.CharField(max_length=50)
+    taala = models.ForeignKey("Taala", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
+
 class Taala(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
+
+    objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -64,9 +90,19 @@ class Taala(models.Model):
         return Artist.objects.filter(concert__tracks__work__taala=self)
 
 class Work(CarnaticStyle, data.models.Work):
-    raaga = models.ForeignKey('Raaga', blank=True, null=True)
-    taala = models.ForeignKey('Taala', blank=True, null=True)
+    raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
+    taala = models.ManyToManyField('Taala', through="WorkTaala")
     #form = models.ForeignKey('Form', blank=True, null=True)
+
+class WorkRaaga(models.Model):
+    work = models.ForeignKey('Work')
+    raaga = models.ForeignKey('Raaga')
+    sequence = models.IntegerField(blank=True, null=True)
+
+class WorkTaala(models.Model):
+    work = models.ForeignKey('Work')
+    taala = models.ForeignKey('Taala')
+    sequence = models.IntegerField(blank=True, null=True)
 
 class WorkAttribute(CarnaticStyle, data.models.WorkAttribute):
     pass
@@ -80,8 +116,11 @@ class WorkAttributeTypeValue(CarnaticStyle, data.models.WorkAttributeTypeValue):
 class Recording(CarnaticStyle, data.models.Recording):
     pass
 
-class Instrument(CarnaticStyle, data.models.Instrument):
+class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     pass
+
+class Instrument(CarnaticStyle, data.models.Instrument):
+    objects = managers.FuzzySearchManager()
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass

@@ -146,6 +146,15 @@ class Recording(BaseModel):
         ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(concert__tracks=self)
 
+class InstrumentAlias(models.Model):
+    class Meta:
+        abstract = True
+    name = models.CharField(max_length=50)
+    instrument = models.ForeignKey("Instrument", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
+
 class Instrument(BaseModel):
     class Meta:
         abstract = True
