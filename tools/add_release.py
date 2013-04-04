@@ -81,15 +81,31 @@ def add_and_get_artist(artistid):
 def _get_raaga(taglist):
     for t in taglist:
         name = t["name"].lower()
-        if "raaga" in name:
-            return name.replace("raaga", "").strip()
+        if "raaga" in name or "raga" in name:
+            if ":" in name:
+                parts = name.split(":")
+                return parts[1].strip()
+            elif " " in name:
+                parts = name.split()
+                if "raaga" in parts[0] or "raga" in parts[0]:
+                    return " ".join(parts[1:])
+                else:
+                    return " ".join(parts[0:len(parts)-1])
     return None
 
 def _get_taala(taglist):
     for t in taglist:
         name = t["name"].lower()
-        if "taala" in name:
-            return name.replace("taala", "").strip()
+        if "taala" in name or "tala" in name:
+            if ":" in name:
+                parts = name.split(":")
+                return parts[1].strip()
+            elif " " in name:
+                parts = name.split()
+                if "taala" in parts[0] or "tala" in parts[0]:
+                    return " ".join(parts[1:])
+                else:
+                    return " ".join(parts[0:len(parts)-1])
     return None
 
 def add_and_get_recording(recordingid):
@@ -118,7 +134,7 @@ def add_and_get_recording(recordingid):
                 add_performance(recordingid, artistid, "vocal", is_lead)
             elif perf["type"] == "instrument":
                 artistid = perf["target"]
-                attrs = perf.get("attrribute-list", [])
+                attrs = perf.get("atrribute-list", [])
                 is_lead = False
                 if "lead" in attrs:
                     is_lead = "True"
@@ -169,24 +185,22 @@ def add_and_get_composer(artistid):
     return composer
 
 def add_and_get_raaga(raaganame):
+    print "get raaga", raaganame
     if raaganame is None:
         return None
     try:
-        raaga = Raaga.objects.get(name=raaganame)
-    except Raaga.DoesNotExist:
-        raaga = None
-        logging.warn("Cannot find raaga %s" % raaganame)
-    return raaga
+        return Raaga.objects.fuzzy(name=raaganame)
+    except:
+        logging.warn("not found raaga %s" % (raaganame, ))
 
 def add_and_get_taala(taalaname):
+    print "get taala", taalaname
     if taalaname is None:
         return None
     try:
-        taala = Taala.objects.get(name=taalaname)
-    except Taala.DoesNotExist:
-        taala = None
-        logging.warn("Cannot find taala %s" % taalaname)
-    return taala
+        return Taala.objects.fuzzy(name=taalaname)
+    except:
+        logging.warn("not found taala %s" % (taalaname, ))
 
 def add_performance(recordingid, artistid, instrument, is_lead):
     logging.info("  Adding performance...")
@@ -197,14 +211,7 @@ def add_performance(recordingid, artistid, instrument, is_lead):
     perf.save()
 
 def add_and_get_instrument(instname):
-    try:
-        inst = Instrument.objects.get(name=instname)
-    except Instrument.DoesNotExist:
-        logging.info("  adding instrument %s" % (instname,))
-        inst = Instrument()
-        inst.name = instname
-        inst.save()
-    return inst
+    return Instrument.objects.fuzzy(name=instname)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
