@@ -1,35 +1,75 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Dunya{% if title %} :: {{ title }}{% endif %}</title>
-    <link rel="stylesheet/less" href="{% static 'browse/css/style.less' %}" />
-    <script src="{% static 'browse/js/less.min.js' %}"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-    <script src="{% static 'browse/js/underscore.min.js' %}"></script>
-    <script src="{% static 'browse/js/backbone.min.js' %}"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
-    <script src="{% static 'browse/js/dunya.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/smoothness/jquery-ui.css" />
-    {% for stylesheet in extra_stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static 'browse/css/{{ stylesheet }}.css' %}" />
-    {% endfor %}
-</head>
-<body>
-    <div id="navbar">
-        <ul>
-            <li class="title"><a href="{% url 'home' %}">Dunya</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'logout' %}">Log out ({{ user.username }})</a></li>
-            {% else %}
-                <li><a href="{{ login_url }}">Login/register</a></li>
-            {% endif %}
-        </ul>
-    </div>
-    <div id="wrap">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'browse/css/normalize.min.css' %}">
+        <link rel="stylesheet" href="{% static 'browse/css/main.css' %}">
+        <link href="{% static 'browse/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
+
+        <script src="{% static 'browse/js/vendor/modernizr-2.6.2.min.js' %}"></script>
+        <script src="{% static 'browse/js/vendor/jquery-1.9.1.min.js' %}"></script>
+        <script src="{% static 'browse/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
+
+        <script src="{% static 'browse/js/main.js' %}"></script>
+        <script src="{% static 'browse/js/plugins.js' %}"></script>
+        <script>
+            {% block script %}
+            {% endblock %}
+        </script>
+
+    </head>
+    <body>
+        <div class="header-container">
+            <header>
+                <h1 class="title">Dunya UI Prototype 1.1</h1>
+                <nav>
+                    <ul>
+                        <li><a href="#">BROWSE</a></li>
+                        <li><a href="#">ABOUT</a></li>
+                        <li><a href="#">HELP</a></li>
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <div class="main-container">
         {% block wrap %}
         {% endblock %}
-    </div>
-</body>
+        </div>
+
+        <div class="footer-container">
+            <footer class="wrapper">
+                <h3>footer</h3>
+            </footer>
+        </div>
+
+        <div id="footage">
+
+        	<!-- //////////////// -->
+        	<!-- FILTER BASE MODEL -->
+        	<!-- //////////////// -->
+
+        	<div id="filterModel">
+        		<div class="filterBall shadow1">
+        			<span>new filter</span>
+        			<div class="arrow"></div>
+        			<div class="filterSummary shadow1">No selection yet</div>
+        		</div>
+        		<div class="formFilter"></div>
+	            <div class="filterList filterGlobalList"></div>
+        	</div>
+
+        </div>
+
+    </body>
 </html>

@@ -1,0 +1,414 @@
+{
+	"franjas":[{
+		"nombre":"fr1",
+		"hours": [{"hr":"6:00-6:30"}, {"hr":"6:30-7:00"}, {"hr":"7:00-7:30"}, {"hr":"7:30-8:00"}, {"hr":"8:00-8:30"}, {"hr":"8:30-9:00"}, {"hr":"9:00-9:30"}, {"hr":"9:30-10:00"}, {"hr":"10:00-10:30"}, {"hr":"10:30-11:00"}, {"hr":"11:00-11:30"}, {"hr":"11:30-12:00"}, {"hr":"12:00-12:30"}, {"hr":"12:30-13:00"}, {"hr":"13:00-13:30"}, {"hr":"14:30-14:00"}, {"hr":"14:00-14:30"}, {"hr":"14:30-15:00"}, {"hr":"15:00-15:30"}],
+		"days":[{
+				"day":"lunes",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			},{
+				"day":"martes",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			},{
+				"day":"miércoles",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			},{
+				"day":"jueves",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			},{
+				"day":"viernes",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			},{
+				"day":"sábado",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			},{
+				"day":"domingo",
+		    	"programas": [{
+		        	"programa": "Título del programa",
+					"horaInicio": "10",
+					"minInicio": "30",
+					"horaFi": "11",
+					"minFi": "30",
+					"duracio": "2",
+					"frame": "imagen.jpg"
+		    	},{
+			        "programa": "Título del programa",
+					"horaInicio": "11",
+					"minInicio": "30",
+					"horaFi": "13",
+					"minFi": "30",
+					"duracio": "4",
+					"frame": "imagen.jpg"
+			    }]
+			}]
+	},		{
+				"nombre":"fr2",
+				"hours": [{"hr":"15:00-15:30"},{"hr":"15:30-16:00"}, {"hr":"16:00-16:30"}, {"hr":"16:30-17:00"}, {"hr":"17:00-17:30"}, {"hr":"17:30-18:00"}, {"hr":"18:00-18:30"}, {"hr":"18:30-19:00"}, {"hr":"19:00-19:30"}, {"hr":"19:30-20:00"}, {"hr":"20:00-20:30"}, {"hr":"20:30-21:00"}, {"hr":"21:00-21:30"}, {"hr":"21:30-22:00"}],
+				"days":[{
+						"day":"lunes",
+				    	"programas": [{
+				        	"programa": "Título del programa",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "20",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+				    	},{
+					        "programa": "Título del programa",
+							"horaInicio": "20",
+							"minInicio": "30",
+							"horaFi": "21",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+					    }]
+					},	{
+						"day":"martes",
+					    "programas": [{
+					       	"programa": "Título del programa martes",
+							"horaInicio": "15",
+							"minInicio": "30",
+							"horaFi": "17",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+					    },{
+					       	"programa": "Título del programa martes",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "19",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+						}]
+					},{
+						"day":"miércoles",
+				    	"programas": [{
+				        	"programa": "Título del programa",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "20",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+				    	},{
+					        "programa": "Título del programa",
+							"horaInicio": "20",
+							"minInicio": "30",
+							"horaFi": "21",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+					    }]
+					},	{
+						"day":"jueves",
+					    "programas": [{
+					       	"programa": "Título del programa martes",
+							"horaInicio": "15",
+							"minInicio": "30",
+							"horaFi": "17",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+					    },{
+					       	"programa": "Título del programa martes",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "19",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+						}]
+					},{
+						"day":"viernes",
+				    	"programas": [{
+				        	"programa": "Título del programa",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "20",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+				    	},{
+					        "programa": "Título del programa",
+							"horaInicio": "20",
+							"minInicio": "30",
+							"horaFi": "21",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+					    }]
+					},	{
+						"day":"sábado",
+					    "programas": [{
+					       	"programa": "Título del programa martes",
+							"horaInicio": "15",
+							"minInicio": "30",
+							"horaFi": "17",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+					    },{
+					       	"programa": "Título del programa martes",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "19",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+						}]
+					},{
+						"day":"domingo",
+				    	"programas": [{
+				        	"programa": "Título del programa",
+							"horaInicio": "18",
+							"minInicio": "30",
+							"horaFi": "20",
+							"minFi": "30",
+							"duracio": "4",
+							"frame": "imagen.jpg"
+				    	},{
+					        "programa": "Título del programa",
+							"horaInicio": "20",
+							"minInicio": "30",
+							"horaFi": "21",
+							"minFi": "30",
+							"duracio": "2",
+							"frame": "imagen.jpg"
+					    }]
+					}]
+			},		{
+						"nombre":"fr3",
+						"hours": [{"hr":"22:00-22:30"}, {"hr":"22:30-23:00"}, {"hr":"23:00-23:30"}, {"hr":"23:30-00:00"}, {"hr":"00:00-00:30"}, {"hr":"00:30-01:00"}, {"hr":"01:00-01:30"}, {"hr":"01:30-02:00"}, {"hr":"02:00-02:30"}, {"hr":"02:30-03:00"}, {"hr":"03:00-03:30"}, {"hr":"03:30-04:00"}, {"hr":"04:00-04:30"}, {"hr":"04:30-05:00"}, {"hr":"05:00-05:30"}, {"hr":"05:30-06:00"}],
+						"days":[{
+								"day":"lunes",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							},	{
+								"day":"lunes",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							},{
+								"day":"miércoles",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							},	{
+								"day":"jueves",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							},{
+								"day":"viernes",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							},	{
+								"day":"sábado",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							},{
+								"day":"domingo",
+						    	"programas": [{
+						        	"programa": "Título del programa",
+									"horaInicio": "22",
+									"minInicio": "30",
+									"horaFi": "00",
+									"minFi": "30",
+									"duracio": "4",
+									"frame": "imagen.jpg"
+						    	},{
+							        "programa": "Título del programa",
+									"horaInicio": "1",
+									"minInicio": "30",
+									"horaFi": "2",
+									"minFi": "30",
+									"duracio": "2",
+									"frame": "imagen.jpg"
+							    }]
+							}]
+					}]
+}

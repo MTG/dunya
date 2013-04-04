@@ -16,6 +16,9 @@ def main(request):
     instruments = Instrument.objects.all()
     numraaga = Raaga.objects.count()
     numtaala = Taala.objects.count()
+
+    filter_items = open("json/dunya-filters.json").read()
+
     ret = {"numartists": numartists,
            "numcomposers": numcomposers,
            "numrecordings": numrecordings,
@@ -28,7 +31,8 @@ def main(request):
            "concerts": concerts,
            "raagas": raagas,
            "taalas": taalas,
-           "instruments": instruments
+           "instruments": instruments,
+           "filter_items": filter_items
            }
     return render(request, "carnatic/index.html", ret)
 

@@ -1,0 +1,17 @@
+{
+    "filters": 
+    	{
+        "id": "entity_id",
+        "refilters": {
+            "filter_id": "value", 
+            "filter_id": {"value","value","value"}
+        },
+        {
+        "id": "entity_id",
+        "refilters": {
+            "filter_id": "value", 
+            "filter_id": {"value","value","value"}
+        }
+
+
+}
