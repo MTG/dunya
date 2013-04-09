@@ -11,6 +11,13 @@ Installation
     pip install --upgrade distribute
     pip install -r requirements
 
+Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and edit it
+to point to your database. It does not matter if you use postgres, mysql, or sqlite.
+
+To add tables to the database run
+
+    fab setupdb
+
 Running
 =======
 
@@ -18,6 +25,36 @@ To run the server:
 
     source env/bin/activate
     fab up
+
+When you upgrade and there are database changes, you can run this to migrate them
+
+    fab updatedb
+
+To make a complete dump of the database to a file called `dunya_data.json` or to
+load it again, run
+
+    fab dumpdata
+    fab loaddata
+
+Updating Fixtures
+=================
+
+Some data in Dunya should only rarely change (e.g., Raaga, Taala, Form, Location, Language lists).
+We store this in _fixtures,_ and it is automatically loaded when you create a new database.
+Fixure files are in `fixtures/initial_data.json` in the app (e.g., `data` and `carnatic`).
+
+If you make a new fixture table, you can easily import data into it by creating a CSV file with
+the data in the first column and running
+
+    python tools/import_csv.py -t <fixturename> <csvfile>
+
+You'll need to edit `import_csv.py` to tell it about your table.
+You should then dump the fixtures to file and commit them for other people to use
+(you'll need to edit the `dumpfixture` method in `fabfile.py` to tell it about the
+new fixture, too.
+
+    fab dumpfixture:carnatic
+
 
 Development
 ===========

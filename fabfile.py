@@ -4,16 +4,31 @@ import os
 def up(port="8001"):
     local("python manage.py runserver 0.0.0.0:%s"%port)
 
-def reset():
+def setupdb():
+    local("rm data/migrations/*")
+    local("rm carnatic/migrations/*")
+    local("python manage.py schemamigration --initial data")
+    local("python manage.py schemamigration --initial carnatic")
     local("python manage.py syncdb --noinput")
+    local("python manage.py migrate data")
+    local("python manage.py migrate carnatic")
+
+def updatedb():
+    with settings(warn_only=True):
+        local("python manage.py schemamigration data --auto")
+    with settings(warn_only=True):
+        local("python manage.py schemamigration carnatic --auto")
+    local("python manage.py migrate data")
+    local("python manage.py migrate carnatic")
 
 def dumpfixture(modname):
-    with hide('running', 'status'):
-        redir = "%s/fixtures/initial_data.json" % modname
-        if modname == "data":
-            local("python manage.py dumpdata data data.SourceName --indent=4 > %s" % redir)
-        elif modname == "carnatic": 
-            local("python manage.py dumpdata carnatic carnatic.Instrument carnatic.Taala carnatic.Raaga carnatic.GeographicRegion --indent=4 > %s" % redir)
+    redir = "%s/fixtures/initial_data.json" % modname
+    if modname == "data":
+        local("python manage.py dumpdata data data.SourceName --indent=4 > %s" % redir)
+    elif modname == "carnatic":
+        tables = ["Instrument", "Taala", "Raaga", "GeographicRegion", "Form", "Language", "MusicalSchool"]
+        modellist = " ".join(["carnatic.%s" % t for t in tables])
+        local("python manage.py dumpdata %s --indent=4 > %s" % (modellist, redir))
 
 def dumpdata(fname="dunya_data.json"):
     with hide('running', 'status'):
