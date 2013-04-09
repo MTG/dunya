@@ -25,8 +25,28 @@ class GeographicRegion(CarnaticStyle, models.Model):
 class MusicalSchool(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
 
+    def __unicode__(self):
+        return self.name
+
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+
+class Language(CarnaticStyle, models.Model):
+    name = models.CharField(max_length=50)
+
+    objects = managers.FuzzySearchManager()
+
+    def __unicode__(self):
+        return self.name
+
+class LanguageAlias(CarnaticStyle, models.Model):
+    name = models.CharField(max_length=50)
+    language = models.ForeignKey(Language, related_name="aliases")
+
+    objects = managers.FuzzySearchManager()
+
+    def __unicode__(self):
+        return self.name
 
 class Sabbah(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
@@ -38,6 +58,23 @@ class Concert(CarnaticStyle, data.models.Concert):
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
     raaga = models.ForeignKey("Raaga", related_name="aliases")
+
+    objects = managers.FuzzySearchManager()
+
+    def __unicode__(self):
+        return self.name
+
+class Form(models.Model):
+    name = models.CharField(max_length=50)
+
+    objects = managers.FuzzySearchManager()
+
+    def __unicode__(self):
+        return self.name
+
+class FormAlias(models.Model):
+    name = models.CharField(max_length=50)
+    form = models.ForeignKey(Form, related_name="aliases")
 
     objects = managers.FuzzySearchManager()
 

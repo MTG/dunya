@@ -16,7 +16,7 @@ import data.models
 
 
 def load(fname, obclass):
-    """ Load a csv file into a class. If any items are in 
+    """ Load a csv file into a class. If any items are in
     additional columns then import them as aliases """
     fp = open(fname, "rb")
     reader = csv.reader(fp)
@@ -41,11 +41,17 @@ def main(args):
         obclass = Taala
     elif t == "region":
         obclass = GeographicRegion
+    elif t == "form":
+        obclass = Form
+    elif t == "language":
+        obclass = Language
+    elif t == "school":
+        obclass = MusicalSchool
     if obclass:
         load(fname, obclass)
 
 if __name__ == "__main__":
-    choices = ["instrument", "raaga", "taala", "region"]
+    choices = ["instrument", "raaga", "taala", "region", "form", "language", "school"]
     p = argparse.ArgumentParser(description="Load data csv")
     p.add_argument("-t", required=True, choices=choices)
     p.add_argument("fname", help="The zip file to import")
