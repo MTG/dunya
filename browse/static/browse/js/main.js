@@ -1,9 +1,8 @@
-
-
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
-
-function removeFilter(entity_filter){
+var filtersLiteralOutputArray = new Object();
+      
+function removeFilter(entity_filter){ 
 	$(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
 	$(".filterBall").parent().find(".filterGlobalList").addClass("filterListClosed");
 	$(".filterBall").find(".arrow").addClass("arrowClosed");
@@ -12,46 +11,46 @@ function removeFilter(entity_filter){
 	$(".entity_"+entity_filter).remove();
 	filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
 }
-
-function loadFilter(entity_filter,eid){
+        
+function loadFilter(entity_filter,eid){ 
 
 	$(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
 	$(".filterBall").parent().find(".filterGlobalList").addClass("filterListClosed");
 	$(".filterBall").find(".arrow").addClass("arrowClosed");
 	$(".filterBall").addClass("filterBallClosed");
 	$("#entitiesList").addClass("filterListClosed");
-
+	
 	if(entity_filter==1){
-		filterFile = "json/carnatic_artists.json";
+		filterFile = "/static/browse/js/carnatic_artists.json";
 		filterName = "Artist";
 	}else if(entity_filter==2){
-		filterFile = "json/carnatic_concerts.json";
+		filterFile = "/static/browse/js/carnatic_concerts.json";
 		filterName = "Concert";
 	}else if(entity_filter==3){
-		filterFile = "json/carnatic_works.json";
+		filterFile = "/static/browse/js/carnatic_works.json";
 		filterName = "Work";
 	}else if(entity_filter==4){
-		filterFile = "json/carnatic_artists.json";
+		filterFile = "/static/browse/js/carnatic_artists.json";
 		filterName = "Form";
 	}else if(entity_filter==5){
-	 	filterFile = "json/carnatic_artists.json";
+	 	filterFile = "/static/browse/js/carnatic_artists.json";
 	 	filterName = "Composer";
 	}else if(entity_filter==6){
-		filterFile = "json/carnatic_recordings.json";
+		filterFile = "/static/browse/js/carnatic_recordings.json";
 		filterName = "Recording";
 	}else if(entity_filter==7){
-		filterFile = "json/carnatic_artists.json";
+		filterFile = "/static/browse/js/carnatic_artists.json";
 		filterName = "Instrument";
 	}else if(entity_filter==8){
-		filterFile = "json/carnatic_artists.json";
+		filterFile = "/static/browse/js/carnatic_artists.json";
 		filterName = "Raaga";
 	}else if(entity_filter==9){
-		filterFile = "json/carnatic_artists.json";
+		filterFile = "/static/browse/js/carnatic_artists.json";
 		filterName = "Taala";
 	}
 	getFilterData(filterFile,entity_filter,filterName,eid);
 }
-
+        
 function getFilterData(filterFile,entity_filter,filterName,eid){
 	window.filterData = "";
     $.ajax({
@@ -62,6 +61,23 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 		success: function(source){
 			window.filterData = source;
 			showFilterData(entity_filter,filterName,eid);
+		},
+		error: function(dato){
+			alert("ERROR while loading JSON");
+		}
+	});
+}
+
+function loadAllFilters(){
+	window.filtersItems = "";
+    $.ajax({
+    	url: "/static/browse/js/dunya-filters.json",
+		data: "nocache=" + Math.random(),
+		type: "GET",
+		dataType: "json",
+		success: function(source){
+			window.filtersItems = source;
+			parseAllFilters();
 		},
 		error: function(dato){
 			alert("ERROR while loading JSON");
@@ -83,17 +99,17 @@ function parseAllFilters(){
 	    			formHTML += "<label class='formSection'>"+element2.name+"</label>";
 	    			formHTML += "<div class='filterList formFilterItem'><ul>";
 	    			for( i in element2.data ){
-	    				formHTML += "<li the_id='"+(i++)+"'>"+element2.data[i]+"</li>";
+	    				formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
 	    			}
-	    			formHTML += "</ul></div></fieldset>";
+	    			formHTML += "</ul></div></fieldset>";		
     			}else{
 	    			formHTML += "<fieldset filtertype='select' filtername='"+element2.name+"'>";
 	    			formHTML += "<label class='formSection'>"+element2.name+"</label>";
 	    			formHTML += "<div class='filterList formFilterItem'><ul>";
 	    			for( i in element2.data ){
-		    			formHTML += "<li the_id='"+(i++)+"'>"+element2.data[i]+"</li>";
+		    			formHTML += "<li the_id='"+(i+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
 	    			}
-	    			formHTML += "</ul></div></fieldset>";
+	    			formHTML += "</ul></div></fieldset>";		
     			}
     		}else if(formType=="rangeslider"){
 	    		formHTML += "<fieldset filtertype='slideRange' filtername='"+element2.name+"'>";
@@ -107,18 +123,19 @@ function parseAllFilters(){
 			    }
 		        formHTML += "</div></fieldset>";
     		}else if(formType=="text"){
-
+	    		formHTML += "<fieldset filtertype='text' filtername='"+element2.name+"'>";
+		        formHTML += "<label class='formSectionText'>"+element2.name+"<input type='text' /></label>";
+		        formHTML += "</fieldset>";
     		}
     	});
 	    formHTML += "</form></div>";
 	    $("#footage").append(formHTML);
-	    console.log(formHTML);
     });
     loadClicks();
 }
-
+        
 function loadClicks(){
-
+	
 	$("#entitiesList ul li").click(function(){
 		if($(this).hasClass("selected")){
 			removeFilter($(this).attr("entity_id"));
@@ -127,16 +144,16 @@ function loadClicks(){
 		}
 		$(this).toggleClass("selected");
 	});
-
+	
 	$(".filterList.formFilterItem ul li").click(function(){
 		$(this).toggleClass("selected");
 		entity = $(this).parent().parent().parent().parent().parent().parent().parent().attr("eid");
 		filterType = $(this).parent().parent().parent().attr("filtertype");
 		filterName = $(this).parent().parent().parent().attr("filtername");
 		getResults($(this));
-	});
-
-
+	});	
+	 
+	
 	$(".formSection").click(function(){
 		$(this).toggleClass("formSectionOpen");
 		$(this).nextAll(".formFilterItem").toggle();
@@ -146,11 +163,11 @@ function loadClicks(){
 		container = $(this).parent().parent().parent().parent();
 		container.scrollTop(topPosition.top-10);
 		if($(this).hasClass("formSectionOpen")){
-			container.addClass("noScroll");
+			container.addClass("noScroll");	
 		}else{
-			container.removeClass("noScroll");
+			container.removeClass("noScroll");	
 		}
-	});
+	});    	
 	$(".filterBall").click(function(){
 		nuk = $(this);
 		if($(this).hasClass("filterBallClosed")){
@@ -174,19 +191,19 @@ function loadClicks(){
 			sumarizeFilter($(this));
 		}
 	});
-
-}
-
+	
+}        
+      
 function sumarizeFilter(object){
-
+	
 	summaryHTML = "";
-	$.each(filtersOutputArray[object.parent().attr("eid")], function(nom, valors) {
-		summaryHTML += nom +" - " + valors+"</br>";
+	$.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
+		summaryHTML += "<b>" + nom +"</b>" + valors+"</br>";
     });
 	object.find(".filterSummary").html(summaryHTML);
 
-}
-
+}     
+        
 function showFilterData(entity_filter,filterName,eid){
 	filtersArray.push(entity_filter);
 	filterPosition = filtersArray.indexOf(entity_filter);
@@ -201,24 +218,24 @@ function showFilterData(entity_filter,filterName,eid){
     //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
     $(".form_"+entity_filter).clone(true).appendTo($(newFilter).find(".formFilter"));
     //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
-
+    
     $(newFilter+" .formFilter").removeClass("formFilterClosed");
 	$(newFilter+" .filterList").removeClass("filterListClosed");
 	$(newFilter+" .filterBall .arrow").removeClass("arrowClosed");
 	$(newFilter+" .filterBall").removeClass("filterBallClosed");
-
+    
     $(newFilter+" .slider-range").each(function(){
     	if($(this).attr('step')){
 	    	$(this).slider({
 			range: true,
 			min: parseInt($(this).attr('min')),
 			max: parseInt($(this).attr('max')),
-			step: parseInt($(this).attr('step')),
+			step: parseInt($(this).attr('step')), 
 			values: [ parseInt($(this).attr('min')), parseInt($(this).attr('max')) ],
 			slide: function( event, ui ) {
 				$(newFilter).find(".output").html( ui.values[ 0 ] + " - " + ui.values[ 1 ] + "<div class='results' first='"+ui.values[ 0 ]+"' second='"+ui.values[ 1 ]+"'></div>" );
 			}
-		});
+		});	
     	}else{
 	    	$(this).slider({
 			range: true,
@@ -230,9 +247,9 @@ function showFilterData(entity_filter,filterName,eid){
 			}
 		});
     	}
-
+		    
     });
-
+    
 
     //$(newFilter).find(".output").html( $(this).parent().find(".slider-range").attr("min")+"- 2013" );
     $(newFilter).find(".output").each(function(){
@@ -242,14 +259,14 @@ function showFilterData(entity_filter,filterName,eid){
 		if($(this).hasClass("artistGeneration")){
 			result = 1912+(data.value.toFixed(2)*100);
   			$(this).parent().find(".output").html(result.toFixed());
-		}else{
+		}else{	
 			result = data.value.toFixed(2)*100;
   			$(this).parent().find(".output").html(result.toFixed());
   			console.log("change");
 		}
 	});
 }
-
+        
 function listFilterData(entity_filter){
     list = "<ul>";
     $.each(window.filterData, function(index, element) {
@@ -262,33 +279,44 @@ function listFilterData(entity_filter){
 
 function getResults(item){
 		theValue = "";
+		theName = "";
 		if( filterType == "multiSelect" ){
 			theValue =[ ];
+			theName =[ ];
 			item.parent().find(".selected").each(function (i){
         		theValue[i]=$(this).attr("the_id");
+        		theName[i]=$(this).attr("valor");
+        		console.log(theName[i]);
         	});
 		}else if( filterType == "select" ){
 			theValue = item.parent().find(".selected").attr("the_id");
+			theName = item.parent().find(".selected").attr("valor");
 		}else if( filterType == "slider" ){
 			theValue = "es un slider";
 		}else if( filterType == "sliderRange" ){
 			theValue = "es un sliderrange";
 		}
-
+		
+		
 		if(jQuery.isEmptyObject(filtersOutputArray)){
 			filtersOutputArray[entity] = new Object();
 			filtersOutputArray[entity][filterName] = theValue;
-		}else{
+			filtersLiteralOutputArray[entity] = new Object();
+			filtersLiteralOutputArray[entity][filterName] = theName;
+		}else{	
 			for(var i in filtersOutputArray){
 				if (filtersOutputArray.hasOwnProperty(entity)) {
 					filtersOutputArray[entity][filterName] = theValue;
+					filtersLiteralOutputArray[entity][filterName] = theName;
 				}else{
 					filtersOutputArray[entity] = new Object();
 					filtersOutputArray[entity][filterName] = theValue;
+					filtersLiteralOutputArray[entity] = new Object();
+					filtersLiteralOutputArray[entity][filterName] = theName;
 				}
 			}
 		}
-
-		console.log(filtersOutputArray);
-		//refilter =
+		console.log(filtersLiteralOutputArray);
+		//console.log(filtersOutputArray);
+		
 	}

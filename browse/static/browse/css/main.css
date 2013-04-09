@@ -159,7 +159,7 @@ nav a:hover {
 .filterList { position: relative; float:left; width:300px; height: 300px; overflow-y: scroll; border-left:1px solid #A7A8AC; border-right:1px solid #A7A8AC; }
 .formFilter .filterList { max-height: 234px; height: auto; }
 .filterList ul { list-style: none; margin: 0px; padding: 0px; }
-.filterList ul li { color:#1B1818; border-bottom:1px solid #A7A8AC; padding-left:10px; text-transform: uppercase; cursor:pointer; }
+.filterList ul li { color:#1B1818; border-bottom:1px solid #A7A8AC; padding-left:10px; text-transform: capitalize; cursor:pointer; }
 .filterList ul li.selected { color:#fff; background: #666; background: rgba(50,50,50,0.5); }
 .colorCode { position: relative; display: inline-block; width:15px; height: 15px; -webkit-border-radius: 15px; -moz-border-radius: 20px; border-radius: 20px; background: #333; margin-right: 5px; top: 3px; opacity: 0.5; }
 #entitiesForm ul li.selected .colorCode { background: #fff; opacity: 1; }
@@ -167,8 +167,9 @@ nav a:hover {
 .arrow { position: absolute; top:50%; margin-top:-15px; right: -34px; background: url("../img/greyTriangle.png") 0 0 no-repeat; width: 15px; height: 30px; }
 .arrowClosed { position: absolute; top:50%; margin-top:-15px; right: -20px; background: url("../img/greyTriangleClosed.png") 0 0 no-repeat; width: 15px; height: 30px;}
 #filterMask { position: relative; width:100%; height: 300px; overflow: hidden; overflow-x: scroll; background: url("../img/cloth_alike.png") 0 0 repeat; }
-.formFilterItem { display: none; background: #fff; background: rgba(256,256,256,0.8); width: 100%; border: 1px solid #ccc; border-radius: 10px; margin-bottom: 10px; -webkit-border-top-left-radius:0px; -webkit-border-top-right-radius:0px; -moz-border-top-left-radius:0px; -moz-border-top-right-radius:0px; border-top-left-radius:0px; border-top-right-radius:0px;}
+.formFilterItem { display: none; background: #fff; background: rgba(256,256,256,0.8); width: 100%; border: 1px solid #ccc; border-radius: 10px; margin-bottom: 10px; -webkit-border-top-left-radius:0px; -webkit-border-top-right-radius:0px; -moz-border-top-left-radius:0px; -moz-border-top-right-radius:0px; border-top-left-radius:0px; border-top-right-radius:0px; overflow: hidden; }
 .formSection { cursor: pointer; background: #000 url("../img/formSectionClose.png") 98% 11px no-repeat; background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 11px no-repeat; padding:5px; padding-right: 10px; padding-left: 10px; -webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;  width: 100%; position: relative; display: block; border-bottom: 2px solid #ccc; }
+.formSectionText { cursor: pointer; background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; padding:5px; padding-right: 10px; padding-left: 10px; -webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;  width: 100%; position: relative; display: block; border-bottom: 2px solid #ccc; }
 
 fieldset { margin-bottom: 6px; }
 .noScroll { overflow: hidden; }
