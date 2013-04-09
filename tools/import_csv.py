@@ -15,7 +15,7 @@ from carnatic.models import *
 import data.models
 
 
-def load(fname, obclass, aliasclass):
+def load(fname, obclass):
     """ Load a csv file into a class. If any items are in 
     additional columns then import them as aliases """
     fp = open(fname, "rb")
@@ -23,10 +23,11 @@ def load(fname, obclass, aliasclass):
     for line in reader:
         name = line[0]
         rest = line[1:]
-        item = obclass.objects.create(name=name)
-        for a in rest:
-            alias = aliasclass.objects.create(name=a)
-            item.aliases.add(alises)
+        item, _ = obclass.objects.get_or_create(name=name)
+        if hasattr(obclass, "aliases"):
+            for a in rest:
+                if a:
+                    item.aliases.create(name=a)
 
 def main(args):
     obclass = aliasclass = None
@@ -34,18 +35,14 @@ def main(args):
     fname = args.fname
     if t == "instrument":
         obclass = Instrument
-        aliasclass = data.models.InstrumentAlias
     elif t == "raaga":
         obclass = Raaga
-        aliasclass = RaagaAlias
     elif t == "taala":
         obclass = Taala
-        aliasclass = TaalaAlias
     elif t == "region":
-        obclass = Region
-        aliasclass = None
+        obclass = GeographicRegion
     if obclass:
-        load(fname, obclass, aliasclass)
+        load(fname, obclass)
 
 if __name__ == "__main__":
     choices = ["instrument", "raaga", "taala", "region"]

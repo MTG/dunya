@@ -11,6 +11,7 @@ setup_environ(settings)
 
 from carnatic.models import *
 import data.models
+import parse_tags
 
 import musicbrainzngs as mb
 mb.set_useragent("Dunya", "0.1")
@@ -79,34 +80,20 @@ def add_and_get_artist(artistid):
     return artist
 
 def _get_raaga(taglist):
+    ret = []
     for t in taglist:
         name = t["name"].lower()
-        if "raaga" in name or "raga" in name:
-            if ":" in name:
-                parts = name.split(":")
-                return parts[1].strip()
-            elif " " in name:
-                parts = name.split()
-                if "raaga" in parts[0] or "raga" in parts[0]:
-                    return " ".join(parts[1:])
-                else:
-                    return " ".join(parts[0:len(parts)-1])
-    return None
+        if parse_tags.has_raaga(name):
+            ret.append(parse_tags.parse_raaga(name))
+    return ret
 
 def _get_taala(taglist):
+    ret = []
     for t in taglist:
         name = t["name"].lower()
-        if "taala" in name or "tala" in name:
-            if ":" in name:
-                parts = name.split(":")
-                return parts[1].strip()
-            elif " " in name:
-                parts = name.split()
-                if "taala" in parts[0] or "tala" in parts[0]:
-                    return " ".join(parts[1:])
-                else:
-                    return " ".join(parts[0:len(parts)-1])
-    return None
+        if parse_tags.has_taala(name):
+            ret.append(parse_tags.parse_taala(name))
+    return ret
 
 def add_and_get_recording(recordingid):
     try:
@@ -115,12 +102,12 @@ def add_and_get_recording(recordingid):
         logging.info("  adding recording %s" % (recordingid,))
         mbrec = mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
         mbrec = mbrec["recording"]
-        raaga = _get_raaga(mbrec.get("tag-list", []))
-        taala = _get_taala(mbrec.get("tag-list", []))
+        raagas = _get_raaga(mbrec.get("tag-list", []))
+        taalas = _get_taala(mbrec.get("tag-list", []))
         mbwork = None
         for work in mbrec.get("work-relation-list", []):
             if work["type"] == "performance":
-                mbwork = add_and_get_work(work["target"], raaga, taala)
+                mbwork = add_and_get_work(work["target"], raagas, taalas)
         rec = Recording(mbid=recordingid, work=mbwork)
         source = make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
         rec.source = source
@@ -143,17 +130,27 @@ def add_and_get_recording(recordingid):
                 add_performance(recordingid, artistid, inst, is_lead)
     return rec
 
-def add_and_get_work(workid, raaga, taala):
+def add_and_get_work(workid, raagas, taalas):
     try:
         w = Work.objects.get(mbid=workid)
     except Work.DoesNotExist:
-        r = add_and_get_raaga(raaga)
-        t = add_and_get_taala(taala)
         mbwork = mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
-        w = Work(title=mbwork["title"], mbid=workid, raaga=r, taala=t)
+        w = Work(title=mbwork["title"], mbid=workid)
         source = make_mb_source("http://musicbrainz.org/work/%s" % workid)
         w.source = source
         w.save()
+        for seq, rname in raagas:
+            r = add_and_get_raaga(rname)
+            if r:
+                WorkRaaga.objects.create(work=w, raaga=r, sequence=seq)
+            else:
+                logging.warn("Cannot find raaga: %s" % rname)
+        for seq, tname in taalas:
+            t = add_and_get_taala(tname)
+            if t:
+                WorkTaala.objects.create(work=w, taala=t, sequence=seq)
+            else:
+                logging.warn("Cannot find taala: %s" % tname)
         for artist in mbwork.get("artist-relation-list", []):
             if artist["type"] == "composer":
                 composer = add_and_get_composer(artist["target"])
@@ -185,22 +182,24 @@ def add_and_get_composer(artistid):
     return composer
 
 def add_and_get_raaga(raaganame):
-    print "get raaga", raaganame
-    if raaganame is None:
-        return None
     try:
         return Raaga.objects.fuzzy(name=raaganame)
-    except:
-        logging.warn("not found raaga %s" % (raaganame, ))
+    except Raaga.DoesNotExist, e:
+        try:
+            alias = RaagaAlias.objects.fuzzy(name=raaganame)
+            return alias.raaga
+        except RaagaAlias.DoesNotExist, e:
+            return None
 
 def add_and_get_taala(taalaname):
-    print "get taala", taalaname
-    if taalaname is None:
-        return None
     try:
         return Taala.objects.fuzzy(name=taalaname)
-    except:
-        logging.warn("not found taala %s" % (taalaname, ))
+    except Taala.DoesNotExist, e:
+        try:
+            alias = TaalaAlias.objects.fuzzy(name=taalaname)
+            return alias.taala
+        except TaalaAlias.DoesNotExist, e:
+            return None
 
 def add_performance(recordingid, artistid, instrument, is_lead):
     logging.info("  Adding performance...")
