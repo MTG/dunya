@@ -3,25 +3,25 @@
 
 {% block script %}
 $(document).ready(function() {
-window.filtersItems = {{ filter_items|safe }};
-	loadAllFilters(); 
+    window.filtersItems = {{ filter_items|safe }};
+	parseAllFilters();
 });
 {% endblock %}
 
 {% block wrap %}
     <div id="filterMask">
 	    <div id="filterArea">
-	    	
+
 	    	<div class="filterBall shadow1"><span>browse</span><div class="arrow"></div>
 	    	</div>
 	    	<div id="entitiesList" class="filterList">
 	        	<ul>
-	
+
 	        	</ul>
 	    	</div>
-	    	
+
 	    </div>
-	
+
 	    <article>
 	    	<div id="#data"></div>
 	    </article>
