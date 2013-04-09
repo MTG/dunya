@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 
 import data.models
 import managers
+import filters
 
 class CarnaticStyle(object):
     def get_style(self):
@@ -31,6 +32,13 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"name": "Artist",
+               "data": [filters.School().object, filters.Region().object, filters.Generation().object]
+              }
+        return ret
+
 class Language(CarnaticStyle, models.Model):
     name = models.CharField(max_length=50)
 
@@ -54,6 +62,13 @@ class Sabbah(CarnaticStyle, models.Model):
 
 class Concert(CarnaticStyle, data.models.Concert):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
+
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"name": "Concert",
+               "data": [filters.Venue().object, filters.Instrument().object]
+              }
+        return ret
 
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -89,6 +104,13 @@ class Raaga(models.Model):
     def __unicode__(self):
         return self.name
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"name": "Raaga",
+               "data": [filters.Text().object]
+              }
+        return ret
+
     def get_absolute_url(self):
         return reverse('carnatic-raaga', args=[str(self.id)])
 
@@ -118,6 +140,13 @@ class Taala(models.Model):
     def __unicode__(self):
         return self.name
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"name": "Taala",
+               "data": [filters.Text().object]
+              }
+        return ret
+
     def get_absolute_url(self):
         return reverse('carnatic-taala', args=[str(self.id)])
 
@@ -134,6 +163,13 @@ class Work(CarnaticStyle, data.models.Work):
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
     taala = models.ManyToManyField('Taala', through="WorkTaala")
     #form = models.ForeignKey('Form', blank=True, null=True)
+
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"name": "Work",
+               "data": [filters.Form().object, filters.Language().object, filters.WorkDate().object]
+              }
+        return ret
 
 class WorkRaaga(models.Model):
     work = models.ForeignKey('Work')
@@ -168,6 +204,13 @@ class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
 
 class Instrument(CarnaticStyle, data.models.Instrument):
     objects = managers.FuzzySearchManager()
+
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"name": "Instrument",
+               "data": [filters.Text().object]
+              }
+        return ret
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass

@@ -2,8 +2,23 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 from carnatic.models import *
+import json
 
 def main(request):
+    filter_items = [
+            Artist.get_filter_criteria(),
+            Concert.get_filter_criteria(),
+            Work.get_filter_criteria(),
+            Instrument.get_filter_criteria(),
+            Raaga.get_filter_criteria(),
+            Taala.get_filter_criteria()
+        ]
+
+    ret = {"filter_items": json.dumps(filter_items)
+           }
+    return render(request, "carnatic/index.html", ret)
+
+def overview(request):
     numartists = Artist.objects.count()
     artists = Artist.objects.all()
     numcomposers = Composer.objects.count()
@@ -17,8 +32,6 @@ def main(request):
     numraaga = Raaga.objects.count()
     numtaala = Taala.objects.count()
 
-    filter_items = open("json/dunya-filters.json").read()
-
     ret = {"numartists": numartists,
            "numcomposers": numcomposers,
            "numrecordings": numrecordings,
@@ -31,10 +44,9 @@ def main(request):
            "concerts": concerts,
            "raagas": raagas,
            "taalas": taalas,
-           "instruments": instruments,
-           "filter_items": filter_items
+           "instruments": instruments
            }
-    return render(request, "carnatic/index.html", ret)
+    return render(request, "carnatic/overview.html", ret)
 
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
