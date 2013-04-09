@@ -7,9 +7,17 @@ Installation
 
     apt-get install postgresql python-dev python-virtualenv
     virtualenv --no-site-packages env
-    . env/bin/activate
+    source env/bin/activate
     pip install --upgrade distribute
     pip install -r requirements
+
+Running
+=======
+
+To run the server:
+
+    source env/bin/activate
+    fab up
 
 Development
 ===========
@@ -83,5 +91,5 @@ When linking to an entity, never construct a link manually. Instead, make sure t
 
     {% load extras %}
 
-and use the provided `{% inline_x thex %}` methods. These will automatically create a link and 
+and use the provided `{% inline_x thex %}` methods. These will automatically create a link and
 the best form of the objects name.
