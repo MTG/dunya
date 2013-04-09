@@ -33,11 +33,13 @@ class Sabbah(CarnaticStyle, models.Model):
     city = models.CharField(max_length=100)
 
 class Concert(CarnaticStyle, data.models.Concert):
-    sabbah = models.ForeignKey(Sabbah)
+    sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
 
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
     raaga = models.ForeignKey("Raaga", related_name="aliases")
+
+    objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -65,6 +67,8 @@ class Raaga(models.Model):
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
     taala = models.ForeignKey("Taala", related_name="aliases")
+
+    objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -99,10 +103,16 @@ class WorkRaaga(models.Model):
     raaga = models.ForeignKey('Raaga')
     sequence = models.IntegerField(blank=True, null=True)
 
+    def __unicode__(self):
+        return "%s, seq %d %s" % (self.work, self.sequence, self.raaga)
+
 class WorkTaala(models.Model):
     work = models.ForeignKey('Work')
     taala = models.ForeignKey('Taala')
     sequence = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return "%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 class WorkAttribute(CarnaticStyle, data.models.WorkAttribute):
     pass
@@ -117,7 +127,7 @@ class Recording(CarnaticStyle, data.models.Recording):
     pass
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
-    pass
+    objects = managers.FuzzySearchManager()
 
 class Instrument(CarnaticStyle, data.models.Instrument):
     objects = managers.FuzzySearchManager()
