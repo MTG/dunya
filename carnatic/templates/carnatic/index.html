@@ -3,8 +3,7 @@
 
 {% block script %}
 $(document).ready(function() {
-    window.filtersItems = {{ filter_items|safe }};
-	parseAllFilters();
+    parseAllFilters({{ filter_items|safe }});
 });
 {% endblock %}
 

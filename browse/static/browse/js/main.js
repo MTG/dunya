@@ -1,6 +1,6 @@
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
-var filsersLiteralOutputArray = new Object();
+var filtersLiteralOutputArray = new Object();
 
 function removeFilter(entity_filter){
 	$(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
@@ -12,55 +12,23 @@ function removeFilter(entity_filter){
 	filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
 }
 
-function loadFilter(entity_filter,eid){
-
+function loadFilter(filterdata, entity_filter,eid){
 	$(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
 	$(".filterBall").parent().find(".filterGlobalList").addClass("filterListClosed");
 	$(".filterBall").find(".arrow").addClass("arrowClosed");
 	$(".filterBall").addClass("filterBallClosed");
 	$("#entitiesList").addClass("filterListClosed");
 
-	if(entity_filter==1){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Artist";
-	}else if(entity_filter==2){
-		filterFile = "/static/browse/js/carnatic_concerts.json";
-		filterName = "Concert";
-	}else if(entity_filter==3){
-		filterFile = "/static/browse/js/carnatic_works.json";
-		filterName = "Work";
-	}else if(entity_filter==4){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Form";
-	}else if(entity_filter==5){
-	 	filterFile = "/static/browse/js/carnatic_artists.json";
-	 	filterName = "Composer";
-	}else if(entity_filter==6){
-		filterFile = "/static/browse/js/carnatic_recordings.json";
-		filterName = "Recording";
-	}else if(entity_filter==7){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Instrument";
-	}else if(entity_filter==8){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Raaga";
-	}else if(entity_filter==9){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Taala";
-	}
-	getFilterData(filterFile,entity_filter,filterName,eid);
+	getFilterData(filterdata.url,entity_filter,filterdata.name,eid);
 }
 
 function getFilterData(filterFile,entity_filter,filterName,eid){
-	window.filterData = "";
     $.ajax({
     	url: filterFile,
-		data: "nocache=" + Math.random(),
 		type: "GET",
 		dataType: "json",
 		success: function(source){
-			window.filterData = source;
-			showFilterData(entity_filter,filterName,eid);
+			showFilterData(source, entity_filter,filterName,eid);
 		},
 		error: function(dato){
 			alert("ERROR while loading JSON");
@@ -68,42 +36,66 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 	});
 }
 
-function parseAllFilters(){
-    $.each(window.filtersItems, function(index, element) {
-    	entityHTML = "<li entity_id='"+(index+1)+"' eid='eid"+(index+1)+"'><div class='colorCode shadow1'></div>"+element.name+"</li>";
-	    $("#entitiesList ul").append(entityHTML);
+var makeFormElementList = function(element) {
+    formHTML = "";
+    if (element.multiselect) {
+        var filtertype = 'multiSelect';
+    } else {
+        var filtertype = 'select';
+    }
+    formHTML += "<fieldset filtertype='"+filtertype+"' filtername='"+element.name+"'>";
+    formHTML += "<label class='formSection'>"+element.name+"</label>";
+    formHTML += "<div class='filterList formFilterItem'><ul>";
+    for( i in element.data ){
+        formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element.data[i]+"'>"+element.data[i]+"</li>";
+    }
+    formHTML += "</ul></div></fieldset>";
+    return formHTML;
+};
+
+var makeFormElementSlider = function(element) {
+    formHTML = "";
+    formHTML += "<fieldset filtertype='slideRange' filtername='"+element.name+"'>";
+    formHTML += "<label class='formSection'>"+element.name+"</label>";
+    formHTML += "<div class='formFilterItem'>";
+    formHTML += "<span class='output'></span>";
+    if(element.step){
+        step = "step='"+element.step+"'";
+    }
+    formHTML += "<div class='slider-range' min='"+element.data[0]+"' max='"+element.data[1]+"' "+step+"></div>";
+    formHTML += "</div></fieldset>";
+    return formHTML;
+};
+
+var makeFormElementText = function(element) {
+    formHTML = "";
+    formHTML += "<fieldset filtertype='text' filtername='"+element.name+"'>";
+    formHTML += "<label class='formSectionText'>"+element.name+"<input type='text' /></label>";
+    formHTML += "</fieldset>";
+    return formHTML;
+};
+
+function parseAllFilters(filtersItems){
+    $.each(filtersItems, function(index, element) {
+        console.log(element)
+        entity = $("<li>", {
+            entity_id: (index+1),
+            eid: "eid"+(index+1)
+        }).append($("<div>", {"class": "colorCode shadow1"}))
+          .append(element.name);
+        entity.data("filter", element);
+
+	    $("#entitiesList ul").append(entity);
     	formHTML = "<div class='form_"+(index+1)+"'><form>";
     	formHTML += element.name;
     	$.each(element.data, function(index2, element2) {
     		formType = element2.type;
     		if(formType=="list"){
-    			if (element2.multiselect) {
-                    var filtertype = 'multiSelect';
-                } else {
-                    var filtertype = 'select';
-                }
-                formHTML += "<fieldset filtertype='"+filtertype+"' filtername='"+element2.name+"'>";
-                formHTML += "<label class='formSection'>"+element2.name+"</label>";
-                formHTML += "<div class='filterList formFilterItem'><ul>";
-                for( i in element2.data ){
-                    formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
-                }
-                formHTML += "</ul></div></fieldset>";
+                formHTML += makeFormElementList(element2);
     		}else if(formType=="rangeslider"){
-	    		formHTML += "<fieldset filtertype='slideRange' filtername='"+element2.name+"'>";
-		        formHTML += "<label class='formSection'>"+element2.name+"</label>";
-		        formHTML += "<div class='formFilterItem'>";
-			    formHTML += "<span class='output'></span>";
-			    if(element2.step){
-				    formHTML += "<div class='slider-range' min='"+element2.data[0]+"' max='"+element2.data[1]+"' step='"+element2.step+"'></div>";
-			    }else{
-			    	formHTML += "<div class='slider-range' min='"+element2.data[0]+"' max='"+element2.data[1]+"' ></div>";
-			    }
-		        formHTML += "</div></fieldset>";
+                formHTML += makeFormElementSlider(element2);
     		}else if(formType=="text"){
-	    		formHTML += "<fieldset filtertype='text' filtername='"+element2.name+"'>";
-		        formHTML += "<label class='formSectionText'>"+element2.name+"<input type='text' /></label>";
-		        formHTML += "</fieldset>";
+                formHTML += makeFormElementText(element2);
     		}
     	});
 	    formHTML += "</form></div>";
@@ -118,7 +110,7 @@ function loadClicks(){
 		if($(this).hasClass("selected")){
 			removeFilter($(this).attr("entity_id"));
 		}else{
-			loadFilter($(this).attr("entity_id"),$(this).attr("eid"));
+			loadFilter($(this).data("filter"), $(this).attr("entity_id"),$(this).attr("eid"));
 		}
 		$(this).toggleClass("selected");
 	});
@@ -182,20 +174,18 @@ function sumarizeFilter(object){
 
 }
 
-function showFilterData(entity_filter,filterName,eid){
+function showFilterData(results, entity_filter,filterName,eid){
 	filtersArray.push(entity_filter);
 	filterPosition = filtersArray.indexOf(entity_filter);
 	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","entity_"+entity_filter).attr("eid",eid);
 	$('#filterArea').width(480+(filtersArray.length*780));
 	newFilter = "#filter_"+filterPosition;
-    $(newFilter).find(".filterList").append(listFilterData(entity_filter));
+    $(newFilter).find(".filterList").append(listFilterData(results));
     $(newFilter).find(".filterList ul li").click(function(){
   		$(this).toggleClass("selected");
 	});
     $(newFilter).find(".filterBall span").html(filterName);
-    //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
     $(".form_"+entity_filter).clone(true).appendTo($(newFilter).find(".formFilter"));
-    //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
 
     $(newFilter+" .formFilter").removeClass("formFilterClosed");
 	$(newFilter+" .filterList").removeClass("filterListClosed");
@@ -229,7 +219,6 @@ function showFilterData(entity_filter,filterName,eid){
     });
 
 
-    //$(newFilter).find(".output").html( $(this).parent().find(".slider-range").attr("min")+"- 2013" );
     $(newFilter).find(".output").each(function(){
     	$(this).html($(this).siblings().attr("min")+" - "+$(this).siblings().attr("max"));
     });
@@ -245,11 +234,14 @@ function showFilterData(entity_filter,filterName,eid){
 	});
 }
 
-function listFilterData(entity_filter){
+function listFilterData(data){
     list = "<ul>";
-    $.each(window.filterData, function(index, element) {
-    	if(entity_filter==2||entity_filter==3||entity_filter==6){ list += "<li>"+element.info.title+"</li>"}
-    	else{ list += "<li>"+element.info.name+"</li>"};
+    $.each(data, function(index, element) {
+        if (element.name) {
+            list += "<li>"+element.name+"</li>";
+        } else {
+            list += "<li>"+element.title+"</li>";
+        }
     });
     list += "</ul>";
     return list;
