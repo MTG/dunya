@@ -106,7 +106,8 @@ INSTALLED_APPS = (
     'social',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    'south'
+    'south',
+    'django.contrib.comments'
 )
 
 # A sample logging configuration. The only tangible logging

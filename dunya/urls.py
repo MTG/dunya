@@ -3,6 +3,9 @@ from django.conf.urls import patterns, include, url, static
 from django.conf import settings
 
 from django.contrib import admin
+
+from django.contrib.comments.models import FreeComment
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.urls')),
+    url(r'^comment/', include('django.contrib.comments.urls')),
 )
 
 #if settings.DEBUG:
