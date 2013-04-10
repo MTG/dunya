@@ -1,6 +1,6 @@
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
-var filtersLiteralOutputArray = new Object();
+var filsersLiteralOutputArray = new Object();
 
 function removeFilter(entity_filter){
 	$(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
@@ -77,23 +77,18 @@ function parseAllFilters(){
     	$.each(element.data, function(index2, element2) {
     		formType = element2.type;
     		if(formType=="list"){
-    			if(element2.multiselect==true){
-	    			formHTML += "<fieldset filtertype='multiSelect' filtername='"+element2.name+"'>";
-	    			formHTML += "<label class='formSection'>"+element2.name+"</label>";
-	    			formHTML += "<div class='filterList formFilterItem'><ul>";
-	    			for( i in element2.data ){
-	    				formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
-	    			}
-	    			formHTML += "</ul></div></fieldset>";
-    			}else{
-	    			formHTML += "<fieldset filtertype='select' filtername='"+element2.name+"'>";
-	    			formHTML += "<label class='formSection'>"+element2.name+"</label>";
-	    			formHTML += "<div class='filterList formFilterItem'><ul>";
-	    			for( i in element2.data ){
-		    			formHTML += "<li the_id='"+(i+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
-	    			}
-	    			formHTML += "</ul></div></fieldset>";
-    			}
+    			if (element2.multiselect) {
+                    var filtertype = 'multiSelect';
+                } else {
+                    var filtertype = 'select';
+                }
+                formHTML += "<fieldset filtertype='"+filtertype+"' filtername='"+element2.name+"'>";
+                formHTML += "<label class='formSection'>"+element2.name+"</label>";
+                formHTML += "<div class='filterList formFilterItem'><ul>";
+                for( i in element2.data ){
+                    formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
+                }
+                formHTML += "</ul></div></fieldset>";
     		}else if(formType=="rangeslider"){
 	    		formHTML += "<fieldset filtertype='slideRange' filtername='"+element2.name+"'>";
 		        formHTML += "<label class='formSection'>"+element2.name+"</label>";
