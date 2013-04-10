@@ -7,10 +7,14 @@
 Work title: {{ work.title }}<br>
 Composed by: {% inline_composer work.composer %}<br>
 {% if work.raaga %}
-Raaga: {% inline_raaga work.raaga %}<br>
+{% for r in work.raaga.all %}
+    Raaga: {% inline_raaga r %}<br>
+{% endfor %}
 {% endif %}
 {% if work.taala %}
-Taala: {% inline_taala work.taala %}<br>
+{% for t in work.taala.all %}
+    Taala: {% inline_taala t %}<br>
+{% endfor %}
 {% endif %}
 
 <h3>Concerts</h3>
