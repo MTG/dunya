@@ -5,8 +5,9 @@ def up(port="8001"):
     local("python manage.py runserver 0.0.0.0:%s"%port)
 
 def setupdb():
-    local("rm data/migrations/*")
-    local("rm carnatic/migrations/*")
+    with settings(warn_only=True):
+        local("rm data/migrations/*")
+        local("rm carnatic/migrations/*")
     local("python manage.py schemamigration --initial data")
     local("python manage.py schemamigration --initial carnatic")
     local("python manage.py syncdb --noinput")
