@@ -37,20 +37,23 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 }
 
 var makeFormElementList = function(element) {
-    formHTML = "";
     if (element.multiselect) {
         var filtertype = 'multiSelect';
     } else {
         var filtertype = 'select';
     }
-    formHTML += "<fieldset filtertype='"+filtertype+"' filtername='"+element.name+"'>";
-    formHTML += "<label class='formSection'>"+element.name+"</label>";
-    formHTML += "<div class='filterList formFilterItem'><ul>";
+    var fieldset = $("<fieldset>").data("type", filtertype).data("name", element.name);
+    fieldset.append($("<label>", {"class": "formSection"}).text(element.name));
+
+    var div = $("<div>", {"class": "filterList formFilterItem"});
+    var ul = $("<ul>");
     for( i in element.data ){
-        formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element.data[i]+"'>"+element.data[i]+"</li>";
+        var li = $("<li>").data("id", i+1).data("value", element.data[i]).text(element.data[i]);
+        ul.append(li);
     }
-    formHTML += "</ul></div></fieldset>";
-    return formHTML;
+    div.append(ul);
+    fieldset.append(div);
+    return fieldset;
 };
 
 var makeFormElementSlider = function(element) {
@@ -68,17 +71,19 @@ var makeFormElementSlider = function(element) {
 };
 
 var makeFormElementText = function(element) {
-    formHTML = "";
-    formHTML += "<fieldset filtertype='text' filtername='"+element.name+"'>";
-    formHTML += "<label class='formSectionText'>"+element.name+"<input type='text' /></label>";
-    formHTML += "</fieldset>";
-    return formHTML;
+    form = $("<form>").data("type", "text").data("name", element.name);
+    form.append(
+            $("<label>", {"class": "formSectionText"})
+                .append(element.name)
+                .append($("<input>", {type:"text"}))
+            );
+    return form;
 };
 
 function parseAllFilters(filtersItems){
     $.each(filtersItems, function(index, element) {
-        console.log(element)
-        entity = $("<li>", {
+        console.log(element.name)
+        var entity = $("<li>", {
             entity_id: (index+1),
             eid: "eid"+(index+1)
         }).append($("<div>", {"class": "colorCode shadow1"}))
@@ -86,20 +91,18 @@ function parseAllFilters(filtersItems){
         entity.data("filter", element);
 
 	    $("#entitiesList ul").append(entity);
-    	formHTML = "<div class='form_"+(index+1)+"'><form>";
-    	formHTML += element.name;
+        form = $("<form>").append(element.name);
     	$.each(element.data, function(index2, element2) {
     		formType = element2.type;
-    		if(formType=="list"){
-                formHTML += makeFormElementList(element2);
-    		}else if(formType=="rangeslider"){
-                formHTML += makeFormElementSlider(element2);
-    		}else if(formType=="text"){
-                formHTML += makeFormElementText(element2);
+    		if (formType=="list") {
+                form.append(makeFormElementList(element2));
+    		} else if (formType=="rangeslider") {
+                form.append(makeFormElementSlider(element2));
+    		} else if (formType=="text") {
+                form.append(makeFormElementText(element2));
     		}
     	});
-	    formHTML += "</form></div>";
-	    $("#footage").append(formHTML);
+	    $("#footage").append($("<div>", {"class": "form_"+(index+1)}).append(form));
     });
     loadClicks();
 }
@@ -117,12 +120,9 @@ function loadClicks(){
 
 	$(".filterList.formFilterItem ul li").click(function(){
 		$(this).toggleClass("selected");
-		entity = $(this).parent().parent().parent().parent().parent().parent().parent().attr("eid");
-		filterType = $(this).parent().parent().parent().attr("filtertype");
-		filterName = $(this).parent().parent().parent().attr("filtername");
-		getResults($(this));
+		//getResults($(this));
+        performSearch();
 	});
-
 
 	$(".formSection").click(function(){
 		$(this).toggleClass("formSectionOpen");
@@ -132,11 +132,6 @@ function loadClicks(){
 		topPosition = $(this).position()
 		container = $(this).parent().parent().parent().parent();
 		container.scrollTop(topPosition.top-10);
-		if($(this).hasClass("formSectionOpen")){
-			container.addClass("noScroll");
-		}else{
-			container.removeClass("noScroll");
-		}
 	});
 	$(".filterBall").click(function(){
 		nuk = $(this);
@@ -165,6 +160,7 @@ function loadClicks(){
 }
 
 function sumarizeFilter(object){
+    return
 
 	summaryHTML = "";
 	$.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
@@ -177,9 +173,9 @@ function sumarizeFilter(object){
 function showFilterData(results, entity_filter,filterName,eid){
 	filtersArray.push(entity_filter);
 	filterPosition = filtersArray.indexOf(entity_filter);
-	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","entity_"+entity_filter).attr("eid",eid);
+	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterName).attr("class","entity_"+entity_filter).attr("eid",eid);
 	$('#filterArea').width(480+(filtersArray.length*780));
-	newFilter = "#filter_"+filterPosition;
+	newFilter = "#filter_"+filterName;
     $(newFilter).find(".filterList").append(listFilterData(results));
     $(newFilter).find(".filterList ul li").click(function(){
   		$(this).toggleClass("selected");
@@ -193,19 +189,7 @@ function showFilterData(results, entity_filter,filterName,eid){
 	$(newFilter+" .filterBall").removeClass("filterBallClosed");
 
     $(newFilter+" .slider-range").each(function(){
-    	if($(this).attr('step')){
-	    	$(this).slider({
-			range: true,
-			min: parseInt($(this).attr('min')),
-			max: parseInt($(this).attr('max')),
-			step: parseInt($(this).attr('step')),
-			values: [ parseInt($(this).attr('min')), parseInt($(this).attr('max')) ],
-			slide: function( event, ui ) {
-				$(newFilter).find(".output").html( ui.values[ 0 ] + " - " + ui.values[ 1 ] + "<div class='results' first='"+ui.values[ 0 ]+"' second='"+ui.values[ 1 ]+"'></div>" );
-			}
-		});
-    	}else{
-	    	$(this).slider({
+        var sliderdata = {
 			range: true,
 			min: parseInt($(this).attr('min')),
 			max: parseInt($(this).attr('max')),
@@ -213,9 +197,12 @@ function showFilterData(results, entity_filter,filterName,eid){
 			slide: function( event, ui ) {
 				$(newFilter).find(".output").html( ui.values[ 0 ] + " - " + ui.values[ 1 ] + "<div class='results' first='"+ui.values[ 0 ]+"' second='"+ui.values[ 1 ]+"'></div>" );
 			}
-		});
-    	}
+        };
 
+    	if($(this).attr('step')) {
+            sliderdata["step"] = parseInt($(this).attr('step'));
+        }
+        $(this).slider(sliderdata);
     });
 
 
@@ -247,20 +234,46 @@ function listFilterData(data){
     return list;
 }
 
-function getResults(item){
+var updateSearchForEntity = function(entity) {
+    // TODO: We only want to do a search update if the values have changed
+    // since last time.
+    var name = $(entity).data("filter").name;
+    console.log("for entity " + name);
+    var search = $("div#filter_"+name);
+
+    search.find($("fieldset")).each(function(i, e) {
+        var data = $(e).data()
+        console.log("Criteria " + data.name)
+        $(e).find("li.selected").each(function(j, li) {
+            console.log("   "+$(li).data("value"));
+        });
+    });
+};
+
+var performSearch = function() {
+    $.each($("div#entitiesList li.selected"), function (i, el) {
+        updateSearchForEntity(el);
+    });
+
+};
+
+function getResults(item) {
+		var entity = item.parent().parent().parent().parent().parent().parent().parent().attr("eid");
+		var filterType = item.parents("fieldset").data("type");
+		var filterName = item.parents("fieldset").data("name");
 		theValue = "";
 		theName = "";
 		if( filterType == "multiSelect" ){
 			theValue =[ ];
 			theName =[ ];
 			item.parent().find(".selected").each(function (i){
-        		theValue[i]=$(this).attr("the_id");
-        		theName[i]=$(this).attr("valor");
+        		theValue[i]=$(this).data("id");
+        		theName[i]=$(this).data("value");
         		console.log(theName[i]);
         	});
 		}else if( filterType == "select" ){
-			theValue = item.parent().find(".selected").attr("the_id");
-			theName = item.parent().find(".selected").attr("valor");
+			theValue = item.parent().find(".selected").data("id");
+			theName = item.parent().find(".selected").data("value");
 		}else if( filterType == "slider" ){
 			theValue = "es un slider";
 		}else if( filterType == "sliderRange" ){
@@ -268,25 +281,25 @@ function getResults(item){
 		}
 
 
-		if(jQuery.isEmptyObject(filtersOutputArray)){
-			filtersOutputArray[entity] = new Object();
-			filtersOutputArray[entity][filterName] = theValue;
-			filtersLiteralOutputArray[entity] = new Object();
-			filtersLiteralOutputArray[entity][filterName] = theName;
-		}else{
-			for(var i in filtersOutputArray){
-				if (filtersOutputArray.hasOwnProperty(entity)) {
-					filtersOutputArray[entity][filterName] = theValue;
-					filtersLiteralOutputArray[entity][filterName] = theName;
-				}else{
-					filtersOutputArray[entity] = new Object();
-					filtersOutputArray[entity][filterName] = theValue;
-					filtersLiteralOutputArray[entity] = new Object();
-					filtersLiteralOutputArray[entity][filterName] = theName;
-				}
-			}
-		}
-		console.log(filtersLiteralOutputArray);
+		//if(jQuery.isEmptyObject(filtersOutputArray)){
+		//	filtersOutputArray[entity] = new Object();
+		//	filtersOutputArray[entity][filterName] = theValue;
+		//	filtersLiteralOutputArray[entity] = new Object();
+		//	filtersLiteralOutputArray[entity][filterName] = theName;
+		//}else{
+		//	for(var i in filtersOutputArray){
+		//		if (filtersOutputArray.hasOwnProperty(entity)) {
+		//			filtersOutputArray[entity][filterName] = theValue;
+		//			filtersLiteralOutputArray[entity][filterName] = theName;
+		//		}else{
+		//			filtersOutputArray[entity] = new Object();
+		//			filtersOutputArray[entity][filterName] = theValue;
+		//			filtersLiteralOutputArray[entity] = new Object();
+		//			filtersLiteralOutputArray[entity][filterName] = theName;
+		//		}
+		//	}
+		//}
+		//console.log(filtersLiteralOutputArray);
 		//console.log(filtersOutputArray);
 
 	}
