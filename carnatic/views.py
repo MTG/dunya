@@ -48,6 +48,13 @@ def overview(request):
            }
     return render(request, "carnatic/overview.html", ret)
 
+def artistsearch(request):
+    artists = Artist.objects.all()
+    ret = []
+    for a in artists:
+        ret.append({"mbid": a.mbid, "name": a.name})
+    return HttpResponse(json.dumps(ret), content_type="application/json")
+
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
     ret = {"artist": artist
@@ -61,6 +68,13 @@ def composer(request, composerid):
 
     return render(request, "carnatic/composer.html", ret)
 
+def concertsearch(request):
+    concerts = Concert.objects.all()
+    ret = []
+    for c in concerts:
+        ret.append({"mbid": c.mbid, "title": c.title})
+    return HttpResponse(json.dumps(ret), content_type="application/json")
+
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
     ret = {"concert": concert}
@@ -73,11 +87,25 @@ def recording(request, recordingid):
     ret = {"recording": recording}
     return render(request, "carnatic/recording.html", ret)
 
+def worksearch(request):
+    works = Work.objects.all()
+    ret = []
+    for w in works:
+        ret.append({"mbid": w.mbid, "title": w.title})
+    return HttpResponse(json.dumps(ret), content_type="application/json")
+
 def work(request, workid):
     work = get_object_or_404(Work, pk=workid)
 
     ret = {"work": work}
     return render(request, "carnatic/work.html", ret)
+
+def taalasearch(request):
+    taalas = Taala.objects.all()
+    ret = []
+    for t in taalas:
+        ret.append({"pk": t.pk, "name": t.name})
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
@@ -85,11 +113,25 @@ def taala(request, taalaid):
     ret = {"taala": taala}
     return render(request, "carnatic/taala.html", ret)
 
+def raagasearch(request):
+    raagas = Raaga.objects.all()
+    ret = []
+    for r in raagas:
+        ret.append({"pk": r.pk, "name": r.name})
+    return HttpResponse(json.dumps(ret), content_type="application/json")
+
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
 
     ret = {"raaga": raaga}
     return render(request, "carnatic/raaga.html", ret)
+
+def instrumentsearch(request):
+    instruments = Instrument.objects.all()
+    ret = []
+    for i in instruments:
+        ret.append({"pk": i.pk, "name": i.name})
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)

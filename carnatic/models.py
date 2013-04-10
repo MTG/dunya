@@ -34,7 +34,8 @@ class Artist(CarnaticStyle, data.models.Artist):
 
     @classmethod
     def get_filter_criteria(cls):
-        ret = {"name": "Artist",
+        ret = {"url": reverse('carnatic-artist-search'),
+               "name": "Artist",
                "data": [filters.School().object, filters.Region().object, filters.Generation().object]
               }
         return ret
@@ -65,7 +66,8 @@ class Concert(CarnaticStyle, data.models.Concert):
 
     @classmethod
     def get_filter_criteria(cls):
-        ret = {"name": "Concert",
+        ret = {"url": reverse('carnatic-concert-search'),
+               "name": "Concert",
                "data": [filters.Venue().object, filters.Instrument().object]
               }
         return ret
@@ -106,7 +108,8 @@ class Raaga(models.Model):
 
     @classmethod
     def get_filter_criteria(cls):
-        ret = {"name": "Raaga",
+        ret = {"url": reverse('carnatic-raaga-search'),
+               "name": "Raaga",
                "data": [filters.Text().object]
               }
         return ret
@@ -142,7 +145,8 @@ class Taala(models.Model):
 
     @classmethod
     def get_filter_criteria(cls):
-        ret = {"name": "Taala",
+        ret = {"url": reverse('carnatic-taala-search'),
+               "name": "Taala",
                "data": [filters.Text().object]
               }
         return ret
@@ -166,7 +170,8 @@ class Work(CarnaticStyle, data.models.Work):
 
     @classmethod
     def get_filter_criteria(cls):
-        ret = {"name": "Work",
+        ret = {"url": reverse('carnatic-work-search'),
+               "name": "Work",
                "data": [filters.Form().object, filters.Language().object, filters.WorkDate().object]
               }
         return ret
@@ -207,7 +212,8 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 
     @classmethod
     def get_filter_criteria(cls):
-        ret = {"name": "Instrument",
+        ret = {"url": reverse('carnatic-instrument-search'),
+               "name": "Instrument",
                "data": [filters.Text().object]
               }
         return ret
