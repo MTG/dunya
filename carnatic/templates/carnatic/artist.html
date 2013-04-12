@@ -8,4 +8,29 @@
 <p>Name: {{artist.name}}
 
 {% include "carnatic/concerts_by_artist_list.html" with artist=artist only %}
+
+<h2>Comments:</h2>
+{% render_comment_list for artist %}
+
+<h2>Post comment:</h2>
+{% if user.is_authenticated %}
+ {% get_comment_form for artist as form %}
+ <form action="{% comment_form_target %}" method="post">
+	{% csrf_token %}
+	{{ form.comment }}
+	{{ form.honeypot }}
+	{{ form.content_type }}
+	{{ form.object_pk }}
+	{{ form.timestamp }}
+	{{ form.security_hash }}
+	<br>
+	<!--Redirecting to artist after the comment post -->
+	<input type="hidden" name="next" value="{% url 'carnatic-artist' artist.id %}" />
+	<input type="submit" value="Add comment" id="id_submit" />
+        <input type="submit" name="preview" value="Preview">
+ </form> 
+{% else %}
+    <p>Please <a href="{{ login_url }}">log in</a> to leave a comment.</p>
+{% endif %}
+
 {% endblock %}

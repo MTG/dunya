@@ -1,5 +1,6 @@
 {% extends "browse/base.html" %}
 {% load inline %}
+{% load comments %}
 
 {% block wrap %}
 <h2>Recording</h2>
@@ -15,5 +16,30 @@
 <p>Performers:<br>
 {% for perf in recording.instrumentperformance_set.all %}
   <li>{% inline_artist perf.performer %}, playing {% inline_instrument perf.instrument %}
-  {% endfor %}
+{% endfor %}
+
+<h2>Comments:</h2>
+{% render_comment_list for recording %}
+
+<h2>Post comment:</h2>
+{% if user.is_authenticated %}
+ {% get_comment_form for recording as form %}
+ <form action="{% comment_form_target %}" method="post">
+	{% csrf_token %}
+	{{ form.comment }}
+	{{ form.honeypot }}
+	{{ form.content_type }}
+	{{ form.object_pk }}
+	{{ form.timestamp }}
+	{{ form.security_hash }}
+        <br>
+	<!--Redirecting to recording after the comment post -->
+	<input type="hidden" name="next" value="{% url 'carnatic-recording' recording.id %}" />
+	<input type="submit" value="Add comment" id="id_submit" />
+        <input type="submit" name="preview" value="Preview">
+ </form> 
+{% else %}
+    <p>Please <a href="{{ login_url }}">log in</a> to leave a comment.</p>
+{% endif %}
+
 {% endblock %}
