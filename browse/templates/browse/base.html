@@ -22,10 +22,8 @@
 
         <script src="{% static 'browse/js/main.js' %}"></script>
         <script src="{% static 'browse/js/plugins.js' %}"></script>
-        <script>
-            {% block script %}
-            {% endblock %}
-        </script>
+        {% block script %}
+        {% endblock %}
 
     </head>
     <body>
@@ -71,6 +69,10 @@
         	</div>
 
         </div>
+
+
+
+        <li data-test="hello">
 
     </body>
 </html>
