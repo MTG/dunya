@@ -29,16 +29,9 @@ Composed by: {% inline_composer work.composer %}<br>
 <h2>Post comment:</h2>
 {% if user.is_authenticated %}
  {% get_comment_form for work as form %}
- <form action="{% comment_form_target %}" method="post">
-	{% csrf_token %}
-	{{ form.comment }}
-	{{ form.honeypot }}
-	{{ form.content_type }}
-	{{ form.object_pk }}
-	{{ form.timestamp }}
-	{{ form.security_hash }}
-        <br>
-	<!--Redirecting to work after the comment post -->
+
+{% include "browse/form-comment.html" %}
+
 	<input type="hidden" name="next" value="{% url 'carnatic-work' work.id %}" />
 	<input type="submit" value="Add comment" id="id_submit" />
         <input type="submit" name="preview" value="Preview">
