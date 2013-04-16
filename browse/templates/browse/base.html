@@ -11,7 +11,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static 'browse/css/normalize.min.css' %}">
         <link rel="stylesheet" href="{% static 'browse/css/main.css' %}">
         <link href="{% static 'browse/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
@@ -20,7 +20,7 @@
         <script src="{% static 'browse/js/vendor/jquery-1.9.1.min.js' %}"></script>
         <script src="{% static 'browse/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
 
-        <script src="{% static 'browse/js/main.js' %}"></script>
+        <script src="{% static 'browse/js/main-ck.js' %}"></script>
         <script src="{% static 'browse/js/plugins.js' %}"></script>
         <script>
             {% block script %}
@@ -31,6 +31,20 @@
     <body>
         <div class="header-container">
             <header>
+            	<div id="logo"></div>
+            	<div id="globalsearch">
+	            	<input type="text" value="search..." />
+	            	<div class="button"></div>
+            	</div><!-- globalserach -->
+            	<div id="globalMusic">
+            		<label>Select Music Style</label>
+            		<span id="gmSelected">Carnatic</span>
+            		<ul id="gmDropDown">
+            			<li>Music Style 1</li>
+            			<li>Music Style 2</li>
+            			<li>Music Style 3</li>
+            		</ul>
+            	</div><!-- globalmusic -->
                 <h1 class="title">Dunya UI Prototype 1.1</h1>
                 <nav>
                     <ul>

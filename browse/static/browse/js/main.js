@@ -114,6 +114,12 @@ function parseAllFilters(){
 
 function loadClicks(){
 
+	/* Select Music Style */
+	$("#gmSelected").click(function(){
+		console.log("hia");
+		$("#gmDropDown").show();
+	});
+
 	$("#entitiesList ul li").click(function(){
 		if($(this).hasClass("selected")){
 			removeFilter($(this).attr("entity_id"));
