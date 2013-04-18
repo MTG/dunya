@@ -37,7 +37,7 @@ Composed by: {% inline_composer work.composer %}<br>
         <input type="submit" name="preview" value="Preview">
  </form> 
 {% else %}
-    <p>Please <a href="{{ login_url }}">log in</a> to leave a comment.</p>
+    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/carnatic/overview' %}">log in</a> to leave a comment.</p>
 {% endif %}
 
 {% endblock %}

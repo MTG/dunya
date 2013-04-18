@@ -10,7 +10,11 @@
    <p><label for="id_username">Username:</label>{{ form.username }}</p>
    <p><label for="id_password">Password:</label>{{ form.password }}</p>
    <input type="submit" value="login" />
-   <input type="hidden" name="next" value="{{ social_main }}" />
+   {% if request.GET.next %}
+   <input type="hidden" name="next" value="{{ request.GET.next }}" />
+   {% else %}
+    <input type="hidden" name="next" value="{{ social_main }}" />
+   {% endif %}
   </form>
 {% endblock %}
 
