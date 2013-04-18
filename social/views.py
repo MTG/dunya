@@ -26,7 +26,7 @@ def user_page(request, username):
 
 def logout_page(request):
     logout(request)
-    return HttpResponseRedirect(reverse('social-main'))
+    return HttpResponseRedirect(reverse('carnatic-overview'))
 
 def register_page(request):
     if request.method == 'POST':

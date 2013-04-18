@@ -1,7 +1,8 @@
-{%extends "base.html" %}
-{%block title %}User Login{% endblock %}
-{%block head %}User Login{% endblock %}
-{%block content %}
+{%extends "browse/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+
  {% if form.has_errors %}
   <p>Your username and password didn't match.Please try again.</p>
  {% endif %}
@@ -13,7 +14,7 @@
    {% if request.GET.next %}
    <input type="hidden" name="next" value="{{ request.GET.next }}" />
    {% else %}
-    <input type="hidden" name="next" value="{{ social_main }}" />
+    <input type="hidden" name="next" value="{% url 'carnatic-overview' %}" />
    {% endif %}
   </form>
 {% endblock %}

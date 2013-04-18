@@ -5,6 +5,7 @@ import data.models
 import managers
 import filters
 
+
 class CarnaticStyle(object):
     def get_style(self):
         return "carnatic"
@@ -31,6 +32,7 @@ class MusicalSchool(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+    
 
     @classmethod
     def get_filter_criteria(cls):

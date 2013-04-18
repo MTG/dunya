@@ -32,17 +32,17 @@ class Playlist(models.Model):
 #class Comment(models.Model):
 #    comment = models.TextField()
 
-class Tag(models.Model):
-    tag = models.CharField(max_length=100)
-    category = models.CharField(max_length=100)
-    
-class ArtistTag(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
-    artist = models.ForeignKey(Artist)
-    timestamp = models.DateTimeField('date tagged')
-    class Meta:
-        unique_together = (("user", "tag", "artist"),)
+#class Tag(models.Model):
+#    tag = models.CharField(max_length=100)
+#    category = models.CharField(max_length=100)
+#    
+#class ArtistTag(models.Model):
+#    user = models.ForeignKey(User)
+#    tag = models.ForeignKey(Tag)
+#    artist = models.ForeignKey(Artist)
+#    timestamp = models.DateTimeField('date tagged')
+#    class Meta:
+#        unique_together = (("user", "tag", "artist"),)
 
 #class ArtistComment(models.Model):
 #    user = models.ForeignKey(User)
