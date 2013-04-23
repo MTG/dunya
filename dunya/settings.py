@@ -147,4 +147,7 @@ LOGGING = {
     }
 }
 
+#Social part_PROFILE
+AUTH_PROFILE_MODULE = "social.UserProfile"
+
 from local_settings import *

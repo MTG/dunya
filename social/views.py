@@ -38,9 +38,6 @@ def register_page(request):
                 email=form.cleaned_data['email']
             )
             
-            user.first_name=form.cleaned_data['first_name']
-            user.last_name=form.cleaned_data['last_name']
-            
             user.save()
             
             return HttpResponseRedirect(reverse('social-auth-register-success'))
@@ -50,4 +47,30 @@ def register_page(request):
             'form': form
     })
     return render_to_response('registration/register.html',variables)
+
+def tag_save_page(request):
+    if request.method == 'POST':
+        form = TagSaveForm(request.POST)
+        if form.is_valid():
+            # Create new tag list.
+            tag_names = form.cleaned_data['tags'].split()
+            for tag_name in tag_names:
+                tag, dummy = Tag.objects.get_or_create(name=tag_name)
+                artist.tag_set.add(tag)
+            return HttpResponseRedirect('/carnatic/artist/%s' % artist.id)
+    else:
+        form = TagSaveForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+    return render_to_response('form-tag.html', variables)
+
+
+def view_profile(request):
+    user_profile = request.user.get_profile()
+    url = user_profile.url
+
+
+
+
 

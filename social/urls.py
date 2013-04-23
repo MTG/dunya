@@ -21,8 +21,9 @@ urlpatterns = patterns('',
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media}),
     url(r'^register/$', views.register_page, name='social-auth-register'),
     #(r'^register/success/$', direct_to_template, {'template': 'registration/register_success.html'})
-    url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success')
-    
+    url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
+    url(r'^tag/$', views.tag_save_page, name='tag-form'),
+
     # Examples:
     # url(r'^$', 'Dunya.views.home', name='home'),
     # url(r'^Dunya/', include('Dunya.foo.urls')),

@@ -6,8 +6,6 @@ class RegistrationForm(forms.Form):
 	required_css_class = 'required'
 	username = forms.CharField(label=u'Username', max_length=30)
 	email = forms.EmailField(label=u'Email')
-	first_name = forms.CharField(label=u'First Name', required=False)
-	last_name = forms.CharField(label=u'Last Name', required=False)
 	password1 = forms.CharField(label=u'Password',widget=forms.PasswordInput())
 	password2 = forms.CharField(label=u'Password (Again)',widget=forms.PasswordInput())
 
@@ -28,3 +26,8 @@ class RegistrationForm(forms.Form):
 		except User.DoesNotExist:
 			return username
 		raise forms.ValidationError('Username is already taken.')
+
+class TagSaveForm(forms.Form):
+	tags = forms.CharField(label=u'Tags', required=True, widget=forms.TextInput(attrs={'size': '64'}))		
+
+

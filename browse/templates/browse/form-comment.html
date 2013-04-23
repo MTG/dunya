@@ -2,11 +2,11 @@
 
 <form action="{% comment_form_target %}" method="post">
 	{% csrf_token %}
-	{{ form.comment }}
-	{{ form.honeypot }}
-	{{ form.content_type }}
-	{{ form.object_pk }}
-	{{ form.timestamp }}
-	{{ form.security_hash }}
+	{{ form_comment.comment }}
+	{{ form_comment.honeypot }}
+	{{ form_comment.content_type }}
+	{{ form_comment.object_pk }}
+	{{ form_comment.timestamp }}
+	{{ form_comment.security_hash }}
 	<br>
 	<!--Redirecting to model url after the comment post -->
