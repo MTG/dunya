@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 from carnatic.models import *
+from social.forms import TagSaveForm
 import json
 
 def main(request):
@@ -57,8 +58,11 @@ def artistsearch(request):
 
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
-    ret = {"artist": artist
-          }
+    ret = {"artist": artist,
+           "form": TagSaveForm(),
+            "object": "artist",
+            "objectid": artist.id,
+    }
 
     return render(request, "carnatic/artist.html", ret)
 

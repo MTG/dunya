@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from social.forms import *
-
+from social.models import *
+from datetime import datetime
 
 def main_page(request):
     return render_to_response('main_page.html',RequestContext(request))
@@ -53,11 +54,15 @@ def tag_save_page(request):
         form = TagSaveForm(request.POST)
         if form.is_valid():
             # Create new tag list.
-            tag_names = form.cleaned_data['tags'].split()
+            objectid = int(form.cleaned_data['objectid'])
+            tag_names = form.cleaned_data['tags'].split(",")
             for tag_name in tag_names:
-                tag, dummy = Tag.objects.get_or_create(name=tag_name)
-                artist.tag_set.add(tag)
-            return HttpResponseRedirect('/carnatic/artist/%s' % artist.id)
+                tag, _ = Tag.objects.get_or_create(name=tag_name, category="")
+                artist = Artist.objects.get(pk=objectid)
+                #artist.tag_set.add(tag)
+                if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
+                    artist_tag, _ = ArtistTag.objects.create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
+            return HttpResponseRedirect('/carnatic/artist/%s' % objectid)
     else:
         form = TagSaveForm()
     variables = RequestContext(request, {
@@ -66,9 +71,14 @@ def tag_save_page(request):
     return render_to_response('form-tag.html', variables)
 
 
-def view_profile(request):
+def user_profile(request):
     user_profile = request.user.get_profile()
-    url = user_profile.url
+    variables = RequestContext(request, {
+            'user_profile': user_profile
+    })
+    #url = user_profile.url
+    #return HttpResponse(unicode(user_profile), content_type="text/plain")
+    return render_to_response('user_profile.html', variables)
 
 
 

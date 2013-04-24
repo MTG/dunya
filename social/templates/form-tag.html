@@ -1,4 +1,12 @@
-<form method="post" action=".">
+<script>
+    $(document).ready(function() {
+       $('#id_object').val("{{ object }}");
+       $('#id_objectid').val({{ objectid }});
+    });
+</script>
+
+<form method="post" action="/social/tag/">
+    {% csrf_token %}
     {{ form.as_p }}
 <input type="submit" value="save" />
 </form>

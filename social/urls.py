@@ -16,6 +16,7 @@ site_media = os.path.join(
 urlpatterns = patterns('',
     url(r'^$', views.main_page, name='social-main'),
     url(r'^user/(\w+)/$', views.user_page, name='social-auth-user'),
+    url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='social-auth-login'),
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media}),

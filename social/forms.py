@@ -28,6 +28,8 @@ class RegistrationForm(forms.Form):
 		raise forms.ValidationError('Username is already taken.')
 
 class TagSaveForm(forms.Form):
-	tags = forms.CharField(label=u'Tags', required=True, widget=forms.TextInput(attrs={'size': '64'}))		
+	tags = forms.CharField(label=u'Tags', required=True, widget=forms.TextInput(attrs={'size': '128'}))
+	objectid = forms.IntegerField(widget=forms.HiddenInput())
+	object = forms.CharField(widget=forms.HiddenInput(), max_length=30)
 
 

@@ -22,6 +22,8 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=100, null=True)
     birthday = models.DateField(null=True)
     avatar = models.ImageField(upload_to='gallery', null=True)
+    def __unicode__(self):
+        return unicode(self.user)
 
 def user_post_save(sender, instance, created, **kwargs):
     """Create a user profile when a new user account is created"""
@@ -42,8 +44,12 @@ class Playlist(models.Model):
     recordings = models.ManyToManyField(Recording)
 
 class Tag(models.Model):
-    name = models.CharField(max_length=64, unique=True)
-    artist = models.ManyToManyField(Artist)
+    name = models.CharField(max_length=128)
+    category = models.CharField(max_length=64, blank=True, null=True)
+    #artist = models.ManyToManyField(Artist)
+    
+    class Meta:
+        unique_together = ('name', 'category',)
     
     def __unicode__(self):
         return self.name
@@ -55,14 +61,17 @@ class Tag(models.Model):
 #class Tag(models.Model):
 #    tag = models.CharField(max_length=100)
 #    category = models.CharField(max_length=100)
-#    
-#class ArtistTag(models.Model):
-#    user = models.ForeignKey(User)
-#    tag = models.ForeignKey(Tag)
-#    artist = models.ForeignKey(Artist)
-#    timestamp = models.DateTimeField('date tagged')
-#    class Meta:
-#        unique_together = (("user", "tag", "artist"),)
+#
+
+class ArtistTag(models.Model):
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
+    artist = models.ForeignKey(Artist)
+    timestamp = models.DateTimeField('date tagged')
+    class Meta:
+        unique_together = (("user", "tag", "artist"),)
+    def __unicode__(self):
+        return u"('%s','%s','%s')" % (self.artist, self.tag, self.user)
 
 
 #class Comment(models.Model):
