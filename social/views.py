@@ -57,11 +57,11 @@ def tag_save_page(request):
             objectid = int(form.cleaned_data['objectid'])
             tag_names = form.cleaned_data['tags'].split(",")
             for tag_name in tag_names:
-                tag, _ = Tag.objects.get_or_create(name=tag_name, category="")
+                tag, _ = Tag.objects.get_or_create(name=tag_name.lower(), category="") # tag to lower case
                 artist = Artist.objects.get(pk=objectid)
                 #artist.tag_set.add(tag)
                 if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
-                    artist_tag, _ = ArtistTag.objects.create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
+                    artist_tag, _ = ArtistTag.objects.get_or_create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
             return HttpResponseRedirect('/carnatic/artist/%s' % objectid)
     else:
         form = TagSaveForm()
