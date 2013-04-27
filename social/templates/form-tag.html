@@ -2,7 +2,16 @@
     $(document).ready(function() {
        $('#id_object').val("{{ object }}");
        $('#id_objectid').val({{ objectid }});
+
     });
+    $(function() {
+        $("#id_tags").autocomplete({
+            source: '{{ social_tag_autocomplete }}',
+            selectFirst:true,
+            minLength:2,
+         });
+    });
+    
 </script>
 
 <form method="post" action="/social/tag/">

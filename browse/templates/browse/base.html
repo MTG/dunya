@@ -35,7 +35,8 @@
 	{% url 'social-main' as social_main %}
 	{% url 'carnatic-main' as carnatic_main %}
 	{% url 'carnatic-overview' as carnatic_overview %}
-	{% url 'tag-form' as tag_form %}
+	{% url 'social-user-profile' as social_user_profile %}
+	{% url 'social-tag-autocomplete' as social_tag_autocomplete %}
 	
         <div class="header-container">
             <header>
@@ -53,6 +54,7 @@
 			{% if user.is_authenticated %}
 			     <!--welcome {{ user.username }}-->
 			     <li><a href="{{ logout_url }}">logout ({{ user.username }})</a></li>
+			     <li><a href="{{ social_user_profile }}">profile</a></li>
 			    {% else %}
 			     <li><a href="{{ login_url }}">login</a></li>
 			     <li><a href="{{ register_url }}">register</a></li>

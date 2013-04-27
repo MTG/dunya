@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from social.forms import *
 from social.models import *
 from datetime import datetime
+from django.utils import simplejson
 
 def main_page(request):
     return render_to_response('main_page.html',RequestContext(request))
@@ -73,12 +74,37 @@ def tag_save_page(request):
 
 def user_profile(request):
     user_profile = request.user.get_profile()
+    
     variables = RequestContext(request, {
-            'user_profile': user_profile
+        'user_profile': user_profile
     })
-    #url = user_profile.url
-    #return HttpResponse(unicode(user_profile), content_type="text/plain")
-    return render_to_response('user_profile.html', variables)
+    return render_to_response('user-profile.html', variables)
+
+
+def user_profile_save(request):
+    user_profile = request.user.get_profile()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST)
+
+    else:
+        form = UserProfileForm()
+    
+    variables = RequestContext(request, {
+        'user_profile': user_profile
+    })
+    return render_to_response('user-profile.html', variables)
+
+
+
+def ajax_tag_autocomplete(request):
+    q = request.GET['term']
+    tags = Tag.objects.filter(name__istartswith=q)[:10]
+    results = []
+    for tag in tags:
+        tag_dict = {'id':tag.id, 'label':tag.name, 'value':tag.name}
+        results.append(tag_dict)
+    return HttpResponse(simplejson.dumps(results),mimetype='application/json')
+
 
 
 

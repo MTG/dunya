@@ -1,0 +1,14 @@
+{% extends "browse/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+
+
+    
+<p><b>Username:</b> {{ user.username }}</p>
+<p><b>First Name:</b> {{ user_profile.first_name }}</p>
+<p><b>Last Name:</b> {{ user_profile.last_name }}</p>
+<p><b>Birthday:</b> {{ user_profile.birthday }}</p>
+<!--<p>Avatar: {{ user.avatar }}</p>-->
+
+{% endblock %}

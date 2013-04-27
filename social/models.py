@@ -18,10 +18,10 @@ class UserProfile(models.Model):
     
     #user = models.OneToOneField(User)
     user = models.ForeignKey(User, unique=True)
-    first_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
-    birthday = models.DateField(null=True)
-    avatar = models.ImageField(upload_to='gallery', null=True)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    birthday = models.DateField(null=True, blank=True)
+    avatar = models.ImageField(upload_to='gallery', blank=True)
     def __unicode__(self):
         return unicode(self.user)
 
@@ -71,7 +71,7 @@ class ArtistTag(models.Model):
     class Meta:
         unique_together = (("user", "tag", "artist"),)
     def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.artist, self.tag, self.user)
+        return u"('%s','%s','%s')" % (self.artist, self.tag , self.user)
 
 
 #class Comment(models.Model):

@@ -24,6 +24,10 @@ urlpatterns = patterns('',
     #(r'^register/success/$', direct_to_template, {'template': 'registration/register_success.html'})
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
     url(r'^tag/$', views.tag_save_page, name='tag-form'),
+    url(r'^profile/$', views.user_profile, name='social-user-profile'),
+    # Ajax
+    url(r'^ajax/tag/autocomplete/$', views.ajax_tag_autocomplete, name='social-tag-autocomplete'),
+
 
     # Examples:
     # url(r'^$', 'Dunya.views.home', name='home'),
