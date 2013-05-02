@@ -4,3 +4,4 @@ env
 dunya/local_settings.py
 *.swp
 *.sqlite
+.DS_Store
