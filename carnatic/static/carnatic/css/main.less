@@ -1,21 +1,15 @@
 @import "normalize.min.less";
+@import "mixins.less";
 
-#filterArea { position: relative; width: 100%; height: 300px; }
-.filterBall { position: relative; float: left; background: #666; background: rgba(102,102,102,0.7); width: 120px; height: 120px; -webkit-border-radius: 120px; -moz-border-radius: 120px; border-radius: 120px; display: table; top: 86px; margin-left: 30px; cursor: pointer; margin-right: 25px; border: 8px solid rgba(0,0,0,0);}
-.filterBall:hover { border: 8px solid rgba(0,0,0,0.2); }
-.filterBall:hover .arrowClosed{ display: block; }
-.filterBall:hover .arrow{ display: block; }
-.filterBall span { display: table-cell; position: relative; top:0px; left: 0px; width: 100%; height: 100%; vertical-align: middle; text-align: center; padding: 0px; color:#fff; text-shadow: 0px 1px 3px black; font-size: 16px; text-transform: uppercase; }
-.formFilter { position: relative; float:left; width:240px; height: 300px; overflow-y: scroll; padding:15px; overflow-y: scroll; color:#000; }
-.formFilter fieldset span.output { color: #333; display: block; text-align: center; background: #fff; position: relative; }
 
-.formFilter .filterList { max-height: 234px; height: auto; }
-.colorCode { position: relative; display: inline-block; width:15px; height: 15px; -webkit-border-radius: 15px; -moz-border-radius: 20px; border-radius: 20px; background: #333; margin-right: 5px; top: 3px; opacity: 0.5; }
-#entitiesForm ul li.selected .colorCode { background: #fff; opacity: 1; }
-.arrow { position: absolute; top:50%; margin-top:-15px; right: -11px; background: url("../img/greyTriangle.png") 0 0 no-repeat; width: 15px; height: 30px; display: none; }
-.arrowClosed { position: absolute; top:50%; margin-top:-15px; right: -20px; background: url("../img/greyTriangleClosed.png") 0 0 no-repeat; width: 15px; height: 30px; display: none; }
 
-.formFilterItem { display: none; background: #fff; background: rgba(256,256,256,0.8); width: 100%; border: 1px solid #ccc; overflow: hidden; }
+
+
+
+
+
+
+
 .formSection { cursor: pointer; background: url("../img/formSectionClose.png") 98% 4px no-repeat; padding:5px; padding-right: 10px; padding-left: 10px; position: relative; display: block; border-bottom: 2px solid @gris6; font-weight: bold; }
 .formSectionText { cursor: pointer; background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; padding:5px; padding-right: 10px; padding-left: 10px; width: 100%; position: relative; display: block; border-bottom: 2px solid #ccc; }
 
@@ -70,54 +64,6 @@ fieldset { margin-bottom: 6px; }
 @entity_8_color: #C02942;
 @entity_9_color: #542437;
 @entity_10_color: #53777A;
-
-
-
-.hidder {
-	display: none;
-}
-.rounded (@radius: 5px) {
-  -webkit-border-radius: @radius;
-  -moz-border-radius: @radius;
-  -ms-border-radius: @radius;
-  -o-border-radius: @radius;
-  border-radius: @radius;
-}
-
-.arrowBase() {  
-	width: 0; 
-	height: 0; 
-	position: relative;
-	&:after {
-		position: absolute;
-		content:"";
-		top:-@size/(1.1);
-		left:-@size;
-		width: 0; 
-		height: 0; 
-	}
-}
-.arrow(@size: 5px){
-	.arrowBase();
-	border-top: @size solid transparent;
-	border-bottom: @size solid transparent;
-	border-left: @size solid green;
-	&:after {
-		border-top: @size/(1.1) solid transparent;
-		border-bottom: @size/(1.1) solid transparent;
-		border-left: @size/(1.1) solid red;	
-	}
-}
-
-.shadow () {
-  box-shadow: 1px 1px 8px #666;
-}
-.boxesCloth {
-	.rounded;
-	.shadow;
-	padding: 10px;
-	background: url("../img/cloth_alike.png") 0 0 repeat;
-}
 
 
 /* ==========================================================================
@@ -179,7 +125,9 @@ textarea {
     color: #000;
     padding: 0.2em 0;
 }
-
+.hidder {
+	display: none;
+}
 .header-container, .main-container { min-width: 1024px; }
 #entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
 
@@ -299,6 +247,9 @@ textarea {
 	overflow-x: scroll; 
 	background: url("../img/cloth_alike.png") 0 0 repeat; 
 	#filterArea { 
+		position: relative; 
+		width: 100%; 
+		height: 300px; 
 		.filterList { 
 			position: relative; 
 			float:left; 
@@ -326,15 +277,105 @@ textarea {
 		}
 		.formFilterItem { height: auto; }
 		#entitiesList {
-			
+			ul {
+				li {
+					.colorCode { 
+						position: relative; 
+						display: inline-block; 
+						width:15px; 
+						height: 15px; 
+						-webkit-border-radius: 15px; 
+						-moz-border-radius: 20px; 
+						border-radius: 20px; 
+						background: #333; 
+						margin-right: 5px; 
+						top: 3px; 
+						opacity: 0.5; 
+					}		
+				}	
+			}
 		}
 		.filters { 
 			.filterBall { 
-				-webkit-transition: all 0 ease 0; 
-				-moz-transition: all 0 ease 0; 
-				-o-transition: all 0 ease 0; 
-				transition:all 0 ease 0; 
+				.animate();
+				position: relative; 
+				float: left; 
+				width: 120px; 
+				height: 120px; 
+				-webkit-border-radius: 120px; 
+				-moz-border-radius: 120px; 
+				border-radius: 120px; 
+				display: table; 
+				top: 86px; 
+				margin-left: 30px; 
+				cursor: pointer; 
+				margin-right: 25px; 
+				border: 8px solid rgba(0,0,0,0);
+				&:hover { 
+					border: 8px solid rgba(0,0,0,0.2); 
+				}
+				&:hover .arrowClosed{ display: block; }
+				&:hover .arrow{ display: block; }
+				& span { 
+					display: table-cell; 
+					position: relative; 
+					top:0px; 
+					left: 0px; 
+					width: 100%; 
+					height: 100%; 
+					vertical-align: middle; 
+					text-align: center; 
+					padding: 0px; 
+					color:#fff; 
+					text-shadow: 0px 1px 3px black; 
+					font-size: 16px; 
+					text-transform: uppercase; 
+				}
+				& .arrow { 
+					position: absolute; top:50%; 
+					margin-top:-15px; 
+					right: -11px; 
+					background: url("../img/greyTriangle.png") 0 0 no-repeat; 
+					width: 15px; 
+					height: 30px; 
+					display: none; 
+				}
+				& .arrowClosed { 
+					position: absolute; 
+					top:50%; 
+					margin-top:-15px; 
+					right: -20px; 
+					background: url("../img/greyTriangleClosed.png") 0 0 no-repeat; 
+					width: 15px; 
+					height: 30px; 
+					display: none;
+				}
 			}
+			.formFilter { 
+				position: relative; 
+				float:left; 
+				width:240px; 
+				height: 300px; 
+				overflow-y: scroll; 
+				padding:15px; 
+				overflow-y: scroll; 
+				color:#000; 
+				& fieldset span.output { 
+					color: #333; 
+					display: block; 
+					text-align: center; 
+					background: #fff; 
+					position: relative; 
+				}
+				& .filterList { 
+					max-height: 234px; 
+					height: auto; 
+				}
+				& .formFilterItem { display: none; background: #fff; background: rgba(256,256,256,0.8); width: 100%; border: 1px solid #ccc; overflow: hidden; }
+			}
+
+
+
 			h3 { padding:10px; }
 		}
 	}
