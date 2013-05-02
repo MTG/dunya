@@ -21,22 +21,22 @@ function loadFilter(entity_filter,eid){
 	$("#entitiesList").addClass("filterListClosed");
 
 	if(entity_filter==1){
-		filterFile = "/static/browse/js/carnatic_artists.json";
+		filterFile = "/static/carnatic/js/carnatic_artists.json";
 		filterName = "Artist";
 	}else if(entity_filter==2){
-		filterFile = "/static/browse/js/carnatic_concerts.json";
+		filterFile = "/static/carnatic/js/carnatic_concerts.json";
 		filterName = "Concert";
 	}else if(entity_filter==3){
-		filterFile = "/static/browse/js/carnatic_works.json";
+		filterFile = "/static/carnatic/js/carnatic_works.json";
 		filterName = "Work";
 	}else if(entity_filter==4){
-		filterFile = "/static/browse/js/carnatic_artists.json";
+		filterFile = "/static/carnatic/js/carnatic_artists.json";
 		filterName = "Instrument";
 	}else if(entity_filter==5){
-	 	filterFile = "/static/browse/js/carnatic_artists.json";
+	 	filterFile = "/static/carnatic/js/carnatic_artists.json";
 	 	filterName = "Raaga";
 	}else if(entity_filter==6){
-		filterFile = "/static/browse/js/carnatic_recordings.json";
+		filterFile = "/static/carnatic/js/carnatic_recordings.json";
 		filterName = "Taala";
 	}
 	getFilterData(filterFile,entity_filter,filterName,eid);
@@ -165,7 +165,7 @@ function loadClicks(){
 			sumarizeFilter($(this));
 		}
 	});
-	
+
 	$("#toggleMain").click(function(){
 		$("#filterMask").toggleClass('querybar');
 	});
