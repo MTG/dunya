@@ -1,0 +1,2312 @@
+[
+{
+    "pk": 1, 
+    "model": "carnatic.geographicregion", 
+    "fields": {
+        "name": "Andhra Pradesh"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.geographicregion", 
+    "fields": {
+        "name": "Karnataka"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.geographicregion", 
+    "fields": {
+        "name": "Kerala"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.geographicregion", 
+    "fields": {
+        "name": "Maharashtra"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.geographicregion", 
+    "fields": {
+        "name": "Tamil Nadu"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.artist", 
+    "fields": {
+        "begin": null, 
+        "end": null, 
+        "name": "M. D. Ramanathan", 
+        "state": null, 
+        "gender": "M", 
+        "main_instrument": null, 
+        "source": 2, 
+        "mbid": "4676e6c8-2862-435b-a02c-4d1077101885", 
+        "artist_type": "P"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.artist", 
+    "fields": {
+        "begin": "1928-01-09", 
+        "end": "2009-06-02", 
+        "name": "Palghat Raghu", 
+        "state": null, 
+        "gender": "M", 
+        "main_instrument": null, 
+        "source": 6, 
+        "mbid": "a6f7e1c3-0dcd-4de4-8dd1-0e2cfd0093ef", 
+        "artist_type": "P"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.artist", 
+    "fields": {
+        "begin": null, 
+        "end": null, 
+        "name": "Chalakudy Narayanaswamy Iyer", 
+        "state": null, 
+        "gender": "M", 
+        "main_instrument": null, 
+        "source": 7, 
+        "mbid": "deabd14f-d850-498a-84e4-62bbf4b35090", 
+        "artist_type": "P"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.artist", 
+    "fields": {
+        "begin": null, 
+        "end": null, 
+        "name": "Vikku Vinayakram", 
+        "state": null, 
+        "gender": null, 
+        "main_instrument": null, 
+        "source": 8, 
+        "mbid": "e54fe64c-abdc-4f25-958e-fbc747fd01d2", 
+        "artist_type": "P"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.concert", 
+    "fields": {
+        "sabbah": null, 
+        "title": "M. D. Ramanathan Concert at Music Academy 1969", 
+        "tracks": [
+            1, 
+            2, 
+            3, 
+            4, 
+            5, 
+            6, 
+            7, 
+            8, 
+            9, 
+            10
+        ], 
+        "source": 1, 
+        "mbid": "0da039d7-76f9-4822-ae3a-41f2b7d5178e", 
+        "location": null, 
+        "artists": [
+            1
+        ]
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "abhogi", 
+        "raaga": 2
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "anadabhhairavi", 
+        "raaga": 3
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "ananda bairavi", 
+        "raaga": 3
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "ananda bhairavi", 
+        "raaga": 3
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "anandabhairavi", 
+        "raaga": 3
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "anandhabhairavi", 
+        "raaga": 3
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "behag", 
+        "raaga": 9
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "karnataka behag", 
+        "raaga": 9
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "bhairavi varnam", 
+        "raaga": 10
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "chakravaham", 
+        "raaga": 12
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "chakravaka", 
+        "raaga": 12
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "chakravakam", 
+        "raaga": 12
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "karnataka devagandhari", 
+        "raaga": 14
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "hamsashwani", 
+        "raaga": 20
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "hari kambhoji", 
+        "raaga": 22
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "harikambhoj", 
+        "raaga": 22
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "harikambhoji", 
+        "raaga": 22
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "harikamboji", 
+        "raaga": 22
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "harikhamboji", 
+        "raaga": 22
+    }
+},
+{
+    "pk": 20, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "karnataka kapi", 
+        "raaga": 26
+    }
+},
+{
+    "pk": 21, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "kambhoji", 
+        "raaga": 29
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "kamboji", 
+        "raaga": 29
+    }
+},
+{
+    "pk": 23, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "khambhoji", 
+        "raaga": 29
+    }
+},
+{
+    "pk": 24, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "manirangu", 
+        "raaga": 35
+    }
+},
+{
+    "pk": 25, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "naswarali", 
+        "raaga": 39
+    }
+},
+{
+    "pk": 26, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "naata", 
+        "raaga": 41
+    }
+},
+{
+    "pk": 27, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "nata", 
+        "raaga": 41
+    }
+},
+{
+    "pk": 28, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "karnataka shuddha saveri", 
+        "raaga": 52
+    }
+},
+{
+    "pk": 29, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "sindh bhairavi", 
+        "raaga": 53
+    }
+},
+{
+    "pk": 30, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "sindhu bhairavi", 
+        "raaga": 53
+    }
+},
+{
+    "pk": 31, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "sindhubhairavi", 
+        "raaga": 53
+    }
+},
+{
+    "pk": 32, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "sindubhairavi", 
+        "raaga": 53
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "abheri"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "abhogi"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "anandabhairavi"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "arabhi"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "asaveri"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "atana"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "bahudari"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "begada"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "behag"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "bhairavi"
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "bilahari"
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "chakravaka"
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "darbar"
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "devagandhari"
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "devamanohari"
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "dhanashri"
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "dhanyasi"
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "dheerasankarabharanam"
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "gowla"
+    }
+},
+{
+    "pk": 20, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "hamsadhvani"
+    }
+},
+{
+    "pk": 21, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "hamsanandi"
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "hari kambhoji"
+    }
+},
+{
+    "pk": 23, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "hindolam"
+    }
+},
+{
+    "pk": 24, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "jaganmohini"
+    }
+},
+{
+    "pk": 25, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "jaunpuri"
+    }
+},
+{
+    "pk": 26, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kaapi"
+    }
+},
+{
+    "pk": 27, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kalyani"
+    }
+},
+{
+    "pk": 28, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kamas"
+    }
+},
+{
+    "pk": 29, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kambhoji"
+    }
+},
+{
+    "pk": 30, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kanada"
+    }
+},
+{
+    "pk": 31, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "karaharapriya"
+    }
+},
+{
+    "pk": 32, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kedaragaula"
+    }
+},
+{
+    "pk": 33, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "kuntalavarali"
+    }
+},
+{
+    "pk": 34, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "madhyamavathi"
+    }
+},
+{
+    "pk": 35, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "manirangu"
+    }
+},
+{
+    "pk": 36, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "manji"
+    }
+},
+{
+    "pk": 37, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "mohanam"
+    }
+},
+{
+    "pk": 38, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "mukhari"
+    }
+},
+{
+    "pk": 39, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "nagasvarali"
+    }
+},
+{
+    "pk": 40, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "natakurinji"
+    }
+},
+{
+    "pk": 41, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "nattai"
+    }
+},
+{
+    "pk": 42, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "pantuvarali"
+    }
+},
+{
+    "pk": 43, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "poorikalyani"
+    }
+},
+{
+    "pk": 44, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "ranjani"
+    }
+},
+{
+    "pk": 45, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "reethi gowlai"
+    }
+},
+{
+    "pk": 46, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "sahana"
+    }
+},
+{
+    "pk": 47, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "saurashtram"
+    }
+},
+{
+    "pk": 48, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "senchurutti"
+    }
+},
+{
+    "pk": 49, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "shanmukhapriya"
+    }
+},
+{
+    "pk": 50, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "shree"
+    }
+},
+{
+    "pk": 51, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "shree ranjani"
+    }
+},
+{
+    "pk": 52, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "shuddha saveri"
+    }
+},
+{
+    "pk": 53, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "sindhu bhairavi"
+    }
+},
+{
+    "pk": 54, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "surati"
+    }
+},
+{
+    "pk": 55, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "thodi"
+    }
+},
+{
+    "pk": 56, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "vachaspati"
+    }
+},
+{
+    "pk": 57, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "varali"
+    }
+},
+{
+    "pk": 58, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "vasanta"
+    }
+},
+{
+    "pk": 59, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "name": "yadukula kambhoji"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi(tisra/khanda/chatusra)", 
+        "taala": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "triputa", 
+        "taala": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chaturasra rupakam", 
+        "taala": 2
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra rupakam", 
+        "taala": 2
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra rupakam khanda gathi", 
+        "taala": 2
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chapu", 
+        "taala": 3
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "misra laghu", 
+        "taala": 3
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "misram", 
+        "taala": 3
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chaturashra eka", 
+        "taala": 5
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "ekam", 
+        "taala": 5
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jampe", 
+        "taala": 9
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jhampa", 
+        "taala": 9
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jhaptal", 
+        "taala": 9
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra triputa tisra gathi", 
+        "taala": 10
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "ata", 
+        "taala": 11
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda ata", 
+        "taala": 11
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda jati ata", 
+        "taala": 11
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda atta", 
+        "taala": 11
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi (tisram)", 
+        "taala": 12
+    }
+},
+{
+    "pk": 20, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi tisra", 
+        "taala": 12
+    }
+},
+{
+    "pk": 21, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra gati adi", 
+        "taala": 12
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra nadai", 
+        "taala": 12
+    }
+},
+{
+    "pk": 23, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra jhampa", 
+        "taala": 13
+    }
+},
+{
+    "pk": 24, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra jati jhampe", 
+        "taala": 13
+    }
+},
+{
+    "pk": 25, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "desadi", 
+        "taala": 14
+    }
+},
+{
+    "pk": 26, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda triputa", 
+        "taala": 15
+    }
+},
+{
+    "pk": 27, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "kanda triputa", 
+        "taala": 15
+    }
+},
+{
+    "pk": 28, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda ekam", 
+        "taala": 16
+    }
+},
+{
+    "pk": 29, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "madhyad", 
+        "taala": 17
+    }
+},
+{
+    "pk": 30, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "misra rupakam", 
+        "taala": 19
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "adi"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "rupaka"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "mishra chapu"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "khanda chapu"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "eka"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "tishra eka"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "dhruva"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "matya"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "mishra jhampe"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "tishra triputa"
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "atta"
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "adi (tishra nade)"
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "chaturashra-jaati jhampe"
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "deshadi"
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "khanda-jaati triputa"
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "khanda-jaati eka"
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "madhyadi"
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "mahalakshmi"
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "name": "mishra-jaati rupaka"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 3, 
+        "mbid": "365d7b7d-6192-4042-9fc8-c7a7cb9106d6", 
+        "composer": 1, 
+        "title": "Chalamela"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 9, 
+        "mbid": "32ad30a4-13ff-4fee-9e42-b152c1a117c5", 
+        "composer": 2, 
+        "title": "Gajavadana"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 12, 
+        "mbid": "0bb21864-fbbe-4406-8017-c74f48e01682", 
+        "composer": 3, 
+        "title": "Divakara Tanujam"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 15, 
+        "mbid": "3c8258f1-e3b5-4a27-a45b-c623421b0e09", 
+        "composer": null, 
+        "title": "Hari hara putram shastaram sada bhajeham maya"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 17, 
+        "mbid": "3737c9e8-4beb-419f-98de-9891149df12f", 
+        "composer": 4, 
+        "title": "Jaya Jaya"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 20, 
+        "mbid": "69d2c822-7a39-42b3-9901-89acea32f6d0", 
+        "composer": null, 
+        "title": "Giripai nelakona ramuni guri dappaga kanti"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 22, 
+        "mbid": "3249093a-c278-4fd1-9857-20937b49e85c", 
+        "composer": null, 
+        "title": "RTP"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 24, 
+        "mbid": "05b74738-7c5e-4305-9ecc-8ffd9735d426", 
+        "composer": null, 
+        "title": "Ramanukku mannan"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 26, 
+        "mbid": "f8490a98-4b8a-43bf-aa90-82357e8baf28", 
+        "composer": null, 
+        "title": "Apakara nindai pattuzhalade ariyada (tp)"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.work", 
+    "fields": {
+        "source": 28, 
+        "mbid": "dffd9380-1edb-46f6-b917-ea05226e24f8", 
+        "composer": 5, 
+        "title": "Mangalam"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 1, 
+        "raaga": 13, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 2, 
+        "raaga": 20, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 3, 
+        "raaga": 59, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 4, 
+        "raaga": 58, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 5, 
+        "raaga": 35, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 6, 
+        "raaga": 46, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 8, 
+        "raaga": 23, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.workraaga", 
+    "fields": {
+        "work": 9, 
+        "raaga": 12, 
+        "sequence": 0
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 5, 
+        "mbid": "ca19b9a3-6c31-4640-87bf-bd302d6c19ed", 
+        "work": 1, 
+        "length": 228715, 
+        "title": "Chalamela jesevura chala nammina napai (tv)"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 11, 
+        "mbid": "9ec4cfa3-7843-4b1e-a206-2c6829e53ced", 
+        "work": 2, 
+        "length": 542928, 
+        "title": "Gajavadana"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 14, 
+        "mbid": "2885858c-e2d7-4e37-8743-97f2a674bccb", 
+        "work": 3, 
+        "length": 1198148, 
+        "title": "Divakara tanujam jnanaishvaram"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 16, 
+        "mbid": "60ea6d35-39a2-4082-a169-ac0f210d47f3", 
+        "work": 4, 
+        "length": 1639989, 
+        "title": "Hari hara putram shastaram sada bhajeham maya"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 19, 
+        "mbid": "c4292169-dc85-4fcd-ab72-469bf620fde3", 
+        "work": 5, 
+        "length": 241875, 
+        "title": "Jaya jaya padmanabhanujesha jaya jaya"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 21, 
+        "mbid": "100b9cf7-a203-4479-8ce1-3516a6899dfe", 
+        "work": 6, 
+        "length": 3176497, 
+        "title": "Giripai nelakona ramuni guri dappaga kanti"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 23, 
+        "mbid": "17cf06a3-cfab-4f8c-817a-4f7d3badf418", 
+        "work": 7, 
+        "length": 1686898, 
+        "title": "RTP - kalyANi"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 25, 
+        "mbid": "2edfc31b-5d24-4081-a12e-868ddf51c320", 
+        "work": 8, 
+        "length": 198669, 
+        "title": "Ramanukku mannan mudi tarittale nanmai (r)"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 27, 
+        "mbid": "3469d39d-01ca-4d71-abbb-4e876235b518", 
+        "work": 9, 
+        "length": 61160, 
+        "title": "Apakara nindai pattuzhalade ariyada (tp)"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.recording", 
+    "fields": {
+        "source": 30, 
+        "mbid": "d6bf72ed-3a09-405b-8721-b44a464d5fd1", 
+        "work": 10, 
+        "length": 171037, 
+        "title": "Mangalam"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 7, 
+        "name": "Venu"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 11, 
+        "name": "kanjira"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 16, 
+        "name": "Gotuvadyam"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 16, 
+        "name": "Gotthuvadyam"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 20, 
+        "name": "Shruti Box"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Name"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Vocal"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Violin"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Mridangam"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Tambura"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Veena"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Flute"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Mandolin"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Saxophone"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Ghatam"
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Khanjira"
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Morsing"
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Konnakol"
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Gettuvadyam"
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Jalatarang"
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Chitraveena"
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Chanda"
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Maddala"
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Talam"
+    }
+},
+{
+    "pk": 20, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Electronic tambura"
+    }
+},
+{
+    "pk": 21, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Saraswati veena"
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "source": null, 
+        "name": "Thavil"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 1, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 1, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 1, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 2, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 2, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 2, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 3, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 3, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 3, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 4, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 4, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 4, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 5, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 5, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 5, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 6, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 6, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 6, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 7, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 20, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 7, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 21, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 7, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 8, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 23, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 8, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 24, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 8, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 25, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 9, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 26, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 9, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 27, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 9, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 28, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 10, 
+        "instrument": 4, 
+        "performer": 2, 
+        "lead": false
+    }
+},
+{
+    "pk": 29, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 10, 
+        "instrument": 3, 
+        "performer": 3, 
+        "lead": false
+    }
+},
+{
+    "pk": 30, 
+    "model": "carnatic.instrumentperformance", 
+    "fields": {
+        "recording": 10, 
+        "instrument": 10, 
+        "performer": 4, 
+        "lead": false
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.composer", 
+    "fields": {
+        "begin": null, 
+        "end": null, 
+        "name": "Kuppuswamy Iyer", 
+        "gender": "M", 
+        "state": null, 
+        "source": 4, 
+        "mbid": "eff5b5ce-5288-43b4-99f4-81fe8734ba60"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.composer", 
+    "fields": {
+        "begin": null, 
+        "end": null, 
+        "name": "M. D. Ramanathan", 
+        "gender": "M", 
+        "state": null, 
+        "source": 10, 
+        "mbid": "4676e6c8-2862-435b-a02c-4d1077101885"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.composer", 
+    "fields": {
+        "begin": "1775-03-24", 
+        "end": "1835-10-21", 
+        "name": "Muthuswamy Dikshitar", 
+        "gender": "M", 
+        "state": null, 
+        "source": 13, 
+        "mbid": "6c78c783-4b14-43ba-a090-fa0b12bc514f"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.composer", 
+    "fields": {
+        "begin": "1484", 
+        "end": "1564", 
+        "name": "Purandara Dasa", 
+        "gender": "M", 
+        "state": null, 
+        "source": 18, 
+        "mbid": "0c56206c-633e-4784-a74f-4f4bca5da95a"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.composer", 
+    "fields": {
+        "begin": "1767-05-04", 
+        "end": "1847-01-06", 
+        "name": "Ty\u0101gar\u0101ja", 
+        "gender": "M", 
+        "state": null, 
+        "source": 29, 
+        "mbid": "6ee9be28-cda0-4fae-b3f1-9860b0c8894b"
+    }
+},
+{
+    "pk": 1, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "MusicBrainz"
+    }
+},
+{
+    "pk": 2, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "Wikipedia"
+    }
+},
+{
+    "pk": 1, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:34.299Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/release/0da039d7-76f9-4822-ae3a-41f2b7d5178e"
+    }
+},
+{
+    "pk": 2, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:34.679Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/4676e6c8-2862-435b-a02c-4d1077101885"
+    }
+},
+{
+    "pk": 3, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:51.466Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/365d7b7d-6192-4042-9fc8-c7a7cb9106d6"
+    }
+},
+{
+    "pk": 4, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:51.573Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/eff5b5ce-5288-43b4-99f4-81fe8734ba60"
+    }
+},
+{
+    "pk": 5, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:51.594Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/ca19b9a3-6c31-4640-87bf-bd302d6c19ed"
+    }
+},
+{
+    "pk": 6, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:51.666Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/a6f7e1c3-0dcd-4de4-8dd1-0e2cfd0093ef"
+    }
+},
+{
+    "pk": 7, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:51.756Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/deabd14f-d850-498a-84e4-62bbf4b35090"
+    }
+},
+{
+    "pk": 8, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:51.829Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/e54fe64c-abdc-4f25-958e-fbc747fd01d2"
+    }
+},
+{
+    "pk": 9, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:52.142Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/32ad30a4-13ff-4fee-9e42-b152c1a117c5"
+    }
+},
+{
+    "pk": 10, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:52.231Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/4676e6c8-2862-435b-a02c-4d1077101885"
+    }
+},
+{
+    "pk": 11, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:52.252Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/9ec4cfa3-7843-4b1e-a206-2c6829e53ced"
+    }
+},
+{
+    "pk": 12, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:52.603Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/0bb21864-fbbe-4406-8017-c74f48e01682"
+    }
+},
+{
+    "pk": 13, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:52.702Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/6c78c783-4b14-43ba-a090-fa0b12bc514f"
+    }
+},
+{
+    "pk": 14, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:52.727Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/2885858c-e2d7-4e37-8743-97f2a674bccb"
+    }
+},
+{
+    "pk": 15, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:53.136Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/3c8258f1-e3b5-4a27-a45b-c623421b0e09"
+    }
+},
+{
+    "pk": 16, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:53.169Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/60ea6d35-39a2-4082-a169-ac0f210d47f3"
+    }
+},
+{
+    "pk": 17, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:53.538Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/3737c9e8-4beb-419f-98de-9891149df12f"
+    }
+},
+{
+    "pk": 18, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:53.665Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/0c56206c-633e-4784-a74f-4f4bca5da95a"
+    }
+},
+{
+    "pk": 19, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:53.694Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/c4292169-dc85-4fcd-ab72-469bf620fde3"
+    }
+},
+{
+    "pk": 20, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:54.063Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/69d2c822-7a39-42b3-9901-89acea32f6d0"
+    }
+},
+{
+    "pk": 21, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:54.086Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/100b9cf7-a203-4479-8ce1-3516a6899dfe"
+    }
+},
+{
+    "pk": 22, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:54.496Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/3249093a-c278-4fd1-9857-20937b49e85c"
+    }
+},
+{
+    "pk": 23, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:54.511Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/17cf06a3-cfab-4f8c-817a-4f7d3badf418"
+    }
+},
+{
+    "pk": 24, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:54.858Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/05b74738-7c5e-4305-9ecc-8ffd9735d426"
+    }
+},
+{
+    "pk": 25, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:54.894Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/2edfc31b-5d24-4081-a12e-868ddf51c320"
+    }
+},
+{
+    "pk": 26, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:55.306Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/f8490a98-4b8a-43bf-aa90-82357e8baf28"
+    }
+},
+{
+    "pk": 27, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:55.343Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/3469d39d-01ca-4d71-abbb-4e876235b518"
+    }
+},
+{
+    "pk": 28, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:55.760Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/work/dffd9380-1edb-46f6-b917-ea05226e24f8"
+    }
+},
+{
+    "pk": 29, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:55.833Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/artist/6ee9be28-cda0-4fae-b3f1-9860b0c8894b"
+    }
+},
+{
+    "pk": 30, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-04-09T12:00:55.861Z", 
+        "source_name": 1, 
+        "uri": "http://musicbrainz.org/recording/d6bf72ed-3a09-405b-8721-b44a464d5fd1"
+    }
+}
+]

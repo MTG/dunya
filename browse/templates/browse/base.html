@@ -11,7 +11,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static 'browse/css/normalize.min.css' %}">
         <link rel="stylesheet" href="{% static 'browse/css/main.css' %}">
         <link href="{% static 'browse/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
@@ -29,6 +29,8 @@
 
     </head>
     <body>
+    	
+    	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
             	<div id="logo"></div>
@@ -45,16 +47,20 @@
             			<li>Music Style 3</li>
             		</ul>
             	</div><!-- globalmusic -->
-                <h1 class="title">Dunya UI Prototype 1.1</h1>
-                <nav>
-                    <ul>
-                        <li><a href="#">BROWSE</a></li>
-                        <li><a href="#">ABOUT</a></li>
-                        <li><a href="#">HELP</a></li>
-                    </ul>
+                <nav id="mainmenu">
+                    	<a href="#">PLAYER</a>
+	               		<a href="#">EDIT QUERY</a>
+	               		<a href="#">BOOKMARKS</a>
+	               		<a href="#">ABOUT</a>
+	               		<a href="#">SEARCH</a>
                 </nav>
+                <div id="toggleMain">TOGGLE</div>
+                <div class="clearfix"></div>
             </header>
         </div>
+        <!-- //////  HEADER BLOCK end ////// -->
+        
+
 
         <div class="main-container">
         {% block wrap %}
@@ -73,7 +79,7 @@
         	<!-- FILTER BASE MODEL -->
         	<!-- //////////////// -->
 
-        	<div id="filterModel">
+        	<div id="filterModel" class="filters">
         		<div class="filterBall shadow1">
         			<span>new filter</span>
         			<div class="arrow"></div>

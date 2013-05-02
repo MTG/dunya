@@ -1,6 +1,6 @@
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
-var filsersLiteralOutputArray = new Object();
+var filtersLiteralOutputArray = new Object();
 
 function removeFilter(entity_filter){
 	$(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
@@ -8,7 +8,7 @@ function removeFilter(entity_filter){
 	$(".filterBall").find(".arrow").addClass("arrowClosed");
 	$(".filterBall").addClass("filterBallClosed");
 	$("#entitiesList").addClass("filterListClosed");
-	$(".entity_"+entity_filter).remove();
+	$(".filters.entity_"+entity_filter).remove();
 	filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
 }
 
@@ -31,21 +31,12 @@ function loadFilter(entity_filter,eid){
 		filterName = "Work";
 	}else if(entity_filter==4){
 		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Form";
+		filterName = "Instrument";
 	}else if(entity_filter==5){
 	 	filterFile = "/static/browse/js/carnatic_artists.json";
-	 	filterName = "Composer";
+	 	filterName = "Raaga";
 	}else if(entity_filter==6){
 		filterFile = "/static/browse/js/carnatic_recordings.json";
-		filterName = "Recording";
-	}else if(entity_filter==7){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Instrument";
-	}else if(entity_filter==8){
-		filterFile = "/static/browse/js/carnatic_artists.json";
-		filterName = "Raaga";
-	}else if(entity_filter==9){
-		filterFile = "/static/browse/js/carnatic_artists.json";
 		filterName = "Taala";
 	}
 	getFilterData(filterFile,entity_filter,filterName,eid);
@@ -70,10 +61,9 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 
 function parseAllFilters(){
     $.each(window.filtersItems, function(index, element) {
-    	entityHTML = "<li entity_id='"+(index+1)+"' eid='eid"+(index+1)+"'><div class='colorCode shadow1'></div>"+element.name+"</li>";
-	    $("#entitiesList ul").append(entityHTML);
+    	entityHTML = "<li class='entity_"+(index+1)+"' entity_id='"+(index+1)+"' eid='eid"+(index+1)+"'><div class='colorCode shadow1'></div>"+element.name+"</li>";
+    	$("#entitiesList ul").append(entityHTML);
     	formHTML = "<div class='form_"+(index+1)+"'><form>";
-    	formHTML += element.name;
     	$.each(element.data, function(index2, element2) {
     		formType = element2.type;
     		if(formType=="list"){
@@ -116,7 +106,6 @@ function loadClicks(){
 
 	/* Select Music Style */
 	$("#gmSelected").click(function(){
-		console.log("hia");
 		$("#gmDropDown").show();
 	});
 
@@ -127,6 +116,7 @@ function loadClicks(){
 			loadFilter($(this).attr("entity_id"),$(this).attr("eid"));
 		}
 		$(this).toggleClass("selected");
+		$("#summary").attr("class","entity_"+$(this).attr("entity_id"));
 	});
 
 	$(".filterList.formFilterItem ul li").click(function(){
@@ -175,7 +165,10 @@ function loadClicks(){
 			sumarizeFilter($(this));
 		}
 	});
-
+	
+	$("#toggleMain").click(function(){
+		$("#filterMask").toggleClass('querybar');
+	});
 }
 
 function sumarizeFilter(object){
@@ -191,12 +184,15 @@ function sumarizeFilter(object){
 function showFilterData(entity_filter,filterName,eid){
 	filtersArray.push(entity_filter);
 	filterPosition = filtersArray.indexOf(entity_filter);
-	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","entity_"+entity_filter).attr("eid",eid);
+	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter).attr("eid",eid);
+	entityHTML_bc = "<div class='bread entity_"+entity_filter+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
+	$("#breadcrumb").append(entityHTML_bc);
 	$('#filterArea').width(480+(filtersArray.length*780));
 	newFilter = "#filter_"+filterPosition;
     $(newFilter).find(".filterList").append(listFilterData(entity_filter));
     $(newFilter).find(".filterList ul li").click(function(){
   		$(this).toggleClass("selected");
+  		$("#breadcrumb").find(".entity_"+entity_filter+" span a").html($(this).html());
 	});
     $(newFilter).find(".filterBall span").html(filterName);
     //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
@@ -281,7 +277,6 @@ function getResults(item){
 			theValue = "es un sliderrange";
 		}
 
-
 		if(jQuery.isEmptyObject(filtersOutputArray)){
 			filtersOutputArray[entity] = new Object();
 			filtersOutputArray[entity][filterName] = theValue;
@@ -300,7 +295,4 @@ function getResults(item){
 				}
 			}
 		}
-		console.log(filtersLiteralOutputArray);
-		//console.log(filtersOutputArray);
-
 	}
