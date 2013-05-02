@@ -41,6 +41,7 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 //    	entityHTML = "<li class='entity_"+(index+1)+"' entity_id='"+(index+1)+"' eid='eid"+(index+1)+"'><div class='colorCode shadow1'></div>"+element.name+"</li>";
 //    	$("#entitiesList ul").append(entityHTML);
 //    	formHTML = "<div class='form_"+(index+1)+"'><form>";
+//
 var makeFormElementList = function(element) {
     if (element.multiselect) {
         var filtertype = 'multiSelect';
@@ -90,6 +91,7 @@ function parseAllFilters(filtersItems){
         console.log(element.name)
         var entity = $("<li>", {
             entity_id: (index+1),
+            class: "entity_"+(index+1),
             eid: "eid"+(index+1)
         }).append($("<div>", {"class": "colorCode shadow1"}))
           .append(element.name);
@@ -190,8 +192,7 @@ function showFilterData(results, entity_filter,filterName,eid){
 	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter).attr("eid",eid);
 	entityHTML_bc = "<div class='bread entity_"+entity_filter+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
 	$("#breadcrumb").append(entityHTML_bc);
-    //XXX
-	//$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterName).attr("class","entity_"+entity_filter).attr("eid",eid);
+	$('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterName).attr("class","entity_"+entity_filter).attr("eid",eid);
 	$('#filterArea').width(480+(filtersArray.length*780));
 	newFilter = "#filter_"+filterName;
     $(newFilter).find(".filterList").append(listFilterData(results));
