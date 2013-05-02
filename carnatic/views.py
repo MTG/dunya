@@ -14,7 +14,10 @@ def main(request):
             Taala.get_filter_criteria()
         ]
 
-    ret = {"filter_items": json.dumps(filter_items)
+    concerts = Concert.objects.all()[:5]
+
+    ret = {"filter_items": json.dumps(filter_items),
+           "concerts": concerts
            }
     return render(request, "carnatic/index.html", ret)
 
@@ -77,6 +80,12 @@ def concertsearch(request):
 
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
+
+    # Other concerts by the same person
+
+    # People who played in this concert
+
+    # Raaga in
     ret = {"concert": concert}
 
     return render(request, "carnatic/concert.html", ret)
