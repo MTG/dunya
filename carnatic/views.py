@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+import social.tagging as tagging
 
 from carnatic.models import *
 from social.forms import TagSaveForm
@@ -58,10 +59,14 @@ def artistsearch(request):
 
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
+    
+    artist_tags = tagging.tag_cloud(artistid)
+    
     ret = {"artist": artist,
            "form": TagSaveForm(),
             "object": "artist",
             "objectid": artist.id,
+            "artist_tags": artist_tags,
     }
 
     return render(request, "carnatic/artist.html", ret)

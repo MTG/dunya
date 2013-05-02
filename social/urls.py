@@ -27,6 +27,9 @@ urlpatterns = patterns('',
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
     # Ajax
     url(r'^ajax/tag/autocomplete/$', views.ajax_tag_autocomplete, name='social-tag-autocomplete'),
+    # Tag cloud
+    #url(r'^tags/(?P<artistid>\d+)/$', views.tag_cloud_artist, name='social-tag-cloud-artist'),
+
 
 
     # Examples:

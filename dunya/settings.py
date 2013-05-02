@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'django.contrib.comments',
+    'inplaceeditform',
 )
 
 # A sample logging configuration. The only tangible logging

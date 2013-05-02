@@ -8,6 +8,7 @@ from social.forms import *
 from social.models import *
 from datetime import datetime
 from django.utils import simplejson
+from django.db.models import Count
 
 def main_page(request):
     return render_to_response('main_page.html',RequestContext(request))
@@ -95,7 +96,6 @@ def user_profile_save(request):
     return render_to_response('user-profile.html', variables)
 
 
-
 def ajax_tag_autocomplete(request):
     q = request.GET['term']
     tags = Tag.objects.filter(name__istartswith=q)[:10]
@@ -106,7 +106,39 @@ def ajax_tag_autocomplete(request):
     return HttpResponse(simplejson.dumps(results),mimetype='application/json')
 
 
+#def tag_cloud_artist(request, artistid):
+#    MAX_WEIGHT = 5
+#    #artist_tags = Tag.objects.filter(artist_id="1").values('tag','artist').annotate(freq_tag=Count('tag'))
+#    artist_tags = ArtistTag.objects.filter(artist_id=artistid).values('tag','artist').annotate(freq_tag=Count('tag'))
+#    #tags = Tag.objects.order_by('name')
+#    
+#    if len(artist_tags)>0:
+#        # Calculate artist_tag, min and max counts.
+#        min_count = max_count = artist_tags[0]['freq_tag']
+#        
+#        for artist_tag in artist_tags:
+#            artist_tag['tag_name'] = Tag.objects.get(pk=artist_tag['tag']).name
+#            artist_tag_count = artist_tag['freq_tag']
+#            if artist_tag_count < min_count:
+#                min_count = artist_tag_count
+#            if max_count < artist_tag_count:
+#                max_count = artist_tag_count
+#                
+#        # Calculate count range. Avoid dividing by zero.
+#        rango = float(max_count - min_count)
+#        if rango == 0.0:
+#            rango = 1.0
+#            
+#        # Calculate artist_tag weights.
+#        for artist_tag in artist_tags:
+#            artist_tag['freq_tag'] = int(
+#                MAX_WEIGHT * (artist_tag['freq_tag'] - min_count) / rango)
+#    variables = RequestContext(request, {
+#        'artist_tags': artist_tags
+#    })
+#    return render_to_response('tag_cloud_artist.html', variables)
 
 
+#ArtistTag.objects.filter(tag__name="prueba").values('artist', 'tag').annotate(freq_artist=Count('artist'))
 
 

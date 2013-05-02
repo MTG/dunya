@@ -1,14 +1,15 @@
 {% extends "browse/base.html" %}
 {% load inline %}
+{% load inplace_edit %}
+{% inplace_static %}
 
 {% block wrap %}
 
-
-    
 <p><b>Username:</b> {{ user.username }}</p>
-<p><b>First Name:</b> {{ user_profile.first_name }}</p>
+<p><b>Email:</b> {{ user.email }}</p>
+<p><b>First Name:</b> {% inplace_edit "user_profile.first_name|safe" %} </p>
 <p><b>Last Name:</b> {{ user_profile.last_name }}</p>
-<p><b>Birthday:</b> {{ user_profile.birthday }}</p>
+<p><b>Birthday:</b> {% inplace_edit "user_profile.birthday|date:'d m Y'" %}</p>
 <!--<p>Avatar: {{ user.avatar }}</p>-->
 
 {% endblock %}

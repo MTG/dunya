@@ -44,12 +44,9 @@ class Playlist(models.Model):
     recordings = models.ManyToManyField(Recording)
 
 class Tag(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, unique=True)
     category = models.CharField(max_length=64, blank=True, null=True)
     #artist = models.ManyToManyField(Artist)
-    
-    class Meta:
-        unique_together = ('name', 'category',)
     
     def __unicode__(self):
         return self.name

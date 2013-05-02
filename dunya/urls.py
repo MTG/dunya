@@ -8,6 +8,10 @@ from django.contrib.comments.models import Comment
 
 admin.autodiscover()
 
+js_info_dict = {
+    'packages': ('django.conf',),
+}
+
 urlpatterns = patterns('',
     # Examples:
     url(r'^/?', include('browse.urls')),
@@ -19,6 +23,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.urls')),
     url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^inplaceeditform/', include('inplaceeditform.urls')),
+    url(r'^jsi18n$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )
 
 #if settings.DEBUG:
