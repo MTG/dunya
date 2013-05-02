@@ -4,10 +4,12 @@
 {% load staticfiles %}
 
 {% block script %}
+<script src="{% static 'carnatic/js/main.js' %}"></script>
+<script>
 $(document).ready(function() {
-    window.filtersItems = {{ filter_items|safe }};
-	parseAllFilters();
+    parseAllFilters({{ filter_items|safe }});
 });
+</script>
 {% endblock %}
 
 {% block wrap %}
