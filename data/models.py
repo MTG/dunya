@@ -66,6 +66,9 @@ class Artist(BaseModel):
             ret.append((c, theperf))
         return ret
 
+class Label(BaseModel):
+    name = models.CharField(max_length=100)
+
 class Concert(BaseModel):
     class Meta:
         abstract = True
@@ -74,6 +77,8 @@ class Concert(BaseModel):
     title = models.CharField(max_length=100)
     artists = models.ManyToManyField('Artist')
     tracks = models.ManyToManyField('Recording')
+    year = models.IntegerField(blank=True, null=True)
+    label = models.ForeignKey('Label', blank=True, null=True)
 
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
