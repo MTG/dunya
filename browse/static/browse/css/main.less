@@ -1,4 +1,5 @@
-.filterBall { -webkit-transition: all 0 ease 0; -moz-transition: all 0 ease 0; -o-transition: all 0 ease 0; transition:all 0 ease 0; }
+@import "normalize.min.less";
+
 #filterArea { position: relative; width: 100%; height: 300px; }
 .filterBall { position: relative; float: left; background: #666; background: rgba(102,102,102,0.7); width: 120px; height: 120px; -webkit-border-radius: 120px; -moz-border-radius: 120px; border-radius: 120px; display: table; top: 86px; margin-left: 30px; cursor: pointer; margin-right: 25px; border: 8px solid rgba(0,0,0,0);}
 .filterBall:hover { border: 8px solid rgba(0,0,0,0.2); }
@@ -26,8 +27,8 @@ fieldset { margin-bottom: 6px; }
 .ui-slider { margin-bottom: 12px; margin-top: 13px; margin-right:20px; margin-left: 20px; }
 .formFilterClosed { width: 0px; padding:0px; } 
 .filterListClosed { width: 0px !important; } 
-#entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
-#entitiesList h3 { padding:10px; }
+
+
 .filterBallClosed { top: 18px; }
 .filterSummary { position: absolute; top: 120px; padding: 10px; background: #f0f0f0; background: rgba(256,256,256,0.5); border-radius: 10px; width: 155px; left: -27px; display: none; }
 
@@ -180,6 +181,7 @@ textarea {
 }
 
 .header-container, .main-container { min-width: 1024px; }
+#entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
 
 /* ==========================================================================
    HEADER 
@@ -325,6 +327,15 @@ textarea {
 		.formFilterItem { height: auto; }
 		#entitiesList {
 			
+		}
+		.filters { 
+			.filterBall { 
+				-webkit-transition: all 0 ease 0; 
+				-moz-transition: all 0 ease 0; 
+				-o-transition: all 0 ease 0; 
+				transition:all 0 ease 0; 
+			}
+			h3 { padding:10px; }
 		}
 	}
 	#breadcrumb { display: none; }
@@ -558,7 +569,7 @@ textarea {
 				}
 				.artist {
 					border-right:1px solid @gris;
-					border-bottom:1px solid @gris;
+					border-bottom	:1px solid @gris;
 					float:left;
 					width: 222px;
 					padding:10px;
