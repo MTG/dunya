@@ -1,9 +1,10 @@
 {% extends "browse/base.html" %}
+{% load staticfiles %}
 {% load inline %}
 
 {% block script %}
-<script src="{% static carnatic/js/main.js %}"></script>
-</script>
+<script src="{% static 'carnatic/js/main.js' %}"></script>
+<script>
 $(document).ready(function() {
     parseAllFilters({{ filter_items|safe }});
 });
