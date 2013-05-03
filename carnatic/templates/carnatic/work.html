@@ -28,7 +28,7 @@ Composed by: {% inline_composer work.composer %}<br>
 
 <h2>Post comment:</h2>
 {% if user.is_authenticated %}
- {% get_comment_form for work as form %}
+ {% get_comment_form for work as form_comment %}
 
 {% include "browse/form-comment.html" %}
 
