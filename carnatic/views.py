@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from carnatic.models import *
 import json
 
-def main(request):
+def get_filter_items():
     filter_items = [
             Artist.get_filter_criteria(),
             Concert.get_filter_criteria(),
@@ -12,11 +12,14 @@ def main(request):
             Instrument.get_filter_criteria(),
             Raaga.get_filter_criteria(),
             Taala.get_filter_criteria()
-        ]
+    ]
+    return filter_items
+
+def main(request):
 
     concerts = Concert.objects.all()[:5]
 
-    ret = {"filter_items": json.dumps(filter_items),
+    ret = {"filter_items": json.dumps(get_filter_items()),
            "concerts": concerts
            }
     return render(request, "carnatic/index.html", ret)
@@ -82,11 +85,12 @@ def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
 
     # Other concerts by the same person
-
-    # People who played in this concert
+    concerts = Concert.objects.filter(artists__in=concert.artists.all())
 
     # Raaga in
-    ret = {"concert": concert}
+    ret = {"filter_items": json.dumps(get_filter_items()),
+           "concert": concert,
+           "otherconcerts": concerts}
 
     return render(request, "carnatic/concert.html", ret)
 

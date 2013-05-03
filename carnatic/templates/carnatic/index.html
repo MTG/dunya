@@ -4,7 +4,6 @@
 {% load staticfiles %}
 
 {% block script %}
-<script src="{% static 'carnatic/js/main.js' %}"></script>
 <script>
 $(document).ready(function() {
     parseAllFilters({{ filter_items|safe }});

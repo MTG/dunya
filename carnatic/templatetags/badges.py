@@ -8,17 +8,22 @@ register = template.Library()
 def badge_concert(concert):
     if not isinstance(concert, Concert):
         concert = Concert.objects.get(pk=concert)
-    artists = ", ".join([a.name for a in concert.performers()])
     return {"title": concert.title,
-            "artists": artists,
+            "artists": concert.artistnames(),
             "detail": None,
-            "date": None,
+            "date": 2043,
            }
 
 @register.inclusion_tag("badges/artist.html")
 def badge_performance(performance):
     if not isinstance(performance, InstrumentPerformance):
         performance = InstrumentPerformance.objects.get(pk=performance)
-    return {"name": performance.performer.name,
-            "instrument": performance.instrument.name,
+    return {"performance": performance
+           }
+
+@register.inclusion_tag("badges/recording.html")
+def badge_recording(recording):
+    if not isinstance(recording, Recording):
+        recording = Recording.objects.get(pk=recording)
+    return {"recording": recording
            }
