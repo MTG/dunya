@@ -113,7 +113,7 @@ def tag_page(request, modeltype, tag_name):
         lists = ArtistTag.objects.filter(tag__name=tag_name).values('artist', 'tag').annotate(freq_artist=Count('artist'))
         objects=[]
         for lista in lists:
-            objects.append(Artist.objects.get(pk=lista['artist']))
+            objects.append([Artist.objects.get(pk=lista['artist']), lista['freq_artist']])
       
     variables = RequestContext(request, {
         'objects': objects,

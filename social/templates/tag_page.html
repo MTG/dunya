@@ -11,7 +11,7 @@
 
 <ul>
 {% for a in objects %}
-   <li>{% inline_artist a %}</li>
+   <li>{% inline_artist a.0 %} ({{ a.1 }})</li> 
 {% endfor %}
 </ul>
 
