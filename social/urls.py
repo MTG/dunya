@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     # Tag cloud
     #url(r'^tags/(?P<artistid>\d+)/$', views.tag_cloud_artist, name='social-tag-cloud-artist'),
     # Tag page
-    url(r'^tags/([^\s]+)/([^\s]+)/$', views.tag_page, name='tag-page'),
+    url(r'^tags/([^\s]+)/([\w ]+)/$', views.tag_page, name='tag-page'),
 
 
     # Examples:
