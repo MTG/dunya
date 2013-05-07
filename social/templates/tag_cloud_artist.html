@@ -1,6 +1,6 @@
 
 <div id="tag-cloud">
 {% for artist_tag in artist_tags %}
-    <a href="." class="tag-cloud-{{ artist_tag.freq_tag }}">{{ artist_tag.tag_name }}</a>
+    <a href="/social/tags/{{ artist_tag.modeltype}}/{{ artist_tag.tag_name}}" class="tag-cloud-{{ artist_tag.freq_tag }}">{{ artist_tag.tag_name }}</a>
 {% endfor %}
 </div>

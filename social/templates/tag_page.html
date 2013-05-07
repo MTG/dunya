@@ -1,0 +1,19 @@
+{% extends "browse/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+
+<p>TAG: <b>{{ tag_name }}</b></p>
+
+{% if modeltype == "artist" %}
+    <h4>Artists</h4>
+{% endif %} 
+
+<ul>
+{% for a in objects %}
+   <li>{% inline_artist a %}</li>
+{% endfor %}
+</ul>
+
+
+{% endblock %}

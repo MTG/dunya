@@ -5,6 +5,7 @@
 
     });
     $(function() {
+        
       function split( val ) {
       return val.split( /,\s*/ );
     }
@@ -24,8 +25,7 @@
         minLength: 0,
         source: function( request, response ) {
           // delegate back to autocomplete, but extract the last term
-          response( $.ui.autocomplete.filter(
-            '{{ social_tag_autocomplete }}', extractLast( request.term ) ) );
+          response( $.ui.autocomplete.filter('{{ social_tag_autocomplete }}' , extractLast( request.term ) ) );
         },
         focus: function() {
           // prevent value inserted on focus

@@ -60,7 +60,7 @@ def artistsearch(request):
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
     
-    artist_tags = tagging.tag_cloud(artistid)
+    artist_tags = tagging.tag_cloud(artistid, "artist")
     
     ret = {"artist": artist,
            "form": TagSaveForm(),

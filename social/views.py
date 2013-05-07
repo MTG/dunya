@@ -9,6 +9,7 @@ from social.models import *
 from datetime import datetime
 from django.utils import simplejson
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 
 def main_page(request):
     return render_to_response('main_page.html',RequestContext(request))
@@ -104,6 +105,23 @@ def ajax_tag_autocomplete(request):
         tag_dict = {'id':tag.id, 'label':tag.name, 'value':tag.name}
         results.append(tag_dict)
     return HttpResponse(simplejson.dumps(results),mimetype='application/json')
+
+def tag_page(request, modeltype, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    
+    if modeltype == "artist":
+        lists = ArtistTag.objects.filter(tag__name=tag_name).values('artist', 'tag').annotate(freq_artist=Count('artist'))
+        objects=[]
+        for lista in lists:
+            objects.append(Artist.objects.get(pk=lista['artist']))
+      
+    variables = RequestContext(request, {
+        'objects': objects,
+        'tag_name': tag_name,
+        'modeltype': modeltype,
+    })
+    return render_to_response('tag_page.html', variables)
+
 
 
 #def tag_cloud_artist(request, artistid):
