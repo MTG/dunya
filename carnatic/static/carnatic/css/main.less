@@ -13,7 +13,7 @@ fieldset { margin-bottom: 6px; }
 .formSectionOpen { -webkit-border-bottom-left-radius:0px; -webkit-border-bottom-right-radius:0px; -moz-border-bottom-left-radius:0px; -moz-border-bottom-right-radius:0px; border-bottom-left-radius:0px; border-bottom-right-radius:0px; }
 .filterList h2 { margin: 8px; font-size: 17px; background: #777; border-radius: 10px; padding: 4px; font-weight: normal; padding-left: 10px; color: #dcdcdc; }
 .ui-slider { margin-bottom: 12px; margin-top: 13px; margin-right:20px; margin-left: 20px; }
-.formFilterClosed { width: 0px; padding:0px; } 
+.formFilterClosed { width: 0px !important; padding:0px !important; } 
 .filterListClosed { width: 0px !important; } 
 
 
@@ -386,29 +386,29 @@ textarea {
 					top:10px;
 					left:0px;
 				}
-				&.entity_1 .breadarrow { 
-					border-left-color: darken(@entity_1_color, 10%); 
-					&:after { border-left-color: @entity_1_color; }
+				&.artist .breadarrow { 
+					border-left-color: darken(@artist_color, 10%); 
+					&:after { border-left-color: @artist_color; }
 				}
-				&.entity_2 .breadarrow { 
-					border-left-color: darken(@entity_2_color, 10%); 
-					&:after { border-left-color: @entity_2_color; }
+				&.concert .breadarrow { 
+					border-left-color: darken(@concert_color, 10%); 
+					&:after { border-left-color: @concert_color; }
 				}
-				&.entity_3 .breadarrow { 
-					border-left-color: darken(@entity_3_color, 10%); 
-					&:after { border-left-color: @entity_3_color; }
+				&.work .breadarrow { 
+					border-left-color: darken(@work_color, 10%); 
+					&:after { border-left-color: @work_color; }
 				}
-				&.entity_4 .breadarrow { 
-					border-left-color: darken(@entity_4_color, 10%); 
-					&:after { border-left-color: @entity_4_color; }
+				&.instrument .breadarrow { 
+					border-left-color: darken(@instrument_color, 10%); 
+					&:after { border-left-color: @instrument_color; }
 				}
-				&.entity_5 .breadarrow { 
-					border-left-color: darken(@entity_5_color, 10%); 
-					&:after { border-left-color: @entity_5_color; }
+				&.raaga .breadarrow { 
+					border-left-color: darken(@raaga_color, 10%); 
+					&:after { border-left-color: @raaga_color; }
 				}
-				&.entity_6 .breadarrow { 
-					border-left-color: darken(@entity_6_color, 10%); 
-					&:after { border-left-color: @entity_6_color; }
+				&.taala .breadarrow { 
+					border-left-color: darken(@taala_color, 10%); 
+					&:after { border-left-color: @taala_color; }
 				}
 				span {
 					display: table-cell;
@@ -476,18 +476,31 @@ textarea {
 				vertical-align: middle;
 				display: table-cell;			
 				text-align: right;
-				h1 { font-size: 20px; margin:0px; }
-				h2 { font-weight: normal; margin:0px; }
-				h3 { color:#fff; margin:0px; font-weight: normal; }
+				h1 { font-size: 22px; margin:0px; }
+				h2 { 
+					font-size: 18px;
+					font-weight: normal; 
+					margin:0px; 
+					a { color:#000; text-decoration: none; }
+				}
+				h3 { 
+					color:#666; 
+					margin:0px; 
+					font-weight: normal; 
+					a { color: #fff; text-decoration: none; }
+				}
 				#icon {}
 			}
 		}
-		#image {
+		.bigImage {
 			position: relative; 
 			float: left;
 			width: 296px;
 			height: 296px;
 			overflow: hidden;
+			background: #333;
+		}
+		#image {
 			background: url("../img/artistImage.jpg") 0 0 no-repeat;
 		}
 		#meta {
@@ -502,20 +515,21 @@ textarea {
 					float:left;
 					width: 33%;	
 					height: 148px;
-					border-left:1px solid @gris;
+					border-right:1px solid @grisD;
 					overflow-y: scroll;
-					padding-top:20px;
+					padding-top:24px;
 					position: relative;
 					h3 { 
 						top:0px;
 						padding: 10px;
 						padding-top: 5px;
 						padding-bottom: 5px;
-						border-bottom:1px solid @gris;
+						border-bottom:1px solid @grisD;
 						margin: 0px;
 						position: absolute;
 						background: #fff;
 						width: 100%;
+						font-size: 12px;
 					}
 					span { 
 						display: block; 
@@ -566,6 +580,7 @@ textarea {
 				padding: 10px;
 				margin-left: 220px;
 				border-left:1px solid @gris;
+				min-height: 34px;
 				.recording {
 					float:left;
 					height: 100px;
@@ -627,96 +642,168 @@ textarea {
 	}
 }
 
+// WORK Layout
+
+#detail #header #meta.work .metaBlock {
+	.metaDetails {
+		&#editorial {
+			z-index: 2;
+			width:137px;	
+			.list {
+				label { width: 38px; }
+				b { width: 69px; }
+			}
+		}
+		&#tonic {
+			z-index: 1;
+			width:145px;	
+			span {
+				display: block;
+				clear: both;
+				background: #333;
+				color:#bbb;
+				padding:10px;
+				.rounded (4px);
+				font-size: 10px;
+				text-align: center;
+				margin: 2px;
+				b {
+					font-size: 20px;
+					color:#fff;
+					display: block;
+					clear: both;
+					text-align: center;
+				}
+			}
+		}
+		&#samples {
+			z-index: 0;
+			width:100%;	
+			margin-left:-282px;
+			overflow-x: hidden;
+			.inner { margin-left: 282px;}
+		}
+		&#recording {
+			width:100%;	
+		}
+	}
+}
+
+
+// ARTIST Layout
+
+#detail.artist #header #meta .metaBlock {
+	.metaDetails {
+		width:33%;
+		&#excerpt {
+			height: 297px;
+			padding:20px;
+		}
+		&#samples {
+			z-index: 2;
+			height: 297px;
+			h3 { position: relative; margin-top:85px; }
+			span { position: relative; }
+		}
+		&#external {
+			z-index: 1;	
+			height: 297px;
+			h3 { position: relative; margin-top:85px; }
+			span { position: relative; }
+		}
+	}
+}
+
 .nopad { padding: 0px !important; }
 /* ==========================================================================
    Entities Filters Colors
    ========================================================================== */
    
-#filterMask #filterArea .filterList ul li.entity_1 { background: @entity_1_color; }
-#filterMask #filterArea .filterList ul li.entity_2 { background: @entity_2_color; }
-#filterMask #filterArea .filterList ul li.entity_3 { background: @entity_3_color; }
-#filterMask #filterArea .filterList ul li.entity_4 { background: @entity_4_color; }
-#filterMask #filterArea .filterList ul li.entity_5 { background: @entity_5_color; }
-#filterMask #filterArea .filterList ul li.entity_6 { background: @entity_6_color; }
+#filterMask #filterArea .filterList ul li.artist { background: @artist_color; }
+#filterMask #filterArea .filterList ul li.concert { background: @concert_color; }
+#filterMask #filterArea .filterList ul li.work { background: @work_color; }
+#filterMask #filterArea .filterList ul li.instrument { background: @instrument_color; }
+#filterMask #filterArea .filterList ul li.raaga { background: @raaga_color; }
+#filterMask #filterArea .filterList ul li.taala { background: @taala_color; }
 #filterMask #filterArea .filterList ul li.entity_7 { background: @entity_7_color; }
 #filterMask #filterArea .filterList ul li.entity_8 { background: @entity_8_color; }
 #filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
 #filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }
 
-.filters.entity_1 { background: lighten(@entity_1_color, 20%); }
-.filters.entity_2 { background: lighten(@entity_2_color, 10%); }
-.filters.entity_3 { background: lighten(@entity_3_color, 5%); }
-.filters.entity_4 { background: lighten(@entity_4_color, 20%); }
-.filters.entity_5 { background: lighten(@entity_5_color, 20%); }
-.filters.entity_6 { background: lighten(@entity_6_color, 20%); }
+.filters.artist { background: lighten(@artist_color, 20%); }
+.filters.concert { background: lighten(@concert_color, 10%); }
+.filters.work { background: lighten(@work_color, 5%); }
+.filters.instrument { background: lighten(@instrument_color, 20%); }
+.filters.raaga { background: lighten(@raaga_color, 20%); }
+.filters.taala { background: lighten(@taala_color, 20%); }
 .filters.entity_7 { background: lighten(@entity_7_color, 20%); }
 .filters.entity_8 { background: lighten(@entity_8_color, 20%); }
 .filters.entity_9 { background: lighten(@entity_9_color, 20%); }
 .filters.entity_10 { background: lighten(@entity_10_color, 20%); }
 
 
-.filters.entity_1 { background: fade(@entity_1_color, 20%); }
-.filters.entity_2 { background: fade(@entity_2_color, 20%); }
-.filters.entity_3 { background: fade(@entity_3_color, 20%); }
-.filters.entity_4 { background: fade(@entity_4_color, 20%); }
-.filters.entity_5 { background: fade(@entity_5_color, 20%); }
-.filters.entity_6 { background: fade(@entity_6_color, 20%); }
+.filters.artist { background: fade(@artist_color, 20%); }
+.filters.concert { background: fade(@concert_color, 20%); }
+.filters.work { background: fade(@work_color, 20%); }
+.filters.instrument { background: fade(@instrument_color, 20%); }
+.filters.raaga { background: fade(@raaga_color, 20%); }
+.filters.taala { background: fade(@taala_color, 20%); }
 .filters.entity_7 { background: fade(@entity_7_color, 20%); }
 .filters.entity_8 { background: fade(@entity_8_color, 20%); }
 .filters.entity_9 { background: fade(@entity_9_color, 20%); }
 .filters.entity_10 { background: fade(@entity_10_color, 20%); }
 
 
-.entity_1 .filterBall, .entity_1 .filterList ul li.selected { background: @entity_1_color; }
-.entity_2 .filterBall, .entity_2 .filterList ul li.selected { background: @entity_2_color; }
-.entity_3 .filterBall, .entity_3 .filterList ul li.selected { background: @entity_3_color; }
-.entity_4 .filterBall, .entity_4 .filterList ul li.selected { background: @entity_4_color; }
-.entity_5 .filterBall, .entity_5 .filterList ul li.selected { background: @entity_5_color; }
-.entity_6 .filterBall, .entity_6 .filterList ul li.selected { background: @entity_6_color; }
+.artist .filterBall, .artist .filterList ul li.selected { background: @artist_color; }
+.concert .filterBall, .concert .filterList ul li.selected { background: @concert_color; }
+.work .filterBall, .work .filterList ul li.selected { background: @work_color; }
+.instrument .filterBall, .instrument .filterList ul li.selected { background: @instrument_color; }
+.raaga .filterBall, .raaga .filterList ul li.selected { background: @raaga_color; }
+.taala .filterBall, .taala .filterList ul li.selected { background: @taala_color; }
 .entity_7 .filterBall, .entity_7 .filterList ul li.selected { background: @entity_7_color; }
 .entity_8 .filterBall, .entity_8 .filterList ul li.selected { background: @entity_8_color; }
 .entity_9 .filterBall, .entity_9 .filterList ul li.selected { background: @entity_9_color; }
 .entity_10 .filterBall, .entity_10 .filterList ul li.selected { background: @entity_10_color; }
 
-.entity_1 .formFilter { border-right: 4px solid @entity_1_color; }
-.entity_2 .formFilter { border-right: 4px solid @entity_2_color; }
-.entity_3 .formFilter { border-right: 4px solid @entity_3_color; }
-.entity_4 .formFilter { border-right: 4px solid @entity_4_color; }
-.entity_5 .formFilter { border-right: 4px solid @entity_5_color; }
-.entity_6 .formFilter { border-right: 4px solid @entity_6_color; }
+.artist .formFilter { border-right: 4px solid @artist_color; }
+.concert .formFilter { border-right: 4px solid @concert_color; }
+.work .formFilter { border-right: 4px solid @work_color; }
+.instrument .formFilter { border-right: 4px solid @instrument_color; }
+.raaga .formFilter { border-right: 4px solid @raaga_color; }
+.taala .formFilter { border-right: 4px solid @taala_color; }
 .entity_7 .formFilter { border-right: 4px solid @entity_7_color; }
 .entity_8 .formFilter { border-right: 4px solid @entity_8_color; }
 .entity_9 .formFilter { border-right: 4px solid @entity_9_color; }
 .entity_10 .formFilter { border-right: 4px solid @entity_10_color; }
 
-.entity_1 .formSectionOpen { background: @entity_1_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_2 .formSectionOpen  { background: @entity_2_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_3 .formSectionOpen  { background: @entity_3_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_4 .formSectionOpen  { background: @entity_4_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_5 .formSectionOpen  { background: @entity_5_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_6 .formSectionOpen  { background: @entity_6_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.artist .formSectionOpen { background: @artist_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.concert .formSectionOpen  { background: @concert_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.work .formSectionOpen  { background: @work_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.instrument .formSectionOpen  { background: @instrument_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.raaga .formSectionOpen  { background: @raaga_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.taala .formSectionOpen  { background: @taala_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .entity_7 .formSectionOpen  { background: @entity_7_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .entity_8 .formSectionOpen  { background: @entity_8_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .entity_9 .formSectionOpen  { background: @entity_9_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .entity_10 .formSectionOpen  { background: @entity_10_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 
-#summary.entity_1 #summaryBack { background: fade(darken(@entity_1_color, 20%),40%); border-bottom:10px solid @entity_1_color; }
-#summary.entity_2 #summaryBack { background: fade(darken(@entity_2_color, 30%),40%); border-bottom:10px solid @entity_2_color; }
-#summary.entity_3 #summaryBack { background: fade(darken(@entity_3_color, 40%),40%); border-bottom:10px solid @entity_3_color; }
-#summary.entity_4 #summaryBack { background: fade(darken(@entity_4_color, 20%),40%); border-bottom:10px solid @entity_4_color; }
-#summary.entity_5 #summaryBack { background: fade(darken(@entity_5_color, 20%),40%); border-bottom:10px solid @entity_5_color; }
-#summary.entity_6 #summaryBack { background: fade(darken(@entity_6_color, 20%),40%); border-bottom:10px solid @entity_6_color; }
-#summary.entity_7 #summaryBack { background: fade(darken(@entity_7_color, 20%),40%); border-bottom:10px solid @entity_7_color; }
-#summary.entity_8 #summaryBack { background: fade(darken(@entity_8_color, 20%),40%); border-bottom:10px solid @entity_8_color; }
-#summary.entity_9 #summaryBack { background: fade(darken(@entity_9_color, 20%),40%); border-bottom:10px solid @entity_9_color; }
-#summary.entity_10 #summaryBack { background: fade(darken(@entity_10_color, 20%),40%); border-bottom:10px solid @entity_10_color; }
+.artist #summary #summaryBack { background: fade(darken(@artist_color, 20%),40%); border-bottom:10px solid @artist_color; }
+.concert #summary #summaryBack { background: fade(darken(@concert_color, 30%),40%); border-bottom:10px solid @concert_color; }
+.work #summary #summaryBack { background: fade(darken(@work_color, 40%),40%); border-bottom:10px solid @work_color; }
+.instrument #summary #summaryBack { background: fade(darken(@instrument_color, 20%),40%); border-bottom:10px solid @instrument_color; }
+.raaga #summary #summaryBack { background: fade(darken(@raaga_color, 20%),40%); border-bottom:10px solid @raaga_color; }
+.taala #summary #summaryBack { background: fade(darken(@taala_color, 20%),40%); border-bottom:10px solid @taala_color; }
+.entity_7 #summary #summaryBack { background: fade(darken(@entity_7_color, 20%),40%); border-bottom:10px solid @entity_7_color; }
+.entity_8 #summary #summaryBack { background: fade(darken(@entity_8_color, 20%),40%); border-bottom:10px solid @entity_8_color; }
+.entity_9 #summary #summaryBack { background: fade(darken(@entity_9_color, 20%),40%); border-bottom:10px solid @entity_9_color; }
+.entity_10 #summary #summaryBack { background: fade(darken(@entity_10_color, 20%),40%); border-bottom:10px solid @entity_10_color; }
 
-#summary.entity_1 h1 { color: darken(@entity_1_color,45%); }
-#summary.entity_2 h1 { color: darken(@entity_2_color,45%); }
-#summary.entity_3 h1 { color: darken(@entity_3_color,45%); }
-#summary.entity_4 h1 { color: darken(@entity_4_color,45%); }
-#summary.entity_5 h1 { color: darken(@entity_5_color,45%); }
-#summary.entity_6 h1 { color: darken(@entity_6_color,45%); }
+#summary.artist h1 { color: darken(@artist_color,45%); }
+#summary.concert h1 { color: darken(@concert_color,45%); }
+#summary.work h1 { color: darken(@work_color,45%); }
+#summary.instrument h1 { color: darken(@instrument_color,45%); }
+#summary.raaga h1 { color: darken(@raaga_color,45%); }
+#summary.taala h1 { color: darken(@taala_color,45%); }
 #summary.entity_7 h1 { color: darken(@entity_7_color,45%); }
 #summary.entity_8 h1 { color: darken(@entity_8_color,45%); }
 #summary.entity_9 h1 { color: darken(@entity_9_color,45%); }

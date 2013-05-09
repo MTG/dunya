@@ -292,8 +292,8 @@ fieldset {
   margin-left: 20px;
 }
 .formFilterClosed {
-  width: 0px;
-  padding: 0px;
+  width: 0px !important;
+  padding: 0px !important;
 }
 .filterListClosed {
   width: 0px !important;
@@ -356,11 +356,11 @@ body {
   font-family: 'Questrial', sans-serif;
 }
 ::-moz-selection {
-  background: #ff0000;
+  background: #dcdcdc;
   text-shadow: none;
 }
 ::selection {
-  background: #ff0000;
+  background: #dcdcdc;
   text-shadow: none;
 }
 hr {
@@ -736,40 +736,40 @@ textarea {
   border-bottom: 18.18181818181818px solid transparent;
   border-left: 18.18181818181818px solid #ff0000;
 }
-#filterMask.querybar #breadcrumb .bread.entity_1 .breadarrow {
+#filterMask.querybar #breadcrumb .bread.artist .breadarrow {
   border-left-color: #3dc5e0;
 }
-#filterMask.querybar #breadcrumb .bread.entity_1 .breadarrow:after {
+#filterMask.querybar #breadcrumb .bread.artist .breadarrow:after {
   border-left-color: #69d2e7;
 }
-#filterMask.querybar #breadcrumb .bread.entity_2 .breadarrow {
+#filterMask.querybar #breadcrumb .bread.concert .breadarrow {
   border-left-color: #83ccc8;
 }
-#filterMask.querybar #breadcrumb .bread.entity_2 .breadarrow:after {
+#filterMask.querybar #breadcrumb .bread.concert .breadarrow:after {
   border-left-color: #a7dbd8;
 }
-#filterMask.querybar #breadcrumb .bread.entity_3 .breadarrow {
+#filterMask.querybar #breadcrumb .bread.work .breadarrow {
   border-left-color: #ccd2ab;
 }
-#filterMask.querybar #breadcrumb .bread.entity_3 .breadarrow:after {
+#filterMask.querybar #breadcrumb .bread.work .breadarrow:after {
   border-left-color: #e0e4cc;
 }
-#filterMask.querybar #breadcrumb .bread.entity_4 .breadarrow {
+#filterMask.querybar #breadcrumb .bread.instrument .breadarrow {
   border-left-color: #e36b0d;
 }
-#filterMask.querybar #breadcrumb .bread.entity_4 .breadarrow:after {
+#filterMask.querybar #breadcrumb .bread.instrument .breadarrow:after {
   border-left-color: #f38630;
 }
-#filterMask.querybar #breadcrumb .bread.entity_5 .breadarrow {
+#filterMask.querybar #breadcrumb .bread.raaga .breadarrow {
   border-left-color: #c75400;
 }
-#filterMask.querybar #breadcrumb .bread.entity_5 .breadarrow:after {
+#filterMask.querybar #breadcrumb .bread.raaga .breadarrow:after {
   border-left-color: #fa6900;
 }
-#filterMask.querybar #breadcrumb .bread.entity_6 .breadarrow {
+#filterMask.querybar #breadcrumb .bread.taala .breadarrow {
   border-left-color: #e6c04b;
 }
-#filterMask.querybar #breadcrumb .bread.entity_6 .breadarrow:after {
+#filterMask.querybar #breadcrumb .bread.taala .breadarrow:after {
   border-left-color: #ecd078;
 }
 #filterMask.querybar #breadcrumb .bread span {
@@ -851,24 +851,36 @@ textarea {
   text-align: right;
 }
 #detail #header #summary span h1 {
-  font-size: 20px;
+  font-size: 22px;
   margin: 0px;
 }
 #detail #header #summary span h2 {
+  font-size: 18px;
   font-weight: normal;
   margin: 0px;
+}
+#detail #header #summary span h2 a {
+  color: #000;
+  text-decoration: none;
 }
 #detail #header #summary span h3 {
-  color: #fff;
+  color: #666;
   margin: 0px;
   font-weight: normal;
 }
-#detail #header #image {
+#detail #header #summary span h3 a {
+  color: #fff;
+  text-decoration: none;
+}
+#detail #header .bigImage {
   position: relative;
   float: left;
   width: 296px;
   height: 296px;
   overflow: hidden;
+  background: #333;
+}
+#detail #header #image {
   background: url("../img/artistImage.jpg") 0 0 no-repeat;
 }
 #detail #header #meta {
@@ -885,9 +897,9 @@ textarea {
   float: left;
   width: 33%;
   height: 148px;
-  border-left: 1px solid #a7a8ac;
+  border-right: 1px solid #dddddd;
   overflow-y: scroll;
-  padding-top: 20px;
+  padding-top: 24px;
   position: relative;
 }
 #detail #header #meta .metaBlock .metaDetails h3 {
@@ -895,11 +907,12 @@ textarea {
   padding: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #a7a8ac;
+  border-bottom: 1px solid #dddddd;
   margin: 0px;
   position: absolute;
   background: #fff;
   width: 100%;
+  font-size: 12px;
 }
 #detail #header #meta .metaBlock .metaDetails span {
   display: block;
@@ -958,6 +971,26 @@ textarea {
   padding: 10px;
   margin-left: 220px;
   border-left: 1px solid #a7a8ac;
+  min-height: 34px;
+}
+#detail .thedata .rightdata .innerrightdata .recording {
+  float: left;
+  height: 100px;
+}
+#detail .thedata .rightdata .innerrightdata .recording .disc {
+  float: left;
+  width: 127px;
+  height: 90px;
+  margin-right: 10px;
+}
+#detail .thedata .rightdata .innerrightdata .recording .desc p {
+  margin: 0px;
+  color: #888;
+}
+#detail .thedata .rightdata .innerrightdata .recording .desc b {
+  font-weight: normal;
+  display: block;
+  color: #000;
 }
 #detail .thedata .rightdata .innerrightdata .album {
   float: left;
@@ -1022,28 +1055,105 @@ textarea {
 #detail .thedata .rightdata .innerrightdata .artist .artist4 {
   background: url("../img/artist4.jpg") 0 0 no-repeat;
 }
+#detail #header #meta.work .metaBlock .metaDetails#editorial {
+  z-index: 2;
+  width: 137px;
+}
+#detail #header #meta.work .metaBlock .metaDetails#editorial .list label {
+  width: 38px;
+}
+#detail #header #meta.work .metaBlock .metaDetails#editorial .list b {
+  width: 69px;
+}
+#detail #header #meta.work .metaBlock .metaDetails#tonic {
+  z-index: 1;
+  width: 145px;
+}
+#detail #header #meta.work .metaBlock .metaDetails#tonic span {
+  display: block;
+  clear: both;
+  background: #333;
+  color: #bbb;
+  padding: 10px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  text-align: center;
+  margin: 2px;
+}
+#detail #header #meta.work .metaBlock .metaDetails#tonic span b {
+  font-size: 20px;
+  color: #fff;
+  display: block;
+  clear: both;
+  text-align: center;
+}
+#detail #header #meta.work .metaBlock .metaDetails#samples {
+  z-index: 0;
+  width: 100%;
+  margin-left: -282px;
+  overflow-x: hidden;
+}
+#detail #header #meta.work .metaBlock .metaDetails#samples .inner {
+  margin-left: 282px;
+}
+#detail #header #meta.work .metaBlock .metaDetails#recording {
+  width: 100%;
+}
+#detail.artist #header #meta .metaBlock .metaDetails {
+  width: 33%;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#excerpt {
+  height: 297px;
+  padding: 20px;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#samples {
+  z-index: 2;
+  height: 297px;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#samples h3 {
+  position: relative;
+  margin-top: 85px;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#samples span {
+  position: relative;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#external {
+  z-index: 1;
+  height: 297px;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#external h3 {
+  position: relative;
+  margin-top: 85px;
+}
+#detail.artist #header #meta .metaBlock .metaDetails#external span {
+  position: relative;
+}
 .nopad {
   padding: 0px !important;
 }
 /* ==========================================================================
    Entities Filters Colors
    ========================================================================== */
-#filterMask #filterArea .filterList ul li.entity_1 {
+#filterMask #filterArea .filterList ul li.artist {
   background: #69d2e7;
 }
-#filterMask #filterArea .filterList ul li.entity_2 {
+#filterMask #filterArea .filterList ul li.concert {
   background: #a7dbd8;
 }
-#filterMask #filterArea .filterList ul li.entity_3 {
+#filterMask #filterArea .filterList ul li.work {
   background: #e0e4cc;
 }
-#filterMask #filterArea .filterList ul li.entity_4 {
+#filterMask #filterArea .filterList ul li.instrument {
   background: #f38630;
 }
-#filterMask #filterArea .filterList ul li.entity_5 {
+#filterMask #filterArea .filterList ul li.raaga {
   background: #fa6900;
 }
-#filterMask #filterArea .filterList ul li.entity_6 {
+#filterMask #filterArea .filterList ul li.taala {
   background: #ecd078;
 }
 #filterMask #filterArea .filterList ul li.entity_7 {
@@ -1058,22 +1168,22 @@ textarea {
 #filterMask #filterArea .filterList ul li.entity_10 {
   background: #53777a;
 }
-.filters.entity_1 {
+.filters.artist {
   background: #c1ecf5;
 }
-.filters.entity_2 {
+.filters.concert {
   background: #cbeae8;
 }
-.filters.entity_3 {
+.filters.work {
   background: #eaeddd;
 }
-.filters.entity_4 {
+.filters.instrument {
   background: #f9be90;
 }
-.filters.entity_5 {
+.filters.raaga {
   background: #ffa361;
 }
-.filters.entity_6 {
+.filters.taala {
   background: #f9efd1;
 }
 .filters.entity_7 {
@@ -1088,22 +1198,22 @@ textarea {
 .filters.entity_10 {
   background: #86aaad;
 }
-.filters.entity_1 {
+.filters.artist {
   background: rgba(105, 210, 231, 0.2);
 }
-.filters.entity_2 {
+.filters.concert {
   background: rgba(167, 219, 216, 0.2);
 }
-.filters.entity_3 {
+.filters.work {
   background: rgba(224, 228, 204, 0.2);
 }
-.filters.entity_4 {
+.filters.instrument {
   background: rgba(243, 134, 48, 0.2);
 }
-.filters.entity_5 {
+.filters.raaga {
   background: rgba(250, 105, 0, 0.2);
 }
-.filters.entity_6 {
+.filters.taala {
   background: rgba(236, 208, 120, 0.2);
 }
 .filters.entity_7 {
@@ -1118,28 +1228,28 @@ textarea {
 .filters.entity_10 {
   background: rgba(83, 119, 122, 0.2);
 }
-.entity_1 .filterBall,
-.entity_1 .filterList ul li.selected {
+.artist .filterBall,
+.artist .filterList ul li.selected {
   background: #69d2e7;
 }
-.entity_2 .filterBall,
-.entity_2 .filterList ul li.selected {
+.concert .filterBall,
+.concert .filterList ul li.selected {
   background: #a7dbd8;
 }
-.entity_3 .filterBall,
-.entity_3 .filterList ul li.selected {
+.work .filterBall,
+.work .filterList ul li.selected {
   background: #e0e4cc;
 }
-.entity_4 .filterBall,
-.entity_4 .filterList ul li.selected {
+.instrument .filterBall,
+.instrument .filterList ul li.selected {
   background: #f38630;
 }
-.entity_5 .filterBall,
-.entity_5 .filterList ul li.selected {
+.raaga .filterBall,
+.raaga .filterList ul li.selected {
   background: #fa6900;
 }
-.entity_6 .filterBall,
-.entity_6 .filterList ul li.selected {
+.taala .filterBall,
+.taala .filterList ul li.selected {
   background: #ecd078;
 }
 .entity_7 .filterBall,
@@ -1158,22 +1268,22 @@ textarea {
 .entity_10 .filterList ul li.selected {
   background: #53777a;
 }
-.entity_1 .formFilter {
+.artist .formFilter {
   border-right: 4px solid #69d2e7;
 }
-.entity_2 .formFilter {
+.concert .formFilter {
   border-right: 4px solid #a7dbd8;
 }
-.entity_3 .formFilter {
+.work .formFilter {
   border-right: 4px solid #e0e4cc;
 }
-.entity_4 .formFilter {
+.instrument .formFilter {
   border-right: 4px solid #f38630;
 }
-.entity_5 .formFilter {
+.raaga .formFilter {
   border-right: 4px solid #fa6900;
 }
-.entity_6 .formFilter {
+.taala .formFilter {
   border-right: 4px solid #ecd078;
 }
 .entity_7 .formFilter {
@@ -1188,22 +1298,22 @@ textarea {
 .entity_10 .formFilter {
   border-right: 4px solid #53777a;
 }
-.entity_1 .formSectionOpen {
+.artist .formSectionOpen {
   background: #69d2e7 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_2 .formSectionOpen {
+.concert .formSectionOpen {
   background: #a7dbd8 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_3 .formSectionOpen {
+.work .formSectionOpen {
   background: #e0e4cc url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_4 .formSectionOpen {
+.instrument .formSectionOpen {
   background: #f38630 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_5 .formSectionOpen {
+.raaga .formSectionOpen {
   background: #fa6900 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_6 .formSectionOpen {
+.taala .formSectionOpen {
   background: #ecd078 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .entity_7 .formSectionOpen {
@@ -1218,62 +1328,62 @@ textarea {
 .entity_10 .formSectionOpen {
   background: #53777a url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-#summary.entity_1 #summaryBack {
+.artist #summary #summaryBack {
   background: rgba(32, 173, 202, 0.4);
   border-bottom: 10px solid #69d2e7;
 }
-#summary.entity_2 #summaryBack {
+.concert #summary #summaryBack {
   background: rgba(68, 165, 160, 0.4);
   border-bottom: 10px solid #a7dbd8;
 }
-#summary.entity_3 #summaryBack {
+.work #summary #summaryBack {
   background: rgba(137, 149, 79, 0.4);
   border-bottom: 10px solid #e0e4cc;
 }
-#summary.entity_4 #summaryBack {
+.instrument #summary #summaryBack {
   background: rgba(179, 85, 10, 0.4);
   border-bottom: 10px solid #f38630;
 }
-#summary.entity_5 #summaryBack {
+.raaga #summary #summaryBack {
   background: rgba(148, 62, 0, 0.4);
   border-bottom: 10px solid #fa6900;
 }
-#summary.entity_6 #summaryBack {
+.taala #summary #summaryBack {
   background: rgba(223, 176, 31, 0.4);
   border-bottom: 10px solid #ecd078;
 }
-#summary.entity_7 #summaryBack {
+.entity_7 #summary #summaryBack {
   background: rgba(151, 50, 31, 0.4);
   border-bottom: 10px solid #d95b43;
 }
-#summary.entity_8 #summaryBack {
+.entity_8 #summary #summaryBack {
   background: rgba(108, 23, 37, 0.4);
   border-bottom: 10px solid #c02942;
 }
-#summary.entity_9 #summaryBack {
+.entity_9 #summary #summaryBack {
   background: rgba(13, 5, 8, 0.4);
   border-bottom: 10px solid #542437;
 }
-#summary.entity_10 #summaryBack {
+.entity_10 #summary #summaryBack {
   background: rgba(42, 60, 61, 0.4);
   border-bottom: 10px solid #53777a;
 }
-#summary.entity_1 h1 {
+#summary.artist h1 {
   color: #0f4f5c;
 }
-#summary.entity_2 h1 {
+#summary.concert h1 {
   color: #2d6f6b;
 }
-#summary.entity_3 h1 {
+#summary.work h1 {
   color: #7a8446;
 }
-#summary.entity_4 h1 {
+#summary.instrument h1 {
   color: #3a1c03;
 }
-#summary.entity_5 h1 {
+#summary.raaga h1 {
   color: #140900;
 }
-#summary.entity_6 h1 {
+#summary.taala h1 {
   color: #6f5810;
 }
 #summary.entity_7 h1 {
