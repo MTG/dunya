@@ -9,7 +9,7 @@ from social.models import *
 from datetime import datetime
 from django.utils import simplejson
 from django.db.models import Count
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 def main_page(request):
     return render_to_response('main_page.html',RequestContext(request))
@@ -52,28 +52,6 @@ def register_page(request):
     })
     return render_to_response('registration/register.html',variables)
 
-def tag_save_page(request):
-    if request.method == 'POST':
-        form = TagSaveForm(request.POST)
-        if form.is_valid():
-            # Create new tag list.
-            objectid = int(form.cleaned_data['objectid'])
-            tag_names = form.cleaned_data['tags'].split(",")
-            for tag_name in tag_names:
-                tag, _ = Tag.objects.get_or_create(name=tag_name.lower(), category="") # tag to lower case
-                artist = Artist.objects.get(pk=objectid)
-                #artist.tag_set.add(tag)
-                if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
-                    artist_tag, _ = ArtistTag.objects.get_or_create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
-            return HttpResponseRedirect('/carnatic/artist/%s' % objectid)
-    else:
-        form = TagSaveForm()
-    variables = RequestContext(request, {
-        'form': form
-    })
-    return render_to_response('form-tag.html', variables)
-
-
 def user_profile(request):
     user_profile = request.user.get_profile()
     
@@ -96,6 +74,63 @@ def user_profile_save(request):
     })
     return render_to_response('user-profile.html', variables)
 
+def users_list(request):
+    numusers = User.objects.count()
+    users = User.objects.all()
+
+    ret = {"numusers": numusers,
+           "users": users,
+           }
+    return render(request, "users_list.html", ret)
+
+def user_page(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(UserProfile, user_id=user.id)
+    
+    ret = {"other_user": user,
+           "profile": profile,
+    }
+
+    return render(request, "user_page.html", ret)
+
+##### TAG ####
+
+def tag_save_page(request):
+    if request.method == 'POST':
+        form = TagSaveForm(request.POST)
+        if form.is_valid():
+            # Create new tag list.
+            objectid = int(form.cleaned_data['objectid'])
+            objecttype = form.cleaned_data['objecttype']
+            tag_names = form.cleaned_data['tags'].split(",")
+            for tag_name in tag_names:
+                tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip()) # tag to lower case
+                
+                if objecttype == "artist":
+                    artist = Artist.objects.get(pk=objectid)
+                    if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
+                        object_tag, _ = ArtistTag.objects.get_or_create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
+                elif objecttype == "concert":
+                    concert = Concert.objects.get(pk=objectid)
+                    if len(ConcertTag.objects.filter(tag=tag, user=request.user, concert=concert)) == 0:
+                        object_tag, _ = ConcertTag.objects.get_or_create(tag=tag, user=request.user, concert=concert, timestamp=datetime.now())
+                elif objecttype == "recording":
+                    recording = Recording.objects.get(pk=objectid)
+                    if len(RecordingTag.objects.filter(tag=tag, user=request.user, recording=recording)) == 0:
+                        object_tag, _ = RecordingTag.objects.get_or_create(tag=tag, user=request.user, recording=recording, timestamp=datetime.now())
+                elif objecttype == "work":
+                    work = Work.objects.get(pk=objectid)
+                    if len(WorkTag.objects.filter(tag=tag, user=request.user, work=work)) == 0:
+                        object_tag, _ = WorkTag.objects.get_or_create(tag=tag, user=request.user, work=work, timestamp=datetime.now())
+            
+            return HttpResponseRedirect('/carnatic/%s/%s' % (objecttype, objectid))
+    else:
+        form = TagSaveForm()
+    variables = RequestContext(request, {
+        'form': form
+    })
+    return render_to_response('form-tag.html', variables)
+
 
 def ajax_tag_autocomplete(request):
     q = request.GET['term']
@@ -106,14 +141,30 @@ def ajax_tag_autocomplete(request):
         results.append(tag_dict)
     return HttpResponse(simplejson.dumps(results),mimetype='application/json')
 
-def tag_page(request, modeltype, tag_name):
+
+def tag_page(request, tag_name, modeltype):
     tag = get_object_or_404(Tag, name=tag_name)
     
     if modeltype == "artist":
-        lists = ArtistTag.objects.filter(tag__name=tag_name).values('artist', 'tag').annotate(freq_artist=Count('artist'))
+        lists = ArtistTag.objects.filter(tag__name=tag_name).values('artist', 'tag').annotate(freq=Count('artist'))
         objects=[]
         for lista in lists:
-            objects.append([Artist.objects.get(pk=lista['artist']), lista['freq_artist']])
+            objects.append([Artist.objects.get(pk=lista['artist']), lista['freq']])
+    elif modeltype == "concert":
+        lists = ConcertTag.objects.filter(tag__name=tag_name).values('concert', 'tag').annotate(freq=Count('concert'))
+        objects=[]
+        for lista in lists:
+            objects.append([Concert.objects.get(pk=lista['concert']), lista['freq']])
+    elif modeltype == "recording":
+        lists = RecordingTag.objects.filter(tag__name=tag_name).values('recording', 'tag').annotate(freq=Count('recording'))
+        objects=[]
+        for lista in lists:
+            objects.append([Recording.objects.get(pk=lista['recording']), lista['freq']])
+    elif modeltype == "work":
+        lists = WorkTag.objects.filter(tag__name=tag_name).values('work', 'tag').annotate(freq=Count('work'))
+        objects=[]
+        for lista in lists:
+            objects.append([Work.objects.get(pk=lista['work']), lista['freq']])
       
     variables = RequestContext(request, {
         'objects': objects,
@@ -121,42 +172,5 @@ def tag_page(request, modeltype, tag_name):
         'modeltype': modeltype,
     })
     return render_to_response('tag_page.html', variables)
-
-
-
-#def tag_cloud_artist(request, artistid):
-#    MAX_WEIGHT = 5
-#    #artist_tags = Tag.objects.filter(artist_id="1").values('tag','artist').annotate(freq_tag=Count('tag'))
-#    artist_tags = ArtistTag.objects.filter(artist_id=artistid).values('tag','artist').annotate(freq_tag=Count('tag'))
-#    #tags = Tag.objects.order_by('name')
-#    
-#    if len(artist_tags)>0:
-#        # Calculate artist_tag, min and max counts.
-#        min_count = max_count = artist_tags[0]['freq_tag']
-#        
-#        for artist_tag in artist_tags:
-#            artist_tag['tag_name'] = Tag.objects.get(pk=artist_tag['tag']).name
-#            artist_tag_count = artist_tag['freq_tag']
-#            if artist_tag_count < min_count:
-#                min_count = artist_tag_count
-#            if max_count < artist_tag_count:
-#                max_count = artist_tag_count
-#                
-#        # Calculate count range. Avoid dividing by zero.
-#        rango = float(max_count - min_count)
-#        if rango == 0.0:
-#            rango = 1.0
-#            
-#        # Calculate artist_tag weights.
-#        for artist_tag in artist_tags:
-#            artist_tag['freq_tag'] = int(
-#                MAX_WEIGHT * (artist_tag['freq_tag'] - min_count) / rango)
-#    variables = RequestContext(request, {
-#        'artist_tags': artist_tags
-#    })
-#    return render_to_response('tag_cloud_artist.html', variables)
-
-
-#ArtistTag.objects.filter(tag__name="prueba").values('artist', 'tag').annotate(freq_artist=Count('artist'))
 
 

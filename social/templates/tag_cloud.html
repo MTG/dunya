@@ -1,0 +1,6 @@
+
+<div id="tag-cloud">
+{% for tag in tags %}
+    <a href="/social/tags/{{ tag.tag_name}}/{{ tag.modeltype}}" class="tag-cloud-{{ tag.freq_tag }}">{{ tag.tag_name }}</a>
+{% endfor %}
+</div>

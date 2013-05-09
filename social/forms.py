@@ -30,7 +30,7 @@ class RegistrationForm(forms.Form):
 class TagSaveForm(forms.Form):
 	tags = forms.CharField(label=u'Tags', required=True, widget=forms.TextInput(attrs={'size': '128'}))
 	objectid = forms.IntegerField(widget=forms.HiddenInput())
-	object = forms.CharField(widget=forms.HiddenInput(), max_length=30)
+	objecttype = forms.CharField(widget=forms.HiddenInput(), max_length=30)
 
 class UserProfileForm(forms.Form):
 	first_name = forms.CharField(label=u'First Name', max_length=50)

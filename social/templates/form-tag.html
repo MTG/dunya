@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-       $('#id_object').val("{{ object }}");
+       $('#id_objecttype').val("{{ objecttype }}");
        $('#id_objectid').val({{ objectid }});
 
     });
@@ -25,7 +25,15 @@
         minLength: 0,
         source: function( request, response ) {
           // delegate back to autocomplete, but extract the last term
-          response( $.ui.autocomplete.filter('{{ social_tag_autocomplete }}' , extractLast( request.term ) ) );
+          //console.log('http://0.0.0.0:8001{{ social_tag_autocomplete }}?term='+extractLast( request.term ));
+          var items = [];
+          $.getJSON('{{ social_tag_autocomplete }}?term='+extractLast( request.term ), function(data) {
+                $.each(data, function(k, v) {
+                  items.push(v.value);
+                });
+                response( $.ui.autocomplete.filter(items , extractLast( request.term ) ) );
+          });
+          
         },
         focus: function() {
           // prevent value inserted on focus

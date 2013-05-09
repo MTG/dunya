@@ -31,8 +31,17 @@
 	<input type="submit" value="Add comment" id="id_submit" />
         <input type="submit" name="preview" value="Preview">
  </form> 
+
+<h2>Post Tag:</h2>
+	{% include "form-tag.html" %}
+
+
 {% else %}
-    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/carnatic/overview' %}">log in</a> to leave a comment.</p>
+    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/' %}">log in</a> to leave a comment.</p>
 {% endif %}
+
+<h2>Tags:</h2>
+
+	{% include "tag_cloud.html" %}
 
 {% endblock %}

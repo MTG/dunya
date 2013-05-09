@@ -60,13 +60,13 @@ def artistsearch(request):
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
     
-    artist_tags = tagging.tag_cloud(artistid, "artist")
+    tags = tagging.tag_cloud(artistid, "artist")
     
     ret = {"artist": artist,
            "form": TagSaveForm(),
-            "object": "artist",
+            "objecttype": "artist",
             "objectid": artist.id,
-            "artist_tags": artist_tags,
+            "tags": tags,
     }
 
     return render(request, "carnatic/artist.html", ret)
@@ -86,14 +86,30 @@ def concertsearch(request):
 
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
-    ret = {"concert": concert}
+    
+    tags = tagging.tag_cloud(concertid, "concert")
+    
+    ret = {"concert": concert,
+           "form": TagSaveForm(),
+            "objecttype": "concert",
+            "objectid": concert.id,
+            "tags": tags,
+    }
 
     return render(request, "carnatic/concert.html", ret)
 
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
-
-    ret = {"recording": recording}
+    
+    tags = tagging.tag_cloud(recordingid, "recording")
+    
+    ret = {"recording": recording,
+           "form": TagSaveForm(),
+            "objecttype": "recording",
+            "objectid": recording.id,
+            "tags": tags,
+    }
+    
     return render(request, "carnatic/recording.html", ret)
 
 def worksearch(request):
@@ -106,7 +122,14 @@ def worksearch(request):
 def work(request, workid):
     work = get_object_or_404(Work, pk=workid)
 
-    ret = {"work": work}
+    tags = tagging.tag_cloud(workid, "work")
+    
+    ret = {"work": work,
+           "form": TagSaveForm(),
+            "objecttype": "work",
+            "objectid": work.id,
+            "tags": tags,
+    }
     return render(request, "carnatic/work.html", ret)
 
 def taalasearch(request):

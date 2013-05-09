@@ -1,0 +1,19 @@
+{% extends "browse/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<h1>Users in Dunya</h1>
+
+<h3>Statistics:</h3>
+
+<p>Number of users: {{numusers}}
+
+
+<h4>Users</h4>
+<ul>
+{% for a in users %}
+   <li>{% inline_user a %}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

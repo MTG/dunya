@@ -15,8 +15,6 @@ class UserProfile(models.Model):
     #email
     #first name
     #last name
-    
-    #user = models.OneToOneField(User)
     user = models.ForeignKey(User, unique=True)
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
@@ -45,20 +43,9 @@ class Playlist(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=128, unique=True)
-    category = models.CharField(max_length=64, blank=True, null=True)
-    #artist = models.ManyToManyField(Artist)
     
     def __unicode__(self):
         return self.name
-
-
-    
-
-
-#class Tag(models.Model):
-#    tag = models.CharField(max_length=100)
-#    category = models.CharField(max_length=100)
-#
 
 class ArtistTag(models.Model):
     user = models.ForeignKey(User)
@@ -70,14 +57,33 @@ class ArtistTag(models.Model):
     def __unicode__(self):
         return u"('%s','%s','%s')" % (self.artist, self.tag , self.user)
 
+class ConcertTag(models.Model):
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
+    concert = models.ForeignKey(Concert)
+    timestamp = models.DateTimeField('date tagged')
+    class Meta:
+        unique_together = (("user", "tag", "concert"),)
+    def __unicode__(self):
+        return u"('%s','%s','%s')" % (self.concert, self.tag , self.user)
 
-#class Comment(models.Model):
-#    comment = models.TextField()
-
-#class ArtistComment(models.Model):
-#    user = models.ForeignKey(User)
-#    comment = models.ForeignKey(Comment)
-#    artist = models.ForeignKey(Artist)
-#    timestamp = models.DateTimeField('date commented')
-#    class Meta:
-#        unique_together = (("user", "comment", "artist"),)
+class RecordingTag(models.Model):
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
+    recording = models.ForeignKey(Recording)
+    timestamp = models.DateTimeField('date tagged')
+    class Meta:
+        unique_together = (("user", "tag", "recording"),)
+    def __unicode__(self):
+        return u"('%s','%s','%s')" % (self.recording, self.tag , self.user)
+    
+class WorkTag(models.Model):
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
+    work = models.ForeignKey(Work)
+    timestamp = models.DateTimeField('date tagged')
+    class Meta:
+        unique_together = (("user", "tag", "work"),)
+    def __unicode__(self):
+        return u"('%s','%s','%s')" % (self.work, self.tag , self.user)
+    

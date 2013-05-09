@@ -1,7 +1,10 @@
-{% extends "base.html" %}
-{% block title %}{{ username }}{% endblock %}
-{% block head %}Perfil of {{ fullname }}{% endblock %}
-{% block content %}
- 
+{% extends "browse/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<h1>Profile of {{ other_user.username }}</h1>
+
+
 {% endblock %}
+
 

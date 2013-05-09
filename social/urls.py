@@ -21,16 +21,17 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media}),
     url(r'^register/$', views.register_page, name='social-auth-register'),
-    #(r'^register/success/$', direct_to_template, {'template': 'registration/register_success.html'})
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
     url(r'^tag/$', views.tag_save_page, name='tag-form'),
+    
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
+    url(r'^users/(?P<username>\w+)$', views.user_page, name='social-user-page'),
+
+    url(r'^users/$', views.users_list, name='social-users-list'),
     # Ajax
     url(r'^ajax/tag/autocomplete/$', views.ajax_tag_autocomplete, name='social-tag-autocomplete'),
-    # Tag cloud
-    #url(r'^tags/(?P<artistid>\d+)/$', views.tag_cloud_artist, name='social-tag-cloud-artist'),
     # Tag page
-    url(r'^tags/([^\s]+)/([\w ]+)/$', views.tag_page, name='tag-page'),
+    url(r'^tags/([\w ]+)/([^\s]+)/$', views.tag_page, name='tag-page'),
 
 
     # Examples:
