@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.urls')),
+    url(r'^dashboard/', include('dashboard.urls')),
 )
 
 #if settings.DEBUG:

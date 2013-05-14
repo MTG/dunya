@@ -12,22 +12,23 @@ class Migration(SchemaMigration):
         db.create_table(u'dashboard_musicbrainzcollection', (
             ('id', self.gf('django.db.models.fields.CharField')(max_length=36, primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('last_updated', self.gf('django.db.models.fields.DateTimeField')()),
+            ('last_updated', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
         ))
         db.send_create_signal(u'dashboard', ['MusicbrainzCollection'])
 
         # Adding model 'MusicbrainzRelease'
         db.create_table(u'dashboard_musicbrainzrelease', (
-            ('collectionid', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.MusicbrainzCollection'])),
             ('id', self.gf('django.db.models.fields.CharField')(max_length=36, primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('collection', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.MusicbrainzCollection'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
         ))
         db.send_create_signal(u'dashboard', ['MusicbrainzRelease'])
 
         # Adding model 'MusicbrainzRecording'
         db.create_table(u'dashboard_musicbrainzrecording', (
             ('id', self.gf('django.db.models.fields.CharField')(max_length=36, primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('release', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.MusicbrainzRelease'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('position', self.gf('django.db.models.fields.IntegerField')()),
         ))
         db.send_create_signal(u'dashboard', ['MusicbrainzRecording'])
@@ -99,20 +100,21 @@ class Migration(SchemaMigration):
         u'dashboard.musicbrainzcollection': {
             'Meta': {'object_name': 'MusicbrainzCollection'},
             'id': ('django.db.models.fields.CharField', [], {'max_length': '36', 'primary_key': 'True'}),
-            'last_updated': ('django.db.models.fields.DateTimeField', [], {}),
+            'last_updated': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         u'dashboard.musicbrainzrecording': {
             'Meta': {'object_name': 'MusicbrainzRecording'},
             'id': ('django.db.models.fields.CharField', [], {'max_length': '36', 'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'position': ('django.db.models.fields.IntegerField', [], {})
+            'position': ('django.db.models.fields.IntegerField', [], {}),
+            'release': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']"}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         u'dashboard.musicbrainzrelease': {
             'Meta': {'object_name': 'MusicbrainzRelease'},
-            'collectionid': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzCollection']"}),
+            'collection': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzCollection']"}),
             'id': ('django.db.models.fields.CharField', [], {'max_length': '36', 'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         u'dashboard.status': {
             'Meta': {'object_name': 'Status'},

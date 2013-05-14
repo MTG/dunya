@@ -1,22 +1,33 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
 
+import datetime
 import uuid
 
 class MusicbrainzCollection(models.Model):
     id = UUIDField(primary_key=True)
     name = models.CharField(max_length=200)
-    last_updated = models.DateTimeField()
+    last_updated = models.DateTimeField(default=datetime.datetime.now)
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.name, self.id)
 
 class MusicbrainzRelease(models.Model):
-    collectionid = models.ForeignKey(MusicbrainzCollection)
     id = UUIDField(primary_key=True)
-    name = models.CharField(max_length=200)
+    collection = models.ForeignKey(MusicbrainzCollection)
+    title = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.title, self.id)
 
 class MusicbrainzRecording(models.Model):
     id = UUIDField(primary_key=True)
-    name = models.CharField(max_length=200)
+    release = models.ForeignKey(MusicbrainzRelease)
+    title = models.CharField(max_length=200)
     position = models.IntegerField()
+
+    def __unicode__(self):
+        return "%s: %s (%s)" % (self.position, self.title, self.id)
 
 class HealthMonitor(models.Model):
     name = models.CharField(max_length=200)
