@@ -501,18 +501,6 @@ function getResults(item){
 //	});
 //}
 //
-//function listFilterData(data){
-//    list = "<ul>";
-//    $.each(data, function(index, element) {
-//        if (element.name) {
-//            list += "<li>"+element.name+"</li>";
-//        } else {
-//            list += "<li>"+element.title+"</li>";
-//        }
-//    });
-//    list += "</ul>";
-//    return list;
-//}
 //
 //var updateSearchForEntity = function(entity) {
 //    // TODO: We only want to do a search update if the values have changed
