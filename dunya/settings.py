@@ -98,6 +98,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'kombu.transport.django',
+    'djcelery',
+    'dashboard',
     'docserver',
     'browse',
     'carnatic',
@@ -108,6 +111,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south'
 )
+
+# Celery
+import djcelery
+djcelery.setup_loader()
+BROKER_URL = 'django://'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
