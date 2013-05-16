@@ -11,22 +11,24 @@ from django.utils import simplejson
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 
+import social.timeline as timeline
+
 def main_page(request):
     return render_to_response('main_page.html',RequestContext(request))
 
-def user_page(request, username):
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        raise Http404(u'Requested user not found.')
-
-    fullname = user.get_full_name()
-
-    variables = RequestContext(request, {
-            'username': username,
-            'fullname': fullname
-    })
-    return render_to_response('user_page.html', variables)
+#def user_page(request, username):
+#    try:
+#        user = User.objects.get(username=username)
+#    except User.DoesNotExist:
+#        raise Http404(u'Requested user not found.')
+#
+#    fullname = user.get_full_name()
+#
+#    variables = RequestContext(request, {
+#            'username': username,
+#            'fullname': fullname
+#    })
+#    return render_to_response('user_page.html', variables)
 
 def logout_page(request):
     logout(request)
@@ -55,8 +57,14 @@ def register_page(request):
 def user_profile(request):
     user_profile = request.user.get_profile()
     
+    users_id = []
+    users_id.append(request.user.id)
+    
+    timelines = timeline.timeline(users_id)
+    
     variables = RequestContext(request, {
-        'user_profile': user_profile
+        'user_profile': user_profile,
+        'timeline': timelines
     })
     return render_to_response('user-profile.html', variables)
 
@@ -87,8 +95,15 @@ def user_page(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(UserProfile, user_id=user.id)
     
+    users_id = []
+    users_id.append(user.id)
+    
+    timelines = timeline.timeline(users_id)
+    
+    
     ret = {"other_user": user,
            "profile": profile,
+           "timeline": timelines
     }
 
     return render(request, "user_page.html", ret)

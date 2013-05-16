@@ -87,3 +87,12 @@ class WorkTag(models.Model):
     def __unicode__(self):
         return u"('%s','%s','%s')" % (self.work, self.tag , self.user)
     
+class UserFollowsUser(models.Model):
+    user_follower = models.ForeignKey(User, related_name='follow_set')
+    user_followed = models.ForeignKey(User, related_name='to_follow_set')
+    timestamp = models.DateTimeField('date follow')
+    class Meta:
+        unique_together = (("user_follower", "user_followed"),)
+    def __unicode__(self):
+        return u"('%s','%s','%s')" % (self.user_follower.username, self.user_followed.username, self.timestamp)   
+

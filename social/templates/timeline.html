@@ -1,0 +1,15 @@
+<h2>TIMELINE</h2>
+<h3>Activity for the last two weeks</h3>
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+{% for a in timeline %}
+    {% if a.type == 'comment' %}
+        <p>When: <b>{{ a.submit_date }}</b>, User: <b>{{ a.username }}</b>, Action: <b>{{ a.type }}</b>, In {{ a.content_type }}: <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a></p>
+        <p>Comment: <b>"{{ a.value }}"</b></p>
+        <p>----------------------------------------------------------------------------------------------------------</p>
+    {% elif a.type == 'tag' %}
+        <p>When: <b>{{ a.submit_date }}</b>, User: <b>{{ a.username }}</b>, Action: <b>{{ a.type }}</b>, In {{ a.content_type }}: <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a></p> 
+        <p>Tag: <a href="/social/tags/{{ a.value}}/{{ a.content_type}}">{{ a.value }}</a></p>
+        <p>----------------------------------------------------------------------------------------------------------</p>
+    {% endif %}
+{% endfor %}
