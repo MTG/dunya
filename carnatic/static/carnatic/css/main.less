@@ -59,7 +59,7 @@ textarea {
 body {
     font-size: 12px;
     background: #fff;
-    font-family:'Questrial', sans-serif;
+    font-family:'Open Sans', sans-serif;
 }
 
 ::-moz-selection {
@@ -104,7 +104,7 @@ textarea {
 .hidder {
 	display: none;
 }
-.header-container, .main-container { min-width: 1024px; }
+.header-container, .main-container { min-width: 1024px; /*width: 1024px !important;*/ }
 #entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
 
 /* ==========================================================================
@@ -135,7 +135,7 @@ textarea {
 			border:none;
 			width: 411px;
 			height: 44px;
-			font-family:'Questrial', sans-serif;
+			font-family:'Open Sans', sans-serif;
 			padding:10px;
 			font-size: 14px;
 			color:@gris6;
@@ -188,7 +188,7 @@ textarea {
 	    	float: left;
 	    	margin: 0;
 	    	margin-left: 5px;
-	    	padding: 4px 7px 1px 7px;
+	    	padding: 4px 7px 3px 7px;
 	    	display: block;
 	    	text-align: center;
 	    	text-decoration: none;
@@ -196,6 +196,7 @@ textarea {
 	    	color: #221F1F;
 	    	background: #eeeded;
 	    	.rounded (4px);
+	    	font-size: 12px;
     	}
     	li:first-child a {
    			margin-left: 0;
@@ -443,6 +444,13 @@ textarea {
    ========================================================================== */
 
 #detail {
+	border-bottom: 30px solid #333;
+	a:after {
+			content: url("../img/link.png") !important;
+			top:2px !important;
+			margin-left: 2px !important;
+			position: relative !important;
+	}
 	#header {
 		background: #fff;
 		border-bottom:1px solid @grisD;
@@ -476,15 +484,21 @@ textarea {
 				vertical-align: middle;
 				display: table-cell;			
 				text-align: right;
-				h1 { font-size: 22px; margin:0px; }
+				h1 { 
+					font-size: 22px; 
+					line-height: 22px; 
+					margin:0px; 
+				}
 				h2 { 
-					font-size: 18px;
+					font-size: 16px;
 					font-weight: normal; 
 					margin:0px; 
+					line-height: 16px;
+					margin-top: 7px;
 					a { color:#000; text-decoration: none; }
 				}
 				h3 { 
-					color:#666; 
+					color:#fff; 
 					margin:0px; 
 					font-weight: normal; 
 					a { color: #fff; text-decoration: none; }
@@ -499,6 +513,7 @@ textarea {
 			height: 296px;
 			overflow: hidden;
 			background: #333;
+			z-index: 2;
 		}
 		#image {
 			background: url("../img/artistImage.jpg") 0 0 no-repeat;
@@ -516,20 +531,28 @@ textarea {
 					width: 33%;	
 					height: 148px;
 					border-right:1px solid @grisD;
-					overflow-y: scroll;
+					font-size:11px;
 					padding-top:24px;
 					position: relative;
+					.inner {
+						overflow-y: scroll;
+						height: 100%;
+					}
 					h3 { 
 						top:0px;
 						padding: 10px;
 						padding-top: 5px;
-						padding-bottom: 5px;
-						border-bottom:1px solid @grisD;
+						padding-bottom: 4px;
+						border-bottom:1px solid darken(@grisf6,5%);
+						border-top: 1px solid @grisD;
+						background: @grisf6;
+						color:darken(@grisf6,30%);
 						margin: 0px;
 						position: absolute;
-						background: #fff;
 						width: 100%;
-						font-size: 12px;
+						text-transform: uppercase;
+						font-size: 9px;
+						font-weight: normal;
 					}
 					span { 
 						display: block; 
@@ -547,8 +570,26 @@ textarea {
 						}
 					}
 					span.list{
-						label { float:left; width:28%; text-align: right; clear: left; margin-right:8px; }
-						b { float: left; font-weight: normal; width:68%; }
+						label { 
+							float:left; 
+							width:28%; 
+							text-align: right; 
+							clear: left; 
+							margin-right: 4px; 
+						}
+						b { 
+							float: left; 
+							font-weight: normal; 
+							width:68%; 
+						}
+					}
+					span.list2{
+						label { 
+							display: block;
+						}
+						b { 
+							display: block;
+						}
 					}
 				}
 			}
@@ -574,7 +615,7 @@ textarea {
 			width: 100%;
 			margin-left: -220px;
 			.scrolldata { overflow-x: scroll; 
-				.scrollblock { width: 3000px; }
+				.scrollblock { width: 100%; }
 			}
 			.innerrightdata {
 				padding: 10px;
@@ -613,12 +654,70 @@ textarea {
 						b {font-weight: normal; display: block; color: #000; }
 					}
 				}
+				.artistCell {
+					float:left;
+					.photo {
+						float: left;
+						width: 51px; 
+						height: 63px;
+						margin-right:10px;
+					}
+					.desc { 
+						width: 180px;
+						p { margin:0px; color: #888;}
+						b {font-weight: normal; display: block; color: #000; }
+					}
+				}
+				.track {
+					float:left;
+					padding:10px;
+					border-right: 1px solid darken(@grisf6,8%);
+					border-bottom: 1px solid darken(@grisf6,8%);
+					margin-bottom: -1px;
+					margin-top: 1px;
+					width: 300px; 
+					h4 {
+						margin: 0px;
+						margin-bottom:4px;
+						
+					}
+				}
+				.instrumentCell {
+					float:left;
+					padding:10px;
+					border-right: 1px solid darken(@grisf6,8%);
+					border-bottom: 1px solid darken(@grisf6,8%);
+					margin-bottom: -1px;
+					margin-top: 1px;
+					h4 {
+						text-align: center;
+						margin: 0px;
+						margin-bottom:4px;
+					}
+				}
+				.raagaCell {
+					float:left;
+					padding:10px;
+					border-right: 1px solid darken(@grisf6,8%);
+					border-bottom: 1px solid darken(@grisf6,8%);
+					margin-bottom: -1px;
+					margin-top: 1px;
+					width: 138px;
+					h4 {
+						text-align: center;
+						margin: 0px;
+						margin-bottom:4px;
+					}
+				}
 				.artist {
-					border-right:1px solid @gris;
-					border-bottom	:1px solid @gris;
+					border-right:1px solid darken(@grisf6,8%);
+					border-bottom:1px solid darken(@grisf6,8%);
 					float:left;
 					width: 222px;
 					padding:10px;
+					margin-bottom: -1px;
+					margin-top:1px;
+					overflow-y: scroll;
 					.artistFoto { 
 						position: relative;
 						width: 51px;
@@ -631,6 +730,7 @@ textarea {
 						height: 63px;
 						float:left;
 						padding: 5px;
+						font-size: 11px;
 					}
 					.artist1 { background: url("../img/artist1.jpg") 0 0 no-repeat; }
 					.artist2 { background: url("../img/artist2.jpg") 0 0 no-repeat; }
@@ -642,9 +742,10 @@ textarea {
 	}
 }
 
+
 // WORK Layout
 
-#detail #header #meta.work .metaBlock {
+#detail.work #header #meta .metaBlock {
 	.metaDetails {
 		&#editorial {
 			z-index: 2;
@@ -657,24 +758,6 @@ textarea {
 		&#tonic {
 			z-index: 1;
 			width:145px;	
-			span {
-				display: block;
-				clear: both;
-				background: #333;
-				color:#bbb;
-				padding:10px;
-				.rounded (4px);
-				font-size: 10px;
-				text-align: center;
-				margin: 2px;
-				b {
-					font-size: 20px;
-					color:#fff;
-					display: block;
-					clear: both;
-					text-align: center;
-				}
-			}
 		}
 		&#samples {
 			z-index: 0;
@@ -696,6 +779,8 @@ textarea {
 	.metaDetails {
 		width:33%;
 		&#excerpt {
+			height: 296px;
+			overflow-y: scroll;
 			height: 297px;
 			padding:20px;
 		}
@@ -714,6 +799,94 @@ textarea {
 	}
 }
 
+// INSTRUMENT Layout
+
+#detail.instrument #header #meta .metaBlock {
+	.metaDetails {
+		width:50%;
+		&#excerpt {
+		
+		}
+		&#samples {
+			h3 { }
+			span {  }
+		}
+		&#external {
+			h3 { }
+			span { }
+		}
+	}
+}
+
+
+// CONCERT Layout
+#detail.concert #header #meta .metaBlock {	
+	.metaDetails {
+		&#structure {
+			z-index: 3;
+			width:134px;	
+		}
+		&#tonic {
+			z-index: 2;
+			width:145px;
+		}		
+		&#samples {
+			z-index: 0;
+			width:100%;	
+			margin-left:-279px;
+			overflow-x: hidden;
+			.inner, h3 { margin-left: 279px;}
+		}
+		&#editorial {
+			z-index: 3;
+			width:134px;	
+			.list {
+				label { width: 41px; }
+				b { width: 50px; }
+			}
+		}
+		&#artists {
+			z-index: 2;
+			width: 200px;
+		}
+
+		&#external {
+			z-index:0; 
+			width:100%;	
+			margin-left: -334px;
+			overflow-x: hidden;
+			.inner, h3 { margin-left: 334px; }
+		}
+	}
+}
+
+
+#tonic {	
+	.inner {
+		text-align: center;	
+		padding-top:6px;
+		span {
+			display: inline-block !important;
+			background: @concert_color;
+			color:#222;
+			padding:4px;
+			.rounded (4px);
+			font-size: 10px;
+			text-align: center;
+			margin: 2px !important; 
+			border: 2px solid darken(@concert_color, 10%);
+			b {
+				font-size: 20px;
+				color:#fff;
+				display: block;
+				clear: both;
+				text-align: center;
+			}
+		}
+	}
+}
+
+
 .nopad { padding: 0px !important; }
 /* ==========================================================================
    Entities Filters Colors
@@ -729,6 +902,19 @@ textarea {
 #filterMask #filterArea .filterList ul li.entity_8 { background: @entity_8_color; }
 #filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
 #filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }
+
+
+#detail.artist a { color: darken( @artist_color, 30% ) !important; }
+#detail.concert a { color: darken( @concert_color, 30% ) !important; }
+#detail.work a { color: darken( @work_color, 30% ) !important; }
+#detail.instrument a { color: darken( @instrument_color, 30% ) !important; }
+#detail.raaga a { color: darken( @raaga_color, 30% ) !important; }
+#detail.taala a { color: darken( @taala_color, 30% ) !important; } 
+#detail.entity_7 a { color: darken( @entity_7_color, 30% ) !important; }
+#detail.entity_8 a { color: darken( @entity_8_color, 30% ) !important; }
+#detail.entity_9 a { color: darken( @entity_9_color, 30% ) !important; }
+#detail.entity_10 a { color: darken( @entity_10_color, 30% ) !important; }
+
 
 .filters.artist { background: lighten(@artist_color, 20%); }
 .filters.concert { background: lighten(@concert_color, 10%); }
@@ -809,6 +995,17 @@ textarea {
 #summary.entity_9 h1 { color: darken(@entity_9_color,45%); }
 #summary.entity_10 h1 { color: darken(@entity_10_color,45%); }
 
+
+#detail.artist #header #summary span h1 { color: darken(@artist_color, 40%); }
+#detail.concert #header #summary span h1 { color: darken(@concert_color, 40%); }
+#detail.work #header #summary span h1 { color: darken(@work_color, 40%); }
+#detail.instrument #header #summary span h1 { color: darken(@instrument_color, 40%); }
+#detail.raaga #header #summary span h1 { color: darken(@raaga_color, 40%); }
+#detail.taala #header #summary span h1 { color: darken(@taala_color, 40%); }
+#detail.entity_7 #header #summary span h1 { color: darken(@entity_7_color, 40%); }
+#detail.entity_8 #header #summary span h1 { color: darken(@entity_8_color, 40%); }
+#detail.entity_9 #header #summary span h1 { color: darken(@entity_9_color, 40%); }
+#detail.entity_10 #header #summary span h1 { color: darken(@entity_10_color, 40%); }
 
 /* ==========================================================================
    Media Queries
