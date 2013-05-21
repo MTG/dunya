@@ -6,6 +6,7 @@
 {% block script %}
 <script>
 $(document).ready(function() {
+	$("#filterMask").toggleClass('querybar');
     parseAllFilters({{ filter_items|safe }});
 });
 </script>
@@ -23,24 +24,27 @@ $(document).ready(function() {
 	    	</div>
 
 	    	<div id="breadcrumb">
-	    		<!--
-	    		<div class="bread entity_6">
+	    		<div class="bread entity_1 artist">
 	    			<div class="breadarrow"></div>
-	    			<span>
-	    			<a href="#">Alathur Brothers concert at Nangudayan Vinayakar Temple, Trichy 1956</a>
-	    			<a href="#">Carnatic - Vocal (Classical Live Concert)</a>
-	    			</span>
+	    			<span><a href="#">No selection</a></span>
 	    		</div>
-	    		-->
+	    		<div class="bread entity_3 work">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    		<div class="bread entity_4 instrument">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
 	    	</div>
 
 	    </div>
      </div>
 
 
-     <div id="detail">
+     <div id="detail" class="concert">
      	<div id="header">
-     		<div id="summary" class="entity_2">
+     		<div id="summary">
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{concert.title}}</h1>
@@ -51,57 +55,69 @@ $(document).ready(function() {
      			<div id="summaryBack"></div>
      			<div id="icon"></div>
      		</div>
-     		<div id="image"></div>
-     		<div id="meta" class="entity_2">
+     		<div class="bigImage"><img src="{% static 'carnatic/img/develop/concert.jpg' %}" /></div>
+     		<div id="meta">
      		<div class="metaBlock">
 				<div id="structure" class="metaDetails">
 					<h3>Structure</h3>
-					<span>rAgam</span>
-					<span>tAgam</span>
-					<span>pallavL</span>
+					<div class="inner">
+						<span>rAgam</span>
+						<span>tAgam</span>
+						<span>pallavL</span>
+					</div>
 				</div>
 				<div id="tonic" class="metaDetails">
 					<h3>Tonic</h3>
-					<span>Rãgam<b>D</b></span>
-					<span>´Sruti Tonic<b>C</b></span>
-					<span>Shankarabharanam<b>R2</b></span>
+					<div class="inner">
+						<span>Rãgam<b>D</b></span>
+						<span>´Sruti Tonic<b>C</b></span>
+						<span>Shankarabharanam<b>R2</b></span>
+					</div>
 				</div>
 				<div id="samples" class="metaDetails">
 					<h3>Samples</h3>
-					<span>
-					<div class="player">Palghat Raghu, K. S. Nārāyanaswāmi, Narayana</div>
-					<div class="player">Palghat Raghu, V. V. Subramaniam, K. V.</div>
-					</span>
+					<div class="inner">
+						<span>
+						<div class="player">Palghat Raghu, K. S. Nārāyanaswāmi, Narayana</div>
+						<div class="player">Palghat Raghu, V. V. Subramaniam, K. V.</div>
+						</span>
+					</div>
 				</div>
 				<div id="editorial" class="metaDetails">
 					<h3>Editorial Metadata</h3>
-					<span class='list'>
-					<label>date:</label><b>1969</b>
-					<label>format:</label><b>CD</b>
-					<label>length:</label><b>2:32:26</b>
-					<label>status:</label><b>Bootleg</b>
-					<label>script:</label><b>Latin</b>
-					<label>quality:</label><b>Normal</b>
-					</span>
+					<div class="inner">
+						<span class='list'>
+						<label>date:</label><b>1969</b>
+						<label>format:</label><b>CD</b>
+						<label>length:</label><b>2:32:26</b>
+						<label>status:</label><b>Bootleg</b>
+						<label>script:</label><b>Latin</b>
+						<label>quality:</label><b>Normal</b>
+						</span>
+					</div>
 				</div>
 
 				<div id="artists" class="metaDetails">
 					<h3>Artists</h3>
-					<span class='list'>
-					<label>ghatam:</label><b>Vikku Vinayakram</b>
-					<label>mridangam:</label><b>Palghat Raghu</b>
-					<label>violin:</label><b>Chalakudy Narayanaswamy Iyer</b>
-					<label>live recording of:</label><b>Chalamela</b>
-					<label>composer:</label><b>Kuppuswamy Iyer, Tiruvottiyur Thyagaiyer, Vadivelu</b>
-					<label>lyricist:</label><b>Kuppuswamy Iyer</b>
-					</span>
+					<div class="inner">
+						<span class='list2'>
+						<label>ghatam:</label><b>Vikku Vinayakram</b>
+						<label>mridangam:</label><b>Palghat Raghu</b>
+						<label>violin:</label><b>Chalakudy Narayanaswamy Iyer</b>
+						<label>live recording of:</label><b>Chalamela</b>
+						<label>composer:</label><b>Kuppuswamy Iyer, Tiruvottiyur Thyagaiyer, Vadivelu</b>
+						<label>lyricist:</label><b>Kuppuswamy Iyer</b>
+						</span>
+					</div>
 				</div>
 				<div id="external" class="metaDetails">
 					<h3>External references</h3>
-					<span>
-					<a href="#">Official Website of Palghat R Raghu</a>
-					<a href="#">Obituary in The Hindu newspaper</a>
-					</span>
+					<div class="inner">
+						<span>
+						<a href="#">Official Website of Palghat R Raghu</a>
+						<a href="#">Obituary in The Hindu newspaper</a>
+						</span>
+					</div>
 				</div>
      		</div>
      		</div>
@@ -112,18 +128,61 @@ $(document).ready(function() {
 
      	<div class="thedata">
      		<div class="leftdata">
-	     		<h3>Tracks</h3>
+	     		<h3>List of concerts</h3>
      		</div>
      		<div class="rightdata">
      			<div class="innerrightdata scrolldata">
                     <div class="scrollblock">
-                        {% for recording in concert.tracks.all %}
-                            {% badge_recording recording %}
+                        {% for concert in otherconcerts %}
+                            {% badge_concert concert %}
                         {% endfor %}
                     </div>
      			</div>
      		</div>
      	</div>
+     	
+     	<div class="thedata">
+     		<div class="leftdata">
+	     		<h3>List of tracks</h3>
+     		</div>
+     		<div class="rightdata">
+     			<div class="innerrightdata scrolldata nopad">
+                    <div class="scrollblock">
+		                <div class="track">
+			                   <h4>Chalamela jesevura chala nammina napai (tv)</h4>
+			                   <div class="trackWave">
+			                   		<img src="{% static 'carnatic/img/develop/track.png' %}" />
+			                   </div>
+			                   <div class="trackMeta">
+				                   <label>Raagas:</label><b>abheri / abhogi</b>
+				                   <label>Taalas:</label><b>eka / tishra eka</b>
+			                   </div>
+	                    </div>
+	                    <div class="track">
+			                   <h4>Gajavadana </h4>
+			                   <div class="trackWave">
+			                   		<img src="{% static 'carnatic/img/develop/track.png' %}" />
+			                   </div>
+			                   <div class="trackMeta">
+				                   <label>Raagas:</label><b>abheri / abhogi</b>
+				                   <label>Taalas:</label><b>eka / tishra eka</b>
+			                   </div>
+	                    </div>
+	                    <div class="track">
+			                   <h4>Divakara tanujam jnanaishvaram </h4>
+			                   <div class="trackWave">
+			                   		<img src="{% static 'carnatic/img/develop/track.png' %}" />
+			                   </div>
+			                   <div class="trackMeta">
+				                   <label>Raagas:</label><b>abheri / abhogi</b>
+				                   <label>Taalas:</label><b>eka / tishra eka</b>
+			                   </div>
+	                    </div>
+                    </div>        
+     			</div>
+     		</div>
+     	</div>
+     	
      	<div class="thedata">
      		<div class="leftdata">
 	     		<h3>Accompanying artists</h3>
@@ -137,41 +196,22 @@ $(document).ready(function() {
      			</div>
      		</div>
      	</div>
+     	
      	<div class="thedata">
      		<div class="leftdata">
-	     		<h3>Other concerts by {{concert.artistnames}}</h3>
+	     		<h3>Other concerts of the same season</h3>
      		</div>
      		<div class="rightdata">
-     			<div class="innerrightdata scrolldata">
+	     		<div class="innerrightdata scrolldata">
                     <div class="scrollblock">
                         {% for concert in otherconcerts %}
                             {% badge_concert concert %}
                         {% endfor %}
                     </div>
-     			</div>
+                </div>
      		</div>
      	</div>
-     	<div class="thedata">
-     		<div class="leftdata">
-	     		<h3>Raagas</h3>
-     		</div>
-     		<div class="rightdata">
-     			<div class="innerrightdata">
-     			Right Data
-     			</div>
-     		</div>
-     	</div>
-     	<div class="thedata">
-     		<div class="leftdata">
-	     		<h3>Taalas</h3>
-     		</div>
-     		<div class="rightdata">
-     			<div class="innerrightdata">
-     			Right Data
-     			</div>
-     		</div>
-     	</div>
-
+     	
      </div>
 
 {% endblock %}
