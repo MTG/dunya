@@ -32,6 +32,22 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
 
+    def biography(self):
+        return "Biography of %s" % self.name
+
+    def instruments(self):
+        pass
+
+    def similar_artists(self):
+        pass
+
+    def concerts(self):
+        ret = []
+        ret.extend(self.concert_set.all())
+        for concert, perf in self.performances():
+            ret.append(concert)
+        return ret
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-artist-search'),
@@ -209,6 +225,25 @@ class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
 
 class Instrument(CarnaticStyle, data.models.Instrument):
     objects = managers.FuzzySearchManager()
+
+    def description(self):
+        return "The description of an instrument"
+
+    def performers(self):
+        IPClass = self.get_object_map("performance")
+        concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self).distinct()
+        ret = []
+        for c in concerts:
+            performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
+            # Unique the instrument list
+            instruments = []
+            theperf = []
+            for p in performances:
+                if p.instrument not in instruments:
+                    theperf.append(p)
+                    instruments.append(p.instrument)
+            ret.append((c, theperf))
+        return ret
 
     @classmethod
     def get_filter_criteria(cls):

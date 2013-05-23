@@ -1,9 +1,10 @@
 {% load staticfiles %}
-<div class="artist">
-    <div class="artistFoto">
-        <img src="{% static 'carnatic/img/artist1.jpg' %}" />
+
+<div class="artistCell">
+    <div class="photo">
+        <img src="{% static 'carnatic/img/develop/artist_2.jpg' %}">
     </div>
-    <div class="artistName">
+    <div class="desc">
         <a href="{{ performance.performer.get_absolute_url }}">
             <b>{{ performance.performer.name }}</b>
         </a>
@@ -11,5 +12,4 @@
             {{ performance.instrument.name }}
         </a></p>
     </div>
-    <div class="clearfix"></div>
 </div>
