@@ -10,11 +10,17 @@ class Source(models.Model):
     uri = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now_add=True)
 
+class Reference(models.Model):
+    source_name = models.ForeignKey(SourceName)
+    uri = models.CharField(max_length=255)
+    last_updated = models.DateTimeField(auto_now_add=True)
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
 
     source = models.ForeignKey(Source, blank=True, null=True)
+    references = models.ManyToManyField(Reference, blank=True, null=True)
 
     def get_style(self):
         raise Exception("need style")

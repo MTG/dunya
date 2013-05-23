@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 import data.models
 import managers
 import filters
+import random
 
 class CarnaticStyle(object):
     def get_style(self):
@@ -231,19 +232,24 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 
     def performers(self):
         IPClass = self.get_object_map("performance")
-        concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self).distinct()
+        performances = IPClass.objects.filter(instrument=self).distinct()
         ret = []
-        for c in concerts:
-            performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
-            # Unique the instrument list
-            instruments = []
-            theperf = []
-            for p in performances:
-                if p.instrument not in instruments:
-                    theperf.append(p)
-                    instruments.append(p.instrument)
-            ret.append((c, theperf))
+        artists = []
+        for p in performances:
+            if p.performer not in artists:
+                ret.append(p)
+                artists.append(p.performer)
         return ret
+
+    def references(self):
+        pass
+
+    def samples(self):
+        IPClass = self.get_object_map("performance")
+        performances = list(IPClass.objects.filter(instrument=self).all())
+        random.shuffle(performances)
+        perf = performances[:2]
+        return [p.recording for p in perf]
 
     @classmethod
     def get_filter_criteria(cls):
