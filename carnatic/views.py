@@ -6,7 +6,7 @@ from carnatic.models import *
 from social.forms import TagSaveForm
 import json
 
-def main(request):
+def get_filter_items():
     filter_items = [
             Artist.get_filter_criteria(),
             Concert.get_filter_criteria(),
@@ -14,9 +14,15 @@ def main(request):
             Instrument.get_filter_criteria(),
             Raaga.get_filter_criteria(),
             Taala.get_filter_criteria()
-        ]
+    ]
+    return filter_items
 
-    ret = {"filter_items": json.dumps(filter_items)
+def main(request):
+
+    concerts = Concert.objects.all()[:5]
+
+    ret = {"filter_items": json.dumps(get_filter_items()),
+           "concerts": concerts
            }
     return render(request, "carnatic/index.html", ret)
 
@@ -86,15 +92,20 @@ def concertsearch(request):
 
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
-    
+
     tags = tagging.tag_cloud(concertid, "concert")
     
-    ret = {"concert": concert,
-           "form": TagSaveForm(),
-            "objecttype": "concert",
-            "objectid": concert.id,
-            "tags": tags,
-    }
+    # Other concerts by the same person
+    concerts = Concert.objects.filter(artists__in=concert.artists.all())
+
+    # Raaga in
+    ret = {"filter_items": json.dumps(get_filter_items()),
+           "concert": concert,
+	   "otherconcerts": concerts,
+	   "form": TagSaveForm(),
+	   "objecttype": "concert",
+	   "objectid": concert.id,
+	   "tags": tags,}
 
     return render(request, "carnatic/concert.html", ret)
 

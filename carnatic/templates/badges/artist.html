@@ -1,0 +1,15 @@
+{% load staticfiles %}
+<div class="artist">
+    <div class="artistFoto">
+        <img src="{% static 'carnatic/img/artist1.jpg' %}" />
+    </div>
+    <div class="artistName">
+        <a href="{{ performance.performer.get_absolute_url }}">
+            <b>{{ performance.performer.name }}</b>
+        </a>
+        <p><a href="{{performance.instrument.get_absolute_url }}">
+            {{ performance.instrument.name }}
+        </a></p>
+    </div>
+    <div class="clearfix"></div>
+</div>

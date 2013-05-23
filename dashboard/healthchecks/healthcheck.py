@@ -1,0 +1,2 @@
+class HealthCheckJob(object):
+    pass
