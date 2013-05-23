@@ -12,6 +12,7 @@ def badge_concert(concert):
             "artists": concert.artistnames(),
             "detail": None,
             "date": 2043,
+            "url": concert.get_absolute_url()
            }
 
 @register.inclusion_tag("badges/artist.html")
@@ -27,3 +28,11 @@ def badge_recording(recording):
         recording = Recording.objects.get(pk=recording)
     return {"recording": recording
            }
+
+@register.inclusion_tag("badges/sample.html")
+def badge_sample(sample):
+    return {"sample": sample}
+
+@register.inclusion_tag("badges/reference.html")
+def badge_reference(reference):
+    return {"reference": reference}

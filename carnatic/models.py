@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 import data.models
 import managers
 import filters
+import random
 
 
 class CarnaticStyle(object):
@@ -33,6 +34,22 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     
+
+    def biography(self):
+        return "Biography of %s" % self.name
+
+    def instruments(self):
+        pass
+
+    def similar_artists(self):
+        pass
+
+    def concerts(self):
+        ret = []
+        ret.extend(self.concert_set.all())
+        for concert, perf in self.performances():
+            ret.append(concert)
+        return ret
 
     @classmethod
     def get_filter_criteria(cls):
@@ -211,6 +228,30 @@ class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
 
 class Instrument(CarnaticStyle, data.models.Instrument):
     objects = managers.FuzzySearchManager()
+
+    def description(self):
+        return "The description of an instrument"
+
+    def performers(self):
+        IPClass = self.get_object_map("performance")
+        performances = IPClass.objects.filter(instrument=self).distinct()
+        ret = []
+        artists = []
+        for p in performances:
+            if p.performer not in artists:
+                ret.append(p)
+                artists.append(p.performer)
+        return ret
+
+    def references(self):
+        pass
+
+    def samples(self):
+        IPClass = self.get_object_map("performance")
+        performances = list(IPClass.objects.filter(instrument=self).all())
+        random.shuffle(performances)
+        perf = performances[:2]
+        return [p.recording for p in perf]
 
     @classmethod
     def get_filter_criteria(cls):

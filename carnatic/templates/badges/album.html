@@ -1,10 +1,10 @@
 {% load staticfiles %}
 <div class="album">
     <div class="disc">
-        <img src="{% static 'carnatic/img/disc1.png' %}">
+        <a href="{{url}}"><img src="{% static 'carnatic/img/disc1.png' %}"></a>
     </div>
     <div class="desc">
-        <b>{{ title }}</b>
+        <a href="{{url}}"><b>{{ title }}</b></a>
         <p>{{ artists }}</p>
         <p>{{ details }}</p>
         <p>{{ date }}</p>

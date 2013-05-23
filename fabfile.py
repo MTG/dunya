@@ -10,6 +10,8 @@ def setupdb():
     local("python manage.py migrate djcelery")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
+    local("python manage.py migrate dashboard")
+    local("python manage.py migrate docserver")
     local("python manage.py migrate social")
 
 def updatedb():
@@ -19,10 +21,16 @@ def updatedb():
         local("python manage.py schemamigration carnatic --auto")
     with settings(warn_only=True):
         local("python manage.py schemamigration dashboard --auto")
+    with settings(warn_only=True):
+        local("python manage.py schemamigration docserver --auto")
+    with settings(warn_only=True):
+        local("python manage.py schemamigration social --auto")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
     local("python manage.py migrate social")
     local("python manage.py migrate dashboard")
+    local("python manage.py migrate docserver")
+    local("python manage.py migrate social")
 
 def dumpfixture(modname):
     redir = "%s/fixtures/initial_data.json" % modname
