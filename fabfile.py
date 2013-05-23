@@ -10,6 +10,7 @@ def setupdb():
     local("python manage.py syncdb --noinput")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
+    local("python manage.py migrate social")
 
 def updatedb():
     with settings(warn_only=True):
@@ -20,6 +21,7 @@ def updatedb():
         local("python manage.py schemamigration dashboard --auto")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
+    local("python manage.py migrate social")
     local("python manage.py migrate dashboard")
 
 def dumpfixture(modname):
