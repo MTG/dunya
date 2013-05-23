@@ -128,21 +128,6 @@ $(document).ready(function() {
 
      	<div class="thedata">
      		<div class="leftdata">
-	     		<h3>List of concerts</h3>
-     		</div>
-     		<div class="rightdata">
-     			<div class="innerrightdata scrolldata">
-                    <div class="scrollblock">
-                        {% for concert in otherconcerts %}
-                            {% badge_concert concert %}
-                        {% endfor %}
-                    </div>
-     			</div>
-     		</div>
-     	</div>
-     	
-     	<div class="thedata">
-     		<div class="leftdata">
 	     		<h3>List of tracks</h3>
      		</div>
      		<div class="rightdata">
@@ -182,7 +167,7 @@ $(document).ready(function() {
      			</div>
      		</div>
      	</div>
-     	
+
      	<div class="thedata">
      		<div class="leftdata">
 	     		<h3>Accompanying artists</h3>
@@ -196,19 +181,19 @@ $(document).ready(function() {
      			</div>
      		</div>
      	</div>
-     	
+
      	<div class="thedata">
      		<div class="leftdata">
-	     		<h3>Other concerts of the same season</h3>
+	     		<h3>Similar concerts</h3>
      		</div>
      		<div class="rightdata">
-	     		<div class="innerrightdata scrolldata">
+     			<div class="innerrightdata scrolldata">
                     <div class="scrollblock">
-                        {% for concert in otherconcerts %}
+                        {% for concert in concert.artist.concerts %}
                             {% badge_concert concert %}
                         {% endfor %}
                     </div>
-                </div>
+     			</div>
      		</div>
      	</div>
      	
