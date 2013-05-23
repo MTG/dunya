@@ -67,8 +67,9 @@ $(document).ready(function() {
 					<div class="inner">
 						<h3>Samples</h3>
 						<span>
-						<div class="player">Palghat Raghu, K. S. Nārāyanaswāmi, Narayana</div>
-						<div class="player">Palghat Raghu, V. V. Subramaniam, K. V.</div>
+                            {% for s in instrument.samples %}
+                                {% badge_sample s %}
+                            {% endfor %}
 						</span>
 					</div>
 				</div>
@@ -77,7 +78,9 @@ $(document).ready(function() {
 					<div class="inner">
 						<h3>External references</h3>
 						<span>
-						<a href="#">Wikipedia</a>
+                            {% for r in instrument.references %}
+                                {% badge_reference r %}
+                            {% endfor %}
 						</span>
 					</div>
 				</div>
@@ -96,7 +99,9 @@ $(document).ready(function() {
      		<div class="rightdata">
      			<div class="innerrightdata scrolldata">
                     <div class="scrollblock">                          
-
+                        {% for p in instrument.performers %}
+                            {% badge_performance p %}
+                        {% endfor %}
                     </div>
      			</div>
      		</div>

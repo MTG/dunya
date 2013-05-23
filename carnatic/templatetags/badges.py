@@ -28,3 +28,11 @@ def badge_recording(recording):
         recording = Recording.objects.get(pk=recording)
     return {"recording": recording
            }
+
+@register.inclusion_tag("badges/sample.html")
+def badge_sample(sample):
+    return {"sample": sample}
+
+@register.inclusion_tag("badges/reference.html")
+def badge_reference(reference):
+    return {"reference": reference}
