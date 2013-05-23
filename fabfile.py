@@ -5,22 +5,24 @@ def up(port="8001"):
     local("python manage.py runserver 0.0.0.0:%s"%port)
 
 def setupdb():
-    with settings(warn_only=True):
-        local("rm data/migrations/*")
-        local("rm carnatic/migrations/*")
-    local("python manage.py schemamigration --initial data")
-    local("python manage.py schemamigration --initial carnatic")
     local("python manage.py syncdb --noinput")
+    local("python manage.py migrate kombu.transport.django")
+    local("python manage.py migrate djcelery")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
+    local("python manage.py migrate social")
 
 def updatedb():
     with settings(warn_only=True):
         local("python manage.py schemamigration data --auto")
     with settings(warn_only=True):
         local("python manage.py schemamigration carnatic --auto")
+    with settings(warn_only=True):
+        local("python manage.py schemamigration dashboard --auto")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
+    local("python manage.py migrate social")
+    local("python manage.py migrate dashboard")
 
 def dumpfixture(modname):
     redir = "%s/fixtures/initial_data.json" % modname
@@ -33,7 +35,7 @@ def dumpfixture(modname):
 
 def dumpdata(fname="dunya_data.json"):
     with hide('running', 'status'):
-        modules = ["browse", "carnatic", "data", "docserver", "social"]
+        modules = ["browse", "carnatic", "data", "docserver", "social", "comments", "auth"]
         local("python manage.py dumpdata --indent=4 %s > %s" % (" ".join(modules), fname))
         print "dumped data to %s" % fname
 
