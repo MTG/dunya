@@ -12,6 +12,7 @@ def badge_concert(concert):
             "artists": concert.artistnames(),
             "detail": None,
             "date": 2043,
+            "url": concert.get_absolute_url()
            }
 
 @register.inclusion_tag("badges/artist.html")
