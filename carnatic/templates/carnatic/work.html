@@ -1,8 +1,181 @@
-{% extends "browse/base.html" %}
+{% extends "carnatic/base.html" %}
 {% load inline %}
 {% load comments %}
+{% load badges %}
+{% load staticfiles %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+	$("#filterMask").toggleClass('querybar');
+    parseAllFilters({{ filter_items|safe }});
+});
+</script>
+{% endblock %}
+
 
 {% block wrap %}
+ <div id="filterMask">
+	    <div id="filterArea">
+
+	    	<div id="entitiesList" class="filterList">
+	    		<h3>Chose your query</h3>
+	        	<ul>
+
+	        	</ul>
+	    	</div>
+
+	    	<div id="breadcrumb">
+	    		<div class="bread entity_1 artist">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    		<div class="bread entity_3 work">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    		<div class="bread entity_4 instrument">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    	</div>
+
+	    </div>
+     </div>
+
+ <div id="detail" class="work">
+     	<div id="header">
+     		<div id="summary">
+     			<div id="innerSummary">
+	     			<span>
+		     			<h1>{{ work.title }}</h1>
+		     			<h2>Composed by: {% inline_composer work.composer %}</h2>
+		     			<h3>
+			     			{% if work.raaga %}
+			     				{% for r in work.raaga.all %}
+									Raaga: {% inline_raaga r %}<br>
+    							{% endfor %}
+							{% endif %}
+							{% if work.taala %}
+								{% for t in work.taala.all %}
+								    Taala: {% inline_taala t %}<br>
+    							{% endfor %}
+							{% endif %}
+		     			</h3>
+	     			</span>
+     			</div>
+     			<div id="summaryBack"></div>
+     			<div id="icon"></div>
+     		</div>
+     		<div class="bigImage"></div>
+     		<div id="meta">
+     		<div class="metaBlock">
+     			<div id="editorial" class="metaDetails">
+     				<div class="inner">
+						<h3>Editorial Metadata</h3>
+						<span class='list'>
+						<label>date:</label><b>1969</b>
+						<label>format:</label><b>CD</b>
+						<label>length:</label><b>2:32:26</b>
+						<label>status:</label><b>Bootleg</b>
+						<label>script:</label><b>Latin</b>
+						<label>quality:</label><b>Normal</b>
+						</span>
+     				</div>
+				</div>
+				<div id="tonic" class="metaDetails">
+					<div class="inner">
+						<h3>Tonic</h3>
+						<span>Rãgam<b>D</b></span>
+						<span>´Sruti Tonic<b>C</b></span>
+						<span>Shankarabharanam<b>R2</b></span>
+					</div>
+				</div>
+				<div id="samples" class="metaDetails">
+					<div class="inner">
+						<h3>Samples</h3>
+						<span>
+						<div class="player">Palghat Raghu, K. S. Nārāyanaswāmi, Narayana</div>
+						<div class="player">Palghat Raghu, V. V. Subramaniam, K. V.</div>
+						</span>
+					</div>
+				</div>
+				<div id="recording" class="metaDetails">
+					<div class="inner">
+						<h3>Recording</h3>
+					</div>
+				</div>
+     		</div>
+     		</div>
+
+	     	<div class="clearfix"></div>
+
+     	</div><!-- HEADER END -->
+
+     	<div class="thedata">
+     		<div class="leftdata">
+	     		<h3>List of concerts</h3>
+     		</div>
+     		<div class="rightdata">
+     			<div class="innerrightdata scrolldata">
+                    <div class="scrollblock">
+                        {% for concert in concerts %}
+                            {% badge_concert concert %}
+                        {% endfor %}
+                    </div>
+     			</div>
+     		</div>
+     	</div>
+     	<div class="thedata">
+     		<div class="leftdata">
+	     		<h3>List of artists that perform</h3>
+     		</div>
+     		<div class="rightdata">
+     			<div class="innerrightdata nopad">
+                    {% for performance in performances %}
+                        {% badge_performance performance %}
+                    {% endfor %}
+	     			<div class="clearfix"></div>
+     			</div>
+     		</div>
+     	</div>
+     	<div class="thedata">
+     		<div class="leftdata">
+	     		<h3>Score & Lyrics</h3>
+     		</div>
+     		<div class="rightdata">
+     			<div class="innerrightdata">
+     			Right Data
+     			</div>
+     		</div>
+     	</div>
+     	<div class="thedata">
+     		<div class="leftdata">
+	     		<h3>Raagas</h3>
+     		</div>
+     		<div class="rightdata">
+     			<div class="innerrightdata">
+     			Right Data
+     			</div>
+     		</div>
+     	</div>
+     	<div class="thedata">
+     		<div class="leftdata">
+	     		<h3>Taalas</h3>
+     		</div>
+     		<div class="rightdata">
+     			<div class="innerrightdata">
+     			Right Data
+     			</div>
+     		</div>
+     	</div>
+
+     </div>
+
+
+
+
+<hr>
 <h2>Work</h2>
 
 Work title: {{ work.title }}<br>

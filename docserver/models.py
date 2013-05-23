@@ -23,7 +23,7 @@ class CollectionListSerializer(serializers.HyperlinkedModelSerializer):
         fields = {'name', 'description', 'slug', 'root_dir'}
 
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
-    documents = serializers.ManySlugRelatedField(slug_field='docid')
+    documents = serializers.SlugRelatedField(many=True, slug_field='docid')
     class Meta:
         model = Collection
         fields = {'name', 'description', 'slug', 'root_dir', 'documents'}
@@ -48,7 +48,7 @@ class Document(models.Model):
         pass
 
     def get_file_by_extension(self, ext):
-        """Get the file for this document that has the fiven extension"""
+        """Get the file for this document that has the given extension"""
         pass
 
     def get_conversions(self):
@@ -63,7 +63,7 @@ class Document(models.Model):
         pass
 
 class DocumentSerializer(serializers.HyperlinkedModelSerializer):
-    files = serializers.ManyPrimaryKeyRelatedField()
+    files = serializers.PrimaryKeyRelatedField(many=True)
     class Meta:
         model = Document
         fields = {'docid', 'title', 'files'}
@@ -71,9 +71,11 @@ class DocumentSerializer(serializers.HyperlinkedModelSerializer):
 class FileType(models.Model):
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
+    is_derived = models.BooleanField()
+    derived_from = models.ForeignKey('FileType')
 
     def __unicode__(self):
-        return extension
+        return self.name
 
 class File(models.Model):
     """An actual file. References a document"""

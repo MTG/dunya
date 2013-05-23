@@ -1,0 +1,10 @@
+{% load staticfiles %}
+<div class="recording">
+    <div class="disc">
+        <img src="{% static 'carnatic/img/recording.png' %}">
+    </div>
+    <div class="desc">
+        <a href="{{recording.get_absolute_url}}"><b>{{ recording.title }}</b></a>
+    </div>
+</div>
+

@@ -66,6 +66,9 @@ class Artist(BaseModel):
             ret.append((c, theperf))
         return ret
 
+class Label(BaseModel):
+    name = models.CharField(max_length=100)
+
 class Concert(BaseModel):
     class Meta:
         abstract = True
@@ -74,6 +77,8 @@ class Concert(BaseModel):
     title = models.CharField(max_length=100)
     artists = models.ManyToManyField('Artist')
     tracks = models.ManyToManyField('Recording')
+    year = models.IntegerField(blank=True, null=True)
+    label = models.ForeignKey('Label', blank=True, null=True)
 
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
@@ -85,9 +90,32 @@ class Concert(BaseModel):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
 
+    def artistnames(self):
+        artists = self.artists.all()
+        if len(artists) > 1:
+            last = artists[-1]
+            rest = artists[:-1]
+            ret = ", ".join(rest)
+            if len(rest) > 1:
+                joiner = ", and "
+            else:
+                joiner = " and "
+            ret += joiner + last.name
+            return ret
+        else:
+            return artists[0].name
+
     def performers(self):
-        ArtistClass = self.get_object_map("artist")
-        return ArtistClass.objects.filter(instrumentperformance__recording__in=self.tracks.all()).distinct().all()
+        IPClass = self.get_object_map("performance")
+        perf = IPClass.objects.filter(recording__in=self.tracks.all()).distinct().all()
+        person = []
+        ret = []
+        # XXX: Do this as a group by query
+        for p in perf:
+            if p.performer.id not in person:
+                person.append(p.performer.id)
+                ret.append(p)
+        return ret
 
 class Work(BaseModel):
     class Meta:

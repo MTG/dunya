@@ -1,0 +1,97 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}{% endblock %}Dunya</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
+        <!-- <link rel="stylesheet" href="{% static 'carnatic/css/main.css' %}"> -->
+        <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
+        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
+
+        <script src="{% static 'carnatic/js/vendor/less.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/vendor/modernizr-2.6.2.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/vendor/jquery-1.9.1.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
+
+        <script src="{% static 'carnatic/js/main.js' %}"></script>
+        <script src="{% static 'carnatic/js/plugins.js' %}"></script>
+        {% block script %}
+        {% endblock %}
+
+    </head>
+    <body>
+
+    	<!-- //////  HEADER BLOCK  ////// -->
+        <div class="header-container">
+            <header>
+            	<div id="logo"></div>
+            	<div id="globalsearch">
+	            	<input type="text" value="search..." />
+	            	<div class="button"></div>
+            	</div><!-- globalserach -->
+            	<div id="globalMusic">
+            		<label>Select Music Style</label>
+            		<span id="gmSelected">Carnatic</span>
+            		<ul id="gmDropDown">
+            			<li>Music Style 1</li>
+            			<li>Music Style 2</li>
+            			<li>Music Style 3</li>
+            		</ul>
+            	</div><!-- globalmusic -->
+                <nav id="mainmenu">
+                    	<a href="#">PLAYER</a>
+	               		<a href="#">EDIT QUERY</a>
+	               		<a href="#">BOOKMARKS</a>
+	               		<a href="#">ABOUT</a>
+	               		<a href="#">SEARCH</a>
+                </nav>
+                <div id="toggleMain">TOGGLE</div>
+                <div class="clearfix"></div>
+            </header>
+        </div>
+        <!-- //////  HEADER BLOCK end ////// -->
+
+
+
+        <div class="main-container">
+        {% block wrap %}
+        {% endblock %}
+        </div>
+
+<!--
+        <div class="footer-container">
+            <footer class="wrapper">
+                <h3>footer</h3>
+            </footer>
+        </div>
+-->
+
+        <div id="footage">
+
+        	<!-- //////////////// -->
+        	<!-- FILTER BASE MODEL -->
+        	<!-- //////////////// -->
+
+        	<div id="filterModel" class="filters">
+        		<div class="filterBall shadow1">
+        			<span>new filter</span>
+        			<div class="arrow"></div>
+        			<div class="filterSummary shadow1">No selection yet</div>
+        			<div class="closeFilter"></div><div class="resizeFilter"></div>
+        		</div>
+        		<div class="formFilter"></div>
+	            <div class="filterList filterGlobalList"></div>
+        	</div>
+
+        </div>
+
+    </body>
+</html>

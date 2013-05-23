@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^inplaceeditform/', include('inplaceeditform.urls')),
     url(r'^jsi18n$', 'django.views.i18n.javascript_catalog', js_info_dict),
+    url(r'^dashboard/', include('dashboard.urls')),
 )
 
 #if settings.DEBUG:
