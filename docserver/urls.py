@@ -6,7 +6,7 @@ from docserver import views
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
 urlpatterns = patterns('',
-    url(r'^$', 'api_root'),
+    url(r'^$', views.index),
     url(r'^collections$', views.CollectionList.as_view(), name='collection-list'),
     url(r'^(?P<cslug>[^/]+)$', views.CollectionDetail.as_view(), name='collection-detail'),
     url(r'^(?P<cslug>[^/]+)/%s$' % uuid_match, views.DocumentDetail.as_view(), name='ds-document'),
