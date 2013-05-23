@@ -12,7 +12,9 @@
 <h4>Users</h4>
 <ul>
 {% for a in users %}
-   <li>{% inline_user a %}</li>
+   {% if a.pk != user.pk %}
+      <li>{% inline_user a %}</li>
+   {%endif%}
 {% endfor %}
 </ul>
 

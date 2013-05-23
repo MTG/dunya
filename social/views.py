@@ -92,18 +92,26 @@ def users_list(request):
     return render(request, "users_list.html", ret)
 
 def user_page(request, username):
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(UserProfile, user_id=user.id)
+    other_user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(UserProfile, user_id=other_user.id)
+    
+    user = request.user
+    if len(UserFollowsUser.objects.filter(user_followed_id=user, user_follower_id=other_user)) == 0:
+        follow = False
+    else:
+        follow = True
+    
     
     users_id = []
-    users_id.append(user.id)
+    users_id.append(other_user.id)
     
     timelines = timeline.timeline(users_id)
     
     
-    ret = {"other_user": user,
+    ret = {"other_user": other_user,
            "profile": profile,
-           "timeline": timelines
+           "timeline": timelines,
+           "follow": follow
     }
 
     return render(request, "user_page.html", ret)
