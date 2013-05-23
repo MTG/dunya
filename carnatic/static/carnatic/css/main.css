@@ -908,20 +908,31 @@ textarea {
 #detail #header #meta .metaBlock {
   margin-left: 516px;
 }
-#detail #header #meta .metaBlock .metaDetails {
+#detail #header #meta .metaBlock .metaMask {
+  position: relative;
+  width: auto;
+  height: 100%;
+  overflow: scroll;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer {
+  position: relative;
+  width: 3000px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails {
+  display: inline-block;
   float: left;
-  width: 33%;
-  height: 148px;
+  width: 300px;
+  height: 284px;
   border-right: 1px solid #dddddd;
   font-size: 11px;
   padding-top: 24px;
   position: relative;
 }
-#detail #header #meta .metaBlock .metaDetails .inner {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails .inner {
   overflow-y: scroll;
   height: 100%;
 }
-#detail #header #meta .metaBlock .metaDetails h3 {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails h3 {
   top: 0px;
   padding: 10px;
   padding-top: 5px;
@@ -937,37 +948,120 @@ textarea {
   font-size: 9px;
   font-weight: normal;
 }
-#detail #header #meta .metaBlock .metaDetails span {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span {
   display: block;
   margin: 10px;
 }
-#detail #header #meta .metaBlock .metaDetails span .player {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span .player {
   background: url("../img/playButton.png") 0 50% no-repeat;
   padding-left: 38px;
   padding-top: 10px;
   padding-bottom: 11px;
 }
-#detail #header #meta .metaBlock .metaDetails span a {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span a {
   color: #d71f00;
   display: block;
   margin-bottom: 8px;
 }
-#detail #header #meta .metaBlock .metaDetails span.list label {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list label {
   float: left;
   width: 28%;
   text-align: right;
   clear: left;
   margin-right: 4px;
 }
-#detail #header #meta .metaBlock .metaDetails span.list b {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list b {
   float: left;
   font-weight: normal;
   width: 68%;
 }
-#detail #header #meta .metaBlock .metaDetails span.list2 label {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list2 label {
   display: block;
 }
-#detail #header #meta .metaBlock .metaDetails span.list2 b {
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list2 b {
+  display: block;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails.narrow {
+  width: 450px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails.close {
+  width: 150px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta {
+  display: inline-block;
+  float: left;
+  width: 300px;
+  height: 284px;
+  border-right: 1px solid #dddddd;
+  font-size: 11px;
+  position: relative;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta.narrow {
+  width: 450px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta.close {
+  width: 150px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails {
+  display: inline-block;
+  float: left;
+  width: 100%;
+  height: 142px;
+  font-size: 11px;
+  padding-top: 24px;
+  position: relative;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails .inner {
+  overflow-y: scroll;
+  height: 100%;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails h3 {
+  top: 0px;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e9e9e9;
+  border-top: 1px solid #dddddd;
+  background: #f6f6f6;
+  color: #aaaaaa;
+  margin: 0px;
+  position: absolute;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 9px;
+  font-weight: normal;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span {
+  display: block;
+  margin: 10px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span .player {
+  background: url("../img/playButton.png") 0 50% no-repeat;
+  padding-left: 38px;
+  padding-top: 10px;
+  padding-bottom: 11px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span a {
+  color: #d71f00;
+  display: block;
+  margin-bottom: 8px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list label {
+  float: left;
+  width: 28%;
+  text-align: right;
+  clear: left;
+  margin-right: 4px;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list b {
+  float: left;
+  font-weight: normal;
+  width: 68%;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list2 label {
+  display: block;
+}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list2 b {
   display: block;
 }
 #detail .thedata {
@@ -1176,7 +1270,7 @@ textarea {
   width: 100%;
 }
 #detail.artist #header #meta .metaBlock .metaDetails {
-  width: 33%;
+  width: 300px;
 }
 #detail.artist #header #meta .metaBlock .metaDetails#excerpt {
   height: 296px;
