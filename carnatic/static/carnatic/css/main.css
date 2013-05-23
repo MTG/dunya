@@ -804,12 +804,15 @@ textarea {
    ========================================================================== */
 #detail {
   border-bottom: 30px solid #333;
-}
-#detail a:after {
-  content: url("../img/link.png") !important;
-  top: 2px !important;
-  margin-left: 2px !important;
-  position: relative !important;
+  /*
+	a:after {
+			content: url("../img/link.png") !important;
+			top:2px !important;
+			margin-left: 2px !important;
+			position: relative !important;
+	}
+	*/
+
 }
 #detail #header {
   background: #fff;
@@ -1148,10 +1151,16 @@ textarea {
 }
 #detail .thedata .rightdata .innerrightdata .artistCell {
   float: left;
+  width: 235px;
+  height: 63px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid #f6f6f6;
+  font-size: 10px;
 }
 #detail .thedata .rightdata .innerrightdata .artistCell .photo {
   float: left;
-  width: 51px;
+  width: 55px;
   height: 63px;
   margin-right: 10px;
 }
@@ -1162,10 +1171,12 @@ textarea {
   margin: 0px;
   color: #888;
 }
+#detail .thedata .rightdata .innerrightdata .artistCell .desc p a {
+  color: #666666 !important;
+}
 #detail .thedata .rightdata .innerrightdata .artistCell .desc b {
-  font-weight: normal;
+  font-weight: bold;
   display: block;
-  color: #000;
 }
 #detail .thedata .rightdata .innerrightdata .track {
   float: left;

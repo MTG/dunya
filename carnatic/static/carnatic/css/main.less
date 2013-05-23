@@ -445,12 +445,14 @@ textarea {
 
 #detail {
 	border-bottom: 30px solid #333;
+	/*
 	a:after {
 			content: url("../img/link.png") !important;
 			top:2px !important;
 			margin-left: 2px !important;
 			position: relative !important;
 	}
+	*/
 	#header {
 		background: #fff;
 		border-bottom:1px solid @grisD;
@@ -749,16 +751,23 @@ textarea {
 				}
 				.artistCell {
 					float:left;
+					width: 235px;
+					height: 63px;
+					margin-bottom:10px;
+					overflow: hidden;
+					border: 1px solid @grisf6;
+					font-size: 10px;
 					.photo {
 						float: left;
-						width: 51px; 
+						width: 55px; 
 						height: 63px;
 						margin-right:10px;
 					}
 					.desc { 
 						width: 180px;
-						p { margin:0px; color: #888;}
-						b {font-weight: normal; display: block; color: #000; }
+						p { margin:0px; color: #888; }
+						p a { color: @gris6 !important; }
+						b { font-weight: bold; display: block; }
 					}
 				}
 				.track {
