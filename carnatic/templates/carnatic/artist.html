@@ -47,8 +47,7 @@ $(document).ready(function() {
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{artist.name}}</h1>
-		     			<h2>Release oby M. D. Ramanathan</h2>
-		     			<h3>Bootleg</h3>
+                        <h2>{{artist.instruments}}</h2>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
@@ -56,75 +55,146 @@ $(document).ready(function() {
      		</div>
      		<div class="bigImage"><img src="{% static 'carnatic/img/develop/artist.jpg' %}" /></div>
      		<div id="meta">
-     		<div class="metaBlock">
-					
-				<div id="excerpt" class="metaDetails">
-					<p>Palghat R. Raghu (January 9, 1928 - June 2, 2009) was a famous Carnatic musician and percussionist.</p>
-					<p>Palghat Raghu was a percussion master known for his distinctive style in playing as well as his effortless finger techniques and technical brilliance. His unique style which involves imaginative use of the Toppi (left part of Mridangam) combines melody with rhythm and lifts the concert performance to high levels. </p>
-				</div>
-				<div id="samples" class="metaDetails">
-					<div class="inner">
-						<h3>Samples</h3>
-						<span>
-						<div class="player">Palghat Raghu, K. S. Nārāyanaswāmi, Narayana</div>
-						<div class="player">Palghat Raghu, V. V. Subramaniam, K. V.</div>
-						</span>
-					</div>
-				</div>
-				
-				<div id="external" class="metaDetails">
-					<div class="inner">
-						<h3>External references</h3>
-						<span>
-						<a href="#">Official Website of Palghat R Raghu</a>
-						<a href="#">Obituary in The Hindu newspaper</a>
-						</span>
-					</div>
-				</div>
-				
-     		</div>
-     		</div>
+	     		<div class="metaBlock">
+			 		<div class="metaMask">
+			 			<div class="metaContainer">
+			 				
+			 				<!-- SPLIT VERTICAL METADETAIL -->
+							<div class="splitMeta close">
+								<div class="metaDetails">
+									<div class="inner">
+										<h3>External references</h3>
+										<span>
+										<a href="#">Official Website of Palghat R Raghu</a>
+										<a href="#">Obituary in The Hindu newspaper</a>
+										</span>
+									</div>
+								</div>
+								<div class="metaDetails">
+									<div class="inner">
+										<h3>External references</h3>
+										<span>
+										<a href="#">Official Website of Palghat R Raghu</a>
+										<a href="#">Obituary in The Hindu newspaper</a>
+										</span>
+									</div>
+								</div>
+							</div>
+				 			
+				 			<!-- NARROW WIDTH METADETAIL -->
+							<div class="metaDetails narrow">
+								<div class="inner">
+									<h3>Samples</h3>
+									<span>
+									<div class="player">Palghat Raghu, K. S. Nārāyanaswāmi, Narayana</div>
+									<div class="player">Palghat Raghu, V. V. Subramaniam, K. V.</div>
+									</span>
+								</div>
+							</div>
+							
+							<!-- NORMAL WIDTH METADETAIL -->
+							<div class="metaDetails">
+								<div class="inner">
+									<h3>External references</h3>
+									<span>
+									<a href="#">Official Website of Palghat R Raghu</a>
+									<a href="#">Obituary in The Hindu newspaper</a>
+									</span>
+								</div>
+							</div>
+							
+							<!-- CLOSE WIDTH METADETAIL -->
+							<div class="metaDetails close">
+								<div class="inner">
+									<h3>External references</h3>
+									<span>
+									<a href="#">Official Website of Palghat R Raghu</a>
+									<a href="#">Obituary in The Hindu newspaper</a>
+									</span>
+								</div>
+							</div>
+						
+							<!-- SPLIT VERTICAL METADETAIL -->
+							<div class="splitMeta">
+								<div class="metaDetails">
+									<div class="inner">
+										<h3>External references</h3>
+										<span>
+										<a href="#">Official Website of Palghat R Raghu</a>
+										<a href="#">Obituary in The Hindu newspaper</a>
+										</span>
+									</div>
+								</div>
+								<div class="metaDetails">
+									<div class="inner">
+										<h3>External references</h3>
+										<span>
+										<a href="#">Official Website of Palghat R Raghu</a>
+										<a href="#">Obituary in The Hindu newspaper</a>
+										</span>
+									</div>
+								</div>
+							</div>
+							
+							<!-- CLOSE WIDTH METADETAIL -->
+							<div class="metaDetails close">
+								<div class="inner">
+									<h3>External references</h3>
+									<span>
+									<a href="#">Official Website of Palghat R Raghu</a>
+									<a href="#">Obituary in The Hindu newspaper</a>
+									</span>
+								</div>
+							</div>
+						
+							<!-- SPLIT VERTICAL METADETAIL -->
+							<div class="splitMeta narrow">
+								<div class="metaDetails">
+									<div class="inner">
+										<h3>External references</h3>
+										<span>
+										<a href="#">Official Website of Palghat R Raghu</a>
+										<a href="#">Obituary in The Hindu newspaper</a>
+										</span>
+									</div>
+								</div>
+								<div class="metaDetails">
+									<div class="inner">
+										<h3>External references</h3>
+										<span>
+										<a href="#">Official Website of Palghat R Raghu</a>
+										<a href="#">Obituary in The Hindu newspaper</a>
+										</span>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+			 			</div>
+			 	</div>
+	     	</div>
 
-	     	<div class="clearfix"></div>
+	 		<div class="clearfix"></div>
 
      	</div><!-- HEADER END -->
 
      	<div class="thedata">
      		<div class="leftdata">
-	     		<h3>List of concerts</h3>
+	     		<h3>Concerts</h3>
      		</div>
      		<div class="rightdata">
      			<div class="innerrightdata scrolldata">
                     <div class="scrollblock">                          
-						<div class="album">
-						    <div class="disc">
-						        <img src="/static/carnatic/img/disc1.png">
-						    </div>
-						    <div class="desc">
-						        <b>M. D. Ramanathan Concert at Music Academy 1969</b>
-						        <p>M. D. Ramanathan</p>
-						        <p></p>
-						        <p>2043</p>
-						    </div>
-						</div>
-						<div class="album">
-						    <div class="disc">
-						        <img src="/static/carnatic/img/disc1.png">
-						    </div>
-						    <div class="desc">
-						        <b>M. D. Ramanathan Concert at Music Academy 1969</b>
-						        <p>M. D. Ramanathan</p>
-						        <p></p>
-						        <p>2043</p>
-						    </div>
-						</div>
+                        {% for concert in artist.concerts %}
+                            {% badge_concert concert %}
+                        {% endfor %}
                     </div>
      			</div>
      		</div>
      	</div>
      	<div class="thedata">
      		<div class="leftdata">
-	     		<h3>List of recordings</h3>
+	     		<h3>Recordings</h3>
      		</div>
      		<div class="rightdata">
      			<div class="innerrightdata scrolldata nopad">
@@ -163,103 +233,10 @@ $(document).ready(function() {
      			</div>
      		</div>
      	</div>
-     	<div class="thedata">
-     		<div class="leftdata">
-	     		<h3>List of instruments</h3>
-     		</div>
-     		<div class="rightdata">
-     			<div class="innerrightdata scrolldata nopad">
-                    <div class="scrollblock">
-		                <div class="instrumentCell">
-		                	<div class="instruPict">
-			                	<img src="{% static 'carnatic/img/develop/instrument_1.png' %}" />
-			                 </div>
-			                 <h4>reethi gowlai</h4>
-	                    </div>
-	                    <div class="instrumentCell">
-	                    	<div class="instruPict">
-			                	<img src="{% static 'carnatic/img/develop/instrument_2.png' %}" />
-			                </div>
-			                <h4>shanmukhapriya</h4>
-	                    </div>
-	                    <div class="instrumentCell">
-	                    	<div class="instruPict">
-			                   	<img src="{% static 'carnatic/img/develop/instrument_3.png' %}" />
-			                </div>
-			                <h4>shuddha saveri</h4>
-	                    </div>
-                    </div>        
-     			</div>
-     		</div>
-     	</div>
-     	<div class="thedata">
-     		<div class="leftdata">
-	     		<h3>Raagas</h3>
-     		</div>
-     		<div class="rightdata">
-     			<div class="innerrightdata scrolldata nopad">
-                    <div class="scrollblock">
-		                <div class="raagaCell">
-		                	<div class="raagaPict">
-			                	<img src="{% static 'carnatic/img/develop/raaga.png' %}" />
-			                 </div>
-			                 <h4>reethi gowlai</h4>
-	                    </div>
-	                    <div class="raagaCell">
-	                    	<div class="raagaPict">
-			                	<img src="{% static 'carnatic/img/develop/raaga.png' %}" />
-			                </div>
-			                <h4>shanmukhapriya</h4>
-	                    </div>
-	                    <div class="raagaCell">
-	                    	<div class="raagaPict">
-			                   	<img src="{% static 'carnatic/img/develop/raaga.png' %}" />
-			                </div>
-			                <h4>shuddha saveri</h4>
-	                    </div>
-                    </div>        
-     			</div>
-     		</div>
-     	</div>
-     	<div class="thedata">
-     		<div class="leftdata">
-	     		<h3>Taalas</h3>
-     		</div>
-     		<div class="rightdata">
-     			<div class="innerrightdata scrolldata nopad">
-                    <div class="scrollblock">
-		                <div class="raagaCell">
-		                	<div class="raagaPict">
-			                	<img src="{% static 'carnatic/img/develop/raaga.png' %}" />
-			                 </div>
-			                 <h4>reethi gowlai</h4>
-	                    </div>
-	                    <div class="raagaCell">
-	                    	<div class="raagaPict">
-			                	<img src="{% static 'carnatic/img/develop/raaga.png' %}" />
-			                </div>
-			                <h4>shanmukhapriya</h4>
-	                    </div>
-	                    <div class="raagaCell">
-	                    	<div class="raagaPict">
-			                   	<img src="{% static 'carnatic/img/develop/raaga.png' %}" />
-			                </div>
-			                <h4>shuddha saveri</h4>
-	                    </div>
-                    </div>        
-     			</div>
-     		</div>
-     	</div>
      	<div class="clearfix"></div>
 </div>
 
 
-
-
-
-<h2>Artist</h2>
-
-<p>Name: {{artist.name}}
 
 {% include "carnatic/concerts_by_artist_list.html" with artist=artist only %}
 {% endblock %}

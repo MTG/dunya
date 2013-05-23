@@ -63,6 +63,7 @@ def artistsearch(request):
 
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
+    print artist.concerts()
     ret = {"artist": artist
           }
 
