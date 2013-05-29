@@ -33,6 +33,8 @@ def main_page(request):
 
 def logout_page(request):
     logout(request)
+    if request.GET.has_key("next"):
+        return HttpResponseRedirect(request.GET['next'])
     return HttpResponseRedirect(reverse('carnatic-overview'))
 
 def register_page(request):
@@ -128,24 +130,25 @@ def tag_save_page(request):
             objecttype = form.cleaned_data['objecttype']
             tag_names = form.cleaned_data['tags'].split(",")
             for tag_name in tag_names:
-                tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip()) # tag to lower case
-                
-                if objecttype == "artist":
-                    artist = Artist.objects.get(pk=objectid)
-                    if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
-                        object_tag, _ = ArtistTag.objects.get_or_create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
-                elif objecttype == "concert":
-                    concert = Concert.objects.get(pk=objectid)
-                    if len(ConcertTag.objects.filter(tag=tag, user=request.user, concert=concert)) == 0:
-                        object_tag, _ = ConcertTag.objects.get_or_create(tag=tag, user=request.user, concert=concert, timestamp=datetime.now())
-                elif objecttype == "recording":
-                    recording = Recording.objects.get(pk=objectid)
-                    if len(RecordingTag.objects.filter(tag=tag, user=request.user, recording=recording)) == 0:
-                        object_tag, _ = RecordingTag.objects.get_or_create(tag=tag, user=request.user, recording=recording, timestamp=datetime.now())
-                elif objecttype == "work":
-                    work = Work.objects.get(pk=objectid)
-                    if len(WorkTag.objects.filter(tag=tag, user=request.user, work=work)) == 0:
-                        object_tag, _ = WorkTag.objects.get_or_create(tag=tag, user=request.user, work=work, timestamp=datetime.now())
+                if len(tag_name) > 0:
+                    tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip()) # tag to lower case
+                    
+                    if objecttype == "artist":
+                        artist = Artist.objects.get(pk=objectid)
+                        if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
+                            object_tag, _ = ArtistTag.objects.get_or_create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
+                    elif objecttype == "concert":
+                        concert = Concert.objects.get(pk=objectid)
+                        if len(ConcertTag.objects.filter(tag=tag, user=request.user, concert=concert)) == 0:
+                            object_tag, _ = ConcertTag.objects.get_or_create(tag=tag, user=request.user, concert=concert, timestamp=datetime.now())
+                    elif objecttype == "recording":
+                        recording = Recording.objects.get(pk=objectid)
+                        if len(RecordingTag.objects.filter(tag=tag, user=request.user, recording=recording)) == 0:
+                            object_tag, _ = RecordingTag.objects.get_or_create(tag=tag, user=request.user, recording=recording, timestamp=datetime.now())
+                    elif objecttype == "work":
+                        work = Work.objects.get(pk=objectid)
+                        if len(WorkTag.objects.filter(tag=tag, user=request.user, work=work)) == 0:
+                            object_tag, _ = WorkTag.objects.get_or_create(tag=tag, user=request.user, work=work, timestamp=datetime.now())
             
             return HttpResponseRedirect('/carnatic/%s/%s' % (objecttype, objectid))
     else:

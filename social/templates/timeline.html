@@ -10,7 +10,7 @@
 <!--        <p>When: <b>{{ a.submit_date }}</b>, User: <b>{{ a.username }}</b>, Action: <b>{{ a.type }}</b>, In {{ a.content_type }}: <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a></p>
         <p>Comment: <b>"{{ a.value }}"</b></p>-->
         <p>User <b>{{ a.username }}</b>
-            added <b>"{% inline_comment a %}"</b>
+            added a <b>{% inline_comment a %}</b>
             to {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a>
             on <b>{{ a.submit_date }}</b>
             <span></span>
@@ -19,7 +19,7 @@
     {% elif a.type == 'tag' %}
         <p>User <b>{{ a.username }}</b>
             tagged {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a>
-            with <b>"{% inline_tag a %}"</b>
+            with <b>{% inline_tag a %}</b>
             on <b>{{ a.submit_date }}</b>
             <span></span>
         </p>
