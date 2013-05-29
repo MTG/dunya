@@ -1,16 +1,28 @@
+{% load social_inline %}
+
 <h2>TIMELINE</h2>
 <h3>Recent Activity</h3>
 <p>----------------------------------------------------------------------------------------------------------</p>
 
 {% for a in timeline %}
     {% if a.type == 'comment' %}
-        <p>The user <b>{{ a.username }}</b> made ​​the <b>{{ a.type }}</b> <b>"{{ a.value }}"</b> in the {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a> on <b>{{ a.submit_date }}</b></p>
+        <!--<p>The user <b>{{ a.username }}</b> tagged {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a> with <b>"{{ a.value }}"</b> on <b>{{ a.submit_date }}</b></p>-->
 <!--        <p>When: <b>{{ a.submit_date }}</b>, User: <b>{{ a.username }}</b>, Action: <b>{{ a.type }}</b>, In {{ a.content_type }}: <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a></p>
         <p>Comment: <b>"{{ a.value }}"</b></p>-->
+        <p>User <b>{{ a.username }}</b>
+            added <b>"{% inline_comment a %}"</b>
+            to {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a>
+            on <b>{{ a.submit_date }}</b>
+            <span></span>
+        </p>
         <p>----------------------------------------------------------------------------------------------------------</p>
     {% elif a.type == 'tag' %}
-        <p>The user <b>{{ a.username }}</b> made ​​the <b>{{ a.type }}</b> <b>"{{ a.value }}"</b> in the {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a> on <b>{{ a.submit_date }}</b></p>
-
+        <p>User <b>{{ a.username }}</b>
+            tagged {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a>
+            with <b>"{% inline_tag a %}"</b>
+            on <b>{{ a.submit_date }}</b>
+            <span></span>
+        </p>
         <!--<p>When: <b>{{ a.submit_date }}</b>, User: <b>{{ a.username }}</b>, Action: <b>{{ a.type }}</b>, In {{ a.content_type }}: <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a></p> 
         <p>Tag: <a href="/social/tags/{{ a.value}}/{{ a.content_type}}">{{ a.value }}</a></p>-->
         <p>----------------------------------------------------------------------------------------------------------</p>

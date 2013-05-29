@@ -9,19 +9,19 @@ def tag_cloud(modelid, modeltype):
     if modeltype == "artist":
         tags = ArtistTag.objects.filter(artist_id=modelid).values('tag','artist').annotate(freq_tag=Count('tag'))
         for tag in tags:
-            tag['modeltype'] = "artist"
+            tag['content_type'] = "artist"
     elif modeltype == "concert":
         tags = ConcertTag.objects.filter(concert_id=modelid).values('tag','concert').annotate(freq_tag=Count('tag'))
         for tag in tags:
-            tag['modeltype'] = "concert"
+            tag['content_type'] = "concert"
     elif modeltype == "recording":
         tags = RecordingTag.objects.filter(recording_id=modelid).values('tag','recording').annotate(freq_tag=Count('tag'))
         for tag in tags:
-            tag['modeltype'] = "recording"
+            tag['content_type'] = "recording"
     elif modeltype == "work":
         tags = WorkTag.objects.filter(work_id=modelid).values('tag','work').annotate(freq_tag=Count('tag'))
         for tag in tags:
-            tag['modeltype'] = "work"
+            tag['content_type'] = "work"
     
     
     if len(tags)>0:
@@ -29,7 +29,7 @@ def tag_cloud(modelid, modeltype):
         min_count = max_count = tags[0]['freq_tag']
         
         for tag in tags:
-            tag['tag_name'] = Tag.objects.get(pk=tag['tag']).name
+            tag['value'] = Tag.objects.get(pk=tag['tag']).name
             tag_count = tag['freq_tag']
             if tag_count < min_count:
                 min_count = tag_count

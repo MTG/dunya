@@ -10,6 +10,7 @@ from datetime import datetime
 from django.utils import simplejson
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
+from django.utils.http import urlunquote_plus
 
 import social.timeline as timeline
 
@@ -165,33 +166,34 @@ def ajax_tag_autocomplete(request):
     return HttpResponse(simplejson.dumps(results),mimetype='application/json')
 
 
-def tag_page(request, tag_name, modeltype):
-    tag = get_object_or_404(Tag, name=tag_name)
+def tag_page(request, tagname, modeltype="concert"):
+    tagname = urlunquote_plus(tagname)
+    tag = get_object_or_404(Tag, name=tagname)
     
     if modeltype == "artist":
-        lists = ArtistTag.objects.filter(tag__name=tag_name).values('artist', 'tag').annotate(freq=Count('artist'))
+        lists = ArtistTag.objects.filter(tag__name=tagname).values('artist', 'tag').annotate(freq=Count('artist'))
         objects=[]
         for lista in lists:
             objects.append([Artist.objects.get(pk=lista['artist']), lista['freq']])
     elif modeltype == "concert":
-        lists = ConcertTag.objects.filter(tag__name=tag_name).values('concert', 'tag').annotate(freq=Count('concert'))
+        lists = ConcertTag.objects.filter(tag__name=tagname).values('concert', 'tag').annotate(freq=Count('concert'))
         objects=[]
         for lista in lists:
             objects.append([Concert.objects.get(pk=lista['concert']), lista['freq']])
     elif modeltype == "recording":
-        lists = RecordingTag.objects.filter(tag__name=tag_name).values('recording', 'tag').annotate(freq=Count('recording'))
+        lists = RecordingTag.objects.filter(tag__name=tagname).values('recording', 'tag').annotate(freq=Count('recording'))
         objects=[]
         for lista in lists:
             objects.append([Recording.objects.get(pk=lista['recording']), lista['freq']])
     elif modeltype == "work":
-        lists = WorkTag.objects.filter(tag__name=tag_name).values('work', 'tag').annotate(freq=Count('work'))
+        lists = WorkTag.objects.filter(tag__name=tagname).values('work', 'tag').annotate(freq=Count('work'))
         objects=[]
         for lista in lists:
             objects.append([Work.objects.get(pk=lista['work']), lista['freq']])
       
     variables = RequestContext(request, {
         'objects': objects,
-        'tag_name': tag_name,
+        'tag_name': tagname,
         'modeltype': modeltype,
     })
     return render_to_response('tag_page.html', variables)

@@ -14,6 +14,7 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
         <!-- <link rel="stylesheet" href="{% static 'carnatic/css/main.css' %}"> -->
         <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
+	<link rel="stylesheet/less" type="text/css" href="{% static 'social/css/main.css' %}" />
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
 
         <script src="{% static 'carnatic/js/vendor/less.min.js' %}"></script>
@@ -23,12 +24,22 @@
 
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
+	
         {% block script %}
         {% endblock %}
 
     </head>
     <body>
-
+	
+	{% url 'social-auth-login' as login_url %}
+	{% url 'social-auth-logout' as logout_url %}
+	{% url 'social-auth-register' as register_url %}
+	{% url 'social-main' as social_main %}
+	{% url 'carnatic-main' as carnatic_main %}
+	{% url 'carnatic-overview' as carnatic_overview %}
+	{% url 'social-user-profile' as social_user_profile %}
+	{% url 'social-tag-autocomplete' as social_tag_autocomplete %}
+	{% url 'social-users-list' as social_users_list %}
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
@@ -48,10 +59,19 @@
             	</div><!-- globalmusic -->
                 <nav id="mainmenu">
                     	<a href="#">PLAYER</a>
-	               		<a href="#">EDIT QUERY</a>
-	               		<a href="#">BOOKMARKS</a>
-	               		<a href="#">ABOUT</a>
-	               		<a href="#">SEARCH</a>
+			<a href="#">EDIT QUERY</a>
+			<a href="#">BOOKMARKS</a>
+			<a href="#">ABOUT</a>
+			<a href="#">SEARCH</a>
+			{% if user.is_authenticated %}
+			    <!--welcome {{ user.username }}-->
+			    <a href="{{ logout_url }}">LOGOUT ({{ user.username }})</a>
+			    <a href="{{ social_user_profile }}">PROFILE</a>
+			    <a href="{{ social_users_list }}">USERS</a>
+			{% else %}
+			    <a href="{{ login_url }}">LOGIN</a>
+			    <a href="{{ register_url }}">REGISTER</a>
+			{% endif %}
                 </nav>
                 <div id="toggleMain">TOGGLE</div>
                 <div class="clearfix"></div>
