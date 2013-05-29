@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'data',
     'rest_framework',
     'social',
+    'django_extensions',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'south',

@@ -31,7 +31,8 @@ urlpatterns = patterns('',
     # Ajax
     url(r'^ajax/tag/autocomplete/$', views.ajax_tag_autocomplete, name='social-tag-autocomplete'),
     # Tag page
-    url(r'^tags/([\w ]+)/([^\s]+)/$', views.tag_page, name='tag-page'),
+    #url(r'^tags/(?P<tag_name>\w+)/(?P<modeltype>\w+)/$', views.tag_page, name='social-tag-page'),
+    url(r'^tags/(?P<tagname>[\w\+]+)/(?P<modeltype>\w+)$', views.tag_page, name='social-tag-page'),
 
 
     # Examples:

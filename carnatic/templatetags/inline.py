@@ -42,11 +42,3 @@ def inline_instrument(instrument):
     for i in instrument:
         ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
     return ", ".join(ret)
-
-### SOCIAL PART ###
-@register.simple_tag
-def inline_user(user):
-    if len(user.first_name) == 0:
-        return '<a href="%s">%s</a>' % (reverse('social-user-page', args=[user.username]), user.username)
-    else:
-        return '<a href="%s">%s %s</a>' % (reverse('social-user-page', args=[user.username]), user.first_name, user.last_name)

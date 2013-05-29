@@ -1,6 +1,8 @@
 
+{% load social_inline %}
+
 <div id="tag-cloud">
 {% for tag in tags %}
-    <a href="/social/tags/{{ tag.tag_name}}/{{ tag.modeltype}}" class="tag-cloud-{{ tag.freq_tag }}">{{ tag.tag_name }}</a>
+    <span class="tag-cloud-{{ tag.freq_tag }}">{% inline_tag tag %}</span>
 {% endfor %}
 </div>
