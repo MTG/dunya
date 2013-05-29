@@ -18,3 +18,32 @@ margin: 0 0.2em;
 .tag-cloud-3 { font-size: 160%; }
 .tag-cloud-4 { font-size: 180%; }
 .tag-cloud-5 { font-size: 200%; }
+
+ul.timeline-elems
+{
+    list-style-type: none;
+    padding-left: 1em;
+    margin: 0px;
+}
+
+ul.timeline-elems li
+{
+    margin-top: 1em;
+}
+
+ul.timeline-elems li.timeline-tag-elem
+{
+    background-image: url(../img/tag.png);
+    background-size:16px 16px;
+    background-repeat: no-repeat;
+    /*background-position: 0px 5px;*/
+    padding-left: 20px; 
+}
+
+ul.timeline-elems li.timeline-comment-elem
+{
+    background-image: url(../img/comment.png);
+    background-size:16px 16px;
+    background-repeat: no-repeat;
+    padding-left: 20px; 
+}
