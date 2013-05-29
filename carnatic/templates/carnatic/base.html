@@ -65,11 +65,11 @@
 			<a href="#">SEARCH</a>
 			{% if user.is_authenticated %}
 			    <!--welcome {{ user.username }}-->
-			    <a href="{{ logout_url }}">LOGOUT ({{ user.username }})</a>
+			    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT ({{ user.username }})</a>
 			    <a href="{{ social_user_profile }}">PROFILE</a>
 			    <a href="{{ social_users_list }}">USERS</a>
 			{% else %}
-			    <a href="{{ login_url }}">LOGIN</a>
+			    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
 			    <a href="{{ register_url }}">REGISTER</a>
 			{% endif %}
                 </nav>
