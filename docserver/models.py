@@ -20,13 +20,13 @@ class Collection(models.Model):
 class CollectionListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Collection
-        fields = {'name', 'description', 'slug', 'root_dir'}
+        fields = ['name', 'description', 'slug', 'root_dir']
 
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
     documents = serializers.SlugRelatedField(many=True, slug_field='docid')
     class Meta:
         model = Collection
-        fields = {'name', 'description', 'slug', 'root_dir', 'documents'}
+        fields = ['name', 'description', 'slug', 'root_dir', 'documents']
 
 
 def new_uuid():
