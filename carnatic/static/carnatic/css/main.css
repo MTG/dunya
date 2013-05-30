@@ -959,6 +959,25 @@ textarea {
   margin-left: 220px;
   border-left: 1px solid #a7a8ac;
 }
+#detail .thedata .rightdata .innerrightdata .recording {
+  float: left;
+  height: 100px;
+}
+#detail .thedata .rightdata .innerrightdata .recording .disc {
+  float: left;
+  width: 127px;
+  height: 90px;
+  margin-right: 10px;
+}
+#detail .thedata .rightdata .innerrightdata .recording .desc p {
+  margin: 0px;
+  color: #888;
+}
+#detail .thedata .rightdata .innerrightdata .recording .desc b {
+  font-weight: normal;
+  display: block;
+  color: #000;
+}
 #detail .thedata .rightdata .innerrightdata .album {
   float: left;
   height: 140px;
