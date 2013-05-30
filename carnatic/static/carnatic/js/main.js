@@ -8,7 +8,7 @@ function removeFilter(entity_filter){
     $(".filterBall").find(".arrow").addClass("arrowClosed");
     $(".filterBall").addClass("filterBallClosed");
     $("#entitiesList").addClass("filterListClosed");
-    $(".filters.entity_"+entity_filter).remove();
+    $(".filters."+entity_filter).remove();
     filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
 }
 
@@ -51,13 +51,13 @@ function parseAllFilters(data){
     $.each(data, function(index, element) {
         var entity = $("<li>", {
             entity_id: (index+1),
-            class: "entity_"+(index+1),
+            //class: "entity_"+(index+1)+" "+element.name.toLowerCase(),
+            class: element.name.toLowerCase(),
             eid: "eid"+(index+1)
         }).append($("<div>", {"class": "colorCode shadow1"}))
           .append(element.name);
         entity.data("filter", element);
 
-        entityHTML = "<li class='entity_"+(index+1)+"' entity_id='"+(index+1)+"' eid='eid"+(index+1)+"'><div class='colorCode shadow1'></div>"+element.name+"</li>";
         $("#entitiesList ul").append(entity);
         formHTML = "<div class='form_"+(index+1)+"'><form>";
         $.each(element.data, function(index2, element2) {
@@ -107,12 +107,13 @@ function loadClicks(){
 
     $("#entitiesList ul li").click(function(){
         if($(this).hasClass("selected")){
-            removeFilter($(this).attr("entity_id"));
+            //removeFilter($(this).attr("entity_id"));
+            removeFilter($(this).attr("class").split(" ")[0]);
         }else{
             loadFilter($(this).data("filter"), $(this).attr("entity_id"),$(this).attr("eid"));
         }
         $(this).toggleClass("selected");
-        $("#summary").attr("class","entity_"+$(this).attr("entity_id"));
+        $("#summary").attr("class",$(this).attr("class"));
     });
 
     $(".filterList.formFilterItem ul li").click(function(){
@@ -180,8 +181,8 @@ function sumarizeFilter(object){
 function showFilterData(data, entity_filter,filterName,eid){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
-    $('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter).attr("eid",eid);
-    entityHTML_bc = "<div class='bread entity_"+entity_filter+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
+    $('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
+    entityHTML_bc = "<div class='bread entity_"+entity_filter+" "+filterName.toLowerCase()+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
     $("#breadcrumb").append(entityHTML_bc);
     $('#filterArea').width(480+(filtersArray.length*780));
     newFilter = "#filter_"+filterPosition;

@@ -5,22 +5,44 @@ def up(port="8001"):
     local("python manage.py runserver 0.0.0.0:%s"%port)
 
 def setupdb():
+    """ Run this when you are setting up a new installation
+        or have deleted your database
+    """
+    local("python manage.py syncdb --noinput")
     local("python manage.py migrate kombu.transport.django")
     local("python manage.py migrate djcelery")
-    local("python manage.py syncdb --noinput")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
+    local("python manage.py migrate dashboard")
+    local("python manage.py migrate docserver")
+    local("python manage.py migrate social")
 
 def updatedb():
+    """ Run this when someone has committed some changes to the
+        database migration scripts
+    """
+    local("python manage.py migrate data")
+    local("python manage.py migrate carnatic")
+    local("python manage.py migrate dashboard")
+    local("python manage.py migrate docserver")
+    local("python manage.py migrate social")
+
+def migratedb():
+    """ Run this if you make some changes to the models """
     with settings(warn_only=True):
         local("python manage.py schemamigration data --auto")
     with settings(warn_only=True):
         local("python manage.py schemamigration carnatic --auto")
     with settings(warn_only=True):
         local("python manage.py schemamigration dashboard --auto")
-    local("python manage.py migrate data")
-    local("python manage.py migrate carnatic")
-    local("python manage.py migrate dashboard")
+    with settings(warn_only=True):
+        local("python manage.py schemamigration docserver --auto")
+    with settings(warn_only=True):
+        local("python manage.py schemamigration social --auto")
+
+def initialdb(modulename):
+    """ Use this to tell south to manage a new django app """
+    local("python manage.py schemamigration %s --initial" % modulename)
 
 def dumpfixture(modname):
     redir = "%s/fixtures/initial_data.json" % modname
