@@ -183,7 +183,7 @@ textarea {
         float: right;
         margin-top:24px;
         margin-right: 10px;
-        a {
+        >a {
 	    	float: left;
 	    	margin: 0;
 	    	margin-left: 5px;
@@ -196,8 +196,81 @@ textarea {
 	    	background: #eeeded;
 	    	.rounded (4px);
 	    	font-size: 12px;
-	    	box-shadow: inset 0px 1px 5px #ddd, 1px 1px 2px #666;
+	    	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
     	}
+    	#user {
+    		float: left;
+    		display: block;
+    		position: relative;
+    		width:auto;
+    		height: auto;
+    		padding-right: 5px;
+	    	>a {
+		    	margin: 0;
+		    	margin-left: 5px;
+		    	padding: 4px 7px 3px 7px;
+		    	display: block;
+		    	text-align: center;
+		    	text-decoration: none;
+		    	font-size: 14px;
+		    	.rounded (4px);
+		    	font-size: 12px;
+		    	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+			    background: url("../img/texturelogo.png") 21% 42% no-repeat;
+			    background-size: 177px 157px;
+			    color: #fff;
+			    cursor: pointer;
+			    img {
+				    width: 20px;
+			    }
+		    }
+		    &.open {
+		    }
+	    }
+    	#userOptions {
+	    	position: absolute;
+	    	right: 9px;
+			top: 30px;
+			font-size: 14px;
+	    	.rounded (4px);
+	    	font-size: 12px;
+	    	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
+		    color: #221F1F;
+	    	background: #eeeded;  
+	    	padding:15px;
+	    	z-index:40;
+	    	opacity: 0;
+	    	margin-top:5px;
+	    	>img {
+		    	width: 150px;
+	    	}
+	    	>a {
+		    	color: #000;
+		    	text-decoration: none;
+		    	display: block;
+		    	white-space: nowrap;
+	    	}
+	    	>h3 {
+	    		b {
+		    		color:#600;
+	    		}
+		    	color: #000;
+		    	display: block;
+		    	white-space: nowrap;
+	    	}  
+	    	#userArrow {
+		    	position: absolute;
+		    	width: 27px;
+		    	height: 15px;
+		    	background: url("../img/userArrow.png") 0 0 no-repeat;
+		    	top: -9px;
+				right: 8px;
+	    	}	
+	    	&.open {
+		    	margin-top:0px;
+		    	opacity: 1;
+	    	}
+	    }
     	li:first-child a {
    			margin-left: 0;
    		}

@@ -25,6 +25,16 @@
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 	
+		<script>
+		$(document).ready(function() {
+			$('#user').click(function() {
+				$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+			});
+			$('#user').mouseleave(function() {
+				$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+  			});
+		});
+		</script>
         {% block script %}
         {% endblock %}
 
@@ -65,12 +75,22 @@
 			<a href="#">SEARCH</a>
 			{% if user.is_authenticated %}
 			    <!--welcome {{ user.username }}-->
-			    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT ({{ user.username }})</a>
-			    <a href="{{ social_user_profile }}">PROFILE</a>
-			    <a href="{{ social_users_list }}">USERS</a>
+				<div href="#" id="user">
+					<a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+				    <div id="userOptions">
+				    	<div id="userArrow"></div>
+				    	<h3>Hi <b>{{ user.username }}!</b></h3>
+				    	<img src="{% static 'carnatic/img/develop/avatar.png' %}" />
+					    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT</a>
+					    <a href="{{ social_user_profile }}">PROFILE</a>
+					    <a href="{{ social_users_list }}">USERS</a>
+				    </div>	
+			    </div>
 			{% else %}
-			    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
-			    <a href="{{ register_url }}">REGISTER</a>
+			    <div id="guestOptions">
+				    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
+				    <a href="{{ register_url }}">REGISTER</a>
+			    </div>
 			{% endif %}
                 </nav>
                 <div class="clearfix"></div>
