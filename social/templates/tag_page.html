@@ -1,0 +1,40 @@
+{% extends "carnatic/base.html" %}
+{% load inline %}
+{% load social_inline %}
+
+{% block wrap %}
+
+<p>TAG: <b>{{ tag_name }}</b></p>
+
+{% if modeltype == "artist" %}
+    <h4>Artists</h4>
+    <ul>
+        {% for a in objects %}
+           <li>{% inline_artist a.0 %} ({{ a.1 }})</li> 
+        {% endfor %}
+    </ul>
+{% elif modeltype == "concert" %}
+    <h4>Concerts</h4>
+    <ul>
+        {% for a in objects %}
+           <li>{% inline_concert a.0 %} ({{ a.1 }})</li> 
+        {% endfor %}
+    </ul>
+{% elif modeltype == "recording" %}
+    <h4>Recordings</h4>
+    <ul>
+        {% for a in objects %}
+           <li>{% inline_recording a.0 %} ({{ a.1 }})</li> 
+        {% endfor %}
+    </ul>
+{% elif modeltype == "work" %}
+    <h4>Works</h4>
+    <ul>
+        {% for a in objects %}
+           <li>{% inline_work a.0 %} ({{ a.1 }})</li> 
+        {% endfor %}
+    </ul>
+{% endif %} 
+
+
+{% endblock %}

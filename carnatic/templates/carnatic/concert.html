@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load inline %}
+{% load comments %}
 {% load badges %}
 {% load staticfiles %}
 
@@ -205,5 +206,33 @@ $(document).ready(function() {
 		 	<div class="clearfix"></div>
 	 	</div>     	
 </div>
+
+{% include "carnatic/recordings_by_release_list.html" with concert=concert only %}
+
+<h2>Comments:</h2>
+{% render_comment_list for concert %}
+
+<h2>Post comment:</h2>
+{% if user.is_authenticated %}
+ {% get_comment_form for concert as form_comment %}
+
+{% include "browse/form-comment.html" %}
+
+	<input type="hidden" name="next" value="{% url 'carnatic-concert' concert.id %}" />
+	<input type="submit" value="Add comment" id="id_submit" />
+        <input type="submit" name="preview" value="Preview">
+ </form>
+ 
+<h2>Post Tag:</h2>
+	{% include "form-tag.html" %}
+
+
+{% else %}
+    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/' %}">log in</a> to leave a comment.</p>
+{% endif %}
+
+<h2>Tags:</h2>
+
+	{% include "tag_cloud.html" %}
 
 {% endblock %}

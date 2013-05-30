@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load inline %}
+{% load comments %}
 {% load badges %}
 {% load staticfiles %}
 
@@ -200,4 +201,31 @@ Composed by: {% inline_composer work.composer %}<br>
 {% for c in work.concerts %}
 <li>{% inline_concert c %}
 {% endfor %}
+
+<h2>Comments:</h2>
+{% render_comment_list for work %}
+
+<h2>Post comment:</h2>
+{% if user.is_authenticated %}
+ {% get_comment_form for work as form_comment %}
+
+{% include "browse/form-comment.html" %}
+
+	<input type="hidden" name="next" value="{% url 'carnatic-work' work.id %}" />
+	<input type="submit" value="Add comment" id="id_submit" />
+        <input type="submit" name="preview" value="Preview">
+ </form> 
+
+ <h2>Post Tag:</h2>
+	{% include "form-tag.html" %}
+
+
+{% else %}
+    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/' %}">log in</a> to leave a comment.</p>
+{% endif %}
+
+<h2>Tags:</h2>
+
+	{% include "tag_cloud.html" %}
+
 {% endblock %}

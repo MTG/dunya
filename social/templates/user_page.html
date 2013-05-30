@@ -1,7 +1,17 @@
-{% extends "base.html" %}
-{% block title %}{{ username }}{% endblock %}
-{% block head %}Perfil of {{ fullname }}{% endblock %}
-{% block content %}
- 
+{% extends "carnatic/base.html" %}
+{% load social_inline %}
+
+{% block wrap %}
+<h1>Profile of {{ other_user.username }}</h1>
+
+{% if not follow %}
+    <p>Follow</p>
+{% else %}
+    <p>Unfollow</p>
+{% endif %}    
+
+{% include "timeline.html" %}
+
 {% endblock %}
+
 

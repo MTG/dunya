@@ -91,6 +91,14 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.request",
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -107,9 +115,12 @@ INSTALLED_APPS = (
     'data',
     'rest_framework',
     'social',
+    'django_extensions',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    'south'
+    'south',
+    'django.contrib.comments',
+    'inplaceeditform',
 )
 
 # Celery
@@ -145,5 +156,8 @@ LOGGING = {
         },
     }
 }
+
+#Social part_PROFILE
+AUTH_PROFILE_MODULE = "social.UserProfile"
 
 from local_settings import *
