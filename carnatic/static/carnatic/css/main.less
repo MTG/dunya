@@ -38,9 +38,6 @@ fieldset { margin-bottom: 6px; }
 	GLOBAL COLORS
    ========================================================================== */
    
-   
-#toggleMain { position: absolute; top:0px; left:50%; background: #f00; cursor: pointer; z-index: 10; }
-   
 
 /* ==========================================================================
 	BASE ELEMENTS
@@ -139,6 +136,8 @@ textarea {
 			padding:10px;
 			font-size: 14px;
 			color:@gris6;
+			box-shadow: inset 0px 1px 5px #aaa;
+			.rounded(4px);
 		}
 		.button {  
 			background: url("../img/icon_search.png") 0 0 no-repeat;
@@ -197,6 +196,7 @@ textarea {
 	    	background: #eeeded;
 	    	.rounded (4px);
 	    	font-size: 12px;
+	    	box-shadow: inset 0px 1px 5px #ddd, 1px 1px 2px #666;
     	}
     	li:first-child a {
    			margin-left: 0;
@@ -221,7 +221,7 @@ textarea {
 	position: relative; 
 	width:100%; height: 300px; 
 	overflow: hidden; 
-	overflow-x: scroll; 
+	overflow-x: auto; 
 	background: url("../img/cloth_alike.png") 0 0 repeat; 
 	#filterArea { 
 		position: relative; 
@@ -231,7 +231,7 @@ textarea {
 			position: relative; 
 			float:left; 
 			height: 300px; 
-			overflow-y: scroll; 
+			overflow-y: auto; 
 			border-left:1px solid #A7A8AC; 
 			border-right:1px solid #A7A8AC;
 			ul { 
@@ -279,9 +279,7 @@ textarea {
 				float: left; 
 				width: 120px; 
 				height: 120px; 
-				-webkit-border-radius: 120px; 
-				-moz-border-radius: 120px; 
-				border-radius: 120px; 
+				.rounded(120px); 
 				display: table; 
 				top: 86px; 
 				margin-left: 30px; 
@@ -333,9 +331,9 @@ textarea {
 				float:left; 
 				width:240px; 
 				height: 300px; 
-				overflow-y: scroll; 
+				overflow-y: auto; 
 				padding:15px; 
-				overflow-y: scroll; 
+				overflow-y: auto; 
 				color:#000; 
 				& fieldset span.output { 
 					color: #333; 
@@ -362,6 +360,7 @@ textarea {
 		width:100%;
 		height: 64px; 
 		background: url("../img/compactBar.png") 0 0 repeat-x;
+		box-shadow: inset 0px 0px 8px #444;
 		.arrowItem {
 			.arrow(20px);
 		}
@@ -411,10 +410,26 @@ textarea {
 					border-left-color: darken(@taala_color, 10%); 
 					&:after { border-left-color: @taala_color; }
 				}
+				&.recording .breadarrow { 
+					border-left-color: darken(@recording_color, 10%); 
+					&:after { border-left-color: @recording_color; }
+				}
+				&.composer .breadarrow { 
+					border-left-color: darken(@composer_color, 10%); 
+					&:after { border-left-color: @composer_color; }
+				}
+				&.entity_9 .breadarrow { 
+					border-left-color: darken(@entity_9_color, 10%); 
+					&:after { border-left-color: @entity_9_color; }
+				}
+				&.entity_10 .breadarrow { 
+					border-left-color: darken(@entity_10_color, 10%); 
+					&:after { border-left-color: @entity_10_color; }
+				}
 				span {
 					display: table-cell;
 					padding-right:10px;
-					padding-left:10px;
+					padding-left: 5px;
 					vertical-align: middle;
 					a {
 						text-decoration: none; 
@@ -462,8 +477,15 @@ textarea {
 			width:220px;
 			height: 296px;
 			padding: 10px;
-			background: url("../img/cloth_alike.png") 0 0 repeat;
-			#icon { position: absolute; bottom: 14px; left: 5px; width: 87px; height: 90px; background: url("../img/playButtonBig.png") 0 0 no-repeat; z-index: 4; }
+			#icon { 
+				position: absolute; 
+				bottom: 3px;
+				left: 3px; 
+				width: 87px; 
+				height: 90px; 
+				background: url("../img/playButtonBig.png") 0 0 no-repeat; 
+				z-index: 4; 
+			}
 			#innerSummary { position: absolute; z-index: 3; display: table; width: 100%; height: 100%; }
 			#summaryBack {
 				position: absolute;
@@ -472,6 +494,8 @@ textarea {
 				width: 100%;
 				height: 100%;
 				z-index: 2;
+				background: url("../img/noisy.png") 0 0 repeat;
+				opacity: 0.15;
 			}
 			#summaryBack2 {
 				position: absolute;
@@ -490,6 +514,8 @@ textarea {
 					font-size: 22px; 
 					line-height: 22px; 
 					margin:0px; 
+					color:#fff;
+					text-shadow: 1px 1px 4px #000;
 				}
 				h2 { 
 					font-size: 16px;
@@ -497,7 +523,7 @@ textarea {
 					margin:0px; 
 					line-height: 16px;
 					margin-top: 7px;
-					a { color:#000; text-decoration: none; }
+					a { text-decoration: none; }
 				}
 				h3 { 
 					color:#fff; 
@@ -532,7 +558,7 @@ textarea {
 					position: relative;					
 					width: auto;
 					height: 100%;
-					overflow: scroll;
+					overflow: auto;
 					.metaContainer {
 					position: relative;
 					width: 3000px;
@@ -547,7 +573,7 @@ textarea {
 							padding-top:24px;
 							position: relative;
 							.inner {
-								overflow-y: scroll;
+								overflow-y: auto;
 								height: 100%;
 							}
 							h3 { 
@@ -588,6 +614,7 @@ textarea {
 									text-align: right; 
 									clear: left; 
 									margin-right: 4px; 
+									font-weight: bold;
 								}
 								b { 
 									float: left; 
@@ -627,7 +654,7 @@ textarea {
 									padding-top:24px;
 									position: relative;
 									.inner {
-										overflow-y: scroll;
+										overflow-y: auto;
 										height: 100%;
 									}
 									h3 { 
@@ -709,7 +736,7 @@ textarea {
 			float:left;
 			width: 100%;
 			margin-left: -220px;
-			.scrolldata { overflow-x: scroll; 
+			.scrolldata { overflow-x: auto; 
 				.scrollblock { width: 100%; }
 			}
 			.innerrightdata {
@@ -819,7 +846,7 @@ textarea {
 					padding:10px;
 					margin-bottom: -1px;
 					margin-top:1px;
-					overflow-y: scroll;
+					overflow-y: auto;
 					.artistFoto { 
 						position: relative;
 						width: 51px;
@@ -844,7 +871,7 @@ textarea {
 	}
 }
 
-
+/*
 // WORK Layout
 
 #detail.work #header #meta .metaBlock {
@@ -882,7 +909,7 @@ textarea {
 		width:300px;
 		&#excerpt {
 			height: 296px;
-			overflow-y: scroll;
+			overflow-y: auto;
 			height: 297px;
 			padding:20px;
 		}
@@ -961,7 +988,7 @@ textarea {
 		}
 	}
 }
-
+*/
 
 #tonic {	
 	.inner {
@@ -1000,8 +1027,8 @@ textarea {
 #filterMask #filterArea .filterList ul li.instrument { background: @instrument_color; }
 #filterMask #filterArea .filterList ul li.raaga { background: @raaga_color; }
 #filterMask #filterArea .filterList ul li.taala { background: @taala_color; }
-#filterMask #filterArea .filterList ul li.entity_7 { background: @entity_7_color; }
-#filterMask #filterArea .filterList ul li.entity_8 { background: @entity_8_color; }
+#filterMask #filterArea .filterList ul li.recording { background: @recording_color; }
+#filterMask #filterArea .filterList ul li.composer { background: @composer_color; }
 #filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
 #filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }
 
@@ -1012,8 +1039,8 @@ textarea {
 #detail.instrument a { color: darken( @instrument_color, 30% ) !important; }
 #detail.raaga a { color: darken( @raaga_color, 30% ) !important; }
 #detail.taala a { color: darken( @taala_color, 30% ) !important; } 
-#detail.entity_7 a { color: darken( @entity_7_color, 30% ) !important; }
-#detail.entity_8 a { color: darken( @entity_8_color, 30% ) !important; }
+#detail.recording a { color: darken( @recording_color, 30% ) !important; }
+#detail.composer a { color: darken( @composer_color, 30% ) !important; }
 #detail.entity_9 a { color: darken( @entity_9_color, 30% ) !important; }
 #detail.entity_10 a { color: darken( @entity_10_color, 30% ) !important; }
 
@@ -1024,8 +1051,8 @@ textarea {
 .filters.instrument { background: lighten(@instrument_color, 20%); }
 .filters.raaga { background: lighten(@raaga_color, 20%); }
 .filters.taala { background: lighten(@taala_color, 20%); }
-.filters.entity_7 { background: lighten(@entity_7_color, 20%); }
-.filters.entity_8 { background: lighten(@entity_8_color, 20%); }
+.filters.recording { background: lighten(@recording_color, 20%); }
+.filters.composer { background: lighten(@composer_color, 20%); }
 .filters.entity_9 { background: lighten(@entity_9_color, 20%); }
 .filters.entity_10 { background: lighten(@entity_10_color, 20%); }
 
@@ -1036,8 +1063,8 @@ textarea {
 .filters.instrument { background: fade(@instrument_color, 20%); }
 .filters.raaga { background: fade(@raaga_color, 20%); }
 .filters.taala { background: fade(@taala_color, 20%); }
-.filters.entity_7 { background: fade(@entity_7_color, 20%); }
-.filters.entity_8 { background: fade(@entity_8_color, 20%); }
+.filters.recording { background: fade(@recording_color, 20%); }
+.filters.composer { background: fade(@composer_color, 20%); }
 .filters.entity_9 { background: fade(@entity_9_color, 20%); }
 .filters.entity_10 { background: fade(@entity_10_color, 20%); }
 
@@ -1048,8 +1075,8 @@ textarea {
 .instrument .filterBall, .instrument .filterList ul li.selected { background: @instrument_color; }
 .raaga .filterBall, .raaga .filterList ul li.selected { background: @raaga_color; }
 .taala .filterBall, .taala .filterList ul li.selected { background: @taala_color; }
-.entity_7 .filterBall, .entity_7 .filterList ul li.selected { background: @entity_7_color; }
-.entity_8 .filterBall, .entity_8 .filterList ul li.selected { background: @entity_8_color; }
+.recording .filterBall, .recording .filterList ul li.selected { background: @recording_color; }
+.composer .filterBall, .composer .filterList ul li.selected { background: @composer_color; }
 .entity_9 .filterBall, .entity_9 .filterList ul li.selected { background: @entity_9_color; }
 .entity_10 .filterBall, .entity_10 .filterList ul li.selected { background: @entity_10_color; }
 
@@ -1059,8 +1086,8 @@ textarea {
 .instrument .formFilter { border-right: 4px solid @instrument_color; }
 .raaga .formFilter { border-right: 4px solid @raaga_color; }
 .taala .formFilter { border-right: 4px solid @taala_color; }
-.entity_7 .formFilter { border-right: 4px solid @entity_7_color; }
-.entity_8 .formFilter { border-right: 4px solid @entity_8_color; }
+.recording .formFilter { border-right: 4px solid @recording_color; }
+.composer .formFilter { border-right: 4px solid @composer_color; }
 .entity_9 .formFilter { border-right: 4px solid @entity_9_color; }
 .entity_10 .formFilter { border-right: 4px solid @entity_10_color; }
 
@@ -1070,21 +1097,32 @@ textarea {
 .instrument .formSectionOpen  { background: @instrument_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .raaga .formSectionOpen  { background: @raaga_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .taala .formSectionOpen  { background: @taala_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_7 .formSectionOpen  { background: @entity_7_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.entity_8 .formSectionOpen  { background: @entity_8_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.recording .formSectionOpen  { background: @recording_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.composer .formSectionOpen  { background: @composer_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .entity_9 .formSectionOpen  { background: @entity_9_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .entity_10 .formSectionOpen  { background: @entity_10_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-
+/*
 .artist #summary #summaryBack { background: fade(darken(@artist_color, 20%),40%); border-bottom:10px solid @artist_color; }
 .concert #summary #summaryBack { background: fade(darken(@concert_color, 30%),40%); border-bottom:10px solid @concert_color; }
 .work #summary #summaryBack { background: fade(darken(@work_color, 40%),40%); border-bottom:10px solid @work_color; }
 .instrument #summary #summaryBack { background: fade(darken(@instrument_color, 20%),40%); border-bottom:10px solid @instrument_color; }
 .raaga #summary #summaryBack { background: fade(darken(@raaga_color, 20%),40%); border-bottom:10px solid @raaga_color; }
 .taala #summary #summaryBack { background: fade(darken(@taala_color, 20%),40%); border-bottom:10px solid @taala_color; }
-.entity_7 #summary #summaryBack { background: fade(darken(@entity_7_color, 20%),40%); border-bottom:10px solid @entity_7_color; }
-.entity_8 #summary #summaryBack { background: fade(darken(@entity_8_color, 20%),40%); border-bottom:10px solid @entity_8_color; }
+.recording #summary #summaryBack { background: fade(darken(@recording_color, 20%),40%); border-bottom:10px solid @recording_color; }
+.composer #summary #summaryBack { background: fade(darken(@composer_color, 20%),40%); border-bottom:10px solid @composer_color; }
 .entity_9 #summary #summaryBack { background: fade(darken(@entity_9_color, 20%),40%); border-bottom:10px solid @entity_9_color; }
 .entity_10 #summary #summaryBack { background: fade(darken(@entity_10_color, 20%),40%); border-bottom:10px solid @entity_10_color; }
+*/
+.artist #summary { background: @artist_color; border-bottom:10px solid darken(@artist_color, 20%); }
+.concert #summary { background: @concert_color; border-bottom:10px solid darken(@concert_color, 30%); }
+.work #summary { background: @work_color; border-bottom:10px solid darken(@work_color, 20%); }
+.instrument #summary { background: @instrument_color; border-bottom:10px solid darken(@instrument_color, 20%); }
+.raaga #summary { background: @raaga_color; border-bottom:10px solid darken(@raaga_color, 20%); }
+.taala #summary { background: @taala_color; border-bottom:10px solid darken(@taala_color, 20%); }
+.recording #summary { background: @recording_color; border-bottom:10px solid darken(@recording_color, 20%); }
+.composer #summary { background: @composer_color; border-bottom:10px solid darken(@composer_color, 20%); }
+.entity_9 #summary { background: @entity_9_color; border-bottom:10px solid darken(@entity_9_color, 20%); }
+.entity_10 #summary { background: @entity_10_color; border-bottom:10px solid darken(@entity_10_color, 20%); }
 
 #summary.artist h1 { color: darken(@artist_color,45%); }
 #summary.concert h1 { color: darken(@concert_color,45%); }
@@ -1092,22 +1130,22 @@ textarea {
 #summary.instrument h1 { color: darken(@instrument_color,45%); }
 #summary.raaga h1 { color: darken(@raaga_color,45%); }
 #summary.taala h1 { color: darken(@taala_color,45%); }
-#summary.entity_7 h1 { color: darken(@entity_7_color,45%); }
-#summary.entity_8 h1 { color: darken(@entity_8_color,45%); }
+#summary.recording h1 { color: darken(@recording_color,45%); }
+#summary.composer h1 { color: darken(@composer_color,45%); }
 #summary.entity_9 h1 { color: darken(@entity_9_color,45%); }
 #summary.entity_10 h1 { color: darken(@entity_10_color,45%); }
 
 
-#detail.artist #header #summary span h1 { color: darken(@artist_color, 40%); }
-#detail.concert #header #summary span h1 { color: darken(@concert_color, 40%); }
-#detail.work #header #summary span h1 { color: darken(@work_color, 40%); }
-#detail.instrument #header #summary span h1 { color: darken(@instrument_color, 40%); }
-#detail.raaga #header #summary span h1 { color: darken(@raaga_color, 40%); }
-#detail.taala #header #summary span h1 { color: darken(@taala_color, 40%); }
-#detail.entity_7 #header #summary span h1 { color: darken(@entity_7_color, 40%); }
-#detail.entity_8 #header #summary span h1 { color: darken(@entity_8_color, 40%); }
-#detail.entity_9 #header #summary span h1 { color: darken(@entity_9_color, 40%); }
-#detail.entity_10 #header #summary span h1 { color: darken(@entity_10_color, 40%); }
+#detail.artist #header #summary span h2, #detail.artist #header #summary span h2 a { color: darken(@artist_color, 40%); }
+#detail.concert #header #summary span h2, #detail.concert #header #summary span h2 a { color: darken(@concert_color, 40%); }
+#detail.work #header #summary span h2, #detail.work #header #summary span h2 a { color: darken(@work_color, 40%); }
+#detail.instrument #header #summary span h2, #detail.instrument #header #summary span h2 a { color: darken(@instrument_color, 40%); }
+#detail.raaga #header #summary span h2, #detail.raaga #header #summary span h2 a { color: darken(@raaga_color, 40%); }
+#detail.taala #header #summary span h2, #detail.taala #header #summary span h2 a { color: darken(@taala_color, 40%); }
+#detail.recording #header #summary span h2, #detail.recording #header #summary span h2 a { color: darken(@recording_color, 40%); }
+#detail.composer #header #summary span h2, #detail.composer #header #summary span h2 a { color: darken(@composer_color, 40%); }
+#detail.entity_9 #header #summary span h2, #detail.entity_9 #header #summary span h2 a { color: darken(@entity_9_color, 40%); }
+#detail.entity_10 #header #summary span h2, #detail.entity_10 #header #summary span h2 a { color: darken(@entity_10_color, 40%); }
 
 /* ==========================================================================
    Media Queries

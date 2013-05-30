@@ -329,14 +329,6 @@ fieldset {
 /* ==========================================================================
 	GLOBAL COLORS
    ========================================================================== */
-#toggleMain {
-  position: absolute;
-  top: 0px;
-  left: 50%;
-  background: #f00;
-  cursor: pointer;
-  z-index: 10;
-}
 /* ==========================================================================
 	BASE ELEMENTS
    ========================================================================== */
@@ -433,6 +425,12 @@ textarea {
   padding: 10px;
   font-size: 14px;
   color: #666666;
+  box-shadow: inset 0px 1px 5px #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
 }
 .header-container #globalsearch .button {
   background: url("../img/icon_search.png") 0 0 no-repeat;
@@ -502,6 +500,7 @@ textarea {
   -o-border-radius: 4px;
   border-radius: 4px;
   font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 1px 1px 2px #666;
 }
 .header-container nav#mainmenu li:first-child a {
   margin-left: 0;
@@ -523,7 +522,7 @@ textarea {
   width: 100%;
   height: 300px;
   overflow: hidden;
-  overflow-x: scroll;
+  overflow-x: auto;
   background: url("../img/cloth_alike.png") 0 0 repeat;
 }
 #filterMask #filterArea {
@@ -535,7 +534,7 @@ textarea {
   position: relative;
   float: left;
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-left: 1px solid #A7A8AC;
   border-right: 1px solid #A7A8AC;
 }
@@ -583,6 +582,8 @@ textarea {
   height: 120px;
   -webkit-border-radius: 120px;
   -moz-border-radius: 120px;
+  -ms-border-radius: 120px;
+  -o-border-radius: 120px;
   border-radius: 120px;
   display: table;
   top: 86px;
@@ -641,7 +642,7 @@ textarea {
   width: 240px;
   height: 300px;
   padding: 15px;
-  overflow-y: scroll;
+  overflow-y: auto;
   color: #000;
 }
 #filterMask #filterArea .filters .formFilter fieldset span.output {
@@ -674,6 +675,7 @@ textarea {
   width: 100%;
   height: 64px;
   background: url("../img/compactBar.png") 0 0 repeat-x;
+  box-shadow: inset 0px 0px 8px #444;
 }
 #filterMask.querybar .arrowItem {
   width: 0;
@@ -774,10 +776,34 @@ textarea {
 #filterMask.querybar #breadcrumb .bread.taala .breadarrow:after {
   border-left-color: #ecd078;
 }
+#filterMask.querybar #breadcrumb .bread.recording .breadarrow {
+  border-left-color: #c24027;
+}
+#filterMask.querybar #breadcrumb .bread.recording .breadarrow:after {
+  border-left-color: #d95b43;
+}
+#filterMask.querybar #breadcrumb .bread.composer .breadarrow {
+  border-left-color: #962034;
+}
+#filterMask.querybar #breadcrumb .bread.composer .breadarrow:after {
+  border-left-color: #c02942;
+}
+#filterMask.querybar #breadcrumb .bread.entity_9 .breadarrow {
+  border-left-color: #301520;
+}
+#filterMask.querybar #breadcrumb .bread.entity_9 .breadarrow:after {
+  border-left-color: #542437;
+}
+#filterMask.querybar #breadcrumb .bread.entity_10 .breadarrow {
+  border-left-color: #3e595c;
+}
+#filterMask.querybar #breadcrumb .bread.entity_10 .breadarrow:after {
+  border-left-color: #53777a;
+}
 #filterMask.querybar #breadcrumb .bread span {
   display: table-cell;
   padding-right: 10px;
-  padding-left: 10px;
+  padding-left: 5px;
   vertical-align: middle;
 }
 #filterMask.querybar #breadcrumb .bread span a {
@@ -824,12 +850,11 @@ textarea {
   width: 220px;
   height: 296px;
   padding: 10px;
-  background: url("../img/cloth_alike.png") 0 0 repeat;
 }
 #detail #header #summary #icon {
   position: absolute;
-  bottom: 14px;
-  left: 5px;
+  bottom: 3px;
+  left: 3px;
   width: 87px;
   height: 90px;
   background: url("../img/playButtonBig.png") 0 0 no-repeat;
@@ -849,6 +874,8 @@ textarea {
   width: 100%;
   height: 100%;
   z-index: 2;
+  background: url("../img/noisy.png") 0 0 repeat;
+  opacity: 0.15;
 }
 #detail #header #summary #summaryBack2 {
   position: absolute;
@@ -868,6 +895,8 @@ textarea {
   font-size: 22px;
   line-height: 22px;
   margin: 0px;
+  color: #fff;
+  text-shadow: 1px 1px 4px #000;
 }
 #detail #header #summary span h2 {
   font-size: 16px;
@@ -877,7 +906,6 @@ textarea {
   margin-top: 7px;
 }
 #detail #header #summary span h2 a {
-  color: #000;
   text-decoration: none;
 }
 #detail #header #summary span h3 {
@@ -915,7 +943,7 @@ textarea {
   position: relative;
   width: auto;
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 #detail #header #meta .metaBlock .metaMask .metaContainer {
   position: relative;
@@ -932,7 +960,7 @@ textarea {
   position: relative;
 }
 #detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails .inner {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100%;
 }
 #detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails h3 {
@@ -972,6 +1000,7 @@ textarea {
   text-align: right;
   clear: left;
   margin-right: 4px;
+  font-weight: bold;
 }
 #detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list b {
   float: left;
@@ -1015,7 +1044,7 @@ textarea {
   position: relative;
 }
 #detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails .inner {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 100%;
 }
 #detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails h3 {
@@ -1088,7 +1117,7 @@ textarea {
   margin-left: -220px;
 }
 #detail .thedata .rightdata .scrolldata {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 #detail .thedata .rightdata .scrolldata .scrollblock {
   width: 100%;
@@ -1226,7 +1255,7 @@ textarea {
   padding: 10px;
   margin-bottom: -1px;
   margin-top: 1px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #detail .thedata .rightdata .innerrightdata .artist .artistFoto {
   position: relative;
@@ -1254,108 +1283,124 @@ textarea {
 #detail .thedata .rightdata .innerrightdata .artist .artist4 {
   background: url("../img/artist4.jpg") 0 0 no-repeat;
 }
-#detail.work #header #meta .metaBlock .metaDetails#editorial {
-  z-index: 2;
-  width: 137px;
+/*
+// WORK Layout
+
+#detail.work #header #meta .metaBlock {
+	.metaDetails {
+		&#editorial {
+			z-index: 2;
+			width:137px;	
+			.list {
+				label { width: 38px; }
+				b { width: 69px; }
+			}
+		}
+		&#tonic {
+			z-index: 1;
+			width:145px;	
+		}
+		&#samples {
+			z-index: 0;
+			width:100%;	
+			margin-left:-282px;
+			overflow-x: hidden;
+			.inner { margin-left: 282px;}
+		}
+		&#recording {
+			width:100%;	
+		}
+	}
 }
-#detail.work #header #meta .metaBlock .metaDetails#editorial .list label {
-  width: 38px;
+
+
+// ARTIST Layout
+
+#detail.artist #header #meta .metaBlock {
+	.metaDetails {
+		width:300px;
+		&#excerpt {
+			height: 296px;
+			overflow-y: auto;
+			height: 297px;
+			padding:20px;
+		}
+		&#samples {
+			z-index: 2;
+			height: 297px;
+			h3 { position: relative; margin-top:85px; }
+			span { position: relative; }
+		}
+		&#external {
+			z-index: 1;	
+			height: 297px;
+			h3 { position: relative; margin-top:85px; }
+			span { position: relative; }
+		}
+	}
 }
-#detail.work #header #meta .metaBlock .metaDetails#editorial .list b {
-  width: 69px;
+
+// INSTRUMENT Layout
+
+#detail.instrument #header #meta .metaBlock {
+	.metaDetails {
+		width:50%;
+		&#excerpt {
+		
+		}
+		&#samples {
+			h3 { }
+			span {  }
+		}
+		&#external {
+			h3 { }
+			span { }
+		}
+	}
 }
-#detail.work #header #meta .metaBlock .metaDetails#tonic {
-  z-index: 1;
-  width: 145px;
+
+
+// CONCERT Layout
+#detail.concert #header #meta .metaBlock {	
+	.metaDetails {
+		&#structure {
+			z-index: 3;
+			width:134px;	
+		}
+		&#tonic {
+			z-index: 2;
+			width:145px;
+		}		
+		&#samples {
+			z-index: 0;
+			width:100%;	
+			margin-left:-279px;
+			overflow-x: hidden;
+			.inner, h3 { margin-left: 279px;}
+		}
+		&#editorial {
+			z-index: 3;
+			width:134px;	
+			.list {
+				label { width: 41px; }
+				b { width: 50px; }
+			}
+		}
+		&#artists {
+			z-index: 2;
+			width: 200px;
+		}
+
+		&#external {
+			z-index:0; 
+			width:100%;	
+			margin-left: -334px;
+			overflow-x: hidden;
+			.inner, h3 { margin-left: 334px; }
+		}
+	}
 }
-#detail.work #header #meta .metaBlock .metaDetails#samples {
-  z-index: 0;
-  width: 100%;
-  margin-left: -282px;
-  overflow-x: hidden;
-}
-#detail.work #header #meta .metaBlock .metaDetails#samples .inner {
-  margin-left: 282px;
-}
-#detail.work #header #meta .metaBlock .metaDetails#recording {
-  width: 100%;
-}
-#detail.artist #header #meta .metaBlock .metaDetails {
-  width: 300px;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#excerpt {
-  height: 296px;
-  overflow-y: scroll;
-  height: 297px;
-  padding: 20px;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#samples {
-  z-index: 2;
-  height: 297px;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#samples h3 {
-  position: relative;
-  margin-top: 85px;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#samples span {
-  position: relative;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#external {
-  z-index: 1;
-  height: 297px;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#external h3 {
-  position: relative;
-  margin-top: 85px;
-}
-#detail.artist #header #meta .metaBlock .metaDetails#external span {
-  position: relative;
-}
-#detail.instrument #header #meta .metaBlock .metaDetails {
-  width: 50%;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#structure {
-  z-index: 3;
-  width: 134px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#tonic {
-  z-index: 2;
-  width: 145px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#samples {
-  z-index: 0;
-  width: 100%;
-  margin-left: -279px;
-  overflow-x: hidden;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#samples .inner,
-#detail.concert #header #meta .metaBlock .metaDetails#samples h3 {
-  margin-left: 279px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#editorial {
-  z-index: 3;
-  width: 134px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#editorial .list label {
-  width: 41px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#editorial .list b {
-  width: 50px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#artists {
-  z-index: 2;
-  width: 200px;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#external {
-  z-index: 0;
-  width: 100%;
-  margin-left: -334px;
-  overflow-x: hidden;
-}
-#detail.concert #header #meta .metaBlock .metaDetails#external .inner,
-#detail.concert #header #meta .metaBlock .metaDetails#external h3 {
-  margin-left: 334px;
-}
+*/
 #tonic .inner {
   text-align: center;
   padding-top: 6px;
@@ -1406,10 +1451,10 @@ textarea {
 #filterMask #filterArea .filterList ul li.taala {
   background: #ecd078;
 }
-#filterMask #filterArea .filterList ul li.entity_7 {
+#filterMask #filterArea .filterList ul li.recording {
   background: #d95b43;
 }
-#filterMask #filterArea .filterList ul li.entity_8 {
+#filterMask #filterArea .filterList ul li.composer {
   background: #c02942;
 }
 #filterMask #filterArea .filterList ul li.entity_9 {
@@ -1436,10 +1481,10 @@ textarea {
 #detail.taala a {
   color: #b28d19 !important;
 }
-#detail.entity_7 a {
+#detail.recording a {
   color: #6d2416 !important;
 }
-#detail.entity_8 a {
+#detail.composer a {
   color: #420e17 !important;
 }
 #detail.entity_9 a {
@@ -1466,10 +1511,10 @@ textarea {
 .filters.taala {
   background: #f9efd1;
 }
-.filters.entity_7 {
+.filters.recording {
   background: #eaa598;
 }
-.filters.entity_8 {
+.filters.composer {
   background: #e06f82;
 }
 .filters.entity_9 {
@@ -1496,10 +1541,10 @@ textarea {
 .filters.taala {
   background: rgba(236, 208, 120, 0.2);
 }
-.filters.entity_7 {
+.filters.recording {
   background: rgba(217, 91, 67, 0.2);
 }
-.filters.entity_8 {
+.filters.composer {
   background: rgba(192, 41, 66, 0.2);
 }
 .filters.entity_9 {
@@ -1532,12 +1577,12 @@ textarea {
 .taala .filterList ul li.selected {
   background: #ecd078;
 }
-.entity_7 .filterBall,
-.entity_7 .filterList ul li.selected {
+.recording .filterBall,
+.recording .filterList ul li.selected {
   background: #d95b43;
 }
-.entity_8 .filterBall,
-.entity_8 .filterList ul li.selected {
+.composer .filterBall,
+.composer .filterList ul li.selected {
   background: #c02942;
 }
 .entity_9 .filterBall,
@@ -1566,10 +1611,10 @@ textarea {
 .taala .formFilter {
   border-right: 4px solid #ecd078;
 }
-.entity_7 .formFilter {
+.recording .formFilter {
   border-right: 4px solid #d95b43;
 }
-.entity_8 .formFilter {
+.composer .formFilter {
   border-right: 4px solid #c02942;
 }
 .entity_9 .formFilter {
@@ -1596,10 +1641,10 @@ textarea {
 .taala .formSectionOpen {
   background: #ecd078 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_7 .formSectionOpen {
+.recording .formSectionOpen {
   background: #d95b43 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.entity_8 .formSectionOpen {
+.composer .formSectionOpen {
   background: #c02942 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .entity_9 .formSectionOpen {
@@ -1608,45 +1653,57 @@ textarea {
 .entity_10 .formSectionOpen {
   background: #53777a url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
-.artist #summary #summaryBack {
-  background: rgba(32, 173, 202, 0.4);
-  border-bottom: 10px solid #69d2e7;
+/*
+.artist #summary #summaryBack { background: fade(darken(@artist_color, 20%),40%); border-bottom:10px solid @artist_color; }
+.concert #summary #summaryBack { background: fade(darken(@concert_color, 30%),40%); border-bottom:10px solid @concert_color; }
+.work #summary #summaryBack { background: fade(darken(@work_color, 40%),40%); border-bottom:10px solid @work_color; }
+.instrument #summary #summaryBack { background: fade(darken(@instrument_color, 20%),40%); border-bottom:10px solid @instrument_color; }
+.raaga #summary #summaryBack { background: fade(darken(@raaga_color, 20%),40%); border-bottom:10px solid @raaga_color; }
+.taala #summary #summaryBack { background: fade(darken(@taala_color, 20%),40%); border-bottom:10px solid @taala_color; }
+.recording #summary #summaryBack { background: fade(darken(@recording_color, 20%),40%); border-bottom:10px solid @recording_color; }
+.composer #summary #summaryBack { background: fade(darken(@composer_color, 20%),40%); border-bottom:10px solid @composer_color; }
+.entity_9 #summary #summaryBack { background: fade(darken(@entity_9_color, 20%),40%); border-bottom:10px solid @entity_9_color; }
+.entity_10 #summary #summaryBack { background: fade(darken(@entity_10_color, 20%),40%); border-bottom:10px solid @entity_10_color; }
+*/
+.artist #summary {
+  background: #69d2e7;
+  border-bottom: 10px solid #20adca;
 }
-.concert #summary #summaryBack {
-  background: rgba(68, 165, 160, 0.4);
-  border-bottom: 10px solid #a7dbd8;
+.concert #summary {
+  background: #a7dbd8;
+  border-bottom: 10px solid #44a5a0;
 }
-.work #summary #summaryBack {
-  background: rgba(137, 149, 79, 0.4);
-  border-bottom: 10px solid #e0e4cc;
+.work #summary {
+  background: #e0e4cc;
+  border-bottom: 10px solid #b7c189;
 }
-.instrument #summary #summaryBack {
-  background: rgba(179, 85, 10, 0.4);
-  border-bottom: 10px solid #f38630;
+.instrument #summary {
+  background: #f38630;
+  border-bottom: 10px solid #b3550a;
 }
-.raaga #summary #summaryBack {
-  background: rgba(148, 62, 0, 0.4);
-  border-bottom: 10px solid #fa6900;
+.raaga #summary {
+  background: #fa6900;
+  border-bottom: 10px solid #943e00;
 }
-.taala #summary #summaryBack {
-  background: rgba(223, 176, 31, 0.4);
-  border-bottom: 10px solid #ecd078;
+.taala #summary {
+  background: #ecd078;
+  border-bottom: 10px solid #dfb01f;
 }
-.entity_7 #summary #summaryBack {
-  background: rgba(151, 50, 31, 0.4);
-  border-bottom: 10px solid #d95b43;
+.recording #summary {
+  background: #d95b43;
+  border-bottom: 10px solid #97321f;
 }
-.entity_8 #summary #summaryBack {
-  background: rgba(108, 23, 37, 0.4);
-  border-bottom: 10px solid #c02942;
+.composer #summary {
+  background: #c02942;
+  border-bottom: 10px solid #6c1725;
 }
-.entity_9 #summary #summaryBack {
-  background: rgba(13, 5, 8, 0.4);
-  border-bottom: 10px solid #542437;
+.entity_9 #summary {
+  background: #542437;
+  border-bottom: 10px solid #0d0508;
 }
-.entity_10 #summary #summaryBack {
-  background: rgba(42, 60, 61, 0.4);
-  border-bottom: 10px solid #53777a;
+.entity_10 #summary {
+  background: #53777a;
+  border-bottom: 10px solid #2a3c3d;
 }
 #summary.artist h1 {
   color: #0f4f5c;
@@ -1666,10 +1723,10 @@ textarea {
 #summary.taala h1 {
   color: #6f5810;
 }
-#summary.entity_7 h1 {
+#summary.recording h1 {
   color: #2d0f09;
 }
-#summary.entity_8 h1 {
+#summary.composer h1 {
   color: #030101;
 }
 #summary.entity_9 h1 {
@@ -1678,34 +1735,44 @@ textarea {
 #summary.entity_10 h1 {
   color: #000000;
 }
-#detail.artist #header #summary span h1 {
+#detail.artist #header #summary span h2,
+#detail.artist #header #summary span h2 a {
   color: #126272;
 }
-#detail.concert #header #summary span h1 {
+#detail.concert #header #summary span h2,
+#detail.concert #header #summary span h2 a {
   color: #35817d;
 }
-#detail.work #header #summary span h1 {
+#detail.work #header #summary span h2,
+#detail.work #header #summary span h2 a {
   color: #89954f;
 }
-#detail.instrument #header #summary span h1 {
+#detail.instrument #header #summary span h2,
+#detail.instrument #header #summary span h2 a {
   color: #522705;
 }
-#detail.raaga #header #summary span h1 {
+#detail.raaga #header #summary span h2,
+#detail.raaga #header #summary span h2 a {
   color: #2e1300;
 }
-#detail.taala #header #summary span h1 {
+#detail.taala #header #summary span h2,
+#detail.taala #header #summary span h2 a {
   color: #856a13;
 }
-#detail.entity_7 #header #summary span h1 {
+#detail.recording #header #summary span h2,
+#detail.recording #header #summary span h2 a {
   color: #43160d;
 }
-#detail.entity_8 #header #summary span h1 {
+#detail.composer #header #summary span h2,
+#detail.composer #header #summary span h2 a {
   color: #180508;
 }
-#detail.entity_9 #header #summary span h1 {
+#detail.entity_9 #header #summary span h2,
+#detail.entity_9 #header #summary span h2 a {
   color: #000000;
 }
-#detail.entity_10 #header #summary span h1 {
+#detail.entity_10 #header #summary span h2,
+#detail.entity_10 #header #summary span h2 a {
   color: #000101;
 }
 /* ==========================================================================
