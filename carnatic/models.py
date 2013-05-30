@@ -6,6 +6,7 @@ import managers
 import filters
 import random
 
+
 class CarnaticStyle(object):
     def get_style(self):
         return "carnatic"
@@ -32,6 +33,7 @@ class MusicalSchool(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+    
 
     def biography(self):
         return "Biography of %s" % self.name

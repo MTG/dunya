@@ -15,12 +15,19 @@ class Reference(models.Model):
     uri = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now_add=True)
 
+class Description(models.Model):
+    """ A short description of a thing in the database.
+    It could be a biography, or a description """
+    source = models.ForeignKey(Source, blank=True, null=True)
+    description = models.TextField()
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
 
     source = models.ForeignKey(Source, blank=True, null=True)
     references = models.ManyToManyField(Reference, blank=True, null=True)
+    description = models.ForeignKey(Description, blank=True, null=True)
 
     def get_style(self):
         raise Exception("need style")

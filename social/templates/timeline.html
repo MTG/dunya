@@ -1,0 +1,37 @@
+{% load social_inline %}
+
+<div class="timeline">
+<h2>TIMELINE</h2>
+<h3>Recent Activity</h3>
+<hr>
+
+<ul class="timeline-elems">
+{% for a in timeline %}
+    {% if a.type == 'comment' %}
+        <li class="timeline-comment-elem">
+            {% if request.user.is_authenticated and a.user_id == request.user.id %}
+                <b>You</b>
+            {% else %}
+                User <b>{{ a.username }}</b>
+            {% endif %}
+            added a <b>{% inline_comment a %}</b>
+            to {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a>
+            on <b>{{ a.submit_date }}</b>
+            <span></span>
+        </li>
+    {% elif a.type == 'tag' %}
+        <li class="timeline-tag-elem">
+            {% if request.user.is_authenticated and a.user_id == request.user.id %}
+                <b>You</b>
+            {% else %}
+                User <b>{{ a.username }}</b>
+            {% endif %}
+            tagged {{ a.content_type }} <a href="/carnatic/{{ a.content_type}}/{{ a.content_id}}"><b>{{ a.content_name }}</b></a>
+            with <b>{% inline_tag a %}</b>
+            on <b>{{ a.submit_date }}</b>
+            <span></span>
+        </li>
+    {% endif %}
+{% endfor %}
+</ul>
+</div>

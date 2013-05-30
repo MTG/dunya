@@ -1,0 +1,74 @@
+<script>
+    $(document).ready(function() {
+       $('#id_objecttype').val("{{ objecttype }}");
+       $('#id_objectid').val({{ objectid }});
+
+    });
+    $(function() {
+        
+      function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+     
+    $( "#id_tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).data( "ui-autocomplete" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          //console.log('http://0.0.0.0:8001{{ social_tag_autocomplete }}?term='+extractLast( request.term ));
+          var items = [];
+          $.getJSON('{{ social_tag_autocomplete }}?term='+extractLast( request.term ), function(data) {
+                $.each(data, function(k, v) {
+                  items.push(v.value);
+                });
+                response( $.ui.autocomplete.filter(items , extractLast( request.term ) ) );
+          });
+          
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( "," );
+          return false;
+        }
+      });
+  }); 
+     
+     
+      //function( request, response ) {
+      //    // delegate back to autocomplete, but extract the last term
+      //    response( $.ui.autocomplete.filter('{{ social_tag_autocomplete }}', extractLast( request.term ) ) );
+      //  }
+    //$("#id_tags").autocomplete({
+    //        source: '{{ social_tag_autocomplete }}',
+    //        selectFirst:true,
+    //        minLength:2,
+    //     });
+    //});
+    
+</script>
+
+<form method="post" action="/social/tag/">
+    {% csrf_token %}
+    {{ form.as_p }}
+<input type="submit" value="save" />
+</form>
