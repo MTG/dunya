@@ -53,91 +53,44 @@ $(document).ready(function() {
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
-     			<div id="icon"></div>
      		</div>
 	     		
      		<div id="meta">
-     		<div class="metaBlock">
-				<div class="metaMask">
-			 		<div class="metaContainer">	
-						<div id="excerpt" class="metaDetails">
-							<span class="list">
-								<label>From album</label><b>Pure Expressions</b>
-								<label>Composer</label><b>Vyasaraya</b>
-								<label>Taala</label><b>Mishra Chapu</b>
-								<label>Raaga</label><b>Yaman Kalyani</b>
-								<label>Tonic</label><b>Tonic: 164.81 Hz</b>
-							</span>
-						</div>
-			 		</div>
-				</div>
+	     		<div class="metaBlock">
+					<div class="metaMask">
+				 		<div class="metaContainer">	
+							<div id="excerpt" class="metaDetails">
+								<span class="list">
+									<label>From album</label><b>Pure Expressions</b>
+									<label>Composer</label><b>Vyasaraya</b>
+									<label>Taala</label><b>Mishra Chapu</b>
+									<label>Raaga</label><b>Yaman Kalyani</b>
+									<label>Tonic</label><b>Tonic: 164.81 Hz</b>
+								</span>
+							</div>
+				 		</div>
+					</div>
+	     		</div>
      		</div>
-     		</div>
-
+	 		<div id="control">
+	 			<div class="revButton"></div>
+	 			<div class="plButton"></div>
+	 			<div class="folButton"></div>
+	 		</div>
 	     	<div class="clearfix"></div>
 
      	</div><!-- HEADER END -->
 
 	 	<div class="alldata">
 	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>List of concerts</h3>
+	     		<div class="bigWave">
+				 	<img src="{% static 'carnatic/img/develop/wave_1.png' %}" />
 	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata scrolldata">
-	                    <div class="scrollblock">
-	                        {% for concert in concerts %}
-	                            {% badge_concert concert %}
-	                        {% endfor %}
-	                    </div>
-	     			</div>
-	     		</div>
-	     	</div>
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>List of recordings</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata nopad">
-	                    {% for performance in performances %}
-	                        {% badge_performance performance %}
-	                    {% endfor %}
-		     			<div class="clearfix"></div>
-	     			</div>
-	     		</div>
-	     	</div>
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>List of instruments</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata">
-	     			Right Data
-	     			</div>
-	     		</div>
-	     	</div>
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>Raagas</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata">
-	     			Right Data
-	     			</div>
-	     		</div>
-	     	</div>
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>Taalas</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata">
-	     			Right Data
-	     			</div>
-	     		</div>
+	     		
 	     	</div>
 		 	<div class="clearfix"></div>
 	 	</div>
+	 		<div class="clearfix"></div>
      </div>
 
 

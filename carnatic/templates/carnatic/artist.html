@@ -7,7 +7,8 @@
 <script>
 $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
-    parseAllFilters({{ filter_items|safe }});
+	// parseAllFilters({{ filter_items|safe }});
+    widthOfChildren('.metaContainer');
 });
 </script>
 {% endblock %}

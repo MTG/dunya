@@ -1401,6 +1401,33 @@ textarea {
 	}
 }
 */
+#detail.recording #header {
+  float: left;
+  width: 220px;
+}
+#detail.recording #header #summary {
+  height: 65px;
+  float: none;
+}
+#detail.recording #header #summary #innerSummary span h1 {
+  font-size: 16px;
+}
+#detail.recording #header #summary #innerSummary span h2 {
+  margin-top: 0px;
+  font-size: 12px;
+}
+#detail.recording #header #meta {
+  float: none;
+  width: auto;
+}
+#detail.recording .alldata {
+  float: left;
+  width: 100%;
+  margin-left: -220px;
+}
+#detail.recording .alldata .thedata {
+  margin-left: 220px;
+}
 #tonic .inner {
   text-align: center;
   padding-top: 6px;
