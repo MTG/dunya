@@ -1,6 +1,7 @@
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
 var filtersLiteralOutputArray = new Object();
+var globalSpeed  = 500;
 
 function removeFilter(entity_filter){
     $(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
@@ -296,6 +297,8 @@ function getResults(item){
             }
         }
     }
+
+
 
 // function parseAllFilters(){
 //    $.each(window.filtersItems, function(index, element) {

@@ -483,7 +483,7 @@ textarea {
   margin-top: 24px;
   margin-right: 10px;
 }
-.header-container nav#mainmenu a {
+.header-container nav#mainmenu > a {
   float: left;
   margin: 0;
   margin-left: 5px;
@@ -500,7 +500,86 @@ textarea {
   -o-border-radius: 4px;
   border-radius: 4px;
   font-size: 12px;
-  box-shadow: inset 0px 1px 5px #ddd, 1px 1px 2px #666;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+}
+.header-container nav#mainmenu #user {
+  float: left;
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  padding-right: 5px;
+}
+.header-container nav#mainmenu #user > a {
+  margin: 0;
+  margin-left: 5px;
+  padding: 4px 7px 3px 7px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: url("../img/texturelogo.png") 21% 42% no-repeat;
+  background-size: 177px 157px;
+  color: #fff;
+  cursor: pointer;
+}
+.header-container nav#mainmenu #user > a img {
+  width: 20px;
+}
+.header-container nav#mainmenu #userOptions {
+  position: absolute;
+  right: 9px;
+  top: 30px;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
+  color: #221F1F;
+  background: #eeeded;
+  padding: 15px;
+  z-index: 40;
+  opacity: 0;
+  margin-top: 5px;
+}
+.header-container nav#mainmenu #userOptions > img {
+  width: 150px;
+}
+.header-container nav#mainmenu #userOptions > a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+.header-container nav#mainmenu #userOptions > h3 {
+  color: #000;
+  display: block;
+  white-space: nowrap;
+}
+.header-container nav#mainmenu #userOptions > h3 b {
+  color: #600;
+}
+.header-container nav#mainmenu #userOptions #userArrow {
+  position: absolute;
+  width: 27px;
+  height: 15px;
+  background: url("../img/userArrow.png") 0 0 no-repeat;
+  top: -9px;
+  right: 8px;
+}
+.header-container nav#mainmenu #userOptions.open {
+  margin-top: 0px;
+  opacity: 1;
 }
 .header-container nav#mainmenu li:first-child a {
   margin-left: 0;
