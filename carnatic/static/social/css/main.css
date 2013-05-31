@@ -19,6 +19,18 @@ margin: 0 0.2em;
 .tag-cloud-4 { font-size: 180%; }
 .tag-cloud-5 { font-size: 200%; }
 
+ul
+{
+    list-style-type: none;
+    padding-left: 1em;
+    margin: 0px;
+}
+
+ul li
+{
+    margin-top: 1em;
+}
+
 ul.timeline-elems
 {
     list-style-type: none;
