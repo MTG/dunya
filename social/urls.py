@@ -15,6 +15,8 @@ site_media = os.path.join(
 
 urlpatterns = patterns('',
     url(r'^$', views.main_page, name='social-main'),
+    url(r'^user/follow$', views.user_follow, name='social-user-follow'),
+    url(r'^user/unfollow$', views.user_unfollow, name='social-user-unfollow'),
     url(r'^user/(\w+)/$', views.user_page, name='social-auth-user'),
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='social-auth-login'),

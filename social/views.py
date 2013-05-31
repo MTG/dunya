@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
@@ -12,6 +13,7 @@ from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.utils.http import urlunquote_plus
 
+import json
 import social.timeline as timeline
 
 def main_page(request):
@@ -99,7 +101,7 @@ def user_page(request, username):
     profile = get_object_or_404(UserProfile, user_id=other_user.id)
     
     user = request.user
-    if len(UserFollowsUser.objects.filter(user_followed_id=user, user_follower_id=other_user)) == 0:
+    if len(UserFollowsUser.objects.filter(user_follower_id=user, user_followed_id=other_user)) == 0:
         follow = False
     else:
         follow = True
@@ -118,6 +120,27 @@ def user_page(request, username):
     }
 
     return render(request, "user_page.html", ret)
+
+@csrf_protect
+def user_follow(request):
+    to_follow = get_object_or_404(User, username=request.POST['username'])
+    follower = request.user
+    user_follows_user, _ = UserFollowsUser.objects.get_or_create(user_follower=follower, user_followed=to_follow, timestamp=datetime.now())
+    ret = {"status": "OK"}
+    return HttpResponse(json.dumps(ret), content_type="application/json")
+
+@csrf_protect
+def user_unfollow(request):
+    to_unfollow = get_object_or_404(User, username=request.POST['username'])
+    follower = request.user
+    print follower, to_unfollow
+    user_follows_user = UserFollowsUser.objects.filter(user_follower=follower, user_followed=to_unfollow)
+    if len(user_follows_user) == 0:
+        ret = {"status": "FAIL"}
+    else:
+        user_follows_user.delete()
+        ret = {"status": "OK"}
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
 ##### TAG ####
 

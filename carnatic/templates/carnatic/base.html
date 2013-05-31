@@ -25,16 +25,32 @@
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 	
-		<script>
-		$(document).ready(function() {
-			$('#user').click(function() {
-				$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
-			});
-			$('#user').mouseleave(function() {
-				$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
-  			});
+	<script src="{% static 'social/js/main.js' %}"></script>
+	<script src="{% static 'social/js/jquery.cookie.js' %}"></script>
+
+	<script>
+	$(document).ready(function() {
+		function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		$.ajaxSetup({
+		    crossDomain: false, // obviates need for sameOrigin test
+		    beforeSend: function(xhr, settings) {
+			if (!csrfSafeMethod(settings.type)) {
+			    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+			}
+		    }
 		});
-		</script>
+		$('#user').click(function() {
+			$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#user').mouseleave(function() {
+			$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		loadSocialFollowButtons();
+	});
+	</script>
         {% block script %}
         {% endblock %}
 
