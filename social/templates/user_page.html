@@ -5,10 +5,10 @@
 <h1>Profile of {{ other_user.username }}</h1>
 
 {% if not follow %}
-    <p>Follow</p>
+    <button class="btn followButton" rel="6" id="{{ other_user.username.decode }}">Follow</button>
 {% else %}
-    <p>Unfollow</p>
-{% endif %}    
+    <button class="btn followButton following" rel="6" id="{{ other_user.username.decode }}">Following</button>
+{% endif %}
 
 {% include "timeline.html" %}
 
