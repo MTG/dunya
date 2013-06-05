@@ -9,15 +9,35 @@
 #tag-cloud {
 text-align: center;
 }
-#tag-cloud a {
+#detail #tag-cloud a {
 margin: 0 0.2em;
+color: #fff !important;
+text-decoration: none;
 }
+/*
 .tag-cloud-0 { font-size: 100%; }
 .tag-cloud-1 { font-size: 120%; }
 .tag-cloud-2 { font-size: 140%; }
 .tag-cloud-3 { font-size: 160%; }
 .tag-cloud-4 { font-size: 180%; }
 .tag-cloud-5 { font-size: 200%; }
+*/
+
+#tag-cloud span {
+	margin-left: 5px;
+	padding: 6px 9px 5px 9px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	background: #eeeded;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+	text-shadow: 1px 1px 2px black;
+	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+}
 
 ul.timeline-elems
 {
@@ -46,4 +66,48 @@ ul.timeline-elems li.timeline-comment-elem
     background-size:16px 16px;
     background-repeat: no-repeat;
     padding-left: 20px; 
+}
+
+#comments .acomment{
+	position: relative;
+	float: left;
+	margin: 0;
+	margin-left: 15px;
+	padding: 10px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	color: #221F1F;
+	background: #eeeded;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	border-radius: 4px;
+	font-size: 12px;
+	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+#comments .acomment .pastilla {
+	position: absolute;
+	width: 27px;
+	height: 15px;
+	background: url("http://localhost:8001/static/carnatic/css/../img/userArrow.png") 0 0 no-repeat;
+	bottom: -10px;
+	right: 8px;
+	 -moz-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: FlipV;
+    -ms-filter: "FlipV";
+}
+#comments .acomment .thecomment {
+	font-size: 20px;
+	font-style: italic;
+}
+#comments .acomment .commentMeta {
+	color:#666;
 }

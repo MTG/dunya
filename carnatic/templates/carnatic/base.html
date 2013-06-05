@@ -33,6 +33,12 @@
 			$('#user').mouseleave(function() {
 				$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
   			});
+  			$('#guest').click(function() {
+				$(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+			});
+			$('#guest').mouseleave(function() {
+				$(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+  			});
 		});
 		</script>
         {% block script %}
@@ -87,10 +93,15 @@
 				    </div>	
 			    </div>
 			{% else %}
-			    <div id="guestOptions">
-				    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
-				    <a href="{{ register_url }}">REGISTER</a>
-			    </div>
+				<div href="#" id="guest">
+					<a href="#">USER<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+				    <div id="guestOptions">
+				    	<div id="userArrow"></div>
+				    	<h3>Hi! what do you want to do?</h3>
+					    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
+					    <a href="{{ register_url }}">REGISTER</a>
+				    </div>
+				</div>
 			{% endif %}
                 </nav>
                 <div class="clearfix"></div>
