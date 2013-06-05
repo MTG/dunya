@@ -47,6 +47,7 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
+"""
 class ArtistTag(models.Model):
     user = models.ForeignKey(User)
     tag = models.ForeignKey(Tag)
@@ -86,6 +87,18 @@ class WorkTag(models.Model):
         unique_together = (("user", "tag", "work"),)
     def __unicode__(self):
         return u"('%s','%s','%s')" % (self.work, self.tag , self.user)
+"""
+
+class Annotation(models.Model):
+    user = models.ForeignKey(User)
+    tag = models.ForeignKey(Tag)
+    entity_id = models.IntegerField()
+    entity_type = models.CharField(max_length=20)
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True)
+    class Meta:
+        unique_together = (("user", "tag", "entity_id", "entity_type"),)
+    def __unicode__(self):
+        return u"('%s','%s','%s')" % (self.entity_type, self.tag , self.user)
     
 class UserFollowsUser(models.Model):
     user_follower = models.ForeignKey(User, related_name='follow_set')

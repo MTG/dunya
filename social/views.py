@@ -150,28 +150,13 @@ def tag_save_page(request):
         if form.is_valid():
             # Create new tag list.
             objectid = int(form.cleaned_data['objectid'])
-            objecttype = form.cleaned_data['objecttype']
+            objecttype = form.cleaned_data['objecttype'].lower()
             tag_names = form.cleaned_data['tags'].split(",")
             for tag_name in tag_names:
                 if len(tag_name) > 0:
                     tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip()) # tag to lower case
-                    
-                    if objecttype == "artist":
-                        artist = Artist.objects.get(pk=objectid)
-                        if len(ArtistTag.objects.filter(tag=tag, user=request.user, artist=artist)) == 0:
-                            object_tag, _ = ArtistTag.objects.get_or_create(tag=tag, user=request.user, artist=artist, timestamp=datetime.now())
-                    elif objecttype == "concert":
-                        concert = Concert.objects.get(pk=objectid)
-                        if len(ConcertTag.objects.filter(tag=tag, user=request.user, concert=concert)) == 0:
-                            object_tag, _ = ConcertTag.objects.get_or_create(tag=tag, user=request.user, concert=concert, timestamp=datetime.now())
-                    elif objecttype == "recording":
-                        recording = Recording.objects.get(pk=objectid)
-                        if len(RecordingTag.objects.filter(tag=tag, user=request.user, recording=recording)) == 0:
-                            object_tag, _ = RecordingTag.objects.get_or_create(tag=tag, user=request.user, recording=recording, timestamp=datetime.now())
-                    elif objecttype == "work":
-                        work = Work.objects.get(pk=objectid)
-                        if len(WorkTag.objects.filter(tag=tag, user=request.user, work=work)) == 0:
-                            object_tag, _ = WorkTag.objects.get_or_create(tag=tag, user=request.user, work=work, timestamp=datetime.now())
+                    if len(Annotation.objects.filter(tag=tag, user=request.user, entity_type=objecttype, entity_id=objectid)) == 0:
+                        object_tag, _ = Annotation.objects.get_or_create(tag=tag, user=request.user, entity_type=objecttype, entity_id=objectid)
             
             return HttpResponseRedirect('/carnatic/%s/%s' % (objecttype, objectid))
     else:
@@ -192,30 +177,25 @@ def ajax_tag_autocomplete(request):
     return HttpResponse(simplejson.dumps(results),mimetype='application/json')
 
 
+def __get_entity(entity_type, entity_id):
+    if entity_type == "artist":
+        return Artist.objects.get(pk=entity_id)
+    elif entity_type == "concert":
+        return Concert.objects.get(pk=entity_id)
+    elif entity_type == "recording":
+        return Recording.objects.get(pk=entity_id)
+    elif entity_type == "work":
+        return Work.objects.get(pk=entity_id)
+    return None
+
 def tag_page(request, tagname, modeltype="concert"):
     tagname = urlunquote_plus(tagname)
     tag = get_object_or_404(Tag, name=tagname)
     
-    if modeltype == "artist":
-        lists = ArtistTag.objects.filter(tag__name=tagname).values('artist', 'tag').annotate(freq=Count('artist'))
-        objects=[]
-        for lista in lists:
-            objects.append([Artist.objects.get(pk=lista['artist']), lista['freq']])
-    elif modeltype == "concert":
-        lists = ConcertTag.objects.filter(tag__name=tagname).values('concert', 'tag').annotate(freq=Count('concert'))
-        objects=[]
-        for lista in lists:
-            objects.append([Concert.objects.get(pk=lista['concert']), lista['freq']])
-    elif modeltype == "recording":
-        lists = RecordingTag.objects.filter(tag__name=tagname).values('recording', 'tag').annotate(freq=Count('recording'))
-        objects=[]
-        for lista in lists:
-            objects.append([Recording.objects.get(pk=lista['recording']), lista['freq']])
-    elif modeltype == "work":
-        lists = WorkTag.objects.filter(tag__name=tagname).values('work', 'tag').annotate(freq=Count('work'))
-        objects=[]
-        for lista in lists:
-            objects.append([Work.objects.get(pk=lista['work']), lista['freq']])
+    lists = Annotation.objects.filter(tag__name=tagname, entity_type=modeltype).values('entity_type', 'entity_id', 'tag').annotate(freq=Count('entity_type'))
+    objects=[]
+    for lista in lists:
+        objects.append([__get_entity(modeltype, lista['entity_id']), lista['freq']])
       
     variables = RequestContext(request, {
         'objects': objects,
