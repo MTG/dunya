@@ -6,23 +6,9 @@ from social.models import *
 def tag_cloud(modelid, modeltype):
     MAX_WEIGHT = 5
     
-    if modeltype == "artist":
-        tags = ArtistTag.objects.filter(artist_id=modelid).values('tag','artist').annotate(freq_tag=Count('tag'))
-        for tag in tags:
-            tag['content_type'] = "artist"
-    elif modeltype == "concert":
-        tags = ConcertTag.objects.filter(concert_id=modelid).values('tag','concert').annotate(freq_tag=Count('tag'))
-        for tag in tags:
-            tag['content_type'] = "concert"
-    elif modeltype == "recording":
-        tags = RecordingTag.objects.filter(recording_id=modelid).values('tag','recording').annotate(freq_tag=Count('tag'))
-        for tag in tags:
-            tag['content_type'] = "recording"
-    elif modeltype == "work":
-        tags = WorkTag.objects.filter(work_id=modelid).values('tag','work').annotate(freq_tag=Count('tag'))
-        for tag in tags:
-            tag['content_type'] = "work"
-    
+    tags = Annotation.objects.filter(entity_type=modeltype, entity_id=modelid).values('tag','entity_type').annotate(freq_tag=Count('tag'))
+    for tag in tags:
+        tag['content_type'] = modeltype
     
     if len(tags)>0:
         # Calculate artist_tag, min and max counts.
