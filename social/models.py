@@ -47,48 +47,6 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
-"""
-class ArtistTag(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
-    artist = models.ForeignKey(Artist)
-    timestamp = models.DateTimeField('date tagged')
-    class Meta:
-        unique_together = (("user", "tag", "artist"),)
-    def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.artist, self.tag , self.user)
-
-class ConcertTag(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
-    concert = models.ForeignKey(Concert)
-    timestamp = models.DateTimeField('date tagged')
-    class Meta:
-        unique_together = (("user", "tag", "concert"),)
-    def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.concert, self.tag , self.user)
-
-class RecordingTag(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
-    recording = models.ForeignKey(Recording)
-    timestamp = models.DateTimeField('date tagged')
-    class Meta:
-        unique_together = (("user", "tag", "recording"),)
-    def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.recording, self.tag , self.user)
-    
-class WorkTag(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
-    work = models.ForeignKey(Work)
-    timestamp = models.DateTimeField('date tagged')
-    class Meta:
-        unique_together = (("user", "tag", "work"),)
-    def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.work, self.tag , self.user)
-"""
-
 class Annotation(models.Model):
     user = models.ForeignKey(User)
     tag = models.ForeignKey(Tag)
