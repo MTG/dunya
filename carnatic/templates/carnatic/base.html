@@ -74,6 +74,7 @@
 	{% url 'social-user-profile' as social_user_profile %}
 	{% url 'social-tag-autocomplete' as social_tag_autocomplete %}
 	{% url 'social-users-list' as social_users_list %}
+	{% url 'social-timeline-page' as social_timeline_page %}
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
@@ -108,6 +109,7 @@
 					    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT</a>
 					    <a href="{{ social_user_profile }}">PROFILE</a>
 					    <a href="{{ social_users_list }}">USERS</a>
+					    <a href="{{ social_timeline_page }}">TIMELINE</a>
 				    </div>	
 			    </div>
 			{% else %}

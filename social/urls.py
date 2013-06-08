@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^tag/$', views.tag_save_page, name='tag-form'),
     
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
+    url(r'^timeline/$', views.timeline_page, name='social-timeline-page'),
     url(r'^users/(?P<username>\w+)$', views.user_page, name='social-user-page'),
 
     url(r'^users/$', views.users_list, name='social-users-list'),

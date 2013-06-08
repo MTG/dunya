@@ -121,6 +121,25 @@ def user_page(request, username):
 
     return render(request, "user_page.html", ret)
 
+def timeline_page(request):
+    
+    follower = request.user
+    users_followed = UserFollowsUser.objects.filter(user_follower=follower).values('user_followed_id')
+    users_id = []
+    users_id.append(request.user.id)
+    
+    for user in users_followed:
+        users_id.append(user['user_followed_id'])
+    
+    
+    timelines = timeline.timeline(users_id)
+    
+    variables = RequestContext(request, {
+        'timeline': timelines
+    })
+    return render_to_response('timeline-page.html', variables)
+
+
 @csrf_protect
 def user_follow(request):
     to_follow = get_object_or_404(User, username=request.POST['username'])
