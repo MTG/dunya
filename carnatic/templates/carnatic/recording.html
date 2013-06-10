@@ -8,8 +8,88 @@
 <script>
 $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
-    parseAllFilters({{ filter_items|safe }});
+    //parseAllFilters({{ filter_items|safe }});
+     audio = $("#theaudio")[0];
+     renders = $('#renders');
+     rendersMask = $('#rendersMask');
+     capcal = $('#capcal');
+     capcalTotal = $('#capcalTotal');
+     renderTotal = $('#renderTotal');
+     zoomFactor = "";
+     waveform = $('#bigWave img');
+     plButton = $("#control .plButton");
+     timecode = $("#timecode");
+     zooms = $(".zoom");
+	/* waveform.click(function(e) {
+	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
+		var left = Math.round( (e.clientX - offset_l) );
+	    mouPlay(left);
+	});*/
 });
+
+function mouPlay(desti){
+	posicio = renders.position();
+	distclick = Math.abs(posicio.left)+desti;
+	percentPunt = (distclick*100)/(waveform.width());
+	nouPunt = (audio.duration*percentPunt)/100;
+	console.log(nouPunt+" - "+audio.duration);
+	audio.pause();
+	audio.currentTime = Math.ceil(nouPunt);
+	audio.play();
+	audio.currentTime = Math.ceil(nouPunt);
+}
+function play() {
+    audio.play();
+    int = window.setInterval(updateProgress, 30);
+}
+function pause() {
+    audio.pause();
+    window.clearInterval(int);
+}
+function updateProgress() {
+    progress_seconds = Math.ceil(audio.currentTime);
+    progress_minutes = Math.floor(audio.currentTime/60);
+    resto = (progress_seconds-(progress_minutes*60));
+    if(resto<10){
+		resto = "0"+resto;    
+    }
+    if(progress_minutes<10){
+		progress_minutes = "0"+progress_minutes;    
+    }
+    progress_percent = (audio.currentTime / audio.duration * 100);
+	ampleMask = rendersMask.width();
+	ampleRenders = renders.width();
+	ampleRenderTotal = renderTotal.width();
+    $('#progress_seconds').html('Seconds: ' + progress_seconds);
+    $('#progress_seconds').html('Seconds: ' + ampleRenders);
+    nouLeft = ((ampleRenders*progress_percent)/100);
+    nouLeft2 = ((ampleRenderTotal*progress_percent)/100);
+    capcal.css('left',nouLeft);
+    capcalTotal.css('left',nouLeft2);
+    
+    if(nouLeft>(ampleMask/2)){
+    	decalatge = (nouLeft-(ampleMask/2))*(-1);
+	    renders.css('left',decalatge);
+    }
+    timecodeHtml = "00:"+progress_minutes+":"+resto;
+    timecode.html(timecodeHtml);
+};
+function zoom(factor){
+	zoomFactor = factor;
+	renders.width((factor*901));
+	zooms.removeClass("selected");
+	$("#zoom"+factor).addClass("selected");
+}
+function playrecord(){
+	if(plButton.hasClass("stop")){
+		pause();
+		plButton.removeClass("stop");
+	}else{
+		play();
+		plButton.addClass("stop");
+	}
+}
+
 </script>
 {% endblock %}
 
@@ -43,13 +123,13 @@ $(document).ready(function() {
 	    </div>
      </div>
 
- <div id="detail" class="recording">
+ <div id="detail" class="recording"> 
      	<div id="header">
      		<div id="summary">
      			<div id="innerSummary">
 	     			<span>
-		     			<h1>Krishna Nee Begane</h1>
-		     			<h2> by Aneesh Vidyashankar</h2>
+		     			<h1>{{recording.title}}</h1>
+		     			<h2> by {% inline_artist recording.all_artists.get %}</h2>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
@@ -61,10 +141,26 @@ $(document).ready(function() {
 				 		<div class="metaContainer">	
 							<div id="excerpt" class="metaDetails">
 								<span class="list">
-									<label>From album</label><b>Pure Expressions</b>
-									<label>Composer</label><b>Vyasaraya</b>
-									<label>Taala</label><b>Mishra Chapu</b>
-									<label>Raaga</label><b>Yaman Kalyani</b>
+									<label>From album</label><b>{% inline_concert recording.concert_set.get %}</b>
+									<label>Composer</label><b>{% inline_artist recording.all_artists.get %}</b>
+									<label>Performing</label><b>{% inline_work recording.work %}</b>
+									{% if recording.work.taala %}
+									<label>Taala</label><b>
+										{% for t in recording.work.taala.all %}
+										    {% inline_taala t %}
+		    							{% endfor %}
+		    						</b>
+									{% endif %}
+									
+									
+									{% if recording.work.raaga %}
+									<label>Raaga</label><b>
+					     				{% for r in recording.work.raaga.all %}
+											{% inline_raaga r %}
+		    							{% endfor %}
+									</b>
+									{% endif %}
+									
 									<label>Tonic</label><b>Tonic: 164.81 Hz</b>
 								</span>
 							</div>
@@ -74,67 +170,138 @@ $(document).ready(function() {
      		</div>
 	 		<div id="control">
 	 			<div class="revButton"></div>
-	 			<div class="plButton"></div>
+	 			<div class="plButton" onclick="playrecord();"></div>
 	 			<div class="folButton"></div>
 	 		</div>
+	 		<div id="timecode">00:00:00</div>
+	 		
+	 		<div id="zooms">
+	 			<span>zoom level</span>
+		 		<a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
+				<a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
+				<a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
+				<a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+	 		</div>
+	 		
 	     	<div class="clearfix"></div>
 
      	</div><!-- HEADER END -->
 
 	 	<div class="alldata">
 	     	<div class="thedata">
-	     		<div class="bigWave">
-				 	<img src="{% static 'carnatic/img/develop/wave_1.png' %}" />
+	     		<div id="rendersMask">
+	     			<div id="renders">
+	     				<div id="capcal"></div>
+		     			<div id="bigWave">
+					 		<img src="{% static 'carnatic/img/develop/Waveform_markers.jpg' %}" />
+					 		<img src="{% static 'carnatic/img/develop/Pitch.jpg' %}" />
+					 	</div>
+	     			</div>
 	     		</div>
-	     		
+	     		<div id="renderTotal"><div id="capcalTotal"></div>
+	     		<img src="{% static 'carnatic/img/develop/Waveform_markers.jpg' %}" />
+	     		</div>
 	     	</div>
+	    
 		 	<div class="clearfix"></div>
 	 	</div>
-	 		<div class="clearfix"></div>
-     </div>
+	 	
+	 		<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Performers</h3>
+	     		</div>
+	     		
+	     		<div class="rightdata">
+	     			<div class="innerrightdata nopad">
+	                    {% for performance in recording.instrumentperformance_set.all %}
+	                        {% badge_performance performance %}	                    
+	                    {% endfor %}
+		     			<div class="clearfix"></div>
+	     			</div>
+	     		</div>
+	     	</div>
+	 	
+	 		<!-- COMMENTS -->
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Tags</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata">
+			 			{% include "tag_cloud.html" %}
+	     			</div>
+	     		</div>
+			 </div>
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Comments</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata">
+	                    {% get_comment_list for recording as comment_list %}
+	                    <div id="comments">
+	                    {% for comment in comment_list %}
+	                    	<div class="acomment">
+	                    		<div class="commentMeta">
+		                    		{{comment.submit_date}}
+									<b>{{comment.user_name}}</b>
+	                    		</div>
+	                    		<div class="thecomment">
+	                    			{{comment.comment}}
+	                    		</div>
+	                    	<div class="pastilla"></div>
+	                    	</div>
+	                    {% endfor %}
+	                    </div>
+	                    <div class="clearfix"></div>
+	     			</div>
+	     		</div>
+	     	</div>
+	     	{% if user.is_authenticated %}
+				<div class="thedata">
+		     		<div class="leftdata">
+			     		<h3>Post comment</h3>
+		     		</div>
+		     		<div class="rightdata">
+		     			<div class="innerrightdata">
+				 			{% get_comment_form for recording as form_comment %}
+							{% include "browse/form-comment.html" %}
+							<input type="hidden" name="next" value="{% url 'carnatic-recording' recording.id %}" />
+							<input type="submit" value="Add comment" id="id_submit" />
+							<input type="submit" name="preview" value="Preview">
+							</form>
+		     			</div>
+		     		</div>
+		     	</div>
+				<div class="thedata">
+		     		<div class="leftdata">
+			     		<h3>Post Tag</h3>
+		     		</div>
+		     		<div class="rightdata">
+		     			<div class="innerrightdata">
+				 			{% include "form-tag.html" %}
+		     			</div>
+		     		</div>
+		     	</div>
+			{% else %}
+				<div class="thedata">
+		     		<div class="leftdata">
+			     		<h3></h3>
+		     		</div>
+		     		<div class="rightdata">
+		     			<div class="innerrightdata">
+				 			<p>Please <a href="{{ login_url }}?next={% firstof request.path '/' %}">log in</a> to leave a comment or to add a tag.</p>
+		     			</div>
+		     		</div>
+		 		</div>
+			{% endif %}
 
+	 	<div class="clearfix"></div>
+</div>
 
+<audio id="theaudio">
+	<source src="{% static 'carnatic/audio/8_Krishna_Nee_Begane.mp3' %}" type="audio/mp3" preload>
+</audio>
 
-
-<h2>Recording</h2>
-
-{{recording.title}}, by {% inline_artist recording.all_artists.get %}
-
-{% if recording.work %}
-<p>Performance of {% inline_work recording.work %}
-{% endif %}
-
-<p>Played in concert {% inline_concert recording.concert_set.get %}
-
-<p>Performers:<br>
-{% for perf in recording.instrumentperformance_set.all %}
-  <li>{% inline_artist perf.performer %}, playing {% inline_instrument perf.instrument %}
-{% endfor %}
-
-<h2>Comments:</h2>
-{% render_comment_list for recording %}
-
-<h2>Post comment:</h2>
-{% if user.is_authenticated %}
- {% get_comment_form for recording as form_comment %}
-
-{% include "browse/form-comment.html" %}
-
-	<input type="hidden" name="next" value="{% url 'carnatic-recording' recording.id %}" />
-	<input type="submit" value="Add comment" id="id_submit" />
-        <input type="submit" name="preview" value="Preview">
- </form> 
-
-<h2>Post Tag:</h2>
-	{% include "form-tag.html" %}
-
-
-{% else %}
-    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/' %}">log in</a> to leave a comment.</p>
-{% endif %}
-
-<h2>Tags:</h2>
-
-	{% include "tag_cloud.html" %}
 
 {% endblock %}
