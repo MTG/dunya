@@ -65,10 +65,16 @@ def artistsearch(request):
 
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
-    
+    images = artist.images.all()
+    if images:
+        image = images[0].image.url
+    else:
+        image = "images/noartist.jpg"
+
     tags = tagging.tag_cloud(artistid, "artist")
     
     ret = {"artist": artist,
+           "image": image,
            "form": TagSaveForm(),
             "objecttype": "artist",
             "objectid": artist.id,
