@@ -3,6 +3,12 @@ var filtersOutputArray = new Object();
 var filtersLiteralOutputArray = new Object();
 var globalSpeed  = 500;
 
+$(document).ready(function(){
+	//ScrollBlock
+	widthOfChildren(".scrollblock");	
+});
+
+
 function removeFilter(entity_filter){
     $(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
     $(".filterBall").parent().find(".filterGlobalList").addClass("filterListClosed");
@@ -37,6 +43,9 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 		}
 	});
 }
+
+
+
 
 //    $.each(filtersItems, function(index, element) {
 //        console.log(element.name)
