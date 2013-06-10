@@ -5,15 +5,20 @@ from django.core.urlresolvers import reverse
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
 
+    def __unicode__(self):
+        return self.name
+
 class Source(models.Model):
+    # The source type that we got this data from (wikipedia, musicbrainz, etc)
     source_name = models.ForeignKey(SourceName)
+    # The title of the page on the source website
+    title = models.CharField(max_length=255)
+    # The URL of the source
     uri = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now_add=True)
 
-class Reference(models.Model):
-    source_name = models.ForeignKey(SourceName)
-    uri = models.CharField(max_length=255)
-    last_updated = models.DateTimeField(auto_now_add=True)
+    def __unicode__(self):
+        return "From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
 
 class Description(models.Model):
     """ A short description of a thing in the database.
@@ -21,13 +26,22 @@ class Description(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True)
     description = models.TextField()
 
+    def __unicode__(self):
+        return "%s - %s" % (self.source, self.description[:100])
+
+class Image(models.Model):
+    """ An image of a thing in the database """
+    source = models.ForeignKey(Source, blank=True, null=True)
+    image = models.ImageField(upload_to="images")
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    source = models.ForeignKey(Source, blank=True, null=True)
-    references = models.ManyToManyField(Reference, blank=True, null=True)
+    source = models.ForeignKey(Source, blank=True, null=True, related_name="%(class)s_source_set")
+    references = models.ManyToManyField(Source, blank=True, null=True, related_name="%(class)s_reference_set")
     description = models.ForeignKey(Description, blank=True, null=True)
+    images = models.ManyToManyField(Image, related_name="%(class)s_image_set")
 
     def get_style(self):
         raise Exception("need style")
