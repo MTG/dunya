@@ -967,7 +967,7 @@ textarea {
 					border-bottom: 1px solid darken(@grisf6,8%);
 					margin-bottom: -1px;
 					margin-top: 1px;
-					width: 300px; 
+					width: 300px !important; 
 					h4 {
 						margin: 0px;
 						margin-bottom:4px;
@@ -1077,7 +1077,7 @@ textarea {
 	.rounded(10px);
 	font-size: 12px;
 	box-shadow: inset 0px 1px 8px #ddd, 2px 2px 10px #888;
-	background: #fff url("http://localhost:8001/static/carnatic/css/../img/logoDunya.png") 50% 40px no-repeat;
+	background: #fff url("../img/logoDunya.png") 50% 40px no-repeat;
 	color: #333;
 	margin-top: 100px;
 	text-align: center;
@@ -1085,6 +1085,15 @@ textarea {
 		text-shadow: 1px 2px 2px black;
 		color:#ddd;
 	}
+	label {
+		text-align: right;
+		width: 125px;
+		position: relative;
+		display: inline-block;
+	}
+	&.logCenter label {
+		text-align: center;
+	} 
 }
 
 input[type="button"], input[type="submit"] {
@@ -1124,6 +1133,8 @@ input[type="text"], input[type="password"] {
 	#header {
 		float:left;
 		width: 220px;
+		border: none;
+		position: relative;
 		#summary {
 			height: 65px;
 			float: none;
@@ -1134,15 +1145,150 @@ input[type="text"], input[type="password"] {
 		}
 		#meta { 
 			float:none; 
-			width: auto;
+			width: 100%;
+			.metaBlock {
+				width: 100%;
+				.metaMask .metaContainer {
+					width: 100%;
+					.metaDetails {
+						width: 221px;				
+						label { width: 34% !important; }
+						b { width: 64% !important; }
+					}
+				}
+			}
+		}
+		#control {
+			position: relative;
+			padding-left: 30px;
+			.revButton { 
+				position: relative;
+				float: left;
+				width:48px;
+				height: 50px;
+				background: url("../img/revButton.png") 0 0 repeat-y;
+				margin-top: 7px;
+				&:hover {
+					background: url("../img/revButton_hover.png") 0 0 repeat-y;	
+				}
+			}
+			.plButton { 
+				position: relative;
+				float: left;
+				width:64px;
+				height: 66px;
+				background: url("../img/plButton.png") 0 0 no-repeat;
+				&:hover {
+					background: url("../img/plButton_hover.png") 0 0 no-repeat;	
+				}
+				&.stop {
+					background: url("../img/stopButton.png") 0 0 no-repeat;	
+					&:hover {
+						background: url("../img/stopButton_hover.png") 0 0 no-repeat;	
+					}
+				}
+			}
+			.folButton { 
+				position: relative;
+				float: left;
+				width:48px;
+				height: 50px;
+				background: url("../img/folButton.png") 0 0 repeat-y;
+				margin-top: 7px;
+				&:hover {
+					background: url("../img/folButton_hover.png") 0 0 repeat-y;	
+				}
+			}
+		}
+		#timecode {
+			position: absolute;
+			margin: 0;			
+			padding: 15px;
+			display: block;
+			text-align: right;
+			text-decoration: none;
+			font-size: 18px;
+			color: #221F1F;
+			background: #eeeded;
+			.rounded(10px);
+			box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+			top: 298px;
+			left: 58px;
+		}
+		#zooms {
+			position: absolute;
+			top: 434px;
+			width: 100%;
+			text-align: center;
+			span {
+				display: block;
+			}
+			a {
+				position: relative;
+				display: inline-block;
+				color: #221F1F;
+				background: #eeeded;
+				.rounded(10px);
+				box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+				padding:8px;
+				text-decoration: none;
+				&.selected {
+					background: #333;
+					color:#fff !important;
+				}
+			}
 		}
 	}
+
 	.alldata { 
 		float:left;
 		width:100%;
 		margin-left: -220px;
 			.thedata{
 				margin-left: 220px;
+				#rendersMask {
+					position: relative;
+					width:901px;
+					overflow-y: hidden;
+					overflow-x: scroll;
+					#renders {
+						position: relative;
+						width: 901px;
+						#capcal {
+							position: absolute;
+							left:0px;
+							top:0px;
+							width:13px;
+							height: 100%;
+							background: url("../img/capcal.png") -5px 0 repeat-y;
+						}
+						#bigWave { 
+							width:100%; 
+							img {
+								width:100%; 
+								height: 234px;
+							}
+						}
+					}
+				}
+				#renderTotal {
+					position: relative;
+					width:901px;
+					img {
+						width:901px;
+						height: 30px;
+						opacity: 0.5;
+					}
+					#capcalTotal {
+						position: absolute;
+						left:0px;
+						top:0px;
+						width:13px;
+						height: 100%;
+						z-index:2;
+						background: url("../img/capcal.png") -5px 0 repeat-y;
+					}
+				}
 			}
 	}
 }
