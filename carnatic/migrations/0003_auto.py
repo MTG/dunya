@@ -8,63 +8,84 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Artist.description'
-        db.add_column(u'carnatic_artist', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Artist'
+        db.create_table(u'carnatic_artist_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('artist', models.ForeignKey(orm[u'carnatic.artist'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_artist_images', ['artist_id', 'image_id'])
 
-        # Adding field 'Recording.description'
-        db.add_column(u'carnatic_recording', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Recording'
+        db.create_table(u'carnatic_recording_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('recording', models.ForeignKey(orm[u'carnatic.recording'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_recording_images', ['recording_id', 'image_id'])
 
-        # Adding field 'Work.description'
-        db.add_column(u'carnatic_work', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Work'
+        db.create_table(u'carnatic_work_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('work', models.ForeignKey(orm[u'carnatic.work'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_work_images', ['work_id', 'image_id'])
 
-        # Adding field 'Concert.description'
-        db.add_column(u'carnatic_concert', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Concert'
+        db.create_table(u'carnatic_concert_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('concert', models.ForeignKey(orm[u'carnatic.concert'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_concert_images', ['concert_id', 'image_id'])
 
-        # Adding field 'Instrument.description'
-        db.add_column(u'carnatic_instrument', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Instrument'
+        db.create_table(u'carnatic_instrument_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('instrument', models.ForeignKey(orm[u'carnatic.instrument'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_instrument_images', ['instrument_id', 'image_id'])
 
-        # Adding field 'Composer.description'
-        db.add_column(u'carnatic_composer', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Composer'
+        db.create_table(u'carnatic_composer_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('composer', models.ForeignKey(orm[u'carnatic.composer'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_composer_images', ['composer_id', 'image_id'])
 
-        # Adding field 'Location.description'
-        db.add_column(u'carnatic_location', 'description',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Description'], null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field images on 'Location'
+        db.create_table(u'carnatic_location_images', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('location', models.ForeignKey(orm[u'carnatic.location'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(u'carnatic_location_images', ['location_id', 'image_id'])
 
 
     def backwards(self, orm):
-        # Deleting field 'Artist.description'
-        db.delete_column(u'carnatic_artist', 'description_id')
+        # Removing M2M table for field images on 'Artist'
+        db.delete_table('carnatic_artist_images')
 
-        # Deleting field 'Recording.description'
-        db.delete_column(u'carnatic_recording', 'description_id')
+        # Removing M2M table for field images on 'Recording'
+        db.delete_table('carnatic_recording_images')
 
-        # Deleting field 'Work.description'
-        db.delete_column(u'carnatic_work', 'description_id')
+        # Removing M2M table for field images on 'Work'
+        db.delete_table('carnatic_work_images')
 
-        # Deleting field 'Concert.description'
-        db.delete_column(u'carnatic_concert', 'description_id')
+        # Removing M2M table for field images on 'Concert'
+        db.delete_table('carnatic_concert_images')
 
-        # Deleting field 'Instrument.description'
-        db.delete_column(u'carnatic_instrument', 'description_id')
+        # Removing M2M table for field images on 'Instrument'
+        db.delete_table('carnatic_instrument_images')
 
-        # Deleting field 'Composer.description'
-        db.delete_column(u'carnatic_composer', 'description_id')
+        # Removing M2M table for field images on 'Composer'
+        db.delete_table('carnatic_composer_images')
 
-        # Deleting field 'Location.description'
-        db.delete_column(u'carnatic_location', 'description_id')
+        # Removing M2M table for field images on 'Location'
+        db.delete_table('carnatic_location_images')
 
 
     models = {
@@ -76,6 +97,7 @@ class Migration(SchemaMigration):
             'end': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
             'gender': ('django.db.models.fields.CharField', [], {'max_length': '1', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'artist_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'main_instrument': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['carnatic.Instrument']", 'null': 'True', 'blank': 'True'}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
@@ -90,6 +112,7 @@ class Migration(SchemaMigration):
             'end': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
             'gender': ('django.db.models.fields.CharField', [], {'max_length': '1', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'composer_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'composer_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
@@ -101,6 +124,7 @@ class Migration(SchemaMigration):
             'artists': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['carnatic.Artist']", 'symmetrical': 'False'}),
             'description': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Description']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'concert_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'label': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Label']", 'null': 'True', 'blank': 'True'}),
             'location': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['carnatic.Location']", 'null': 'True', 'blank': 'True'}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
@@ -131,6 +155,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Instrument'},
             'description': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Description']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'instrument_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'instrument_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'instrument_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
@@ -166,6 +191,7 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Description']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'location_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'lat': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
             'lng': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
@@ -193,6 +219,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Recording'},
             'description': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Description']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'recording_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'length': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
             'performance': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['carnatic.Artist']", 'through': u"orm['carnatic.InstrumentPerformance']", 'symmetrical': 'False'}),
@@ -223,6 +250,7 @@ class Migration(SchemaMigration):
             'composer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['carnatic.Composer']", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Description']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'work_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
             'raaga': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['carnatic.Raaga']", 'through': u"orm['carnatic.WorkRaaga']", 'symmetrical': 'False'}),
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'work_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
@@ -269,10 +297,16 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Source']", 'null': 'True', 'blank': 'True'})
         },
+        u'data.image': {
+            'Meta': {'object_name': 'Image'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'})
+        },
         u'data.label': {
             'Meta': {'object_name': 'Label'},
             'description': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Description']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'label_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'label_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'label_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
