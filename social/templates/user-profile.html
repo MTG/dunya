@@ -8,6 +8,8 @@
 
 
 {% block wrap %}
+<div id="profile">
+
 
 <ul class="user-profile">
 <li><b>Username:</b> {{ user.username }}</li>
@@ -21,4 +23,5 @@
 
 {% include "timeline.html" %}
 
+</div>
 {% endblock %}

@@ -2,10 +2,13 @@
 {% load inline %}
 
 {% block wrap %}
-<form method="post" action=".">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="register" />
-</form>
+<div id="login">
+	<h1>Register</h1>
+	<form method="post" action=".">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="register" />
+	</form>
+</div>
 {% endblock %}
 
