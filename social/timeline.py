@@ -38,6 +38,37 @@ def get_comments(users_id, start_period, end_period):
         comment_list.append(micomment)
     return comment_list
 
+def __get_entity_name(entity_type, entity_id):
+    if entity_type == "artist":
+        return Artist.objects.get(pk=entity_id).name
+    elif entity_type == "concert":
+        return Concert.objects.get(pk=entity_id).title
+    elif entity_type == "recording":
+        return Recording.objects.get(pk=entity_id).title
+    elif entity_type == "work":
+        return Work.objects.get(pk=entity_id).title
+    return None
+
+def get_tags(users_id, start_period, end_period):
+    tags = Annotation.objects.filter(user_id__in=users_id).filter(timestamp__range=[start_period, end_period]).order_by("-timestamp")
+    tag_list = []
+    for tag in tags:
+        mitag = {"type": "tag",
+                    "tag_id": tag.tag_id,
+                    "content_type": tag.entity_type,
+                    "content_id": tag.entity_id,
+                    "user_id": tag.user_id,
+                    "submit_date": tag.timestamp}
+        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username        
+        mitag["value"] = Tag.objects.get(pk=mitag['tag_id']).name
+        entity = __get_entity_name(tag.entity_type, tag.entity_id)
+        mitag["content_name"] = ""
+        if entity is not None:
+            mitag["content_name"] = entity
+        tag_list.append(mitag)
+    return tag_list
+
+"""
 def get_artist_tags(users_id, start_period, end_period):
     artisttags = ArtistTag.objects.filter(user_id__in=users_id).filter(timestamp__range=[start_period, end_period]).order_by("-timestamp")
     tag_list = []
@@ -106,7 +137,7 @@ def get_recording_tags(users_id, start_period, end_period):
             
         tag_list.append(mitag)    
     return tag_list
-    
+"""
 
 def timeline(users_id):
     
@@ -117,16 +148,17 @@ def timeline(users_id):
     #entries = Entry.objects.filter(created_at__range=[start_week, end_week])
     date = datetime.now()
     end_period = date
-    start_period = date - timedelta(days=15)
+    start_period = date - timedelta(days=30)
     
     comment_list = get_comments(users_id, start_period, end_period)
     
-    tag_list=[]
+    tag_list = get_tags(users_id, start_period, end_period)
+    """
     tag_list += get_artist_tags(users_id, start_period, end_period)
     tag_list += get_concert_tags(users_id, start_period, end_period)
     tag_list += get_work_tags(users_id, start_period, end_period)
     tag_list += get_recording_tags(users_id, start_period, end_period)
-
+    """
     final_list = comment_list + tag_list
     
     return sorted(final_list, key=lambda x: x['submit_date'], reverse=True)

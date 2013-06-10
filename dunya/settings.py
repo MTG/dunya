@@ -123,6 +123,8 @@ INSTALLED_APPS = (
     'inplaceeditform',
 )
 
+INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
+
 # Celery
 import djcelery
 djcelery.setup_loader()

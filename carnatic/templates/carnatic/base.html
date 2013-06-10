@@ -1,4 +1,5 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -25,25 +26,42 @@
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 	
-		<script>
-		$(document).ready(function() {
-			$('#user').click(function() {
-				$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
-			});
-			$('#user').mouseleave(function() {
-				$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
-  			});
-  			$('#guest').click(function() {
-				$(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
-			});
-			$('#guest').mouseleave(function() {
-				$(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
-  			});
+	<script src="{% static 'social/js/main.js' %}"></script>
+	<script src="{% static 'social/js/jquery.cookie.js' %}"></script>
+
+	<script>
+	$(document).ready(function() {
+		function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		$.ajaxSetup({
+		    crossDomain: false, // obviates need for sameOrigin test
+		    beforeSend: function(xhr, settings) {
+			if (!csrfSafeMethod(settings.type)) {
+			    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+			}
+		    }
 		});
-		</script>
+		$('#user').click(function() {
+			$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#user').mouseleave(function() {
+			$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#guest').click(function() {
+		    $(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#guest').mouseleave(function() {
+		    $(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+  		});
+		loadSocialFollowButtons();
+	});
+	</script>
         {% block script %}
         {% endblock %}
-
+	{% block extra_head %}
+        {% endblock %}
     </head>
     <body>
 	
@@ -56,6 +74,7 @@
 	{% url 'social-user-profile' as social_user_profile %}
 	{% url 'social-tag-autocomplete' as social_tag_autocomplete %}
 	{% url 'social-users-list' as social_users_list %}
+	{% url 'social-timeline-page' as social_timeline_page %}
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
@@ -90,6 +109,7 @@
 					    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT</a>
 					    <a href="{{ social_user_profile }}">PROFILE</a>
 					    <a href="{{ social_users_list }}">USERS</a>
+					    <a href="{{ social_timeline_page }}">TIMELINE</a>
 				    </div>	
 			    </div>
 			{% else %}
