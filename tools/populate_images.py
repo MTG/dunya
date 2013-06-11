@@ -21,10 +21,13 @@ def import_artist(a):
         i, b, u = wikipedia.get_artist_details(a.name)
         if u:
             additional_urls.append(u)
-        if not b:
-            newname = wikipedia.search(a.name)
-            if newname:
-                i, b, u = wikipedia.get_artist_details(newname)
+        #if not b:
+        #    newname = wikipedia.search(a.name)
+        #    mx = max(len(a.name), len(newname))
+        #    mn = min(len(a.name), len(newname))
+        #    # Only accept the wikipedia search result if it's
+        #    if newname and mn + 3 < mx:
+        #        i, b, u = wikipedia.get_artist_details(newname)
         if b:
             sn = data.models.SourceName.objects.get(name="Wikipedia")
 
@@ -40,7 +43,7 @@ def import_artist(a):
         a.description = description
         if i:
             im = data.models.Image()
-            im.image.save("test.jpg", ContentFile(i))
+            im.image.save("artist/%s.jpg" % a.mbid, ContentFile(i))
             a.images.add(im)
         if additional_urls:
             for u in additional_urls:
