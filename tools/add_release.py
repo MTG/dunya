@@ -12,6 +12,7 @@ setup_environ(settings)
 from carnatic.models import *
 import data.models
 import parse_tags
+import populate_images
 
 import musicbrainzngs as mb
 mb.set_useragent("Dunya", "0.1")
@@ -37,7 +38,12 @@ def import_release(mbid):
     try:
         concert = Concert.objects.get(mbid=mbid)
     except Concert.DoesNotExist:
-        concert = Concert(mbid=mbid, title=rel["title"])
+        year = rel.get("date", "")[:4]
+        if year:
+            year = int(year)
+        else:
+            year = None
+        concert = Concert(mbid=mbid, title=rel["title"], year=year)
         source = make_mb_source("http://musicbrainz.org/release/%s" % mbid)
         concert.source = source
         concert.save()
@@ -77,6 +83,7 @@ def add_and_get_artist(artistid):
             artist.begin = dates.get("begin")
             artist.end = dates.get("end")
         artist.save()
+        populate_images.import_artist(artist)
     return artist
 
 def _get_raaga(taglist):
