@@ -31,7 +31,22 @@ $(document).ready(function() {
 
      <div id="detail">
         Dunya search results
+        {% for c in concerts %}
+            {% badge_concert c %}
+        {% endfor %}
 
+        {% for a in artists %}
+            {% badge_artist a %}
+        {% endfor %}
+
+        <div>
+            <h3>Statistics</h3>
+            <p>Number of artists: {{numartists}}
+            <p>Number of composers: {{numcomposers}}
+            <p>Number of recordings: {{numrecordings}}
+            <p>Number of raagas attached to recordings: {{numraaga}}
+            <p>Number of taalas attached to recordings: {{numtaala}}
+        </div>
      </div>
 
 

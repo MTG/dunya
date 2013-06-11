@@ -18,11 +18,33 @@ def get_filter_items():
     return filter_items
 
 def main(request):
+    numartists = Artist.objects.count()
+    artists = Artist.objects.all()[:6]
+    numcomposers = Composer.objects.count()
+    composers = Composer.objects.all()[:6]
+    numrecordings = Recording.objects.count()
+    recordings = Recording.objects.all()[:6]
+    concerts = Concert.objects.all()[:6]
+    raagas = Raaga.objects.all()[:6]
+    taalas = Taala.objects.all()[:6][:6]
+    instruments = Instrument.objects.all()[:6]
+    numraaga = Raaga.objects.count()
+    numtaala = Taala.objects.count()
 
-    concerts = Concert.objects.all()[:5]
+    ret = {"numartists": numartists,
+           "filter_items": json.dumps(get_filter_items()),
+           "numcomposers": numcomposers,
+           "numrecordings": numrecordings,
+           "numraaga": numraaga,
+           "numtaala": numtaala,
 
-    ret = {"filter_items": json.dumps(get_filter_items()),
-           "concerts": concerts
+           "artists": artists,
+           "composers": composers,
+           "recordings": recordings,
+           "concerts": concerts,
+           "raagas": raagas,
+           "taalas": taalas,
+           "instruments": instruments
            }
     return render(request, "carnatic/index.html", ret)
 
