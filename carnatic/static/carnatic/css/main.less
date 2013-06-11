@@ -4,8 +4,29 @@
 
 
 
-.formSection { cursor: pointer; background: url("../img/formSectionClose.png") 98% 4px no-repeat; padding:5px; padding-right: 10px; padding-left: 10px; position: relative; display: block; border-bottom: 2px solid @gris6; font-weight: bold; }
-.formSectionText { cursor: pointer; background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; padding:5px; padding-right: 10px; padding-left: 10px; width: 100%; position: relative; display: block; border-bottom: 2px solid #ccc; }
+.formSection { 
+	cursor: pointer; 
+	background: url("../img/formSectionClose.png") 98% 4px no-repeat; 
+	padding:5px; 
+	padding-right: 10px; 
+	padding-left: 10px; 
+	position: relative; 
+	display: block; 
+	font-weight: bold; 
+}
+.formSectionText { 
+	cursor: pointer; 
+	background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; 
+	background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; 
+	padding:5px; 
+	padding-right: 10px; 
+	padding-left: 10px; 
+	width: 100%; 
+	position: relative; 
+	display: block; 
+	border-bottom: 2px solid #ccc; 
+}
+
 
 fieldset { margin-bottom: 6px; }
 .noScroll { overflow: hidden; }
@@ -17,8 +38,23 @@ fieldset { margin-bottom: 6px; }
 .filterListClosed { width: 0px !important; } 
 
 
-.filterBallClosed { top: 18px; }
-.filterSummary { position: absolute; top: 120px; padding: 10px; background: #f0f0f0; background: rgba(256,256,256,0.5); border-radius: 10px; width: 155px; left: -27px; display: none; }
+.filterBallClosed { top: 6px !important; }
+.filterSummary { 
+	position: absolute;
+	top: 115px;
+	padding: 10px;
+	background: #f0f0f0;
+	background: rgba(256, 256, 256, 0.5);
+	width: 155px;
+	left: -19px;
+	display: none;
+	color: #666;
+	width: 174px;
+	left: -30px;
+	height: 178px;	
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 
 .filterBallClosed .filterSummary { display: block; }
 
@@ -177,6 +213,7 @@ textarea {
 				list-style: none;
 				display: block;
 				white-space: nowrap;
+				cursor: pointer;
 			}
 		}
 	}
@@ -397,6 +434,7 @@ textarea {
 					padding: 9px; 
 					text-transform: capitalize; 
 					cursor:pointer; 
+					margin: 0px;
 					&.selected { 
 						color:#fff; 
 						background: #666; 
@@ -407,6 +445,33 @@ textarea {
 		}
 		.formFilterItem { height: auto; }
 		#entitiesList {
+			ul {
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+			}
+			h3 {
+				position: absolute;
+				top: 0px;
+				text-align: center;
+				color: #fff;
+				width: 100%;
+				text-shadow: 1px 2px 2px black;
+				margin: 0px;
+				left: 0px;
+				height: 81px;
+				opacity: 0.6;
+				padding-top: 50px;
+				background: #fff;
+				background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0)));
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
+
+			}
 			ul {
 				li {
 					.colorCode { 
@@ -427,7 +492,10 @@ textarea {
 		}
 		.filters { 
 			.filterBall { 
-				.animate();
+				-webkit-transition: all 0.5s ease 0; 
+				-moz-transition: all 0.5s ease 0; 
+				-o-transition: all 0.5s ease 0; 
+				transition:all 0.5s ease 0; 
 				position: relative; 
 				float: left; 
 				width: 120px; 
@@ -438,9 +506,8 @@ textarea {
 				margin-left: 30px; 
 				cursor: pointer; 
 				margin-right: 25px; 
-				border: 8px solid rgba(0,0,0,0);
 				&:hover { 
-					border: 8px solid rgba(0,0,0,0.2); 
+					box-shadow: 0px 0px 10px #000;
 				}
 				&:hover .arrowClosed{ display: block; }
 				&:hover .arrow{ display: block; }
@@ -478,6 +545,10 @@ textarea {
 					height: 30px; 
 					display: none;
 				}
+				& .filterSummary {
+					font-size: 10px;
+					& b { color: #000; }
+				}
 			}
 			.formFilter { 
 				position: relative; 
@@ -499,7 +570,20 @@ textarea {
 					max-height: 234px; 
 					height: auto; 
 				}
-				& .formFilterItem { display: none; background: #fff; background: rgba(256,256,256,0.8); width: 100%; border: 1px solid #ccc; overflow: hidden; }
+				& .formFilterItem { 
+					display: none; 
+					background: #fff; 
+					background: rgba(256,256,256,0.8); 
+					width: 100%; 
+					border: 1px solid #ccc; 
+					overflow: hidden; 
+					input[type="text"] {
+						padding: 7px;
+						padding-top:8px;
+						background: rgba(256,256,256,0.4);
+						margin:10px;
+					}
+				}
 			}
 
 
@@ -696,7 +780,7 @@ textarea {
 			background: #333;
 			z-index: 2;
             img {
-                width: 296px;
+                width: 297px;
             }
 		}
 		#image {
@@ -904,6 +988,12 @@ textarea {
 				margin-left: 220px;
 				border-left:1px solid @gris;
 				min-height: 40px;
+				textarea {
+					margin-bottom: 10px;
+					box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+					.rounded(5px);
+					border:none;
+				}
 				.recording {
 					float:left;
 					height: 100px;
@@ -1098,27 +1188,31 @@ textarea {
 
 input[type="button"], input[type="submit"] {
 	position: relative;
-	padding: 10px;
 	text-align: center;
-	.rounded(10px);
+	.rounded(5px);
 	font-size: 12px;
 	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-	background: #444;
-	color: #ddd;
+	background: #fff;
+	color: #444;
+	border: none;
 	text-transform: uppercase;
 	outline: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 7px;
+	padding-bottom: 6px;
 }
-
 input[type="button"]:hover, input[type="submit"]:hover {
-	text-decoration: underline;
-	color: #fff;
+	background: #444;
+	color: #ddd;
 }
 
 input[type="text"], input[type="password"] {
 	position: relative;
 	padding: 10px;
-	.rounded(10px);
+	.rounded(5px);
 	font-size: 12px;
+	border:none;
 	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
 	background: #fff;
 	color: #000;
@@ -1309,6 +1403,17 @@ input[type="text"], input[type="password"] {
 #filterMask #filterArea .filterList ul li.composer { background: @composer_color; }
 #filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
 #filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }
+
+#filterMask #filterArea .filterList ul li.artist.selected .colorCode { background: darken( @artist_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.concert.selected .colorCode { background: darken( @concert_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.work.selected .colorCode { background: darken( @work_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.instrument.selected .colorCode { background: darken( @instrument_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.raaga.selected .colorCode { background: darken( @raaga_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.taala.selected .colorCode { background: darken( @taala_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.recording.selected .colorCode { background: darken( @recording_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.composer.selected .colorCode { background: darken( @composer_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.entity_9.selected .colorCode { background: darken( @entity_9_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.entity_10.selected .colorCode { background: darken( @entity_10_color, 20% ) !important; }
 
 
 #detail.artist a { color: darken( @artist_color, 30% ) !important; }
