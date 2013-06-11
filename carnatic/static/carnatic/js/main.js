@@ -7,7 +7,13 @@ var globalSpeed  = 500;
 $(document).ready(function(){
 	//ScrollBlock
 	widthOfChildren(".scrollblock");	
+	$("#filterArea").on("click",".filterList.filterGlobalList ul li",function(){
+        $(this).toggleClass("selected");
+        entity = $(this).parent().parent().parent().attr("eid");
+		getResults2($(this));
+    });
 });
+
 
 
 function removeFilter(entity_filter){
@@ -17,7 +23,12 @@ function removeFilter(entity_filter){
     $(".filterBall").addClass("filterBallClosed");
     $("#entitiesList").addClass("filterListClosed");
     $(".filters."+entity_filter).remove();
+    
     filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
+    
+    delete filtersOutputArray["eid"+entity_filter];
+    delete filtersLiteralOutputArray["eid"+entity_filter];
+    delete EspecificOutputArray["eid"+entity_filter];
 }
 
 function loadFilter(filterdata, entity_filter,eid){
@@ -111,6 +122,21 @@ function parseAllFilters(data){
 
 function loadClicks(){
 
+	$('#query').click(function(){
+		console.log("filtersArray");
+		console.log(filtersArray);
+		console.log("-------------------------");
+		console.log("filtersOutputArray");
+		console.log(filtersOutputArray);
+		console.log("-------------------------");
+		console.log("filtersLiteralOutputArray");
+		console.log(filtersLiteralOutputArray);
+		console.log("-------------------------");
+		console.log("EspecificOutputArray");
+		console.log(EspecificOutputArray);
+		console.log("-------------------------");
+	});
+	
     /* Select Music Style */
     $("#gmSelected").click(function(){
         $("#gmDropDown").fadeIn();
@@ -130,18 +156,12 @@ function loadClicks(){
         $("#summary").attr("class",$(this).attr("class"));
     });
 
-    $(".filterList.formFilterItem ul li").click(function(){
+    $(".formFilterItem ul li").click(function(){
         $(this).toggleClass("selected");
         entity = $(this).parent().parent().parent().parent().parent().parent().parent().attr("eid");
         filterType = $(this).parent().parent().parent().attr("filtertype");
         filterName = $(this).parent().parent().parent().attr("filtername");
         getResults($(this));
-    });
-    
-    $(".filterList.filterGlobalList ul li").click(function(){
-        $(this).toggleClass("selected");
-        entity = $(this).parent().parent().parent().parent().parent().parent().parent().attr("eid");
-        getResults2($(this));
     });
 
 
@@ -189,24 +209,29 @@ function loadClicks(){
 }
 
 function sumarizeFilter(object){
-    summaryHTML = "";
-    $.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
-    	elsvalors = valors.join('<br>·');
-        summaryHTML += "<b>" + nom +"</b></br>·" + elsvalors + "</br>";
-    });
-    object.find(".filterSummary").html(summaryHTML);
+	if(jQuery.isEmptyObject(filtersLiteralOutputArray)){
+	
+	}else{
+		summaryHTML = "";
+		$.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
+    		elsvalors = valors.join('<br>·');
+    	    summaryHTML += "<b>" + nom +"</b></br>·" + elsvalors + "</br>";
+		});
+	    object.find(".filterSummary").html(summaryHTML);
+	}
+    
 }
 
 function showFilterData(data, entity_filter,filterName,eid){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
-    $('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
+    $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
     entityHTML_bc = "<div class='bread entity_"+entity_filter+" "+filterName.toLowerCase()+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
     $("#breadcrumb").append(entityHTML_bc);
     $('#filterArea').width(480+(filtersArray.length*780));
     newFilter = "#filter_"+filterPosition;
     $(newFilter).find(".filterList").append(listFilterData(data, entity_filter));
-    $(newFilter).find(".filterList ul li").click(function(){
+    $(newFilter).find("#entitiesList.filterList ul li").click(function(){
         $(this).toggleClass("selected");
         $("#breadcrumb").find(".entity_"+entity_filter+" span a").html($(this).html());
     });
@@ -261,6 +286,7 @@ function showFilterData(data, entity_filter,filterName,eid){
             console.log("change");
         }
     });
+  
 }
 
 function listFilterData(data, entity_filter){
@@ -316,23 +342,33 @@ function getResults(item){
     }
     
     function getResults2(item){
-    /*    theValue = "";
-        theValue = item.("html");
-
+    	theValue = "";
+		theValue = item.html();
         if(jQuery.isEmptyObject(EspecificOutputArray)){
-            EspecificOutputArray[entity] = new Object();
-            EspecificOutputArray[entity][filterName] = theValue;
+            EspecificOutputArray[entity] = new Array();
+            EspecificOutputArray[entity].push(theValue);
         }else{
+        	existeix = "no";
             for(var i in EspecificOutputArray){
-                if (EspecificOutputArray.hasOwnProperty(entity)) {
-                    EspecificOutputArray[entity][filterName] = theValue;
-                }else{
-                    EspecificOutputArray[entity] = new Object();
-                    EspecificOutputArray[entity][filterName] = theValue;
+                if (EspecificOutputArray.hasOwnProperty(entity)) {	
+                	existeix = "si";
+                	hies = "no";
+                	for(var u in EspecificOutputArray[entity]){
+	                	if(EspecificOutputArray[entity][u] == theValue){
+		                	hies = "si";
+		                	EspecificOutputArray[entity].splice(u, 1);
+	                	}
+                	}
+                	if(hies == "no"){
+	                	EspecificOutputArray[entity].push(theValue);	
+                	}   
                 }
             }
+            if(existeix == "no"){
+				EspecificOutputArray[entity] = new Array();
+				EspecificOutputArray[entity].push(theValue);
+            }
         }
-        */
     }
 
 
