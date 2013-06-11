@@ -11,7 +11,7 @@ def badge_concert(concert):
     return {"title": concert.title,
             "artists": concert.artistnames(),
             "detail": None,
-            "date": 2043,
+            "date": concert.year,
             "url": concert.get_absolute_url()
            }
 
