@@ -73,7 +73,8 @@ def artist(request, artistid):
 
     tags = tagging.tag_cloud(artistid, "artist")
     
-    ret = {"artist": artist,
+    ret = {"filter_items": json.dumps(get_filter_items()),
+    	   "artist": artist,
            "image": image,
            "form": TagSaveForm(),
             "objecttype": "artist",
@@ -85,7 +86,7 @@ def artist(request, artistid):
 
 def composer(request, composerid):
     composer = get_object_or_404(Composer, pk=composerid)
-    ret = {"composer": composer}
+    ret = {"composer": composer, "filter_items": json.dumps(get_filter_items())}
 
     return render(request, "carnatic/composer.html", ret)
 
@@ -120,7 +121,8 @@ def recording(request, recordingid):
     
     tags = tagging.tag_cloud(recordingid, "recording")
     
-    ret = {"recording": recording,
+    ret = {"filter_items": json.dumps(get_filter_items()),
+    	   "recording": recording,
            "form": TagSaveForm(),
             "objecttype": "recording",
             "objectid": recording.id,
@@ -141,7 +143,8 @@ def work(request, workid):
 
     tags = tagging.tag_cloud(workid, "work")
     
-    ret = {"work": work,
+    ret = {"filter_items": json.dumps(get_filter_items()),
+           "work": work,
            "form": TagSaveForm(),
             "objecttype": "work",
             "objectid": work.id,
@@ -159,7 +162,7 @@ def taalasearch(request):
 def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
 
-    ret = {"taala": taala}
+    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -172,7 +175,7 @@ def raagasearch(request):
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
 
-    ret = {"raaga": raaga}
+    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):
@@ -184,6 +187,6 @@ def instrumentsearch(request):
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
-    ret = {"instrument": instrument}
+    ret = {"instrument": instrument, "filter_items": json.dumps(get_filter_items()),}
 
     return render(request, "carnatic/instrument.html", ret)
