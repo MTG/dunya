@@ -246,7 +246,6 @@ table {
   padding-left: 10px;
   position: relative;
   display: block;
-  border-bottom: 2px solid #666666;
   font-weight: bold;
 }
 .formSectionText {
@@ -299,18 +298,23 @@ fieldset {
   width: 0px !important;
 }
 .filterBallClosed {
-  top: 18px;
+  top: 6px !important;
 }
 .filterSummary {
   position: absolute;
-  top: 120px;
+  top: 115px;
   padding: 10px;
   background: #f0f0f0;
   background: rgba(256, 256, 256, 0.5);
-  border-radius: 10px;
   width: 155px;
-  left: -27px;
+  left: -19px;
   display: none;
+  color: #666;
+  width: 174px;
+  left: -30px;
+  height: 178px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .filterBallClosed .filterSummary {
   display: block;
@@ -480,6 +484,7 @@ textarea {
   list-style: none;
   display: block;
   white-space: nowrap;
+  cursor: pointer;
 }
 .header-container nav#mainmenu {
   float: right;
@@ -716,6 +721,7 @@ textarea {
   padding: 9px;
   text-transform: capitalize;
   cursor: pointer;
+  margin: 0px;
 }
 #filterMask #filterArea .filterList ul li.selected {
   color: #fff;
@@ -724,6 +730,32 @@ textarea {
 }
 #filterMask #filterArea .formFilterItem {
   height: auto;
+}
+#filterMask #filterArea #entitiesList ul {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+#filterMask #filterArea #entitiesList h3 {
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  text-shadow: 1px 2px 2px black;
+  margin: 0px;
+  left: 0px;
+  height: 81px;
+  opacity: 0.6;
+  padding-top: 50px;
+  background: #fff;
+  background: -moz-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, rgba(255, 255, 255, 0)));
+  background: -webkit-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -o-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -ms-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=0);
 }
 #filterMask #filterArea #entitiesList ul li .colorCode {
   position: relative;
@@ -739,10 +771,10 @@ textarea {
   opacity: 0.5;
 }
 #filterMask #filterArea .filters .filterBall {
-  -webkit-transition: all 0 ease 0;
-  -moz-transition: all 0 ease 0;
-  -o-transition: all 0 ease 0;
-  transition: all 0 ease 0;
+  -webkit-transition: all 0.5s ease 0;
+  -moz-transition: all 0.5s ease 0;
+  -o-transition: all 0.5s ease 0;
+  transition: all 0.5s ease 0;
   position: relative;
   float: left;
   width: 120px;
@@ -757,10 +789,9 @@ textarea {
   margin-left: 30px;
   cursor: pointer;
   margin-right: 25px;
-  border: 8px solid rgba(0, 0, 0, 0);
 }
 #filterMask #filterArea .filters .filterBall:hover {
-  border: 8px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 10px #000;
 }
 #filterMask #filterArea .filters .filterBall:hover .arrowClosed {
   display: block;
@@ -803,6 +834,12 @@ textarea {
   height: 30px;
   display: none;
 }
+#filterMask #filterArea .filters .filterBall .filterSummary {
+  font-size: 10px;
+}
+#filterMask #filterArea .filters .filterBall .filterSummary b {
+  color: #000;
+}
 #filterMask #filterArea .filters .formFilter {
   position: relative;
   float: left;
@@ -830,6 +867,12 @@ textarea {
   width: 100%;
   border: 1px solid #ccc;
   overflow: hidden;
+}
+#filterMask #filterArea .filters .formFilter .formFilterItem input[type="text"] {
+  padding: 7px;
+  padding-top: 8px;
+  background: rgba(256, 256, 256, 0.4);
+  margin: 10px;
 }
 #filterMask #filterArea .filters h3 {
   padding: 10px;
@@ -1093,6 +1136,9 @@ textarea {
   background: #333;
   z-index: 2;
 }
+#detail #header .bigImage img {
+  width: 297px;
+}
 #detail #header #image {
   background: url("../img/artistImage.jpg") 0 0 no-repeat;
 }
@@ -1297,6 +1343,16 @@ textarea {
   margin-left: 220px;
   border-left: 1px solid #a7a8ac;
   min-height: 40px;
+}
+#detail .thedata .rightdata .innerrightdata textarea {
+  margin-bottom: 10px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
 }
 #detail .thedata .rightdata .innerrightdata .recording {
   float: left;
@@ -1520,35 +1576,40 @@ textarea {
 input[type="button"],
 input[type="submit"] {
   position: relative;
-  padding: 10px;
   text-align: center;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
   font-size: 12px;
   box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-  background: #444;
-  color: #ddd;
+  background: #fff;
+  color: #444;
+  border: none;
   text-transform: uppercase;
   outline: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7px;
+  padding-bottom: 6px;
 }
 input[type="button"]:hover,
 input[type="submit"]:hover {
-  text-decoration: underline;
-  color: #fff;
+  background: #444;
+  color: #ddd;
 }
 input[type="text"],
 input[type="password"] {
   position: relative;
   padding: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
   font-size: 12px;
+  border: none;
   box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
   background: #fff;
   color: #000;
@@ -1764,6 +1825,36 @@ input[type="password"] {
 }
 #filterMask #filterArea .filterList ul li.entity_10 {
   background: #53777a;
+}
+#filterMask #filterArea .filterList ul li.artist.selected .colorCode {
+  background: #20adca !important;
+}
+#filterMask #filterArea .filterList ul li.concert.selected .colorCode {
+  background: #5fbdb8 !important;
+}
+#filterMask #filterArea .filterList ul li.work.selected .colorCode {
+  background: #b7c189 !important;
+}
+#filterMask #filterArea .filterList ul li.instrument.selected .colorCode {
+  background: #b3550a !important;
+}
+#filterMask #filterArea .filterList ul li.raaga.selected .colorCode {
+  background: #943e00 !important;
+}
+#filterMask #filterArea .filterList ul li.taala.selected .colorCode {
+  background: #dfb01f !important;
+}
+#filterMask #filterArea .filterList ul li.recording.selected .colorCode {
+  background: #97321f !important;
+}
+#filterMask #filterArea .filterList ul li.composer.selected .colorCode {
+  background: #6c1725 !important;
+}
+#filterMask #filterArea .filterList ul li.entity_9.selected .colorCode {
+  background: #0d0508 !important;
+}
+#filterMask #filterArea .filterList ul li.entity_10.selected .colorCode {
+  background: #2a3c3d !important;
 }
 #detail.artist a {
   color: #19889e !important;

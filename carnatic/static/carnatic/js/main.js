@@ -1,6 +1,7 @@
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
 var filtersLiteralOutputArray = new Object();
+var EspecificOutputArray = new Object();
 var globalSpeed  = 500;
 
 $(document).ready(function(){
@@ -98,7 +99,7 @@ function parseAllFilters(data){
                 formHTML += "</div></fieldset>";
             }else if(formType=="text"){
                 formHTML += "<fieldset filtertype='text' filtername='"+element2.name+"'>";
-                formHTML += "<label class='formSectionText'>"+element2.name+"<input type='text' /></label>";
+                formHTML += "<label class='formSection formSectionText'>"+element2.name+"</label><div class='filterList formFilterItem'><input type='text' /></div>";
                 formHTML += "</fieldset>";
             }
         });
@@ -112,7 +113,10 @@ function loadClicks(){
 
     /* Select Music Style */
     $("#gmSelected").click(function(){
-        $("#gmDropDown").show();
+        $("#gmDropDown").fadeIn();
+    });
+    $("#gmDropDown").click(function(){
+	   	$("#gmDropDown").fadeOut(); 
     });
 
     $("#entitiesList ul li").click(function(){
@@ -132,6 +136,12 @@ function loadClicks(){
         filterType = $(this).parent().parent().parent().attr("filtertype");
         filterName = $(this).parent().parent().parent().attr("filtername");
         getResults($(this));
+    });
+    
+    $(".filterList.filterGlobalList ul li").click(function(){
+        $(this).toggleClass("selected");
+        entity = $(this).parent().parent().parent().parent().parent().parent().parent().attr("eid");
+        getResults2($(this));
     });
 
 
@@ -179,13 +189,12 @@ function loadClicks(){
 }
 
 function sumarizeFilter(object){
-
     summaryHTML = "";
     $.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
-        summaryHTML += "<b>" + nom +"</b>" + valors+"</br>";
+    	elsvalors = valors.join('<br>·');
+        summaryHTML += "<b>" + nom +"</b></br>·" + elsvalors + "</br>";
     });
     object.find(".filterSummary").html(summaryHTML);
-
 }
 
 function showFilterData(data, entity_filter,filterName,eid){
@@ -276,7 +285,6 @@ function getResults(item){
             item.parent().find(".selected").each(function (i){
                 theValue[i]=$(this).attr("the_id");
                 theName[i]=$(this).attr("valor");
-                console.log(theName[i]);
             });
         }else if( filterType == "select" ){
             theValue = item.parent().find(".selected").attr("the_id");
@@ -305,6 +313,26 @@ function getResults(item){
                 }
             }
         }
+    }
+    
+    function getResults2(item){
+    /*    theValue = "";
+        theValue = item.("html");
+
+        if(jQuery.isEmptyObject(EspecificOutputArray)){
+            EspecificOutputArray[entity] = new Object();
+            EspecificOutputArray[entity][filterName] = theValue;
+        }else{
+            for(var i in EspecificOutputArray){
+                if (EspecificOutputArray.hasOwnProperty(entity)) {
+                    EspecificOutputArray[entity][filterName] = theValue;
+                }else{
+                    EspecificOutputArray[entity] = new Object();
+                    EspecificOutputArray[entity][filterName] = theValue;
+                }
+            }
+        }
+        */
     }
 
 
