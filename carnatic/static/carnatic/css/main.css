@@ -689,27 +689,14 @@ textarea {
 /* ==========================================================================
    FILTERS
    ========================================================================== */
-#filterMask {
-  position: relative;
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-  overflow-x: auto;
-  background: url("../img/cloth_alike.png") 0 0 repeat;
-}
-#filterMask #filterArea {
-  position: relative;
-  width: 100%;
-  height: 300px;
-}
-#filterMask #filterArea #queryCont {
-  position: fixed;
+#queryCont {
+  position: absolute;
   display: block;
   right: 10px;
   top: 80px;
   z-index: 200;
 }
-#filterMask #filterArea #queryCont #query {
+#queryCont #query {
   position: relative;
   float: left;
   background: rgba(0, 0, 0, 0.5);
@@ -728,7 +715,7 @@ textarea {
   cursor: pointer;
   margin-right: 25px;
 }
-#filterMask #filterArea #queryCont #query span {
+#queryCont #query span {
   display: table-cell;
   position: relative;
   top: 0px;
@@ -745,8 +732,21 @@ textarea {
   text-transform: uppercase;
   background: url("http://localhost:8001/static/carnatic/css/../img/icon_search.png") 50% 30px no-repeat;
 }
-#filterMask #filterArea #queryCont #query:hover {
+#queryCont #query:hover {
   background: url("http://localhost:8001/static/carnatic/css/../img/texturelogo.png") 21% 42% no-repeat;
+}
+#filterMask {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  overflow-x: auto;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+}
+#filterMask #filterArea {
+  position: relative;
+  width: 100%;
+  height: 300px;
 }
 #filterMask #filterArea .filterList {
   position: relative;
@@ -1080,6 +1080,9 @@ textarea {
 #filterMask.querybar #breadcrumb .bread span a:hover {
   background: #666;
   color: #fff;
+}
+#filterMask.querybar #breadcrumb .bread span a h3 {
+  margin: 0px;
 }
 /* ==========================================================================
    DETAIL 
@@ -1581,6 +1584,179 @@ textarea {
   display: block;
   clear: both;
   text-align: center;
+}
+/* RESULTS FOR DEMO */
+#resultsstats {
+  display: block;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+  position: relative;
+  width: 100%;
+  height: 48px;
+  overflow: hidden;
+}
+#resultsstats table {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.2)), color-stop(100%, rgba(0, 0, 0, 0)));
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#33000000', endColorstr='#00000000', GradientType=0);
+  border-bottom: 1px solid #333;
+}
+#resultsstats table td {
+  padding-left: 10px;
+  border-bottom: 1px solid #a7a8ac;
+  border-left: 1px solid #a7a8ac;
+  font-size: 30px;
+  color: #fff;
+  text-shadow: 1px 2px 2px black;
+}
+#resultsstats table td b {
+  font-size: 12px;
+  color: #000;
+  text-shadow: none;
+}
+#resultsstats table td h3 {
+  font-size: 14px;
+}
+#resultsstats table td:first-child {
+  width: 149px;
+  border-left: none;
+}
+#results > div {
+  float: left;
+  width: 307px;
+  height: 125px;
+  margin-bottom: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid #f6f6f6;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+#results > div .desc {
+  padding: 10px;
+}
+#results > div .desc p {
+  margin: 0px;
+  color: #333;
+}
+#results > div .desc b,
+#results > div .desc a {
+  font-weight: normal;
+  display: block;
+  color: #fff;
+  text-decoration: none;
+}
+#results > div .desc a:hover {
+  text-decoration: underline;
+}
+#results .recording {
+  background: #d95b43;
+}
+#results .recording:hover {
+  background: #97321f;
+}
+#results .recording .disc {
+  float: left;
+  width: 127px;
+  height: 90px;
+  margin-right: 10px;
+}
+#results .album {
+  background: #d95b43;
+}
+#results .album:hover {
+  background: #97321f;
+}
+#results .album .disc {
+  float: left;
+  width: 127px;
+  height: 123px;
+  margin-right: 10px;
+}
+#results .artistCell {
+  background: #69d2e7;
+}
+#results .artistCell:hover {
+  background: #20adca;
+}
+#results .artistCell .photo {
+  float: left;
+  width: 127px;
+  height: 123px;
+  margin-right: 10px;
+}
+#results .artistCell .photo img {
+  width: 127px;
+  height: 123px;
+}
+#results .track {
+  background: #d95b43;
+}
+#results .track:hover {
+  background: #97321f;
+}
+#results .track h4 {
+  margin: 0px;
+  margin-bottom: 4px;
+}
+#results .instrumentCell {
+  background: #f38630;
+}
+#results .instrumentCell:hover {
+  background: #b3550a;
+}
+#results .instrumentCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+#results .raagaCell {
+  background: #fa6900;
+}
+#results .raagaCell:hover {
+  background: #943e00;
+}
+#results .raagaCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+#results .taalaCell {
+  background: #ecd078;
+}
+#results .taalaCell:hover {
+  background: #dfb01f;
+}
+#results .taalaCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+#results .artist {
+  background: #69d2e7;
+}
+#results .artist:hover {
+  background: #20adca;
+}
+#results .artist .artistFoto {
+  position: relative;
+  width: 51px;
+  height: 63px;
+  float: left;
+}
+#results .artist .artistName {
+  position: relative;
+  width: 150px;
+  height: 63px;
+  float: left;
+  padding: 5px;
+  font-size: 11px;
 }
 /* ==========================================================================
    LOGIN
