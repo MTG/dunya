@@ -10,7 +10,7 @@ $(document).ready(function(){
 	$("#filterArea").on("click",".filterList.filterGlobalList ul li",function(){
         $(this).toggleClass("selected");
         entity = $(this).parent().parent().parent().attr("eid");
-		getResults2($(this));
+		getResults2($(this), entity);
     });
 });
 
@@ -205,20 +205,60 @@ function loadClicks(){
 
     $("#toggleMain").click(function(){
         $("#filterMask").toggleClass('querybar');
+        populateBreadcrumbs();
     });
 }
 
+function populateBreadcrumbs(){
+	entityHTML_bc = "";
+	hay= "no";
+	for( i in filtersArray){
+		entity_name = ("eid"+filtersArray[i]);	
+		entity_realName = $("#entitiesList ul li[eid='"+entity_name+"']").text().toLowerCase();
+		entityHTML_bc += "<div class='bread entity_"+entity_name+" "+entity_realName+"'><div class='breadarrow'></div><span><a href='#'>";
+		entityHTML_bc += "<h3>"+entity_realName+"</h3>";
+		if(filtersLiteralOutputArray[entity_name]){			
+				$.each(filtersLiteralOutputArray[entity_name], function(key, info) {
+			           entityHTML_bc += key+"- "+info+"<br>";
+				});
+				hay = "yes";
+		}else{
+			hay = "no";
+		};
+		for( i in EspecificOutputArray[entity_name]){
+			especific_name = EspecificOutputArray[entity_name][i];
+			entityHTML_bc += especific_name+" ";
+			hay = "yes";	
+		}
+		if(hay == "no"){
+			entityHTML_bc += "Nothing selected";
+		}
+		entityHTML_bc += "</a></span></div>";	
+	}
+	
+	$("#breadcrumb").html(entityHTML_bc);
+}
+
 function sumarizeFilter(object){
+	entity_name = object.parent().attr("eid");
+	summaryHTML = "";	
 	if(jQuery.isEmptyObject(filtersLiteralOutputArray)){
 	
 	}else{
-		summaryHTML = "";
-		$.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
+		$.each(filtersLiteralOutputArray[entity_name], function(nom, valors) {
     		elsvalors = valors.join('<br>·');
     	    summaryHTML += "<b>" + nom +"</b></br>·" + elsvalors + "</br>";
 		});
-	    object.find(".filterSummary").html(summaryHTML);
 	}
+	if(jQuery.isEmptyObject(EspecificOutputArray)){
+	
+	}else{
+		summaryHTML += "<b>Selection</b><br>";
+		$.each(EspecificOutputArray[entity_name], function(nom, valors) {
+    	    summaryHTML += valors + "</br>";
+		});
+	}
+	    object.find(".filterSummary").html(summaryHTML);
     
 }
 
@@ -226,15 +266,9 @@ function showFilterData(data, entity_filter,filterName,eid){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
     $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
-    entityHTML_bc = "<div class='bread entity_"+entity_filter+" "+filterName.toLowerCase()+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
-    $("#breadcrumb").append(entityHTML_bc);
     $('#filterArea').width(480+(filtersArray.length*780));
     newFilter = "#filter_"+filterPosition;
     $(newFilter).find(".filterList").append(listFilterData(data, entity_filter));
-    $(newFilter).find("#entitiesList.filterList ul li").click(function(){
-        $(this).toggleClass("selected");
-        $("#breadcrumb").find(".entity_"+entity_filter+" span a").html($(this).html());
-    });
     $(newFilter).find(".filterBall span").html(filterName);
     //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
     $(".form_"+entity_filter).clone(true).appendTo($(newFilter).find(".formFilter"));
@@ -341,33 +375,29 @@ function getResults(item){
         }
     }
     
-    function getResults2(item){
+    function getResults2(item, entity){
     	theValue = "";
 		theValue = item.html();
         if(jQuery.isEmptyObject(EspecificOutputArray)){
             EspecificOutputArray[entity] = new Array();
             EspecificOutputArray[entity].push(theValue);
         }else{
-        	existeix = "no";
-            for(var i in EspecificOutputArray){
-                if (EspecificOutputArray.hasOwnProperty(entity)) {	
-                	existeix = "si";
-                	hies = "no";
-                	for(var u in EspecificOutputArray[entity]){
-	                	if(EspecificOutputArray[entity][u] == theValue){
-		                	hies = "si";
-		                	EspecificOutputArray[entity].splice(u, 1);
-	                	}
-                	}
-                	if(hies == "no"){
-	                	EspecificOutputArray[entity].push(theValue);	
-                	}   
-                }
-            }
-            if(existeix == "no"){
-				EspecificOutputArray[entity] = new Array();
-				EspecificOutputArray[entity].push(theValue);
-            }
+        	if (EspecificOutputArray.hasOwnProperty(entity)) {
+        		existeix = "no";
+				for(var u in EspecificOutputArray[entity]){
+	        	   	if(EspecificOutputArray[entity][u] == theValue){
+						EspecificOutputArray[entity].splice(u, 1);
+						existeix = "si";
+					}
+				}
+				if(existeix == "no"){
+					EspecificOutputArray[entity].push(theValue);
+				}
+        	}else{
+        		EspecificOutputArray[entity] = new Array();
+	        	EspecificOutputArray[entity].push(theValue);
+        	}
+        	
         }
     }
 
