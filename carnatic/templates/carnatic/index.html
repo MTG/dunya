@@ -24,19 +24,31 @@ $(document).ready(function() {
 			
 	    	<div id="breadcrumb">
 	    	</div>
-
-			<div id="queryCont">
-				<div id="query" class="shadow1">
-        			<span>QUERY</span>
-				</div>
-			</div>
 	    </div>
 	    
      </div>
+     
+     <div id="queryCont">
+		<div id="query" class="shadow1">
+        	<span>QUERY</span>
+		</div>
+	 </div>
 
+	 <div id="resultsstats">
+        <table>
+        	<tr>
+        		<td><h3>Statistics</h3></td>
+        		<td>{{numartists}} <b>Artists</b></td>
+        		<td>{{numcomposers}} <b>Composers</b></td>
+        		<td>{{numrecordings}} <b>Recordings</b></td>
+        		<td>{{numraaga}} <b>Raagas attached to recordings</b></td>
+        		<td>{{numtaala}} <b>Taalas attached to recordings</b></td>
+        	</tr>
+        </table>
+     </div>
 
-     <div id="detail">
-        Dunya search results
+     <div id="results">
+
         {% for c in concerts %}
             {% badge_concert c %}
         {% endfor %}
@@ -45,14 +57,6 @@ $(document).ready(function() {
             {% badge_artist a %}
         {% endfor %}
 
-        <div>
-            <h3>Statistics</h3>
-            <p>Number of artists: {{numartists}}
-            <p>Number of composers: {{numcomposers}}
-            <p>Number of recordings: {{numrecordings}}
-            <p>Number of raagas attached to recordings: {{numraaga}}
-            <p>Number of taalas attached to recordings: {{numtaala}}
-        </div>
      </div>
 
 
