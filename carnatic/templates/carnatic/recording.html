@@ -8,7 +8,7 @@
 <script>
 $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
-    //parseAllFilters({{ filter_items|safe }});
+    parseAllFilters({{ filter_items|safe }});
      audio = $("#theaudio")[0];
      renders = $('#renders');
      rendersMask = $('#rendersMask');
@@ -222,6 +222,7 @@ function playrecord(){
 	     	</div>
 	 	
 	 		<!-- COMMENTS -->
+            {% if tags %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Tags</h3>
@@ -232,13 +233,15 @@ function playrecord(){
 	     			</div>
 	     		</div>
 			 </div>
+            {% endif %}
+            {% get_comment_list for recording as comment_list %}
+            {% if comment_list %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Comments</h3>
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata">
-	                    {% get_comment_list for recording as comment_list %}
 	                    <div id="comments">
 	                    {% for comment in comment_list %}
 	                    	<div class="acomment">
@@ -257,6 +260,7 @@ function playrecord(){
 	     			</div>
 	     		</div>
 	     	</div>
+            {% endif %}
 	     	{% if user.is_authenticated %}
 				<div class="thedata">
 		     		<div class="leftdata">

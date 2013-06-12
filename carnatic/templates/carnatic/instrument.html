@@ -7,7 +7,7 @@
 <script>
 $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
-    //parseAllFilters({{ filter_items|safe }});
+    parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
 });
 </script>
@@ -50,7 +50,7 @@ $(document).ready(function() {
      			<div id="summaryBack"></div>
      			<div id="icon"></div>
      		</div>
-     		<div class="bigImage"><img src="{% static 'carnatic/img/develop/instrument.jpg' %}" /></div>
+            <div class="bigImage"><img src="{{image}}" /></div>
      		<div id="meta">
      			<div class="metaBlock">
 					<div class="metaMask">
@@ -58,7 +58,10 @@ $(document).ready(function() {
 							<div id="excerpt" class="metaDetails">
 								<div class="inner">
 									<h3>Description</h3>
-			                        <span>{{instrument.description}}</span>
+			                        <span>{{instrument.description.description}}
+                                    <p><label>Description from </label>
+                                        <a href="{{instrument.description.source.uri}}">Wikipedia</a>
+                                    </span>
 								</div>
 							</div>
 							<div id="samples" class="metaDetails">
@@ -72,13 +75,6 @@ $(document).ready(function() {
 								</div>
 							</div>
 							
-							<div id="external" class="metaDetails">
-								<div class="inner">
-									<h3>External references</h3>
-									<span>
-									</span>
-								</div>
-							</div>
 			 			</div>
 			 		</div>
 				</div>
