@@ -67,7 +67,9 @@ $(document).ready(function() {
 								<div class="inner">
 									<h3>Biography</h3>
 			                        <span>{{artist.description.description}}
+                                    {% if artist.description.description %}
                                     <p><label>Description from </label> <a href="{{artist.description.source.uri}}">{{artist.description.source.source_name.name}}</a>
+                                    {% endif %}
                                     </span>
 								</div>
 							</div>

@@ -135,6 +135,13 @@ function loadClicks(){
 		console.log("EspecificOutputArray");
 		console.log(EspecificOutputArray);
 		console.log("-------------------------");
+        var url = "/carnatic/?q=1";
+        for (var i=0; i< EspecificOutputArray.eid1.length; i++) {
+            n = EspecificOutputArray.eid1[i];
+            url += "&a="+n;
+    }
+        console.log(url);
+        window.location.href = url;
 	});
 	
     /* Select Music Style */
