@@ -13,6 +13,24 @@ import data.models
 
 from compmusic import wikipedia
 from compmusic import kutcheris
+from compmusic import image
+
+def import_instrument(i):
+    iname = wikipedia.search(i.name)
+    img, b, u = wikipedia.get_artist_details(i.name)
+    if b and b.startswith("#REDIR"):
+        newname = b.replace("#REDIRECT ", "")
+        img, b, u = wikipedia.get_artist_details(newname)
+    if b:
+        sn = data.models.SourceName.objects.get(name="Wikipedia")
+        source = data.models.Source.objects.create(source_name=sn, title=i.name, uri=u)
+        description = data.models.Description.objects.create(description=b, source=source)
+        i.description = description
+    if img:
+        im = data.models.Image()
+        im.image.save("/%s.jpg" % i.name.replace(" ", "_"), ContentFile(img))
+        i.images.add(im)
+    i.save()
 
 def import_artist(a):
     artist = kutcheris.search_artist(a.name)
@@ -54,7 +72,12 @@ def import_artist(a):
         a.save()
 
 def import_concert(c):
-    pass
+    i = image.get_coverart_for_release(c.mbid)
+    if i:
+        im = data.models.Image()
+        im.image.save("concert/%s.jpg" % c.mbid, ContentFile(i))
+        c.images.add(im)
+        c.save()
 
 def do_artists():
     for a in Artist.objects.all():
