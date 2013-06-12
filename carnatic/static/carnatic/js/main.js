@@ -225,8 +225,8 @@ function populateBreadcrumbs(){
 		}else{
 			hay = "no";
 		};
-		for( i in EspecificOutputArray){
-			especific_name = EspecificOutputArray[i];
+		for( i in EspecificOutputArray[entity_name]){
+			especific_name = EspecificOutputArray[entity_name][i];
 			entityHTML_bc += especific_name+" ";
 			hay = "yes";	
 		}
