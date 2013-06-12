@@ -12,5 +12,19 @@
     "fields": {
         "name": "Wikipedia"
     }
+},
+{
+    "pk": 3, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "kutcheris.com"
+    }
+},
+{
+    "pk": 4, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "Cover Art Archive"
+    }
 }
 ]
