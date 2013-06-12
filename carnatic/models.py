@@ -39,7 +39,10 @@ class Artist(CarnaticStyle, data.models.Artist):
         for perf in self.instrumentperformance_set.all():
             if perf.instrument.name not in insts:
                 insts.append(perf.instrument)
-        return insts[0]
+        if insts:
+            return insts[0]
+        else:
+            return None
 
     def similar_artists(self):
         pass

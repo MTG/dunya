@@ -60,7 +60,8 @@ def badge_recording(recording):
 def badge_instrument(instrument):
     if not isinstance(instrument, Instrument):
         instrument = Instrument.objects.get(pk=instrument)
-    return {"instrument": instrument
+    return {"instrument": instrument,
+            "image": get_image(instrument, "noinstrument")
            }
 
 

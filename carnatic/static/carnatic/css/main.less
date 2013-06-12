@@ -1203,6 +1203,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 /* RESULTS FOR DEMO */
 #resultsstats {
+    .artist {
+        background: @artist_color;
+    }
+
+    .concert {
+        background: @concert_color;
+    }
+    .recording {
+        background: @recording_color;
+    }
+    .raaga {
+        background: @raaga_color;
+    }
+    .taala {
+        background: @taala_color;
+    }
 	display: block;
 	background: url("../img/cloth_alike.png") 0 0 repeat;
 	position: relative;
@@ -1271,13 +1287,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		}
 	}
 	.album {
-		background: @recording_color;
-		&:hover { background: darken( @recording_color, 20% ); }
+		background: @concert_color;
+		&:hover { background: darken( @concert_color, 20% ); }
 		.disc {
 			float: left;
 			width: 127px; 
 			height: 123px;
 			margin-right:10px;
+            img {
+                width: 127px;
+            }
 		}
 	}
 	.artistCell {
@@ -1311,6 +1330,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			margin: 0px;
 			margin-bottom:4px;
 		}
+        .photo {
+			float: left;
+            img {
+                width:127px;
+            }
+        }
 	}
 	.raagaCell {
 		background: @raaga_color;

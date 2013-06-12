@@ -37,17 +37,23 @@ $(document).ready(function() {
 	 <div id="resultsstats">
         <table>
         	<tr>
-        		<td><h3>Statistics</h3></td>
-        		<td>{{numartists}} <b>Artists</b></td>
-        		<td>{{numcomposers}} <b>Composers</b></td>
-        		<td>{{numrecordings}} <b>Recordings</b></td>
-        		<td>{{numraaga}} <b>Raagas attached to recordings</b></td>
-        		<td>{{numtaala}} <b>Taalas attached to recordings</b></td>
+        		<td><h3>Collection statistics</h3></td>
+        		<td class="artist">{{numartists}} <b>Artists</b></td>
+        		<td class="artist">{{numcomposers}} <b>Composers</b></td>
+        		<td class="concert">{{numconcert}} <b>Concerts</b></td>
+        		<td class="recording">{{numrecordings}} <b>Recordings</b></td>
+        		<td class="raaga">{{numraaga}} <b>Raagas</b></td>
+        		<td class="taala">{{numtaala}} <b>Taalas</b></td>
         	</tr>
         </table>
      </div>
 
      <div id="results">
+         {% if results %}
+         Query results:<br>
+         {% else %}
+         Some items from our collection:<br>
+         {% endif %}
 
         {% for c in concerts %}
             {% badge_concert c %}
@@ -55,6 +61,10 @@ $(document).ready(function() {
 
         {% for a in artists %}
             {% badge_artist a %}
+        {% endfor %}
+
+        {% for i in instruments %}
+            {% badge_instrument i %}
         {% endfor %}
 
      </div>

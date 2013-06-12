@@ -142,8 +142,11 @@ function playrecord(){
 							<div id="excerpt" class="metaDetails">
 								<span class="list">
 									<label>From album</label><b>{% inline_concert recording.concert_set.get %}</b>
-									<label>Composer</label><b>{% inline_artist recording.all_artists.get %}</b>
+                                    {% if recording.work %}
 									<label>Performing</label><b>{% inline_work recording.work %}</b>
+                                    {% if recording.work.composer %}
+									<label>Composer</label><b>{% inline_artist recording.work.composer %}</b>
+                                    {% endif %}
 									{% if recording.work.taala %}
 									<label>Taala</label><b>
 										{% for t in recording.work.taala.all %}
@@ -160,8 +163,8 @@ function playrecord(){
 		    							{% endfor %}
 									</b>
 									{% endif %}
+                                {% endif %}
 									
-									<label>Tonic</label><b>Tonic: 164.81 Hz</b>
 								</span>
 							</div>
 				 		</div>

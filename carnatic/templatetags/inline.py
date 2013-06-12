@@ -40,5 +40,6 @@ def inline_instrument(instrument):
         instrument = [instrument]
     ret = []
     for i in instrument:
-        ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
+        if i:
+            ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
     return ", ".join(ret)

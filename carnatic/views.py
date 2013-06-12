@@ -18,18 +18,39 @@ def get_filter_items():
     return filter_items
 
 def main(request):
+    qartist = []
+    if "a" in request.GET:
+        for x in request.GET.getlist("a"):
+            qartist.append(x)
+    artistquery = request.GET.get('a');
     numartists = Artist.objects.count()
-    artists = Artist.objects.all()[:6]
     numcomposers = Composer.objects.count()
-    composers = Composer.objects.all()[:6]
     numrecordings = Recording.objects.count()
-    recordings = Recording.objects.all()[:6]
-    concerts = Concert.objects.all()[:6]
-    raagas = Raaga.objects.all()[:6]
-    taalas = Taala.objects.all()[:6][:6]
-    instruments = Instrument.objects.all()[:6]
     numraaga = Raaga.objects.count()
     numtaala = Taala.objects.count()
+    numconcert = Concert.objects.count()
+
+    if qartist:
+        artists = []
+        instruments = []
+        concerts = []
+        for aname in qartist:
+            art = Artist.objects.get(name=aname)
+            artists.append(art)
+            instruments.append(art.instruments())
+        concerts = Concert.objects.filter(artists__in=artists).all()
+        results = True
+    else:
+        print "something else"
+        artists = Artist.objects.all()[:6]
+        concerts = Concert.objects.all()[:6]
+        instruments = Instrument.objects.all()[:6]
+        results = None
+
+    composers = Composer.objects.all()[:6]
+    recordings = Recording.objects.all()[:6]
+    raagas = Raaga.objects.all()[:6]
+    taalas = Taala.objects.all()[:6][:6]
 
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
@@ -37,6 +58,7 @@ def main(request):
            "numrecordings": numrecordings,
            "numraaga": numraaga,
            "numtaala": numtaala,
+           "numconcert": numconcert,
 
            "artists": artists,
            "composers": composers,
@@ -44,7 +66,8 @@ def main(request):
            "concerts": concerts,
            "raagas": raagas,
            "taalas": taalas,
-           "instruments": instruments
+           "instruments": instruments,
+           "results": results,
            }
     return render(request, "carnatic/index.html", ret)
 
