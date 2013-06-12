@@ -34,12 +34,12 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     
-
-    def biography(self):
-        return "Biography of %s" % self.name
-
     def instruments(self):
-        pass
+        insts = []
+        for perf in self.instrumentperformance_set.all():
+            if perf.instrument.name not in insts:
+                insts.append(perf.instrument.name)
+        return ", ".join(insts)
 
     def similar_artists(self):
         pass
