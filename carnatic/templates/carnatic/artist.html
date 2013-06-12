@@ -51,7 +51,7 @@ $(document).ready(function() {
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{artist.name}}</h1>
-                        <h2>{{artist.instruments}}</h2>
+                        <h2>{% inline_instrument artist.instruments %}</h2>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
@@ -66,8 +66,8 @@ $(document).ready(function() {
 							<div class="metaDetails narrow">
 								<div class="inner">
 									<h3>Biography</h3>
-                                    <span>
-                                        {{artist.description.description}} 
+			                        <span>{{artist.description.description}}
+                                    <p><label>Description from </label> <a href="{{artist.description.source.uri}}">{{artist.description.source.source_name.name}}</a>
                                     </span>
 								</div>
 							</div>
@@ -78,8 +78,10 @@ $(document).ready(function() {
 									<div class="inner">
 										<h3>External references</h3>
 										<span>
-										<a href="#">Official Website of Palghat R Raghu</a>
-										<a href="#">Obituary in The Hindu newspaper</a>
+                                            {% for ref in artist.reference_urls %}
+                                            <a href="{{ref.url}}">{{ref.title}}</a>
+
+                                            {% endfor %}
 										</span>
 									</div>
 								</div>
@@ -120,43 +122,31 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="scrollblock">
-			                <div class="track">
-				                   <h4>Chalamela jesevura chala nammina napai (tv)</h4>
-				                   <div class="trackWave">
-				                   		<img src="{% static 'carnatic/img/develop/track.png' %}" />
-				                   </div>
-				                   <div class="trackMeta">
-					                   <label>Raagas:</label><b>abheri / abhogi</b>
-					                   <label>Taalas:</label><b>eka / tishra eka</b>
-				                   </div>
-		                    </div>
-		                    <div class="track">
-				                   <h4>Gajavadana </h4>
-				                   <div class="trackWave">
-				                   		<img src="{% static 'carnatic/img/develop/track.png' %}" />
-				                   </div>
-				                   <div class="trackMeta">
-					                   <label>Raagas:</label><b>abheri / abhogi</b>
-					                   <label>Taalas:</label><b>eka / tishra eka</b>
-				                   </div>
-		                    </div>
-		                    <div class="track">
-				                   <h4>Divakara tanujam jnanaishvaram </h4>
-				                   <div class="trackWave">
-				                   		<img src="{% static 'carnatic/img/develop/track.png' %}" />
-				                   </div>
-				                   <div class="trackMeta">
-					                   <label>Raagas:</label><b>abheri / abhogi</b>
-					                   <label>Taalas:</label><b>eka / tishra eka</b>
-				                   </div>
-		                    </div>
+                            {% for rec in artist.recordings %}
+                            {% badge_recording rec %}
+                            {% endfor %}
+	                    </div>        
+	     			</div>
+	     		</div>
+	     	</div>
+
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Artists who play the same instrument</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata scrolldata nopad">
+	                    <div class="scrollblock">
+                            {% for a in similar_artists %}
+                            {% badge_artist a %}
+                            {% endfor %}
 	                    </div>        
 	     			</div>
 	     		</div>
 	     	</div>
 	     	
 	     	<!-- COMMENTS -->
-	     	
+	        {% if tags %}	
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Tags</h3>
@@ -167,14 +157,17 @@ $(document).ready(function() {
 	     			</div>
 	     		</div>
 			 </div>
-	     	
+            {% endif %}
+
+
+	        {% get_comment_list for artist as comment_list %}
+	        {% if comment_list %}	
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Comments</h3>
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata">
-	                    {% get_comment_list for artist as comment_list %}
 	                    <div id="comments">
 	                    {% for comment in comment_list %}
 	                    	<div class="acomment">
@@ -193,7 +186,7 @@ $(document).ready(function() {
 	     			</div>
 	     		</div>
 	     	</div>
-	     	
+	        {% endif %}	
 	     	
 	     	{% if user.is_authenticated %}
 			 
@@ -243,35 +236,4 @@ $(document).ready(function() {
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>
-
-
-<!-- {% include "carnatic/concerts_by_artist_list.html" with artist=artist only %} -->
-
-<!--
-<h2>Comments:</h2>
-{% render_comment_list for artist %}
-
-<h2>Post comment:</h2>
-{% if user.is_authenticated %}
- {% get_comment_form for artist as form_comment %}
-
-{% include "browse/form-comment.html" %}
-
-	<input type="hidden" name="next" value="{% url 'carnatic-artist' artist.id %}" />
-	<input type="submit" value="Add comment" id="id_submit" />
-        <input type="submit" name="preview" value="Preview">
- </form>
- 
- <h2>Post Tag:</h2>
-	{% include "form-tag.html" %}
-
-
-{% else %}
-    <p>Please <a href="{{ login_url }}?next={% firstof request.path '/' %}">log in</a> to leave a comment.</p>
-{% endif %}
-
-<h2>Tags:</h2>
-
-	{% include "tag_cloud.html" %}
--->
 {% endblock %}

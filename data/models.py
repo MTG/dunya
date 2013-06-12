@@ -43,6 +43,11 @@ class BaseModel(models.Model):
     description = models.ForeignKey(Description, blank=True, null=True)
     images = models.ManyToManyField(Image, related_name="%(class)s_image_set")
 
+    def ref(self):
+        u = {"url": self.source.uri, "title": self.source.source_name.name}
+        return u
+        return [u]
+
     def get_style(self):
         raise Exception("need style")
 
@@ -76,6 +81,13 @@ class Artist(BaseModel):
         viewname = "%s-artist" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
 
+    def recordings(self):
+        perfs = self.performances()
+        IPClass = self.get_object_map("performance")
+        performances = IPClass.objects.filter(performer=self)
+        recs = [p.recording for p in performances]
+        return recs
+
     def performances(self):
         ConcertClass = self.get_object_map("concert")
         IPClass = self.get_object_map("performance")
@@ -107,6 +119,16 @@ class Concert(BaseModel):
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey('Label', blank=True, null=True)
 
+    def length(self):
+        tot_len = 0
+        print "tracks"
+        print self.tracks.all()
+        for t in self.tracks.all():
+            tot_len += t.length
+            print t.length
+        import time
+        return time.strftime('%H:%M:%S', time.gmtime(tot_len))
+
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
         if self.location:
@@ -118,6 +140,7 @@ class Concert(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def artistnames(self):
+        return self.artists.all()[0]
         artists = self.artists.all()
         if len(artists) > 1:
             last = artists[-1]

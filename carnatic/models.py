@@ -38,8 +38,8 @@ class Artist(CarnaticStyle, data.models.Artist):
         insts = []
         for perf in self.instrumentperformance_set.all():
             if perf.instrument.name not in insts:
-                insts.append(perf.instrument.name)
-        return ", ".join(insts)
+                insts.append(perf.instrument)
+        return insts[0]
 
     def similar_artists(self):
         pass
@@ -221,7 +221,20 @@ class WorkAttributeTypeValue(CarnaticStyle, data.models.WorkAttributeTypeValue):
     pass
 
 class Recording(CarnaticStyle, data.models.Recording):
-    pass
+
+    def raaga(self):
+        if self.work:
+            rs = self.work.raaga.all()
+            if rs:
+                return rs[0]
+        return None
+
+    def taala(self):
+        if self.work:
+            ts = self.work.taala.all()
+            if ts:
+                return ts[0]
+        return None
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     objects = managers.FuzzySearchManager()
