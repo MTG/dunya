@@ -1,9 +1,10 @@
-{% extends "base.html" %}
-{% block title %}Registration Successful{% endblock %}
-{% block head %}
-	Registration Completed Successfully
-{% endblock %}
-{% block content %}
-	Thank you for registering. Your information has been saved in the database. Now you can either <a href="{{ login_url }}">login</a> or go back to the <a href="/">main page</a>.
+{% extends "carnatic/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<div id="login">
+	<h1>Thank you for registering</h1>
+	<p>Your information has been saved in the database. Now you can either <a href="{{ login_url }}">login</a> or go back to the <a href="{{ carnatic_overview }}">main page</a>.</p>
+</div>
 {% endblock %}
 

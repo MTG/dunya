@@ -22,3 +22,17 @@
 }());
 
 // Place any jQuery/helper plugins in here.
+
+
+
+function widthOfChildren(object){
+	/*$(object).each(function(){
+		var sum=0;
+		$(this).children('div').each( function(){ sum += ($('div',this).width()+5); });
+		$(this).width( sum+10 );
+	});*/
+	var sum=0;
+	$(object+'>div').each( function(){ sum += ($(this).outerWidth()+5); });
+	$(object).width( sum+10 );
+	
+}

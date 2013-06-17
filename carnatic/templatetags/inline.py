@@ -1,4 +1,6 @@
 from django import template
+from django.conf import settings
+from django.core.urlresolvers import reverse
 
 import collections
 
@@ -38,5 +40,6 @@ def inline_instrument(instrument):
         instrument = [instrument]
     ret = []
     for i in instrument:
-        ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
+        if i:
+            ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
     return ", ".join(ret)

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -13,7 +14,8 @@
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
         <!-- <link rel="stylesheet" href="{% static 'carnatic/css/main.css' %}"> -->
-        <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
+        <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.less' %}" />
+	<link rel="stylesheet/less" type="text/css" href="{% static 'social/css/main.css' %}" />
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
 
         <script src="{% static 'carnatic/js/vendor/less.min.js' %}"></script>
@@ -23,16 +25,64 @@
 
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
+	
+	<script src="{% static 'social/js/main.js' %}"></script>
+	<script src="{% static 'social/js/jquery.cookie.js' %}"></script>
+
+	<script>
+	$(document).ready(function() {
+		function csrfSafeMethod(method) {
+			// these HTTP methods do not require CSRF protection
+			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+		}
+		$.ajaxSetup({
+		    crossDomain: false, // obviates need for sameOrigin test
+		    beforeSend: function(xhr, settings) {
+			if (!csrfSafeMethod(settings.type)) {
+			    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+			}
+		    }
+		});
+		$('#user').click(function() {
+			$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#user').mouseleave(function() {
+			$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#guest').click(function() {
+		    $(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
+		});
+		$('#guest').mouseleave(function() {
+		    $(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+  		});
+		loadSocialFollowButtons();
+	});
+	</script>
         {% block script %}
         {% endblock %}
-
+	{% block extra_head %}
+        {% endblock %}
     </head>
     <body>
-
+	
+	{% url 'social-auth-login' as login_url %}
+	{% url 'social-auth-logout' as logout_url %}
+	{% url 'social-auth-register' as register_url %}
+	{% url 'social-main' as social_main %}
+	{% url 'carnatic-main' as carnatic_main %}
+	{% url 'carnatic-overview' as carnatic_overview %}
+	{% url 'social-user-profile' as social_user_profile %}
+	{% url 'social-tag-autocomplete' as social_tag_autocomplete %}
+	{% url 'social-users-list' as social_users_list %}
+	{% url 'social-timeline-page' as social_timeline_page %}
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
-            	<div id="logo"></div>
+            <div id="logo">
+                <a href="/carnatic">
+                <img src="{% static 'carnatic/img/logoDunya.png' %}">    
+            </a>
+            </div>
             	<div id="globalsearch">
 	            	<input type="text" value="search..." />
 	            	<div class="button"></div>
@@ -48,12 +98,36 @@
             	</div><!-- globalmusic -->
                 <nav id="mainmenu">
                     	<a href="#">PLAYER</a>
-	               		<a href="#">EDIT QUERY</a>
-	               		<a href="#">BOOKMARKS</a>
-	               		<a href="#">ABOUT</a>
-	               		<a href="#">SEARCH</a>
+			<a href="#" id="toggleMain">EDIT QUERY</a>
+			<a href="#">BOOKMARKS</a>
+			<a href="#">ABOUT</a>
+			<a href="#">SEARCH</a>
+			{% if user.is_authenticated %}
+			    <!--welcome {{ user.username }}-->
+				<div href="#" id="user">
+					<a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+				    <div id="userOptions">
+				    	<div id="userArrow"></div>
+				    	<h3>Hi <b>{{ user.username }}!</b></h3>
+				    	<img src="{% static 'carnatic/img/develop/avatar.png' %}" />
+					    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT</a>
+					    <a href="{{ social_user_profile }}">PROFILE</a>
+					    <a href="{{ social_users_list }}">USERS</a>
+					    <a href="{{ social_timeline_page }}">TIMELINE</a>
+				    </div>	
+			    </div>
+			{% else %}
+				<div href="#" id="guest">
+					<a href="#">USER<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+				    <div id="guestOptions">
+				    	<div id="userArrow"></div>
+				    	<h3>Hi! what do you want to do?</h3>
+					    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
+					    <a href="{{ register_url }}">REGISTER</a>
+				    </div>
+				</div>
+			{% endif %}
                 </nav>
-                <div id="toggleMain">TOGGLE</div>
                 <div class="clearfix"></div>
             </header>
         </div>

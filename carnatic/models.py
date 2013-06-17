@@ -6,6 +6,7 @@ import managers
 import filters
 import random
 
+
 class CarnaticStyle(object):
     def get_style(self):
         return "carnatic"
@@ -32,12 +33,16 @@ class MusicalSchool(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
-
-    def biography(self):
-        return "Biography of %s" % self.name
-
+    
     def instruments(self):
-        pass
+        insts = []
+        for perf in self.instrumentperformance_set.all():
+            if perf.instrument.name not in insts:
+                insts.append(perf.instrument)
+        if insts:
+            return insts[0]
+        else:
+            return None
 
     def similar_artists(self):
         pass
@@ -219,7 +224,20 @@ class WorkAttributeTypeValue(CarnaticStyle, data.models.WorkAttributeTypeValue):
     pass
 
 class Recording(CarnaticStyle, data.models.Recording):
-    pass
+
+    def raaga(self):
+        if self.work:
+            rs = self.work.raaga.all()
+            if rs:
+                return rs[0]
+        return None
+
+    def taala(self):
+        if self.work:
+            ts = self.work.taala.all()
+            if ts:
+                return ts[0]
+        return None
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     objects = managers.FuzzySearchManager()

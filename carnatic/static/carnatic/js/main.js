@@ -1,6 +1,20 @@
 var filtersArray = new Array();
 var filtersOutputArray = new Object();
 var filtersLiteralOutputArray = new Object();
+var EspecificOutputArray = new Object();
+var globalSpeed  = 500;
+
+$(document).ready(function(){
+	//ScrollBlock
+	widthOfChildren(".scrollblock");	
+	$("#filterArea").on("click",".filterList.filterGlobalList ul li",function(){
+        $(this).toggleClass("selected");
+        entity = $(this).parent().parent().parent().attr("eid");
+		getResults2($(this), entity);
+    });
+});
+
+
 
 function removeFilter(entity_filter){
     $(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
@@ -9,7 +23,12 @@ function removeFilter(entity_filter){
     $(".filterBall").addClass("filterBallClosed");
     $("#entitiesList").addClass("filterListClosed");
     $(".filters."+entity_filter).remove();
+    
     filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
+    
+    delete filtersOutputArray["eid"+entity_filter];
+    delete filtersLiteralOutputArray["eid"+entity_filter];
+    delete EspecificOutputArray["eid"+entity_filter];
 }
 
 function loadFilter(filterdata, entity_filter,eid){
@@ -36,6 +55,9 @@ function getFilterData(filterFile,entity_filter,filterName,eid){
 		}
 	});
 }
+
+
+
 
 //    $.each(filtersItems, function(index, element) {
 //        console.log(element.name)
@@ -88,7 +110,7 @@ function parseAllFilters(data){
                 formHTML += "</div></fieldset>";
             }else if(formType=="text"){
                 formHTML += "<fieldset filtertype='text' filtername='"+element2.name+"'>";
-                formHTML += "<label class='formSectionText'>"+element2.name+"<input type='text' /></label>";
+                formHTML += "<label class='formSection formSectionText'>"+element2.name+"</label><div class='filterList formFilterItem'><input type='text' /></div>";
                 formHTML += "</fieldset>";
             }
         });
@@ -100,9 +122,34 @@ function parseAllFilters(data){
 
 function loadClicks(){
 
+	$('#query').click(function(){
+		console.log("filtersArray");
+		console.log(filtersArray);
+		console.log("-------------------------");
+		console.log("filtersOutputArray");
+		console.log(filtersOutputArray);
+		console.log("-------------------------");
+		console.log("filtersLiteralOutputArray");
+		console.log(filtersLiteralOutputArray);
+		console.log("-------------------------");
+		console.log("EspecificOutputArray");
+		console.log(EspecificOutputArray);
+		console.log("-------------------------");
+        var url = "/carnatic/?q=1";
+        for (var i=0; i< EspecificOutputArray.eid1.length; i++) {
+            n = EspecificOutputArray.eid1[i];
+            url += "&a="+n;
+    }
+        console.log(url);
+        window.location.href = url;
+	});
+	
     /* Select Music Style */
     $("#gmSelected").click(function(){
-        $("#gmDropDown").show();
+        $("#gmDropDown").fadeIn();
+    });
+    $("#gmDropDown").click(function(){
+	   	$("#gmDropDown").fadeOut(); 
     });
 
     $("#entitiesList ul li").click(function(){
@@ -116,7 +163,7 @@ function loadClicks(){
         $("#summary").attr("class",$(this).attr("class"));
     });
 
-    $(".filterList.formFilterItem ul li").click(function(){
+    $(".formFilterItem ul li").click(function(){
         $(this).toggleClass("selected");
         entity = $(this).parent().parent().parent().parent().parent().parent().parent().attr("eid");
         filterType = $(this).parent().parent().parent().attr("filtertype");
@@ -165,32 +212,70 @@ function loadClicks(){
 
     $("#toggleMain").click(function(){
         $("#filterMask").toggleClass('querybar');
+        populateBreadcrumbs();
     });
 }
 
+function populateBreadcrumbs(){
+	entityHTML_bc = "";
+	hay= "no";
+	for( i in filtersArray){
+		entity_name = ("eid"+filtersArray[i]);	
+		entity_realName = $("#entitiesList ul li[eid='"+entity_name+"']").text().toLowerCase();
+		entityHTML_bc += "<div class='bread entity_"+entity_name+" "+entity_realName+"'><div class='breadarrow'></div><span><a href='#'>";
+		entityHTML_bc += "<h3>"+entity_realName+"</h3>";
+		if(filtersLiteralOutputArray[entity_name]){			
+				$.each(filtersLiteralOutputArray[entity_name], function(key, info) {
+			           entityHTML_bc += key+"- "+info+"<br>";
+				});
+				hay = "yes";
+		}else{
+			hay = "no";
+		};
+		for( i in EspecificOutputArray[entity_name]){
+			especific_name = EspecificOutputArray[entity_name][i];
+			entityHTML_bc += especific_name+" ";
+			hay = "yes";	
+		}
+		if(hay == "no"){
+			entityHTML_bc += "Nothing selected";
+		}
+		entityHTML_bc += "</a></span></div>";	
+	}
+	
+	$("#breadcrumb").html(entityHTML_bc);
+}
+
 function sumarizeFilter(object){
-
-    summaryHTML = "";
-    $.each(filtersLiteralOutputArray[object.parent().attr("eid")], function(nom, valors) {
-        summaryHTML += "<b>" + nom +"</b>" + valors+"</br>";
-    });
-    object.find(".filterSummary").html(summaryHTML);
-
+	entity_name = object.parent().attr("eid");
+	summaryHTML = "";	
+	if(jQuery.isEmptyObject(filtersLiteralOutputArray)){
+	
+	}else{
+		$.each(filtersLiteralOutputArray[entity_name], function(nom, valors) {
+    		elsvalors = valors.join('<br>·');
+    	    summaryHTML += "<b>" + nom +"</b></br>·" + elsvalors + "</br>";
+		});
+	}
+	if(jQuery.isEmptyObject(EspecificOutputArray)){
+	
+	}else{
+		summaryHTML += "<b>Selection</b><br>";
+		$.each(EspecificOutputArray[entity_name], function(nom, valors) {
+    	    summaryHTML += valors + "</br>";
+		});
+	}
+	    object.find(".filterSummary").html(summaryHTML);
+    
 }
 
 function showFilterData(data, entity_filter,filterName,eid){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
-    $('#filterModel').clone(true).appendTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
-    entityHTML_bc = "<div class='bread entity_"+entity_filter+" "+filterName.toLowerCase()+"'><div class='breadarrow'></div><span><a href='#'>No selection</a></span></div>";
-    $("#breadcrumb").append(entityHTML_bc);
+    $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
     $('#filterArea').width(480+(filtersArray.length*780));
     newFilter = "#filter_"+filterPosition;
     $(newFilter).find(".filterList").append(listFilterData(data, entity_filter));
-    $(newFilter).find(".filterList ul li").click(function(){
-        $(this).toggleClass("selected");
-        $("#breadcrumb").find(".entity_"+entity_filter+" span a").html($(this).html());
-    });
     $(newFilter).find(".filterBall span").html(filterName);
     //$(newFilter).find(".formFilter").html($(".form_"+entity_filter).html());
     $(".form_"+entity_filter).clone(true).appendTo($(newFilter).find(".formFilter"));
@@ -242,6 +327,7 @@ function showFilterData(data, entity_filter,filterName,eid){
             console.log("change");
         }
     });
+  
 }
 
 function listFilterData(data, entity_filter){
@@ -266,7 +352,6 @@ function getResults(item){
             item.parent().find(".selected").each(function (i){
                 theValue[i]=$(this).attr("the_id");
                 theName[i]=$(this).attr("valor");
-                console.log(theName[i]);
             });
         }else if( filterType == "select" ){
             theValue = item.parent().find(".selected").attr("the_id");
@@ -296,6 +381,34 @@ function getResults(item){
             }
         }
     }
+    
+    function getResults2(item, entity){
+    	theValue = "";
+		theValue = item.html();
+        if(jQuery.isEmptyObject(EspecificOutputArray)){
+            EspecificOutputArray[entity] = new Array();
+            EspecificOutputArray[entity].push(theValue);
+        }else{
+        	if (EspecificOutputArray.hasOwnProperty(entity)) {
+        		existeix = "no";
+				for(var u in EspecificOutputArray[entity]){
+	        	   	if(EspecificOutputArray[entity][u] == theValue){
+						EspecificOutputArray[entity].splice(u, 1);
+						existeix = "si";
+					}
+				}
+				if(existeix == "no"){
+					EspecificOutputArray[entity].push(theValue);
+				}
+        	}else{
+        		EspecificOutputArray[entity] = new Array();
+	        	EspecificOutputArray[entity].push(theValue);
+        	}
+        	
+        }
+    }
+
+
 
 // function parseAllFilters(){
 //    $.each(window.filtersItems, function(index, element) {

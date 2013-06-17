@@ -1,10 +1,19 @@
 {% load staticfiles %}
-<div class="recording">
-    <div class="disc">
-        <img src="{% static 'carnatic/img/recording.png' %}">
-    </div>
-    <div class="desc">
-        <a href="{{recording.get_absolute_url}}"><b>{{ recording.title }}</b></a>
-    </div>
+{% load inline %}
+<div class="track">
+        <a href="{{recording.get_absolute_url}}"><h4>{{ recording.title }}</h4></a>
+       <div class="trackWave">
+            <img src="{% static 'carnatic/img/develop/track.png' %}" />
+       </div>
+       <div class="trackMeta">
+           <label>Raaga:</label>
+           {% if recording.raaga %}
+           <b>{% inline_raaga recording.raaga %}</b>
+           {% else %}unknown{%endif%}
+           <label>Taala:</label>
+           {% if recording.taala %}
+           <b>{% inline_taala recording.taala %}</b>
+           {% else %}unknown{%endif%}
+       </div>
 </div>
 

@@ -21,16 +21,51 @@ $(document).ready(function() {
 
 	        	</ul>
 	    	</div>
-
+			
 	    	<div id="breadcrumb">
 	    	</div>
-
 	    </div>
+	    
+     </div>
+     
+     <div id="queryCont">
+		<div id="query" class="shadow1">
+        	<span>QUERY</span>
+		</div>
+	 </div>
+
+	 <div id="resultsstats">
+        <table>
+        	<tr>
+        		<td><h3>Collection statistics</h3></td>
+        		<td class="artist">{{numartists}} <b>Artists</b></td>
+        		<td class="artist">{{numcomposers}} <b>Composers</b></td>
+        		<td class="concert">{{numconcert}} <b>Concerts</b></td>
+        		<td class="recording">{{numrecordings}} <b>Recordings</b></td>
+        		<td class="raaga">{{numraaga}} <b>Raagas</b></td>
+        		<td class="taala">{{numtaala}} <b>Taalas</b></td>
+        	</tr>
+        </table>
      </div>
 
+     <div id="results">
+         {% if results %}
+         Query results:<br>
+         {% else %}
+         Some items from our collection:<br>
+         {% endif %}
 
-     <div id="detail">
-        Dunya search results
+        {% for c in concerts %}
+            {% badge_concert c %}
+        {% endfor %}
+
+        {% for a in artists %}
+            {% badge_artist a %}
+        {% endfor %}
+
+        {% for i in instruments %}
+            {% badge_instrument i %}
+        {% endfor %}
 
      </div>
 

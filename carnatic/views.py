@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+import social.tagging as tagging
 
 from carnatic.models import *
+from social.forms import TagSaveForm
 import json
 
 def get_filter_items():
@@ -16,11 +18,56 @@ def get_filter_items():
     return filter_items
 
 def main(request):
+    qartist = []
+    if "a" in request.GET:
+        for x in request.GET.getlist("a"):
+            qartist.append(x)
+    artistquery = request.GET.get('a');
+    numartists = Artist.objects.count()
+    numcomposers = Composer.objects.count()
+    numrecordings = Recording.objects.count()
+    numraaga = Raaga.objects.count()
+    numtaala = Taala.objects.count()
+    numconcert = Concert.objects.count()
 
-    concerts = Concert.objects.all()[:5]
+    if qartist:
+        artists = []
+        instruments = []
+        concerts = []
+        for aname in qartist:
+            art = Artist.objects.get(name=aname)
+            artists.append(art)
+            instruments.append(art.instruments())
+        concerts = Concert.objects.filter(artists__in=artists).all()
+        results = True
+    else:
+        print "something else"
+        artists = Artist.objects.all()[:6]
+        concerts = Concert.objects.all()[:6]
+        instruments = Instrument.objects.all()[:6]
+        results = None
 
-    ret = {"filter_items": json.dumps(get_filter_items()),
-           "concerts": concerts
+    composers = Composer.objects.all()[:6]
+    recordings = Recording.objects.all()[:6]
+    raagas = Raaga.objects.all()[:6]
+    taalas = Taala.objects.all()[:6][:6]
+
+    ret = {"numartists": numartists,
+           "filter_items": json.dumps(get_filter_items()),
+           "numcomposers": numcomposers,
+           "numrecordings": numrecordings,
+           "numraaga": numraaga,
+           "numtaala": numtaala,
+           "numconcert": numconcert,
+
+           "artists": artists,
+           "composers": composers,
+           "recordings": recordings,
+           "concerts": concerts,
+           "raagas": raagas,
+           "taalas": taalas,
+           "instruments": instruments,
+           "results": results,
            }
     return render(request, "carnatic/index.html", ret)
 
@@ -61,17 +108,41 @@ def artistsearch(request):
         ret.append({"mbid": a.mbid, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+def get_image(entity, noimage):
+    images = entity.images.all()
+    if images:
+        image = images[0].image.url
+    else:
+        image = "/media/images/%s.jpg" % noimage
+    return image
+
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
-    print artist.concerts()
-    ret = {"artist": artist
-          }
+
+    inst = artist.instruments()
+    ips = InstrumentPerformance.objects.filter(instrument=inst)
+    similar_artists = []
+    for i in ips:
+        if i.performer not in similar_artists:
+            similar_artists.append(i.performer)
+
+    tags = tagging.tag_cloud(artistid, "artist")
+    
+    ret = {"filter_items": json.dumps(get_filter_items()),
+    	   "artist": artist,
+           "image": get_image(artist, "noartist"),
+           "form": TagSaveForm(),
+            "objecttype": "artist",
+            "objectid": artist.id,
+            "tags": tags,
+            "similar_artists": similar_artists
+    }
 
     return render(request, "carnatic/artist.html", ret)
 
 def composer(request, composerid):
     composer = get_object_or_404(Composer, pk=composerid)
-    ret = {"composer": composer}
+    ret = {"composer": composer, "filter_items": json.dumps(get_filter_items())}
 
     return render(request, "carnatic/composer.html", ret)
 
@@ -84,21 +155,65 @@ def concertsearch(request):
 
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
+    images = concert.images.all()
+    if images:
+        image = images[0].image.url
+    else:
+        image = "/media/images/noconcert.jpg"
 
+    samples = concert.tracks.all()[:2]
+
+    tags = tagging.tag_cloud(concertid, "concert")
+    
     # Other concerts by the same person
-    concerts = Concert.objects.filter(artists__in=concert.artists.all())
+    # XXX: Sort by if there's an image
+    artist_concerts = Concert.objects.filter(artists__in=concert.artists.all()).all()
+    works = [t.work for t in concert.tracks.all()]
+    work_concerts = Concert.objects.filter(tracks__work__in=works).all()
+    raagas = []
+    taalas = []
+    for t in concert.tracks.all():
+        if t.work:
+            raagas.extend(t.work.raaga.all())
+            taalas.extend(t.work.taala.all())
+    raaga_concerts = Concert.objects.filter(tracks__work__raaga__in=raagas).all()
+    taala_concerts = Concert.objects.filter(tracks__work__taala__in=taalas).all()
+    work_concerts = sorted(work_concerts, key=lambda c: len(c.images.all()), reverse=True)
+    raaga_concerts = sorted(raaga_concerts, key=lambda c: len(c.images.all()), reverse=True)
+    taala_concerts = sorted(taala_concerts, key=lambda c: len(c.images.all()), reverse=True)
+    artist_concerts = sorted(artist_concerts, key=lambda c: len(c.images.all()), reverse=True)
+
 
     # Raaga in
     ret = {"filter_items": json.dumps(get_filter_items()),
            "concert": concert,
-           "otherconcerts": concerts}
+	   "artist_concerts": artist_concerts,
+	   "work_concerts": work_concerts,
+	   "raaga_concerts": raaga_concerts,
+	   "taala_concerts": taala_concerts,
+	   "form": TagSaveForm(),
+	   "objecttype": "concert",
+	   "objectid": concert.id,
+	   "tags": tags,
+       "image": image,
+       "samples": samples
+       }
 
     return render(request, "carnatic/concert.html", ret)
 
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
-
-    ret = {"recording": recording}
+    
+    tags = tagging.tag_cloud(recordingid, "recording")
+    
+    ret = {"filter_items": json.dumps(get_filter_items()),
+    	   "recording": recording,
+           "form": TagSaveForm(),
+            "objecttype": "recording",
+            "objectid": recording.id,
+            "tags": tags,
+    }
+    
     return render(request, "carnatic/recording.html", ret)
 
 def worksearch(request):
@@ -111,7 +226,15 @@ def worksearch(request):
 def work(request, workid):
     work = get_object_or_404(Work, pk=workid)
 
-    ret = {"work": work}
+    tags = tagging.tag_cloud(workid, "work")
+    
+    ret = {"filter_items": json.dumps(get_filter_items()),
+           "work": work,
+           "form": TagSaveForm(),
+            "objecttype": "work",
+            "objectid": work.id,
+            "tags": tags,
+    }
     return render(request, "carnatic/work.html", ret)
 
 def taalasearch(request):
@@ -124,7 +247,7 @@ def taalasearch(request):
 def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
 
-    ret = {"taala": taala}
+    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -137,7 +260,7 @@ def raagasearch(request):
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
 
-    ret = {"raaga": raaga}
+    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):
@@ -149,6 +272,7 @@ def instrumentsearch(request):
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
-    ret = {"instrument": instrument}
+    ret = {"instrument": instrument, "filter_items": json.dumps(get_filter_items()),
+           "image": get_image(instrument, "noinstrument")}
 
     return render(request, "carnatic/instrument.html", ret)

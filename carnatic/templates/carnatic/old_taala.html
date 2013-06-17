@@ -1,0 +1,21 @@
+{% extends "carnatic/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<h2>Taala {{taala.name}}</h2>
+
+<h3>Artist</h3>
+{% for a in taala.artists %}
+<li>{% inline_artist a %}
+{% endfor %}
+
+<h3>Composers</h3>
+{% for c in taala.composers %}
+<li>{% inline_composer c %}
+{% endfor %}
+
+<h3>Works</h3>
+{% for w in taala.works %}
+<li>{% inline_work w %}
+{% endfor %}
+{% endblock %}

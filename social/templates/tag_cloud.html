@@ -1,0 +1,8 @@
+
+{% load social_inline %}
+
+<div id="tag-cloud">
+{% for tag in tags %}
+    <span class="tag-cloud-{{ tag.freq_tag }}">{% inline_tag tag %}</span>
+{% endfor %}
+</div>

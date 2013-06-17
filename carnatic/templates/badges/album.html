@@ -1,12 +1,12 @@
 {% load staticfiles %}
+{% load inline %}
 <div class="album">
     <div class="disc">
-        <a href="{{url}}"><img src="{% static 'carnatic/img/disc1.png' %}"></a>
+        <a href="{{url}}"><img src="{{image}}"></a>
     </div>
     <div class="desc">
         <a href="{{url}}"><b>{{ title }}</b></a>
-        <p>{{ artists }}</p>
-        <p>{{ details }}</p>
+        <p>{% inline_artist artist %}</p>
         <p>{{ date }}</p>
     </div>
 </div>
