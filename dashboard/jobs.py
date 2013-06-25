@@ -4,6 +4,43 @@ import celery
 from dashboard.models import *
 import compmusic
 
+class DunyaStatusFileTask(celery.Task):
+    """ A celery task that performs a health check on a file """
+    abstract = True
+
+    def after_return(self, status, retval, task_id, args, kwargs, einfo):
+        pass
+
+
+class DunyaStatusReleaseTask(celery.Task):
+    """ A celery task that performs a health check on a directory
+    representing a release """
+    abstract = True
+
+    def after_return(self, status, retval, task_id, args, kwargs, einfo):
+        pass
+
+@celery.task(base=DunyaFileTask)
+def check_coverart_file(filestate_id, fname):
+    """ Check that a file has embedded coverart """
+    pass
+
+@celery.task(base=DunyaReleaseTask)
+def check_coverart_release(releasestate_id, releaseid, releasedir):
+    """ Check that a release has coverart on the CAA """
+    pass
+
+@celery.task(base=DunyaFileTask)
+def check_tags_file(filestate_id, fname):
+    """ Check that a file has all the correct musicbrainz tags """
+    pass
+
+@celery.task(base=DunyaReleaseTask)
+def check_release_relationships(releasestate_id, releaseid, releasedir):
+    """ Check that a release on MB has relationships for composers,
+    performers, and wikipedia links. """
+    pass
+
 @celery.task()
 def load_musicbrainz_collection(collectionid):
     """ Load a musicbrainz collection into the database.
