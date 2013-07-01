@@ -1,7 +1,8 @@
 from django.db import transaction
 import celery
+import os
 
-from dashboard.models import *
+from dashboard import models
 import compmusic
 
 class DunyaStatusFileTask(celery.Task):
@@ -23,11 +24,21 @@ class DunyaStatusReleaseTask(celery.Task):
 class CompletenessBase(object):
     pass
 
+class RaagaTaalaFile(CompletenessBase):
+    """ Check that the raaga and taala tags on this file's
+    recording page in musicbrainz have matching entries
+    in the local database """
+    type = 'f'
+
+    @celery.task(base=DunyaStatusFileTask, ignore_result=True)
+    def task(collectionfile_id):
+        fg = CollectionFile.objects.get(pk=collectionfile_id)
+
 class CoverartFile(CompletenessBase):
     """ Check that a file has embedded coverart """
     type = 'f'
 
-    @celery.task(base=DunyaFileTask, ignore_result=True)
+    @celery.task(base=DunyaStatusFileTask, ignore_result=True)
     def task(collectionfile_id):
         fg = CollectionFile.objects.get(pk=collectionfile_id)
 
@@ -35,7 +46,7 @@ class CoverartRelease(CompletenessBase):
     """ Check that a release has coverart on the CAA """
     type = 'r'
 
-    @celery.task(base=DunyaReleaseTask, ignore_result=True)
+    @celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
     def task(releasestate_id, releaseid, releasedir):
         pass
 
@@ -43,59 +54,73 @@ class FileTags(CompletenessBase):
     """ Check that a file has all the correct musicbrainz tags """
     type = 'f'
 
-    @celery.task(base=DunyaFileTask, ignore_result=True)
+    @celery.task(base=DunyaStatusFileTask, ignore_result=True)
     def task(filestate_id, fname):
         pass
 
 class ReleaseRelationships(CompletenessBase):
     """ Check that a release on MB has relationships for composers,
     performers, and wikipedia links. """
+    type = 'r'
 
-    @celery.task(base=DunyaReleaseTask, ignore_result=True)
+    @celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
     def task(releasestate_id, releaseid, releasedir):
         pass
 
 def get_musicbrainz_release_for_dir(dirname):
     release_ids = set()
-    for fname in os.path.listdir(dirname):
+    for fname in os.listdir(dirname):
         fpath = os.path.join(dirname, fname)
-        meta = compmusic.file_metadata(fpath)
-        rel = meta["meta"]["releaseid"]
-        if rel:
-            release_ids.update(rel)
+        if compmusic.is_mp3_file(fpath):
+            meta = compmusic.file_metadata(fpath)
+            rel = meta["meta"]["releaseid"]
+            if rel:
+                print "releaseid", rel
+                release_ids.add(rel)
     return release_ids
 
 @celery.task(ignore_result=True)
-def load_musicbrainz_collection(collectionid, root_dir, name):
+def load_musicbrainz_collection(collectionid):
     """ Load a musicbrainz collection into the database.
     TODO: what if the collectionid doesn't exist
     - Need to log files with no release and 
            release with no files
     """
     releases = compmusic.get_releases_in_collection(collectionid)
-    coll = Collection.objects.create(id=collectionid, root_directory=root_dir, name=name)
-    collstate = CollectionState.objects.create()
+    coll = models.Collection.objects.get(pk=collectionid)
     for relid in releases:
         print "."
         try:
+            # TODO: Don't duplicate releases
             mbrelease = compmusic.mb.get_release_by_id(relid)["release"]
             title = mbrelease["title"]
-            rel = MusicbrainzRelease.objects.create(id=relid, collection=coll, title=title)
-        except: # TODO: correct mb error here
+            rel = models.MusicbrainzRelease.objects.create(id=relid, collection=coll, title=title)
+        except compmusic.mb.MusicBrainzError:
+            coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
             print "missing", relid
-            # TODO: log error message
 
+def match_collection_and_dir(collectionid, root_dir):
+
+    coll = models.Collection.objects.get(pk=collectionid)
     for root, d, files in os.walk(root_dir):
         if len(files) > 0:
-            cd = CollectionDirectory.objects.create(collection=coll, path=d)
-            rels = get_musicbrainz_release_for_dir(d)
+            print d, len(d)
+            rels = get_musicbrainz_release_for_dir(root)
+            print root
+            print rels
+            print "======="
             if len(rels) > 1:
-                pass
+                print "more than one release per directory?"
             elif len(rels) == 1:
                 try:
-                    cd.musicbrainz_release = MusicbrainzRelease.objects.get(id=rels[0])
+                    # TODO: Don't add if it already exists
+                    # TODO: When adding a path, don't add the collection's root to it.
+                    cd = models.CollectionDirectory.objects.create(collection=coll, path=root)
+                    theid = list(rels)[0]
+                    cd.musicbrainz_release = models.MusicbrainzRelease.objects.get(id=theid)
                     cd.save()
-                except MusicbrainzRelease.NotFound:
-                    pass
-            for f in files:
-                CollectionFile.objects.create(name=f, directory=cd)
+
+                    for f in files:
+                        models.CollectionFile.objects.create(name=f, directory=cd)
+                except models.MusicbrainzRelease.DoesNotExist:
+                    print "cannot find release in the collection"
