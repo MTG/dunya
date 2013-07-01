@@ -15,15 +15,20 @@ def index(request):
     else:
         form = forms.AddCollectionForm()
 
-    collections = models.MusicbrainzCollection.objects.all()
+    collections = models.Collection.objects.all()
     ret = {'form': form, 'collections': collections}
     return render(request, 'dashboard/index.html', ret)
 
-def collection(request, collectionid):
-    pass
+def collection(request, uuid):
+    c = models.Collection.objects.get(pk=uuid)
+    log = models.CollectionLogMessage.objects.filter(collection=c)
+    releases = models.MusicbrainzRelease.objects.filter(collection=c)
+    folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainz_release__isnull=True)
+    ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
+    return render(request, 'dashboard/collection.html', ret)
 
-def release(request, releaseid):
-    pass
+def release(request, uuid):
+    return render(request, 'dashboard/release.html')
 
 def recording(request, recordingid):
     pass

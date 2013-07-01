@@ -4,16 +4,24 @@
 
 <h1>Dunya Dashboard</h1>
 
-<ul>
-    {% for c in collections %}
-    <li>{{ c.id }}
-    {% endfor %}
-</ul>
-
+<p> Add new collection
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
 </form>
 
+{% if collections %}
+<table><tr><th>Collection</th><th>Current status</th><th>Last status at</th></tr>
+    {% for c in collections %}
+        <tr><td><a href="{{c.get_absolute_url}}">{{c.name}}</a></td>
+            <td>
+                <span class="{{c.state_colour}}">&nbsp;</span>
+            </td>
+            <td>
+                {{c.get_current_state.state_date}}
+        </td></tr>
+    {% endfor %}
+</table>
+{% endif %}
 
 {% endblock %}

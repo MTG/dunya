@@ -1,0 +1,31 @@
+{% extends "dashboard/base.html" %}
+
+{% block wrap %}
+
+<h1>Collection {{collection.name}}</h1>
+<p>Root: {{collection.root_directory}}</p>
+
+<h3>Releases</h3>
+<table><tr><th>Release</th><th>Matched path</th></tr>
+{% for r in releases %}
+<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}<a></td>
+        
+            <td>{{r.matched_paths}}</td></tr>
+{% endfor %}
+</table>
+
+<h3>Folders with unknown releases</h3>
+<table><tr><td></td></tr>
+    {% for f in folders %}
+    <tr><td>{{f.path}}</td></tr>
+    {% endfor %}
+</table>
+
+<h3>Log messages</h3>
+<table><tr><td></td><td></td></tr>
+{% for l in log_messages %}
+<tr><td>{{l.datetime}}</td><td>{{l.message}}</td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}
