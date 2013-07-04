@@ -11,13 +11,12 @@ def setupdb():
     local("python manage.py syncdb --noinput")
     local("python manage.py migrate kombu.transport.django")
     local("python manage.py migrate djcelery")
-    local("python manage.py migrate data 0002")
-    local("python manage.py migrate carnatic 0002")
     local("python manage.py migrate data")
     local("python manage.py migrate carnatic")
     local("python manage.py migrate dashboard")
     local("python manage.py migrate docserver")
     local("python manage.py migrate social")
+    local("python manage.py mkdunyadata")
 
 def updatedb():
     """ Run this when someone has committed some changes to the
