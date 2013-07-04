@@ -18,8 +18,9 @@ class StateCarryingManager(models.Manager):
 
     def create(self, **kwargs):
         baseobject = models.Manager.create(self, **kwargs)
-        # Use magic **dict because `linkname' changes between models.
-        self.stateclass.objects.create(**{self.linkname: baseobject})
+        if self.stateclass and self.linkname:
+            # Use magic **dict because `linkname' changes between models.
+            self.stateclass.objects.create(**{self.linkname: baseobject})
         return baseobject
 
 class CompletenessChecker(models.Model):
@@ -47,7 +48,9 @@ class CollectionState(models.Model):
         return "%s (%s)" % (dict(self.STATE_CHOICE)[self.state], self.state_date)
 
 class Collection(models.Model):
-    objects = StateCarryingManager(CollectionState, "collection")
+    objects = StateCarryingManager()
+    objects.stateclass = CollectionState
+    objects.linkname = "collection"
 
     id = UUIDField(primary_key=True)
     name = models.CharField(max_length=200)
@@ -145,6 +148,9 @@ class CollectionDirectory(models.Model):
     musicbrainz_release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     path = models.CharField(max_length=255)
 
+    def get_absolute_url(self):
+        return reverse('dashboard-directory', args=[int(self.id)])
+
     def update_state(self, state):
         rs = ReleaseState.objects.create(release=self, state=state)
 
@@ -160,6 +166,9 @@ class ReleaseLogMessage(models.Model):
     checker = models.ForeignKey(CompletenessChecker, blank=True, null=True)
     message = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now)
+
+    def __unicode__(self):
+        return "%s: %s" % (self.datetime, self.message)
 
 class FileState(models.Model):
     """ Indicates the processing state of a single file.
@@ -189,6 +198,9 @@ class CollectionFile(models.Model):
     def add_log_message(self, checker, message):
         return FileLogMessage.objects.create(file=self, checker=checker, message=message)
 
+    def get_absolute_url(self):
+        return reverse('dashboard-file', args=[int(self.id)])
+
 class FileLogMessage(models.Model):
     """ A message that a completeness checker can add to a CollectionFile """
     recording = models.ForeignKey(CollectionFile)
@@ -203,7 +215,9 @@ class Status(models.Model):
     """
     STATUS_CHOICE = ( ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
     datetime = models.DateTimeField()
-    recording = models.ForeignKey(CollectionFile)
+    recording = models.ForeignKey(CollectionFile, blank=True, null=True)
+    release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     monitor = models.ForeignKey(CompletenessChecker)
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='s')
+    data = models.TextField()
 
