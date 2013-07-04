@@ -1,0 +1,19 @@
+{% extends "dashboard/base.html" %}
+
+{% block wrap %}
+
+<h1>Directory</h1>
+{% for f, d in files.items %}
+<li>{{f}}
+<ul>
+   {% for i, j in d.meta.items %}
+   <li>{{i}}: {{j}}
+{% endfor %}
+</ul>
+{% endfor %}
+
+{% for m in directory.releaselogmessage_set.all %}
+<li>{{m.message}}
+{% endfor %}
+
+{% endblock %}

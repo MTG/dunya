@@ -2,6 +2,17 @@
 
 {% block wrap %}
 
-<h1>Release</h1>
+<h1>Release {{release.title}}</h1>
+
+<table><tr><th>File</th><th>Status</th></tr>
+    {% for d in files %}
+    <tr><th>{{d.path}}</th><th></th></tr>
+    {% for f in d.collectionfile_set.all %}
+    <tr><td><a href="{{f.get_absolute_url}}">{{f.name}}</a></td><td></td></tr>
+    {% endfor %}
+    {% endfor %}
+</table>
+
+<h3>Release-specific checks</h3>
 
 {% endblock %}
