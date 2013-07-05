@@ -219,5 +219,5 @@ class Status(models.Model):
     release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     monitor = models.ForeignKey(CompletenessChecker)
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='s')
-    data = models.TextField()
+    data = models.TextField(blank=True, null=True)
 
