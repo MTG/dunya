@@ -2,18 +2,22 @@
 
 {% block wrap %}
 
-<h1>Directory</h1>
-{% for f, d in files.items %}
-<li>{{f}}
-<ul>
-   {% for i, j in d.meta.items %}
-   <li>{{i}}: {{j}}
-{% endfor %}
-</ul>
-{% endfor %}
+<h2>Collection <a href="{{directory.collection.get_absolute_url}}">{{directory.collection.name}}</a></h2>
+<h3>Directory {{directory.path}}</h3>
 
-{% for m in directory.releaselogmessage_set.all %}
-<li>{{m.message}}
+{% if got_release %}
+Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a> 
+{% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}">{{artistname}}</a>{% endif %}
+{% endif %}
+
+<table><tr><th>File</th></tr>
+{% for f in files %}
+<tr><td>{{f}}
+</td></tr>
 {% endfor %}
+</table>
+
+{% include "dashboard/log.html" with logs=directory.releaselogmessage_set.all %}
+
 
 {% endblock %}

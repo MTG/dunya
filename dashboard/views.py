@@ -51,17 +51,39 @@ def directory(request, dirid):
     """
 
     directory = models.CollectionDirectory.objects.get(pk=dirid)
-    collection = thedir.collection
-    full_path = os.path.join(collection.root_directory, thedir.path)
+    collection = directory.collection
+    full_path = os.path.join(collection.root_directory, directory.path)
     files = os.listdir(full_path)
     meta = {}
-    releaseids = []
-    releasename = []
-    artistids = []
-    artistname = []
+    releaseids = set()
+    releasename = set()
+    artistids = set()
+    artistname = set()
     for f in files:
         data = compmusic.file_metadata(os.path.join(full_path, f))
-        meta[f] = data
+        relid = data["meta"]["releaseid"]
+        relname = data["meta"]["release"]
+        aname = data["meta"]["artist"]
+        aid = data["meta"]["artistid"]
+        if relid and relname:
+            releaseids.add(relid)
+            releasename.add(relname)
+        if aname and aid:
+            artistids.add(aid)
+            artistname.add(aname)
 
-    ret = {"files": meta, "directory": directory}
+    got_release = len(releaseids) == 1
+    # This won't work if there are more than 1 lead artist?
+    got_artist = len(artistids) == 1
+    print "releaseids", releaseids
+    print "artistids", artistids
+
+
+    ret = {"files": sorted(files), "directory": directory, "got_release": got_release, "got_artist": got_artist}
+    if got_release:
+        ret["releasename"] = list(releasename)[0]
+        ret["releaseid"] = list(releaseids)[0]
+    if got_artist:
+        ret["artistname"] = list(artistname)[0]
+        ret["artistid"] = list(artistids)[0]
     return render(request, 'dashboard/directory.html', ret)
