@@ -79,7 +79,6 @@ def get_musicbrainz_release_for_dir(dirname):
             meta = compmusic.file_metadata(fpath)
             rel = meta["meta"]["releaseid"]
             if rel:
-                print "releaseid", rel
                 release_ids.add(rel)
     return release_ids
 
