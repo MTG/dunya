@@ -78,7 +78,6 @@ def directory(request, dirid):
     print "releaseids", releaseids
     print "artistids", artistids
 
-
     ret = {"files": sorted(files), "directory": directory, "got_release": got_release, "got_artist": got_artist}
     if got_release:
         ret["releasename"] = list(releasename)[0]

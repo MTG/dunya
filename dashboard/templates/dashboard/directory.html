@@ -2,13 +2,26 @@
 
 {% block wrap %}
 
-<h2>Collection <a href="{{directory.collection.get_absolute_url}}">{{directory.collection.name}}</a></h2>
-<h3>Directory {{directory.path}}</h3>
+<h2>
+    <span class="breadcrumbs">Directory
+        <li><a href="{{directory.collection.get_absolute_url}}">{{directory.collection.name}}</a></li>
+        <li>{{directory.short_path}}</li>
+    </span>
+</h2>
 
-{% if got_release %}
-Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a> 
-{% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}">{{artistname}}</a>{% endif %}
-{% endif %}
+<div id="infobox">
+    <div id="infoheader">Info</div>
+    {% if directory.path != directory.short_path %}
+    <li>Directory: {{directory.path}}
+    {% endif %}
+    {% if got_release %}
+        <li>Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a> 
+        {% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}">{{artistname}}</a>{% endif %}
+    {% else %}
+        <li>This release doesn't have any Musicbrainz tags set.
+    {% endif %}
+
+</div>
 
 <table><tr><th>File</th></tr>
 {% for f in files %}

@@ -147,6 +147,14 @@ class CollectionDirectory(models.Model):
     collection = models.ForeignKey(Collection)
     musicbrainz_release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     path = models.CharField(max_length=255)
+    
+    # TODO: __unicode__
+
+    def short_path(self):
+        if len(self.path) < 60:
+            return self.path
+        else:
+            return self.path[:30] + "..." + self.path[-30:]
 
     def get_absolute_url(self):
         return reverse('dashboard-directory', args=[int(self.id)])

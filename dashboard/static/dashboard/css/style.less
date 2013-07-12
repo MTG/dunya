@@ -57,14 +57,21 @@ p {
 }
 
 #wrap {
+    margin: 1em;
     width: 100%;
 }
 
-#content {
-    //.scrollable;
-    padding-left: @sidebarWidth;
-    background: @contentBg;
-    overflow-x: hidden;
+#infobox {
+    margin-top:0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    border: 1px solid @lightGrey;
+    #infoheader {
+        border-bottom: 1px solid @lightGrey;
+        font-weight: bold;
+        padding-bottom: 5px;
+        margin-bottom:5px;
+    }
 }
 
 section {
@@ -171,6 +178,11 @@ a.button {
 
 h2 {
     margin: 15px 0px;
+}
+
+h4 {
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .breadcrumbs {

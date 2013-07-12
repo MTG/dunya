@@ -126,8 +126,10 @@ def load_musicbrainz_collection(collectionid):
                         if f.lower().endswith(".mp3"):
                             models.CollectionFile.objects.get_or_create(name=f, directory=cd)
                 except models.MusicbrainzRelease.DoesNotExist:
-                    cd.add_log_message(None, "there's a release but I don't know what it is")
-                    print "cannot find release in the collection"
+                    cd.add_log_message(None, "Cannot find this release (%s) in the Musicbrainz collection" % (theid, ))
+            elif len(rels) == 0:
+                cd.add_log_message(None, "No releases found in ID3 tags")
+                pass
             else:
-                cd.add_log_message(None, "Not one release per folder?")
+                cd.add_log_message(None, "More than one release found in ID3 tags")
 
