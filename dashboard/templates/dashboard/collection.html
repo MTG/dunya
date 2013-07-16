@@ -2,30 +2,40 @@
 
 {% block wrap %}
 
-<h1>Collection {{collection.name}}</h1>
-<p>Root: {{collection.root_directory}}</p>
+
+<h2>
+    <span class="breadcrumbs">Collection
+        <li>{{collection.name}}</li>
+    </span>
+</h2>
 
 <h3>Releases</h3>
+
+<div id="infobox">
+    <div id="infoheader">Info</div>
+    <li>Root: {{collection.root_directory}}
+</div>
+
 <table><tr><th>Release</th><th>Matched path</th><th>Current status</th><th>Last status at</th></tr>
 {% for r in releases %}
 <tr><td><a href="{{r.get_absolute_url}}">{{r.title}}<a></td>
         
-            <td>{{r.matched_paths}}</td></tr>
+            <td>
+                {% for p in r.matched_paths %}
+                {{p}}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %} 
+        </td></tr>
 {% endfor %}
 </table>
 
-<h3>Folders with unknown releases</h3>
+<h4>Folders with unknown releases</h4>
 <table><tr><th>Folder</th><th>Reload</th></tr>
     {% for f in folders %}
     <tr><td><a href="{{f.get_absolute_url}}">{{f.path}}<a></td></tr>
     {% endfor %}
 </table>
 
-<h3>Log messages</h3>
-<table><tr><td></td><td></td></tr>
-{% for l in log_messages %}
-<tr><td>{{l.datetime}}</td><td>{{l.message}}</td></tr>
-{% endfor %}
-</table>
+{% include "dashboard/log.html" with logs=log_messages %}
 
 {% endblock %}

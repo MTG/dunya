@@ -2,6 +2,25 @@
 
 {% block wrap %}
 
-<h1>File</h1>
+<h2>
+    <span class="breadcrumbs">File
+        <li><a href="{{file.directory.collection.get_absolute_url}}">{{file.directory.collection.name}}</a></li>
+        <li><a href="{{file.directory.musicbrainz_release.get_absolute_url}}">{{file.directory.musicbrainz_release.title}}</a></li>
+        <li>{{file.name}}</li>
+    </span>
+</h2>
+
+
+<h3>File-specific checks</h3>
+
+<h4>Pending tests</h4>
+<table>
+    <tr><th>Checker</th></tr>
+    {% for r in file.filestatus_set.all %}
+    <tr><td>{{r.checker.name}}</td></tr>
+    {% endfor %}
+</table>
+
+<h4>Complete tests</h4>
 
 {% endblock %}

@@ -2,12 +2,17 @@
 
 {% block wrap %}
 
-<h1>Release {{release.title}}</h1>
+<h2>
+    <span class="breadcrumbs">Release
+        <li><a href="{{release.collection.get_absolute_url}}">{{release.collection.name}}</a></li>
+        <li>{{release.title}}</li>
+    </span>
+</h2>
 
 <table><tr><th>File</th><th>Status</th></tr>
     {% for d in files %}
     <tr><th>{{d.path}}</th><th></th></tr>
-    {% for f in d.collectionfile_set.all %}
+    {% for f in d.get_file_list %}
     <tr><td><a href="{{f.get_absolute_url}}">{{f.name}}</a></td><td></td></tr>
     {% endfor %}
     {% endfor %}

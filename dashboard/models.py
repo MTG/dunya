@@ -1,9 +1,11 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
+from django.db.models.loading import get_model
 
 import datetime
 import uuid
+import os
 
 class StateCarryingManager(models.Manager):
     """ A model manager that also creates a state entry when a
@@ -11,17 +13,28 @@ class StateCarryingManager(models.Manager):
     of progress on the import.
     """
 
-    def __init__(self, stateclass=None, linkname=None):
-        models.Manager.__init__(self)
-        self.stateclass = stateclass
-        self.linkname = linkname
-
     def create(self, **kwargs):
+        if not self.stateclass or not self.linkname:
+            raise ValueError("Need stateclass and linkname set in a subclass")
         baseobject = models.Manager.create(self, **kwargs)
         if self.stateclass and self.linkname:
+            if isinstance(self.stateclass, str):
+                self.stateclass = get_model("dashboard", self.stateclass)
             # Use magic **dict because `linkname' changes between models.
             self.stateclass.objects.create(**{self.linkname: baseobject})
         return baseobject
+
+class CollectionManager(StateCarryingManager):
+    stateclass = "CollectionState"
+    linkname = "collection"
+
+class CollectionDirectoryManager(StateCarryingManager):
+    stateclass = "CollectionDirectoryState"
+    linkname = "collectiondirectory"
+
+class CollectionFileManager(StateCarryingManager):
+    stateclass = "CollectionFileState"
+    linkname = "collectionfile"
 
 class CompletenessChecker(models.Model):
     """ Stores information about modules that have been written to check
@@ -35,27 +48,40 @@ class CompletenessChecker(models.Model):
     # flag for if this a checker for a single file, or for a whole release
     type = models.CharField(max_length=5, choices=TYPE_CHOICE)
 
+    def __unicode__(self):
+        return "%s (%s / %s)" % (self.name, self.module, self.type)
+
 class CollectionState(models.Model):
     """ A collection is processed when all releases linked to it are
     complete
     """
     collection = models.ForeignKey("Collection")
-    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'),
+            ('s', 'Started'), ('f', 'Finished') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=datetime.datetime.now)
+
+    @property
+    def state_name(self):
+        print "whee"
+        print self.state
+        print dict(self.STATE_CHOICE)
+        print dict(self.STATE_CHOICE)[self.state]
+        return dict(self.STATE_CHOICE)[self.state]
 
     def __unicode__(self):
         return "%s (%s)" % (dict(self.STATE_CHOICE)[self.state], self.state_date)
 
 class Collection(models.Model):
-    objects = StateCarryingManager()
-    objects.stateclass = CollectionState
-    objects.linkname = "collection"
+
+    objects = CollectionManager()
 
     id = UUIDField(primary_key=True)
     name = models.CharField(max_length=200)
     last_updated = models.DateTimeField(default=datetime.datetime.now)
     root_directory = models.CharField(max_length=255)
+
+    checkers = models.ManyToManyField(CompletenessChecker)
 
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.id)
@@ -73,6 +99,9 @@ class Collection(models.Model):
 
     def get_current_state(self):
         return CollectionState.objects.filter(collection=self).order_by('-state_date')[0]
+
+    def status_importing(self):
+        CollectionState.objects.create(collection=self, state='i')
 
     def status_start(self):
         """ Mark this collection as having its importer started. """
@@ -121,10 +150,13 @@ class MusicbrainzRelease(models.Model):
     def matched_paths(self):
         r = []
         for m in self.collectiondirectory_set.all():
-            r.append(m.path)
-        return ", ".join(r)
+            r.append(m.short_path())
+        return r
 
-class ReleaseState(models.Model):
+    def get_status(self):
+        pass
+
+class CollectionDirectoryState(models.Model):
     """ Indicates the procesing state of a release. A release has finished
     processing when all files it is part of have finished.
 
@@ -132,7 +164,7 @@ class ReleaseState(models.Model):
     because it lets us use the same state/log information for
     releases that are not in the collection also.
     """
-    release = models.ForeignKey("CollectionDirectory")
+    collectiondirectory = models.ForeignKey("CollectionDirectory")
     STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=datetime.datetime.now)
@@ -142,19 +174,21 @@ class CollectionDirectory(models.Model):
     in it. This usually corresponds to a single CD. This means a MusicbrainzRelease
     may have more than 1 CollectionDirectory """
 
-    objects = StateCarryingManager(ReleaseState, "release")
+    objects = CollectionDirectoryManager()
 
     collection = models.ForeignKey(Collection)
     musicbrainz_release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     path = models.CharField(max_length=255)
     
-    # TODO: __unicode__
+    def __unicode__(self):
+        return "From collection %s, release %s, path on disk %s" % (self.collection,
+                self.musicbrainz_release, self.path)
 
     def short_path(self):
         if len(self.path) < 60:
             return self.path
         else:
-            return self.path[:30] + "..." + self.path[-30:]
+            return u"%s\u2026%s" % (self.path[:30], self.path[-30:])
 
     def get_absolute_url(self):
         return reverse('dashboard-directory', args=[int(self.id)])
@@ -168,6 +202,9 @@ class CollectionDirectory(models.Model):
     def add_log_message(self, checker, message):
         return ReleaseLogMessage.objects.create(release=self, checker=checker, message=message)
 
+    def get_file_list(self):
+        return self.collectionfile_set.order_by('name').all()
+
 class ReleaseLogMessage(models.Model):
     """ A message that a completeness checker can add to a CollectionDirectory """
     release = models.ForeignKey(CollectionDirectory)
@@ -178,12 +215,12 @@ class ReleaseLogMessage(models.Model):
     def __unicode__(self):
         return "%s: %s" % (self.datetime, self.message)
 
-class FileState(models.Model):
+class CollectionFileState(models.Model):
     """ Indicates the processing state of a single file.
     a file has finished processing when all `file' consistency
     checkers have completed (regardless of if they are good or bad). """
 
-    file = models.ForeignKey("CollectionFile")
+    collectionfile = models.ForeignKey("CollectionFile")
     STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=datetime.datetime.now)
@@ -192,10 +229,15 @@ class CollectionFile(models.Model):
     """ A single audio file in the collection. A file is part of a
     collection directory.
     """
-    objects = StateCarryingManager(FileState, "file")
+    objects = CollectionFileManager()
 
     name = models.CharField(max_length=255)
     directory = models.ForeignKey(CollectionDirectory)
+
+    @property
+    def path(self):
+        return os.path.join(self.directory.collection.root_directory,
+                self.directory.path, self.name)
 
     def update_state(self, state):
         rs = FileState.objects.create(file=self, state=state)
@@ -216,16 +258,26 @@ class FileLogMessage(models.Model):
     message = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now)
 
-class Status(models.Model):
+class FileStatus(models.Model):
     """ The result of running a single completeness checker
     on a single file. The a completeness checker either returns 
     True or False.
     """
-    STATUS_CHOICE = ( ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
-    datetime = models.DateTimeField()
-    recording = models.ForeignKey(CollectionFile, blank=True, null=True)
-    release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
-    monitor = models.ForeignKey(CompletenessChecker)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='s')
+    STATUS_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
+    datetime = models.DateTimeField(default=datetime.datetime.now)
+    file = models.ForeignKey(CollectionFile, blank=True, null=True)
+    checker = models.ForeignKey(CompletenessChecker)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='n')
     data = models.TextField(blank=True, null=True)
 
+class ReleaseStatus(models.Model):
+    """ The result of running a single completeness checker
+    on a single release. The a completeness checker either returns 
+    True or False.
+    """
+    STATUS_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
+    datetime = models.DateTimeField(default=datetime.datetime.now)
+    release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
+    checker = models.ForeignKey(CompletenessChecker)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='n')
+    data = models.TextField(blank=True, null=True)
