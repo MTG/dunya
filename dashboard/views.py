@@ -6,6 +6,8 @@ from dashboard import models
 from dashboard import forms
 import compmusic
 import os
+import importlib
+import json
 
 def index(request):
     if request.method == 'POST':
@@ -48,7 +50,20 @@ def release(request, uuid):
 
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
-    ret = {"file": thefile}
+    pendingtest = thefile.filestatus_set.filter(status__in=('n', 's')).all()
+
+    finished = thefile.filestatus_set.filter(status__in=('g', 'b')).all()
+    finishedtest = []
+    for f in finished:
+        clsname = f.checker.module
+        mod, dot, cls = clsname.rpartition(".")
+        i = importlib.import_module(mod)
+        instance = getattr(i, cls)()
+
+        finishedtest.append({"checker": f,
+                            "data": instance.prepare_view(json.loads(f.data)),
+                            "template": instance.templatestub})
+    ret = {"file": thefile, "pendingtest": pendingtest, "finishedtest": finishedtest}
     return render(request, 'dashboard/file.html', ret)
 
 def directory(request, dirid):

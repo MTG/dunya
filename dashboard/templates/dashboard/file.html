@@ -16,11 +16,22 @@
 <h4>Pending tests</h4>
 <table>
     <tr><th>Checker</th></tr>
-    {% for r in file.filestatus_set.all %}
-    <tr><td>{{r.checker.name}}</td></tr>
+    {% for r in pendingtest %}
+    <tr><td>({{r.id}}) {{r.checker.name}}</td></tr>
     {% endfor %}
 </table>
 
 <h4>Complete tests</h4>
+<table>
+    <tr><th>Checker</th><th>Status</th></tr>
+    {% for r in finishedtest %}
+    <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>x</td></tr>
+    <tr><td colspan="2">
+            {% with "dashboard/jobs/"|add:r.template as template %}
+            {% include template with data=r.data only %}
+            {% endwith %}
+    </td></tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

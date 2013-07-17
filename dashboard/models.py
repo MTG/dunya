@@ -239,6 +239,19 @@ class CollectionFile(models.Model):
         return os.path.join(self.directory.collection.root_directory,
                 self.directory.path, self.name)
 
+    def start_state(self):
+        self.update_state('s')
+
+    def try_finish_state(self):
+        """ Check this file's """
+        currentstate = self.get_current_state()
+        if currentstate.state == 's':
+            # If we're in s and there are no more n or s, then we can
+            # change to f
+            if not self.filestatus_set.filter(status__in=('n', 's')).count():
+                self.update_state('f')
+        # TODO: Bubble up to the directory/release/collection
+
     def update_state(self, state):
         rs = FileState.objects.create(file=self, state=state)
 

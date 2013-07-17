@@ -1,8 +1,11 @@
 from django.db import transaction
 import celery
 import os
+import json
+import datetime
 
 from dashboard import models
+import carnatic
 import compmusic
 
 class DunyaStatusFileTask(celery.Task):
@@ -10,11 +13,20 @@ class DunyaStatusFileTask(celery.Task):
     abstract = True
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        # TODO: Find the release that the file is in, get the release's status
-        # if it's changed now that this file is done, mark as done
-        # TODO: Then bubble up to see if the collection can be marked as done
-        pass
+        if status == "SUCCESS":
+            filestatus_id = args[0]
+            fs = models.FileStatus.objects.get(pk=filestatus_id)
+            if isinstance(retval, bool):
+                retval, data = (retval, {})
+            else:
+                retval, data = retval
+            status = 'g' if retval else 'b' 
+            fs.status = status
+            fs.data = json.dumps(data)
+            fs.datetime = datetime.datetime.now()
+            fs.save()
 
+            fs.file.try_finish_state()
 
 class DunyaStatusReleaseTask(celery.Task):
     """ A celery task that performs a health check on a directory
@@ -34,7 +46,7 @@ class CompletenessBase(object):
 
     # a view stub that is called with data that the checker task
     # saves. It returns a dict that is passed to the templatestub file.
-    def prepare_view(data):
+    def prepare_view(self, data):
         """ Default prepare_view just passes the data through """
         return data
 
@@ -45,6 +57,51 @@ class CompletenessBase(object):
     def task(fileid, releaseid):
         pass
 
+@celery.task(base=DunyaStatusFileTask)
+def raagataalafiletask(filestatus_id):
+    fs = models.FileStatus.objects.get(pk=filestatus_id)
+    fpath = fs.file.path
+    meta = compmusic.file_metadata(fpath)
+    m = meta["meta"]
+    recordingid = m["recordingid"]
+    print "http://musicbrainz.org/recording/%s" % recordingid
+    mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
+    mbrec = mbrec["recording"]
+    tags = mbrec.get("tag-list", [])
+    res = {}
+    raagas = []
+    taalas = []
+    for t in tags:
+        tag = t["name"]
+        if compmusic.tags.has_raaga(tag):
+            raagas.append(compmusic.tags.parse_raaga(tag))
+        if compmusic.tags.has_taala(tag):
+            taalas.append(compmusic.tags.parse_taala(tag))
+    res["recordingid"] = recordingid
+    missingr = []
+    missingt = []
+    for r in raagas:
+        try:
+            carnatic.models.Raaga.objects.fuzzy(r)
+        except carnatic.models.Raaga.DoesNotExist:
+            missingr.append(r)
+        if missingr:
+            res["missingr"] = missingr
+    for t in taalas:
+        try:
+            carnatic.models.Taala.objects.fuzzy(t)
+        except carnatic.models.Taala.DoesNotExist:
+            missingt.append(t)
+        if missingt:
+            res["missingt"] = missingt
+            
+    res["gotraaga"] = len(raagas) > 0
+    res["gottaala"] = len(taalas) > 1
+    if raagas and taalas and not missingt and not missingr:
+        return (True, res)
+    else:
+        return (False, res)
+
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
     recording page in musicbrainz have matching entries
@@ -52,13 +109,7 @@ class RaagaTaalaFile(CompletenessBase):
     type = 'f'
     templatestub = 'raagataala.html'
     name = 'Recording raaga and taala'
-
-    def prepare_view(data):
-        return data
-
-    @celery.task(base=DunyaStatusFileTask, ignore_result=True)
-    def task(self, collectionfile_id):
-        fg = CollectionFile.objects.get(pk=collectionfile_id)
+    task = raagataalafiletask
 
 class CoverartFile(CompletenessBase):
     """ Check that a file has embedded coverart """
@@ -67,7 +118,7 @@ class CoverartFile(CompletenessBase):
 
     @celery.task(base=DunyaStatusFileTask, ignore_result=True)
     def task(self, filestatus_id):
-        fs = FileStatus.objects.get(pk=filestatus_id)
+        fs = models.FileStatus.objects.get(pk=filestatus_id)
 
 class ReleaseCoverart(CompletenessBase):
     """ Check that a release has coverart on the CAA """
@@ -76,7 +127,7 @@ class ReleaseCoverart(CompletenessBase):
 
     @celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
     def task(self, releasestatus_id):
-        rs = ReleaseStatus.objects.get(pk=releasestatus_id)
+        rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
 
 class FileTags(CompletenessBase):
     """ Check that a file has all the correct musicbrainz tags """
@@ -86,7 +137,7 @@ class FileTags(CompletenessBase):
 
     @celery.task(base=DunyaStatusFileTask, ignore_result=True)
     def task(self, filestatus_id):
-        fs = FileStatus.objects.get(pk=filestatus_id)
+        fs = models.FileStatus.objects.get(pk=filestatus_id)
         fpath = fs.file.path
         meta = compmusic.file_metadata(fpath)
         complete = True
