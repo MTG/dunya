@@ -1,0 +1,3327 @@
+/*! normalize.css v1.1.0 | MIT License | git.io/normalize */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+audio,
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+[hidden] {
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+html,
+button,
+input,
+select,
+textarea {
+  font-family: sans-serif;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+body {
+  margin: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+a:focus {
+  outline: thin dotted;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+a:active,
+a:hover {
+  outline: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+h5 {
+  font-size: .83em;
+  margin: 1.67em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+h6 {
+  font-size: .67em;
+  margin: 2.33em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+b,
+strong {
+  font-weight: bold;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+blockquote {
+  margin: 1em 40px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+dfn {
+  font-style: italic;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+mark {
+  background: #ff0;
+  color: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+p,
+pre {
+  margin: 1em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace,serif;
+  _font-family: 'courier new', monospace;
+  font-size: 1em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+q {
+  quotes: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+small {
+  font-size: 80%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+sup {
+  top: -0.5em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+sub {
+  bottom: -0.25em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+dl,
+menu,
+ol,
+ul {
+  margin: 1em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+dd {
+  margin: 0 0 0 40px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+menu,
+ol,
+ul {
+  padding: 0 0 0 40px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+nav ul,
+nav ol {
+  list-style: none;
+  list-style-image: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+svg:not(:root) {
+  overflow: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+figure {
+  margin: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+form {
+  margin: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+legend {
+  border: 0;
+  padding: 0;
+  white-space: normal;
+  *margin-left: -7px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+button,
+input {
+  line-height: normal;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+button,
+select {
+  text-transform: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+  *overflow: visible;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+  *height: 13px;
+  *width: 13px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/normalize\.min\.less}line{font-family:\000032}}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/**** Isotope Filtering ****/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/variables\.less}line{font-family:\0000324}}
+.isotope-item {
+  z-index: 2;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/variables\.less}line{font-family:\0000328}}
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+/**** Isotope CSS3 transitions ****/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/variables\.less}line{font-family:\0000335}}
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  -ms-transition-duration: 0.8s;
+  -o-transition-duration: 0.8s;
+  transition-duration: 0.8s;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/variables\.less}line{font-family:\0000344}}
+.isotope {
+  -webkit-transition-property: height, width;
+  -moz-transition-property: height, width;
+  -ms-transition-property: height, width;
+  -o-transition-property: height, width;
+  transition-property: height, width;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/variables\.less}line{font-family:\0000352}}
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+  -moz-transition-property: -moz-transform, opacity;
+  -ms-transition-property: -ms-transform, opacity;
+  -o-transition-property: -o-transform, opacity;
+  transition-property: transform, opacity;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000037}}
+.formSection {
+  cursor: pointer;
+  background: url("../img/formSectionClose.png") 98% 4px no-repeat;
+  padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  position: relative;
+  display: block;
+  font-weight: bold;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000317}}
+.formSectionText {
+  cursor: pointer;
+  background: #000000 url("../img/formSectionClose.png") 98% 79% no-repeat;
+  background: rgba(0, 0, 0, 0.5) url("../img/formSectionClose.png") 98% 79% no-repeat;
+  padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  width: 100%;
+  position: relative;
+  display: block;
+  border-bottom: 2px solid #ccc;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000331}}
+fieldset {
+  margin-bottom: 6px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000332}}
+.noScroll {
+  overflow: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000334}}
+.formSectionOpen {
+  -webkit-border-bottom-left-radius: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  -moz-border-bottom-left-radius: 0px;
+  -moz-border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000335}}
+.filterList h2 {
+  margin: 8px;
+  font-size: 17px;
+  background: #777;
+  border-radius: 10px;
+  padding: 4px;
+  font-weight: normal;
+  padding-left: 10px;
+  color: #dcdcdc;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000336}}
+.ui-slider {
+  margin-bottom: 12px;
+  margin-top: 13px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000337}}
+.formFilterClosed {
+  width: 0px !important;
+  padding: 0px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000338}}
+.filterListClosed {
+  width: 0px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000341}}
+.filterBallClosed {
+  top: 6px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000342}}
+.filterSummary {
+  position: absolute;
+  top: 115px;
+  padding: 10px;
+  background: #f0f0f0;
+  background: rgba(256, 256, 256, 0.5);
+  width: 155px;
+  left: -19px;
+  display: none;
+  color: #666;
+  width: 174px;
+  left: -30px;
+  height: 178px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000359}}
+.filterBallClosed .filterSummary {
+  display: block;
+}
+/*   SHADOW OF THE CIRCLES   */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000362}}
+.shadow1 {
+  box-shadow: 1px 1px 3px #666;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000364}}
+#footage {
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000367}}
+#filterArea > div {
+  position: relative;
+  display: inline-block;
+}
+/* ==========================================================================
+	GLOBAL COLORS
+   ========================================================================== */
+/* ==========================================================================
+	BASE ELEMENTS
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000382}}
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000384}}
+html,
+button,
+input,
+select,
+textarea {
+  color: #222;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000392}}
+body {
+  font-size: 12px;
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\0000398}}
+::-moz-selection {
+  background: #dcdcdc;
+  text-shadow: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003103}}
+::selection {
+  background: #dcdcdc;
+  text-shadow: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003108}}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003117}}
+img {
+  vertical-align: middle;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003121}}
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003127}}
+textarea {
+  resize: vertical;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003131}}
+.chromeframe {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003137}}
+.hidder {
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003140}}
+.nopad {
+  padding: 0px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003141}}
+.header-container,
+.main-container {
+  min-width: 1024px;
+  /*width: 1024px !important;*/
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003142}}
+#entitiesList.filterListClosed,
+#entitiesList {
+  width: 150px !important;
+}
+/* ==========================================================================
+   HEADER 
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003148}}
+.header-container {
+  position: relative;
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003151}}
+.header-container #logo {
+  position: relative;
+  top: 8px;
+  left: 0px;
+  width: 57px;
+  height: 59px;
+  float: left;
+  margin-left: 15px;
+  margin-bottom: 13px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003161}}
+.header-container #globalsearch {
+  position: relative;
+  top: 15px;
+  float: left;
+  margin-left: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003166}}
+.header-container #globalsearch input {
+  background: url("../img/searchBackground.png") 0 0 no-repeat;
+  border: none;
+  width: 411px;
+  height: 44px;
+  font-family: 'Open Sans', sans-serif;
+  padding: 10px;
+  font-size: 14px;
+  color: #666666;
+  box-shadow: inset 0px 1px 5px #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003178}}
+.header-container #globalsearch .button {
+  background: url("../img/icon_search.png") 0 0 no-repeat;
+  width: 28px;
+  height: 29px;
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003187}}
+.header-container #globalMusic {
+  position: relative;
+  float: left;
+  top: 16px;
+  margin-left: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003192}}
+.header-container #globalMusic label {
+  position: relative;
+  font-size: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003196}}
+.header-container #globalMusic #gmSelected {
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  background: url("../img/smallArrow.png") 0 7px no-repeat;
+  padding-left: 12px;
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003204}}
+.header-container #globalMusic #gmDropDown {
+  list-style: none;
+  margin: 0px;
+  position: absolute;
+  z-index: 1;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 8px #666;
+  padding: 10px;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003211}}
+.header-container #globalMusic #gmDropDown li {
+  list-style: none;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003219}}
+.header-container nav#mainmenu {
+  float: right;
+  margin-top: 24px;
+  margin-right: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003223}}
+.header-container nav#mainmenu > a {
+  float: left;
+  margin: 0;
+  margin-left: 5px;
+  padding: 4px 7px 3px 7px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  color: #221F1F;
+  background: #eeeded;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003238}}
+.header-container nav#mainmenu #user {
+  float: left;
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  padding-right: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003245}}
+.header-container nav#mainmenu #user > a {
+  margin: 0;
+  margin-left: 5px;
+  padding: 4px 7px 3px 7px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: url("../img/texturelogo.png") 21% 42% no-repeat;
+  background-size: 177px 157px;
+  color: #fff;
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003260}}
+.header-container nav#mainmenu #user > a img {
+  width: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003267}}
+.header-container nav#mainmenu #guest {
+  float: left;
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  padding-right: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003274}}
+.header-container nav#mainmenu #guest > a {
+  margin: 0;
+  margin-left: 5px;
+  padding: 4px 7px 3px 7px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: #666;
+  background-size: 177px 157px;
+  color: #fff;
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003289}}
+.header-container nav#mainmenu #guest > a img {
+  width: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003296}}
+.header-container nav#mainmenu #userOptions {
+  position: absolute;
+  right: 9px;
+  top: 30px;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
+  color: #221F1F;
+  background: #eeeded;
+  padding: 15px;
+  z-index: 40;
+  opacity: 0;
+  margin-top: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003310}}
+.header-container nav#mainmenu #userOptions > img {
+  width: 150px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003313}}
+.header-container nav#mainmenu #userOptions > a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003318}}
+.header-container nav#mainmenu #userOptions > a:hover {
+  text-decoration: underline;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003322}}
+.header-container nav#mainmenu #userOptions > h3 {
+  color: #000;
+  display: block;
+  white-space: nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003323}}
+.header-container nav#mainmenu #userOptions > h3 b {
+  color: #600;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003330}}
+.header-container nav#mainmenu #userOptions #userArrow {
+  position: absolute;
+  width: 27px;
+  height: 15px;
+  background: url("../img/userArrow.png") 0 0 no-repeat;
+  top: -9px;
+  right: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003338}}
+.header-container nav#mainmenu #userOptions.open {
+  margin-top: 0px;
+  opacity: 1;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003343}}
+.header-container nav#mainmenu #guestOptions {
+  position: absolute;
+  right: 9px;
+  top: 30px;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
+  color: #221F1F;
+  background: #eeeded;
+  padding: 15px;
+  z-index: 40;
+  opacity: 0;
+  margin-top: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003357}}
+.header-container nav#mainmenu #guestOptions > img {
+  width: 150px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003360}}
+.header-container nav#mainmenu #guestOptions > a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003365}}
+.header-container nav#mainmenu #guestOptions > a:hover {
+  text-decoration: underline;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003369}}
+.header-container nav#mainmenu #guestOptions > h3 {
+  color: #000;
+  display: block;
+  white-space: nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003370}}
+.header-container nav#mainmenu #guestOptions > h3 b {
+  color: #600;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003377}}
+.header-container nav#mainmenu #guestOptions #userArrow {
+  position: absolute;
+  width: 27px;
+  height: 15px;
+  background: url("../img/userArrow.png") 0 0 no-repeat;
+  top: -9px;
+  right: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003385}}
+.header-container nav#mainmenu #guestOptions.open {
+  margin-top: 0px;
+  opacity: 1;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003390}}
+.header-container nav#mainmenu li:first-child a {
+  margin-left: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003393}}
+.header-container nav#mainmenu li:last-child a {
+  margin-right: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003396}}
+.header-container nav#mainmenu ul li {
+  display: inline;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003399}}
+.header-container nav#mainmenu .oldie nav a {
+  margin: 0 0.7%;
+}
+/* ==========================================================================
+   FILTERS
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003410}}
+#filterMask {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  overflow-x: auto;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003416}}
+#filterMask #filterArea {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003421}}
+#filterMask #filterArea .filterList {
+  position: relative;
+  float: left;
+  height: 300px;
+  overflow-y: auto;
+  border-left: 1px solid #A7A8AC;
+  border-right: 1px solid #A7A8AC;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003428}}
+#filterMask #filterArea .filterList ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003432}}
+#filterMask #filterArea .filterList ul li {
+  color: #fff;
+  text-shadow: 1px 1px 1px #555555;
+  font-weight: bold;
+  padding: 9px 9px 9px 24px;
+  text-transform: capitalize;
+  cursor: pointer;
+  margin: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003440}}
+#filterMask #filterArea .filterList ul li.selected {
+  color: #fff;
+  background: url("../img/sticker.png") 0 50% no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003447}}
+#filterMask #filterArea .formFilterItem {
+  height: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003449}}
+#filterMask #filterArea #entitiesList ul {
+  position: absolute;
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003453}}
+#filterMask #filterArea #entitiesList h3 {
+  position: absolute;
+  top: 0px;
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  text-shadow: 1px 2px 2px black;
+  margin: 0px;
+  left: 0px;
+  height: 81px;
+  opacity: 0.6;
+  padding-top: 50px;
+  background: #fff;
+  background: -moz-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, rgba(255, 255, 255, 0)));
+  background: -webkit-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -o-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -ms-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=0);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003477}}
+#filterMask #filterArea #entitiesList ul li .colorCode {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border-radius: 20px;
+  background: #fff;
+  margin-right: 5px;
+  top: 3px;
+  opacity: 1;
+  border: 5px solid #f00;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003493}}
+#filterMask #filterArea .filters .filterBall {
+  -webkit-transition: all 0.5s ease 0;
+  -moz-transition: all 0.5s ease 0;
+  -o-transition: all 0.5s ease 0;
+  transition: all 0.5s ease 0;
+  position: relative;
+  float: left;
+  width: 120px;
+  height: 120px;
+  -webkit-border-radius: 120px;
+  -moz-border-radius: 120px;
+  -ms-border-radius: 120px;
+  -o-border-radius: 120px;
+  border-radius: 120px;
+  display: table;
+  top: 86px;
+  margin-left: 30px;
+  cursor: pointer;
+  margin-right: 25px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003508}}
+#filterMask #filterArea .filters .filterBall:hover {
+  box-shadow: 0px 0px 10px #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003511}}
+#filterMask #filterArea .filters .filterBall:hover .arrowClosed {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003512}}
+#filterMask #filterArea .filters .filterBall:hover .arrow {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003513}}
+#filterMask #filterArea .filters .filterBall span {
+  display: table-cell;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0px;
+  color: #fff;
+  text-shadow: 0px 1px 3px black;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003528}}
+#filterMask #filterArea .filters .filterBall .arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -15px;
+  right: -11px;
+  background: url("../img/greyTriangle.png") 0 0 no-repeat;
+  width: 15px;
+  height: 30px;
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003537}}
+#filterMask #filterArea .filters .filterBall .arrowClosed {
+  position: absolute;
+  top: 50%;
+  margin-top: -15px;
+  right: -20px;
+  background: url("../img/greyTriangleClosed.png") 0 0 no-repeat;
+  width: 15px;
+  height: 30px;
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003547}}
+#filterMask #filterArea .filters .filterBall .filterSummary {
+  font-size: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003549}}
+#filterMask #filterArea .filters .filterBall .filterSummary b {
+  color: #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003552}}
+#filterMask #filterArea .filters .formFilter {
+  position: relative;
+  float: left;
+  width: 240px;
+  height: 300px;
+  padding: 15px;
+  overflow-y: auto;
+  color: #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003561}}
+#filterMask #filterArea .filters .formFilter fieldset span.output {
+  color: #333;
+  display: block;
+  text-align: center;
+  background: #fff;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003568}}
+#filterMask #filterArea .filters .formFilter .filterList {
+  max-height: 234px;
+  height: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003572}}
+#filterMask #filterArea .filters .formFilter .formFilterItem {
+  display: none;
+  background: #fff;
+  background: rgba(256, 256, 256, 0.8);
+  width: 100%;
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003579}}
+#filterMask #filterArea .filters .formFilter .formFilterItem input[type="text"] {
+  padding: 7px;
+  padding-top: 8px;
+  background: rgba(256, 256, 256, 0.4);
+  margin: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003590}}
+#filterMask #filterArea .filters h3 {
+  padding: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003593}}
+#filterMask #breadcrumb {
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003594}}
+#filterMask.querybar {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  background: url("../img/compactBar.png") 0 0 repeat-x;
+  box-shadow: inset 0px 0px 8px #444;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003600}}
+#filterMask.querybar .arrowItem {
+  width: 0;
+  height: 0;
+  position: relative;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid #008000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/mixins\.less}line{font-family:\0000320}}
+#filterMask.querybar .arrowItem:after {
+  position: absolute;
+  content: "";
+  top: -18.18181818181818px;
+  left: -20px;
+  width: 0;
+  height: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/mixins\.less}line{font-family:\0000334}}
+#filterMask.querybar .arrowItem:after {
+  border-top: 18.18181818181818px solid transparent;
+  border-bottom: 18.18181818181818px solid transparent;
+  border-left: 18.18181818181818px solid #ff0000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003604}}
+#filterMask.querybar #filterArea #entitiesBall,
+#filterMask.querybar #filterArea #entitiesList,
+#filterMask.querybar #filterArea .filters {
+  display: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003608}}
+#filterMask.querybar #breadcrumb {
+  display: block;
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003613}}
+#filterMask.querybar #breadcrumb .bread {
+  float: left;
+  position: relative;
+  height: 64px;
+  border-left: 1px solid #a7a8ac;
+  display: table;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003619}}
+#filterMask.querybar #breadcrumb .bread .breadarrow {
+  width: 0;
+  height: 0;
+  position: relative;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid #008000;
+  position: absolute;
+  top: 10px;
+  left: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/mixins\.less}line{font-family:\0000320}}
+#filterMask.querybar #breadcrumb .bread .breadarrow:after {
+  position: absolute;
+  content: "";
+  top: -18.18181818181818px;
+  left: -20px;
+  width: 0;
+  height: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/mixins\.less}line{font-family:\0000334}}
+#filterMask.querybar #breadcrumb .bread .breadarrow:after {
+  border-top: 18.18181818181818px solid transparent;
+  border-bottom: 18.18181818181818px solid transparent;
+  border-left: 18.18181818181818px solid #ff0000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003625}}
+#filterMask.querybar #breadcrumb .bread.artist .breadarrow {
+  border-left-color: #45cee7;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003627}}
+#filterMask.querybar #breadcrumb .bread.artist .breadarrow:after {
+  border-left-color: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003629}}
+#filterMask.querybar #breadcrumb .bread.concert .breadarrow {
+  border-left-color: #6dd6d2;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003631}}
+#filterMask.querybar #breadcrumb .bread.concert .breadarrow:after {
+  border-left-color: #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003633}}
+#filterMask.querybar #breadcrumb .bread.work .breadarrow {
+  border-left-color: #d6d9ac;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003635}}
+#filterMask.querybar #breadcrumb .bread.work .breadarrow:after {
+  border-left-color: #e7e9cf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003637}}
+#filterMask.querybar #breadcrumb .bread.instrument .breadarrow {
+  border-left-color: #ec8206;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003639}}
+#filterMask.querybar #breadcrumb .bread.instrument .breadarrow:after {
+  border-left-color: #fa9b2b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003641}}
+#filterMask.querybar #breadcrumb .bread.raaga .breadarrow {
+  border-left-color: #e26700;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003643}}
+#filterMask.querybar #breadcrumb .bread.raaga .breadarrow:after {
+  border-left-color: #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003645}}
+#filterMask.querybar #breadcrumb .bread.taala .breadarrow {
+  border-left-color: #dcb341;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003647}}
+#filterMask.querybar #breadcrumb .bread.taala .breadarrow:after {
+  border-left-color: #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003649}}
+#filterMask.querybar #breadcrumb .bread.recording .breadarrow {
+  border-left-color: #c24027;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003651}}
+#filterMask.querybar #breadcrumb .bread.recording .breadarrow:after {
+  border-left-color: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003653}}
+#filterMask.querybar #breadcrumb .bread.composer .breadarrow {
+  border-left-color: #962034;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003655}}
+#filterMask.querybar #breadcrumb .bread.composer .breadarrow:after {
+  border-left-color: #c02942;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003657}}
+#filterMask.querybar #breadcrumb .bread.entity_9 .breadarrow {
+  border-left-color: #301520;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003659}}
+#filterMask.querybar #breadcrumb .bread.entity_9 .breadarrow:after {
+  border-left-color: #542437;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003661}}
+#filterMask.querybar #breadcrumb .bread.entity_10 .breadarrow {
+  border-left-color: #3e595c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003663}}
+#filterMask.querybar #breadcrumb .bread.entity_10 .breadarrow:after {
+  border-left-color: #53777a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003665}}
+#filterMask.querybar #breadcrumb .bread span {
+  display: table-cell;
+  padding-right: 10px;
+  padding-left: 5px;
+  vertical-align: middle;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003670}}
+#filterMask.querybar #breadcrumb .bread span a {
+  text-decoration: none;
+  color: #222;
+  display: inline-block;
+  padding: 2px;
+  padding-left: 15px;
+  padding-right: 5px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  float: left;
+  clear: left;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003680}}
+#filterMask.querybar #breadcrumb .bread span a:hover {
+  background: #666;
+  color: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003684}}
+#filterMask.querybar #breadcrumb .bread span a h3 {
+  margin: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003692}}
+#tab {
+  position: absolute;
+  top: 350px;
+  left: 0px;
+  width: 100%;
+  height: 29px;
+  background: url("http://localhost:8001/static/carnatic/img/tabBack.png") 50% 50% repeat-x;
+  z-index: 10;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003700}}
+#tab #tabControl {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: 65px;
+  height: 22px;
+  margin-left: -32px;
+  cursor: pointer;
+  background: url("http://localhost:8001/static/carnatic/img/tabControl.png") 0 0 repeat-x;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003709}}
+#tab #tabControl:hover {
+  background: url("http://localhost:8001/static/carnatic/img/tabControl_hover.png") 0 0 repeat-x;
+}
+/* ==========================================================================
+   DETAIL 
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003719}}
+#detail {
+  border-bottom: 30px solid #333;
+  /*
+	a:after {
+			content: url("../img/link.png") !important;
+			top:2px !important;
+			margin-left: 2px !important;
+			position: relative !important;
+	}
+	*/
+
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003729}}
+#detail #header {
+  background: #fff;
+  border-bottom: 1px solid #dddddd;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003732}}
+#detail #header #summary {
+  position: relative;
+  float: left;
+  width: 220px;
+  height: 296px;
+  padding: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003738}}
+#detail #header #summary #icon {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  width: 87px;
+  height: 90px;
+  background: url("../img/playButtonBig.png") 0 0 no-repeat;
+  z-index: 4;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003747}}
+#detail #header #summary #innerSummary {
+  position: absolute;
+  z-index: 3;
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003748}}
+#detail #header #summary #summaryBack {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: url("../img/noisy.png") 0 0 repeat;
+  opacity: 0.15;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003758}}
+#detail #header #summary #summaryBack2 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003766}}
+#detail #header #summary span {
+  z-index: 2;
+  vertical-align: middle;
+  display: table-cell;
+  text-align: right;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003771}}
+#detail #header #summary span h1 {
+  font-size: 22px;
+  line-height: 22px;
+  margin: 0px;
+  color: #fff;
+  text-shadow: 1px 1px 4px #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003778}}
+#detail #header #summary span h2 {
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0px;
+  line-height: 16px;
+  margin-top: 7px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003784}}
+#detail #header #summary span h2 a {
+  text-decoration: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003786}}
+#detail #header #summary span h3 {
+  color: #fff;
+  margin: 0px;
+  font-weight: normal;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003790}}
+#detail #header #summary span h3 a {
+  color: #fff;
+  text-decoration: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003795}}
+#detail #header .bigImage {
+  position: relative;
+  float: left;
+  width: 296px;
+  height: 296px;
+  overflow: hidden;
+  background: #333;
+  z-index: 2;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003803}}
+#detail #header .bigImage img {
+  width: 297px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003807}}
+#detail #header #image {
+  background: url("../img/artistImage.jpg") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003810}}
+#detail #header #meta {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin-left: -516px;
+  height: 296px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003816}}
+#detail #header #meta .metaBlock {
+  position: relative;
+  height: 100%;
+  margin-left: 516px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003820}}
+#detail #header #meta .metaBlock .metaMask {
+  position: relative;
+  width: auto;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003826}}
+#detail #header #meta .metaBlock .metaMask .metaContainer {
+  position: relative;
+  width: 3000px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003829}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails {
+  display: inline-block;
+  float: left;
+  width: 300px;
+  height: 297px;
+  border-right: 1px solid #dddddd;
+  font-size: 11px;
+  padding-top: 24px;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003839}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails .inner {
+  overflow-y: auto;
+  height: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003843}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails h3 {
+  top: 0px;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e9e9e9;
+  border-top: 1px solid #dddddd;
+  background: #f6f6f6;
+  color: #aaaaaa;
+  margin: 0px;
+  position: absolute;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 9px;
+  font-weight: normal;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003859}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span {
+  display: block;
+  margin: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003862}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span .player {
+  background: url("../img/playButton.png") 0 50% no-repeat;
+  padding-left: 38px;
+  padding-top: 10px;
+  padding-bottom: 11px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003868}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span a {
+  color: #d71f00;
+  display: block;
+  margin-bottom: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003875}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list label {
+  float: left;
+  width: 28%;
+  text-align: right;
+  clear: left;
+  margin-right: 4px;
+  font-weight: bold;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003883}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list b {
+  float: left;
+  font-weight: normal;
+  width: 68%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003890}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list2 label {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003893}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails span.list2 b {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003897}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails.narrow {
+  width: 450px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003898}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .metaDetails.close {
+  width: 150px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003900}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta {
+  display: inline-block;
+  float: left;
+  width: 300px;
+  height: 297px;
+  border-right: 1px solid #dddddd;
+  font-size: 11px;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003909}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta.narrow {
+  width: 450px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003910}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta.close {
+  width: 150px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003911}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails {
+  display: inline-block;
+  float: left;
+  width: 100%;
+  height: 142px;
+  padding-top: 24px;
+  position: relative;
+  border: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003921}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails .inner {
+  overflow-y: auto;
+  height: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003925}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails h3 {
+  top: 0px;
+  padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e9e9e9;
+  border-top: 1px solid #dddddd;
+  background: #f6f6f6;
+  color: #aaaaaa;
+  margin: 0px;
+  position: absolute;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: normal;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003941}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span {
+  display: block;
+  margin: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003944}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span .player {
+  background: url("../img/playButton.png") 0 50% no-repeat;
+  padding-left: 38px;
+  padding-top: 10px;
+  padding-bottom: 11px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003950}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span a {
+  color: #d71f00;
+  display: block;
+  margin-bottom: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003957}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list label {
+  float: left;
+  width: 28%;
+  text-align: right;
+  clear: left;
+  margin-right: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003964}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list b {
+  float: left;
+  font-weight: normal;
+  width: 68%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003971}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list2 label {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003974}}
+#detail #header #meta .metaBlock .metaMask .metaContainer .splitMeta .metaDetails span.list2 b {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003986}}
+#detail .thedata {
+  border-bottom: 1px solid #a7a8ac;
+  display: block;
+  clear: both;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003990}}
+#detail .thedata .leftdata {
+  width: 220px;
+  float: left;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\00003993}}
+#detail .thedata .leftdata h3 {
+  font-weight: normal;
+  text-align: right;
+  font-size: 14px;
+  margin: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031000}}
+#detail .thedata .rightdata {
+  float: left;
+  width: 100%;
+  margin-left: -220px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031004}}
+#detail .thedata .rightdata .scrolldata {
+  overflow-x: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031005}}
+#detail .thedata .rightdata .scrolldata .scrollblock {
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031007}}
+#detail .thedata .rightdata .innerrightdata {
+  padding: 10px;
+  margin-left: 220px;
+  border-left: 1px solid #a7a8ac;
+  min-height: 40px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031012}}
+#detail .thedata .rightdata .innerrightdata textarea {
+  margin-bottom: 10px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031018}}
+#detail .thedata .rightdata .innerrightdata .recording {
+  float: left;
+  height: 100px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031021}}
+#detail .thedata .rightdata .innerrightdata .recording .disc {
+  float: left;
+  width: 127px;
+  height: 90px;
+  margin-right: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031028}}
+#detail .thedata .rightdata .innerrightdata .recording .desc p {
+  margin: 0px;
+  color: #888;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031029}}
+#detail .thedata .rightdata .innerrightdata .recording .desc b {
+  font-weight: normal;
+  display: block;
+  color: #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031032}}
+#detail .thedata .rightdata .innerrightdata .album {
+  float: left;
+  height: 140px;
+  width: 290px;
+  margin-right: 38px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031037}}
+#detail .thedata .rightdata .innerrightdata .album .disc {
+  float: left;
+  width: 127px;
+  height: 123px;
+  margin-right: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031042}}
+#detail .thedata .rightdata .innerrightdata .album .disc img {
+  width: 123px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031047}}
+#detail .thedata .rightdata .innerrightdata .album .desc p {
+  margin: 0px;
+  color: #888;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031048}}
+#detail .thedata .rightdata .innerrightdata .album .desc b {
+  font-weight: normal;
+  display: block;
+  color: #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031051}}
+#detail .thedata .rightdata .innerrightdata .artistCell {
+  float: left;
+  width: 235px;
+  height: 63px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid #f6f6f6;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031061}}
+#detail .thedata .rightdata .innerrightdata .artistCell .photo {
+  float: left;
+  width: 55px;
+  height: 63px;
+  margin-right: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031066}}
+#detail .thedata .rightdata .innerrightdata .artistCell .photo img {
+  width: 55px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031071}}
+#detail .thedata .rightdata .innerrightdata .artistCell .desc p {
+  margin: 0px;
+  color: #888;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031072}}
+#detail .thedata .rightdata .innerrightdata .artistCell .desc p a {
+  color: #666666 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031073}}
+#detail .thedata .rightdata .innerrightdata .artistCell .desc b {
+  font-weight: bold;
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031076}}
+#detail .thedata .rightdata .innerrightdata .track {
+  float: left;
+  padding: 10px;
+  border-right: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: -1px;
+  margin-top: 1px;
+  width: 300px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031084}}
+#detail .thedata .rightdata .innerrightdata .track h4 {
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031090}}
+#detail .thedata .rightdata .innerrightdata .instrumentCell {
+  float: left;
+  padding: 10px;
+  border-right: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: -1px;
+  margin-top: 1px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031097}}
+#detail .thedata .rightdata .innerrightdata .instrumentCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031103}}
+#detail .thedata .rightdata .innerrightdata .raagaCell {
+  float: left;
+  padding: 10px;
+  border-right: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: -1px;
+  margin-top: 1px;
+  width: 138px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031111}}
+#detail .thedata .rightdata .innerrightdata .raagaCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031117}}
+#detail .thedata .rightdata .innerrightdata .artist {
+  border-right: 1px solid #e2e2e2;
+  border-bottom: 1px solid #e2e2e2;
+  float: left;
+  width: 222px;
+  padding: 10px;
+  margin-bottom: -1px;
+  margin-top: 1px;
+  overflow-y: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031126}}
+#detail .thedata .rightdata .innerrightdata .artist .artistFoto {
+  position: relative;
+  width: 51px;
+  height: 63px;
+  float: left;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031132}}
+#detail .thedata .rightdata .innerrightdata .artist .artistName {
+  position: relative;
+  width: 150px;
+  height: 63px;
+  float: left;
+  padding: 5px;
+  font-size: 11px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031140}}
+#detail .thedata .rightdata .innerrightdata .artist .artist1 {
+  background: url("../img/artist1.jpg") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031141}}
+#detail .thedata .rightdata .innerrightdata .artist .artist2 {
+  background: url("../img/artist2.jpg") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031142}}
+#detail .thedata .rightdata .innerrightdata .artist .artist3 {
+  background: url("../img/artist3.jpg") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031143}}
+#detail .thedata .rightdata .innerrightdata .artist .artist4 {
+  background: url("../img/artist4.jpg") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031151}}
+#tonic .inner {
+  text-align: center;
+  padding-top: 6px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031154}}
+#tonic .inner span {
+  display: inline-block !important;
+  background: #95e1de;
+  color: #222;
+  padding: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  text-align: center;
+  margin: 2px !important;
+  border: 2px solid #6dd6d2;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031165}}
+#tonic .inner span b {
+  font-size: 20px;
+  color: #fff;
+  display: block;
+  clear: both;
+  text-align: center;
+}
+/* RESULTS FOR DEMO */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031180}}
+#resultsstats {
+  display: block;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031187}}
+#resultsstats #queryCont {
+  background: #ffffff url("http://localhost:8001/static/carnatic/img/icon_search.png") 0 50% no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031189}}
+#resultsstats #queryCont #query {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  background: #ffffff url("http://localhost:8001/static/carnatic/img/playSearch.png") 53% 53% no-repeat;
+  margin-right: 5px;
+  top: 3px;
+  opacity: 1;
+  border: 5px solid #EEEEEE;
+  margin-top: 8px;
+  margin-bottom: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031207}}
+#resultsstats .artist > span {
+  border-color: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031208}}
+#resultsstats .composer > span {
+  border-color: #c02942;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031209}}
+#resultsstats .concert > span {
+  border-color: #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031210}}
+#resultsstats .recording > span {
+  border-color: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031211}}
+#resultsstats .raaga > span {
+  border-color: #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031212}}
+#resultsstats .taala > span {
+  border-color: #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031213}}
+#resultsstats table {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  border-bottom: 1px solid #333;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031218}}
+#resultsstats table td {
+  padding-left: 10px;
+  border-bottom: 1px solid #a7a8ac;
+  border-left: 1px solid #a7a8ac;
+  background: #fff;
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031224}}
+#resultsstats table td:hover {
+  box-shadow: 1px 1px 6px #666666;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031226}}
+#resultsstats table td:hover > span {
+  color: #000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031230}}
+#resultsstats table td > span {
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  width: 80px;
+  height: 80px;
+  position: relative;
+  display: block;
+  float: left;
+  margin-top: 8px;
+  border: 5px solid #EEEEEE;
+  font-weight: 900;
+  text-align: center;
+  padding-top: 17px;
+  font-size: 28px;
+  color: #bbb;
+  box-shadow: 1px 1px 3px #666;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031246}}
+#resultsstats table td b {
+  font-size: 12px;
+  color: #000;
+  text-shadow: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031251}}
+#resultsstats table td h3 {
+  font-size: 14px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031253}}
+#resultsstats table td:first-child {
+  width: 230px;
+  border-left: none;
+  color: #666;
+  text-shadow: none;
+  font-size: 12px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031259}}
+#resultsstats table td:first-child span {
+  display: block;
+  float: left;
+  height: 40px;
+  margin-left: 42px;
+  margin-right: 19px;
+  position: relative;
+  top: 35px;
+  font-size: 19px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031273}}
+#results > div {
+  float: left;
+  width: 220px;
+  height: 270px;
+  margin-bottom: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  background: #f6f6f6;
+  box-shadow: 1px 1px 3px #666;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031285}}
+#results > div.open {
+  width: 450px;
+  height: 565px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031289}}
+#results > div.open .desc .plus {
+  background: url("http://localhost:8001/static/carnatic/img/lessIcon.png") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031294}}
+#results > div .pict {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 207px !important;
+  height: 205px !important;
+  overflow: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031301}}
+#results > div .pict a {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  display: block;
+  background: #fff;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031309}}
+#results > div .pict a img {
+  width: 207px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031314}}
+#results > div .desc {
+  overflow: hidden;
+  bottom: 0;
+  height: 57px;
+  padding: 6px;
+  position: absolute;
+  width: 100%;
+  font-size: 11px;
+  line-height: 12px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031323}}
+#results > div .desc .plus {
+  position: relative;
+  float: right;
+  margin-top: 8px;
+  width: 23px;
+  height: 23px;
+  background: url("http://localhost:8001/static/carnatic/img/plusIcon.png") 0 0 no-repeat;
+  cursor: pointer;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031332}}
+#results > div .desc p {
+  margin: 0px;
+  color: #333;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031333}}
+#results > div .desc b,
+#results > div .desc a {
+  font-weight: bold;
+  display: block;
+  color: #000;
+  text-decoration: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031334}}
+#results > div .desc a:hover {
+  text-decoration: underline;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031339}}
+#results .recording .desc {
+  background: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031340}}
+#results .recording:hover {
+  background: #97321f;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031341}}
+#results .recording .disc {
+  float: left;
+  width: 127px;
+  height: 90px;
+  margin-right: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031350}}
+#results .album .desc {
+  background: #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031351}}
+#results .album:hover {
+  background: #46cbc5;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031355}}
+#results .artistCell .desc {
+  background: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031356}}
+#results .artistCell:hover {
+  background: #1cbfdd;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031361}}
+#results .track .desc {
+  background: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031362}}
+#results .track:hover {
+  background: #97321f;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031363}}
+#results .track h4 {
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031371}}
+#results .instrumentCell .desc {
+  background: #fa9b2b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031372}}
+#results .instrumentCell:hover {
+  background: #bb6704;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031373}}
+#results .instrumentCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031381}}
+#results .raagaCell .desc {
+  background: #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031382}}
+#results .raagaCell:hover {
+  background: #af5000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031383}}
+#results .raagaCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031391}}
+#results .taalaCell .desc {
+  background: #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031392}}
+#results .taalaCell:hover {
+  background: #c69b24;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031393}}
+#results .taalaCell h4 {
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 4px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031401}}
+#results .artist .desc {
+  background: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031402}}
+#results .artist:hover {
+  background: #1cbfdd;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031403}}
+#results .artist .artistFoto {
+  position: relative;
+  width: 51px;
+  height: 63px;
+  float: left;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031409}}
+#results .artist .artistName {
+  position: relative;
+  width: 150px;
+  height: 63px;
+  float: left;
+  padding: 5px;
+  font-size: 11px;
+}
+/* ==========================================================================
+   LOGIN
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031422}}
+#login {
+  position: relative;
+  margin: 0 auto;
+  width: 500px;
+  padding: 30px;
+  padding-top: 100px;
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 8px #ddd, 2px 2px 10px #888;
+  background: #ffffff url("../img/logoDunya.png") 50% 40px no-repeat;
+  color: #333;
+  margin-top: 100px;
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031439}}
+#login h1 {
+  text-shadow: 1px 2px 2px black;
+  color: #ddd;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031443}}
+#login label {
+  text-align: right;
+  width: 125px;
+  position: relative;
+  display: inline-block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031449}}
+#login.logCenter label {
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031454}}
+input[type="button"],
+input[type="submit"] {
+  position: relative;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: #fff;
+  color: #444;
+  border: none;
+  text-transform: uppercase;
+  outline: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031470}}
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background: #444;
+  color: #ddd;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031475}}
+input[type="text"],
+input[type="password"] {
+  position: relative;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  border: none;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: #fff;
+  color: #000;
+  outline: 0;
+}
+/* ==========================================================================
+   RECORDING
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031492}}
+#detail.recording #header {
+  float: left;
+  width: 220px;
+  border: none;
+  position: relative;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031497}}
+#detail.recording #header #summary {
+  height: 65px;
+  float: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031501}}
+#detail.recording #header #summary #innerSummary span h1 {
+  font-size: 16px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031502}}
+#detail.recording #header #summary #innerSummary span h2 {
+  margin-top: 0px;
+  font-size: 12px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031505}}
+#detail.recording #header #meta {
+  float: none;
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031508}}
+#detail.recording #header #meta .metaBlock {
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031510}}
+#detail.recording #header #meta .metaBlock .metaMask .metaContainer {
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031512}}
+#detail.recording #header #meta .metaBlock .metaMask .metaContainer .metaDetails {
+  width: 221px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031514}}
+#detail.recording #header #meta .metaBlock .metaMask .metaContainer .metaDetails label {
+  width: 34% !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031515}}
+#detail.recording #header #meta .metaBlock .metaMask .metaContainer .metaDetails b {
+  width: 64% !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031520}}
+#detail.recording #header #control {
+  position: relative;
+  padding-left: 30px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031523}}
+#detail.recording #header #control .revButton {
+  position: relative;
+  float: left;
+  width: 48px;
+  height: 50px;
+  background: url("../img/revButton.png") 0 0 repeat-y;
+  margin-top: 7px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031530}}
+#detail.recording #header #control .revButton:hover {
+  background: url("../img/revButton_hover.png") 0 0 repeat-y;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031534}}
+#detail.recording #header #control .plButton {
+  position: relative;
+  float: left;
+  width: 64px;
+  height: 66px;
+  background: url("../img/plButton.png") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031540}}
+#detail.recording #header #control .plButton:hover {
+  background: url("../img/plButton_hover.png") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031543}}
+#detail.recording #header #control .plButton.stop {
+  background: url("../img/stopButton.png") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031545}}
+#detail.recording #header #control .plButton.stop:hover {
+  background: url("../img/stopButton_hover.png") 0 0 no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031550}}
+#detail.recording #header #control .folButton {
+  position: relative;
+  float: left;
+  width: 48px;
+  height: 50px;
+  background: url("../img/folButton.png") 0 0 repeat-y;
+  margin-top: 7px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031557}}
+#detail.recording #header #control .folButton:hover {
+  background: url("../img/folButton_hover.png") 0 0 repeat-y;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031562}}
+#detail.recording #header #timecode {
+  position: absolute;
+  margin: 0;
+  padding: 15px;
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  font-size: 18px;
+  color: #221F1F;
+  background: #eeeded;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  top: 298px;
+  left: 58px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031577}}
+#detail.recording #header #zooms {
+  position: absolute;
+  top: 434px;
+  width: 100%;
+  text-align: center;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031582}}
+#detail.recording #header #zooms span {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031585}}
+#detail.recording #header #zooms a {
+  position: relative;
+  display: inline-block;
+  color: #221F1F;
+  background: #eeeded;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  padding: 8px;
+  text-decoration: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031594}}
+#detail.recording #header #zooms a.selected {
+  background: #333;
+  color: #fff !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031602}}
+#detail.recording .alldata {
+  float: left;
+  width: 100%;
+  margin-left: -220px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031606}}
+#detail.recording .alldata .thedata {
+  margin-left: 220px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031608}}
+#detail.recording .alldata .thedata #rendersMask {
+  position: relative;
+  width: 901px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031613}}
+#detail.recording .alldata .thedata #rendersMask #renders {
+  position: relative;
+  width: 901px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031616}}
+#detail.recording .alldata .thedata #rendersMask #renders #capcal {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 13px;
+  height: 100%;
+  background: url("../img/capcal.png") -5px 0 repeat-y;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031624}}
+#detail.recording .alldata .thedata #rendersMask #renders #bigWave {
+  width: 100%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031626}}
+#detail.recording .alldata .thedata #rendersMask #renders #bigWave img {
+  width: 100%;
+  height: 234px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031633}}
+#detail.recording .alldata .thedata #renderTotal {
+  position: relative;
+  width: 901px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031636}}
+#detail.recording .alldata .thedata #renderTotal img {
+  width: 901px;
+  height: 30px;
+  opacity: 0.5;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031641}}
+#detail.recording .alldata .thedata #renderTotal #capcalTotal {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 13px;
+  height: 100%;
+  z-index: 2;
+  background: url("../img/capcal.png") -5px 0 repeat-y;
+}
+/* ==========================================================================
+   Entities Filters Colors
+   ========================================================================== */
+/*#filterMask #filterArea .filterList ul li.artist { background: @artist_color; }
+#filterMask #filterArea .filterList ul li.concert { background: @concert_color; }
+#filterMask #filterArea .filterList ul li.work { background: @work_color; }
+#filterMask #filterArea .filterList ul li.instrument { background: @instrument_color; }
+#filterMask #filterArea .filterList ul li.raaga { background: @raaga_color; }
+#filterMask #filterArea .filterList ul li.taala { background: @taala_color; }
+#filterMask #filterArea .filterList ul li.recording { background: @recording_color; }
+#filterMask #filterArea .filterList ul li.composer { background: @composer_color; }
+#filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
+#filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }*/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031673}}
+#filterMask #filterArea .filterList ul li.artist.selected .colorCode {
+  background: #1cbfdd !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031674}}
+#filterMask #filterArea .filterList ul li.concert.selected .colorCode {
+  background: #46cbc5 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031675}}
+#filterMask #filterArea .filterList ul li.work.selected .colorCode {
+  background: #c4c989 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031676}}
+#filterMask #filterArea .filterList ul li.instrument.selected .colorCode {
+  background: #bb6704 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031677}}
+#filterMask #filterArea .filterList ul li.raaga.selected .colorCode {
+  background: #af5000 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031678}}
+#filterMask #filterArea .filterList ul li.taala.selected .colorCode {
+  background: #c69b24 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031679}}
+#filterMask #filterArea .filterList ul li.recording.selected .colorCode {
+  background: #97321f !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031680}}
+#filterMask #filterArea .filterList ul li.composer.selected .colorCode {
+  background: #6c1725 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031681}}
+#filterMask #filterArea .filterList ul li.entity_9.selected .colorCode {
+  background: #0d0508 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031682}}
+#filterMask #filterArea .filterList ul li.entity_10.selected .colorCode {
+  background: #2a3c3d !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031685}}
+#detail.artist a {
+  color: #1698b0 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031686}}
+#detail.concert a {
+  color: #31aca7 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031687}}
+#detail.work a {
+  color: #b3b966 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031688}}
+#detail.instrument a {
+  color: #894b03 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031689}}
+#detail.raaga a {
+  color: #7c3800 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031690}}
+#detail.taala a {
+  color: #9b791c !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031691}}
+#detail.recording a {
+  color: #6d2416 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031692}}
+#detail.composer a {
+  color: #420e17 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031693}}
+#detail.entity_9 a {
+  color: #000000 !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031694}}
+#detail.entity_10 a {
+  color: #151e1f !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031697}}
+.filters.artist {
+  background: #ccf2f9;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031698}}
+.filters.concert {
+  background: #bdecea;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031699}}
+.filters.work {
+  background: #f0f1e0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031700}}
+.filters.instrument {
+  background: #fcca8f;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031701}}
+.filters.raaga {
+  background: #ffb87c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031702}}
+.filters.taala {
+  background: #f4e7c2;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031703}}
+.filters.recording {
+  background: #eaa598;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031704}}
+.filters.composer {
+  background: #e06f82;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031705}}
+.filters.entity_9 {
+  background: #9b4366;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031706}}
+.filters.entity_10 {
+  background: #86aaad;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031709}}
+.filters.artist {
+  background: rgba(114, 218, 237, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031710}}
+.filters.concert {
+  background: rgba(149, 225, 222, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031711}}
+.filters.work {
+  background: rgba(231, 233, 207, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031712}}
+.filters.instrument {
+  background: rgba(250, 155, 43, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031713}}
+.filters.raaga {
+  background: rgba(255, 128, 22, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031714}}
+.filters.taala {
+  background: rgba(228, 196, 108, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031715}}
+.filters.recording {
+  background: rgba(217, 91, 67, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031716}}
+.filters.composer {
+  background: rgba(192, 41, 66, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031717}}
+.filters.entity_9 {
+  background: rgba(84, 36, 55, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031718}}
+.filters.entity_10 {
+  background: rgba(83, 119, 122, 0.2);
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031721}}
+.artist .filterBall,
+.artist .filterList ul li.selected {
+  background: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031722}}
+.concert .filterBall,
+.concert .filterList ul li.selected {
+  background: #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031723}}
+.work .filterBall,
+.work .filterList ul li.selected {
+  background: #e7e9cf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031724}}
+.instrument .filterBall,
+.instrument .filterList ul li.selected {
+  background: #fa9b2b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031725}}
+.raaga .filterBall,
+.raaga .filterList ul li.selected {
+  background: #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031726}}
+.taala .filterBall,
+.taala .filterList ul li.selected {
+  background: #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031727}}
+.recording .filterBall,
+.recording .filterList ul li.selected {
+  background: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031728}}
+.composer .filterBall,
+.composer .filterList ul li.selected {
+  background: #c02942;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031729}}
+.entity_9 .filterBall,
+.entity_9 .filterList ul li.selected {
+  background: #542437;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031730}}
+.entity_10 .filterBall,
+.entity_10 .filterList ul li.selected {
+  background: #53777a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031732}}
+.artist .formFilter {
+  border-right: 4px solid #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031733}}
+.concert .formFilter {
+  border-right: 4px solid #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031734}}
+.work .formFilter {
+  border-right: 4px solid #e7e9cf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031735}}
+.instrument .formFilter {
+  border-right: 4px solid #fa9b2b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031736}}
+.raaga .formFilter {
+  border-right: 4px solid #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031737}}
+.taala .formFilter {
+  border-right: 4px solid #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031738}}
+.recording .formFilter {
+  border-right: 4px solid #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031739}}
+.composer .formFilter {
+  border-right: 4px solid #c02942;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031740}}
+.entity_9 .formFilter {
+  border-right: 4px solid #542437;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031741}}
+.entity_10 .formFilter {
+  border-right: 4px solid #53777a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031743}}
+.artist .formSectionOpen {
+  background: #72daed url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031744}}
+.concert .formSectionOpen {
+  background: #95e1de url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031745}}
+.work .formSectionOpen {
+  background: #e7e9cf url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031746}}
+.instrument .formSectionOpen {
+  background: #fa9b2b url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031747}}
+.raaga .formSectionOpen {
+  background: #ff8016 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031748}}
+.taala .formSectionOpen {
+  background: #e4c46c url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031749}}
+.recording .formSectionOpen {
+  background: #d95b43 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031750}}
+.composer .formSectionOpen {
+  background: #c02942 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031751}}
+.entity_9 .formSectionOpen {
+  background: #542437 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031752}}
+.entity_10 .formSectionOpen {
+  background: #53777a url("../img/formSectionOpen.png") 98% 4px no-repeat;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031754}}
+.artist #summary {
+  background: #72daed;
+  border-bottom: 10px solid #1cbfdd;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031755}}
+.concert #summary {
+  background: #95e1de;
+  border-bottom: 10px solid #31aca7;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031756}}
+.work #summary {
+  background: #e7e9cf;
+  border-bottom: 10px solid #c4c989;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031757}}
+.instrument #summary {
+  background: #fa9b2b;
+  border-bottom: 10px solid #bb6704;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031758}}
+.raaga #summary {
+  background: #ff8016;
+  border-bottom: 10px solid #af5000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031759}}
+.taala #summary {
+  background: #e4c46c;
+  border-bottom: 10px solid #c69b24;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031760}}
+.recording #summary {
+  background: #d95b43;
+  border-bottom: 10px solid #97321f;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031761}}
+.composer #summary {
+  background: #c02942;
+  border-bottom: 10px solid #6c1725;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031762}}
+.entity_9 #summary {
+  background: #542437;
+  border-bottom: 10px solid #0d0508;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031763}}
+.entity_10 #summary {
+  background: #53777a;
+  border-bottom: 10px solid #2a3c3d;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031765}}
+#summary.artist h1 {
+  color: #0e5d6c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031766}}
+#summary.concert h1 {
+  color: #20716d;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031767}}
+#summary.work h1 {
+  color: #8a9042;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031768}}
+#summary.instrument h1 {
+  color: #3e2201;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031769}}
+#summary.raaga h1 {
+  color: #2f1600;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031770}}
+#summary.taala h1 {
+  color: #5a4611;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031771}}
+#summary.recording h1 {
+  color: #2d0f09;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031772}}
+#summary.composer h1 {
+  color: #030101;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031773}}
+#summary.entity_9 h1 {
+  color: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031774}}
+#summary.entity_10 h1 {
+  color: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031776}}
+#detail.artist #header #summary span h2,
+#detail.artist #header #summary span h2 a {
+  color: #117182;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031777}}
+#detail.concert #header #summary span h2,
+#detail.concert #header #summary span h2 a {
+  color: #268581;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031778}}
+#detail.work #header #summary span h2,
+#detail.work #header #summary span h2 a {
+  color: #9ba24a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031779}}
+#detail.instrument #header #summary span h2,
+#detail.instrument #header #summary span h2 a {
+  color: #573002;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031780}}
+#detail.raaga #header #summary span h2,
+#detail.raaga #header #summary span h2 a {
+  color: #492100;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031781}}
+#detail.taala #header #summary span h2,
+#detail.taala #header #summary span h2 a {
+  color: #705714;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031782}}
+#detail.recording #header #summary span h2,
+#detail.recording #header #summary span h2 a {
+  color: #43160d;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031783}}
+#detail.composer #header #summary span h2,
+#detail.composer #header #summary span h2 a {
+  color: #180508;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031784}}
+#detail.entity_9 #header #summary span h2,
+#detail.entity_9 #header #summary span h2 a {
+  color: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031785}}
+#detail.entity_10 #header #summary span h2,
+#detail.entity_10 #header #summary span h2 a {
+  color: #000101;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031788}}
+#filterMask #filterArea #entitiesList ul li.artist .colorCode {
+  border-color: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031789}}
+#filterMask #filterArea #entitiesList ul li.concert .colorCode {
+  border-color: #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031790}}
+#filterMask #filterArea #entitiesList ul li.work .colorCode {
+  border-color: #e7e9cf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031791}}
+#filterMask #filterArea #entitiesList ul li.instrument .colorCode {
+  border-color: #fa9b2b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031792}}
+#filterMask #filterArea #entitiesList ul li.raaga .colorCode {
+  border-color: #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031793}}
+#filterMask #filterArea #entitiesList ul li.taala .colorCode {
+  border-color: #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031794}}
+#filterMask #filterArea #entitiesList ul li.recording .colorCode {
+  border-color: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031795}}
+#filterMask #filterArea #entitiesList ul li.composer .colorCode {
+  border-color: #c02942;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031796}}
+#filterMask #filterArea #entitiesList ul li.entity_9 .colorCode {
+  border-color: #542437;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031797}}
+#filterMask #filterArea #entitiesList ul li.entity_10 .colorCode {
+  border-color: #53777a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031800}}
+#detail.artist .tag-cloud-0 {
+  background: #a8e8f4;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031801}}
+#detail.artist .tag-cloud-1 {
+  background: #72daed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031802}}
+#detail.artist .tag-cloud-2 {
+  background: #3ccce6;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031803}}
+#detail.artist .tag-cloud-3 {
+  background: #19abc6;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031804}}
+#detail.artist .tag-cloud-4 {
+  background: #127d90;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031805}}
+#detail.artist .tag-cloud-5 {
+  background: #0b4a55;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031807}}
+#detail.concert .tag-cloud-0 {
+  background: #c5efed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031808}}
+#detail.concert .tag-cloud-1 {
+  background: #95e1de;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031809}}
+#detail.concert .tag-cloud-2 {
+  background: #65d3cf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031810}}
+#detail.concert .tag-cloud-3 {
+  background: #36c0bb;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031811}}
+#detail.concert .tag-cloud-4 {
+  background: #29908c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031812}}
+#detail.concert .tag-cloud-5 {
+  background: #1a5d5a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031814}}
+#detail.work .tag-cloud-0 {
+  background: #fcfcf9;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031815}}
+#detail.work .tag-cloud-1 {
+  background: #e7e9cf;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031816}}
+#detail.work .tag-cloud-2 {
+  background: #d2d6a5;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031817}}
+#detail.work .tag-cloud-3 {
+  background: #bbc178;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031818}}
+#detail.work .tag-cloud-4 {
+  background: #a5ac4f;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031819}}
+#detail.work .tag-cloud-5 {
+  background: #7a7f3a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031821}}
+#detail.instrument .tag-cloud-0 {
+  background: #fbb767;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031822}}
+#detail.instrument .tag-cloud-1 {
+  background: #fa9b2b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031823}}
+#detail.instrument .tag-cloud-2 {
+  background: #e27d05;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031824}}
+#detail.instrument .tag-cloud-3 {
+  background: #a25904;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031825}}
+#detail.instrument .tag-cloud-4 {
+  background: #663802;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031826}}
+#detail.instrument .tag-cloud-5 {
+  background: #251401;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031828}}
+#detail.raaga .tag-cloud-0 {
+  background: #ffa153;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031829}}
+#detail.raaga .tag-cloud-1 {
+  background: #ff8016;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031830}}
+#detail.raaga .tag-cloud-2 {
+  background: #d86200;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031831}}
+#detail.raaga .tag-cloud-3 {
+  background: #954400;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031832}}
+#detail.raaga .tag-cloud-4 {
+  background: #582800;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031833}}
+#detail.raaga .tag-cloud-5 {
+  background: #160a00;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031835}}
+#detail.taala .tag-cloud-0 {
+  background: #edd9a0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031836}}
+#detail.taala .tag-cloud-1 {
+  background: #e4c46c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031837}}
+#detail.taala .tag-cloud-2 {
+  background: #dbaf38;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031838}}
+#detail.taala .tag-cloud-3 {
+  background: #b08a20;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031839}}
+#detail.taala .tag-cloud-4 {
+  background: #7c6117;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031840}}
+#detail.taala .tag-cloud-5 {
+  background: #44360d;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031842}}
+#detail.recording .tag-cloud-0 {
+  background: #e38776;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031843}}
+#detail.recording .tag-cloud-1 {
+  background: #d95b43;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031844}}
+#detail.recording .tag-cloud-2 {
+  background: #b93d25;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031845}}
+#detail.recording .tag-cloud-3 {
+  background: #822b1a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031846}}
+#detail.recording .tag-cloud-4 {
+  background: #4f1a10;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031847}}
+#detail.recording .tag-cloud-5 {
+  background: #180805;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031849}}
+#detail.composer .tag-cloud-0 {
+  background: #d94d64;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031850}}
+#detail.composer .tag-cloud-1 {
+  background: #c02942;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031851}}
+#detail.composer .tag-cloud-2 {
+  background: #8e1e31;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031852}}
+#detail.composer .tag-cloud-3 {
+  background: #57131e;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031853}}
+#detail.composer .tag-cloud-4 {
+  background: #25080d;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031854}}
+#detail.composer .tag-cloud-5 {
+  background: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031856}}
+#detail.entity_9 .tag-cloud-0 {
+  background: #7f3653;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031857}}
+#detail.entity_9 .tag-cloud-1 {
+  background: #542437;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031858}}
+#detail.entity_9 .tag-cloud-2 {
+  background: #29121b;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031859}}
+#detail.entity_9 .tag-cloud-3 {
+  background: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031860}}
+#detail.entity_9 .tag-cloud-4 {
+  background: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031861}}
+#detail.entity_9 .tag-cloud-5 {
+  background: #000000;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031864}}
+#detail.entity_10 .tag-cloud-0 {
+  background: #6e999c;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031865}}
+#detail.entity_10 .tag-cloud-1 {
+  background: #53777a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031866}}
+#detail.entity_10 .tag-cloud-2 {
+  background: #3a5356;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031867}}
+#detail.entity_10 .tag-cloud-3 {
+  background: #1f2d2e;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031868}}
+#detail.entity_10 .tag-cloud-4 {
+  background: #07090a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031869}}
+#detail.entity_10 .tag-cloud-5 {
+  background: #000000;
+}
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+@media only screen and (min-width: 480px) {
+  
+}
+@media only screen and (min-width: 768px) {
+  
+}
+@media only screen and (min-width: 1140px) {
+  
+}
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031894}}
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031899}}
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031910}}
+.invisible {
+  visibility: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031914}}
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031920}}
+.clearfix:after {
+  clear: both;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031924}}
+.clearfix {
+  *zoom: 1;
+}
+/* ==========================================================================
+   Print styles
+   ========================================================================== */
+@media print {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031933}}
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    /* Black prints faster: h5bp.com/s */
+  
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031940}}
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031945}}
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031949}}
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+  /*
+       * Don't show links for images, or javascript/internal links
+       */
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031957}}
+  .ir a:after,
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: "";
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031963}}
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031969}}
+  thead {
+    display: table-header-group;
+    /* h5bp.com/t */
+  
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031973}}
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031978}}
+  img {
+    max-width: 100% !important;
+  }
+  @page  {
+    margin: 0.5cm;
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031986}}
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/hitaboy\/Documents\/Feines\/CompMusicDunya\/DunyaDevelopment\/dunya\/carnatic\/static\/detailpage\/Dunya_files\/main\.less}line{font-family:\000031993}}
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}

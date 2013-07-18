@@ -410,7 +410,6 @@ textarea {
   position: relative;
   top: 8px;
   left: 0px;
-  background: url("../img/logoDunya.png") 0 0 no-repeat;
   width: 57px;
   height: 59px;
   float: left;
@@ -1434,17 +1433,8 @@ textarea {
   height: 123px;
   margin-right: 10px;
 }
-#detail .thedata .rightdata .innerrightdata .album .disc1 {
-  background: url("../img/disc1.png") 0 0 no-repeat;
-}
-#detail .thedata .rightdata .innerrightdata .album .disc2 {
-  background: url("../img/disc2.png") 0 0 no-repeat;
-}
-#detail .thedata .rightdata .innerrightdata .album .disc3 {
-  background: url("../img/disc3.png") 0 0 no-repeat;
-}
-#detail .thedata .rightdata .innerrightdata .album .disc4 {
-  background: url("../img/disc4.png") 0 0 no-repeat;
+#detail .thedata .rightdata .innerrightdata .album .disc img {
+  width: 123px;
 }
 #detail .thedata .rightdata .innerrightdata .album .desc p {
   margin: 0px;
@@ -1470,6 +1460,9 @@ textarea {
   width: 55px;
   height: 63px;
   margin-right: 10px;
+}
+#detail .thedata .rightdata .innerrightdata .artistCell .photo img {
+  width: 55px;
 }
 #detail .thedata .rightdata .innerrightdata .artistCell .desc p {
   margin: 0px;
@@ -1594,6 +1587,21 @@ textarea {
   height: 48px;
   overflow: hidden;
 }
+#resultsstats .artist {
+  background: #69d2e7;
+}
+#resultsstats .concert {
+  background: #a7dbd8;
+}
+#resultsstats .recording {
+  background: #d95b43;
+}
+#resultsstats .raaga {
+  background: #fa6900;
+}
+#resultsstats .taala {
+  background: #ecd078;
+}
 #resultsstats table {
   position: relative;
   width: 100%;
@@ -1668,16 +1676,19 @@ textarea {
   margin-right: 10px;
 }
 #results .album {
-  background: #d95b43;
+  background: #a7dbd8;
 }
 #results .album:hover {
-  background: #97321f;
+  background: #5fbdb8;
 }
 #results .album .disc {
   float: left;
   width: 127px;
   height: 123px;
   margin-right: 10px;
+}
+#results .album .disc img {
+  width: 127px;
 }
 #results .artistCell {
   background: #69d2e7;
@@ -1715,6 +1726,12 @@ textarea {
   text-align: center;
   margin: 0px;
   margin-bottom: 4px;
+}
+#results .instrumentCell .photo {
+  float: left;
+}
+#results .instrumentCell .photo img {
+  width: 127px;
 }
 #results .raagaCell {
   background: #fa6900;

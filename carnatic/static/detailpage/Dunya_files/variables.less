@@ -1,0 +1,58 @@
+@selectionColor: #dcdcdc;
+@gris6: #666;
+@gris8: #888;
+@gris: #A7A8AC;
+@grisD: #ddd;
+@grisf6: #f6f6f6;
+@vermell: #D71F00;
+
+@artist_color: #72DAED;
+@concert_color: #95E1DE;
+@work_color: #E7E9CF; 
+@instrument_color: #FA9B2B;
+@raaga_color: #FF8016;
+@taala_color: #E4C46C;
+@recording_color: #D95B43;
+@composer_color: #C02942;
+@entity_9_color: #542437;
+@entity_10_color: #53777A;
+
+
+
+/**** Isotope Filtering ****/
+
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.isotope,
+.isotope .isotope-item {
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+      -ms-transition-duration: 0.8s;
+       -o-transition-duration: 0.8s;
+          transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
