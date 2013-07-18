@@ -7,6 +7,7 @@ import datetime
 from dashboard import models
 import carnatic
 import compmusic
+from musicbrainzngs import caa
 
 class DunyaStatusFileTask(celery.Task):
     """ A celery task that performs a health check on a file """
@@ -34,7 +35,20 @@ class DunyaStatusReleaseTask(celery.Task):
     abstract = True
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        pass
+        if status == "SUCCESS":
+            releasestatus_id = args[0]
+            rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
+            if isinstance(retval, bool):
+                retval, data = (retval, {})
+            else:
+                retval, data = retval
+            status = 'g' if retval else 'b' 
+            rs.status = status
+            rs.data = json.dumps(data)
+            rs.datetime = datetime.datetime.now()
+            rs.save()
+
+            rs.release.try_finish_state()
 
 class CompletenessBase(object):
     """ Base class for a task that checks something is correct """
@@ -111,58 +125,71 @@ class RaagaTaalaFile(CompletenessBase):
     name = 'Recording raaga and taala'
     task = raagataalafiletask
 
+@celery.task(base=DunyaStatusFileTask)
+def coverartfiletask(filestatus_id):
+    fs = models.FileStatus.objects.get(pk=filestatus_id)
+    fpath = fs.file.path
+    art = compmusic.get_coverart(fpath)
+    ret = {}
+    return (art is not None, ret)
+
 class CoverartFile(CompletenessBase):
     """ Check that a file has embedded coverart """
     type = 'f'
     name = 'File embedded coverart'
+    task = coverartfiletask
 
-    @celery.task(base=DunyaStatusFileTask, ignore_result=True)
-    def task(self, filestatus_id):
-        fs = models.FileStatus.objects.get(pk=filestatus_id)
+
+@celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
+def releasecoverarttask(releasestatus_id):
+    rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
+    release = rs.release
+    mbid = release.id
+    coverart = caa.get_coverart_list(mbid)
+    ret = {}
+    return (coverart is not None, ret)
 
 class ReleaseCoverart(CompletenessBase):
     """ Check that a release has coverart on the CAA """
     type = 'r'
     name = 'Cover art archive coverart'
+    task = releasecoverarttask
 
-    @celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
-    def task(self, releasestatus_id):
-        rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
+@celery.task(base=DunyaStatusFileTask)
+def filetagstask(filestatus_id):
+    fs = models.FileStatus.objects.get(pk=filestatus_id)
+    fpath = fs.file.path
+    meta = compmusic.file_metadata(fpath)
+    complete = True
+    data = {}
+    m = meta["meta"]
+    data.update(m)
+    if not m["artist"]:
+        complete = False
+        data["artist_missing"] = True
+    if not m["title"]:
+        complete = False
+        data["title_missing"] = True
+    if not m["release"]:
+        complete = False
+        data["release_missing"] = True
+    if not m["artistid"]:
+        complete = False
+        data["artistid_missing"] = True
+    if not m["releaseid"]:
+        complete = False
+        data["releaseid_missing"] = True
+    if not m["recordingid"]:
+        complete = False
+        data["recordingid_missing"] = True
+
+    return (complete, data)
 
 class FileTags(CompletenessBase):
     """ Check that a file has all the correct musicbrainz tags """
     type = 'f'
-    templatestub = ''
+    templatestub = 'filetags.html'
     name = 'File tags'
-
-    @celery.task(base=DunyaStatusFileTask, ignore_result=True)
-    def task(self, filestatus_id):
-        fs = models.FileStatus.objects.get(pk=filestatus_id)
-        fpath = fs.file.path
-        meta = compmusic.file_metadata(fpath)
-        complete = True
-        data = {}
-        m = meta["meta"]
-        if not m["artist"]:
-            complete = False
-            data["artist_missing"] = True
-        if not m["title"]:
-            complete = False
-            data["title_missing"] = True
-        if not m["release"]:
-            complete = False
-            data["release_missing"] = True
-        if not m["artistid"]:
-            complete = False
-            data["artistid_missing"] = True
-        if not m["releaseid"]:
-            complete = False
-            data["releaseid_missing"] = True
-        if not m["recordingid"]:
-            complete = False
-            data["recordingid_missing"] = True
-
-        return (complete, data)
 
 class ReleaseRelationships(CompletenessBase):
     """ Check that a release on MB has relationships for composers,

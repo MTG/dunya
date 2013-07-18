@@ -16,6 +16,10 @@
     <li>Root: {{collection.root_directory}}
 </div>
 
+Actions:<br>
+<li>Re-scan directory
+<li>Re-scan musicbrainz collection
+
 <table><tr><th>Release</th><th>Matched path</th><th>Current status</th><th>Last status at</th></tr>
 {% for r in releases %}
 <tr><td><a href="{{r.get_absolute_url}}">{{r.title}}<a></td>

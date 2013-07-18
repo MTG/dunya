@@ -37,7 +37,7 @@ def collection(request, uuid):
     c = models.Collection.objects.get(pk=uuid)
     log = models.CollectionLogMessage.objects.filter(collection=c)
     releases = models.MusicbrainzRelease.objects.filter(collection=c)
-    folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainz_release__isnull=True)
+    folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
     ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
     return render(request, 'dashboard/collection.html', ret)
 
@@ -45,7 +45,25 @@ def release(request, uuid):
     release = models.MusicbrainzRelease.objects.get(pk=uuid)
     files = release.collectiondirectory_set.order_by('path').all()
 
-    ret = {"release": release, "files": files}
+    pendingtest = release.releasestatus_set.filter(status__in=('n', 's')).all()
+
+    finished = release.releasestatus_set.filter(status__in=('g', 'b')).all()
+    finishedtest = []
+    for f in finished:
+        clsname = f.checker.module
+        mod, dot, cls = clsname.rpartition(".")
+        i = importlib.import_module(mod)
+        instance = getattr(i, cls)()
+        if hasattr(instance, "templatestub"):
+            template = instance.templatestub
+        else:
+            template = None
+
+        finishedtest.append({"checker": f,
+                            "data": instance.prepare_view(json.loads(f.data)),
+                            "template": template})
+
+    ret = {"release": release, "files": files, "pendingtest": pendingtest, "finishedtest": finishedtest}
     return render(request, 'dashboard/release.html', ret)
 
 def file(request, fileid):
@@ -59,10 +77,14 @@ def file(request, fileid):
         mod, dot, cls = clsname.rpartition(".")
         i = importlib.import_module(mod)
         instance = getattr(i, cls)()
+        if hasattr(instance, "templatestub"):
+            template = instance.templatestub
+        else:
+            template = None
 
         finishedtest.append({"checker": f,
                             "data": instance.prepare_view(json.loads(f.data)),
-                            "template": instance.templatestub})
+                            "template": template})
     ret = {"file": thefile, "pendingtest": pendingtest, "finishedtest": finishedtest}
     return render(request, 'dashboard/file.html', ret)
 

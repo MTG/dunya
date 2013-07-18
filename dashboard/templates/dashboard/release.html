@@ -9,15 +9,45 @@
     </span>
 </h2>
 
+<h4>Current state</h4>
+{{release.get_current_state}}
+
 <table><tr><th>File</th><th>Status</th></tr>
     {% for d in files %}
     <tr><th>{{d.path}}</th><th></th></tr>
     {% for f in d.get_file_list %}
-    <tr><td><a href="{{f.get_absolute_url}}">{{f.name}}</a></td><td></td></tr>
+    <tr><td><a href="{{f.get_absolute_url}}">{{f.name}}</a></td><td>{{f.get_current_state}}</td></tr>
     {% endfor %}
     {% endfor %}
 </table>
 
 <h3>Release-specific checks</h3>
 
+<h4>Pending tests</h4>
+<table>
+    <tr><th>Checker</th><th>Status</th></tr>
+    {% for r in pendingtest %}
+    <tr><td>({{r.id}}) {{r.checker.name}}</td>
+        <td>
+            <img src="/static/dashboard/img/{{r.get_status_icon}}" title="{{r.get_status_desc}}" />
+    </td></tr>
+    {% endfor %}
+</table>
+
+<h4>Complete tests</h4>
+<table>
+    <tr><th>Checker</th><th>Status</th></tr>
+    {% for r in finishedtest %}
+    <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>
+            <img src="/static/dashboard/img/{{r.checker.get_status_icon}}" title="{{r.checker.get_status_desc}}" />
+            </td></tr>
+            {% if r.template %}
+    <tr><td colspan="2">
+            {% with "dashboard/jobs/"|add:r.template as template %}
+            {% include template with data=r.data only %}
+            {% endwith %}
+            {% endif %}
+    </td></tr>
+    {% endfor %}
+</table>
 {% endblock %}

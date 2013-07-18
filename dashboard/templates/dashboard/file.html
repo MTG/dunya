@@ -13,11 +13,17 @@
 
 <h3>File-specific checks</h3>
 
+<h4>Current state</h4>
+{{file.get_current_state}}
+
 <h4>Pending tests</h4>
 <table>
-    <tr><th>Checker</th></tr>
+    <tr><th>Checker</th><th>Status</th></tr>
     {% for r in pendingtest %}
-    <tr><td>({{r.id}}) {{r.checker.name}}</td></tr>
+    <tr><td>({{r.id}}) {{r.checker.name}}</td>
+        <td>
+            <img src="/static/dashboard/img/{{r.get_status_icon}}" title="{{r.get_status_desc}}" />
+    </td></tr>
     {% endfor %}
 </table>
 
@@ -25,11 +31,15 @@
 <table>
     <tr><th>Checker</th><th>Status</th></tr>
     {% for r in finishedtest %}
-    <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>x</td></tr>
+    <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>
+            <img src="/static/dashboard/img/{{r.checker.get_status_icon}}" title="{{r.checker.get_status_desc}}" />
+            </td></tr>
+            {% if r.template %}
     <tr><td colspan="2">
             {% with "dashboard/jobs/"|add:r.template as template %}
             {% include template with data=r.data only %}
             {% endwith %}
+            {% endif %}
     </td></tr>
     {% endfor %}
 </table>

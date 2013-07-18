@@ -16,25 +16,42 @@ class StateCarryingManager(models.Manager):
     def create(self, **kwargs):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
+        if isinstance(self.stateclass, basestring):
+            cls = get_model("dashboard", self.stateclass)
+        else:
+            cls = self.stateclass
+        if not cls:
+            raise ValueError("Stateclass should be a type that exists")
         baseobject = models.Manager.create(self, **kwargs)
-        if self.stateclass and self.linkname:
-            if isinstance(self.stateclass, str):
-                self.stateclass = get_model("dashboard", self.stateclass)
-            # Use magic **dict because `linkname' changes between models.
-            self.stateclass.objects.create(**{self.linkname: baseobject})
+        # Use magic **dict because `linkname' changes between models.
+        cls.objects.create(**{self.linkname: baseobject})
         return baseobject
+
+    def get_or_create(self, **kwargs):
+        if not self.stateclass or not self.linkname:
+            raise ValueError("Need stateclass and linkname set in a subclass")
+        if isinstance(self.stateclass, basestring):
+            cls = get_model("dashboard", self.stateclass)
+        else:
+            cls = self.stateclass
+        if not cls:
+            raise ValueError("Stateclass should be a type that exists")
+        baseobject, created = models.Manager.get_or_create(self, **kwargs)
+        if created:
+            cls.objects.create(**{self.linkname: baseobject})
+        return baseobject, created
 
 class CollectionManager(StateCarryingManager):
     stateclass = "CollectionState"
     linkname = "collection"
 
-class CollectionDirectoryManager(StateCarryingManager):
-    stateclass = "CollectionDirectoryState"
-    linkname = "collectiondirectory"
-
 class CollectionFileManager(StateCarryingManager):
     stateclass = "CollectionFileState"
     linkname = "collectionfile"
+
+class MusicbrainzReleaseManager(StateCarryingManager):
+    stateclass = "MusicbrainzReleaseState"
+    linkname = "musicbrainzrelease"
 
 class CompletenessChecker(models.Model):
     """ Stores information about modules that have been written to check
@@ -63,14 +80,15 @@ class CollectionState(models.Model):
 
     @property
     def state_name(self):
-        print "whee"
-        print self.state
-        print dict(self.STATE_CHOICE)
-        print dict(self.STATE_CHOICE)[self.state]
         return dict(self.STATE_CHOICE)[self.state]
 
     def __unicode__(self):
-        return "%s (%s)" % (dict(self.STATE_CHOICE)[self.state], self.state_date)
+        return "%s (%s)" % (self.state_name, self.state_date)
+
+class Test(models.Model):
+    def __init__(self, **kwargs):
+        import django.db
+        raise django.db.IntegrityError("oops")
 
 class Collection(models.Model):
 
@@ -98,7 +116,7 @@ class Collection(models.Model):
         return "red"
 
     def get_current_state(self):
-        return CollectionState.objects.filter(collection=self).order_by('-state_date')[0]
+        return self.collectionstate_set.order_by('-state_date').all()[0]
 
     def status_importing(self):
         CollectionState.objects.create(collection=self, state='i')
@@ -136,7 +154,26 @@ class CollectionLogMessage(models.Model):
     message = models.TextField()
     datetime = models.DateTimeField(default=datetime.datetime.now)
 
+class MusicbrainzReleaseState(models.Model):
+    """ Indicates the procesing state of a release. A release has finished
+    processing when all files it is part of have finished.
+    """
+    musicbrainzrelease = models.ForeignKey("MusicbrainzRelease")
+    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
+    state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
+    state_date = models.DateTimeField(default=datetime.datetime.now)
+    
+    @property
+    def state_name(self):
+        return dict(self.STATE_CHOICE)[self.state]
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.state_name, self.state_date)
+
 class MusicbrainzRelease(models.Model):
+
+    objects = MusicbrainzReleaseManager()
+
     id = UUIDField(primary_key=True)
     collection = models.ForeignKey(Collection)
     title = models.CharField(max_length=200)
@@ -153,36 +190,40 @@ class MusicbrainzRelease(models.Model):
             r.append(m.short_path())
         return r
 
-    def get_status(self):
-        pass
+    def update_state(self, state):
+        rs = MusicbrainzReleaseState.objects.create(musicbrainzrelease=self, state=state)
 
-class CollectionDirectoryState(models.Model):
-    """ Indicates the procesing state of a release. A release has finished
-    processing when all files it is part of have finished.
+    def start_state(self):
+        self.update_state('s')
 
-    We link to a CollectionDirectory instead of MusicbrainzRelease
-    because it lets us use the same state/log information for
-    releases that are not in the collection also.
-    """
-    collectiondirectory = models.ForeignKey("CollectionDirectory")
-    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
-    state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
-    state_date = models.DateTimeField(default=datetime.datetime.now)
-    
+    def try_finish_state(self):
+        """ Check the state of all of this release's files, and also
+            the state of the release-specific jobs. """
+        currentstate = self.get_current_state()
+        if currentstate.state == 's':
+            files = CollectionFileState.objects.filter(directory__musicbrainzrelease=self).exclude(state=f)
+            if not files.count():
+                self.update_state('f')
+        # TODO: Bubble up to the collection
+
+    def get_current_state(self):
+        states = self.musicbrainzreleasestate_set.order_by('-state_date').all()
+        if not len(states):
+            raise Exception("eoo, no states")
+        return states[0]
+
 class CollectionDirectory(models.Model):
     """ A directory inside the file tree for a collection that has releases
     in it. This usually corresponds to a single CD. This means a MusicbrainzRelease
     may have more than 1 CollectionDirectory """
 
-    objects = CollectionDirectoryManager()
-
     collection = models.ForeignKey(Collection)
-    musicbrainz_release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
+    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     path = models.CharField(max_length=255)
     
     def __unicode__(self):
         return "From collection %s, release %s, path on disk %s" % (self.collection,
-                self.musicbrainz_release, self.path)
+                self.musicbrainzrelease, self.path)
 
     def short_path(self):
         if len(self.path) < 60:
@@ -192,12 +233,6 @@ class CollectionDirectory(models.Model):
 
     def get_absolute_url(self):
         return reverse('dashboard-directory', args=[int(self.id)])
-
-    def update_state(self, state):
-        rs = ReleaseState.objects.create(release=self, state=state)
-
-    def get_current_state(self):
-        return ReleaseState.objects.all().order_by('-state_date')[0]
 
     def add_log_message(self, checker, message):
         return ReleaseLogMessage.objects.create(release=self, checker=checker, message=message)
@@ -225,6 +260,13 @@ class CollectionFileState(models.Model):
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=datetime.datetime.now)
 
+    @property
+    def state_name(self):
+        return dict(self.STATE_CHOICE)[self.state]
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.state_name, self.state_date)
+
 class CollectionFile(models.Model):
     """ A single audio file in the collection. A file is part of a
     collection directory.
@@ -242,6 +284,9 @@ class CollectionFile(models.Model):
     def start_state(self):
         self.update_state('s')
 
+    def __unicode__(self):
+        return "%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
+
     def try_finish_state(self):
         """ Check this file's """
         currentstate = self.get_current_state()
@@ -250,13 +295,17 @@ class CollectionFile(models.Model):
             # change to f
             if not self.filestatus_set.filter(status__in=('n', 's')).count():
                 self.update_state('f')
-        # TODO: Bubble up to the directory/release/collection
+        # Bubble up to the directory/release
+        self.directory.musicbrainzrelease.try_finish_state()
 
     def update_state(self, state):
-        rs = FileState.objects.create(file=self, state=state)
+        rs = CollectionFileState.objects.create(collectionfile=self, state=state)
 
     def get_current_state(self):
-        return FileState.objects.all().order_by('-state_date')[0]
+        states = self.collectionfilestate_set.order_by('-state_date').all()
+        if not len(states):
+            raise Exception("eoo, no states")
+        return states[0]
 
     def add_log_message(self, checker, message):
         return FileLogMessage.objects.create(file=self, checker=checker, message=message)
@@ -283,6 +332,17 @@ class FileStatus(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='n')
     data = models.TextField(blank=True, null=True)
 
+    def get_status_icon(self):
+        icons = {"n": "stop.png",
+                 "s": "time_go.png",
+                 "g": "tick.png",
+                 "b": "cross.png"
+                }
+        return icons[self.status]
+
+    def get_status_desc(self):
+        return dict(self.STATUS_CHOICE)[self.status]
+
 class ReleaseStatus(models.Model):
     """ The result of running a single completeness checker
     on a single release. The a completeness checker either returns 
@@ -294,3 +354,14 @@ class ReleaseStatus(models.Model):
     checker = models.ForeignKey(CompletenessChecker)
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='n')
     data = models.TextField(blank=True, null=True)
+
+    def get_status_icon(self):
+        icons = {"n": "stop.png",
+                 "s": "time_go.png",
+                 "g": "tick.png",
+                 "b": "cross.png"
+                }
+        return icons[self.status]
+
+    def get_status_desc(self):
+        return dict(self.STATUS_CHOICE)[self.status]
