@@ -19,10 +19,13 @@
 Actions:<br>
 <li>Re-scan directory
 <li>Re-scan musicbrainz collection
+<p>
+<li>Order by errors first
+<li>Order by unmatched releases first
 
 <table><tr><th>Release</th><th>Matched path</th><th>Current status</th><th>Last status at</th></tr>
 {% for r in releases %}
-<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}<a></td>
+<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a></td>
         
             <td>
                 {% for p in r.matched_paths %}
