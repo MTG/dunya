@@ -223,22 +223,34 @@ def is_mp3_dir(files):
     return ".mp3" in extensions
 
 @celery.task(ignore_result=True)
-def load_musicbrainz_collection(collectionid):
-    """ Load a musicbrainz collection into the dashboard database.
-    """
-    coll = models.Collection.objects.get(pk=collectionid)
-    coll.status_importing()
+def update_collection(collectionid):
+    """ Delete releases that have been removed from the collection
+        and add new releases """
     releases = compmusic.get_releases_in_collection(collectionid)
-    for relid in releases:
+    coll = models.Collection.objects.get(pk=collectionid)
+    got_releases = [r.id for r in coll.musicbrainzrelease_set.all()]
+    to_remove = set(got_releases) - set(releases)
+    to_add = set(releases) - set(got_releases)
+
+    for relid in to_add:
         try:
             mbrelease = compmusic.mb.get_release_by_id(relid)["release"]
             title = mbrelease["title"]
             rel, created = models.MusicbrainzRelease.objects.get_or_create(id=relid, collection=coll, defaults={"title": title})
-            for checker in coll.checkers.filter(type='r'):
-                models.ReleaseStatus.objects.get_or_create(release=rel, checker=checker)
         except compmusic.mb.MusicBrainzError:
             coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
 
+    for relid in to_remove:
+        models.MusicbrainzRelease.objects.get(id=relid).delete()
+
+@celery.task(ignore_result=True)
+def scan_and_link(collectionid):
+    """ Re-scan the directory for a release. Add & link new directories,
+        Remove directories that have been deleted,
+        Try and find a match for releases that didn't have a match.
+    """
+
+    coll = models.Collection.objects.get(pk=collectionid)
     collectionroot = coll.root_directory
     for root, d, files in os.walk(collectionroot):
         if len(files) > 0 and is_mp3_dir(files):
@@ -262,8 +274,6 @@ def load_musicbrainz_collection(collectionid):
                         if f.lower().endswith(".mp3"):
                             cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd)
 
-                            for checker in coll.checkers.filter(type='f'):
-                                models.FileStatus.objects.get_or_create(file=cfile, checker=checker)
                 except models.MusicbrainzRelease.DoesNotExist:
                     cd.add_log_message(None, "Cannot find this release (%s) in the Musicbrainz collection" % (theid, ))
             elif len(rels) == 0:
@@ -271,3 +281,20 @@ def load_musicbrainz_collection(collectionid):
             else:
                 cd.add_log_message(None, "More than one release found in ID3 tags")
 
+def import_single_directory(directory, releaseid):
+    """ We have a directory and a releaseid that we want to link.
+    * Add files
+    * Add docserver
+    * Do the import?!
+    """
+
+@celery.task(ignore_result=True)
+def load_musicbrainz_collection(collectionid):
+    """ Load a musicbrainz collection into the dashboard database.
+    """
+    coll = models.Collection.objects.get(pk=collectionid)
+    coll.set_status_importing()
+    releases = compmusic.get_releases_in_collection(collectionid)
+    self.update_collection(collectionid)
+
+    self.scan_and_link(collectionid)

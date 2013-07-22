@@ -99,8 +99,6 @@ class Collection(models.Model):
     last_updated = models.DateTimeField(default=datetime.datetime.now)
     root_directory = models.CharField(max_length=255)
 
-    checkers = models.ManyToManyField(CompletenessChecker)
-
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.id)
 
@@ -118,10 +116,10 @@ class Collection(models.Model):
     def get_current_state(self):
         return self.collectionstate_set.order_by('-state_date').all()[0]
 
-    def status_importing(self):
+    def set_status_importing(self):
         CollectionState.objects.create(collection=self, state='i')
 
-    def status_start(self):
+    def set_status_start(self):
         """ Mark this collection as having its importer started. """
         CollectionState.objects.create(collection=self, state='s')
 
@@ -135,7 +133,7 @@ class Collection(models.Model):
                 return False
         return True
 
-    def status_finish(self):
+    def set_status_finish(self):
         """ Mark this collection as having finished its import.
         This method doesn't check if the import can actually be 
         finished first.

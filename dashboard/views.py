@@ -17,12 +17,7 @@ def index(request):
             coll_id = form.cleaned_data['collectionid']
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
-            # Verify that all checker ids that are given are valid
-            checkers = []
-            for i in form.cleaned_data['checkers']:
-                checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
             new_collection = models.Collection.objects.create(id=coll_id, name=coll_name, root_directory=path)
-            new_collection.checkers.add(*checkers) 
             return HttpResponseRedirect(reverse('dashboard-home'))
             # TODO: Start job to automatically import files
             # TODO: create 'not started' status rows for every file and release
