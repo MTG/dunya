@@ -1,205 +1,203 @@
-from django.db import transaction
 import celery
 import os
-import json
-import datetime
 
 from dashboard import models
 import carnatic
 import compmusic
-from musicbrainzngs import caa
 
-class DunyaStatusFileTask(celery.Task):
-    """ A celery task that performs a health check on a file """
-    abstract = True
+import completeness
 
-    def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        if status == "SUCCESS":
-            filestatus_id = args[0]
-            fs = models.FileStatus.objects.get(pk=filestatus_id)
-            if isinstance(retval, bool):
-                retval, data = (retval, {})
+@celery.task()
+def import_release(mbid):
+    rel = mb.get_release_by_id(mbid, includes=["artists","recordings"])
+    rel = rel["release"]
+
+    mbid = rel["id"]
+    logging.info("Adding release %s" % mbid)
+    try:
+        concert = carnatic.models.Concert.objects.get(mbid=mbid)
+    except carnatic.models.Concert.DoesNotExist:
+        year = rel.get("date", "")[:4]
+        if year:
+            year = int(year)
+        else:
+            year = None
+        concert = carnatic.models.Concert(mbid=mbid, title=rel["title"], year=year)
+        source = make_mb_source("http://musicbrainz.org/release/%s" % mbid)
+        concert.source = source
+        concert.save()
+        for a in rel["artist-credit"]:
+            artistid = a["artist"]["id"]
+            artist = add_and_get_artist(artistid)
+            logging.info("  artist: %s" % artist)
+            concert.artists.add(artist)
+    recordings = []
+    for medium in rel["medium-list"]:
+        for track in medium["track-list"]:
+            recordings.append(track["recording"]["id"])
+    for recid in recordings:
+        recording = add_and_get_recording(recid)
+        concert.tracks.add(recording)
+
+
+def add_and_get_artist(artistid):
+    try:
+        artist = carnatic.models.Artist.objects.get(mbid=artistid)
+    except carnatic.models.Artist.DoesNotExist:
+        logging.info("  adding artist %s" % (artistid, ))
+        a = mb.get_artist_by_id(artistid)["artist"]
+        artist = carnatic.models.Artist(name=a["name"], mbid=artistid)
+        source = make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
+        artist.source = source
+        if a.get("type") == "Person":
+            artist.artist_type = "P"
+        elif a.get("type") == "Group":
+            artist.artist_type = "G"
+        if a.get("gender") == "Male":
+            artist.gender = "M"
+        elif a.get("gender") == "Female":
+            artist.gender = "F"
+        dates = a.get("life-span")
+        if dates:
+            artist.begin = dates.get("begin")
+            artist.end = dates.get("end")
+        artist.save()
+        compmusic.populate_images.import_artist(artist)
+    return artist
+
+def _get_raaga(taglist):
+    ret = []
+    for t in taglist:
+        name = t["name"].lower()
+        if compmusic.parse_tags.has_raaga(name):
+            ret.append(compmusic.parse_tags.parse_raaga(name))
+    return ret
+
+def _get_taala(taglist):
+    ret = []
+    for t in taglist:
+        name = t["name"].lower()
+        if compmusic.parse_tags.has_taala(name):
+            ret.append(compmusic.parse_tags.parse_taala(name))
+    return ret
+
+def add_and_get_recording(recordingid):
+    try:
+        rec = carnatic.models.Recording.objects.get(mbid=recordingid)
+    except carnatic.models.Recording.DoesNotExist:
+        logging.info("  adding recording %s" % (recordingid,))
+        mbrec = mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
+        mbrec = mbrec["recording"]
+        raagas = _get_raaga(mbrec.get("tag-list", []))
+        taalas = _get_taala(mbrec.get("tag-list", []))
+        mbwork = None
+        for work in mbrec.get("work-relation-list", []):
+            if work["type"] == "performance":
+                mbwork = add_and_get_work(work["target"], raagas, taalas)
+        rec = carnatic.models.Recording(mbid=recordingid, work=mbwork)
+        source = make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
+        rec.source = source
+        rec.length = mbrec.get("length")
+        rec.title = mbrec["title"]
+        rec.save()
+        for perf in mbrec.get("artist-relation-list", []):
+            if perf["type"] == "vocal":
+                artistid = perf["target"]
+                is_lead = "lead" in perf["attribute-list"]
+                add_performance(recordingid, artistid, "vocal", is_lead)
+            elif perf["type"] == "instrument":
+                artistid = perf["target"]
+                attrs = perf.get("atrribute-list", [])
+                is_lead = False
+                if "lead" in attrs:
+                    is_lead = "True"
+                    attrs.remove("lead")
+                inst = perf["attribute-list"][0]
+                add_performance(recordingid, artistid, inst, is_lead)
+    return rec
+
+def add_and_get_work(workid, raagas, taalas):
+    try:
+        w = carnatic.models.Work.objects.get(mbid=workid)
+    except carnatic.models.Work.DoesNotExist:
+        mbwork = mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
+        w = carnatic.models.Work(title=mbwork["title"], mbid=workid)
+        source = make_mb_source("http://musicbrainz.org/work/%s" % workid)
+        w.source = source
+        w.save()
+        for seq, rname in raagas:
+            r = add_and_get_raaga(rname)
+            if r:
+                carnatic.models.WorkRaaga.objects.create(work=w, raaga=r, sequence=seq)
             else:
-                retval, data = retval
-            status = 'g' if retval else 'b' 
-            fs.status = status
-            fs.data = json.dumps(data)
-            fs.datetime = datetime.datetime.now()
-            fs.save()
-
-            fs.file.try_finish_state()
-
-class DunyaStatusReleaseTask(celery.Task):
-    """ A celery task that performs a health check on a directory
-    representing a release """
-    abstract = True
-
-    def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        if status == "SUCCESS":
-            releasestatus_id = args[0]
-            rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
-            if isinstance(retval, bool):
-                retval, data = (retval, {})
+                logging.warn("Cannot find raaga: %s" % rname)
+        for seq, tname in taalas:
+            t = add_and_get_taala(tname)
+            if t:
+                carnatic.models.WorkTaala.objects.create(work=w, taala=t, sequence=seq)
             else:
-                retval, data = retval
-            status = 'g' if retval else 'b' 
-            rs.status = status
-            rs.data = json.dumps(data)
-            rs.datetime = datetime.datetime.now()
-            rs.save()
+                logging.warn("Cannot find taala: %s" % tname)
+        for artist in mbwork.get("artist-relation-list", []):
+            if artist["type"] == "composer":
+                composer = add_and_get_composer(artist["target"])
+                w.composer = composer
+                w.save()
+            elif artist["type"] == "lyricist":
+                pass
+    return w
 
-            rs.release.try_finish_state()
+def add_and_get_composer(artistid):
+    try:
+        composer = carnatic.models.Composer.objects.get(mbid=artistid)
+    except carnatic.models.Composer.DoesNotExist:
+        logging.info("  adding composer %s" % (artistid, ))
+        a = mb.get_artist_by_id(artistid)["artist"]
+        composer = carnatic.models.Composer(name=a["name"], mbid=artistid)
+        source = make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
+        composer.source = source
+        if a.get("gender") == "Male":
+            composer.gender = "M"
+        elif a.get("gender") == "Female":
+            composer.gender = "F"
+        dates = a.get("life-span")
+        if dates:
+            composer.begin = dates.get("begin")
+            composer.end = dates.get("end")
+        composer.save()
 
-class CompletenessBase(object):
-    """ Base class for a task that checks something is correct """
+    return composer
 
-    # If this checker is for a file (f), or release (r)
-    type = None
-    # a template to include when talking about results
-    templatestub = None
-
-    # a view stub that is called with data that the checker task
-    # saves. It returns a dict that is passed to the templatestub file.
-    def prepare_view(self, data):
-        """ Default prepare_view just passes the data through """
-        return data
-
-    # the celery task to run.
-    # It returns a boolean indicating the status of the check (True=good)
-    # or a tuple (status, data) where data is a dict that is stored
-    # in the database. Prepare_view knows what to do with the data
-    def task(fileid, releaseid):
-        pass
-
-@celery.task(base=DunyaStatusFileTask)
-def raagataalafiletask(filestatus_id):
-    fs = models.FileStatus.objects.get(pk=filestatus_id)
-    fpath = fs.file.path
-    meta = compmusic.file_metadata(fpath)
-    m = meta["meta"]
-    recordingid = m["recordingid"]
-    print "http://musicbrainz.org/recording/%s" % recordingid
-    mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
-    mbrec = mbrec["recording"]
-    tags = mbrec.get("tag-list", [])
-    res = {}
-    raagas = []
-    taalas = []
-    for t in tags:
-        tag = t["name"]
-        if compmusic.tags.has_raaga(tag):
-            raagas.append(compmusic.tags.parse_raaga(tag))
-        if compmusic.tags.has_taala(tag):
-            taalas.append(compmusic.tags.parse_taala(tag))
-    res["recordingid"] = recordingid
-    missingr = []
-    missingt = []
-    for r in raagas:
+def add_and_get_raaga(raaganame):
+    try:
+        return carnatic.models.Raaga.objects.fuzzy(name=raaganame)
+    except carnatic.models.Raaga.DoesNotExist, e:
         try:
-            carnatic.models.Raaga.objects.fuzzy(r)
-        except carnatic.models.Raaga.DoesNotExist:
-            missingr.append(r)
-        if missingr:
-            res["missingr"] = missingr
-    for t in taalas:
+            alias = carnatic.models.RaagaAlias.objects.fuzzy(name=raaganame)
+            return alias.raaga
+        except carnatic.models.RaagaAlias.DoesNotExist, e:
+            return None
+
+def add_and_get_taala(taalaname):
+    try:
+        return carnatic.models.Taala.objects.fuzzy(name=taalaname)
+    except carnatic.models.Taala.DoesNotExist, e:
         try:
-            carnatic.models.Taala.objects.fuzzy(t)
-        except carnatic.models.Taala.DoesNotExist:
-            missingt.append(t)
-        if missingt:
-            res["missingt"] = missingt
-            
-    res["gotraaga"] = len(raagas) > 0
-    res["gottaala"] = len(taalas) > 1
-    if raagas and taalas and not missingt and not missingr:
-        return (True, res)
-    else:
-        return (False, res)
+            alias = carnatic.models.TaalaAlias.objects.fuzzy(name=taalaname)
+            return alias.taala
+        except carnatic.models.TaalaAlias.DoesNotExist, e:
+            return None
 
-class RaagaTaalaFile(CompletenessBase):
-    """ Check that the raaga and taala tags on this file's
-    recording page in musicbrainz have matching entries
-    in the local database """
-    type = 'f'
-    templatestub = 'raagataala.html'
-    name = 'Recording raaga and taala'
-    task = raagataalafiletask
+def add_performance(recordingid, artistid, instrument, is_lead):
+    logging.info("  Adding performance...")
+    artist = add_and_get_artist(artistid)
+    instrument = add_and_get_instrument(instrument)
+    recording = carnatic.models.Recording.objects.get(mbid=recordingid)
+    perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+    perf.save()
 
-@celery.task(base=DunyaStatusFileTask)
-def coverartfiletask(filestatus_id):
-    fs = models.FileStatus.objects.get(pk=filestatus_id)
-    fpath = fs.file.path
-    art = compmusic.get_coverart(fpath)
-    ret = {}
-    return (art is not None, ret)
+def add_and_get_instrument(instname):
+    return carnatic.models.Instrument.objects.fuzzy(name=instname)
 
-class CoverartFile(CompletenessBase):
-    """ Check that a file has embedded coverart """
-    type = 'f'
-    name = 'File embedded coverart'
-    task = coverartfiletask
-
-
-@celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
-def releasecoverarttask(releasestatus_id):
-    rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
-    release = rs.release
-    mbid = release.id
-    coverart = caa.get_coverart_list(mbid)
-    ret = {}
-    return (coverart is not None, ret)
-
-class ReleaseCoverart(CompletenessBase):
-    """ Check that a release has coverart on the CAA """
-    type = 'r'
-    name = 'Cover art archive coverart'
-    task = releasecoverarttask
-
-@celery.task(base=DunyaStatusFileTask)
-def filetagstask(filestatus_id):
-    fs = models.FileStatus.objects.get(pk=filestatus_id)
-    fpath = fs.file.path
-    meta = compmusic.file_metadata(fpath)
-    complete = True
-    data = {}
-    m = meta["meta"]
-    data.update(m)
-    if not m["artist"]:
-        complete = False
-        data["artist_missing"] = True
-    if not m["title"]:
-        complete = False
-        data["title_missing"] = True
-    if not m["release"]:
-        complete = False
-        data["release_missing"] = True
-    if not m["artistid"]:
-        complete = False
-        data["artistid_missing"] = True
-    if not m["releaseid"]:
-        complete = False
-        data["releaseid_missing"] = True
-    if not m["recordingid"]:
-        complete = False
-        data["recordingid_missing"] = True
-
-    return (complete, data)
-
-class FileTags(CompletenessBase):
-    """ Check that a file has all the correct musicbrainz tags """
-    type = 'f'
-    templatestub = 'filetags.html'
-    name = 'File tags'
-
-class ReleaseRelationships(CompletenessBase):
-    """ Check that a release on MB has relationships for composers,
-    performers, and wikipedia links. """
-    type = 'r'
-    name = 'Release relationships'
-
-    @celery.task(base=DunyaStatusReleaseTask, ignore_result=True)
-    def task(self, releasestate_id, releaseid, releasedir):
-        pass
 
 def get_musicbrainz_release_for_dir(dirname):
     """ Get a unique list of all the musicbrainz release IDs that
@@ -215,22 +213,21 @@ def get_musicbrainz_release_for_dir(dirname):
                 release_ids.add(rel)
     return list(release_ids)
 
-def is_mp3_dir(files):
+def _get_mp3_files(files):
     """ See if a list of files consists only of mp3 files """
     # TODO: This should be any audio file
     # TODO: replace with util method
-    extensions = set([os.path.splitext(f)[1].lower() for f in files])
-    return ".mp3" in extensions
+    return [f for f in files if os.path.splitext(f)[1].lower() == ".mp3"]
 
 @celery.task(ignore_result=True)
 def update_collection(collectionid):
     """ Delete releases that have been removed from the collection
         and add new releases """
-    releases = compmusic.get_releases_in_collection(collectionid)
+    found_releases = compmusic.get_releases_in_collection(collectionid)
     coll = models.Collection.objects.get(pk=collectionid)
-    got_releases = [r.id for r in coll.musicbrainzrelease_set.all()]
-    to_remove = set(got_releases) - set(releases)
-    to_add = set(releases) - set(got_releases)
+    existing_releases = [r.id for r in coll.musicbrainzrelease_set.all()]
+    to_remove = set(existing_releases) - set(found_releases)
+    to_add = set(found_releases) - set(existing_releases)
 
     for relid in to_add:
         try:
@@ -243,6 +240,38 @@ def update_collection(collectionid):
     for relid in to_remove:
         models.MusicbrainzRelease.objects.get(id=relid).delete()
 
+def _match_directory_to_release(collectionid, root):
+    coll = models.Collection.objects.get(pk=collectionid)
+    collectionroot = coll.root_directory
+    rels = get_musicbrainz_release_for_dir(root)
+    print root
+    print rels
+    print "======="
+    if not collectionroot.endswith("/"):
+        collectionroot += "/"
+    if root.startswith(collectionroot):
+        # This should always be true since we scan from the collection root
+        shortpath = root[len(collectionroot):]
+    cd, created = models.CollectionDirectory.objects.get_or_create(collection=coll, path=shortpath)
+    if len(rels) == 1:
+        releaseid = rels[0]
+        try:
+            cd.musicbrainzrelease = models.MusicbrainzRelease.objects.get(id=releaseid)
+            cd.save()
+
+            mp3files = _get_mp3_files(os.listdir(root))
+            for f in mp3files:
+                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd)
+
+        except models.MusicbrainzRelease.DoesNotExist:
+            cd.add_log_message(None, "Cannot find this release (%s) in the imported releases" % (theid, ))
+    elif len(rels) == 0:
+        cd.add_log_message(None, "No releases found in ID3 tags")
+    else:
+        cd.add_log_message(None, "More than one release found in ID3 tags")
+
+
+
 @celery.task(ignore_result=True)
 def scan_and_link(collectionid):
     """ Re-scan the directory for a release. Add & link new directories,
@@ -252,41 +281,26 @@ def scan_and_link(collectionid):
 
     coll = models.Collection.objects.get(pk=collectionid)
     collectionroot = coll.root_directory
+    if not collectionroot.endswith("/"):
+        collectionroot += "/"
+    found_directories = []
     for root, d, files in os.walk(collectionroot):
-        if len(files) > 0 and is_mp3_dir(files):
-            rels = get_musicbrainz_release_for_dir(root)
-            print root
-            print rels
-            print "======="
-            if not collectionroot.endswith("/"):
-                collectionroot += "/"
-            if root.startswith(collectionroot):
-                # This should always be true since we scan from the collection root
-                shortpath = root[len(collectionroot):]
-            cd, created = models.CollectionDirectory.objects.get_or_create(collection=coll, path=shortpath)
-            if len(rels) == 1:
-                try:
-                    theid = rels[0]
-                    cd.musicbrainz_release = models.MusicbrainzRelease.objects.get(id=theid)
-                    cd.save()
+        mp3files = _get_mp3_files(files)
+        if len(mp3files) > 0:
+            found_directories.append(root)
+    existing_directories = [c.full_path for c in coll.collectiondirectory_set.all()] 
 
-                    for f in files:
-                        if f.lower().endswith(".mp3"):
-                            cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd)
+    to_remove = set(existing_directories) - set(found_directories)
+    to_add = set(found_directories) - set(existing_directories)
 
-                except models.MusicbrainzRelease.DoesNotExist:
-                    cd.add_log_message(None, "Cannot find this release (%s) in the Musicbrainz collection" % (theid, ))
-            elif len(rels) == 0:
-                cd.add_log_message(None, "No releases found in ID3 tags")
-            else:
-                cd.add_log_message(None, "More than one release found in ID3 tags")
+    for d in to_add:
+        _match_directory_to_release(collectionid, d)
 
-def import_single_directory(directory, releaseid):
-    """ We have a directory and a releaseid that we want to link.
-    * Add files
-    * Add docserver
-    * Do the import?!
-    """
+    for d in to_remove:
+        # We have a full path, but collectiondirectories are
+        # stored with a partial path, so cut it.
+        shortpath = root[len(collectionroot):]
+        coll.collectiondirectory_set.get(path=shortpath).delete()
 
 @celery.task(ignore_result=True)
 def load_musicbrainz_collection(collectionid):

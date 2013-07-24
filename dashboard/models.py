@@ -218,6 +218,10 @@ class CollectionDirectory(models.Model):
     collection = models.ForeignKey(Collection)
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     path = models.CharField(max_length=255)
+
+    @property
+    def full_path(self):
+        return os.path.join(self.collection.root_directory, self.path)
     
     def __unicode__(self):
         return "From collection %s, release %s, path on disk %s" % (self.collection,
