@@ -143,6 +143,14 @@ $(document).ready(function() {
 		        		<div class="colorCode shadow1"></div>
 		        		Taala
 		        	</li>
+		        	<li entity_id="7" class="recording" eid="eid7">
+		        		<div class="colorCode shadow1"></div>
+		        		Recording
+		        	</li>
+		        	<li entity_id="8" class="composer" eid="eid8">
+		        		<div class="colorCode shadow1"></div>
+		        		Composer
+		        	</li>
 	        	</ul>
 	    	</div>
 			
@@ -163,29 +171,25 @@ $(document).ready(function() {
         		<td>
 				    <div id="queryCont">
 				    		<span>Query</span>
-						<div id="query" class="shadow1">
+						<div id="query" class="shadow1" onClick="$('#results').isotope({ filter: '*' });">
 						</div>
 					 </div>
 	 			</td>
-        		<td class="artist"><span>176</span> <b>Artists</b></td>
-        		<td class="concert"><span>181</span> <b>Concerts</b></td>
-        		<td class="composer"><span>96</span> <b>Composers</b></td>
-        		<td class="recording"><span>1947</span> <b>Recordings</b></td>
-        		<td class="raaga"><span>59</span> <b>Raagas</b></td>
-        		<td class="taala"><span>19</span> <b>Taalas</b></td>
+        		<td class="artist" onClick="$('#results').isotope({ filter: '.artist' });"><span>176</span> <b>Artists</b></td>
+        		<td class="concert" onClick="$('#results').isotope({ filter: '.concert' });"><span>181</span> <b>Concerts</b></td>
+        		<td class="work" onClick="$('#results').isotope({ filter: '.work' });"><span>96</span> <b>Works</b></td>
+        		<td class="instrument" onClick="$('#results').isotope({ filter: '.instrument' });"><span>13</span> <b>Instruments</b></td>
+        		<td class="raaga" onClick="$('#results').isotope({ filter: '.raaga' });"><span>59</span> <b>Raagas</b></td>
+        		<td class="taala" onClick="$('#results').isotope({ filter: '.taala' });"><span>19</span> <b>Taalas</b></td>
+        		<td class="recording" onClick="$('#results').isotope({ filter: '.recording' });"><span>1947</span> <b>Recordings</b></td>
+        		<td class="composer" onClick="$('#results').isotope({ filter: '.composer' });"><span>1947</span> <b>Composers</b></td>
         	</tr>
         </tbody></table>
      </div>
-
+	 <h2 class="resultsTitle">Some items from our collection:</h2>
      <div id="results">
-         
-         Some items from our collection:<br>
-         
 
-        
-            
-
-<div class="album item">
+      <div class="artist item">
     <div class="disc pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
@@ -200,13 +204,39 @@ $(document).ready(function() {
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
     
-</div>
-
-        
-            
-
-<div class="album item">
+</div>            
+      <div class="concert item">
     <div class="disc pict">
         <a href="http://localhost:8001/carnatic/concert/2"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
@@ -215,12 +245,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
         <p><a href="http://localhost:8001/carnatic/artist/5">K. V. Narayanaswami</a></p>
         <p>1967</p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="album item">
+      <div class="work item">
     <div class="disc pict">
         <a href="http://localhost:8001/carnatic/concert/3"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
@@ -229,12 +290,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
         <p><a href="http://localhost:8001/carnatic/artist/7">Alathur Brothers</a></p>
         <p>1965</p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="album item">
+      <div class="instrument item">
     <div class="disc pict">
         <a href="http://localhost:8001/carnatic/concert/4"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
@@ -243,12 +335,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
         <p><a href="http://localhost:8001/carnatic/artist/10">M.S. Subbulakshmi</a></p>
         <p>1969</p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="album item">
+      <div class="raaga item">
     <div class="disc pict">
         <a href="http://localhost:8001/carnatic/concert/5"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
@@ -257,12 +380,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
         <p><a href="http://localhost:8001/carnatic/artist/10">M.S. Subbulakshmi</a></p>
         <p>1968</p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="album item">
+      <div class="taala item">
     <div class="disc pict">
         <a href="http://localhost:8001/carnatic/concert/6"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
@@ -271,14 +425,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
         <p><a href="http://localhost:8001/carnatic/artist/7">Alathur Brothers</a></p>
         <p>1956</p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-
-        
-            
-
-<div class="artistCell item">
+      <div class="recording item">
     <div class="photo pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
@@ -290,12 +473,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
             Vocal
         </a></p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="artistCell item">
+      <div class="composer item">
     <div class="photo pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
@@ -307,12 +521,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
             Mridangam
         </a></p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="artistCell item">
+      <div class="artist item">
     <div class="photo pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
@@ -324,12 +569,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
             Violin
         </a></p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="artistCell item">
+      <div class="artist item">
     <div class="photo pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
@@ -341,12 +617,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
             Ghatam
         </a></p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="artistCell item">
+      <div class="artist item">
     <div class="photo pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
@@ -358,12 +665,43 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
             Vocal
         </a></p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
-
-        
-            
-
-<div class="artistCell item">
+      <div class="artist item">
     <div class="photo pict">
         <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
@@ -375,90 +713,1165 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
             Violin
         </a></p>
     </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
 </div>
+      <div class="artist item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc">
+    	<div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/1"><b>M. D. Ramanathan Concert at Music Academy 1969</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/1">M. D. Ramanathan</a></p>
+        <p>1969</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
 
-        
-
-        
-<div class="instrumentCell item">
-    <div class="photo pict">
-        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noinstrument.jpg"></a>
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+    
+</div>            
+      <div class="concert item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/2"><img src="./Dunya_files/noconcert.jpg"></a>
     </div>
     <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/instrument/1">
-            Name
+        <a href="http://localhost:8001/carnatic/concert/2"><b>K. V. Narayanaswami concert at Music Academy 1967</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/5">K. V. Narayanaswami</a></p>
+        <p>1967</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="work item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/3"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/3"><b>Alathur Brothers Rama Navami-Coimbatore 1965</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/7">Alathur Brothers</a></p>
+        <p>1965</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="instrument item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/4"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/4"><b>M.S. Subbulakshmi concert at Naradaganasabha 1969</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/10">M.S. Subbulakshmi</a></p>
+        <p>1969</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="raaga item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/5"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/5"><b>M.S. Subbulakshmi concert at Music Academy, 1968</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/10">M.S. Subbulakshmi</a></p>
+        <p>1968</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="taala item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/6"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/6"><b>Alathur Brothers concert at Nangudayan Vinayakar Temple, Trichy 1956</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/7">Alathur Brothers</a></p>
+        <p>1956</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="recording item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/1">
+            <b>M. D. Ramanathan</b>
         </a>
-    </div>
-</div>
-
-
-        
-<div class="instrumentCell item">
-    <div class="photo pict">
-        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noinstrument.jpg"></a>
-    </div>
-    <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/instrument/2">
+        <p><a href="http://localhost:8001/carnatic/instrument/2">
             Vocal
-        </a>
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
     </div>
 </div>
-
-
-        
-<div class="instrumentCell item">
+      <div class="composer item">
     <div class="photo pict">
-        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noinstrument.jpg"></a>
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
     <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/instrument/3">
-            Violin
+        <a href="http://localhost:8001/carnatic/artist/2">
+            <b>Palghat Raghu</b>
         </a>
-    </div>
-</div>
-
-
-        
-<div class="instrumentCell item">
-    <div class="photo pict">
-        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/Mridangam.jpg"></a>
-    </div>
-    <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/instrument/4">
+        <p><a href="http://localhost:8001/carnatic/instrument/4">
             Mridangam
-        </a>
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
     </div>
 </div>
-
-
-        
-<div class="instrumentCell item">
+      <div class="artist item">
     <div class="photo pict">
-        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noinstrument.jpg"></a>
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
     <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/instrument/5">
-            Tambura
+        <a href="http://localhost:8001/carnatic/artist/3">
+            <b>Chalakudy Narayanaswamy Iyer</b>
         </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/3">
+            Violin
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
     </div>
 </div>
-
-
-        
-<div class="instrumentCell item">
+      <div class="artist item">
     <div class="photo pict">
-        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noinstrument.jpg"></a>
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
     </div>
     <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/instrument/6">
-            Veena
+        <a href="http://localhost:8001/carnatic/artist/4">
+            <b>Vikku Vinayakram</b>
         </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/10">
+            Ghatam
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="artist item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/5">
+            <b>K. V. Narayanaswami</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/2">
+            Vocal
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="artist item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/6">
+            <b>M. S. Gopalakrishnan</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/3">
+            Violin
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
     </div>
 </div>
 
+<div class="artist item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc">
+    	<div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/1"><b>M. D. Ramanathan Concert at Music Academy 1969</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/1">M. D. Ramanathan</a></p>
+        <p>1969</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
 
-        
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+    
+</div>            
+      <div class="concert item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/2"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/2"><b>K. V. Narayanaswami concert at Music Academy 1967</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/5">K. V. Narayanaswami</a></p>
+        <p>1967</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
 
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="work item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/3"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/3"><b>Alathur Brothers Rama Navami-Coimbatore 1965</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/7">Alathur Brothers</a></p>
+        <p>1965</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="instrument item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/4"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/4"><b>M.S. Subbulakshmi concert at Naradaganasabha 1969</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/10">M.S. Subbulakshmi</a></p>
+        <p>1969</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="raaga item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/5"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/5"><b>M.S. Subbulakshmi concert at Music Academy, 1968</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/10">M.S. Subbulakshmi</a></p>
+        <p>1968</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="taala item">
+    <div class="disc pict">
+        <a href="http://localhost:8001/carnatic/concert/6"><img src="./Dunya_files/noconcert.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/concert/6"><b>Alathur Brothers concert at Nangudayan Vinayakar Temple, Trichy 1956</b></a>
+        <p><a href="http://localhost:8001/carnatic/artist/7">Alathur Brothers</a></p>
+        <p>1956</p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="recording item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/1">
+            <b>M. D. Ramanathan</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/2">
+            Vocal
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="composer item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/2">
+            <b>Palghat Raghu</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/4">
+            Mridangam
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="artist item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/3">
+            <b>Chalakudy Narayanaswamy Iyer</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/3">
+            Violin
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="artist item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/4">
+            <b>Vikku Vinayakram</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/10">
+            Ghatam
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="artist item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/5">
+            <b>K. V. Narayanaswami</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/2">
+            Vocal
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+      <div class="artist item">
+    <div class="photo pict">
+        <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a>
+    </div>
+    <div class="desc"><div class="plus"></div>
+        <a href="http://localhost:8001/carnatic/artist/6">
+            <b>M. S. Gopalakrishnan</b>
+        </a>
+        <p><a href="http://localhost:8001/carnatic/instrument/3">
+            Violin
+        </a></p>
+    </div>
+    <div class="descOpen">
+    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
+
+He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
+    </div>
+    <div class="lists">
+    	<div  class="left">
+    		
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem artist">
+    		  <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    	
+    	</div>
+    	<div class="right">
+    	
+    	  <div class="miniitem instrument">
+    	    <div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		<div class="miniitem instrument">
+      		<div class="colorCode shadow1"></div>
+    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
+    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
+    		</div>
+    		
+    	</div>
+    </div>
+</div>
+
+      
      </div>
 
 

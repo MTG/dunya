@@ -17,6 +17,14 @@ $(document).ready(function(){
     itemSelector : '.item',
     layoutMode : 'fitRows'
     });
+    
+    $(".similarity div").click(function(){
+      theparent = $(this).parent();
+      theparent.find("div").removeClass("active");
+      theparent.find("div").removeClass("active");
+      theparent.parent().parent().find(".right .similarList").attr("class","similarList "+$(this).attr('class'));
+      $(this).addClass("active");
+    });
 
 });
 

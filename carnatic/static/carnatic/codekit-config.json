@@ -233,6 +233,17 @@
       "outputAbbreviatedPath" : "\/js\/vendor\/jquery-1.9.1.min-ck.js",
       "fileType" : 64
     },
+    "\/img\/stopButton.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/stopButton.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/stopButton.png",
+      "initialSize" : 6322,
+      "fileType" : 8192
+    },
     "\/css\/main.less" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -246,15 +257,15 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/img\/stopButton.png" : {
+    "\/img\/smallPlay.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/stopButton.png",
+      "inputAbbreviatedPath" : "\/img\/smallPlay.png",
       "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/stopButton.png",
-      "initialSize" : 6322,
+      "outputAbbreviatedPath" : "\/img\/smallPlay.png",
+      "initialSize" : 670,
       "fileType" : 8192
     },
     "\/css\/ui-lightness\/images\/ui-bg_flat_10_000000_40x100.png" : {
@@ -411,17 +422,6 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
-    "\/img\/disc3.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/disc3.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/disc3.png",
-      "initialSize" : 30138,
-      "fileType" : 8192
-    },
     "\/img\/artist2.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -432,6 +432,17 @@
       "outputAbbreviatedPath" : "\/img\/artist2.jpg",
       "initialSize" : 1733,
       "fileType" : 4096
+    },
+    "\/img\/disc3.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/disc3.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/disc3.png",
+      "initialSize" : 30138,
+      "fileType" : 8192
     },
     "\/img\/playButton.png" : {
       "ignoreWasSetByUser" : 0,
@@ -565,6 +576,17 @@
       "initialSize" : 6922,
       "fileType" : 8192
     },
+    "\/img\/develop\/instrument_3.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
+      "initialSize" : 23154,
+      "fileType" : 8192
+    },
     "\/img\/icon_search.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -576,15 +598,15 @@
       "initialSize" : 761,
       "fileType" : 8192
     },
-    "\/img\/develop\/instrument_3.png" : {
+    "\/img\/simiMark.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
+      "inputAbbreviatedPath" : "\/img\/simiMark.png",
       "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
-      "initialSize" : 23154,
+      "outputAbbreviatedPath" : "\/img\/simiMark.png",
+      "initialSize" : 625,
       "fileType" : 8192
     },
     "\/css\/ui-lightness\/images\/ui-bg_gloss-wave_35_f6a828_500x100.png" : {
@@ -842,6 +864,17 @@
       "outputAbbreviatedPath" : "\/js\/underscore.min-ck.js",
       "fileType" : 64
     },
+    "\/img\/simdegra.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/simdegra.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/simdegra.png",
+      "initialSize" : 223,
+      "fileType" : 8192
+    },
     "\/img\/develop\/wave_1.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -864,17 +897,6 @@
       "initialSize" : 6517,
       "fileType" : 8192
     },
-    "\/img\/revButton_hover.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/revButton_hover.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/revButton_hover.png",
-      "initialSize" : 4039,
-      "fileType" : 8192
-    },
     "\/img\/artist.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -885,6 +907,17 @@
       "outputAbbreviatedPath" : "\/img\/artist.jpg",
       "initialSize" : 11517,
       "fileType" : 4096
+    },
+    "\/img\/revButton_hover.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/revButton_hover.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/revButton_hover.png",
+      "initialSize" : 4039,
+      "fileType" : 8192
     },
     "\/img\/develop\/track.png" : {
       "ignoreWasSetByUser" : 0,
@@ -897,6 +930,17 @@
       "initialSize" : 5232,
       "fileType" : 8192
     },
+    "\/img\/develop\/artist_2.jpg" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/develop\/artist_2.jpg",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/develop\/artist_2.jpg",
+      "initialSize" : 1953,
+      "fileType" : 4096
+    },
     "\/css\/ui-lightness\/images\/ui-bg_glass_65_ffffff_1x400.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -906,17 +950,6 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/css\/ui-lightness\/images\/ui-bg_glass_65_ffffff_1x400.png",
       "initialSize" : 207,
-      "fileType" : 8192
-    },
-    "\/img\/noisy.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/noisy.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/noisy.png",
-      "initialSize" : 14972,
       "fileType" : 8192
     },
     "\/js\/vendor\/jquery-ui-1.10.1.custom.min.js" : {
@@ -941,25 +974,16 @@
       "initialSize" : 1792,
       "fileType" : 4096
     },
-    "\/css\/main.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/css\/main.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
-    },
-    "\/img\/develop\/artist_2.jpg" : {
+    "\/img\/noisy.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/develop\/artist_2.jpg",
+      "inputAbbreviatedPath" : "\/img\/noisy.png",
       "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/develop\/artist_2.jpg",
-      "initialSize" : 1953,
-      "fileType" : 4096
+      "outputAbbreviatedPath" : "\/img\/noisy.png",
+      "initialSize" : 14972,
+      "fileType" : 8192
     },
     "\/img\/develop\/taala.jpg" : {
       "ignoreWasSetByUser" : 0,
@@ -971,6 +995,15 @@
       "outputAbbreviatedPath" : "\/img\/develop\/taala.jpg",
       "initialSize" : 9049,
       "fileType" : 4096
+    },
+    "\/css\/main.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/css\/main.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/img\/formSectionOpen.png" : {
       "ignoreWasSetByUser" : 0,
@@ -994,17 +1027,6 @@
       "initialSize" : 4028,
       "fileType" : 8192
     },
-    "\/js\/main.js" : {
-      "ignoreWasSetByUser" : 1,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/main.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 0,
-      "outputAbbreviatedPath" : "\/js\/main-ck.js",
-      "fileType" : 64
-    },
     "\/img\/plButton.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1026,6 +1048,17 @@
       "outputAbbreviatedPath" : "\/css\/ui-lightness\/images\/ui-bg_glass_100_fdf5ce_1x400.png",
       "initialSize" : 348,
       "fileType" : 8192
+    },
+    "\/js\/main.js" : {
+      "ignoreWasSetByUser" : 1,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/main.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 0,
+      "outputAbbreviatedPath" : "\/js\/main-ck.js",
+      "fileType" : 64
     },
     "\/img\/cloth_alike_@2X.png" : {
       "ignoreWasSetByUser" : 0,
@@ -1049,17 +1082,6 @@
       "initialSize" : 18210,
       "fileType" : 8192
     },
-    "\/img\/artist3.jpg" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/artist3.jpg",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/artist3.jpg",
-      "initialSize" : 1454,
-      "fileType" : 4096
-    },
     "\/img\/develop\/artist_3.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1069,6 +1091,17 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/develop\/artist_3.jpg",
       "initialSize" : 1679,
+      "fileType" : 4096
+    },
+    "\/img\/artist3.jpg" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/artist3.jpg",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/artist3.jpg",
+      "initialSize" : 1454,
       "fileType" : 4096
     },
     "\/img\/headerBackground.png" : {

@@ -24,7 +24,7 @@
 	width: 100%; 
 	position: relative; 
 	display: block; 
-	border-bottom: 2px solid #ccc; 
+	border-bottom: 2px solid #ccc;
 }
 
 
@@ -1204,12 +1204,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			}
 		}
 	}
-    .artist>span{ border-color: @artist_color; }
+  .artist>span{ border-color: @artist_color; }
 	.composer>span { border-color: @composer_color; }
-    .concert>span { border-color: @concert_color; }
-    .recording>span { border-color: @recording_color; }
-    .raaga>span { border-color: @raaga_color; }
-    .taala>span { border-color: @taala_color; }
+  .concert>span { border-color: @concert_color; }
+  .recording>span { border-color: @recording_color; }
+  .raaga>span { border-color: @raaga_color; }
+  .taala>span { border-color: @taala_color; }
+  .work>span { border-color: @work_color; }
+  .instrument>span { border-color: @instrument_color; }
 	table {
 		position: relative;
 		width: 100%;
@@ -1229,8 +1231,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			}
 			&>span {
 				.rounded(40px);
-				width: 80px;
-				height: 80px;
+				width: 65px;
+				height: 65px;
 				position: relative;
 				display: block;
 				float: left;
@@ -1238,8 +1240,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				border: 5px solid #EEEEEE;
 				font-weight: 900;
 				text-align: center;
-				padding-top: 17px;
-				font-size: 28px;
+				padding-top: 12px;
+				font-size: 23px;
 				color:#bbb;
 				.shadow1;
 			}
@@ -1247,6 +1249,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				font-size: 12px; 
 				color: #000;
 				text-shadow: none;
+				display: block;
+				margin-left: 71px;
+        margin-top: 33px;
 			}
 			h3 { font-size: 14px; }
 		}
@@ -1269,6 +1274,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		}
 	}
 }
+.resultsTitle { margin: 10px 5px 0 11px; }
 #results {
 	&>div {
 		float:left;
@@ -1286,10 +1292,81 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			width: 450px;
 			height: 565px;
 			.desc {
+			  font-size: 13px;
+			  line-height: 15px;
+			  border-top:2px solid rgba(255,255,255,0.5);
 				.plus {
 					background: url("http://localhost:8001/static/carnatic/img/lessIcon.png") 0 0 no-repeat;
 				}
 			}
+			.descOpen {
+			    display: block;
+			    height: 205px;
+			    left: 213px;
+			    overflow-y: auto;
+			    padding: 13px 21px 21px;
+			    position: absolute;
+			    top: 6px;
+			    width: 237px;
+			}
+			.lists {
+        display: block !important;
+        height: 297px;
+        left: 0;
+        position: absolute;
+        top: 211px;
+        width: 100%;
+        background: url("../img/cloth_alike.png") repeat;
+  			.left {
+    			position: relative;
+    			top:0px;
+    			left:0px;
+    			width: 50%;
+    			height: 100%;
+    			float: left;
+  			}
+  			.right {
+    			position: relative;
+    			top:0px;
+    			left:0px;
+    			width: 50%;
+    			height: 100%;
+    			float:left;
+  			} 
+  			.miniitem {
+  			  height: auto !important;
+          left: 0px;
+          position: relative;
+          top: 0px;
+          width:100% !important;
+          background: none;
+          margin-top: 5px;
+          margin-bottom: 15px;
+          padding:6px;
+    			padding-right: 15px;
+          label {
+            font-size: 11px;
+            line-height: 12px;
+          }
+  			  .disco {
+  			    float: left;
+  			    margin-right: 8px; 
+            a {
+              background: none;
+              img { width: 40px !important; }
+              }
+          }
+        }
+			}
+			.smallPlay {
+    		position: absolute;
+    		left: 200px;
+        top: 2px;
+    		width: 23px;
+    		height: 23px;
+    		background: url("../img/smallPlay.png") 0 0  no-repeat;
+    		z-index: 10;
+      }
 		}
 		.pict {
 			position: absolute;
@@ -1333,9 +1410,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			b, a {font-weight: bold; display: block; color: #000; text-decoration: none; }
 			a:hover { text-decoration: underline; } 
 		}
+		.descOpen, .lists {
+			display: none; 
+		}
+		.smallPlay {
+  		position: absolute;
+  		right: 0;
+      top: 2px;
+  		width: 23px;
+  		height: 23px;
+  		background: url("../img/smallPlay.png") 0 0  no-repeat;
+  		z-index: 10;
+		}
 	}
 	.recording {
-		//background: @recording_color;
+		background: darken( @recording_color, 20% );
 		.desc { background: @recording_color; }
 		&:hover { background: darken( @recording_color, 20% ); }
 		.disc {
@@ -1345,61 +1434,74 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			margin-right:10px;
 		}
 	}
-	.album {
-		//background: @concert_color;
-		.desc { background: @concert_color; }
-		&:hover { background: darken( @concert_color, 20% ); }
-	}
-	.artistCell {
+	.artist {
 		//background: @artist_color;
 		.desc { background: @artist_color; }
-		&:hover { background: darken( @artist_color, 20% ); }
+		background: darken( @artist_color, 20% );
 
 	}
+	.concert { 
+	  .desc { background: @concert_color; }
+		background: darken( @concert_color, 20% );
+  }
+  .work { 
+	  .desc { background: @work_color; }
+		background: darken( @work_color, 20% );
+  }
 	.track {
 		//background: @recording_color;
 		.desc { background: @recording_color; }
-		&:hover { background: darken( @recording_color, 20% ); }
+		ackground: darken( @recording_color, 20% );
 		h4 {
 			margin: 0px;
 			margin-bottom:4px;
 			
 		}
 	}
-	.instrumentCell {
+	.instrument {
 		//background: @instrument_color;
 		.desc { background: @instrument_color; }
-		&:hover { background: darken( @instrument_color, 20% ); }
+		background: darken( @instrument_color, 20% );
 		h4 {
 			text-align: center;
 			margin: 0px;
 			margin-bottom:4px;
 		}
 	}
-	.raagaCell {
+	.raaga {
 		//background: @raaga_color;
 		.desc { background: @raaga_color; }
-		&:hover { background: darken( @raaga_color, 20% ); }
+		background: darken( @raaga_color, 20% );
 		h4 {
 			text-align: center;
 			margin: 0px;
 			margin-bottom:4px;
 		}
 	}
-	.taalaCell {
+	.taala {
 		//background: @taala_color;
 		.desc { background: @taala_color; }
-		&:hover { background: darken( @taala_color, 20% ); }
+		background: darken( @taala_color, 20% );
 		h4 {
 			text-align: center;
 			margin: 0px;
 			margin-bottom:4px;
 		}
+	}
+	.recording {
+		//background: @instrument_color;
+		.desc { background: @recording_color; }
+		background: darken( @recording_color, 10% );
+	}
+	.composer {
+		//background: @instrument_color;
+		.desc { background: @composer_color; }
+		background: darken( @composer_color, 5% );
 	}
 	.artist {
 		//background: @artist_color;
 		.desc { background: @artist_color; }
-		&:hover { background: darken( @artist_color, 20% ); }
+		background: darken( @artist_color, 20% );
 		.artistFoto { 
 			position: relative;
 			width: 51px;
@@ -1415,6 +1517,77 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			font-size: 11px;
 		}
 	}
+	.similarity {
+	  h2 { margin-top:5px; margin-bottom:5px; font-size: 16px; font-weight: normal; color: @gris; }
+	  div {
+	    float: right;
+	    text-align: right;
+	    right: 0px;
+	    clear: right;
+    	display: block;
+    	height: 27px;
+      margin-bottom: 5px;
+      position: relative;
+      text-transform: uppercase;
+      padding-top: 4px;
+      padding-left: 5px;
+      border-left: 6px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+      &.artist { background: @artist_color; color:darken(@artist_color, 40%); }
+      &.concert { background: @composer_color; color:darken(@composer_color, 40%); }
+      &.work { background: @work_color; color:darken(@work_color, 40%); }
+      &.instrument { background: @instrument_color; color:darken(@instrument_color, 40%); }
+      &.raaga { background: @raaga_color; color:darken(@raaga_color, 40%); }
+      &.taala { background: @taala_color; color:darken(@taala_color, 40%); }
+      &.recording { background: @recording_color; color:darken(@recording_color, 40%); }
+      &.composer { background: @composer_color; color:darken(@composer_color, 40%); }
+      &.active:after {
+        content: "";
+        height: 29px;
+        position: absolute;
+        right: -16px;
+        top: 0px;
+        width: 16px;
+        z-index: 10;
+        background: url("../img/simiMark.png") -2px 0 no-repeat;
+      }
+      span {
+        position: absolute;
+        right: 4px;
+      }
+    }
+	}
+	.similarList { 
+  	height: 100%;
+  	position: absolute;
+  	width: 100%;
+  	top: 0px;
+  	left: 0px;
+  	&:before {
+      background-image: url("../img/simdegra.png");
+      background-position: -13px 0;
+      background-repeat: repeat-y;
+      background-size: 100% auto;
+      content: "";
+      height: 100%;
+      opacity: 1;
+      position: absolute;
+      width: 19px;
+      z-index: 0;
+  	}
+  	.miniitem:first-child {
+    	margin-top:15px !important;
+  	}
+  	.miniitem { padding-left: 13px !important; }
+  	&.artist { background-color: @artist_color; color:darken(@artist_color, 40%); }
+    &.concert { background-color: @composer_color; color:darken(@composer_color, 40%); }
+    &.work { background-color: @work_color; color:darken(@work_color, 40%); }
+    &.instrument { background-color: @instrument_color; color:darken(@instrument_color, 40%); }
+    &.raaga { background-color: @raaga_color; color:darken(@raaga_color, 40%); }
+    &.taala { background-color: @taala_color; color:darken(@taala_color, 40%); }
+    &.recording { background-color: @recording_color; color:darken(@recording_color, 40%); }
+    &.composer { background-color: @composer_color; color:darken(@composer_color, 40%); }
+  }
 }
 /* ==========================================================================
    LOGIN
@@ -1795,6 +1968,18 @@ input[type="text"], input[type="password"] {
 #filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; } 
 #filterMask #filterArea #entitiesList ul li.entity_9 .colorCode { border-color: @entity_9_color; } 
 #filterMask #filterArea #entitiesList ul li.entity_10 .colorCode { border-color: @entity_10_color; } 
+
+
+.miniitem.artist .colorCode { border-color: @artist_color !important; } 
+.miniitem.concert .colorCode { border-color: @concert_color !important; } 
+.miniitem.work .colorCode { border-color: @work_color !important; } 
+.miniitem.instrument .colorCode { border-color: @instrument_color !important; } 
+.miniitem.raaga .colorCode { border-color: @raaga_color !important; } 
+.miniitem.taala .colorCode { border-color: @taala_color !important; } 
+.miniitem.recording .colorCode { border-color: @recording_color !important; } 
+.miniitem.composer .colorCode { border-color: @composer_color !important; } 
+.miniitem.entity_9 .colorCode { border-color: @entity_9_color !important; } 
+.miniitem.entity_10 .colorCode { border-color: @entity_10_color !important; } 
 
 
 #detail.artist .tag-cloud-0 { background: lighten(@artist_color, 12%); }
