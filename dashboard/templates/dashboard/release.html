@@ -9,6 +9,14 @@
     </span>
 </h2>
 
+<div id="infobox">
+    <div id="infoheader">Info</div>
+    <li>Directory: 
+    {% for d in release.collectiondirectory_set.all %}
+    {{d.full_path}}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+</div>
+
 <h4>Current state</h4>
 {{release.get_current_state}}
 
