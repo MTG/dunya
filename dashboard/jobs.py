@@ -253,12 +253,12 @@ def update_collection(collectionid):
         try:
             mbrelease = compmusic.mb.get_release_by_id(relid)["release"]
             title = mbrelease["title"]
-            rel, created = models.MusicbrainzRelease.objects.get_or_create(id=relid, collection=coll, defaults={"title": title})
+            rel, created = models.MusicbrainzRelease.objects.get_or_create(mbid=relid, collection=coll, defaults={"title": title})
         except compmusic.mb.MusicBrainzError:
             coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
 
     for relid in to_remove:
-        models.MusicbrainzRelease.objects.get(id=relid).delete()
+        models.MusicbrainzRelease.objects.get(mbid=relid).delete()
 
 def _match_directory_to_release(collectionid, root):
     coll = models.Collection.objects.get(pk=collectionid)
@@ -276,7 +276,7 @@ def _match_directory_to_release(collectionid, root):
     if len(rels) == 1:
         releaseid = rels[0]
         try:
-            cd.musicbrainzrelease = models.MusicbrainzRelease.objects.get(id=releaseid)
+            cd.musicbrainzrelease = models.MusicbrainzRelease.objects.get(mbid=releaseid)
             cd.save()
 
             mp3files = _get_mp3_files(os.listdir(root))

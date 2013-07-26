@@ -169,10 +169,12 @@ class MusicbrainzReleaseState(models.Model):
         return "%s (%s)" % (self.state_name, self.state_date)
 
 class MusicbrainzRelease(models.Model):
+    class Meta:
+        unique_together = ('mbid', 'collection')
 
     objects = MusicbrainzReleaseManager()
 
-    id = UUIDField(primary_key=True)
+    mbid = UUIDField(primary_key=True)
     collection = models.ForeignKey(Collection)
     title = models.CharField(max_length=200)
 

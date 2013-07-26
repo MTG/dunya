@@ -37,7 +37,7 @@ def collection(request, uuid):
     return render(request, 'dashboard/collection.html', ret)
 
 def release(request, uuid):
-    release = models.MusicbrainzRelease.objects.get(pk=uuid)
+    release = models.MusicbrainzRelease.objects.get(mbid=uuid)
     files = release.collectiondirectory_set.order_by('path').all()
 
     pendingtest = release.releasestatus_set.filter(status__in=('n', 's')).all()
