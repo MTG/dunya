@@ -140,20 +140,13 @@ class Concert(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def artistnames(self):
-        return self.artists.all()[0]
-        artists = self.artists.all()
+        return self.artists.all()
         if len(artists) > 1:
-            last = artists[-1]
-            rest = artists[:-1]
-            ret = ", ".join(rest)
-            if len(rest) > 1:
-                joiner = ", and "
-            else:
-                joiner = " and "
-            ret += joiner + last.name
-            return ret
+            return artists
+        elif len(artists) == 0:
+            return None
         else:
-            return artists[0].name
+            return artists[0]
 
     def performers(self):
         IPClass = self.get_object_map("performance")
