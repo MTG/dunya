@@ -28,7 +28,6 @@ class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
         model = Collection
         fields = ['name', 'description', 'slug', 'root_dir', 'documents']
 
-
 def new_uuid():
     u = uuid.uuid4()
     return str(u)
@@ -42,18 +41,6 @@ class Document(models.Model):
     collection = models.ForeignKey(Collection, related_name='documents')
     docid = UUIDField(primary_key=True, default=new_uuid)
     title = models.CharField(max_length=200)
-
-    @property
-    def files(self):
-        pass
-
-    def get_file_by_extension(self, ext):
-        """Get the file for this document that has the given extension"""
-        pass
-
-    def get_conversions(self):
-        """Return a list of file types that exist for this document"""
-        pass
 
     def get_document_by_fileid(self, fileid):
         """Some files (e.g. recordings) have an external ID
@@ -71,8 +58,9 @@ class DocumentSerializer(serializers.HyperlinkedModelSerializer):
 class FileType(models.Model):
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
-    is_derived = models.BooleanField()
-    derived_from = models.ForeignKey('FileType')
+    module = models.CharField(max_length=255)
+    is_derived = models.BooleanField(default=False)
+    derived_from = models.ForeignKey('FileType', blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -89,24 +77,8 @@ class File(models.Model):
     """If the file is known in a different database, the identifier
        for the item."""
     external_identifier = models.CharField(max_length=200)
-    """A field to uniquely identify many files of the same type that
-       belong to a single document (e.g. 2 analysis features)"""
-    disambiguation = models.CharField(max_length=500)
-
-    def get_conversions(self):
-        pass
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = File
         fields = ('document', 'file_type', 'path', 'external_identifier')
-
-class FileConverter(models.Model):
-    """Some documents can be transformed on the fly from one
-    format to another, e.g., flac to ogg.
-    A FileConverter specifies the class that knows how
-    to convert a file type into any other compatible type.
-    """
-    to_type = models.ForeignKey(FileType)
-    description = models.CharField(max_length=200)
-    conversion_class = models.CharField(max_length=200)
