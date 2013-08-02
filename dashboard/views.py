@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 
 from dashboard import models
 from dashboard import forms
+from dashboard import jobs
 import compmusic
 import os
 import importlib
@@ -29,16 +30,33 @@ def index(request):
     return render(request, 'dashboard/index.html', ret)
 
 def collection(request, uuid):
-    c = models.Collection.objects.get(pk=uuid)
+    c = get_object_or_404(models.Collection, pk=uuid)
+
+    rescandir = request.GET.get("rescandir")
+    rescanmb = request.GET.get("rescanmb")
+    if rescandir is not None:
+        # TODO: celery
+        jobs.scan_and_link(c.id)
+    if rescanmb is not None:
+        # TODO: Should we scan and link after this?
+        jobs.update_collection(c.id)
+
     log = models.CollectionLogMessage.objects.filter(collection=c)
     releases = models.MusicbrainzRelease.objects.filter(collection=c)
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
     ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
     return render(request, 'dashboard/collection.html', ret)
 
-def release(request, uuid):
-    release = models.MusicbrainzRelease.objects.get(mbid=uuid)
+def release(request, releaseid):
+    release = get_object_or_404(models.MusicbrainzRelease, pk=releaseid)
+
+    reimport = request.GET.get("reimport")
+    if reimport is not None:
+        #TODO: celery
+        jobs.import_release(release.id)
+
     files = release.collectiondirectory_set.order_by('path').all()
+    log = release.musicbrainzreleaselogmessage_set.all()
 
     pendingtest = release.releasestatus_set.filter(status__in=('n', 's')).all()
 
@@ -58,7 +76,7 @@ def release(request, uuid):
                             "data": instance.prepare_view(json.loads(f.data)),
                             "template": template})
 
-    ret = {"release": release, "files": files, "pendingtest": pendingtest, "finishedtest": finishedtest}
+    ret = {"release": release, "files": files, "pendingtest": pendingtest, "finishedtest": finishedtest, "log_messages": log}
     return render(request, 'dashboard/release.html', ret)
 
 def file(request, fileid):
@@ -90,8 +108,14 @@ def directory(request, dirid):
     We want to group together as much common information as possible, and
     link to musicbrainz if we can.
     """
+    directory = get_object_or_404(models.CollectionDirectory, pk=dirid)
 
-    directory = models.CollectionDirectory.objects.get(pk=dirid)
+    rematch = request.GET.get("rematch")
+    if rematch is not None:
+        # TODO: Change to celery
+        jobs.rematch_unknown_directory(dirid)
+        directory = get_object_or_404(models.CollectionDirectory, pk=dirid)
+
     collection = directory.collection
     full_path = os.path.join(collection.root_directory, directory.path)
     files = os.listdir(full_path)
@@ -113,14 +137,19 @@ def directory(request, dirid):
             artistids.add(aid)
             artistname.add(aname)
 
-    got_release = len(releaseids) == 1
-    # This won't work if there are more than 1 lead artist?
+    got_release_id = len(releaseids) == 1
+    # TODO: This won't work if there are more than 1 lead artist?
     got_artist = len(artistids) == 1
     print "releaseids", releaseids
     print "artistids", artistids
 
-    ret = {"files": sorted(files), "directory": directory, "got_release": got_release, "got_artist": got_artist}
-    if got_release:
+    if directory.musicbrainzrelease:
+        matched_release = directory.musicbrainzrelease
+    else:
+        matched_release = None
+
+    ret = {"files": sorted(files), "directory": directory, "got_release_id": got_release_id, "got_artist": got_artist, "matched_release": matched_release}
+    if got_release_id:
         ret["releasename"] = list(releasename)[0]
         ret["releaseid"] = list(releaseids)[0]
     if got_artist:

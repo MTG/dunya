@@ -9,16 +9,23 @@
     </span>
 </h2>
 
-<div id="infobox">
-    <div id="infoheader">Info</div>
+<div class="topbox">
+    <div class="topheader">Info</div>
     <li>Directory: 
     {% for d in release.collectiondirectory_set.all %}
     {{d.full_path}}{% if not forloop.last %},{% endif %}
     {% endfor %}
 </div>
 
-<h4>Current state</h4>
-{{release.get_current_state}}
+<div class="topbox">
+    <div class="topheader">Actions</div>
+    <li><a href="?reimport">Reimport release</a>
+</div>
+
+<div class="topbox">
+    <div class="topheader">Current state</div>
+    {{release.get_current_state}}
+</div>
 
 <table><tr><th>File</th><th>Status</th></tr>
     {% for d in files %}
@@ -29,20 +36,8 @@
     {% endfor %}
 </table>
 
-<h3>Release-specific checks</h3>
-
-<h4>Pending tests</h4>
-<table>
-    <tr><th>Checker</th><th>Status</th></tr>
-    {% for r in pendingtest %}
-    <tr><td>({{r.id}}) {{r.checker.name}}</td>
-        <td>
-            <img src="/static/dashboard/img/{{r.get_status_icon}}" title="{{r.get_status_desc}}" />
-    </td></tr>
-    {% endfor %}
-</table>
-
-<h4>Complete tests</h4>
+<div class="topbox">
+    <div class="topheader">Release-specific checks</div>
 <table>
     <tr><th>Checker</th><th>Status</th></tr>
     {% for r in finishedtest %}
@@ -58,4 +53,9 @@
     </td></tr>
     {% endfor %}
 </table>
+</div>
+
+{% include "dashboard/log.html" with logs=log_messages %}
+
 {% endblock %}
+

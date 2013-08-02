@@ -11,17 +11,25 @@
 
 <h3>Releases</h3>
 
-<div id="infobox">
-    <div id="infoheader">Info</div>
+<div class="topbox">
+    <div class="topheader">Info</div>
     <li>Root: {{collection.root_directory}}
 </div>
 
-Actions:<br>
-<li>Re-scan directory
-<li>Re-scan musicbrainz collection
-<p>
-<li>Order by errors first
-<li>Order by unmatched releases first
+<div class="topbox">
+    <div class="topheader">Actions</div>
+    <li><a href="?rescandir">Re-scan directories</a>
+    <li><a href="?rescanmb">Re-scan musicbrainz collection</a>
+    <p>
+    <li>Order by errors first
+    <li>Order by unmatched releases first
+    <li>Order by last imported date
+</div>
+
+<div class="topbox">
+    <div class="topheader">Current State</div>
+    {{collection.get_current_state}}
+</div>
 
 <table><tr><th>Release</th><th>Matched path</th><th>Current status</th><th>Last status at</th></tr>
 {% for r in releases %}

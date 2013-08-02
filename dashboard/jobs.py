@@ -2,27 +2,39 @@ import celery
 import os
 
 from dashboard import models
+from dashboard.log import logger
+
 import carnatic
 import compmusic
+import data
 
 import completeness
+import populate_images
 
 @celery.task()
-def import_release(releaseid, directory):
-    ri = ReleaseImporter(releaseid, directory)
-    ri.import_release()
+def import_release(releasepk):
+    release = models.MusicbrainzRelease.objects.get(pk=releasepk)
+    release.start_state()
+    ri = ReleaseImporter(release.collection.id)
+    ri.import_release(release.mbid)
+    release.try_finish_state()
 
 class ReleaseImporter(object):
-    def __init__(self, releaseid, directory):
-        self.releaseid = releaseid
-        self.directory = directory
+    def __init__(self, collectionid):
+        self.collectionid = collectionid
 
-    def import_release(self):
-        rel = mb.get_release_by_id(self.releaseid, includes=["artists","recordings"])
+    def make_mb_source(self, url):
+        sn = data.models.SourceName.objects.get(name="MusicBrainz")
+        source = data.models.Source.objects.create(source_name=sn, uri=url)
+        return source
+
+    def import_release(self, releaseid):
+        # TODO: Can be more than one direcotry here
+        rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists","recordings"])
         rel = rel["release"]
 
         mbid = rel["id"]
-        logging.info("Adding release %s" % mbid)
+        logger.info("Adding release %s" % mbid)
         try:
             concert = carnatic.models.Concert.objects.get(mbid=mbid)
         except carnatic.models.Concert.DoesNotExist:
@@ -35,10 +47,13 @@ class ReleaseImporter(object):
             source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbid)
             concert.source = source
             concert.save()
-            for a in rel["artist-credit"]:
-                artistid = a["artist"]["id"]
-                artist = self.add_and_get_artist(artistid)
-                logging.info("  artist: %s" % artist)
+
+        for a in rel["artist-credit"]:
+            artistid = a["artist"]["id"]
+            artist = self.add_and_get_artist(artistid)
+            logger.info("  artist: %s" % artist)
+            if not concert.artists.filter(pk=artist.pk).exists():
+                logger.info("  - adding to artist list")
                 concert.artists.add(artist)
         recordings = []
         for medium in rel["medium-list"]:
@@ -58,8 +73,8 @@ class ReleaseImporter(object):
         try:
             artist = carnatic.models.Artist.objects.get(mbid=artistid)
         except carnatic.models.Artist.DoesNotExist:
-            logging.info("  adding artist %s" % (artistid, ))
-            a = mb.get_artist_by_id(artistid)["artist"]
+            logger.info("  adding artist %s" % (artistid, ))
+            a = compmusic.mb.get_artist_by_id(artistid)["artist"]
             artist = carnatic.models.Artist(name=a["name"], mbid=artistid)
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
             artist.source = source
@@ -77,31 +92,35 @@ class ReleaseImporter(object):
                 artist.end = dates.get("end")
             artist.save()
             # TODO: Artist hooks
-            compmusic.populate_images.import_artist(artist)
+            populate_images.import_artist(artist)
         return artist
 
     def _get_raaga(self, taglist):
         ret = []
+        seq = 1
         for t in taglist:
             name = t["name"].lower()
-            if compmusic.parse_tags.has_raaga(name):
-                ret.append(compmusic.parse_tags.parse_raaga(name))
+            if compmusic.tags.has_raaga(name):
+                ret.append( (seq, compmusic.tags.parse_raaga(name)) )
+                seq += 1
         return ret
 
     def _get_taala(self, taglist):
         ret = []
+        seq = 1
         for t in taglist:
             name = t["name"].lower()
-            if compmusic.parse_tags.has_taala(name):
-                ret.append(compmusic.parse_tags.parse_taala(name))
+            if compmusic.tags.has_taala(name):
+                ret.append( (seq, compmusic.tags.parse_taala(name)) )
+                seq += 1
         return ret
 
     def add_and_get_recording(self, recordingid):
         try:
             rec = carnatic.models.Recording.objects.get(mbid=recordingid)
         except carnatic.models.Recording.DoesNotExist:
-            logging.info("  adding recording %s" % (recordingid,))
-            mbrec = mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
+            logger.info("  adding recording %s" % (recordingid,))
+            mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
             mbrec = mbrec["recording"]
             raagas = self._get_raaga(mbrec.get("tag-list", []))
             taalas = self._get_taala(mbrec.get("tag-list", []))
@@ -131,13 +150,14 @@ class ReleaseImporter(object):
                     self.add_performance(recordingid, artistid, inst, is_lead)
 
         # TODO: Recording hooks
+        # TODO: Tests, update status
         return rec
 
     def add_and_get_work(self, workid, raagas, taalas):
         try:
             w = carnatic.models.Work.objects.get(mbid=workid)
         except carnatic.models.Work.DoesNotExist:
-            mbwork = mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
+            mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
             w = carnatic.models.Work(title=mbwork["title"], mbid=workid)
             source = self.make_mb_source("http://musicbrainz.org/work/%s" % workid)
             w.source = source
@@ -147,13 +167,13 @@ class ReleaseImporter(object):
                 if r:
                     carnatic.models.WorkRaaga.objects.create(work=w, raaga=r, sequence=seq)
                 else:
-                    logging.warn("Cannot find raaga: %s" % rname)
+                    logger.warn("Cannot find raaga: %s" % rname)
             for seq, tname in taalas:
                 t = self.add_and_get_taala(tname)
                 if t:
                     carnatic.models.WorkTaala.objects.create(work=w, taala=t, sequence=seq)
                 else:
-                    logging.warn("Cannot find taala: %s" % tname)
+                    logger.warn("Cannot find taala: %s" % tname)
             for artist in mbwork.get("artist-relation-list", []):
                 if artist["type"] == "composer":
                     composer = self.add_and_get_composer(artist["target"])
@@ -169,8 +189,8 @@ class ReleaseImporter(object):
         try:
             composer = carnatic.models.Composer.objects.get(mbid=artistid)
         except carnatic.models.Composer.DoesNotExist:
-            logging.info("  adding composer %s" % (artistid, ))
-            a = mb.get_artist_by_id(artistid)["artist"]
+            logger.info("  adding composer %s" % (artistid, ))
+            a = compmusic.mb.get_artist_by_id(artistid)["artist"]
             composer = carnatic.models.Composer(name=a["name"], mbid=artistid)
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
             composer.source = source
@@ -209,7 +229,7 @@ class ReleaseImporter(object):
                 return None
 
     def add_performance(self, recordingid, artistid, instrument, is_lead):
-        logging.info("  Adding performance...")
+        logger.info("  Adding performance...")
         artist = self.add_and_get_artist(artistid)
         instrument = self.add_and_get_instrument(instrument)
         recording = carnatic.models.Recording.objects.get(mbid=recordingid)
@@ -245,7 +265,7 @@ def update_collection(collectionid):
         and add new releases """
     found_releases = compmusic.get_releases_in_collection(collectionid)
     coll = models.Collection.objects.get(pk=collectionid)
-    existing_releases = [r.id for r in coll.musicbrainzrelease_set.all()]
+    existing_releases = [r.mbid for r in coll.musicbrainzrelease_set.all()]
     to_remove = set(existing_releases) - set(found_releases)
     to_add = set(found_releases) - set(existing_releases)
 
@@ -258,7 +278,7 @@ def update_collection(collectionid):
             coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
 
     for relid in to_remove:
-        models.MusicbrainzRelease.objects.get(mbid=relid).delete()
+        coll.musicbrainzrelease_set.filter(mbid=relid).delete()
 
 def _match_directory_to_release(collectionid, root):
     coll = models.Collection.objects.get(pk=collectionid)
@@ -276,19 +296,21 @@ def _match_directory_to_release(collectionid, root):
     if len(rels) == 1:
         releaseid = rels[0]
         try:
-            cd.musicbrainzrelease = models.MusicbrainzRelease.objects.get(mbid=releaseid)
+            therelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
+            cd.musicbrainzrelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
             cd.save()
+            cd.add_log_message("Successfully matched to a release", None)
 
             mp3files = _get_mp3_files(os.listdir(root))
             for f in mp3files:
                 cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd)
 
         except models.MusicbrainzRelease.DoesNotExist:
-            cd.add_log_message(None, "Cannot find this release (%s) in the imported releases" % (theid, ))
+            cd.add_log_message("Cannot find this directory's release (%s) in the imported releases" % (releaseid, ), None)
     elif len(rels) == 0:
-        cd.add_log_message(None, "No releases found in ID3 tags")
+        cd.add_log_message("No releases found in ID3 tags", None)
     else:
-        cd.add_log_message(None, "More than one release found in ID3 tags")
+        cd.add_log_message("More than one release found in ID3 tags", None)
 
 
 
@@ -313,6 +335,9 @@ def scan_and_link(collectionid):
     to_remove = set(existing_directories) - set(found_directories)
     to_add = set(found_directories) - set(existing_directories)
 
+    print "to_add", to_add
+    print "to_remove", to_remove
+
     for d in to_add:
         _match_directory_to_release(collectionid, d)
 
@@ -321,6 +346,17 @@ def scan_and_link(collectionid):
         # stored with a partial path, so cut it.
         shortpath = root[len(collectionroot):]
         coll.collectiondirectory_set.get(path=shortpath).delete()
+
+    # TODO: This is the same code as `rematch_unknown_directory`, deduplicate?
+    cds = coll.collectiondirectory_set.filter(musicbrainzrelease__isnull=True)
+    for cd in cds:
+        print "trying to re-match", cd
+        _match_directory_to_release(coll.id, cd.full_path)
+
+@celery.task(ignore_result=True)
+def rematch_unknown_directory(directoryid):
+    cd = models.CollectionDirectory.objects.get(pk=directoryid)
+    _match_directory_to_release(cd.collection.id, cd.full_path)
 
 @celery.task(ignore_result=True)
 def load_musicbrainz_collection(collectionid):

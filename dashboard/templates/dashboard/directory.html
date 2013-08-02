@@ -9,18 +9,24 @@
     </span>
 </h2>
 
-<div id="infobox">
-    <div id="infoheader">Info</div>
-    {% if directory.path != directory.short_path %}
-    <li>Directory: {{directory.path}}
-    {% endif %}
-    {% if got_release %}
+<div class="topbox">
+    <div class="topheader">Info</div>
+    <li>Directory: {{directory.full_path}}
+    {% if got_release_id %}
         <li>Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a> 
         {% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}">{{artistname}}</a>{% endif %}
     {% else %}
         <li>This release doesn't have any Musicbrainz tags set.
     {% endif %}
+    {% if matched_release %}
+    <li>Matched to a release: <a href="{{matched_release.get_absolute_url}}">{{matched_release.title}}</a>
+    {% endif %}
 
+</div>
+
+<div class="topbox">
+    <div class="topheader">Actions</div>
+    <li><a href="?rematch">Rematch directory to releases</a>
 </div>
 
 <table><tr><th>File</th></tr>
@@ -30,7 +36,6 @@
 {% endfor %}
 </table>
 
-{% include "dashboard/log.html" with logs=directory.releaselogmessage_set.all %}
-
+{% include "dashboard/log.html" with logs=directory.collectiondirectorylogmessage_set.all %}
 
 {% endblock %}
