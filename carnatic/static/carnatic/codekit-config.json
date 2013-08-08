@@ -13,17 +13,6 @@
       "initialSize" : 3200,
       "fileType" : 8192
     },
-    "\/js\/plugins-ck.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/js\/plugins-ck.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 0,
-      "outputAbbreviatedPath" : "\/js\/plugins-ck-ck.js",
-      "fileType" : 64
-    },
     "\/js\/vendor\/simple-slider.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -46,6 +35,17 @@
       "initialSize" : 1418,
       "fileType" : 4096
     },
+    "\/js\/plugins-ck.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/js\/plugins-ck.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 0,
+      "outputAbbreviatedPath" : "\/js\/plugins-ck-ck.js",
+      "fileType" : 64
+    },
     "\/img\/develop\/artist_4.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -65,18 +65,7 @@
       "inputAbbreviatedPath" : "\/img\/userArrow.png",
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/userArrow.png",
-      "initialSize" : 262,
-      "fileType" : 8192
-    },
-    "\/img\/closeFilter.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/closeFilter.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/closeFilter.png",
-      "initialSize" : 699,
+      "initialSize" : 569,
       "fileType" : 8192
     },
     "\/css\/mixins.less" : {
@@ -91,6 +80,17 @@
       "strictImports" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/img\/closeFilter.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/closeFilter.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/closeFilter.png",
+      "initialSize" : 699,
+      "fileType" : 8192
     },
     "\/js\/vendor\/modernizr-2.6.2.min.js" : {
       "ignoreWasSetByUser" : 0,
@@ -133,7 +133,7 @@
       "inputAbbreviatedPath" : "\/img\/capcal.png",
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/capcal.png",
-      "initialSize" : 227,
+      "initialSize" : 228,
       "fileType" : 8192
     },
     "\/img\/disc1.png" : {
@@ -233,17 +233,6 @@
       "outputAbbreviatedPath" : "\/js\/vendor\/jquery-1.9.1.min-ck.js",
       "fileType" : 64
     },
-    "\/img\/stopButton.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/stopButton.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/stopButton.png",
-      "initialSize" : 6322,
-      "fileType" : 8192
-    },
     "\/css\/main.less" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -256,6 +245,17 @@
       "strictImports" : 0,
       "fileType" : 1,
       "debugStyle" : 0
+    },
+    "\/img\/stopButton.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/stopButton.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/stopButton.png",
+      "initialSize" : 6322,
+      "fileType" : 8192
     },
     "\/img\/smallPlay.png" : {
       "ignoreWasSetByUser" : 0,
@@ -576,17 +576,6 @@
       "initialSize" : 6922,
       "fileType" : 8192
     },
-    "\/img\/develop\/instrument_3.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
-      "initialSize" : 23154,
-      "fileType" : 8192
-    },
     "\/img\/icon_search.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -596,6 +585,17 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/icon_search.png",
       "initialSize" : 761,
+      "fileType" : 8192
+    },
+    "\/img\/develop\/instrument_3.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/develop\/instrument_3.png",
+      "initialSize" : 23154,
       "fileType" : 8192
     },
     "\/img\/simiMark.png" : {
@@ -650,7 +650,7 @@
       "inputAbbreviatedPath" : "\/img\/folButton.png",
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/folButton.png",
-      "initialSize" : 4684,
+      "initialSize" : 3298,
       "fileType" : 8192
     },
     "\/img\/develop\/Waveform_markers.jpg" : {
@@ -686,17 +686,6 @@
       "initialSize" : 278,
       "fileType" : 8192
     },
-    "\/img\/raaga.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/raaga.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/raaga.png",
-      "initialSize" : 3827,
-      "fileType" : 8192
-    },
     "\/img\/develop\/raaga.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -706,6 +695,17 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/develop\/raaga.png",
       "initialSize" : 3166,
+      "fileType" : 8192
+    },
+    "\/img\/raaga.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/raaga.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/raaga.png",
+      "initialSize" : 3827,
       "fileType" : 8192
     },
     "\/js\/backbone.min.js" : {
@@ -785,6 +785,17 @@
       "initialSize" : 4549,
       "fileType" : 8192
     },
+    "\/img\/link.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/link.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/link.png",
+      "initialSize" : 324,
+      "fileType" : 8192
+    },
     "\/img\/develop\/artist_1.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -794,17 +805,6 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/develop\/artist_1.jpg",
       "initialSize" : 1978,
-      "fileType" : 4096
-    },
-    "\/img\/develop\/Waveform.jpg" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/develop\/Waveform.jpg",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/develop\/Waveform.jpg",
-      "initialSize" : 193156,
       "fileType" : 4096
     },
     "\/css\/variables.less" : {
@@ -820,16 +820,16 @@
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/img\/link.png" : {
+    "\/img\/develop\/Waveform.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/link.png",
+      "inputAbbreviatedPath" : "\/img\/develop\/Waveform.jpg",
       "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/link.png",
-      "initialSize" : 324,
-      "fileType" : 8192
+      "outputAbbreviatedPath" : "\/img\/develop\/Waveform.jpg",
+      "initialSize" : 193156,
+      "fileType" : 4096
     },
     "\/img\/develop\/Pitch.jpg" : {
       "ignoreWasSetByUser" : 0,
@@ -872,7 +872,7 @@
       "inputAbbreviatedPath" : "\/img\/simdegra.png",
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/simdegra.png",
-      "initialSize" : 223,
+      "initialSize" : 199,
       "fileType" : 8192
     },
     "\/img\/develop\/wave_1.png" : {
@@ -897,17 +897,6 @@
       "initialSize" : 6517,
       "fileType" : 8192
     },
-    "\/img\/artist.jpg" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/artist.jpg",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/artist.jpg",
-      "initialSize" : 11517,
-      "fileType" : 4096
-    },
     "\/img\/revButton_hover.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -918,6 +907,17 @@
       "outputAbbreviatedPath" : "\/img\/revButton_hover.png",
       "initialSize" : 4039,
       "fileType" : 8192
+    },
+    "\/img\/artist.jpg" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/artist.jpg",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/artist.jpg",
+      "initialSize" : 11517,
+      "fileType" : 4096
     },
     "\/img\/develop\/track.png" : {
       "ignoreWasSetByUser" : 0,
@@ -963,6 +963,17 @@
       "outputAbbreviatedPath" : "\/js\/vendor\/jquery-ui-1.10.1.custom.min-ck.js",
       "fileType" : 64
     },
+    "\/img\/controlBackground.jpg" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/controlBackground.jpg",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/controlBackground.jpg",
+      "initialSize" : 879,
+      "fileType" : 4096
+    },
     "\/img\/artist1.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -972,6 +983,17 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/artist1.jpg",
       "initialSize" : 1792,
+      "fileType" : 4096
+    },
+    "\/img\/develop\/taala.jpg" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/develop\/taala.jpg",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/develop\/taala.jpg",
+      "initialSize" : 9049,
       "fileType" : 4096
     },
     "\/img\/noisy.png" : {
@@ -985,26 +1007,6 @@
       "initialSize" : 14972,
       "fileType" : 8192
     },
-    "\/img\/develop\/taala.jpg" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/develop\/taala.jpg",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/develop\/taala.jpg",
-      "initialSize" : 9049,
-      "fileType" : 4096
-    },
-    "\/css\/main.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/css\/main.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
-    },
     "\/img\/formSectionOpen.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1015,6 +1017,15 @@
       "outputAbbreviatedPath" : "\/img\/formSectionOpen.png",
       "initialSize" : 710,
       "fileType" : 8192
+    },
+    "\/css\/main.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/css\/main.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/img\/folButton_hover.png" : {
       "ignoreWasSetByUser" : 0,
@@ -1027,17 +1038,6 @@
       "initialSize" : 4028,
       "fileType" : 8192
     },
-    "\/img\/plButton.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/plButton.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/plButton.png",
-      "initialSize" : 5796,
-      "fileType" : 8192
-    },
     "\/css\/ui-lightness\/images\/ui-bg_glass_100_fdf5ce_1x400.png" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1047,6 +1047,17 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/css\/ui-lightness\/images\/ui-bg_glass_100_fdf5ce_1x400.png",
       "initialSize" : 348,
+      "fileType" : 8192
+    },
+    "\/img\/plButton.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/plButton.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/plButton.png",
+      "initialSize" : 5796,
       "fileType" : 8192
     },
     "\/js\/main.js" : {
@@ -1082,17 +1093,6 @@
       "initialSize" : 18210,
       "fileType" : 8192
     },
-    "\/img\/develop\/artist_3.jpg" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/develop\/artist_3.jpg",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/develop\/artist_3.jpg",
-      "initialSize" : 1679,
-      "fileType" : 4096
-    },
     "\/img\/artist3.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1102,6 +1102,17 @@
       "processed" : 0,
       "outputAbbreviatedPath" : "\/img\/artist3.jpg",
       "initialSize" : 1454,
+      "fileType" : 4096
+    },
+    "\/img\/develop\/artist_3.jpg" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/develop\/artist_3.jpg",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/develop\/artist_3.jpg",
+      "initialSize" : 1679,
       "fileType" : 4096
     },
     "\/img\/headerBackground.png" : {
@@ -1126,17 +1137,6 @@
       "initialSize" : 16197,
       "fileType" : 4096
     },
-    "\/img\/revButton.png" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/img\/revButton.png",
-      "processed" : 0,
-      "outputAbbreviatedPath" : "\/img\/revButton.png",
-      "initialSize" : 4629,
-      "fileType" : 8192
-    },
     "\/img\/develop\/concert.jpg" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1147,6 +1147,17 @@
       "outputAbbreviatedPath" : "\/img\/develop\/concert.jpg",
       "initialSize" : 16197,
       "fileType" : 4096
+    },
+    "\/img\/revButton.png" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/img\/revButton.png",
+      "processed" : 0,
+      "outputAbbreviatedPath" : "\/img\/revButton.png",
+      "initialSize" : 3333,
+      "fileType" : 8192
     },
     "\/img\/tabBack.png" : {
       "ignoreWasSetByUser" : 0,
