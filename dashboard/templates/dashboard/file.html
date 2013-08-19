@@ -10,22 +10,10 @@
     </span>
 </h2>
 
-
-<h3>File-specific checks</h3>
-
-<h4>Current state</h4>
-{{file.get_current_state}}
-
-<h4>Pending tests</h4>
-<table>
-    <tr><th>Checker</th><th>Status</th></tr>
-    {% for r in pendingtest %}
-    <tr><td>({{r.id}}) {{r.checker.name}}</td>
-        <td>
-            <img src="/static/dashboard/img/{{r.get_status_icon}}" title="{{r.get_status_desc}}" />
-    </td></tr>
-    {% endfor %}
-</table>
+<div class="topbox">
+    <div class="topheader">Current state</div>
+    {{file.get_current_state}}
+</div>
 
 <h4>Complete tests</h4>
 <table>
