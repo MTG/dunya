@@ -1,0 +1,26 @@
+{% extends "dashboard/base.html" %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $(".delete img").click(function(e) {
+            console.debug(e);
+            console.debug(this);
+        });
+    });
+</script>
+{% endblock %}
+
+{% block wrap %}
+
+<h2>Carnatic Raagas</h2>
+{% for r in raagas %}
+<li><div data-raaga="{{r.id}}">{{r.name}}<span class="delete"><img src="/static/dashboard/img/delete.png"/></span><span class="add"><img src="/static/dashboard/img/add.png"/></span></div>
+  <ul>
+  {% for a in r.aliases.all %}
+    <li>{{a.name}}
+{% endfor %}
+</ul>
+{% endfor %}
+
+{% endblock %}

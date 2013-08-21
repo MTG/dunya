@@ -11,6 +11,8 @@ import os
 import importlib
 import json
 
+import carnatic
+
 @login_required
 def index(request):
     if request.method == 'POST':
@@ -162,3 +164,21 @@ def directory(request, dirid):
         ret["artistname"] = list(artistname)[0]
         ret["artistid"] = list(artistids)[0]
     return render(request, 'dashboard/directory.html', ret)
+
+@login_required
+def raagas(request):
+    raagas = carnatic.models.Raaga.objects.all()
+    ret = {"raagas": raagas}
+    return render(request, 'dashboard/raagas.html', ret)
+
+@login_required
+def taalas(request):
+    taalas = carnatic.models.Taala.objects.all()
+    ret = {"taalas": taalas}
+    return render(request, 'dashboard/taalas.html', ret)
+
+@login_required
+def instruments(request):
+    instruments = carnatic.models.Instrument.objects.all()
+    ret = {"instruments": instruments}
+    return render(request, 'dashboard/instruments.html', ret)
