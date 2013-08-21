@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 
 from dashboard import models
 from dashboard import forms
@@ -10,6 +11,7 @@ import os
 import importlib
 import json
 
+@login_required
 def index(request):
     if request.method == 'POST':
         form = forms.AddCollectionForm(request.POST)
@@ -29,6 +31,7 @@ def index(request):
     ret = {'form': form, 'collections': collections}
     return render(request, 'dashboard/index.html', ret)
 
+@login_required
 def collection(request, uuid):
     c = get_object_or_404(models.Collection, pk=uuid)
 
@@ -47,6 +50,7 @@ def collection(request, uuid):
     ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
     return render(request, 'dashboard/collection.html', ret)
 
+@login_required
 def release(request, releaseid):
     release = get_object_or_404(models.MusicbrainzRelease, pk=releaseid)
 
@@ -79,6 +83,7 @@ def release(request, releaseid):
     ret = {"release": release, "files": files, "pendingtest": pendingtest, "finishedtest": finishedtest, "log_messages": log}
     return render(request, 'dashboard/release.html', ret)
 
+@login_required
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
     pendingtest = thefile.filestatus_set.filter(status__in=('n', 's')).all()
@@ -101,6 +106,7 @@ def file(request, fileid):
     ret = {"file": thefile, "pendingtest": pendingtest, "finishedtest": finishedtest}
     return render(request, 'dashboard/file.html', ret)
 
+@login_required
 def directory(request, dirid):
     """ A directory that wasn't matched to a release in the collection.
     This could be because it has no release tags, or the release isn't in
