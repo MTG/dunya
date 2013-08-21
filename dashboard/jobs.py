@@ -25,30 +25,39 @@ def import_release(releasepk):
     # do recording/file-specific checks
     # Import files to docserver
 
+def import_all_releases(collection):
+    pass
+    # Get all releases that haven't been imported
+    # call import_release(therelease)
+
 def get_musicbrainz_release_for_dir(dirname):
     """ Get a unique list of all the musicbrainz release IDs that
     are in tags in mp3 files in the given directory.
     """
     release_ids = set()
-    for fname in os.listdir(dirname):
+    for fname in _get_mp3_files(os.listdir(dirname)):
         fpath = os.path.join(dirname, fname)
-        if compmusic.is_mp3_file(fpath):
-            meta = compmusic.file_metadata(fpath)
-            rel = meta["meta"]["releaseid"]
-            if rel:
-                release_ids.add(rel)
+        meta = compmusic.file_metadata(fpath)
+        rel = meta["meta"]["releaseid"]
+        if rel:
+            release_ids.add(rel)
     return list(release_ids)
 
 def _get_mp3_files(files):
-    """ See if a list of files consists only of mp3 files """
+    """ Take a list of files and return only the mp3 files """
     # TODO: This should be any audio file
     # TODO: replace with util method
     return [f for f in files if os.path.splitext(f)[1].lower() == ".mp3"]
 
 @celery.task(ignore_result=True)
 def update_collection(collectionid):
-    """ Delete releases that have been removed from the collection
-        and add new releases """
+    """ Sync the contents of a collection on musicbrainz.org to our local
+        database.
+
+        If new releases have been added, put them in our local database.
+        If releases have been removed, remove referenec to them in or
+        database.
+    """
     found_releases = compmusic.get_releases_in_collection(collectionid)
     coll = models.Collection.objects.get(pk=collectionid)
     existing_releases = [r.mbid for r in coll.musicbrainzrelease_set.all()]
@@ -67,23 +76,32 @@ def update_collection(collectionid):
         coll.musicbrainzrelease_set.filter(mbid=relid).delete()
 
 def _match_directory_to_release(collectionid, root):
+    """ Try and match a single directory containing audio files to a release
+        that exists in the given collection.
+
+        collectionid: the ID of the collection we want the directory to be in
+        root: the root path of the directory containing audio files
+    """
     coll = models.Collection.objects.get(pk=collectionid)
     collectionroot = coll.root_directory
-    rels = get_musicbrainz_release_for_dir(root)
     print root
-    print rels
     print "======="
+    # Remove the path to the collection from the path to the files (we only store relative paths)
     if not collectionroot.endswith("/"):
         collectionroot += "/"
     if root.startswith(collectionroot):
         # This should always be true since we scan from the collection root
         shortpath = root[len(collectionroot):]
+    else:
+        shortpath = root
+    # Try and find the musicbrainz release for the files in the directory
     cd, created = models.CollectionDirectory.objects.get_or_create(collection=coll, path=shortpath)
+    rels = get_musicbrainz_release_for_dir(root)
     if len(rels) == 1:
         releaseid = rels[0]
         try:
             therelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
-            cd.musicbrainzrelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
+            cd.musicbrainzrelease = therelease
             cd.save()
             cd.add_log_message("Successfully matched to a release", None)
 
@@ -98,10 +116,10 @@ def _match_directory_to_release(collectionid, root):
     else:
         cd.add_log_message("More than one release found in ID3 tags", None)
 
-
-
 @celery.task(ignore_result=True)
 def scan_and_link(collectionid):
+    """ Scan the root directory of a collection and see 
+    """
     """ Re-scan the directory for a release. Add & link new directories,
         Remove directories that have been deleted,
         Try and find a match for releases that didn't have a match.
@@ -121,9 +139,6 @@ def scan_and_link(collectionid):
     to_remove = set(existing_directories) - set(found_directories)
     to_add = set(found_directories) - set(existing_directories)
 
-    print "to_add", to_add
-    print "to_remove", to_remove
-
     for d in to_add:
         _match_directory_to_release(collectionid, d)
 
@@ -133,10 +148,10 @@ def scan_and_link(collectionid):
         shortpath = root[len(collectionroot):]
         coll.collectiondirectory_set.get(path=shortpath).delete()
 
-    # TODO: This is the same code as `rematch_unknown_directory`, deduplicate?
+    # For every CollectionDirectory that isn't matched to a MusicbrainzRelease,
+    # try and match it
     cds = coll.collectiondirectory_set.filter(musicbrainzrelease__isnull=True)
     for cd in cds:
-        print "trying to re-match", cd
         _match_directory_to_release(coll.id, cd.full_path)
 
 @celery.task(ignore_result=True)

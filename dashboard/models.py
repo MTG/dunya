@@ -85,11 +85,6 @@ class CollectionState(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.state_name, self.state_date)
 
-class Test(models.Model):
-    def __init__(self, **kwargs):
-        import django.db
-        raise django.db.IntegrityError("oops")
-
 class Collection(models.Model):
 
     objects = CollectionManager()
@@ -330,55 +325,55 @@ class CollectionFile(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard-file', args=[int(self.id)])
 
-class FileLogMessage(models.Model):
+class CollectionFileLogMessage(models.Model):
     """ A message that a completeness checker can add to a CollectionFile """
-    recording = models.ForeignKey(CollectionFile)
+    collectionfile = models.ForeignKey(CollectionFile)
     checker = models.ForeignKey(CompletenessChecker)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
-class FileStatus(models.Model):
+class CollectionFileResult(models.Model):
     """ The result of running a single completeness checker
     on a single file. The a completeness checker either returns 
     True or False.
     """
-    STATUS_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
+    RESULT_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
     datetime = models.DateTimeField(default=django.utils.timezone.now)
-    file = models.ForeignKey(CollectionFile, blank=True, null=True)
+    collectionfile = models.ForeignKey(CollectionFile, blank=True, null=True)
     checker = models.ForeignKey(CompletenessChecker)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='n')
+    result = models.CharField(max_length=10, choices=RESULT_CHOICE, default='n')
     data = models.TextField(blank=True, null=True)
 
-    def get_status_icon(self):
+    def get_result_icon(self):
         icons = {"n": "stop.png",
                  "s": "time_go.png",
                  "g": "tick.png",
                  "b": "cross.png"
                 }
-        return icons[self.status]
+        return icons[self.result]
 
-    def get_status_desc(self):
-        return dict(self.STATUS_CHOICE)[self.status]
+    def get_result_desc(self):
+        return dict(self.RESULT_CHOICE)[self.result]
 
-class ReleaseStatus(models.Model):
+class MusicbrainzReleaseResult(models.Model):
     """ The result of running a single completeness checker
     on a single release. The a completeness checker either returns 
     True or False.
     """
-    STATUS_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
+    RESULT_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
     datetime = models.DateTimeField(default=django.utils.timezone.now)
-    release = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
+    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     checker = models.ForeignKey(CompletenessChecker)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICE, default='n')
+    result = models.CharField(max_length=10, choices=RESULT_CHOICE, default='n')
     data = models.TextField(blank=True, null=True)
 
-    def get_status_icon(self):
+    def get_result_icon(self):
         icons = {"n": "stop.png",
                  "s": "time_go.png",
                  "g": "tick.png",
                  "b": "cross.png"
                 }
-        return icons[self.status]
+        return icons[self.result]
 
-    def get_status_desc(self):
-        return dict(self.STATUS_CHOICE)[self.status]
+    def get_result_desc(self):
+        return dict(self.RESULT_CHOICE)[self.result]
