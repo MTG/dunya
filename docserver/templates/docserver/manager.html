@@ -1,0 +1,38 @@
+{% extends "dashboard/base.html" %}
+
+{% block wrap %}
+
+<h2>Essentia versions</h2>
+
+{% if essentias %}
+<table><tr><th>Version</th><th>Added at</th></tr>
+    {% for e in essentias %}
+    <tr>
+        <td>{{e.version}}</td>
+        <td>{{e.date_added}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>(none)
+{% endif %}
+<p><a href="{% url 'docserver-addessentia' %}">Add new essentia version</a>
+
+<h2>Extractor modules</h2>
+
+{% if modules %}
+<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Actions</th></tr>
+    {% for m in modules %}
+    <tr>
+        <td>{{m.name}} ({{m.path}})</td>
+        <td>{{m.latest_version}}</td>
+        <td></td>
+        <td>Scan all stuff<br>Get new version</td>
+    </tr>
+    {% endfor %}
+{% else %}
+<p>(none)
+{% endif %}
+<p><a href="{% url 'docserver-addmodule' %}">Add new module</a>
+
+{% endblock %}

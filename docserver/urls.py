@@ -10,7 +10,13 @@ urlpatterns = patterns('',
     url(r'^collections$', views.CollectionList.as_view(), name='collection-list'),
     url(r'^(?P<cslug>[^/]+)$', views.CollectionDetail.as_view(), name='collection-detail'),
     url(r'^(?P<cslug>[^/]+)/%s$' % uuid_match, views.DocumentDetail.as_view(), name='ds-document'),
-    url(r'^(?P<cslug>[^/]+)/%s/(?P<ftype>[a-z0-9]+)$' % uuid_match, views.download, name='ds-download')
+    url(r'^(?P<cslug>[^/]+)/%s/(?P<ftype>[a-z0-9]+)$' % uuid_match, views.download, name='ds-download'),
+
+    # Essentia management
+    url(r'manager/addessentia/', views.addessentia, name='docserver-addessentia'),
+    url(r'manager/addmodule', views.addmodule, name='docserver-addmodule'),
+    url(r'manager/module', views.module, name='docserver-module'),
+    url(r'manager/', views.manager, name='docserver-manager'),
 )
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

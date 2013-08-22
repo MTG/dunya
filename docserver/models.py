@@ -1,6 +1,7 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from rest_framework import serializers
+import django.utils.timezone
 
 import uuid
 
@@ -82,3 +83,64 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = File
         fields = ('document', 'file_type', 'path', 'external_identifier')
+
+
+
+# Essentia management stuff
+
+class EssentiaVersion(models.Model):
+    version = models.CharField(max_length=200)
+    sha1 = models.CharField(max_length=200)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
+
+    def __unicode__(self):
+        return "Essentia %s (%s)" % (self.version, self.sha1)
+
+class WorkerMachine(models.Model):
+    name = models.CharField(max_length=200)
+    hostname = models.CharField(max_length=200)
+    moduleversions = models.ManyToManyField('ModuleVersion', through='WorkerMachineModuleVersion')
+    essentiaversions = models.ManyToManyField('EssentiaVersion', through='WorkerMachineEssentiaVersion')
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.name, self.hostname)
+
+class WorkerMachineEssentiaVersion(models.Model):
+    essentiaversion = models.ForeignKey(EssentiaVersion)
+    workermachine = models.ForeignKey(WorkerMachine)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
+
+class Module(models.Model):
+    name = models.CharField(max_length=200)
+    path = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.name, self.path)
+
+    def latest_version(self):
+        versions = self.moduleversion_set.all()
+        if len(versions):
+            versions = sorted(versions, reverse=True)
+            return versions[0].version
+        else:
+            return "(none)"
+
+class ModuleVersion(models.Model):
+    module = models.ForeignKey(Module)
+    version = models.CharField(max_length=10)
+
+    def __unicode__(self):
+        return "v%s for %s" % (self.version, self.module)
+
+class WorkerMachineModuleVersion(models.Model):
+    workermachine = models.ForeignKey(WorkerMachine)
+    moduleversion = models.ForeignKey(ModuleVersion)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
+
+class RunResult(models.Model):
+    date = models.DateTimeField(default=django.utils.timezone.now)
+    essentiaversion = models.ForeignKey(EssentiaVersion)
+    # TODO: Do we have a 'filetype' for each moduleversion? or just a single one?
+    file = models.ForeignKey(File)
+    workermachine = models.ForeignKey(WorkerMachine)
+    moduleversion = models.ForeignKey(ModuleVersion)
