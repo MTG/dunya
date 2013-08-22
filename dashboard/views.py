@@ -64,9 +64,9 @@ def release(request, releaseid):
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.all()
 
-    pendingtest = release.releasestatus_set.filter(status__in=('n', 's')).all()
+    pendingtest = release.musicbrainzreleaseresult_set.filter(result__in=('n', 's')).all()
 
-    finished = release.releasestatus_set.filter(status__in=('g', 'b')).all()
+    finished = release.musicbrainzreleaseresult_set.filter(result__in=('g', 'b')).all()
     finishedtest = []
     for f in finished:
         clsname = f.checker.module
@@ -88,9 +88,9 @@ def release(request, releaseid):
 @login_required
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
-    pendingtest = thefile.filestatus_set.filter(status__in=('n', 's')).all()
+    pendingtest = thefile.collectionfileresult_set.filter(result__in=('n', 's')).all()
 
-    finished = thefile.filestatus_set.filter(status__in=('g', 'b')).all()
+    finished = thefile.collectionfileresult_set.filter(result__in=('g', 'b')).all()
     finishedtest = []
     for f in finished:
         clsname = f.checker.module
