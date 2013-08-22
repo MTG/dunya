@@ -169,6 +169,37 @@ def directory(request, dirid):
 def raagas(request):
     raagas = carnatic.models.Raaga.objects.all()
     ret = {"raagas": raagas}
+    if request.method == 'POST':
+        # Add aliases
+        for r in raagas:
+            isadd = request.POST.get("raaga-%s-alias" % r.id)
+            if isadd is not None:
+                carnatic.models.RaagaAlias.objects.create(raaga=r, name=isadd)
+        # Delete alias
+        for a in carnatic.models.RaagaAlias.objects.all():
+            isdel = request.POST.get("alias-rm-%s" % a.id)
+            if isdel is not None:
+                a.delete()
+
+        # Add new raaga
+        refresh = False
+        newraaga = request.POST.get("newraaga")
+        if newraaga is not None and newraaga != "":
+            refresh = True
+            carnatic.models.Raaga.objects.create(name=newraaga)
+        # Delete raaga
+        for r in raagas:
+            isdel = request.POST.get("delete-raaga-%s" % r.id)
+            if isdel is not None:
+                refresh = True
+                r.delete()
+        if refresh:
+            raagas = carnatic.models.Raaga.objects.all()
+    else:
+        newraaga = request.GET.get("newraaga")
+        if newraaga:
+            ret["newraaga"] = newraaga
+
     return render(request, 'dashboard/raagas.html', ret)
 
 @login_required
