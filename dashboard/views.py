@@ -167,12 +167,17 @@ def directory(request, dirid):
 
 @login_required
 def raagas(request):
+    # TODO: Raaga/taala/instrument is all duplicated code!
     raagas = carnatic.models.Raaga.objects.all()
-    ret = {"raagas": raagas}
+    ret = {"items": raagas,
+           "entityn": "Raaga",
+           "entitynpl": "Raagas",
+           "entityurl": "dashboard-raagas",
+           }
     if request.method == 'POST':
         # Add aliases
         for r in raagas:
-            isadd = request.POST.get("raaga-%s-alias" % r.id)
+            isadd = request.POST.get("item-%s-alias" % r.id)
             if isadd is not None:
                 carnatic.models.RaagaAlias.objects.create(raaga=r, name=isadd)
         # Delete alias
@@ -183,33 +188,108 @@ def raagas(request):
 
         # Add new raaga
         refresh = False
-        newraaga = request.POST.get("newraaga")
+        newraaga = request.POST.get("newname")
         if newraaga is not None and newraaga != "":
             refresh = True
             carnatic.models.Raaga.objects.create(name=newraaga)
         # Delete raaga
         for r in raagas:
-            isdel = request.POST.get("delete-raaga-%s" % r.id)
+            isdel = request.POST.get("delete-item-%s" % r.id)
             if isdel is not None:
                 refresh = True
                 r.delete()
         if refresh:
             raagas = carnatic.models.Raaga.objects.all()
+            ret["items"] = raagas
     else:
-        newraaga = request.GET.get("newraaga")
+        newraaga = request.GET.get("newname")
         if newraaga:
-            ret["newraaga"] = newraaga
+            ret["newname"] = newraaga
 
-    return render(request, 'dashboard/raagas.html', ret)
+    return render(request, 'dashboard/raagataala.html', ret)
 
 @login_required
 def taalas(request):
     taalas = carnatic.models.Taala.objects.all()
-    ret = {"taalas": taalas}
-    return render(request, 'dashboard/taalas.html', ret)
+    ret = {"items": taalas,
+           "entityn": "Taala",
+           "entitynpl": "Taalas",
+           "entityurl": "dashboard-taalas",
+           }
+    if request.method == 'POST':
+        # Add aliases
+        for t in taalas:
+            isadd = request.POST.get("item-%s-alias" % t.id)
+            if isadd is not None:
+                carnatic.models.TaalaAlias.objects.create(taala=t, name=isadd)
+        # Delete alias
+        for a in carnatic.models.TaalaAlias.objects.all():
+            isdel = request.POST.get("alias-rm-%s" % a.id)
+            if isdel is not None:
+                a.delete()
+
+        # Add new taala
+        refresh = False
+        newtaala = request.POST.get("newname")
+        if newtaala is not None and newtaala != "":
+            refresh = True
+            carnatic.models.Taala.objects.create(name=newtaala)
+        # Delete taala
+        for t in taalas:
+            isdel = request.POST.get("delete-item-%s" % t.id)
+            if isdel is not None:
+                refresh = True
+                t.delete()
+        if refresh:
+            taalas = carnatic.models.Taala.objects.all()
+            ret["items"] = taalas
+    else:
+        newtaala = request.GET.get("newname")
+        if newtaala:
+            ret["newname"] = newtaala
+
+    return render(request, 'dashboard/raagataala.html', ret)
 
 @login_required
 def instruments(request):
+
     instruments = carnatic.models.Instrument.objects.all()
-    ret = {"instruments": instruments}
-    return render(request, 'dashboard/instruments.html', ret)
+
+    ret = {"items": instruments,
+           "entityn": "Instrument",
+           "entitynpl": "Instruments",
+           "entityurl": "dashboard-instruments",
+           }
+    if request.method == 'POST':
+        # Add aliases
+        for i in instruments:
+            isadd = request.POST.get("item-%s-alias" % i.id)
+            if isadd is not None:
+                carnatic.models.InstrumentAlias.objects.create(instrument=i, name=isadd)
+        # Delete alias
+        for a in carnatic.models.InstrumentAlias.objects.all():
+            isdel = request.POST.get("alias-rm-%s" % a.id)
+            if isdel is not None:
+                a.delete()
+
+        # Add new instrument
+        refresh = False
+        newinstrument = request.POST.get("newname")
+        if newinstrument is not None and newinstrument != "":
+            refresh = True
+            carnatic.models.Instrument.objects.create(name=newinstrument)
+        # Delete instrument
+        for i in instruments:
+            isdel = request.POST.get("delete-item-%s" % i.id)
+            if isdel is not None:
+                refresh = True
+                i.delete()
+        if refresh:
+            instruments = carnatic.models.Instrument.objects.all()
+            ret["items"] = instruments
+    else:
+        newinstrument = request.GET.get("newname")
+        if newinstrument:
+            ret["newname"] = newinstrument
+
+    return render(request, 'dashboard/raagataala.html', ret)
