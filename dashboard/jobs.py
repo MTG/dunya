@@ -7,6 +7,7 @@ from dashboard.log import logger
 import carnatic
 import compmusic
 import data
+import docserver
 
 import completeness
 import populate_images
@@ -14,23 +15,44 @@ import populate_images
 @celery.task()
 def import_release(releasepk):
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
-    release.start_state()
+    release.set_state_importing()
+
+    # 1. Import release to dunya database
     ri = ReleaseImporter(release.collection.id)
     ri.import_release(release.mbid)
-    release.try_finish_state()
-    # Import the data
-    # Do release-specific checks
-    # Match each file to the recordings in the release
-    # -- can be more than 1 directory per release
-    # do recording/file-specific checks
-    # Import files to docserver
 
-def import_all_releases(collection):
-    pass
-    # Get all releases that haven't been imported
-    # call import_release(therelease)
+    # 2. Run release checkers
+    rcheckers = models.CompletenessChecker.objects.filter(type='r')
+    for check in rcheckers:
+        check.do_check(release.id)
 
-def get_musicbrainz_release_for_dir(dirname):
+    cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
+    # 4. Run file checkers
+    fcheckers = models.CompletenessChecker.objects.filter(type='f')
+    for cfile in cfiles:
+        # 4a. Check file
+        for check in fcheckers:
+            check.do_check(cfile.id)
+        # 4b. Import file to docserver
+        try:
+            doc = docserver.models.Document.objects.get_by_external_id(release.id)
+            docserver.util.docserver_add_file(doc.id, 'mp3', cfile.path)
+        except docserver.models.Document.DoesNotExist:
+            # TODO: title and alternate mbid
+            docserver.util.docserver_add_document(release.collection.id, 'mp3', 'title', cfile.path, 'mbid')
+
+        cfile.set_state_finished()
+
+    release.set_state_finished()
+
+def import_all_releases(collectionid):
+    collection = models.Collection.objects.get(pk=collectionid)
+    collection.set_state_importing()
+    for r in rs:
+        import_release(r.id)
+    collection.set_state_imported()
+
+def _get_musicbrainz_release_for_dir(dirname):
     """ Get a unique list of all the musicbrainz release IDs that
     are in tags in mp3 files in the given directory.
     """
@@ -55,7 +77,7 @@ def update_collection(collectionid):
         database.
 
         If new releases have been added, put them in our local database.
-        If releases have been removed, remove referenec to them in or
+        If releases have been removed, remove referenes to them in our
         database.
     """
     found_releases = compmusic.get_releases_in_collection(collectionid)
@@ -96,7 +118,7 @@ def _match_directory_to_release(collectionid, root):
         shortpath = root
     # Try and find the musicbrainz release for the files in the directory
     cd, created = models.CollectionDirectory.objects.get_or_create(collection=coll, path=shortpath)
-    rels = get_musicbrainz_release_for_dir(root)
+    rels = _get_musicbrainz_release_for_dir(root)
     if len(rels) == 1:
         releaseid = rels[0]
         try:
@@ -107,7 +129,9 @@ def _match_directory_to_release(collectionid, root):
 
             mp3files = _get_mp3_files(os.listdir(root))
             for f in mp3files:
-                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd)
+                meta = compmusic.file_metadata(os.path.join(root, f))
+                recordingid = meta["meta"].get("recordingid")
+                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid)
 
         except models.MusicbrainzRelease.DoesNotExist:
             cd.add_log_message("Cannot find this directory's release (%s) in the imported releases" % (releaseid, ), None)
@@ -118,11 +142,12 @@ def _match_directory_to_release(collectionid, root):
 
 @celery.task(ignore_result=True)
 def scan_and_link(collectionid):
-    """ Scan the root directory of a collection and see 
-    """
-    """ Re-scan the directory for a release. Add & link new directories,
-        Remove directories that have been deleted,
-        Try and find a match for releases that didn't have a match.
+    """ Scan the root directory of a collection and see if any directories
+    have been added or removed.
+
+    If they've been removed, delete references to them. If they've been
+    added, scan the files for a musicbrainz release id and match them
+    to musicbrainz releases that are part of the collection.
     """
 
     coll = models.Collection.objects.get(pk=collectionid)
@@ -155,17 +180,20 @@ def scan_and_link(collectionid):
         _match_directory_to_release(coll.id, cd.full_path)
 
 @celery.task(ignore_result=True)
-def rematch_unknown_directory(directoryid):
-    cd = models.CollectionDirectory.objects.get(pk=directoryid)
+def rematch_unknown_directory(collectiondirectory_id):
+    """ Try and match a CollectionDirectory to a release in the collection. """
+    cd = models.CollectionDirectory.objects.get(pk=collectiondirectory_id)
     _match_directory_to_release(cd.collection.id, cd.full_path)
 
 @celery.task(ignore_result=True)
 def load_musicbrainz_collection(collectionid):
-    """ Load a musicbrainz collection into the dashboard database.
+    """ Load a musicbrainz collection into the dashboard database
+        and scan collection root to match directories to releases.
     """
     coll = models.Collection.objects.get(pk=collectionid)
-    coll.set_status_importing()
-    releases = compmusic.get_releases_in_collection(collectionid)
-    self.update_collection(collectionid)
+    coll.set_status_scanning()
 
+    self.update_collection(collectionid)
     self.scan_and_link(collectionid)
+
+    coll.set_status_scanned()

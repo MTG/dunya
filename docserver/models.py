@@ -33,15 +33,25 @@ def new_uuid():
     u = uuid.uuid4()
     return str(u)
 
+class DocumentManager(models.Manager):
+    def get_by_external_id(self, external_id):
+        return self.get_query_set().get(external_identifier=external_id)
+
 class Document(models.Model):
     """An item in the collection.
     It has a known type and is part of a collection.
     It can be uniquely identified by a docid.
     It can have an option title and description
     """
+
+    objects = DocumentManager()
+
     collection = models.ForeignKey(Collection, related_name='documents')
     docid = UUIDField(primary_key=True, default=new_uuid)
     title = models.CharField(max_length=200)
+    """If the file is known in a different database, the identifier
+       for the item."""
+    external_identifier = models.CharField(max_length=200, blank=True, null=True)
 
     def get_document_by_fileid(self, fileid):
         """Some files (e.g. recordings) have an external ID
@@ -54,7 +64,7 @@ class DocumentSerializer(serializers.HyperlinkedModelSerializer):
     files = serializers.PrimaryKeyRelatedField(many=True)
     class Meta:
         model = Document
-        fields = {'docid', 'title', 'files'}
+        fields = ('docid', 'title', 'files', 'external_identifier')
 
 class FileType(models.Model):
     extension = models.CharField(max_length=10)
@@ -75,14 +85,11 @@ class File(models.Model):
     file_type = models.ForeignKey(FileType)
     """The path on disk to the file"""
     path = models.CharField(max_length=200)
-    """If the file is known in a different database, the identifier
-       for the item."""
-    external_identifier = models.CharField(max_length=200)
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = File
-        fields = ('document', 'file_type', 'path', 'external_identifier')
+        fields = ('document', 'file_type', 'path')
 
 
 

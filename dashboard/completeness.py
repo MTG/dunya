@@ -23,40 +23,30 @@ class CompletenessBase(object):
         """ Default prepare_view just passes the data through """
         return data
 
-    # the celery task to run.
-    # It returns a boolean indicating the status of the check (True=good)
-    # or a tuple (status, data) where data is a dict that is stored
-    # in the database. Prepare_view knows what to do with the data
+    # The task to run.
+    # It returns a tuple (status, data) where data is a dict that is
+    # stored in the database. Prepare_view knows what to do with the data.
     def task(fileid, releaseid):
         pass
 
-    def _finish_release(releasestatus_id):
-        rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
-        if isinstance(retval, bool):
-            retval, data = (retval, {})
-        else:
-            retval, data = retval
-        status = 'g' if retval else 'b' 
-        rs.status = status
-        rs.data = json.dumps(data)
-        rs.datetime = django.utils.timezone.now()
-        rs.save()
-
-        rs.release.try_finish_state()
-
-    def _finish_file(filestatus_id):
-        fs = models.FileStatus.objects.get(pk=filestatus_id)
-        if isinstance(retval, bool):
-            retval, data = (retval, {})
-        else:
-            retval, data = retval
-        status = 'g' if retval else 'b' 
-        fs.status = status
-        fs.data = json.dumps(data)
-        fs.datetime = django.utils.timezone.now()
-        fs.save()
-
-        fs.file.try_finish_state()
+    def do_check(the_id):
+        result, data = self.task(the_id)
+        if self.type == 'f':
+            thefile = models.CollectionFile.objects.get(pk=the_id)
+            fs = models.CollectionFileStatus.objects.create(collectionfile=thefile)
+            status = 'g' if result else 'b' 
+            fs.status = status
+            fs.data = json.dumps(data)
+            fs.datetime = django.utils.timezone.now()
+            fs.save()
+        elif self.type == 'r':
+            therelease = models.MusicbrainzRelease.objects.get(pk=the_id)
+            rs = models.MusicbrainzReleaseStatus.objects.create(musicbrainzrelease=therelease)
+            status = 'g' if result else 'b' 
+            rs.status = status
+            rs.data = json.dumps(data)
+            rs.datetime = django.utils.timezone.now()
+            rs.save()
 
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
@@ -66,9 +56,9 @@ class RaagaTaalaFile(CompletenessBase):
     templatestub = 'raagataala.html'
     name = 'Recording raaga and taala'
 
-    def task(filestatus_id):
-        fs = models.FileStatus.objects.get(pk=filestatus_id)
-        fpath = fs.file.path
+    def task(collectionfile_id):
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
         meta = compmusic.file_metadata(fpath)
         m = meta["meta"]
         recordingid = m["recordingid"]
@@ -116,9 +106,9 @@ class CoverartFile(CompletenessBase):
     type = 'f'
     name = 'File embedded coverart'
 
-    def task(filestatus_id):
-        fs = models.FileStatus.objects.get(pk=filestatus_id)
-        fpath = fs.file.path
+    def task(collectionfile_id):
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
         art = compmusic.get_coverart(fpath)
         ret = {}
         return (art is not None, ret)
@@ -128,9 +118,8 @@ class ReleaseCoverart(CompletenessBase):
     type = 'r'
     name = 'Cover art archive coverart'
 
-    def task(releasestatus_id):
-        rs = models.ReleaseStatus.objects.get(pk=releasestatus_id)
-        release = rs.release
+    def task(muiscbrainzrelease_id):
+        release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
         mbid = release.id
         coverart = caa.get_coverart_list(mbid)
         ret = {}
@@ -142,9 +131,9 @@ class FileTags(CompletenessBase):
     templatestub = 'filetags.html'
     name = 'File tags'
 
-    def task(filestatus_id):
-        fs = models.FileStatus.objects.get(pk=filestatus_id)
-        fpath = fs.file.path
+    def task(collectionfile_id):
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
         meta = compmusic.file_metadata(fpath)
         complete = True
         data = {}
@@ -178,5 +167,14 @@ class ReleaseRelationships(CompletenessBase):
     type = 'r'
     name = 'Release relationships'
 
-    def task(self, releasestate_id, releaseid, releasedir):
+    def task(musicbrainzrelease_id):
+        pass
+
+class ReleaseToFiles(CompletenessBase):
+    """ Check that all the files we have linked to a release
+        matches the number of recordings in the release. """
+    type = 'r'
+    name = 'Release-file matching'
+
+    def task(musicbrainzrelease_id):
         pass

@@ -73,8 +73,7 @@ class CollectionState(models.Model):
     complete
     """
     collection = models.ForeignKey("Collection")
-    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'),
-            ('s', 'Started'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -152,7 +151,7 @@ class MusicbrainzReleaseState(models.Model):
     processing when all files it is part of have finished.
     """
     musicbrainzrelease = models.ForeignKey("MusicbrainzRelease")
-    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
     
@@ -188,8 +187,17 @@ class MusicbrainzRelease(models.Model):
     def update_state(self, state):
         rs = MusicbrainzReleaseState.objects.create(musicbrainzrelease=self, state=state)
 
-    def start_state(self):
+    def set_state_importing(self):
+        """ Set the state of the release to 'importing'. Also sets
+        the state of all files that are part of this release
+        to importing too
+        """
         self.update_state('s')
+        for f in CollectionFile.objects.get(directory__musicbrainzrelease=self):
+            f.set_state_importing()
+
+    def set_state_finished(self):
+        self.update_state('f')
 
     def try_finish_state(self):
         """ Check the state of all of this release's files, and also
@@ -199,7 +207,6 @@ class MusicbrainzRelease(models.Model):
             files = CollectionFileState.objects.filter(directory__musicbrainzrelease=self).exclude(state=f)
             if not files.count():
                 self.update_state('f')
-        # TODO: Bubble up to the collection
 
     def get_current_state(self):
         states = self.musicbrainzreleasestate_set.order_by('-state_date').all()
@@ -268,7 +275,7 @@ class CollectionFileState(models.Model):
     checkers have completed (regardless of if they are good or bad). """
 
     collectionfile = models.ForeignKey("CollectionFile")
-    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -282,33 +289,34 @@ class CollectionFileState(models.Model):
 class CollectionFile(models.Model):
     """ A single audio file in the collection. A file is part of a
     collection directory.
+    If the directory is matched to a MusicbrainzRelease, then a CollectionFile
+    can also have an optional recordingid set, which references the musicbrainz
+    recording id of the file.
     """
     objects = CollectionFileManager()
 
     name = models.CharField(max_length=255)
     directory = models.ForeignKey(CollectionDirectory)
+    recordingid = UUIDField(null=True)
 
     @property
     def path(self):
         return os.path.join(self.directory.collection.root_directory,
                 self.directory.path, self.name)
 
-    def start_state(self):
+    def set_state_importing(self):
         self.update_state('s')
 
     def __unicode__(self):
         return "%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
 
     def try_finish_state(self):
-        """ Check this file's """
         currentstate = self.get_current_state()
         if currentstate.state == 's':
             # If we're in s and there are no more n or s, then we can
             # change to f
             if not self.filestatus_set.filter(status__in=('n', 's')).count():
                 self.update_state('f')
-        # Bubble up to the directory/release
-        self.directory.musicbrainzrelease.try_finish_state()
 
     def update_state(self, state):
         rs = CollectionFileState.objects.create(collectionfile=self, state=state)
@@ -337,17 +345,15 @@ class CollectionFileResult(models.Model):
     on a single file. The a completeness checker either returns 
     True or False.
     """
-    RESULT_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
+    RESULT_CHOICE = ( ('g', 'Good'), ('b', 'Bad') )
     datetime = models.DateTimeField(default=django.utils.timezone.now)
     collectionfile = models.ForeignKey(CollectionFile, blank=True, null=True)
     checker = models.ForeignKey(CompletenessChecker)
-    result = models.CharField(max_length=10, choices=RESULT_CHOICE, default='n')
+    result = models.CharField(max_length=10, choices=RESULT_CHOICE)
     data = models.TextField(blank=True, null=True)
 
     def get_result_icon(self):
-        icons = {"n": "stop.png",
-                 "s": "time_go.png",
-                 "g": "tick.png",
+        icons = {"g": "tick.png",
                  "b": "cross.png"
                 }
         return icons[self.result]
@@ -360,17 +366,15 @@ class MusicbrainzReleaseResult(models.Model):
     on a single release. The a completeness checker either returns 
     True or False.
     """
-    RESULT_CHOICE = ( ('n', 'Not started'), ('s', 'Started'), ('g', 'Good'), ('b', 'Bad') )
+    RESULT_CHOICE = ( ('g', 'Good'), ('b', 'Bad') )
     datetime = models.DateTimeField(default=django.utils.timezone.now)
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     checker = models.ForeignKey(CompletenessChecker)
-    result = models.CharField(max_length=10, choices=RESULT_CHOICE, default='n')
+    result = models.CharField(max_length=10, choices=RESULT_CHOICE)
     data = models.TextField(blank=True, null=True)
 
     def get_result_icon(self):
-        icons = {"n": "stop.png",
-                 "s": "time_go.png",
-                 "g": "tick.png",
+        icons = {"g": "tick.png",
                  "b": "cross.png"
                 }
         return icons[self.result]
