@@ -23,9 +23,8 @@ def index(request):
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
             new_collection = models.Collection.objects.create(id=coll_id, name=coll_name, root_directory=path)
+            jobs.load_musicbrainz_collection.delay(new_collection.id)
             return HttpResponseRedirect(reverse('dashboard-home'))
-            # TODO: Start job to automatically import files
-            # TODO: create 'not started' status rows for every file and release
     else:
         form = forms.AddCollectionForm()
 
@@ -37,16 +36,11 @@ def index(request):
 def collection(request, uuid):
     c = get_object_or_404(models.Collection, pk=uuid)
 
-    rescandir = request.GET.get("rescandir")
-    rescanmb = request.GET.get("rescanmb")
-    if rescandir is not None:
-        # TODO: celery
-        jobs.scan_and_link(c.id)
-    if rescanmb is not None:
-        # TODO: Should we scan and link after this?
-        jobs.update_collection(c.id)
+    rescan = request.GET.get("rescan")
+    if rescan is not None:
+        jobs.load_musicbrainz_collection.delay(c.id)
 
-    log = models.CollectionLogMessage.objects.filter(collection=c)
+    log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
     releases = models.MusicbrainzRelease.objects.filter(collection=c)
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
     ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
@@ -62,13 +56,11 @@ def release(request, releaseid):
         jobs.import_release(release.id)
 
     files = release.collectiondirectory_set.order_by('path').all()
-    log = release.musicbrainzreleaselogmessage_set.all()
+    log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
 
-    pendingtest = release.musicbrainzreleaseresult_set.filter(result__in=('n', 's')).all()
-
-    finished = release.musicbrainzreleaseresult_set.filter(result__in=('g', 'b')).all()
+    results = release.musicbrainzreleaseresult_set.all()
     finishedtest = []
-    for f in finished:
+    for f in results:
         clsname = f.checker.module
         mod, dot, cls = clsname.rpartition(".")
         i = importlib.import_module(mod)
@@ -81,8 +73,9 @@ def release(request, releaseid):
         finishedtest.append({"checker": f,
                             "data": instance.prepare_view(json.loads(f.data)),
                             "template": template})
+    print "finishedtest", finishedtest
 
-    ret = {"release": release, "files": files, "pendingtest": pendingtest, "finishedtest": finishedtest, "log_messages": log}
+    ret = {"release": release, "files": files, "finishedtest": finishedtest, "log_messages": log}
     return render(request, 'dashboard/release.html', ret)
 
 @login_required

@@ -5,15 +5,16 @@ import re
 
 from dashboard import models
 from dashboard import jobs
+from dashboard import completeness
 
 class Command(BaseCommand):
     help = 'Create database data based on static data defined in code'
 
     def handle(self, *args, **options):
-        prefix = 'dashboard.jobs.'
+        prefix = 'dashboard.completeness.'
         all_classes = []
-        for name, checker in inspect.getmembers(jobs, inspect.isclass):
-            if issubclass(checker, jobs.CompletenessBase) and not name.endswith('CompletenessBase'):
+        for name, checker in inspect.getmembers(completeness, inspect.isclass):
+            if issubclass(checker, completeness.CompletenessBase) and not name.endswith('CompletenessBase'):
                 path = "%s%s" % (prefix, name)
                 all_classes.append(path)
                 if models.CompletenessChecker.objects.filter(module=path).count() == 0:

@@ -3,6 +3,7 @@ import os
 
 from dashboard import models
 from dashboard.log import logger
+from dashboard import import_release
 
 import carnatic
 import compmusic
@@ -12,19 +13,36 @@ import docserver
 import completeness
 import populate_images
 
-@celery.task()
+class DunyaTask(celery.Task):
+    abstract = True
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        theobj = self.ObjectClass.objects.get(pk=args[0])
+        theobj.add_log_message(einfo)
+        theobj.set_status_error()
+
+class CollectionDunyaTask(DunyaTask):
+    ObjectClass = models.Collection
+
+class ReleaseDunyaTask(DunyaTask):
+    ObjectClass = models.MusicbrainzRelease
+
+@celery.task(base=ReleaseDunyaTask)
 def import_release(releasepk):
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
     release.set_state_importing()
+    release.add_log_message("Starting import")
 
     # 1. Import release to dunya database
-    ri = ReleaseImporter(release.collection.id)
+    ri = import_release.ReleaseImporter(release.collection.id)
     ri.import_release(release.mbid)
 
     # 2. Run release checkers
     rcheckers = models.CompletenessChecker.objects.filter(type='r')
     for check in rcheckers:
-        check.do_check(release.id)
+        inst = check.get_instance()
+        release.add_log_message("Running release test %s" % inst.name)
+        inst.do_check(release.id)
 
     cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
     # 4. Run file checkers
@@ -34,13 +52,7 @@ def import_release(releasepk):
         for check in fcheckers:
             check.do_check(cfile.id)
         # 4b. Import file to docserver
-        try:
-            doc = docserver.models.Document.objects.get_by_external_id(release.id)
-            docserver.util.docserver_add_file(doc.id, 'mp3', cfile.path)
-        except docserver.models.Document.DoesNotExist:
-            # TODO: title and alternate mbid
-            docserver.util.docserver_add_document(release.collection.id, 'mp3', 'title', cfile.path, 'mbid')
-
+        docserver.util.docserver_add_mp3(release.collection.id, release.mbid, cfile.path, cfile.recordingid)
         cfile.set_state_finished()
 
     release.set_state_finished()
@@ -185,15 +197,17 @@ def rematch_unknown_directory(collectiondirectory_id):
     cd = models.CollectionDirectory.objects.get(pk=collectiondirectory_id)
     _match_directory_to_release(cd.collection.id, cd.full_path)
 
-@celery.task(ignore_result=True)
+@celery.task(base=CollectionDunyaTask)
 def load_musicbrainz_collection(collectionid):
     """ Load a musicbrainz collection into the dashboard database
         and scan collection root to match directories to releases.
     """
     coll = models.Collection.objects.get(pk=collectionid)
     coll.set_status_scanning()
+    coll.add_log_message("Starting import")
 
-    self.update_collection(collectionid)
-    self.scan_and_link(collectionid)
+    update_collection(collectionid)
+    scan_and_link(collectionid)
 
     coll.set_status_scanned()
+    coll.add_log_message("Import finished")

@@ -5,9 +5,10 @@
     <meta name="google" value="notranslate">
     <title>Dunya{% if title %} :: {{ title }}{% endif %}</title>
     <link rel="stylesheet/less" href="{% static 'dashboard/css/style.less' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/dashboard.css' %}" />
     <script src="{% static 'dashboard/js/less.min.js' %}"></script>
-    <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
     {% block js %}
     {% endblock %}
     {% block css %}

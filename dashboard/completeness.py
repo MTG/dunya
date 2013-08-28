@@ -5,6 +5,7 @@ import os
 import json
 
 from dashboard import models
+
 import carnatic
 import compmusic
 from musicbrainzngs import caa
@@ -26,14 +27,16 @@ class CompletenessBase(object):
     # The task to run.
     # It returns a tuple (status, data) where data is a dict that is
     # stored in the database. Prepare_view knows what to do with the data.
-    def task(fileid, releaseid):
+    def task(self, fileid, releaseid):
         pass
 
-    def do_check(the_id):
+    def do_check(self, the_id):
         result, data = self.task(the_id)
+        thismodule = "%s.%s" % (self.__class__.__module__, self.__class__.__name__)
+        checker = models.CompletenessChecker.objects.get(module=thismodule)
         if self.type == 'f':
             thefile = models.CollectionFile.objects.get(pk=the_id)
-            fs = models.CollectionFileStatus.objects.create(collectionfile=thefile)
+            fs = models.CollectionFileResult.objects.create(collectionfile=thefile, checker=checker)
             status = 'g' if result else 'b' 
             fs.status = status
             fs.data = json.dumps(data)
@@ -41,7 +44,7 @@ class CompletenessBase(object):
             fs.save()
         elif self.type == 'r':
             therelease = models.MusicbrainzRelease.objects.get(pk=the_id)
-            rs = models.MusicbrainzReleaseStatus.objects.create(musicbrainzrelease=therelease)
+            rs = models.MusicbrainzReleaseResult.objects.create(musicbrainzrelease=therelease, checker=checker)
             status = 'g' if result else 'b' 
             rs.status = status
             rs.data = json.dumps(data)
@@ -56,7 +59,7 @@ class RaagaTaalaFile(CompletenessBase):
     templatestub = 'raagataala.html'
     name = 'Recording raaga and taala'
 
-    def task(collectionfile_id):
+    def task(self, collectionfile_id):
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
         fpath = thefile.path
         meta = compmusic.file_metadata(fpath)
@@ -106,7 +109,7 @@ class CoverartFile(CompletenessBase):
     type = 'f'
     name = 'File embedded coverart'
 
-    def task(collectionfile_id):
+    def task(self, collectionfile_id):
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
         fpath = thefile.path
         art = compmusic.get_coverart(fpath)
@@ -118,10 +121,9 @@ class ReleaseCoverart(CompletenessBase):
     type = 'r'
     name = 'Cover art archive coverart'
 
-    def task(muiscbrainzrelease_id):
+    def task(self, musicbrainzrelease_id):
         release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
-        mbid = release.id
-        coverart = caa.get_coverart_list(mbid)
+        coverart = caa.get_coverart_list(release.mbid)
         ret = {}
         return (coverart is not None, ret)
 
@@ -131,7 +133,7 @@ class FileTags(CompletenessBase):
     templatestub = 'filetags.html'
     name = 'File tags'
 
-    def task(collectionfile_id):
+    def task(self, collectionfile_id):
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
         fpath = thefile.path
         meta = compmusic.file_metadata(fpath)
@@ -167,8 +169,8 @@ class ReleaseRelationships(CompletenessBase):
     type = 'r'
     name = 'Release relationships'
 
-    def task(musicbrainzrelease_id):
-        pass
+    def task(self, musicbrainzrelease_id):
+        return (False, {})
 
 class ReleaseToFiles(CompletenessBase):
     """ Check that all the files we have linked to a release
@@ -176,5 +178,5 @@ class ReleaseToFiles(CompletenessBase):
     type = 'r'
     name = 'Release-file matching'
 
-    def task(musicbrainzrelease_id):
-        pass
+    def task(self, musicbrainzrelease_id):
+        return (False, {})

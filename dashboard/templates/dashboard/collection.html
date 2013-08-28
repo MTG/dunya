@@ -18,8 +18,7 @@
 
 <div class="topbox">
     <div class="topheader">Actions</div>
-    <li><a href="?rescandir">Re-scan directories</a>
-    <li><a href="?rescanmb">Re-scan musicbrainz collection</a>
+    <li><a href="?rescan">Re-scan collection</a>
     <p>
     <li>Order by errors first
     <li>Order by unmatched releases first
@@ -29,6 +28,16 @@
 <div class="topbox">
     <div class="topheader">Current State</div>
     {{collection.get_current_state}}
+    {% if collection.has_previous_state %}
+    <div id="morestate">
+        <span id="statehandle"><a href="">Show old states</a></span>
+            <div id="statebox">
+                {% for s in collection.get_previous_states %}
+                    <li>{{s}}
+                {% endfor %}
+            </div>
+    </div>
+    {% endif %}
 </div>
 
 <table><tr><th>Release</th><th>Matched path</th><th>Current status</th><th>Last status at</th></tr>
@@ -40,7 +49,10 @@
                 {{p}}
                 {% if not forloop.last %}, {% endif %}
                 {% endfor %} 
-        </td></tr>
+        </td>
+    <td>{{r.get_current_state}}</td> 
+    <td>{{r.get_current_state_date}}</td>
+    </tr>
 {% endfor %}
 </table>
 

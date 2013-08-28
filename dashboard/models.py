@@ -6,6 +6,7 @@ import django.utils.timezone
 
 import uuid
 import os
+import importlib
 
 class StateCarryingManager(models.Manager):
     """ A model manager that also creates a state entry when a
@@ -68,12 +69,21 @@ class CompletenessChecker(models.Model):
     def __unicode__(self):
         return "%s (%s / %s)" % (self.name, self.module, self.type)
 
+    def get_instance(self):
+        """ Import the class referred to by 'module' and return
+        an instance of it """
+        mod, clsname = self.module.rsplit(".", 1)
+        package = importlib.import_module(mod)
+        cls = getattr(package, clsname)
+        instance = cls()
+        return instance
+
 class CollectionState(models.Model):
     """ A collection is processed when all releases linked to it are
     complete
     """
     collection = models.ForeignKey("Collection")
-    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -105,17 +115,35 @@ class Collection(models.Model):
                 return "yellow"
             elif curr.state == "f":
                 return "green"
-        return "red"
+        return "rscan_and_linked"
 
     def get_current_state(self):
         return self.collectionstate_set.order_by('-state_date').all()[0]
 
-    def set_status_importing(self):
-        CollectionState.objects.create(collection=self, state='i')
+    def has_previous_state(self):
+        return self.collectionstate_set.count() > 1
 
-    def set_status_start(self):
+    def get_previous_states(self):
+        return self.collectionstate_set.order_by('-state_date').all()[1:]
+
+    def update_state(self, state):
+        cs = CollectionState.objects.create(collection=self, state=state)
+
+    def set_status_importing(self):
+        self.update_state('i')
+
+    def set_status_finished(self):
+        self.update_state('f')
+
+    def set_status_scanning(self):
         """ Mark this collection as having its importer started. """
-        CollectionState.objects.create(collection=self, state='s')
+        self.update_state('s')
+
+    def set_status_scanned(self):
+        self.update_state('d')
+
+    def set_status_error(self):
+        self.update_state('e')
 
     def status_can_finish(self):
         """ See if this collection's import can finish.
@@ -151,7 +179,7 @@ class MusicbrainzReleaseState(models.Model):
     processing when all files it is part of have finished.
     """
     musicbrainzrelease = models.ForeignKey("MusicbrainzRelease")
-    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
     
@@ -192,27 +220,24 @@ class MusicbrainzRelease(models.Model):
         the state of all files that are part of this release
         to importing too
         """
-        self.update_state('s')
-        for f in CollectionFile.objects.get(directory__musicbrainzrelease=self):
+        self.update_state('i')
+        for f in CollectionFile.objects.filter(directory__musicbrainzrelease=self):
             f.set_state_importing()
 
     def set_state_finished(self):
         self.update_state('f')
 
-    def try_finish_state(self):
-        """ Check the state of all of this release's files, and also
-            the state of the release-specific jobs. """
-        currentstate = self.get_current_state()
-        if currentstate.state == 's':
-            files = CollectionFileState.objects.filter(directory__musicbrainzrelease=self).exclude(state=f)
-            if not files.count():
-                self.update_state('f')
+    def set_state_error(self):
+        self.update_state('e')
 
     def get_current_state(self):
-        states = self.musicbrainzreleasestate_set.order_by('-state_date').all()
-        if not len(states):
-            raise Exception("eoo, no states")
-        return states[0]
+        return self.musicbrainzreleasestate_set.order_by('-state_date').all()[0]
+
+    def has_previous_state(self):
+        return self.musicbrainzreleasestate_set.count() > 1
+
+    def get_previous_states(self):
+        return self.musicbrainzreleasestate_set.order_by('-state_date').all()[1:]
 
     def add_log_message(self, message, checker=None):
         return MusicbrainzReleaseLogMessage.objects.create(musicbrainzrelease=self, checker=checker, message=message)
@@ -275,7 +300,7 @@ class CollectionFileState(models.Model):
     checkers have completed (regardless of if they are good or bad). """
 
     collectionfile = models.ForeignKey("CollectionFile")
-    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished') )
+    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error') )
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -304,28 +329,29 @@ class CollectionFile(models.Model):
         return os.path.join(self.directory.collection.root_directory,
                 self.directory.path, self.name)
 
-    def set_state_importing(self):
-        self.update_state('s')
-
     def __unicode__(self):
         return "%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
 
-    def try_finish_state(self):
-        currentstate = self.get_current_state()
-        if currentstate.state == 's':
-            # If we're in s and there are no more n or s, then we can
-            # change to f
-            if not self.filestatus_set.filter(status__in=('n', 's')).count():
-                self.update_state('f')
-
     def update_state(self, state):
-        rs = CollectionFileState.objects.create(collectionfile=self, state=state)
+        fs = CollectionFileState.objects.create(collectionfile=self, state=state)
+
+    def set_state_importing(self):
+        self.update_state('i')
+
+    def set_state_finished(self):
+        self.update_state('f')
+
+    def set_state_error(self):
+        self.update_state('e')
 
     def get_current_state(self):
-        states = self.collectionfilestate_set.order_by('-state_date').all()
-        if not len(states):
-            raise Exception("eoo, no states")
-        return states[0]
+        return self.collectionfilestate_set.order_by('-state_date').all()[0]
+
+    def has_previous_state(self):
+        return self.collectionfilestate_set.count() > 1
+
+    def get_previous_states(self):
+        return self.collectionfilestate_set.order_by('-state_date').all()[1:]
 
     def add_log_message(self, message, checker=None):
         return FileLogMessage.objects.create(file=self, checker=checker, message=message)

@@ -15,6 +15,9 @@
     {% for d in release.collectiondirectory_set.all %}
     {{d.full_path}}{% if not forloop.last %},{% endif %}
     {% endfor %}
+    {% if release.mbid %}
+    <li><a href="http://musicbrainz.org/release/{{release.mbid}}">View release on Musicbrainz</a>
+    {% endif %}
 </div>
 
 <div class="topbox">
@@ -25,13 +28,29 @@
 <div class="topbox">
     <div class="topheader">Current state</div>
     {{release.get_current_state}}
+    {% if release.has_previous_state %}
+    <div id="morestate">
+        <span id="statehandle"><a href="">Show old states</a></span>
+            <div id="statebox">
+                {% for s in release.get_previous_states %}
+                    <li>{{s}}
+                {% endfor %}
+            </div>
+    </div>
+    {% endif %}
 </div>
 
-<table><tr><th>File</th><th>Status</th></tr>
+<table><tr><th>File</th><th>Recording ID</th><th>Status</th></tr>
     {% for d in files %}
-    <tr><th>{{d.path}}</th><th></th></tr>
+    <tr><th colspan="3">{{d.path}}</th><th></th></tr>
     {% for f in d.get_file_list %}
-    <tr><td><a href="{{f.get_absolute_url}}">{{f.name}}</a></td><td>{{f.get_current_state}}</td></tr>
+    <tr>
+        <td><a href="{{f.get_absolute_url}}">{{f.name}}</a></td>
+        <td>{% if f.recordingid %}
+            <a href="http://musicbrainz.org/recording/{{f.recordingid}}">{{f.recordingid}}</a>
+        {% endif %}</td>     
+        <td>{{f.get_current_state}}</td>
+    </tr>
     {% endfor %}
     {% endfor %}
 </table>
