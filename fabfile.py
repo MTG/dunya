@@ -17,6 +17,9 @@ def setupdb():
     local("python manage.py migrate docserver")
     local("python manage.py migrate social")
     local("python manage.py mkdunyadata")
+    local("python manage.py mkfiletypes")
+
+
 
 def updatedb():
     """ Run this when someone has committed some changes to the
