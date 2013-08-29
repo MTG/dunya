@@ -65,7 +65,6 @@ class RaagaTaalaFile(CompletenessBase):
         meta = compmusic.file_metadata(fpath)
         m = meta["meta"]
         recordingid = m["recordingid"]
-        print "http://musicbrainz.org/recording/%s" % recordingid
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
         mbrec = mbrec["recording"]
         tags = mbrec.get("tag-list", [])

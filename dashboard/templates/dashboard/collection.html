@@ -1,4 +1,5 @@
 {% extends "dashboard/base.html" %}
+{% block title %}Collection {{collection.name}}{% endblock %}
 
 {% block wrap %}
 
@@ -27,20 +28,20 @@
 
 <div class="topbox">
     <div class="topheader">Current State</div>
-    {{collection.get_current_state}}
+    {{collection.get_current_state.state_name}} ({{collection.get_current_state.state_date|timesince}} ago)
     {% if collection.has_previous_state %}
     <div id="morestate">
         <span id="statehandle"><a href="">Show old states</a></span>
             <div id="statebox">
                 {% for s in collection.get_previous_states %}
-                    <li>{{s}}
+                <li>{{s.state_name}} ({{s.state_date|timesince}} ago)
                 {% endfor %}
             </div>
     </div>
     {% endif %}
 </div>
 
-<table><tr><th>Release</th><th>Matched path</th><th>Current status</th><th>Last status at</th></tr>
+<table><tr><th>Release</th><th>Matched path</th><th>Current status</th></tr>
 {% for r in releases %}
 <tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a></td>
         
@@ -50,8 +51,7 @@
                 {% if not forloop.last %}, {% endif %}
                 {% endfor %} 
         </td>
-    <td>{{r.get_current_state}}</td> 
-    <td>{{r.get_current_state_date}}</td>
+        <td>{{r.get_current_state.state_name}} ({{r.get_current_state.state_date|timesince}} ago)</td> 
     </tr>
 {% endfor %}
 </table>

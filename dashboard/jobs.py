@@ -50,7 +50,8 @@ def import_release(releasepk):
     for cfile in cfiles:
         # 4a. Check file
         for check in fcheckers:
-            check.do_check(cfile.id)
+            inst = check.get_instance()
+            inst.do_check(cfile.id)
         # 4b. Import file to docserver
         docserver.util.docserver_add_mp3(release.collection.id, release.mbid, cfile.path, cfile.recordingid)
         cfile.set_state_finished()
@@ -204,10 +205,10 @@ def load_musicbrainz_collection(collectionid):
     """
     coll = models.Collection.objects.get(pk=collectionid)
     coll.set_status_scanning()
-    coll.add_log_message("Starting import")
+    coll.add_log_message("Starting collection scan")
 
     update_collection(collectionid)
     scan_and_link(collectionid)
 
     coll.set_status_scanned()
-    coll.add_log_message("Import finished")
+    coll.add_log_message("Collection scan finished")

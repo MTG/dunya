@@ -1,4 +1,5 @@
 {% extends "dashboard/base.html" %}
+{% block title %}File {{file.name}}{% endblock %}
 
 {% block wrap %}
 
@@ -12,7 +13,7 @@
 
 <div class="topbox">
     <div class="topheader">Current state</div>
-    {{file.get_current_state}}
+    {{file.get_current_state.state_name}} ({{file.get_current_state.state_date|timesince}} ago)
 </div>
 
 <h4>Complete tests</h4>
@@ -20,7 +21,7 @@
     <tr><th>Checker</th><th>Status</th></tr>
     {% for r in finishedtest %}
     <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>
-            <img src="/static/dashboard/img/{{r.checker.get_status_icon}}" title="{{r.checker.get_status_desc}}" />
+            <img src="/static/dashboard/img/{{r.checker.get_result_icon}}" title="{{r.checker.get_result_desc}}" />
             </td></tr>
             {% if r.template %}
     <tr><td colspan="2">

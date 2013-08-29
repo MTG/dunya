@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta name="google" value="notranslate">
-    <title>Dunya{% if title %} :: {{ title }}{% endif %}</title>
+    <title>{% block title %}{% endblock %} - Dunya</title>
     <link rel="stylesheet/less" href="{% static 'dashboard/css/style.less' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/dashboard.css' %}" />
     <script src="{% static 'dashboard/js/less.min.js' %}"></script>

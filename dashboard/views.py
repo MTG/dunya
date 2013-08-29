@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+import django.utils.timezone
 
 from dashboard import models
 from dashboard import forms
@@ -74,16 +75,16 @@ def release(request, releaseid):
                             "data": instance.prepare_view(json.loads(f.data)),
                             "template": template})
     print "finishedtest", finishedtest
+    now = django.utils.timezone.now()
 
-    ret = {"release": release, "files": files, "finishedtest": finishedtest, "log_messages": log}
+    ret = {"release": release, "files": files, "finishedtest": finishedtest, "log_messages": log, "now": now}
     return render(request, 'dashboard/release.html', ret)
 
 @login_required
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
-    pendingtest = thefile.collectionfileresult_set.filter(result__in=('n', 's')).all()
 
-    finished = thefile.collectionfileresult_set.filter(result__in=('g', 'b')).all()
+    finished = thefile.collectionfileresult_set.all()
     finishedtest = []
     for f in finished:
         clsname = f.checker.module
@@ -98,7 +99,7 @@ def file(request, fileid):
         finishedtest.append({"checker": f,
                             "data": instance.prepare_view(json.loads(f.data)),
                             "template": template})
-    ret = {"file": thefile, "pendingtest": pendingtest, "finishedtest": finishedtest}
+    ret = {"file": thefile, "finishedtest": finishedtest}
     return render(request, 'dashboard/file.html', ret)
 
 @login_required
@@ -126,17 +127,19 @@ def directory(request, dirid):
     artistids = set()
     artistname = set()
     for f in files:
-        data = compmusic.file_metadata(os.path.join(full_path, f))
-        relid = data["meta"]["releaseid"]
-        relname = data["meta"]["release"]
-        aname = data["meta"]["artist"]
-        aid = data["meta"]["artistid"]
-        if relid and relname:
-            releaseids.add(relid)
-            releasename.add(relname)
-        if aname and aid:
-            artistids.add(aid)
-            artistname.add(aname)
+        fname = os.path.join(full_path, f)
+        if compmusic.is_mp3_file(fname):
+            data = compmusic.file_metadata(fname)
+            relid = data["meta"]["releaseid"]
+            relname = data["meta"]["release"]
+            aname = data["meta"]["artist"]
+            aid = data["meta"]["artistid"]
+            if relid and relname:
+                releaseids.add(relid)
+                releasename.add(relname)
+            if aname and aid:
+                artistids.add(aid)
+                artistname.add(aname)
 
     got_release_id = len(releaseids) == 1
     # TODO: This won't work if there are more than 1 lead artist?
