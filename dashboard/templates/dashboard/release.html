@@ -64,17 +64,20 @@
     <div class="topheader">Release-specific checks</div>
 <table>
     <tr><th>Checker</th><th>Status</th></tr>
-    {% for r in finishedtest %}
-    <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>
-            <img src="/static/dashboard/img/{{r.checker.get_checker_icon}}" title="{{r.checker.get_checker_desc}}" />
-            </td></tr>
-            {% if r.template %}
+    {% for r in results %}
+    <tr><td>{{r.latest.checker.name}}</td><td>
+            <img src="/static/dashboard/img/{{r.latest.get_result_icon}}" title="{{r.latest.get_result_display}}" /> ({{r.latest.datetime|timesince}} ago) </td></tr>
+            {% if r.latest.checker.templatefile %}
     <tr><td colspan="2">
-            {% with "dashboard/jobs/"|add:r.template as template %}
-            {% include template with data=r.data only %}
+            {% with "dashboard/jobs/"|add:r.latest.checker.templatefile as template %}
+            {% include template with data=r.latest.data_object only %}
             {% endwith %}
             {% endif %}
     </td></tr>
+    {% if r.others %}
+    <tr><td>there are more</td></tr>
+    {% endif %}
+    
     {% endfor %}
 </table>
 </div>

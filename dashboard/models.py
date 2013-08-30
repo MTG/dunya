@@ -7,6 +7,7 @@ import django.utils.timezone
 import uuid
 import os
 import importlib
+import json
 
 class StateCarryingManager(models.Manager):
     """ A model manager that also creates a state entry when a
@@ -63,6 +64,7 @@ class CompletenessChecker(models.Model):
     TYPE_CHOICE = ( ('r', 'Release'), ('f', 'File') )
     name = models.CharField(max_length=200)
     module = models.CharField(max_length=200)
+    templatefile = models.CharField(max_length=200, blank=True, null=True)
     # flag for if this a checker for a single file, or for a whole release
     type = models.CharField(max_length=5, choices=TYPE_CHOICE)
 
@@ -239,6 +241,19 @@ class MusicbrainzRelease(models.Model):
     def get_previous_states(self):
         return self.musicbrainzreleasestate_set.order_by('-state_date').all()[1:]
 
+    def get_latest_checker_results(self):
+        # for each checker, get one result ordered by date
+        ret = []
+        for ch in CompletenessChecker.objects.filter(type='r'):
+            results = self.musicbrainzreleaseresult_set.filter(checker=ch).order_by('-datetime').all()
+            if len(results):
+                ret.append(results[0])
+        return ret
+
+    def get_rest_results_for_checker(self, checkerid):
+        # order by date
+        return self.musicbrainzreleaseresult_set.filter(checker__id=checkerid).order_by('-datetime')[1:]
+
     def add_log_message(self, message, checker=None):
         return MusicbrainzReleaseLogMessage.objects.create(musicbrainzrelease=self, checker=checker, message=message)
 
@@ -359,6 +374,18 @@ class CollectionFile(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard-file', args=[int(self.id)])
 
+    def get_latest_checker_results(self):
+        # for each checker, get one result ordered by date
+        ret = []
+        for ch in CompletenessChecker.objects.filter(type='f'):
+            result = self.collectionfileresult_set.filter(checker=ch).order_by('-datetime')[0]
+            ret.append(result)
+        return ret
+
+    def get_rest_results_for_checker(self, checkerid):
+        # order by date
+        return self.collectionfileresult_set.filter(checker__id=checkerid).order_by('-datetime')[1:]
+
 class CollectionFileLogMessage(models.Model):
     """ A message that a completeness checker can add to a CollectionFile """
     collectionfile = models.ForeignKey(CollectionFile)
@@ -373,10 +400,13 @@ class CollectionFileResult(models.Model):
     """
     RESULT_CHOICE = ( ('g', 'Good'), ('b', 'Bad') )
     datetime = models.DateTimeField(default=django.utils.timezone.now)
-    collectionfile = models.ForeignKey(CollectionFile, blank=True, null=True)
+    collectionfile = models.ForeignKey(CollectionFile)
     checker = models.ForeignKey(CompletenessChecker)
     result = models.CharField(max_length=10, choices=RESULT_CHOICE)
     data = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return "%s testing %s: %s" % (self.checker.name, self.collectionfile.name, self.result)
 
     def get_result_icon(self):
         icons = {"g": "tick.png",
@@ -384,8 +414,12 @@ class CollectionFileResult(models.Model):
                 }
         return icons[self.result]
 
-    def get_result_desc(self):
-        return dict(self.RESULT_CHOICE)[self.result]
+    @property
+    def data_object(self):
+        if self.data:
+            return json.loads(self.data)
+        else:
+            return {}
 
 class MusicbrainzReleaseResult(models.Model):
     """ The result of running a single completeness checker
@@ -399,11 +433,18 @@ class MusicbrainzReleaseResult(models.Model):
     result = models.CharField(max_length=10, choices=RESULT_CHOICE)
     data = models.TextField(blank=True, null=True)
 
+    def __unicode__(self):
+        return "%s testing %s: %s" % (self.checker.name, self.musicbrainzrelease.title, self.result)
+
     def get_result_icon(self):
         icons = {"g": "tick.png",
                  "b": "cross.png"
                 }
         return icons[self.result]
 
-    def get_result_desc(self):
-        return dict(self.RESULT_CHOICE)[self.result]
+    @property
+    def data_object(self):
+        if self.data:
+            return json.loads(self.data)
+        else:
+            return {}

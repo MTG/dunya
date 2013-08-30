@@ -24,7 +24,7 @@ class Command(BaseCommand):
                         # If no name, split on camel case
                         s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
                         name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-                    models.CompletenessChecker.objects.create(module=path, type=checker.type, name=name)
+                    models.CompletenessChecker.objects.create(module=path, type=checker.type, name=name, templatefile=checker.templatefile)
         # Remove any items in the DB that no longer have a class
         for i in models.CompletenessChecker.objects.all():
             if i.module not in all_classes:

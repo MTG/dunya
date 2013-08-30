@@ -19,18 +19,18 @@
 <h4>Complete tests</h4>
 <table>
     <tr><th>Checker</th><th>Status</th></tr>
-    {% for r in finishedtest %}
-    <tr><td>({{r.checker.id}}) {{r.checker.checker.name}}</td><td>
-            <img src="/static/dashboard/img/{{r.checker.get_result_icon}}" title="{{r.checker.get_result_desc}}" />
+    {% for r in results %}
+        <tr><td>{{r.result.checker.name}}</td><td>
+            <img src="/static/dashboard/img/{{r.result.get_result_icon}}" title="{{r.result.get_result_display}}" /> ({{r.result.datetime|timesince}} ago)
+        </td></tr>
+        {% if r.template %}
+            <tr><td colspan="2">
+                {% with "dashboard/jobs/"|add:r.template as template %}
+                {% include template with data=r.data only %}
+                {% endwith %}
+                {% endif %}
             </td></tr>
-            {% if r.template %}
-    <tr><td colspan="2">
-            {% with "dashboard/jobs/"|add:r.template as template %}
-            {% include template with data=r.data only %}
-            {% endwith %}
-            {% endif %}
-    </td></tr>
-    {% endfor %}
+        {% endfor %}
 </table>
 
 {% endblock %}

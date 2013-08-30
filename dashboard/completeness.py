@@ -16,13 +16,7 @@ class CompletenessBase(object):
     # If this checker is for a file (f), or release (r)
     type = None
     # a template to include when talking about results
-    templatestub = None
-
-    # a view stub that is called with data that the checker task
-    # saves. It returns a dict that is passed to the templatestub file.
-    def prepare_view(self, data):
-        """ Default prepare_view just passes the data through """
-        return data
+    templatefile = None
 
     # The task to run.
     # It returns a tuple (status, data) where data is a dict that is
@@ -36,27 +30,25 @@ class CompletenessBase(object):
         checker = models.CompletenessChecker.objects.get(module=thismodule)
         if self.type == 'f':
             thefile = models.CollectionFile.objects.get(pk=the_id)
-            fs = models.CollectionFileResult.objects.create(collectionfile=thefile, checker=checker)
-            status = 'g' if result else 'b' 
-            fs.status = status
-            fs.data = json.dumps(data)
-            fs.datetime = django.utils.timezone.now()
-            fs.save()
+            result = 'g' if result else 'b' 
+            fs = models.CollectionFileResult.objects.create(collectionfile=thefile, checker=checker, result=result)
+            if data:
+                fs.data = json.dumps(data)
+                fs.save()
         elif self.type == 'r':
             therelease = models.MusicbrainzRelease.objects.get(pk=the_id)
-            rs = models.MusicbrainzReleaseResult.objects.create(musicbrainzrelease=therelease, checker=checker)
-            status = 'g' if result else 'b' 
-            rs.status = status
-            rs.data = json.dumps(data)
-            rs.datetime = django.utils.timezone.now()
-            rs.save()
+            result = 'g' if result else 'b' 
+            rs = models.MusicbrainzReleaseResult.objects.create(musicbrainzrelease=therelease, checker=checker, result=result)
+            if data:
+                rs.data = json.dumps(data)
+                rs.save()
 
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
     recording page in musicbrainz have matching entries
     in the local database """
     type = 'f'
-    templatestub = 'raagataala.html'
+    templatefile = 'raagataala.html'
     name = 'Recording raaga and taala'
 
     def task(self, collectionfile_id):
@@ -129,7 +121,7 @@ class ReleaseCoverart(CompletenessBase):
 class FileTags(CompletenessBase):
     """ Check that a file has all the correct musicbrainz tags """
     type = 'f'
-    templatestub = 'filetags.html'
+    templatefile = 'filetags.html'
     name = 'File tags'
 
     def task(self, collectionfile_id):
@@ -171,11 +163,3 @@ class ReleaseRelationships(CompletenessBase):
     def task(self, musicbrainzrelease_id):
         return (False, {})
 
-class ReleaseToFiles(CompletenessBase):
-    """ Check that all the files we have linked to a release
-        matches the number of recordings in the release. """
-    type = 'r'
-    name = 'Release-file matching'
-
-    def task(self, musicbrainzrelease_id):
-        return (False, {})

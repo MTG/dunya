@@ -59,47 +59,21 @@ def release(request, releaseid):
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
 
-    results = release.musicbrainzreleaseresult_set.all()
-    finishedtest = []
-    for f in results:
-        clsname = f.checker.module
-        mod, dot, cls = clsname.rpartition(".")
-        i = importlib.import_module(mod)
-        instance = getattr(i, cls)()
-        if hasattr(instance, "templatestub"):
-            template = instance.templatestub
-        else:
-            template = None
+    allres = []
+    results = release.get_latest_checker_results()
+    for r in results:
+        allres.append({"latest": r,
+                       "others": release.get_rest_results_for_checker(r.checker.id)
+                      })
 
-        finishedtest.append({"checker": f,
-                            "data": instance.prepare_view(json.loads(f.data)),
-                            "template": template})
-    print "finishedtest", finishedtest
-    now = django.utils.timezone.now()
-
-    ret = {"release": release, "files": files, "finishedtest": finishedtest, "log_messages": log, "now": now}
+    ret = {"release": release, "files": files, "results": allres, "log_messages": log}
     return render(request, 'dashboard/release.html', ret)
 
 @login_required
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
 
-    finished = thefile.collectionfileresult_set.all()
-    finishedtest = []
-    for f in finished:
-        clsname = f.checker.module
-        mod, dot, cls = clsname.rpartition(".")
-        i = importlib.import_module(mod)
-        instance = getattr(i, cls)()
-        if hasattr(instance, "templatestub"):
-            template = instance.templatestub
-        else:
-            template = None
-
-        finishedtest.append({"checker": f,
-                            "data": instance.prepare_view(json.loads(f.data)),
-                            "template": template})
-    ret = {"file": thefile, "finishedtest": finishedtest}
+    ret = {"file": thefile}
     return render(request, 'dashboard/file.html', ret)
 
 @login_required
