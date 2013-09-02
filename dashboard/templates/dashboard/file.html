@@ -16,21 +16,27 @@
     {{file.get_current_state.state_name}} ({{file.get_current_state.state_date|timesince}} ago)
 </div>
 
-<h4>Complete tests</h4>
+
+<div class="topbox">
+    <div class="topheader">File-specific checks</div>
 <table>
     <tr><th>Checker</th><th>Status</th></tr>
     {% for r in results %}
-        <tr><td>{{r.result.checker.name}}</td><td>
-            <img src="/static/dashboard/img/{{r.result.get_result_icon}}" title="{{r.result.get_result_display}}" /> ({{r.result.datetime|timesince}} ago)
-        </td></tr>
-        {% if r.template %}
-            <tr><td colspan="2">
-                {% with "dashboard/jobs/"|add:r.template as template %}
-                {% include template with data=r.data only %}
-                {% endwith %}
-                {% endif %}
-            </td></tr>
-        {% endfor %}
+    <tr><td>{{r.latest.checker.name}}</td><td>
+            <img src="/static/dashboard/img/{{r.latest.get_result_icon}}" title="{{r.latest.get_result_display}}" /> ({{r.latest.datetime|timesince}} ago) </td></tr>
+            {% if r.latest.checker.templatefile %}
+    <tr><td colspan="2">
+            {% with "dashboard/jobs/"|add:r.latest.checker.templatefile as template %}
+            {% include template with data=r.latest.data_object only %}
+            {% endwith %}
+            {% endif %}
+    </td></tr>
+    {% if r.others %}
+    <tr><td>there are more</td></tr>
+    {% endif %}
+    
+    {% endfor %}
 </table>
+</div>
 
 {% endblock %}

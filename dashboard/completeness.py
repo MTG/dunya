@@ -161,5 +161,18 @@ class ReleaseRelationships(CompletenessBase):
     name = 'Release relationships'
 
     def task(self, musicbrainzrelease_id):
+        release = compmusic.mb.get_release_by_id(musicbrainzrelease_id)
+
+        # Work relationship for each of the recordings
+
+        # Composer relationship for each of the works 
+
+        # Wikipedia link for each of the artists and composers
+
+        # Performance relationship for the release or the recordings
+
+        # Instrument exists in the DB for each performance
+
+        ret = {}
         return (False, {})
 

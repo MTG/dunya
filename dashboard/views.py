@@ -7,6 +7,8 @@ import django.utils.timezone
 from dashboard import models
 from dashboard import forms
 from dashboard import jobs
+import docserver
+
 import compmusic
 import os
 import importlib
@@ -24,7 +26,9 @@ def index(request):
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
             new_collection = models.Collection.objects.create(id=coll_id, name=coll_name, root_directory=path)
-            jobs.load_musicbrainz_collection.delay(new_collection.id)
+            docserver.models.Collection.objects.get_or_create(collectionid=coll_id, 
+                    defaults={"root_directory":path, "name":coll_name})
+            jobs.load_and_import_collection(new_collection.id)
             return HttpResponseRedirect(reverse('dashboard-home'))
     else:
         form = forms.AddCollectionForm()
@@ -53,8 +57,7 @@ def release(request, releaseid):
 
     reimport = request.GET.get("reimport")
     if reimport is not None:
-        #TODO: celery
-        jobs.import_release(release.id)
+        jobs.import_release.delay(release.id)
 
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
@@ -73,7 +76,14 @@ def release(request, releaseid):
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
 
-    ret = {"file": thefile}
+    allres = []
+    results = thefile.get_latest_checker_results()
+    for r in results:
+        allres.append({"latest": r,
+                       "others": thefile.get_rest_results_for_checker(r.checker.id)
+                      })
+
+    ret = {"file": thefile, "results": allres}
     return render(request, 'dashboard/file.html', ret)
 
 @login_required

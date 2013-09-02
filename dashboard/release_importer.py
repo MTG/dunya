@@ -54,10 +54,6 @@ class ReleaseImporter(object):
             concert.tracks.add(recording)
 
         # TODO: Release hooks
-        # TODO: Post-import:
-        # Match files in a directory to the recordings
-        # Add files to the docserver
-
 
     def add_and_get_artist(self, artistid):
         try:
@@ -222,11 +218,15 @@ class ReleaseImporter(object):
         logger.info("  Adding performance...")
         artist = self.add_and_get_artist(artistid)
         instrument = self.add_and_get_instrument(instrument)
-        recording = carnatic.models.Recording.objects.get(mbid=recordingid)
-        perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
-        perf.save()
+        if instrument:
+            recording = carnatic.models.Recording.objects.get(mbid=recordingid)
+            perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf.save()
 
     def add_and_get_instrument(self, instname):
-        return carnatic.models.Instrument.objects.fuzzy(name=instname)
+        try:
+            return carnatic.models.Instrument.objects.fuzzy(name=instname)
+        except carnatic.models.Instrument.DoesNotExist:
+            return None
 
 
