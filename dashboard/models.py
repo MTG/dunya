@@ -131,20 +131,20 @@ class Collection(models.Model):
     def update_state(self, state):
         cs = CollectionState.objects.create(collection=self, state=state)
 
-    def set_status_importing(self):
+    def set_state_importing(self):
         self.update_state('i')
 
-    def set_status_finished(self):
+    def set_state_finished(self):
         self.update_state('f')
 
-    def set_status_scanning(self):
+    def set_state_scanning(self):
         """ Mark this collection as having its importer started. """
         self.update_state('s')
 
-    def set_status_scanned(self):
+    def set_state_scanned(self):
         self.update_state('d')
 
-    def set_status_error(self):
+    def set_state_error(self):
         self.update_state('e')
 
     def status_can_finish(self):
@@ -156,13 +156,6 @@ class Collection(models.Model):
             if relstate.state != 'f':
                 return False
         return True
-
-    def set_status_finish(self):
-        """ Mark this collection as having finished its import.
-        This method doesn't check if the import can actually be 
-        finished first.
-        """
-        CollectionState.objects.create(collection=self, state='f')
 
     def get_absolute_url(self):
         return reverse("dashboard-collection", args=[str(self.id)])

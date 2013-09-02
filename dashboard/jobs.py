@@ -17,9 +17,14 @@ class DunyaTask(celery.Task):
     abstract = True
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        theobj = self.ObjectClass.objects.get(pk=args[0])
-        theobj.add_log_message(einfo)
-        theobj.set_status_error()
+        try:
+            theobj = self.ObjectClass.objects.get(pk=args[0])
+            theobj.add_log_message(einfo)
+            theobj.set_state_error()
+        except self.ObjectClass.DoesNotExist:
+            classname = "%s.%s" % (self.ObjectClass.__module__, self.ObjectClass.__name__)
+            raise Exception("Cannot find %s object with key %s" % (classname, args[0]))
+        raise exc
 
 class CollectionDunyaTask(DunyaTask):
     ObjectClass = models.Collection
@@ -29,6 +34,10 @@ class ReleaseDunyaTask(DunyaTask):
 
 @celery.task(base=ReleaseDunyaTask)
 def import_release(releasepk):
+    """ Import a single release into the database.
+    Arguments:
+    pk: a models.MusicbrainzRelease object PK
+    """
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
     release.set_state_importing()
     release.add_log_message("Starting import")
@@ -104,7 +113,7 @@ def update_collection(collectionid):
             mbrelease = compmusic.mb.get_release_by_id(relid)["release"]
             title = mbrelease["title"]
             rel, created = models.MusicbrainzRelease.objects.get_or_create(mbid=relid, collection=coll, defaults={"title": title})
-        except compmusic.mb.MusicBrainzError:
+        except compmusic.mb.ResponseError:
             coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
 
     for relid in to_remove:
@@ -183,7 +192,7 @@ def scan_and_link(collectionid):
     for d in to_remove:
         # We have a full path, but collectiondirectories are
         # stored with a partial path, so cut it.
-        shortpath = root[len(collectionroot):]
+        shortpath = d[len(collectionroot):]
         coll.collectiondirectory_set.get(path=shortpath).delete()
 
     # For every CollectionDirectory that isn't matched to a MusicbrainzRelease,
@@ -204,11 +213,11 @@ def load_musicbrainz_collection(collectionid):
         and scan collection root to match directories to releases.
     """
     coll = models.Collection.objects.get(pk=collectionid)
-    coll.set_status_scanning()
+    coll.set_state_scanning()
     coll.add_log_message("Starting collection scan")
 
     update_collection(collectionid)
     scan_and_link(collectionid)
 
-    coll.set_status_scanned()
+    coll.set_state_scanned()
     coll.add_log_message("Collection scan finished")
