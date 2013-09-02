@@ -8,9 +8,10 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 urlpatterns = patterns('',
     url(r'^$', views.index),
     url(r'^collections$', views.CollectionList.as_view(), name='collection-list'),
+    url(r'^by-external/%s/(?P<ftype>[a-z0-9]+)$' % uuid_match, views.download_external, name='ds-download-external'),
+    url(r'^by-external/%s$' % uuid_match, views.DocumentDetail.as_view(), name='ds-document-external'),
     url(r'^(?P<cslug>[^/]+)$', views.CollectionDetail.as_view(), name='collection-detail'),
     url(r'^(?P<cslug>[^/]+)/%s$' % uuid_match, views.DocumentDetail.as_view(), name='ds-document'),
-    url(r'^(?P<cslug>[^/]+)/%s/(?P<ftype>[a-z0-9]+)$' % uuid_match, views.download, name='ds-download'),
 
     # Essentia management
     url(r'manager/addessentia/', views.addessentia, name='docserver-addessentia'),

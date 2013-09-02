@@ -1,6 +1,6 @@
 import json
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 
@@ -34,6 +34,27 @@ class DocumentDetail(generics.RetrieveAPIView):
 
 def download(request, cslug, uuid, ftype):
     return HttpResponse("download %s from %s as %s" % (uuid, cslug, ftype))
+
+def download_external(request, uuid, ftype):
+    try:
+        thetype = models.FileType.objects.get_by_extension(ftype)
+    except models.FileType.DoesNotExist:
+        raise Http404
+    try:
+        thedoc = models.Document.objects.get_by_external_id(uuid)
+    except models.Document.DoesNotExist:
+        raise Http404
+
+    files = thedoc.files.filter(file_type=thetype)
+    if len(files) == 0:
+        raise Http404
+    else:
+        fname = files[0].path
+        contents = open(fname).read()
+    return HttpResponse(contents)
+
+
+#### Essentia manager
 
 def manager(request):
     essentias = models.EssentiaVersion.objects.all()

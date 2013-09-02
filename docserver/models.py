@@ -1,5 +1,6 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
+from django.template.defaultfilters import slugify
 from rest_framework import serializers
 import django.utils.timezone
 
@@ -7,10 +8,11 @@ import uuid
 
 class Collection(models.Model):
     """A set of related documents"""
+    collectionid = UUIDField()
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.CharField(max_length=200)
-    root_dir = models.CharField(max_length=200)
+    root_directory = models.CharField(max_length=200)
 
     def __unicode__(self):
         desc = "%s (%s)" % (self.name, self.slug)
@@ -18,16 +20,21 @@ class Collection(models.Model):
             desc += " - %s" % (self.description, )
         return desc
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)
+        super(Collection, self).save(*args, **kwargs)
+
 class CollectionListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Collection
-        fields = ['name', 'description', 'slug', 'root_dir']
+        fields = ['name', 'description', 'slug', 'root_directory']
 
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
-    documents = serializers.SlugRelatedField(many=True, slug_field='docid')
+    documents = serializers.SlugRelatedField(many=True, slug_field='pk')
     class Meta:
         model = Collection
-        fields = ['name', 'description', 'slug', 'root_dir', 'documents']
+        fields = ['name', 'description', 'slug', 'root_directory', 'documents']
 
 def new_uuid():
     u = uuid.uuid4()
@@ -40,7 +47,6 @@ class DocumentManager(models.Manager):
 class Document(models.Model):
     """An item in the collection.
     It has a known type and is part of a collection.
-    It can be uniquely identified by a docid.
     It can have an option title and description
     """
 
@@ -53,20 +59,31 @@ class Document(models.Model):
        for the item."""
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
 
-    def get_document_by_fileid(self, fileid):
-        """Some files (e.g. recordings) have an external ID
-           (e.g., recording mbid). Get the document that has 
-           a file with this id set
-        """
-        pass
+    def __unicode__(self):
+        ret = ""
+        if self.title:
+            ret += "%s" % self.title
+        if self.external_identifier:
+            ret += " (%s)" % self.external_identifier
+        return ret
 
 class DocumentSerializer(serializers.HyperlinkedModelSerializer):
+    # TODO: List of filetypes, list of files, collection name by slug
+    # TODO: Get document by external identifier
     files = serializers.PrimaryKeyRelatedField(many=True)
     class Meta:
         model = Document
-        fields = ('docid', 'title', 'files', 'external_identifier')
+        fields = ('title', 'files', 'external_identifier')
+
+class FileTypeManager(models.Manager):
+
+    def get_by_extension(self, extension):
+        extension = extension.lower()
+        return self.get_query_set().get(extension=extension)
 
 class FileType(models.Model):
+    objects = FileTypeManager()
+
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     module = models.CharField(max_length=255)
@@ -86,11 +103,14 @@ class File(models.Model):
     """The path on disk to the file"""
     path = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
+
 class FileSerializer(serializers.HyperlinkedModelSerializer):
+    # TODO: Get file contents based on... document id & type, or alt id & type, or fileid
     class Meta:
         model = File
         fields = ('document', 'file_type', 'path')
-
 
 
 # Essentia management stuff
