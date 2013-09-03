@@ -27,10 +27,9 @@ class CollectionDetail(generics.RetrieveAPIView):
     slug_url_kwarg = 'cslug'
 
 class DocumentDetail(generics.RetrieveAPIView):
+    lookup_field='external_identifier'
     model = models.Document
-    serializer = models.DocumentSerializer
-    slug_field = 'docid'
-    slug_url_kwarg = 'uuid'
+    serializer_class = models.DocumentSerializer
 
 def download(request, cslug, uuid, ftype):
     return HttpResponse("download %s from %s as %s" % (uuid, cslug, ftype))

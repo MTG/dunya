@@ -34,7 +34,7 @@ class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
     documents = serializers.SlugRelatedField(many=True, slug_field='pk')
     class Meta:
         model = Collection
-        fields = ['name', 'description', 'slug', 'root_directory', 'documents']
+        fields = ['name', 'documents']
 
 def new_uuid():
     u = uuid.uuid4()
@@ -67,21 +67,18 @@ class Document(models.Model):
             ret += " (%s)" % self.external_identifier
         return ret
 
-class DocumentSerializer(serializers.HyperlinkedModelSerializer):
-    # TODO: List of filetypes, list of files, collection name by slug
-    # TODO: Get document by external identifier
-    files = serializers.PrimaryKeyRelatedField(many=True)
+class DocumentSerializer(serializers.ModelSerializer):
+    files = serializers.SlugRelatedField(many=True, slug_field='pk', read_only=True)
     class Meta:
         model = Document
-        fields = ('title', 'files', 'external_identifier')
+        fields = ['collection', 'files', 'external_identifier', 'title']
 
 class FileTypeManager(models.Manager):
-
     def get_by_extension(self, extension):
         extension = extension.lower()
         return self.get_query_set().get(extension=extension)
 
-class FileType(models.Model):
+class SourceFileType(models.Model):
     objects = FileTypeManager()
 
     extension = models.CharField(max_length=10)
@@ -93,24 +90,51 @@ class FileType(models.Model):
     def __unicode__(self):
         return self.name
 
-class File(models.Model):
+class SourceFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
-    document = models.ForeignKey(Document, related_name='files')
+    document = models.ForeignKey("Document", related_name='files')
     """The filetype"""
-    file_type = models.ForeignKey(FileType)
+    file_type = models.ForeignKey(SourceFileType)
     """The path on disk to the file"""
     path = models.CharField(max_length=200)
 
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
-class FileSerializer(serializers.HyperlinkedModelSerializer):
+class FileSerializer(serializers.ModelSerializer):
     # TODO: Get file contents based on... document id & type, or alt id & type, or fileid
     class Meta:
         model = File
         fields = ('document', 'file_type', 'path')
+
+class DerivedFileType(models.Model):
+    objects = FileTypeManager()
+
+    extension = models.CharField(max_length=10)
+    name = models.CharField(max_length=100)
+    module = models.CharField(max_length=255)
+    is_derived = models.BooleanField(default=False)
+    derived_from = models.ForeignKey('FileType', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+class DerivedFile(models.Model):
+    """An actual file. References a document"""
+
+    """The document this file is part of"""
+    document = models.ForeignKey("Document", related_name='files')
+    """The filetype"""
+    file_type = models.ForeignKey(DerivedFileType)
+    """The path on disk to the file"""
+    path = models.CharField(max_length=200)
+    derived_from = models.ForeignKey(SourceFile)
+    module_version = models.ForeignKey("ModuleVersion")
+
+    def __unicode__(self):
+        return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
 
 # Essentia management stuff
