@@ -46,14 +46,13 @@ class DocumentManager(models.Manager):
 
 class Document(models.Model):
     """An item in the collection.
-    It has a known type and is part of a collection.
+    It has a known title and is part of a collection.
     It can have an option title and description
     """
 
     objects = DocumentManager()
 
     collection = models.ForeignKey(Collection, related_name='documents')
-    docid = UUIDField(primary_key=True, default=new_uuid)
     title = models.CharField(max_length=200)
     """If the file is known in a different database, the identifier
        for the item."""
@@ -84,8 +83,6 @@ class SourceFileType(models.Model):
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     module = models.CharField(max_length=255)
-    is_derived = models.BooleanField(default=False)
-    derived_from = models.ForeignKey('FileType', blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -94,7 +91,7 @@ class SourceFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
-    document = models.ForeignKey("Document", related_name='files')
+    document = models.ForeignKey("Document", related_name='sourcefiles')
     """The filetype"""
     file_type = models.ForeignKey(SourceFileType)
     """The path on disk to the file"""
@@ -103,10 +100,10 @@ class SourceFile(models.Model):
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
-class FileSerializer(serializers.ModelSerializer):
+class SourceFileSerializer(serializers.ModelSerializer):
     # TODO: Get file contents based on... document id & type, or alt id & type, or fileid
     class Meta:
-        model = File
+        model = SourceFile
         fields = ('document', 'file_type', 'path')
 
 class DerivedFileType(models.Model):
@@ -116,7 +113,7 @@ class DerivedFileType(models.Model):
     name = models.CharField(max_length=100)
     module = models.CharField(max_length=255)
     is_derived = models.BooleanField(default=False)
-    derived_from = models.ForeignKey('FileType', blank=True, null=True)
+    derived_from_type = models.ForeignKey('SourceFileType', blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -192,6 +189,6 @@ class RunResult(models.Model):
     date = models.DateTimeField(default=django.utils.timezone.now)
     essentiaversion = models.ForeignKey(EssentiaVersion)
     # TODO: Do we have a 'filetype' for each moduleversion? or just a single one?
-    file = models.ForeignKey(File)
+    file = models.ForeignKey(DerivedFile)
     workermachine = models.ForeignKey(WorkerMachine)
     moduleversion = models.ForeignKey(ModuleVersion)

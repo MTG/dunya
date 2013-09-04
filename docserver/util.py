@@ -4,7 +4,7 @@ import compmusic
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
     # TODO: We assume it's MP3 for now.
-    mp3type = models.FileType.objects.get_by_extension("mp3")
+    mp3type = models.SourceFileType.objects.get_by_extension("mp3")
     title = meta["meta"].get("title")
 
     try:
@@ -23,5 +23,5 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
 
 def docserver_add_file(document_id, ftype, path):
     document = models.Document.objects.get(pk=document_id)
-    file = models.File.objects.create(document=document, file_type=ftype, path=path)
+    file = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
 
