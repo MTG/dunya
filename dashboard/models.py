@@ -391,8 +391,9 @@ class CollectionFile(models.Model):
         # for each checker, get one result ordered by date
         ret = []
         for ch in CompletenessChecker.objects.filter(type='f'):
-            result = self.collectionfileresult_set.filter(checker=ch)[0]
-            ret.append(result)
+            results = self.collectionfileresult_set.filter(checker=ch)
+            if len(results):
+                ret.append(results[0])
         return ret
 
     def get_rest_results_for_checker(self, checkerid):

@@ -3,5 +3,11 @@ $(document).ready(function() {
         e.preventDefault();
         $("#statebox").slideToggle();
     });
+
+    $(".showhidden").click(function(e) {
+        e.preventDefault();
+        var checkerid = $(this).data("tohide");
+        $(".tohide"+checkerid).slideToggle({duration:0});
+    });
 });
 

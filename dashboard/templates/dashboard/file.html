@@ -22,17 +22,11 @@
 <table>
     <tr><th>Checker</th><th>Status</th></tr>
     {% for r in results %}
-    <tr><td>{{r.latest.checker.name}}</td><td>
-            <img src="/static/dashboard/img/{{r.latest.get_result_icon}}" title="{{r.latest.get_result_display}}" /> ({{r.latest.datetime|timesince}} ago) </td></tr>
-            {% if r.latest.checker.templatefile %}
-    <tr><td colspan="2">
-            {% with "dashboard/jobs/"|add:r.latest.checker.templatefile as template %}
-            {% include template with data=r.latest.data_object only %}
-            {% endwith %}
-            {% endif %}
-    </td></tr>
+    {% include "dashboard/release_check_stub.html" with item=r.latest more=r.others hide=r.latest.pk only %}
     {% if r.others %}
-    <tr><td>there are more</td></tr>
+        {% for item in r.others %}
+        {% include "dashboard/release_check_stub.html" with item=item more=False hide=r.latest.pk only %}
+        {% endfor %}
     {% endif %}
     
     {% endfor %}
