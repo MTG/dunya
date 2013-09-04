@@ -159,20 +159,82 @@ class ReleaseRelationships(CompletenessBase):
     performers, and wikipedia links. """
     type = 'r'
     name = 'Release relationships'
+    templatefile = 'releaserels.html'
+
+
+    def parse_recording(self, track):
+        recording = track["recording"]
+        artistrels = self.get_artist_rels(recording)
+        workrels = recording.get("work-relation-list", [])
+        works = [w["work"] for w in workrels if w["type"] == "performance"]
+        if len(works):
+            thework = works[0]
+        else:
+            thework = None
+        thecomposer = None
+        if thework:
+            composers = [w["artist"] for w in thework.get("artist-relation-list", []) if w["type"] == "composer"]
+            if len(composers):
+                thecomposer = composers[0]
+        return {"work": thework, "composer": thecomposer, "id": recording["id"], \
+                "title": recording["title"], "performers": artistrels}
+
+
+    def get_artist_rels(self, release):
+        rels = release.get("artist-relation-list", [])
+        ret = []
+        for r in rels:
+            if r["type"] == "instrument" or r["type"] == "vocal":
+                ret.append(r)
+        return ret
 
     def task(self, musicbrainzrelease_id):
-        release = compmusic.mb.get_release_by_id(musicbrainzrelease_id)
+        includes = ["recordings", "recording-rels", \
+                "recording-level-rels", "artist-rels", \
+                "work-rels", "work-level-rels", "url-rels"]
+        release = compmusic.mb.get_release_by_id(musicbrainzrelease_id, includes=includes)
+
+        release = release["release"]
+        recordings = []
+        for m in release.get("medium-list", []):
+            for rec in m.get("track-list", []):
+                recordings.append(self.parse_recording(rec))
+
+        releaserels = self.get_artist_rels(release)
 
         # Work relationship for each of the recordings
+        # [{"id": recordingid, "title": recordingtitle}, ]
+        missingworks = []
+        for r in recordings:
+            if r["work"] is None:
+                missingworks.append({"id": r["id"], "title": r["title"]})
 
         # Composer relationship for each of the works 
-
-        # Wikipedia link for each of the artists and composers
+        # [{"id": workid, "title": worktitle}, ]
+        missingcomposers = []
+        for r in recordings:
+            if r["composer"] is None and r["work"] is not None:
+                missingcomposers.append({"id": r["work"]["id"], "title": r["work"]["title"]})
 
         # Performance relationship for the release or the recordings
+        # Only populate this if there is no release-level relationships
+        # and a recording has no relationships
+        # [{"id": recordingid, "title": recordingtitle}, ]
+        missingperformers = []
+        if not releaserels:
+            for r in recordings:
+                if r["performers"] is None:
+                    missingperformers.append({"id": r["id"], "title": r["title"]})
 
         # Instrument exists in the DB for each performance
+        # ["instrumentname", ]
+        missinginstruments = []
 
-        ret = {}
-        return (False, {})
+        # Wikipedia link for each of the artists and composers
+        # [{"id": artistid, "name": artistname"}, ]
+        missingartists = []
+
+        ret = {"missingworks": missingworks, "missingcomposers": missingcomposers, "missingperfomers": missingperformers}
+        val = not (len(missingworks) or len(missingcomposers) or len(missingperformers))
+        return (val, ret)
 
