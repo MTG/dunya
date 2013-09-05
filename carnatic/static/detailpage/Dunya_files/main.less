@@ -1289,7 +1289,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		.shadow1;
 		&.open {
 			width: 450px;
-			height: 565px;
+			height: 560px;
 			.desc {
 			  font-size: 13px;
 			  line-height: 15px;
@@ -1306,16 +1306,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			    padding: 13px 21px 21px;
 			    position: absolute;
 			    top: 6px;
-			    width: 237px;
+			    width: 231px;
+          background: rgba(256,256,256,0.8);
 			}
 			.lists {
         display: block !important;
-        height: 297px;
+        height: 286px;
         left: 0;
         position: absolute;
         top: 211px;
         width: 100%;
-        background: url("../img/cloth_alike.png") repeat;
+        padding-left: 6px;
+        padding-right: 6px;
+        overflow: hidden;
   			.left {
     			position: relative;
     			top:0px;
@@ -1323,6 +1326,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     			width: 50%;
     			height: 100%;
     			float: left;
+          background: url("../img/cloth_alike.png") repeat;
   			}
   			.right {
     			position: relative;
@@ -1517,7 +1521,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		}
 	}
 	.similarity {
-	  h2 { margin-top:5px; margin-bottom:5px; font-size: 16px; font-weight: normal; color: @gris; }
+	  h2 { 
+	    font-weight: normal; 
+	    color: @gris6; 
+	    font-size: 11px;
+	    text-align: center;
+      margin-bottom: 10px;
+      margin-top: 9px;
+    }
 	  div {
 	    float: right;
 	    text-align: right;
@@ -1562,6 +1573,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
   	width: 100%;
   	top: 0px;
   	left: 0px;
+  	display: none;
   	&:before {
       background-image: url("../img/simdegra.png");
       background-position: -13px 0;
@@ -1574,6 +1586,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
       width: 19px;
       z-index: 0;
   	}
+  	&.active { display: block; }
   	.miniitem:first-child {
     	margin-top:15px !important;
   	}
