@@ -1,16 +1,24 @@
 Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordingid}}">http://musicbrainz.org/recording/{{data.recordingid}}</a><br>
 
-{% if data.gotraaga or data.missingr %}
-<h3>Raaga</h3>
-{% if data.gotraaga %}Got raaga: {{data.raaga|join:", "}}{% else %}Missing raagas:{% endif %}<br>
+{% if data.gotraaga  %}
+<h4>Raaga</h4>
+{% if data.gotraaga %}Got raaga tags: {{data.raaga|join:", "}}{% else %}Missing raaga tags{% endif %}
+{% endif %}
+
+{% if data.missingr %}
+<h4>Raagas missing in database</h4>
+
 {% for r in data.missingr %}
     <li><a href="{% url 'dashboard-raagas' %}?newname={{r}}">{{r}}</a>
 {% endfor %}
 {% endif %}
 
-{% if data.gottaala or data.missingt %}
-<h3>Taala</h3>
-{% if data.gottaala %}Got taala: {{data.taala|join:", "}}{% else %}Missing taalas:{% endif %}<br>
+{% if data.gottaala %}
+<h4>Taala</h4>
+{% if data.gottaala %}Got taala tags: {{data.taala|join:", "}}{% else %}Missing taala tags{% endif %}
+{% endif %}
+{% if data.missingt %}
+<h4>Taalas missing in database</h4>
 {% for t in data.missingt %}
 <li><a href="{% url 'dashboard-taalas' %}?newname={{t}}">{{t}}</a>
 {% endfor %}
