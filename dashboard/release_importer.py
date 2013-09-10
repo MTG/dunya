@@ -19,7 +19,7 @@ class ReleaseImporter(object):
         return source
 
     def import_release(self, releaseid):
-        # TODO: Can be more than one direcotry here
+        # TODO: Can be more than one directory here
         rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists","recordings"])
         rel = rel["release"]
 
