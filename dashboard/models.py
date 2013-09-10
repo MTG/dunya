@@ -388,7 +388,7 @@ class CollectionFile(models.Model):
         return reverse('dashboard-file', args=[int(self.id)])
 
     def get_latest_checker_results(self):
-        # for each checker, get one result ordered by date
+        # for each checker, get the most recent result
         ret = []
         for ch in CompletenessChecker.objects.filter(type='f'):
             results = self.collectionfileresult_set.filter(checker=ch)

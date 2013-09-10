@@ -3,6 +3,8 @@ import django.utils.timezone
 import celery
 import os
 import json
+import logging
+logging.basicConfig(level=logging.INFO)
 
 from dashboard import models
 
@@ -89,6 +91,8 @@ class RaagaTaalaFile(CompletenessBase):
                 
         res["gotraaga"] = len(raagas) > 0
         res["gottaala"] = len(taalas) > 1
+        res["raaga"] = raagas
+        res["taala"] = taalas
         if raagas and taalas and not missingt and not missingr:
             return (True, res)
         else:
@@ -162,22 +166,28 @@ class ReleaseRelationships(CompletenessBase):
     templatefile = 'releaserels.html'
 
 
-    def parse_recording(self, track):
-        recording = track["recording"]
+    def parse_recording(self, recordingid):
+        logging.info("Recordingid %s" % recordingid)
+        recording = compmusic.mb.get_recording_by_id(recordingid, includes=["work-rels", "artist-rels"])
+        recording = recording["recording"]
         artistrels = self.get_artist_rels(recording)
         workrels = recording.get("work-relation-list", [])
         works = [w["work"] for w in workrels if w["type"] == "performance"]
         if len(works):
-            thework = works[0]
+            theworkid = works[0]["id"]
+            thework = compmusic.mb.get_work_by_id(theworkid, includes=["artist-rels"])["work"]
+            worktitle = thework["title"]
         else:
+            theworkid = None
             thework = None
+            worktitle = None
         thecomposer = None
         if thework:
             composers = [w["artist"] for w in thework.get("artist-relation-list", []) if w["type"] == "composer"]
             if len(composers):
                 thecomposer = composers[0]
-        return {"work": thework, "composer": thecomposer, "id": recording["id"], \
-                "title": recording["title"], "performers": artistrels}
+        return {"workid": theworkid, "worktitle": worktitle, "composer": thecomposer,\
+                "id": recording["id"], "title": recording["title"], "performers": artistrels}
 
 
     def get_artist_rels(self, release):
@@ -189,16 +199,15 @@ class ReleaseRelationships(CompletenessBase):
         return ret
 
     def task(self, musicbrainzrelease_id):
-        includes = ["recordings", "recording-rels", \
-                "recording-level-rels", "artist-rels", \
-                "work-rels", "work-level-rels", "url-rels"]
-        release = compmusic.mb.get_release_by_id(musicbrainzrelease_id, includes=includes)
+        mbrelease = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
+        includes = ["recordings", "url-rels"]
+        release = compmusic.mb.get_release_by_id(mbrelease.mbid, includes=includes)
 
         release = release["release"]
         recordings = []
         for m in release.get("medium-list", []):
             for rec in m.get("track-list", []):
-                recordings.append(self.parse_recording(rec))
+                recordings.append(self.parse_recording(rec["recording"]["id"]))
 
         releaserels = self.get_artist_rels(release)
 
@@ -206,15 +215,15 @@ class ReleaseRelationships(CompletenessBase):
         # [{"id": recordingid, "title": recordingtitle}, ]
         missingworks = []
         for r in recordings:
-            if r["work"] is None:
+            if r["workid"] is None:
                 missingworks.append({"id": r["id"], "title": r["title"]})
 
         # Composer relationship for each of the works 
         # [{"id": workid, "title": worktitle}, ]
         missingcomposers = []
         for r in recordings:
-            if r["composer"] is None and r["work"] is not None:
-                missingcomposers.append({"id": r["work"]["id"], "title": r["work"]["title"]})
+            if r["composer"] is None and r["workid"] is not None:
+                missingcomposers.append({"id": r["workid"], "title": r["worktitle"]})
 
         # Performance relationship for the release or the recordings
         # Only populate this if there is no release-level relationships
@@ -223,18 +232,37 @@ class ReleaseRelationships(CompletenessBase):
         missingperformers = []
         if not releaserels:
             for r in recordings:
-                if r["performers"] is None:
+                if not r["performers"]:
                     missingperformers.append({"id": r["id"], "title": r["title"]})
+        else:
+            print "have release_rels"
+
+        def check_instrument(instrname):
+            from carnatic import models
+            try:
+                models.Instrument.objects.fuzzy(instrname)
+                return True
+            except models.Instrument.DoesNotExist:
+                return False
 
         # Instrument exists in the DB for each performance
+        # We test instruments in the 'release' test, not a separate 'recording'
+        # test because sometimes instrument rels are on the release.
         # ["instrumentname", ]
-        missinginstruments = []
+        missinginstruments = set()
+        for r in releaserels:
+            if len(r["attribute-list"]):
+                instrumentname = r["attribute-list"][0]
+                if not check_instrument(instrumentname):
+                    missinginstruments.add(instrumentname)
+        for r in recordings:
+            for p in r["performers"]:
+                if len(p["attribute-list"]):
+                    instrumentname = p["attribute-list"][0]
+                    if not check_instrument(instrumentname):
+                        missinginstruments.add(instrumentname)
 
-        # Wikipedia link for each of the artists and composers
-        # [{"id": artistid, "name": artistname"}, ]
-        missingartists = []
-
-        ret = {"missingworks": missingworks, "missingcomposers": missingcomposers, "missingperfomers": missingperformers}
-        val = not (len(missingworks) or len(missingcomposers) or len(missingperformers))
+        ret = {"missingworks": missingworks, "missingcomposers": missingcomposers, "missingperfomers": missingperformers, "missinginstruments": list(missinginstruments)}
+        val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
 
