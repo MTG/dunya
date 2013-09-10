@@ -7,7 +7,7 @@
 
 {% if data.missingcomposers %}
 <h3>Works with no composers</h3>
-{% for c in data.missingcompoers %}
+{% for c in data.missingcomposers %}
     <li><a href="http://musicbrainz.org/work/{{c.id}}">{{c.title}}</a>
 {% endfor %}
 {% endif %}

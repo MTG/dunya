@@ -1,6 +1,6 @@
 <tr {% if hide and not more %}class="tohide tohide{{hide}}"{% endif %}>
     <td>{{item.checker.name}}<br>
-    {% if more %}
+    {% if more and not item.checker.templatefile %}
     <a href="" data-tohide="{{hide}}" class="showhidden">Show older checks</a>
     {% endif %}
         </td><td>
@@ -10,6 +10,9 @@
             {% with "dashboard/jobs/"|add:item.checker.templatefile as template %}
             {% include template with data=item.data_object only %}
             {% endwith %}
+    {% if more %}
+    <a href="" data-tohide="{{hide}}" class="showhidden">Show older checks</a>
+    {% endif %}
             {% endif %}
     </td></tr>
 
