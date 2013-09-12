@@ -43,11 +43,36 @@ def collection(request, uuid):
 
     rescan = request.GET.get("rescan")
     if rescan is not None:
-        jobs.load_musicbrainz_collection.delay(c.id)
+        jobs.load_and_import_collection(c.id)
+        return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
+    order = request.GET.get("order")
 
-    log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
     releases = models.MusicbrainzRelease.objects.filter(collection=c)
+    if order == "date":
+        def sortkey(rel):
+            return rel.get_current_state().state_date
+    elif order == "unmatched":
+        def sortkey(rel):
+            return (False if rel.matched_paths() else True, rel.get_current_state().state_date)
+    elif order == "error":
+        def sortkey(rel):
+            count = 0
+            for state in rel.get_latest_checker_results():
+                if state.result == 'b':
+                    count += 1
+            for directory in rel.collectiondirectory_set.all():
+                for f in directory.collectionfile_set.all():
+                    for state in f.get_latest_checker_results():
+                        if state.result == 'b':
+                            count += 1
+            return count
+    else:
+        def sortkey(obj):
+            pass
+    releases = sorted(releases, key=sortkey, reverse=True)
+
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
+    log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
     ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
     return render(request, 'dashboard/collection.html', ret)
 
@@ -58,6 +83,7 @@ def release(request, releaseid):
     reimport = request.GET.get("reimport")
     if reimport is not None:
         jobs.import_release.delay(release.id)
+        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
 
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
@@ -101,6 +127,7 @@ def directory(request, dirid):
         # TODO: Change to celery
         jobs.rematch_unknown_directory(dirid)
         directory = get_object_or_404(models.CollectionDirectory, pk=dirid)
+        return HttpResponseRedirect(reverse('dashboard.views.directory', args=[dirid]))
 
     collection = directory.collection
     full_path = os.path.join(collection.root_directory, directory.path)
