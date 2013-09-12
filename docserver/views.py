@@ -17,18 +17,22 @@ def index(request):
     return HttpResponse("Hello docserver")
 
 class CollectionList(generics.ListAPIView):
-    model = models.Collection
+    queryset = models.Collection.objects.all()
     serializer_class = models.CollectionListSerializer
 
 class CollectionDetail(generics.RetrieveAPIView):
-    model = models.Collection
+    lookup_field = 'slug'
+    queryset = models.Collection.objects.all()
     serializer_class = models.CollectionDetailSerializer
-    slug_field = 'slug'
-    slug_url_kwarg = 'cslug'
+
+class DocumentDetailExternal(generics.RetrieveAPIView):
+    lookup_field='external_identifier'
+    queryset = models.Document.objects.all()
+    serializer_class = models.DocumentSerializer
 
 class DocumentDetail(generics.RetrieveAPIView):
-    lookup_field='external_identifier'
-    model = models.Document
+    lookup_field='pk'
+    queryset = models.Document.objects.all()
     serializer_class = models.DocumentSerializer
 
 def download(request, cslug, uuid, ftype):

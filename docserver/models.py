@@ -30,15 +30,6 @@ class CollectionListSerializer(serializers.HyperlinkedModelSerializer):
         model = Collection
         fields = ['name', 'description', 'slug', 'root_directory']
 
-class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
-    documents = serializers.SlugRelatedField(many=True, slug_field='pk')
-    class Meta:
-        model = Collection
-        fields = ['name', 'documents']
-
-def new_uuid():
-    u = uuid.uuid4()
-    return str(u)
 
 class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
@@ -67,10 +58,17 @@ class Document(models.Model):
         return ret
 
 class DocumentSerializer(serializers.ModelSerializer):
-    files = serializers.SlugRelatedField(many=True, slug_field='pk', read_only=True)
+    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='pk', read_only=True)
+    derivedfiles = serializers.SlugRelatedField(many=True, slug_field='pk', read_only=True)
     class Meta:
         model = Document
-        fields = ['collection', 'files', 'external_identifier', 'title']
+        fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
+
+class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
+    documents = DocumentSerializer(many=True)
+    class Meta:
+        model = Collection
+        fields = ['name', 'documents']
 
 class FileTypeManager(models.Manager):
     def get_by_extension(self, extension):
@@ -122,7 +120,7 @@ class DerivedFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
-    document = models.ForeignKey("Document", related_name='files')
+    document = models.ForeignKey("Document", related_name='derivedfiles')
     """The filetype"""
     file_type = models.ForeignKey(DerivedFileType)
     """The path on disk to the file"""
@@ -133,6 +131,10 @@ class DerivedFile(models.Model):
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
+class DerivedFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DerivedFile
+        fields = ('document', 'file_type', 'path')
 
 # Essentia management stuff
 
