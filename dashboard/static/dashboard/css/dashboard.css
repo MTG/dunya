@@ -1,0 +1,8 @@
+#statebox {
+    display: none;
+}
+
+.tohide {
+    background-color: gray;
+    display: none;
+}

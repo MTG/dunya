@@ -1,0 +1,7 @@
+Title:
+{% if data.title and data.recordingid %}
+<a href="http://musicbrainz.org/recording/{{data.recordingid}}">{{data.title}}</a>
+{% else %} missing{% endif %}<br>
+Artist: {% if data.artist %}
+<a href="http://musicbrainz.org/artist/{{data.artistid}}">{{data.artist}}</a>
+{% else %} missing{% endif %}

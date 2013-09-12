@@ -1,0 +1,19 @@
+{# arguments: 'logs': the logs, 'checker': show the column for the checker #}
+
+<div class="topbox">
+    <div class="topheader">Logs</div>
+<table>
+    <tr>
+        <th style="width:200px;">Date</th>
+        {% if checker %}<th>Checker</th>{% endif %}
+        <th>Message</th>
+    </tr>
+    {% for m in logs %}
+    <tr>
+        <td>{{m.datetime}}</td>
+        {% if checker %}<td>{{m.checker}}</td>{% endif %}
+        <td>{{m.message}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>

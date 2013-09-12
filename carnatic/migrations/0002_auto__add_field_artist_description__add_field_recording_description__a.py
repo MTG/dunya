@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+            ("data", "0002_auto__add_description__add_field_label_description"),
+    )
+
     def forwards(self, orm):
         # Adding field 'Artist.description'
         db.add_column(u'carnatic_artist', 'description',

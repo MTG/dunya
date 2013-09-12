@@ -1,6 +1,6 @@
 from django.db import models
 
-from util.fuzzy import stringDuplicates
+from compmusic.fuzzy import stringDuplicates
 
 class FuzzySearchManager(models.Manager):
     def fuzzy(self, name):

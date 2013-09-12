@@ -1,0 +1,140 @@
+{% extends "dashboard/base.html" %}
+{% load staticfiles %}
+{% comment %}
+This template is generic to allow editing of both raagas and taalas.
+{% endcomment %}
+
+{% block css %}
+<style type="text/css">
+    .aliasrm {
+        display: none;
+    }
+    .add img {
+        vertical-align: text-bottom;
+    }
+    table td {
+        display: table-cell;
+        vertical-align: top;
+    }
+</style>
+{% endblock %}
+
+{% block js %}
+<script>
+    {% if newname %}
+    var newname = "{{newname}}";
+    {% else %}
+    var newname = undefined;
+    {% endif %}
+
+    $(document).ready(function() {
+        $(".add img").click(function(e) {
+            var li = $("<li>")
+            var rid = $(this).parents("span.add").data("itemid");
+            var existing = $("#item-"+rid+"-alias");
+            // Can only add 1 alias at a time
+            if (existing.length == 0) {
+                var input = $("<input>", 
+                    {type: "text",
+                        name: "item-"+rid+"-alias",
+                        id: "item-"+rid+"-alias"
+                    });
+                if (newname) {
+                    input.val(newname);
+                    $("#newitem").val("")
+                }
+                var span = $("<span>");
+                var rm = $("<img>", {src: "{% static 'dashboard/img/delete.png' %}"});
+                rm.on("click", function(e) {
+                    var li = $(this).parents("li");
+                    li.slideUp(function(e) {
+                        $(this).remove();
+                    });
+                });
+                span.append(input);
+                span.append(rm);
+                li.append(span);
+                li.hide();
+                $(this).parents("td").children(":first").append(li);
+                li.slideDown();
+            }
+
+        });
+        $(".alias").hover(function(e) {
+            $(this).children(".aliasrm").show();
+            }, function(e) {
+            $(this).children(".aliasrm").hide();
+        });
+        // When you click "delete" next to an alias
+        $(".aliasrm a").click(function(e) {
+            var aliasid = $(this).parents("span.alias").data("alias");
+            // If we have a hidden input to remove this alias, then it's
+            // been clicked again and we want to undo the 'todelete'
+            var rm = $("#alias-rm-"+aliasid);
+            if (rm.length > 0) {
+                $(this).parents("span").css("text-decoration", "none");
+                rm.remove();
+                $(this).html("[delete]");
+            } else {
+                // Otherwise we want to delete it
+                $(this).parents("span").css("text-decoration", "line-through");
+                var rm = $("<input>", {type: "hidden", name: "alias-rm-"+aliasid, id: "alias-rm-"+aliasid, value: "1"});
+                $("form").append(rm);
+                $(this).html("[undelete]");
+            }
+            e.preventDefault();
+        });
+        // When you click a delete checkbox
+        $(".delete-item").click(function(e) {
+            if ($(this).is(":checked")) {
+                $(this).parents("tr").css("background-color", "red");
+            } else {
+                $(this).parents("tr").css("background-color", "white");
+            }
+        });
+    });
+
+</script>
+{% endblock %}
+
+{% block wrap %}
+
+<h2>Carnatic {{entitynpl}}</h2>
+
+{% if newname %}
+<p>Adding new {{entityn}} {{newname}}
+{% endif %}
+
+<form method="post" action="{% url entityurl %}">
+{% csrf_token %}
+<table style="width:auto">
+    <tr><th>{{entityn}}</th><th>Aliases</th><th><img src="{% static 'dashboard/img/delete.png' %}" /></th></tr>
+    {% for r in items %}
+    <tr><td>
+            <div data-itemid="{{r.id}}">{{r.name}}</div>
+        </td>
+        <td>
+            <ul>
+                {% for a in r.aliases.all %}
+                <li><span class="alias" data-alias="{{a.id}}">{{a.name}}
+                    <span class="aliasrm"><a>[delete]</a></span>
+                </span>
+                {% endfor %}
+            </ul>
+            <span class="add" data-itemid="{{r.id}}">Add alias <img src="/static/dashboard/img/add.png"/></span>
+        </td>
+        <td>
+            <span class="delete"><input type="checkbox" name="delete-item-{{r.id}}" class="delete-item"></span>
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>Add {{entityn}}<br>
+            <input type="text" id="newname" name="newname" {% if newname %} value="{{newname}}"{% endif %}>
+        </td><td></td><td></td>
+    </tr>
+</table>
+<input type="submit" name="submit" value="Send edits"/>
+</form>
+
+{% endblock %}

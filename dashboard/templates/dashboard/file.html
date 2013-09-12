@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+{% block title %}File {{file.name}}{% endblock %}
+
+{% block wrap %}
+
+<h2>
+    <span class="breadcrumbs">File
+        <li><a href="{{file.directory.collection.get_absolute_url}}">{{file.directory.collection.name}}</a></li>
+        <li><a href="{{file.directory.musicbrainzrelease.get_absolute_url}}">{{file.directory.musicbrainzrelease.title}}</a></li>
+        <li>{{file.name}}</li>
+    </span>
+</h2>
+
+<div class="topbox">
+    <div class="topheader">Current state</div>
+    {{file.get_current_state.state_name}} ({{file.get_current_state.state_date|timesince}} ago)
+</div>
+
+
+<div class="topbox">
+    <div class="topheader">File-specific checks</div>
+<table>
+    <tr><th>Checker</th><th>Status</th></tr>
+    {% for r in results %}
+    {% include "dashboard/release_check_stub.html" with item=r.latest more=r.others pk=r.latest.pk hide=False only %}
+    {% if r.others %}
+        {% for item in r.others %}
+        {% include "dashboard/release_check_stub.html" with item=item more=False hide=r.latest.pk only %}
+        {% endfor %}
+    {% endif %}
+    
+    {% endfor %}
+</table>
+</div>
+
+{% endblock %}

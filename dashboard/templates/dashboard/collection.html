@@ -1,0 +1,68 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Collection {{collection.name}}{% endblock %}
+
+{% block wrap %}
+
+
+<h2>
+    <span class="breadcrumbs">Collection
+        <li>{{collection.name}}</li>
+    </span>
+</h2>
+
+<h3>Releases</h3>
+
+<div class="topbox">
+    <div class="topheader">Info</div>
+    <li>Root: {{collection.root_directory}}
+</div>
+
+<div class="topbox">
+    <div class="topheader">Actions</div>
+    <li><a href="?rescan">Re-scan collection</a>
+    <p>
+    <li><a href="?order=error">Order by errors first</a>
+    <li><a href="?order=unmatched">Order by unmatched releases first</a>
+    <li><a href="?order=date">Order by last imported date</a>
+</div>
+
+<div class="topbox">
+    <div class="topheader">Current State</div>
+    {{collection.get_current_state.state_name}} ({{collection.get_current_state.state_date|timesince}} ago)
+    {% if collection.has_previous_state %}
+    <div id="morestate">
+        <span id="statehandle"><a href="">Show old states</a></span>
+            <div id="statebox">
+                {% for s in collection.get_previous_states %}
+                <li>{{s.state_name}} ({{s.state_date|timesince}} ago)
+                {% endfor %}
+            </div>
+    </div>
+    {% endif %}
+</div>
+
+<table><tr><th>Release</th><th>Matched path</th><th>Current status</th></tr>
+{% for r in releases %}
+<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a></td>
+        
+            <td>
+                {% for p in r.matched_paths %}
+                {{p}}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %} 
+        </td>
+        <td>{{r.get_current_state.state_name}} ({{r.get_current_state.state_date|timesince}} ago)</td> 
+    </tr>
+{% endfor %}
+</table>
+
+<h4>Folders with unknown releases</h4>
+<table><tr><th>Folder</th><th>Reload</th></tr>
+    {% for f in folders %}
+    <tr><td><a href="{{f.get_absolute_url}}">{{f.path}}<a></td></tr>
+    {% endfor %}
+</table>
+
+{% include "dashboard/log.html" with logs=log_messages %}
+
+{% endblock %}
