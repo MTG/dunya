@@ -11,6 +11,19 @@ def get_image(entity, noimage):
         image = "/media/images/%s.jpg" % noimage
     return image
 
+
+@register.inclusion_tag("badges/similar_album.html")
+def badge_similar_concert(concert):
+    if not isinstance(concert, Concert):
+        concert = Concert.objects.get(pk=concert)
+    return {"title": concert.title,
+            "artist": concert.artistnames(),
+            "detail": None,
+            "date": concert.year,
+            "url": concert.get_absolute_url(),
+            "image": get_image(concert, "noconcert")
+           }
+
 @register.inclusion_tag("badges/album.html")
 def badge_concert(concert):
     if not isinstance(concert, Concert):
