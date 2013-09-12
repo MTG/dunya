@@ -1,7 +1,7 @@
 <tr {% if hide and not more %}class="tohide tohide{{hide}}"{% endif %}>
     <td>{{item.checker.name}}<br>
     {% if more and not item.checker.templatefile %}
-    <a href="" data-tohide="{{hide}}" class="showhidden">Show older checks</a>
+    <a href="" data-tohide="{{pk}}" class="showhidden">Show older checks</a>
     {% endif %}
         </td><td>
             <img src="/static/dashboard/img/{{item.get_result_icon}}" title="{{item.get_result_display}}" /> ({{item.datetime|timesince}} ago) </td></tr>
@@ -11,7 +11,7 @@
             {% include template with data=item.data_object only %}
             {% endwith %}
     {% if more %}
-    <a href="" data-tohide="{{hide}}" class="showhidden">Show older checks</a>
+    <a href="" data-tohide="{{pk}}" class="showhidden">Show older checks</a>
     {% endif %}
             {% endif %}
     </td></tr>
