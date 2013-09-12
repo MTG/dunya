@@ -7,10 +7,6 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
-    depends_on = (
-            ("carnatic", "0002_auto__add_field_artist_description__add_field_recording_description__a"),
-    )
-
     def forwards(self, orm):
         # Deleting model 'Reference'
         db.delete_table(u'data_reference')

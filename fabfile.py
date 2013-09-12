@@ -19,8 +19,6 @@ def setupdb():
     local("python manage.py mkdunyadata")
     local("python manage.py mkfiletypes")
 
-
-
 def updatedb():
     """ Run this when someone has committed some changes to the
         database migration scripts
