@@ -12,42 +12,49 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block wrap %}
+
+<div class="main-container">
+        
     <div id="filterMask">
 	    <div id="filterArea">
 
 	    	<div id="entitiesList" class="filterList">
-	    		<h3>Chose your query</h3>
-	        	<ul>
-
-	        	</ul>
+	        	<ul></ul>
 	    	</div>
 			
 	    	<div id="breadcrumb">
 	    	</div>
+	    	
 	    </div>
 	    
      </div>
      
-     <div id="queryCont">
-		<div id="query" class="shadow1">
-        	<span>QUERY</span>
-		</div>
-	 </div>
-
+	 <div id="tab">
+		<div id="tabControl"></div>
+	</div>
+	
 	 <div id="resultsstats">
         <table>
-        	<tr>
-        		<td><h3>Collection statistics</h3></td>
-        		<td class="artist">{{numartists}} <b>Artists</b></td>
-        		<td class="artist">{{numcomposers}} <b>Composers</b></td>
-        		<td class="concert">{{numconcert}} <b>Concerts</b></td>
-        		<td class="recording">{{numrecordings}} <b>Recordings</b></td>
-        		<td class="raaga">{{numraaga}} <b>Raagas</b></td>
-        		<td class="taala">{{numtaala}} <b>Taalas</b></td>
+        	<tbody><tr>
+        		<td>
+				    <div id="queryCont">
+				    		<span>Query</span>
+						<div id="query" class="shadow1" onClick="$('#results').isotope({ filter: '*' });">
+						</div>
+					 </div>
+	 			</td>
+        		<td class="artist" onClick="$('#results').isotope({ filter: '.artist' });"><span>176</span> <b>Artists</b></td>
+        		<td class="concert" onClick="$('#results').isotope({ filter: '.concert' });"><span>181</span> <b>Concerts</b></td>
+        		<td class="work" onClick="$('#results').isotope({ filter: '.work' });"><span>96</span> <b>Works</b></td>
+        		<td class="instrument" onClick="$('#results').isotope({ filter: '.instrument' });"><span>13</span> <b>Instruments</b></td>
+        		<td class="raaga" onClick="$('#results').isotope({ filter: '.raaga' });"><span>59</span> <b>Raagas</b></td>
+        		<td class="taala" onClick="$('#results').isotope({ filter: '.taala' });"><span>19</span> <b>Taalas</b></td>
+        		<td class="recording" onClick="$('#results').isotope({ filter: '.recording' });"><span>1947</span> <b>Recordings</b></td>
+        		<td class="composer" onClick="$('#results').isotope({ filter: '.composer' });"><span>1947</span> <b>Composers</b></td>
         	</tr>
-        </table>
+        </tbody></table>
      </div>
-
+     <h2 class="resultsTitle">Some items from our collection:</h2>
      <div id="results">
          {% if results %}
          Query results:<br>
@@ -66,9 +73,7 @@ $(document).ready(function() {
         {% for i in instruments %}
             {% badge_instrument i %}
         {% endfor %}
-
      </div>
-
-
-
+    </div>
+     
 {% endblock %}

@@ -4,6 +4,7 @@ var filtersLiteralOutputArray = new Object();
 var EspecificOutputArray = new Object();
 var globalSpeed  = 500;
 
+
 $(document).ready(function(){
 	//ScrollBlock
 	widthOfChildren(".scrollblock");	
@@ -12,6 +13,18 @@ $(document).ready(function(){
         entity = $(this).parent().parent().parent().attr("eid");
 		getResults2($(this), entity);
     });
+    
+    /*$('#results').isotope({
+    itemSelector : '.item',
+    layoutMode : 'fitRows'
+    });
+    */
+    var $container = $('#results');
+    $container.packery({
+      itemSelector: '.item',
+      gutter: 0
+    });
+
 });
 
 
@@ -121,6 +134,24 @@ function parseAllFilters(data){
 }
 
 function loadClicks(){
+
+	$("#results .desc .plus").click(function(){
+		$(this).parent().parent().toggleClass("open");
+		//$('#results').isotope( 'reLayout');
+		var $container = $('#results');
+    $container.packery({
+      itemSelector: '.item',
+      gutter: 0
+    });
+	});
+	
+	$('.item .similarity div').click(function(){
+    $('.item .similarity div').removeClass('active');	
+      theparent = $(this).parent();
+      buscar = ".right .similarList "+$(this).attr('class');
+      theparent.parent().parent().find(buscar).addClass('active');
+      $(this).addClass("active");
+    });
 
 	$('#query').click(function(){
 		console.log("filtersArray");
