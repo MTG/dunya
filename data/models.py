@@ -140,7 +140,7 @@ class Concert(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def artistnames(self):
-        return self.artists.all()
+        artists = self.artists.all()
         if len(artists) > 1:
             return artists
         elif len(artists) == 0:
