@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.simple_tag
 def inline_artist(artist):
-    if len(artist):
+    if isinstance(artist, list) and len(artist):
         artist = artist[0]
     else:
         return "oopes"
