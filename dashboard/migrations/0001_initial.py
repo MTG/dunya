@@ -13,6 +13,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('module', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('templatefile', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('type', self.gf('django.db.models.fields.CharField')(max_length=5)),
         ))
         db.send_create_signal(u'dashboard', ['CompletenessChecker'])
@@ -25,12 +26,6 @@ class Migration(SchemaMigration):
             ('state_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
         ))
         db.send_create_signal(u'dashboard', ['CollectionState'])
-
-        # Adding model 'Test'
-        db.create_table(u'dashboard_test', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-        ))
-        db.send_create_signal(u'dashboard', ['Test'])
 
         # Adding model 'Collection'
         db.create_table(u'dashboard_collection', (
@@ -71,6 +66,16 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'MusicbrainzRelease', fields ['mbid', 'collection']
         db.create_unique(u'dashboard_musicbrainzrelease', ['mbid', 'collection_id'])
 
+        # Adding model 'MusicbrainzReleaseLogMessage'
+        db.create_table(u'dashboard_musicbrainzreleaselogmessage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('musicbrainzrelease', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.MusicbrainzRelease'])),
+            ('checker', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CompletenessChecker'], null=True, blank=True)),
+            ('message', self.gf('django.db.models.fields.TextField')()),
+            ('datetime', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+        ))
+        db.send_create_signal(u'dashboard', ['MusicbrainzReleaseLogMessage'])
+
         # Adding model 'CollectionDirectory'
         db.create_table(u'dashboard_collectiondirectory', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -80,15 +85,15 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dashboard', ['CollectionDirectory'])
 
-        # Adding model 'ReleaseLogMessage'
-        db.create_table(u'dashboard_releaselogmessage', (
+        # Adding model 'CollectionDirectoryLogMessage'
+        db.create_table(u'dashboard_collectiondirectorylogmessage', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('release', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionDirectory'])),
+            ('collectiondirectory', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionDirectory'])),
             ('checker', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CompletenessChecker'], null=True, blank=True)),
             ('message', self.gf('django.db.models.fields.TextField')()),
             ('datetime', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
         ))
-        db.send_create_signal(u'dashboard', ['ReleaseLogMessage'])
+        db.send_create_signal(u'dashboard', ['CollectionDirectoryLogMessage'])
 
         # Adding model 'CollectionFileState'
         db.create_table(u'dashboard_collectionfilestate', (
@@ -104,40 +109,41 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('directory', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionDirectory'])),
+            ('recordingid', self.gf('django.db.models.fields.CharField')(max_length=36, null=True, blank=True)),
         ))
         db.send_create_signal(u'dashboard', ['CollectionFile'])
 
-        # Adding model 'FileLogMessage'
-        db.create_table(u'dashboard_filelogmessage', (
+        # Adding model 'CollectionFileLogMessage'
+        db.create_table(u'dashboard_collectionfilelogmessage', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('recording', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionFile'])),
+            ('collectionfile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionFile'])),
             ('checker', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CompletenessChecker'])),
             ('message', self.gf('django.db.models.fields.TextField')()),
             ('datetime', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
         ))
-        db.send_create_signal(u'dashboard', ['FileLogMessage'])
+        db.send_create_signal(u'dashboard', ['CollectionFileLogMessage'])
 
-        # Adding model 'FileStatus'
-        db.create_table(u'dashboard_filestatus', (
+        # Adding model 'CollectionFileResult'
+        db.create_table(u'dashboard_collectionfileresult', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('datetime', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('file', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionFile'], null=True, blank=True)),
+            ('collectionfile', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CollectionFile'])),
             ('checker', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CompletenessChecker'])),
-            ('status', self.gf('django.db.models.fields.CharField')(default='n', max_length=10)),
+            ('result', self.gf('django.db.models.fields.CharField')(max_length=10)),
             ('data', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
         ))
-        db.send_create_signal(u'dashboard', ['FileStatus'])
+        db.send_create_signal(u'dashboard', ['CollectionFileResult'])
 
-        # Adding model 'ReleaseStatus'
-        db.create_table(u'dashboard_releasestatus', (
+        # Adding model 'MusicbrainzReleaseResult'
+        db.create_table(u'dashboard_musicbrainzreleaseresult', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('datetime', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('release', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.MusicbrainzRelease'], null=True, blank=True)),
+            ('musicbrainzrelease', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.MusicbrainzRelease'], null=True, blank=True)),
             ('checker', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['dashboard.CompletenessChecker'])),
-            ('status', self.gf('django.db.models.fields.CharField')(default='n', max_length=10)),
+            ('result', self.gf('django.db.models.fields.CharField')(max_length=10)),
             ('data', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
         ))
-        db.send_create_signal(u'dashboard', ['ReleaseStatus'])
+        db.send_create_signal(u'dashboard', ['MusicbrainzReleaseResult'])
 
 
     def backwards(self, orm):
@@ -149,9 +155,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'CollectionState'
         db.delete_table(u'dashboard_collectionstate')
-
-        # Deleting model 'Test'
-        db.delete_table(u'dashboard_test')
 
         # Deleting model 'Collection'
         db.delete_table(u'dashboard_collection')
@@ -165,11 +168,14 @@ class Migration(SchemaMigration):
         # Deleting model 'MusicbrainzRelease'
         db.delete_table(u'dashboard_musicbrainzrelease')
 
+        # Deleting model 'MusicbrainzReleaseLogMessage'
+        db.delete_table(u'dashboard_musicbrainzreleaselogmessage')
+
         # Deleting model 'CollectionDirectory'
         db.delete_table(u'dashboard_collectiondirectory')
 
-        # Deleting model 'ReleaseLogMessage'
-        db.delete_table(u'dashboard_releaselogmessage')
+        # Deleting model 'CollectionDirectoryLogMessage'
+        db.delete_table(u'dashboard_collectiondirectorylogmessage')
 
         # Deleting model 'CollectionFileState'
         db.delete_table(u'dashboard_collectionfilestate')
@@ -177,14 +183,14 @@ class Migration(SchemaMigration):
         # Deleting model 'CollectionFile'
         db.delete_table(u'dashboard_collectionfile')
 
-        # Deleting model 'FileLogMessage'
-        db.delete_table(u'dashboard_filelogmessage')
+        # Deleting model 'CollectionFileLogMessage'
+        db.delete_table(u'dashboard_collectionfilelogmessage')
 
-        # Deleting model 'FileStatus'
-        db.delete_table(u'dashboard_filestatus')
+        # Deleting model 'CollectionFileResult'
+        db.delete_table(u'dashboard_collectionfileresult')
 
-        # Deleting model 'ReleaseStatus'
-        db.delete_table(u'dashboard_releasestatus')
+        # Deleting model 'MusicbrainzReleaseResult'
+        db.delete_table(u'dashboard_musicbrainzreleaseresult')
 
 
     models = {
@@ -202,28 +208,54 @@ class Migration(SchemaMigration):
             'musicbrainzrelease': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']", 'null': 'True', 'blank': 'True'}),
             'path': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
+        u'dashboard.collectiondirectorylogmessage': {
+            'Meta': {'ordering': "['-datetime']", 'object_name': 'CollectionDirectoryLogMessage'},
+            'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']", 'null': 'True', 'blank': 'True'}),
+            'collectiondirectory': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionDirectory']"}),
+            'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'message': ('django.db.models.fields.TextField', [], {})
+        },
         u'dashboard.collectionfile': {
             'Meta': {'object_name': 'CollectionFile'},
             'directory': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionDirectory']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'recordingid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'})
+        },
+        u'dashboard.collectionfilelogmessage': {
+            'Meta': {'ordering': "['-datetime']", 'object_name': 'CollectionFileLogMessage'},
+            'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']"}),
+            'collectionfile': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionFile']"}),
+            'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'message': ('django.db.models.fields.TextField', [], {})
+        },
+        u'dashboard.collectionfileresult': {
+            'Meta': {'ordering': "['-datetime']", 'object_name': 'CollectionFileResult'},
+            'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']"}),
+            'collectionfile': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionFile']"}),
+            'data': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'result': ('django.db.models.fields.CharField', [], {'max_length': '10'})
         },
         u'dashboard.collectionfilestate': {
-            'Meta': {'object_name': 'CollectionFileState'},
+            'Meta': {'ordering': "['-state_date']", 'object_name': 'CollectionFileState'},
             'collectionfile': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionFile']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '10'}),
             'state_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'})
         },
         u'dashboard.collectionlogmessage': {
-            'Meta': {'object_name': 'CollectionLogMessage'},
+            'Meta': {'ordering': "['-datetime']", 'object_name': 'CollectionLogMessage'},
             'collection': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.Collection']"}),
             'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'message': ('django.db.models.fields.TextField', [], {})
         },
         u'dashboard.collectionstate': {
-            'Meta': {'object_name': 'CollectionState'},
+            'Meta': {'ordering': "['-state_date']", 'object_name': 'CollectionState'},
             'collection': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.Collection']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '10'}),
@@ -234,24 +266,8 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'module': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'templatefile': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '5'})
-        },
-        u'dashboard.filelogmessage': {
-            'Meta': {'object_name': 'FileLogMessage'},
-            'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']"}),
-            'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'message': ('django.db.models.fields.TextField', [], {}),
-            'recording': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionFile']"})
-        },
-        u'dashboard.filestatus': {
-            'Meta': {'object_name': 'FileStatus'},
-            'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']"}),
-            'data': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
-            'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'file': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionFile']", 'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '10'})
         },
         u'dashboard.musicbrainzrelease': {
             'Meta': {'unique_together': "(('mbid', 'collection'),)", 'object_name': 'MusicbrainzRelease'},
@@ -260,33 +276,29 @@ class Migration(SchemaMigration):
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
-        u'dashboard.musicbrainzreleasestate': {
-            'Meta': {'object_name': 'MusicbrainzReleaseState'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'musicbrainzrelease': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']"}),
-            'state': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '10'}),
-            'state_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'})
-        },
-        u'dashboard.releaselogmessage': {
-            'Meta': {'object_name': 'ReleaseLogMessage'},
+        u'dashboard.musicbrainzreleaselogmessage': {
+            'Meta': {'ordering': "['-datetime']", 'object_name': 'MusicbrainzReleaseLogMessage'},
             'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']", 'null': 'True', 'blank': 'True'}),
             'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'message': ('django.db.models.fields.TextField', [], {}),
-            'release': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CollectionDirectory']"})
+            'musicbrainzrelease': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']"})
         },
-        u'dashboard.releasestatus': {
-            'Meta': {'object_name': 'ReleaseStatus'},
+        u'dashboard.musicbrainzreleaseresult': {
+            'Meta': {'ordering': "['-datetime']", 'object_name': 'MusicbrainzReleaseResult'},
             'checker': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.CompletenessChecker']"}),
             'data': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'datetime': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'release': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']", 'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '10'})
+            'musicbrainzrelease': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']", 'null': 'True', 'blank': 'True'}),
+            'result': ('django.db.models.fields.CharField', [], {'max_length': '10'})
         },
-        u'dashboard.test': {
-            'Meta': {'object_name': 'Test'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        u'dashboard.musicbrainzreleasestate': {
+            'Meta': {'ordering': "['-state_date']", 'object_name': 'MusicbrainzReleaseState'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'musicbrainzrelease': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['dashboard.MusicbrainzRelease']"}),
+            'state': ('django.db.models.fields.CharField', [], {'default': "'n'", 'max_length': '10'}),
+            'state_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'})
         }
     }
 
