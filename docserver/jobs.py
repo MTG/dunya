@@ -24,3 +24,12 @@ def get_latest_module_version():
         if create:
             models.ModuleVersion.objects.create(module=m, version=v)
 
+
+def run_module_on_collection(module, collection):
+    # get the source type the module needs
+    # get the latest version of the module
+    # get things in collection that don't have a derived of the mod version
+    # get the source types
+    # run on each
+    # save file, add entry
+    pass

@@ -58,8 +58,10 @@ class Document(models.Model):
         return ret
 
 class DocumentSerializer(serializers.ModelSerializer):
-    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='pk', read_only=True)
-    derivedfiles = serializers.SlugRelatedField(many=True, slug_field='pk', read_only=True)
+    # The extension field isn't part of a SourceFile, but we get it from the filetype
+    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
+    derivedfiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
+    collection = serializers.CharField(max_length=100, source='collection.slug', read_only=True)
     class Meta:
         model = Document
         fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
@@ -80,7 +82,6 @@ class SourceFileType(models.Model):
 
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
-    module = models.CharField(max_length=255)
 
     def __unicode__(self):
         return self.name
@@ -95,6 +96,10 @@ class SourceFile(models.Model):
     """The path on disk to the file"""
     path = models.CharField(max_length=200)
 
+    @property
+    def extension(self):
+        return self.file_type.extension
+
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
@@ -104,29 +109,22 @@ class SourceFileSerializer(serializers.ModelSerializer):
         model = SourceFile
         fields = ('document', 'file_type', 'path')
 
-class DerivedFileType(models.Model):
-    objects = FileTypeManager()
-
-    extension = models.CharField(max_length=10)
-    name = models.CharField(max_length=100)
-    module = models.CharField(max_length=255)
-    is_derived = models.BooleanField(default=False)
-    derived_from_type = models.ForeignKey('SourceFileType', blank=True, null=True)
-
-    def __unicode__(self):
-        return self.name
-
 class DerivedFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
-    """The filetype"""
-    file_type = models.ForeignKey(DerivedFileType)
     """The path on disk to the file"""
     path = models.CharField(max_length=200)
     derived_from = models.ForeignKey(SourceFile)
     module_version = models.ForeignKey("ModuleVersion")
+
+    essentia_version = models.ForeignKey("EssentiaVersion")
+    date = models.DateTimeField(default=django.utils.timezone.now)
+
+    @property
+    def extension(self):
+        return self.module_version.extension
 
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
@@ -146,26 +144,14 @@ class EssentiaVersion(models.Model):
     def __unicode__(self):
         return "Essentia %s (%s)" % (self.version, self.sha1)
 
-class WorkerMachine(models.Model):
-    name = models.CharField(max_length=200)
-    hostname = models.CharField(max_length=200)
-    moduleversions = models.ManyToManyField('ModuleVersion', through='WorkerMachineModuleVersion')
-    essentiaversions = models.ManyToManyField('EssentiaVersion', through='WorkerMachineEssentiaVersion')
-
-    def __unicode__(self):
-        return "%s (%s)" % (self.name, self.hostname)
-
-class WorkerMachineEssentiaVersion(models.Model):
-    essentiaversion = models.ForeignKey(EssentiaVersion)
-    workermachine = models.ForeignKey(WorkerMachine)
-    date_added = models.DateTimeField(default=django.utils.timezone.now)
-
 class Module(models.Model):
     name = models.CharField(max_length=200)
-    path = models.CharField(max_length=200)
+    slug = models.SlugField()
+    module = models.CharField(max_length=200)
+    source_type = models.ForeignKey(SourceFileType)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.name, self.path)
+        return "%s (%s)" % (self.name, self.module)
 
     def latest_version(self):
         versions = self.moduleversion_set.all()
@@ -178,19 +164,8 @@ class Module(models.Model):
 class ModuleVersion(models.Model):
     module = models.ForeignKey(Module)
     version = models.CharField(max_length=10)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
 
     def __unicode__(self):
         return "v%s for %s" % (self.version, self.module)
 
-class WorkerMachineModuleVersion(models.Model):
-    workermachine = models.ForeignKey(WorkerMachine)
-    moduleversion = models.ForeignKey(ModuleVersion)
-    date_added = models.DateTimeField(default=django.utils.timezone.now)
-
-class RunResult(models.Model):
-    date = models.DateTimeField(default=django.utils.timezone.now)
-    essentiaversion = models.ForeignKey(EssentiaVersion)
-    # TODO: Do we have a 'filetype' for each moduleversion? or just a single one?
-    file = models.ForeignKey(DerivedFile)
-    workermachine = models.ForeignKey(WorkerMachine)
-    moduleversion = models.ForeignKey(ModuleVersion)

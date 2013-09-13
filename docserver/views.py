@@ -39,6 +39,8 @@ def download(request, cslug, uuid, ftype):
     return HttpResponse("download %s from %s as %s" % (uuid, cslug, ftype))
 
 def download_external(request, uuid, ftype):
+    # TODO we could replace this with
+    # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py
     try:
         thetype = models.FileType.objects.get_by_extension(ftype)
     except models.FileType.DoesNotExist:
@@ -53,7 +55,7 @@ def download_external(request, uuid, ftype):
         raise Http404
     else:
         fname = files[0].path
-        contents = open(fname).read()
+        contents = open(fname, 'rb').read()
     return HttpResponse(contents)
 
 
