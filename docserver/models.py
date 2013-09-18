@@ -35,7 +35,7 @@ class Document(models.Model):
     It can have an option title and description
     """
 
-    #objects = DocumentManager()
+    objects = DocumentManager()
 
     collection = models.ForeignKey(Collection, related_name='documents')
     title = models.CharField(max_length=200)
@@ -95,6 +95,11 @@ class DerivedFile(models.Model):
 
     #essentia_version = models.ForeignKey("EssentiaVersion")
     date = models.DateTimeField(default=django.utils.timezone.now)
+
+    @property
+    def versions(self):
+        versions = self.module_version.module.moduleversion_set.all()
+        return [v.version for v in versions]
 
     @property
     def extension(self):

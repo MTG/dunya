@@ -6,10 +6,18 @@ class CollectionListSerializer(serializers.ModelSerializer):
         model = models.Collection
         fields = ['name', 'description', 'slug', 'root_directory']
 
+class DerivedFileSerializer(serializers.ModelSerializer):
+    extension = serializers.Field(source='extension')
+    versions = serializers.Field(source='versions')
+    class Meta:
+        model = models.DerivedFile
+        fields = ('extension', 'versions')
+
 class DocumentSerializer(serializers.ModelSerializer):
     # The extension field isn't part of a SourceFile, but we get it from the filetype
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
-    derivedfiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
+    #derivedfiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
+    derivedfiles = DerivedFileSerializer(many=True)
     collection = serializers.CharField(max_length=100, source='collection.slug', read_only=True)
     class Meta:
         model = models.Document
@@ -25,10 +33,5 @@ class SourceFileSerializer(serializers.ModelSerializer):
     # TODO: Get file contents based on... document id & type, or alt id & type, or fileid
     class Meta:
         model = models.SourceFile
-        fields = ('document', 'file_type', 'path')
-
-class DerivedFileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.DerivedFile
         fields = ('document', 'file_type', 'path')
 
