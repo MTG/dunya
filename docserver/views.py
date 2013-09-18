@@ -42,8 +42,8 @@ def download_external(request, uuid, ftype):
     # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py
 
     try:
-        thetype = models.FileType.objects.get_by_extension(ftype)
-    except models.FileType.DoesNotExist:
+        thetype = models.SourceFileType.objects.get_by_extension(ftype)
+    except models.SourceFileType.DoesNotExist:
         thetype = None
 
     try:
@@ -53,13 +53,13 @@ def download_external(request, uuid, ftype):
 
     if thedoc and thetype:
         # See if it's an extension
-        files = thedoc.files.filter(file_type=thetype)
+        files = thedoc.sourcefiles.filter(file_type=thetype)
         if len(files) == 0:
             raise Http404
         else:
             fname = files[0].path
             contents = open(fname, 'rb').read()
-        return HttpResponse(contents)
+            return HttpResponse(contents)
     elif thedoc and not thetype:
         # otherwise try derived type
         try:
@@ -72,7 +72,14 @@ def download_external(request, uuid, ftype):
             else:
                 qs = qs.order_by("-date_added")
             if len(qs):
-                return qs[0]
+                modver = qs[0]
+                dfs = thedoc.derivedfiles.filter(module_version=modver).all()
+                if len(dfs):
+                    contents = open(dfs[0].path, 'rb').read()
+                    return HttpResponse(contents)
+                else:
+                    # If no files, or none with this version
+                    raise Http404
             else:
                 # If no files, or none with this version
                 raise Http404
