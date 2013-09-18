@@ -36,15 +36,8 @@ def get_latest_module_version(themod=None):
         version = instance.__version__
         v = "%s" % version
 
-        versions = m.moduleversion_set.all()
-        if len(versions):
-            versions = sorted(versions, reverse=True)
-            last_version = versions[0]
-            if v > last_version:
-                create = True
-        else:
-            create = True
-        if create:
+        versions = m.moduleversion_set.filter(version=version)
+        if not len(versions):
             models.ModuleVersion.objects.create(module=m, version=v)
 
 def _save_file(collection, recording, slug, data):

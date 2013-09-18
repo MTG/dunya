@@ -85,6 +85,11 @@ def download_external(request, uuid, ftype):
 #### Essentia manager
 
 def manager(request):
+    update = request.GET.get("update")
+    if update is not None:
+        jobs.get_latest_module_version()
+        return HttpResponseRedirect(reverse('docserver-manager'))
+
     essentias = models.EssentiaVersion.objects.all()
     modules = models.Module.objects.all()
 
@@ -114,5 +119,3 @@ def addmodule(request):
     ret = {"form": form}
     return render(request, 'docserver/addmodule.html', ret)
 
-def module(request):
-    pass

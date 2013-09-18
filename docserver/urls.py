@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     # Essentia management
     url(r'manager/addessentia/', views.addessentia, name='docserver-addessentia'),
     url(r'manager/addmodule', views.addmodule, name='docserver-addmodule'),
-    url(r'manager/module', views.module, name='docserver-module'),
     url(r'manager/', views.manager, name='docserver-manager'),
 )
 

@@ -26,13 +26,15 @@
     <tr>
         <td>{{m.name}} ({{m.module}})</td>
         <td>{{m.latest_version_number}}</td>
-        <td></td>
+        <td>{{m.processed_files|length}}</td>
+        <td>{{m.unprocessed_files|length}}</td>
         <td>Scan all stuff<br>Get new version</td>
     </tr>
     {% endfor %}
 {% else %}
 <p>(none)
 {% endif %}
-<p><a href="{% url 'docserver-addmodule' %}">Add new module</a>
+<p><a href="{% url 'docserver-addmodule' %}">Add new module</a><br>
+<p><a href="?update">Update module versions</a>
 
 {% endblock %}

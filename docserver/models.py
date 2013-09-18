@@ -122,8 +122,27 @@ class Module(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.module)
 
+    def processed_files(self):
+        latest = self.get_latest_version()
+        qs = Document.objects.filter(sourcefiles__file_type=self.source_type)
+        if latest:
+            qs = qs.filter(derivedfiles__module_version=self.get_latest_version())
+        else:
+            # If we don't have a version we probably can't show files yet
+            return []
+        return qs
+
+    def unprocessed_files(self):
+        latest = self.get_latest_version()
+        qs = Document.objects.filter(sourcefiles__file_type=self.source_type)
+        if latest:
+            qs = qs.exclude(derivedfiles__module_version=self.get_latest_version())
+        else:
+            return []
+        return qs
+
     def latest_version_number(self):
-        version = get_latest_version()
+        version = self.get_latest_version()
         if version:
             return version.version
         else:
