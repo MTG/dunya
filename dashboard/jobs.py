@@ -39,7 +39,7 @@ class ReleaseDunyaTask(DunyaTask):
 def load_and_import_collection(collectionid):
     # Note, use 'immutable subtasks' (.si()) which doesn't pass results from 1 method to the next
     chain = load_musicbrainz_collection.si(collectionid) | import_all_releases.si(collectionid)
-    chain.apply_asyn.apply_async()
+    chain.apply_async()
 
 @celery.task(ignore_result=True)
 def rematch_unknown_directory(collectiondirectory_id):
