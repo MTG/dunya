@@ -21,11 +21,11 @@
 <h2>Extractor modules</h2>
 
 {% if modules %}
-<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Actions</th></tr>
+<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
     {% for m in modules %}
     <tr>
-        <td>{{m.name}} ({{m.path}})</td>
-        <td>{{m.latest_version}}</td>
+        <td>{{m.name}} ({{m.module}})</td>
+        <td>{{m.latest_version_number}}</td>
         <td></td>
         <td>Scan all stuff<br>Get new version</td>
     </tr>

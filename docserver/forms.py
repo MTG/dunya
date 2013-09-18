@@ -6,6 +6,5 @@ class EssentiaVersionForm(forms.ModelForm):
     class Meta:
         model = models.EssentiaVersion
 
-class ModuleForm(forms.ModelForm):
-    class Meta:
-        model = models.Module
+class ModuleForm(forms.Form):
+    module = forms.CharField()

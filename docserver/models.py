@@ -1,7 +1,6 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.template.defaultfilters import slugify
-from rest_framework import serializers
 import django.utils.timezone
 
 import uuid
@@ -25,11 +24,6 @@ class Collection(models.Model):
             self.slug = slugify(self.name)
         super(Collection, self).save(*args, **kwargs)
 
-class CollectionListSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Collection
-        fields = ['name', 'description', 'slug', 'root_directory']
-
 
 class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
@@ -41,7 +35,7 @@ class Document(models.Model):
     It can have an option title and description
     """
 
-    objects = DocumentManager()
+    #objects = DocumentManager()
 
     collection = models.ForeignKey(Collection, related_name='documents')
     title = models.CharField(max_length=200)
@@ -57,20 +51,6 @@ class Document(models.Model):
             ret += " (%s)" % self.external_identifier
         return ret
 
-class DocumentSerializer(serializers.ModelSerializer):
-    # The extension field isn't part of a SourceFile, but we get it from the filetype
-    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
-    derivedfiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
-    collection = serializers.CharField(max_length=100, source='collection.slug', read_only=True)
-    class Meta:
-        model = Document
-        fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
-
-class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
-    documents = DocumentSerializer(many=True)
-    class Meta:
-        model = Collection
-        fields = ['name', 'documents']
 
 class FileTypeManager(models.Manager):
     def get_by_extension(self, extension):
@@ -90,7 +70,7 @@ class SourceFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
-    document = models.ForeignKey("Document", related_name='sourcefiles')
+    document = models.ForeignKey(Document, related_name='sourcefiles')
     """The filetype"""
     file_type = models.ForeignKey(SourceFileType)
     """The path on disk to the file"""
@@ -103,12 +83,6 @@ class SourceFile(models.Model):
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
-class SourceFileSerializer(serializers.ModelSerializer):
-    # TODO: Get file contents based on... document id & type, or alt id & type, or fileid
-    class Meta:
-        model = SourceFile
-        fields = ('document', 'file_type', 'path')
-
 class DerivedFile(models.Model):
     """An actual file. References a document"""
 
@@ -119,20 +93,15 @@ class DerivedFile(models.Model):
     derived_from = models.ForeignKey(SourceFile)
     module_version = models.ForeignKey("ModuleVersion")
 
-    essentia_version = models.ForeignKey("EssentiaVersion")
+    #essentia_version = models.ForeignKey("EssentiaVersion")
     date = models.DateTimeField(default=django.utils.timezone.now)
 
     @property
     def extension(self):
-        return self.module_version.extension
+        return self.module_version.module.slug
 
     def __unicode__(self):
-        return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
-
-class DerivedFileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DerivedFile
-        fields = ('document', 'file_type', 'path')
+        return "%s (%s, %s)" % (self.document.title, self.module_version.module.slug, self.path)
 
 # Essentia management stuff
 
@@ -153,13 +122,19 @@ class Module(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.module)
 
-    def latest_version(self):
-        versions = self.moduleversion_set.all()
-        if len(versions):
-            versions = sorted(versions, reverse=True)
-            return versions[0].version
+    def latest_version_number(self):
+        version = get_latest_version()
+        if version:
+            return version.version
         else:
             return "(none)"
+
+    def get_latest_version(self):
+        versions = self.moduleversion_set.order_by("-date_added")
+        if len(versions):
+            return versions[0]
+        else:
+            return None
 
 class ModuleVersion(models.Model):
     module = models.ForeignKey(Module)
