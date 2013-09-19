@@ -203,6 +203,8 @@ class MusicbrainzRelease(models.Model):
     mbid = UUIDField()
     collection = models.ForeignKey(Collection)
     title = models.CharField(max_length=200)
+    # If a release has ignore set, we do not try and import it
+    ignore = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "%s (%s)" % (self.title, self.id)

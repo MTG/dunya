@@ -54,6 +54,9 @@ def collection(request, uuid):
     elif order == "unmatched":
         def sortkey(rel):
             return (False if rel.matched_paths() else True, rel.get_current_state().state_date)
+    elif order == "ignored":
+        def sortkey(rel):
+            return rel.ignore
     elif order == "error":
         def sortkey(rel):
             count = 0
@@ -83,6 +86,17 @@ def release(request, releaseid):
     reimport = request.GET.get("reimport")
     if reimport is not None:
         jobs.import_release.delay(release.id)
+        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+
+    ignore = request.GET.get("ignore")
+    if ignore is not None:
+        release.ignore = True
+        release.save()
+        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+    unignore = request.GET.get("unignore")
+    if unignore is not None:
+        release.ignore = False
+        release.save()
         return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
 
     files = release.collectiondirectory_set.order_by('path').all()

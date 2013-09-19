@@ -24,7 +24,18 @@
 <div class="topbox">
     <div class="topheader">Actions</div>
     <li><a href="?reimport">Reimport release</a>
+    {% if not release.ignore %}
+    <li><a href="?ignore" title="Don't try and automatically import this release">Ignore release</a>
+    {% endif %}
 </div>
+
+{% if release.ignore %}
+<div class="topbox" style="background-color: #ff9999;">
+    <div class="topheader">Ignored</div>
+    <li>This release is currently being ignored from automatic imports
+    <li><a href="?unignore">Unignore release</a>
+</div>
+{% endif %}
 
 <div class="topbox">
     <div class="topheader">Current state</div>

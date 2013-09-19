@@ -24,6 +24,7 @@
     <li><a href="?order=error">Order by errors first</a>
     <li><a href="?order=unmatched">Order by unmatched releases first</a>
     <li><a href="?order=date">Order by last imported date</a>
+    <li><a href="?order=ignored">Order by ignored</a>
 </div>
 
 <div class="topbox">
@@ -43,7 +44,9 @@
 
 <table><tr><th>Release</th><th>Matched path</th><th>Current status</th></tr>
 {% for r in releases %}
-<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a></td>
+<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a>
+        {% if r.ignore %}(ignored){% endif %}
+    </td>
         
             <td>
                 {% for p in r.matched_paths %}
