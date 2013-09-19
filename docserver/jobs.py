@@ -5,7 +5,7 @@ import json
 from docserver import models
 import celery
 
-DATA_DIR = "/home/alastair/audio/data"
+from django.conf import settings
 
 def _get_module_instance_by_path(modulepath):
     mod, clsname = modulepath.rsplit(".", 1)
@@ -41,7 +41,7 @@ def get_latest_module_version(themod=None):
             models.ModuleVersion.objects.create(module=m, version=v)
 
 def _save_file(collection, recording, slug, data):
-    fdir = os.path.join(DATA_DIR, collection, recording)
+    fdir = os.path.join(settings.AUDIO_ROOT, collection, recording)
     try:
         os.makedirs(fdir)
     except OSError:
