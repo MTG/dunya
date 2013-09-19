@@ -7,7 +7,7 @@ import carnatic
 import compmusic
 import data
 
-import populate_images
+from dashboard import external_data
 
 class ReleaseImporter(object):
     def __init__(self, collectionid):
@@ -54,6 +54,7 @@ class ReleaseImporter(object):
             concert.tracks.add(recording)
 
         # TODO: Release hooks
+        external_data.import_concert_image(concert)
 
     def add_and_get_artist(self, artistid):
         try:
@@ -78,7 +79,7 @@ class ReleaseImporter(object):
                 artist.end = dates.get("end")
             artist.save()
             # TODO: Artist hooks
-            populate_images.import_artist(artist)
+            external_data.import_artist_bio(artist)
         return artist
 
     def _get_raaga(self, taglist):

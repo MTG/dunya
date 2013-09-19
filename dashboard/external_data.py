@@ -1,21 +1,13 @@
-import sys
-import os
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), ".."))
 
-from dunya import settings
-from django.core.management import setup_environ
-setup_environ(settings)
 from django.core.files.base import ContentFile
 
-from carnatic.models import *
 import data.models
 
 from compmusic import wikipedia
 from compmusic import kutcheris
 from compmusic import image
 
-def import_instrument(i):
+def import_instrument_description(i):
     iname = wikipedia.search(i.name)
     img, b, u = wikipedia.get_artist_details(i.name)
     if b and b.startswith("#REDIR"):
@@ -32,10 +24,11 @@ def import_instrument(i):
         i.images.add(im)
     i.save()
 
-def import_artist(a):
+def import_artist_bio(a):
     artist = kutcheris.search_artist(a.name)
     additional_urls = []
     if not len(artist):
+        print "Looing for data on wikipedia"
         i, b, u = wikipedia.get_artist_details(a.name)
         if u:
             additional_urls.append(u)
@@ -50,6 +43,7 @@ def import_artist(a):
             sn = data.models.SourceName.objects.get(name="Wikipedia")
 
     else:
+        print "Found data on kutcheris.com"
         i, b, u = kutcheris.get_artist_details(artist.values()[0])
         u = "http://kutcheris.com/artist.php?id=%s" % artist
         if b:
@@ -60,6 +54,7 @@ def import_artist(a):
         description = data.models.Description.objects.create(description=b, source=source)
         a.description = description
         if i:
+            print "Found image"
             im = data.models.Image()
             im.image.save("artist/%s.jpg" % a.mbid, ContentFile(i))
             a.images.add(im)
@@ -71,7 +66,8 @@ def import_artist(a):
                 a.references.add(source)
         a.save()
 
-def import_concert(c):
+def import_concert_image(c):
+    print "Loading coverart"
     i = image.get_coverart_for_release(c.mbid)
     if i:
         im = data.models.Image()
@@ -79,23 +75,3 @@ def import_concert(c):
         c.images.add(im)
         c.save()
 
-def do_artists():
-    for a in Artist.objects.all():
-        import_artist(a)
-
-def do_composers():
-    for c in Composer.objects.all():
-        import_artist(c)
-
-def do_concerts():
-    for c in Concert.objects.all():
-        import_concert(c)
-
-if __name__ == "__main__":
-    a = sys.argv[1]
-    if a == "artist":
-        do_artists()
-    elif a == "composer":
-        do_composers()
-    elif a == "concert":
-        do_concerts()
