@@ -4,7 +4,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Name"
+        "name": "Vocal"
     }
 },
 {
@@ -12,7 +12,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Vocal"
+        "name": "Violin"
     }
 },
 {
@@ -20,7 +20,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Violin"
+        "name": "Mridangam"
     }
 },
 {
@@ -28,7 +28,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Mridangam"
+        "name": "Tambura"
     }
 },
 {
@@ -36,7 +36,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Tambura"
+        "name": "Veena"
     }
 },
 {
@@ -44,7 +44,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Veena"
+        "name": "Flute"
     }
 },
 {
@@ -52,7 +52,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Flute"
+        "name": "Mandolin"
     }
 },
 {
@@ -60,7 +60,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Mandolin"
+        "name": "Saxophone"
     }
 },
 {
@@ -68,7 +68,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Saxophone"
+        "name": "Ghatam"
     }
 },
 {
@@ -76,7 +76,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Ghatam"
+        "name": "Khanjira"
     }
 },
 {
@@ -84,7 +84,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Khanjira"
+        "name": "Morsing"
     }
 },
 {
@@ -92,7 +92,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Morsing"
+        "name": "Konnakol"
     }
 },
 {
@@ -100,7 +100,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Konnakol"
+        "name": "Gettuvadyam"
     }
 },
 {
@@ -108,7 +108,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Gettuvadyam"
+        "name": "Jalatarang"
     }
 },
 {
@@ -116,7 +116,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Jalatarang"
+        "name": "Chitraveena"
     }
 },
 {
@@ -124,7 +124,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Chitraveena"
+        "name": "Chanda"
     }
 },
 {
@@ -132,7 +132,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Chanda"
+        "name": "Maddala"
     }
 },
 {
@@ -140,7 +140,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Maddala"
+        "name": "Talam"
     }
 },
 {
@@ -148,7 +148,7 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Talam"
+        "name": "Electronic tambura"
     }
 },
 {
@@ -156,19 +156,11 @@
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
-        "name": "Electronic tambura"
-    }
-},
-{
-    "pk": 21, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "source": null, 
         "name": "Saraswati veena"
     }
 },
 {
-    "pk": 22, 
+    "pk": 21, 
     "model": "carnatic.instrument", 
     "fields": {
         "source": null, 
