@@ -67,8 +67,8 @@ def import_artist_bio(a):
         a.save()
 
 def import_concert_image(c):
-    print "Loading coverart"
-    i = image.get_coverart_for_release(c.mbid)
+    # TODO: Get from local files too
+    i = image.get_coverart_from_caa(c.mbid)
     if i:
         im = data.models.Image()
         im.image.save("concert/%s.jpg" % c.mbid, ContentFile(i))
