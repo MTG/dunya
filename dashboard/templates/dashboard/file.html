@@ -33,4 +33,18 @@
 </table>
 </div>
 
+<div class="topbox">
+    <div class="topheader">Source files</div>
+    {% for f in sourcefiles %}
+        <li><a href="{{f.url}}">{{f.title}}</a>
+    {% endfor %}
+</div>
+
+<div class="topbox">
+    <div class="topheader">Computed files</div>
+    {% for f in sourcefiles %}
+        <li><a href="{{f.url}}">{{f.title}}</a>
+    {% endfor %}
+</div>
+
 {% endblock %}
