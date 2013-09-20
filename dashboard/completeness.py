@@ -123,7 +123,9 @@ class ReleaseCoverart(CompletenessBase):
         return (coverart is not None, ret)
 
 class FileTags(CompletenessBase):
-    """ Check that a file has all the correct musicbrainz tags """
+    """ Check that a file has musicbrainz tags set.
+    This does not check that the musicbrainz tags are valid,
+    only that they exist."""
     type = 'f'
     templatefile = 'filetags.html'
     name = 'File tags'
@@ -266,3 +268,43 @@ class ReleaseRelationships(CompletenessBase):
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
 
+class CorrectMBID(CompletenessBase):
+    """Check that the Musicbrainz IDs in the file tags are correct.
+    Do this by performing a search for the release id and hope it's correct.
+    Do a really simple tag <-> mb title check to make sure it looks like it's
+    the right release.
+    Try and match every mb recording id to an id that's in the file listing.
+    Return an error if there's an MB recording id with no match, or a
+    file recordingid that isn't in MB.
+    """
+    type = 'r'
+    templatefile = 'validmbid.html'
+    name = 'MBID validator'
+
+    def task(self, musicbrainzrelease_id):
+        release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
+        mbrelease = compmusic.mb.get_release_by_id(release.mbid, includes=["recordings"])
+        mbrelease = mbrelease["release"]
+
+        recordings = {}
+        for m in release.get("medium-list", []):
+            for rec in m.get("track-list", []):
+                recid = rec["recording"]["id"]
+                recordings["recid"] = rec["recording"]
+
+        mbrecordings = set(recordings.keys())
+        cfiles = release.collectionfile_set.all()
+        localrecordings = set([c.recordingid for c in cfiles])
+        unmatchedmb = list(mbrecordings - localrecordings)
+        badlocal = list(localrecordings - mbrecordings)
+
+        retdata = {}
+        if len(unmatchedmb):
+            retdata["unmatchedmb"] = {k: mbrecordings[k] for k in unmatchedmb}
+        if len(badlocal):
+            retdata["badlocal"] = {}
+            for b in badlocal:
+                retdata["badlocal"][b] = release.collectionfile_set.get(recordingid=b).title
+
+        retval = True if len(unmatchedmb) or len(badlocal) else False
+        return (retval, retdata)
