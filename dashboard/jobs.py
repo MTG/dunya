@@ -1,5 +1,6 @@
 import celery
 import os
+import traceback
 
 from dashboard import models
 from dashboard.log import logger
@@ -27,7 +28,7 @@ class DunyaTask(celery.Task):
             theobj.set_state_error()
         except self.ObjectClass.DoesNotExist:
             classname = "%s.%s" % (self.ObjectClass.__module__, self.ObjectClass.__name__)
-            raise Exception("Cannot find %s object with key %s" % (classname, args[0]))
+            raise Exception("Cannot find %s object with key %s to add error to" % (classname, args[0]))
         raise exc
 
 class CollectionDunyaTask(DunyaTask):
@@ -82,7 +83,11 @@ def import_release(releasepk):
     for check in rcheckers:
         inst = check.get_instance()
         release.add_log_message("Running release test %s" % inst.name)
-        inst.do_check(release.id)
+        try:
+            inst.do_check(release.id)
+        except Exception as e:
+            tb = traceback.format_exec()
+            release.add_log_message(tb)
 
     cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
     # 4. Run file checkers
@@ -91,7 +96,11 @@ def import_release(releasepk):
         # 4a. Check file
         for check in fcheckers:
             inst = check.get_instance()
-            inst.do_check(cfile.id)
+            try:
+                inst.do_check(cfile.id)
+            except Exception as e:
+                tb = traceback.format_exec()
+                cfile.add_log_message(tb)
         # 4b. Import file to docserver
         docserver.util.docserver_add_mp3(release.collection.id, release.mbid, cfile.path, cfile.recordingid)
         cfile.set_state_finished()
@@ -101,11 +110,11 @@ def import_release(releasepk):
 
 @celery.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):
-    """ Import all unimported releases in a collection."""
+    """ Import all unimported and unignored releases in a collection."""
     # TODO: Should this be 'unimported', or 'not finished'?
     collection = models.Collection.objects.get(pk=collectionid)
     collection.set_state_importing()
-    releases = collection.musicbrainzrelease_set.all()
+    releases = collection.musicbrainzrelease_set.filter(ignore=False)
     unstarted = []
     for r in releases:
         if r.get_current_state().state == 'n':
