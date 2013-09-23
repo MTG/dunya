@@ -26,7 +26,12 @@
 </table>
 {% endif %}
 
+<h2>Carnatic fixed data management</h2>
+<li><a href="{% url 'dashboard-raagas' %}">Raagas</a>
+<li><a href="{% url 'dashboard-taalas' %}">Taalas</a>
+<li><a href="{% url 'dashboard-instruments' %}">Instruments</a>
+
 <h2>Essentia module management</h2>
-<a href="{% url 'docserver-manager' %}">Manager</a>
+<li><a href="{% url 'docserver-manager' %}">Manager</a>
 
 {% endblock %}
