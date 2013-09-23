@@ -1,6 +1,21 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Collection {{collection.name}}{% endblock %}
 
+{% block css %}
+<style type="text/css">
+    .collection-list .release {
+        width: 40%;
+    }
+    .collection-list .path {
+        word-break: break-all;
+        width: 40%;
+    }
+    .collection-list .status {
+        width: 20%;
+    }
+</style>
+{% endblock %}
+
 {% block wrap %}
 
 
@@ -42,7 +57,11 @@
     {% endif %}
 </div>
 
-<table><tr><th>Release</th><th>Matched path</th><th>Current status</th></tr>
+<table class="collection-list"><tr>
+        <th class="release">Release</th>
+        <th class="path">Matched path</th>
+        <th class="status">Current status</th>
+    </tr>
 {% for r in releases %}
 <tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a>
         {% if r.ignore %}(ignored){% endif %}
