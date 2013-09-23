@@ -1,0 +1,21 @@
+{%extends "carnatic/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<div style="padding:2em">
+<h1>CompMusic Dunya</h1>
+As part of the <a href="http://compmusic.upf.edu">CompMusic project</a>,
+we are developing a proof of concept application to explore music
+from different cultures.
+<p>
+To access this development version of Dunya, please <a href="{% url 'social-auth-register' %}">register</a> for an account. For further information contact Alastair Porter at alastair.porter@upf.edu.
+<p>
+We currently have prototype covering the Carnatic music of south India.
+<h2><a href="{% url 'carnatic-main' %}">Carnatic</a></h2>
+<p>
+<small><strong>Administration access</strong><br>
+    <a href="{% url 'dashboard-home' %}">Dashboard</a>
+</small>
+</div>
+{% endblock %}
+

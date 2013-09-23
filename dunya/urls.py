@@ -1,9 +1,6 @@
 from django.conf.urls import patterns, include, url, static
-
 from django.conf import settings
-
 from django.contrib import admin
-
 from django.contrib.comments.models import Comment
 
 admin.autodiscover()
@@ -27,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^jsi18n$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
 )
 
 if settings.DEBUG:
