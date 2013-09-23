@@ -3,7 +3,10 @@
     "pk": 1, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Vocal"
     }
 },
@@ -11,7 +14,10 @@
     "pk": 2, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Violin"
     }
 },
@@ -19,7 +25,10 @@
     "pk": 3, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Mridangam"
     }
 },
@@ -27,7 +36,10 @@
     "pk": 4, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [],
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Tambura"
     }
 },
@@ -35,7 +47,10 @@
     "pk": 5, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Veena"
     }
 },
@@ -43,7 +58,10 @@
     "pk": 6, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Flute"
     }
 },
@@ -51,7 +69,10 @@
     "pk": 7, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Mandolin"
     }
 },
@@ -59,7 +80,10 @@
     "pk": 8, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Saxophone"
     }
 },
@@ -67,7 +91,10 @@
     "pk": 9, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Ghatam"
     }
 },
@@ -75,7 +102,10 @@
     "pk": 10, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Khanjira"
     }
 },
@@ -83,7 +113,10 @@
     "pk": 11, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Morsing"
     }
 },
@@ -91,7 +124,10 @@
     "pk": 12, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Konnakol"
     }
 },
@@ -99,7 +135,10 @@
     "pk": 13, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Gettuvadyam"
     }
 },
@@ -107,7 +146,10 @@
     "pk": 14, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Jalatarang"
     }
 },
@@ -115,7 +157,10 @@
     "pk": 15, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [],
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Chitraveena"
     }
 },
@@ -123,7 +168,10 @@
     "pk": 16, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Chanda"
     }
 },
@@ -131,7 +179,10 @@
     "pk": 17, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Maddala"
     }
 },
@@ -139,7 +190,10 @@
     "pk": 18, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Talam"
     }
 },
@@ -147,7 +201,10 @@
     "pk": 19, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Electronic tambura"
     }
 },
@@ -155,7 +212,10 @@
     "pk": 20, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [], 
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Saraswati veena"
     }
 },
@@ -163,8 +223,38 @@
     "pk": 21, 
     "model": "carnatic.instrument", 
     "fields": {
+        "images": [],
         "source": null, 
+        "references": [], 
+        "description": null, 
         "name": "Thavil"
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.instrument", 
+    "fields": {
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "description": 24, 
+        "name": "Thavil"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 1, 
+        "name": "lead vocal"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.instrumentalias", 
+    "fields": {
+        "instrument": 1, 
+        "name": "other vocal"
     }
 },
 {
