@@ -74,39 +74,57 @@ def import_release(releasepk):
     release.set_state_importing()
     release.add_log_message("Starting import")
 
-    # 1. Import release to dunya database
-    ri = release_importer.ReleaseImporter(release.collection.id)
-    ri.import_release(release.mbid)
-
-    # 2. Run release checkers
+    # 1. Run release checkers
+    abort = False
     rcheckers = models.CompletenessChecker.objects.filter(type='r')
     for check in rcheckers:
         inst = check.get_instance()
         release.add_log_message("Running release test %s" % inst.name)
         try:
-            inst.do_check(release.id)
+            res = inst.do_check(release.id)
+            # If the test fails and abort_on_bad is set then we stop the import
+            abort = abort or (not res and inst.abort_on_bad)
         except Exception as e:
-            tb = traceback.format_exec()
+            # also stop the import if there's an exception
+            abort = True
+            tb = traceback.format_exc()
             release.add_log_message(tb)
 
     cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
-    # 4. Run file checkers
+    # 2. Run file checkers
     fcheckers = models.CompletenessChecker.objects.filter(type='f')
     for cfile in cfiles:
-        # 4a. Check file
+        # 2a. Check file
         for check in fcheckers:
             inst = check.get_instance()
+            cfile.add_log_message("Running file test %s" % inst.name)
             try:
-                inst.do_check(cfile.id)
+                res = inst.do_check(cfile.id)
+                abort = abort or (not res and inst.abort_on_bad)
             except Exception as e:
-                tb = traceback.format_exec()
+                abort = True
+                tb = traceback.format_exc()
                 cfile.add_log_message(tb)
-        # 4b. Import file to docserver
-        docserver.util.docserver_add_mp3(release.collection.id, release.mbid, cfile.path, cfile.recordingid)
-        cfile.set_state_finished()
 
-    release.add_log_message("Release import finished")
-    release.set_state_finished()
+    if not abort:
+        for cfile in cfiles:
+            # 3a. Import file to docserver
+            docserver.util.docserver_add_mp3(release.collection.id, release.mbid, cfile.path, cfile.recordingid)
+            cfile.set_state_finished()
+
+        # 3b. Import release to dunya database
+        ri = release_importer.ReleaseImporter(release.collection.id)
+        ri.import_release(release.mbid)
+
+        release.add_log_message("Release import finished")
+        release.set_state_finished()
+    else:
+        # 3c. If there was an error, set this release as "ignored"
+        release.ignore = True
+        release.save()
+        release.add_log_message("Release import aborted due to failed test")
+        release.set_state_error()
+
 
 @celery.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):

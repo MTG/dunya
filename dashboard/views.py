@@ -115,6 +115,7 @@ def release(request, releaseid):
 @login_required
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
+    log = thefile.collectionfilelogmessage_set.order_by('-datetime').all()
 
     allres = []
     results = thefile.get_latest_checker_results()
@@ -123,7 +124,7 @@ def file(request, fileid):
                        "others": thefile.get_rest_results_for_checker(r.checker.id)
                       })
 
-    ret = {"file": thefile, "results": allres}
+    ret = {"file": thefile, "results": allres, "log_messages": log}
     return render(request, 'dashboard/file.html', ret)
 
 @login_required

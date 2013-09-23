@@ -384,7 +384,7 @@ class CollectionFile(models.Model):
         return self.collectionfilestate_set.all()[1:]
 
     def add_log_message(self, message, checker=None):
-        return FileLogMessage.objects.create(file=self, checker=checker, message=message)
+        return CollectionFileLogMessage.objects.create(collectionfile=self, checker=checker, message=message)
 
     def get_absolute_url(self):
         return reverse('dashboard-file', args=[int(self.id)])
@@ -409,7 +409,7 @@ class CollectionFileLogMessage(models.Model):
         ordering = ['-datetime']
 
     collectionfile = models.ForeignKey(CollectionFile)
-    checker = models.ForeignKey(CompletenessChecker)
+    checker = models.ForeignKey(CompletenessChecker, blank=True, null=True)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 

@@ -19,6 +19,8 @@ class CompletenessBase(object):
     type = None
     # a template to include when talking about results
     templatefile = None
+    # If true, abort an import when a task fails
+    abort_on_bad = False
 
     # The task to run.
     # It returns a tuple (status, data) where data is a dict that is
@@ -44,6 +46,7 @@ class CompletenessBase(object):
             if data:
                 rs.data = json.dumps(data)
                 rs.save()
+        return result
 
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
@@ -280,6 +283,7 @@ class CorrectMBID(CompletenessBase):
     type = 'r'
     templatefile = 'validmbid.html'
     name = 'MBID validator'
+    abort_on_bad = True
 
     def task(self, musicbrainzrelease_id):
         release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
@@ -287,7 +291,7 @@ class CorrectMBID(CompletenessBase):
         mbrelease = mbrelease["release"]
 
         recordings = {}
-        for m in release.get("medium-list", []):
+        for m in mbrelease.get("medium-list", []):
             for rec in m.get("track-list", []):
                 recid = rec["recording"]["id"]
                 recordings["recid"] = rec["recording"]
