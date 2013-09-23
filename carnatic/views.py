@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 import social.tagging as tagging
 
 from carnatic.models import *
@@ -17,6 +18,7 @@ def get_filter_items():
     ]
     return filter_items
 
+@login_required()
 def main(request):
     qartist = []
     if "a" in request.GET:
@@ -71,6 +73,7 @@ def main(request):
            }
     return render(request, "carnatic/index.html", ret)
 
+@login_required()
 def overview(request):
     numartists = Artist.objects.count()
     artists = Artist.objects.all()
@@ -101,6 +104,7 @@ def overview(request):
            }
     return render(request, "carnatic/overview.html", ret)
 
+@login_required()
 def artistsearch(request):
     artists = Artist.objects.all()
     ret = []
@@ -108,6 +112,7 @@ def artistsearch(request):
         ret.append({"mbid": a.mbid, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+@login_required()
 def get_image(entity, noimage):
     images = entity.images.all()
     if images:
@@ -116,6 +121,7 @@ def get_image(entity, noimage):
         image = "/media/images/%s.jpg" % noimage
     return image
 
+@login_required()
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
 
@@ -140,12 +146,14 @@ def artist(request, artistid):
 
     return render(request, "carnatic/artist.html", ret)
 
+@login_required()
 def composer(request, composerid):
     composer = get_object_or_404(Composer, pk=composerid)
     ret = {"composer": composer, "filter_items": json.dumps(get_filter_items())}
 
     return render(request, "carnatic/composer.html", ret)
 
+@login_required()
 def concertsearch(request):
     concerts = Concert.objects.all()
     ret = []
@@ -153,6 +161,7 @@ def concertsearch(request):
         ret.append({"mbid": c.mbid, "title": c.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+@login_required()
 def concert(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
     images = concert.images.all()
@@ -201,6 +210,7 @@ def concert(request, concertid):
 
     return render(request, "carnatic/concert.html", ret)
 
+@login_required()
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
     
@@ -216,6 +226,7 @@ def recording(request, recordingid):
     
     return render(request, "carnatic/recording.html", ret)
 
+@login_required()
 def worksearch(request):
     works = Work.objects.all()
     ret = []
@@ -223,6 +234,7 @@ def worksearch(request):
         ret.append({"mbid": w.mbid, "title": w.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+@login_required()
 def work(request, workid):
     work = get_object_or_404(Work, pk=workid)
 
@@ -237,6 +249,7 @@ def work(request, workid):
     }
     return render(request, "carnatic/work.html", ret)
 
+@login_required()
 def taalasearch(request):
     taalas = Taala.objects.all()
     ret = []
@@ -244,12 +257,14 @@ def taalasearch(request):
         ret.append({"pk": t.pk, "name": t.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+@login_required()
 def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
 
     ret = {"taala": taala, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/taala.html", ret)
 
+@login_required()
 def raagasearch(request):
     raagas = Raaga.objects.all()
     ret = []
@@ -257,12 +272,14 @@ def raagasearch(request):
         ret.append({"pk": r.pk, "name": r.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+@login_required()
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
 
     ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/raaga.html", ret)
 
+@login_required()
 def instrumentsearch(request):
     instruments = Instrument.objects.all()
     ret = []
@@ -270,6 +287,7 @@ def instrumentsearch(request):
         ret.append({"pk": i.pk, "name": i.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+@login_required()
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
     ret = {"instrument": instrument, "filter_items": json.dumps(get_filter_items()),

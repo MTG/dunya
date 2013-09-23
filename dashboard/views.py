@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 import django.utils.timezone
 
 from dashboard import models
@@ -16,7 +16,10 @@ import json
 
 import carnatic
 
-@login_required
+def is_staff(user):
+    return user.is_staff
+
+@user_passes_test(is_staff)
 def index(request):
     if request.method == 'POST':
         form = forms.AddCollectionForm(request.POST)
@@ -37,7 +40,7 @@ def index(request):
     ret = {'form': form, 'collections': collections}
     return render(request, 'dashboard/index.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def collection(request, uuid):
     c = get_object_or_404(models.Collection, pk=uuid)
 
@@ -79,7 +82,7 @@ def collection(request, uuid):
     ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
     return render(request, 'dashboard/collection.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def release(request, releaseid):
     release = get_object_or_404(models.MusicbrainzRelease, pk=releaseid)
 
@@ -112,7 +115,7 @@ def release(request, releaseid):
     ret = {"release": release, "files": files, "results": allres, "log_messages": log}
     return render(request, 'dashboard/release.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
     log = thefile.collectionfilelogmessage_set.order_by('-datetime').all()
@@ -127,7 +130,7 @@ def file(request, fileid):
     ret = {"file": thefile, "results": allres, "log_messages": log}
     return render(request, 'dashboard/file.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def directory(request, dirid):
     """ A directory that wasn't matched to a release in the collection.
     This could be because it has no release tags, or the release isn't in
@@ -187,7 +190,7 @@ def directory(request, dirid):
         ret["artistid"] = list(artistids)[0]
     return render(request, 'dashboard/directory.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def raagas(request):
     # TODO: Raaga/taala/instrument is all duplicated code!
     raagas = carnatic.models.Raaga.objects.all()
@@ -230,7 +233,7 @@ def raagas(request):
 
     return render(request, 'dashboard/raagataala.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def taalas(request):
     taalas = carnatic.models.Taala.objects.all()
     ret = {"items": taalas,
@@ -272,7 +275,7 @@ def taalas(request):
 
     return render(request, 'dashboard/raagataala.html', ret)
 
-@login_required
+@user_passes_test(is_staff)
 def instruments(request):
 
     instruments = carnatic.models.Instrument.objects.all()

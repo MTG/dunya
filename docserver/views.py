@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
 
 from docserver import models
@@ -91,6 +92,10 @@ def download_external(request, uuid, ftype):
 
 #### Essentia manager
 
+def is_staff(user):
+    return user.is_staff
+
+@user_passes_test(is_staff)
 def manager(request):
     update = request.GET.get("update")
     if update is not None:
@@ -103,6 +108,7 @@ def manager(request):
     ret = {"essentias": essentias, "modules": modules}
     return render(request, 'docserver/manager.html', ret)
 
+@user_passes_test(is_staff)
 def addessentia(request):
     if request.method == "POST":
         form = forms.EssentiaVersionForm(request.POST)
@@ -114,6 +120,7 @@ def addessentia(request):
     ret = {"form": form}
     return render(request, 'docserver/addessentia.html', ret)
 
+@user_passes_test(is_staff)
 def addmodule(request):
     if request.method == "POST":
         form = forms.ModuleForm(request.POST)
