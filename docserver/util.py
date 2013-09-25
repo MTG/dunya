@@ -22,6 +22,13 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
     docserver_add_file(document.pk, filetype, path)
 
 def docserver_add_file(document_id, ftype, path):
+    """ Add a file to the given document. If a file with the given filetype
+        already exists for the document just update the path. """
     document = models.Document.objects.get(pk=document_id)
-    file = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
+    try:
+        sfile = models.SourceFile.objects.get(document=document, file_type=ftype)
+        sfile.path = path
+        sfile.save()
+    except models.SourceFile.DoesNotExist:
+        sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
 
