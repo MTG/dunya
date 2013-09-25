@@ -6,12 +6,12 @@
         </td><td>
             <img src="/static/dashboard/img/{{item.get_result_icon}}" title="{{item.get_result_display}}" /> ({{item.datetime|timesince}} ago) </td></tr>
             {% if item.checker.templatefile %}
-    <tr><td colspan="2">
+    <tr {% if hide and not more %}class="tohide tohide{{hide}}"{% endif %}><td colspan="2">
             {% with "dashboard/jobs/"|add:item.checker.templatefile as template %}
             {% include template with data=item.data_object only %}
             {% endwith %}
     {% if more %}
-    <a href="" data-tohide="{{pk}}" class="showhidden">Show older checks</a>
+    <p><a href="" data-tohide="{{pk}}" class="showhidden">Show older checks</a>
     {% endif %}
             {% endif %}
     </td></tr>
