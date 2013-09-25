@@ -14,15 +14,9 @@ $(document).ready(function(){
 		getResults2($(this), entity);
     });
     
-    /*$('#results').isotope({
-    itemSelector : '.item',
-    layoutMode : 'fitRows'
-    });
-    */
-    var $container = $('#results');
-    $container.packery({
-      itemSelector: '.item',
-      gutter: 0
+    $('#results').isotope({
+      itemSelector : '.item',
+      layoutMode : 'fitRows'
     });
 
 });
@@ -137,12 +131,7 @@ function loadClicks(){
 
 	$("#results .desc .plus").click(function(){
 		$(this).parent().parent().toggleClass("open");
-		//$('#results').isotope( 'reLayout');
-		var $container = $('#results');
-    $container.packery({
-      itemSelector: '.item',
-      gutter: 0
-    });
+		$('#results').isotope( 'reLayout');
 	});
 	
 	$('.item .similarity div').click(function(){
@@ -241,7 +230,7 @@ function loadClicks(){
         }
     });
 
-    $("#toggleMain").click(function(){
+    $("#tabControl").click(function(){
         $("#filterMask").toggleClass('querybar');
         populateBreadcrumbs();
     });

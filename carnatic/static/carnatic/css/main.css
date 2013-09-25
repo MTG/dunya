@@ -238,6 +238,40 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+.isotope,
+.isotope .isotope-item {
+  /* change duration value to whatever you like */
+
+  -webkit-transition-duration: 0.8s;
+  -moz-transition-duration: 0.8s;
+  -ms-transition-duration: 0.8s;
+  -o-transition-duration: 0.8s;
+  transition-duration: 0.8s;
+}
+.isotope {
+  -webkit-transition-property: height, width;
+  -moz-transition-property: height, width;
+  -ms-transition-property: height, width;
+  -o-transition-property: height, width;
+  transition-property: height, width;
+}
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+  -moz-transition-property: -moz-transform, opacity;
+  -ms-transition-property: -ms-transform, opacity;
+  -o-transition-property: -o-transform, opacity;
+  transition-property: transform, opacity;
+}
+/**** disabling Isotope CSS3 transitions ****/
+.isotope.no-transition,
+.isotope.no-transition .isotope-item,
+.isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+  -moz-transition-duration: 0s;
+  -ms-transition-duration: 0s;
+  -o-transition-duration: 0s;
+  transition-duration: 0s;
+}
 .formSection {
   cursor: pointer;
   background: url("../img/formSectionClose.png") 98% 4px no-repeat;
@@ -321,7 +355,7 @@ fieldset {
 }
 /*   SHADOW OF THE CIRCLES   */
 .shadow1 {
-  box-shadow: 0px 0px 5px #888;
+  box-shadow: 1px 1px 3px #666;
 }
 #footage {
   display: none;
@@ -338,6 +372,8 @@ fieldset {
    ========================================================================== */
 * {
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 html,
 button,
@@ -410,7 +446,6 @@ textarea {
   position: relative;
   top: 8px;
   left: 0px;
-  background: url("../img/logoDunya.png") 0 0 no-repeat;
   width: 57px;
   height: 59px;
   float: left;
@@ -689,52 +724,6 @@ textarea {
 /* ==========================================================================
    FILTERS
    ========================================================================== */
-#queryCont {
-  position: absolute;
-  display: block;
-  right: 10px;
-  top: 80px;
-  z-index: 200;
-}
-#queryCont #query {
-  position: relative;
-  float: left;
-  background: rgba(0, 0, 0, 0.5);
-  right: 0px;
-  top: 0px;
-  width: 80px;
-  height: 120px;
-  -webkit-border-radius: 40px;
-  -moz-border-radius: 40px;
-  -ms-border-radius: 40px;
-  -o-border-radius: 40px;
-  border-radius: 40px;
-  display: table;
-  top: 86px;
-  margin-left: 30px;
-  cursor: pointer;
-  margin-right: 25px;
-}
-#queryCont #query span {
-  display: table-cell;
-  position: relative;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  vertical-align: bottom;
-  text-align: center;
-  padding: 0px;
-  padding-bottom: 30px;
-  color: #fff;
-  text-shadow: 0px 1px 3px black;
-  font-size: 16px;
-  text-transform: uppercase;
-  background: url("http://localhost:8001/static/carnatic/css/../img/icon_search.png") 50% 30px no-repeat;
-}
-#queryCont #query:hover {
-  background: url("http://localhost:8001/static/carnatic/css/../img/texturelogo.png") 21% 42% no-repeat;
-}
 #filterMask {
   position: relative;
   width: 100%;
@@ -762,24 +751,23 @@ textarea {
   padding: 0px;
 }
 #filterMask #filterArea .filterList ul li {
-  color: #1B1818;
-  border-bottom: 1px solid #a7a8ac;
-  padding: 9px;
+  color: #fff;
+  text-shadow: 1px 1px 1px #555555;
+  font-weight: bold;
+  padding: 9px 9px 9px 24px;
   text-transform: capitalize;
   cursor: pointer;
   margin: 0px;
 }
 #filterMask #filterArea .filterList ul li.selected {
   color: #fff;
-  background: #666;
-  background: rgba(50, 50, 50, 0.8);
+  background: url("../img/sticker.png") 0 50% no-repeat;
 }
 #filterMask #filterArea .formFilterItem {
   height: auto;
 }
 #filterMask #filterArea #entitiesList ul {
   position: absolute;
-  bottom: 0px;
   width: 100%;
 }
 #filterMask #filterArea #entitiesList h3 {
@@ -801,20 +789,23 @@ textarea {
   background: -o-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
   background: -ms-linear-gradient(top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
   background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=0);
 }
 #filterMask #filterArea #entitiesList ul li .colorCode {
   position: relative;
   display: inline-block;
-  width: 15px;
-  height: 15px;
-  -webkit-border-radius: 15px;
+  width: 18px;
+  height: 18px;
+  -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
   border-radius: 20px;
-  background: #333;
+  background: #fff;
   margin-right: 5px;
   top: 3px;
-  opacity: 0.5;
+  opacity: 1;
+  border: 5px solid #f00;
 }
 #filterMask #filterArea .filters .filterBall {
   -webkit-transition: all 0.5s ease 0;
@@ -1083,6 +1074,28 @@ textarea {
 }
 #filterMask.querybar #breadcrumb .bread span a h3 {
   margin: 0px;
+}
+#tab {
+  position: absolute;
+  top: 350px;
+  left: 0px;
+  width: 100%;
+  height: 29px;
+  background: url("http://localhost:8001/static/carnatic/img/tabBack.png") 50% 50% repeat-x;
+  z-index: 10;
+}
+#tab #tabControl {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: 65px;
+  height: 22px;
+  margin-left: -32px;
+  cursor: pointer;
+  background: url("http://localhost:8001/static/carnatic/img/tabControl.png") 0 0 repeat-x;
+}
+#tab #tabControl:hover {
+  background: url("http://localhost:8001/static/carnatic/img/tabControl_hover.png") 0 0 repeat-x;
 }
 /* ==========================================================================
    DETAIL 
@@ -1434,17 +1447,8 @@ textarea {
   height: 123px;
   margin-right: 10px;
 }
-#detail .thedata .rightdata .innerrightdata .album .disc1 {
-  background: url("../img/disc1.png") 0 0 no-repeat;
-}
-#detail .thedata .rightdata .innerrightdata .album .disc2 {
-  background: url("../img/disc2.png") 0 0 no-repeat;
-}
-#detail .thedata .rightdata .innerrightdata .album .disc3 {
-  background: url("../img/disc3.png") 0 0 no-repeat;
-}
-#detail .thedata .rightdata .innerrightdata .album .disc4 {
-  background: url("../img/disc4.png") 0 0 no-repeat;
+#detail .thedata .rightdata .innerrightdata .album .disc img {
+  width: 123px;
 }
 #detail .thedata .rightdata .innerrightdata .album .desc p {
   margin: 0px;
@@ -1470,6 +1474,9 @@ textarea {
   width: 55px;
   height: 63px;
   margin-right: 10px;
+}
+#detail .thedata .rightdata .innerrightdata .artistCell .photo img {
+  width: 55px;
 }
 #detail .thedata .rightdata .innerrightdata .artistCell .desc p {
   margin: 0px;
@@ -1591,55 +1598,262 @@ textarea {
   background: url("../img/cloth_alike.png") 0 0 repeat;
   position: relative;
   width: 100%;
-  height: 48px;
+  height: auto;
   overflow: hidden;
+}
+#resultsstats #queryCont {
+  background: #ffffff url("http://localhost:8001/static/carnatic/img/icon_search.png") 0 50% no-repeat;
+}
+#resultsstats #queryCont #query {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  background: #ffffff url("http://localhost:8001/static/carnatic/img/playSearch.png") 53% 53% no-repeat;
+  margin-right: 5px;
+  top: 3px;
+  opacity: 1;
+  border: 5px solid #EEEEEE;
+  margin-top: 8px;
+  margin-bottom: 5px;
+}
+#resultsstats .artist > span {
+  border-color: #69d2e7;
+}
+#resultsstats .composer > span {
+  border-color: #c02942;
+}
+#resultsstats .concert > span {
+  border-color: #a7dbd8;
+}
+#resultsstats .recording > span {
+  border-color: #d95b43;
+}
+#resultsstats .raaga > span {
+  border-color: #fa6900;
+}
+#resultsstats .taala > span {
+  border-color: #ecd078;
+}
+#resultsstats .work > span {
+  border-color: #e0e4cc;
+}
+#resultsstats .instrument > span {
+  border-color: #f38630;
 }
 #resultsstats table {
   position: relative;
   width: 100%;
   height: 48px;
-  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.2)), color-stop(100%, rgba(0, 0, 0, 0)));
-  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-  background: -o-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%);
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#33000000', endColorstr='#00000000', GradientType=0);
   border-bottom: 1px solid #333;
 }
 #resultsstats table td {
   padding-left: 10px;
   border-bottom: 1px solid #a7a8ac;
   border-left: 1px solid #a7a8ac;
-  font-size: 30px;
-  color: #fff;
-  text-shadow: 1px 2px 2px black;
+  background: #fff;
+  cursor: pointer;
+}
+#resultsstats table td:hover {
+  box-shadow: 1px 1px 6px #666666;
+}
+#resultsstats table td:hover > span {
+  color: #000;
+}
+#resultsstats table td > span {
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+  border-radius: 40px;
+  width: 65px;
+  height: 65px;
+  position: relative;
+  display: block;
+  float: left;
+  margin-top: 8px;
+  border: 5px solid #EEEEEE;
+  font-weight: 900;
+  text-align: center;
+  padding-top: 12px;
+  font-size: 23px;
+  color: #bbb;
+  box-shadow: 1px 1px 3px #666;
 }
 #resultsstats table td b {
   font-size: 12px;
   color: #000;
   text-shadow: none;
+  display: block;
+  margin-left: 71px;
+  margin-top: 33px;
 }
 #resultsstats table td h3 {
   font-size: 14px;
 }
 #resultsstats table td:first-child {
-  width: 149px;
+  width: 230px;
   border-left: none;
+  color: #666;
+  text-shadow: none;
+  font-size: 12px;
+}
+#resultsstats table td:first-child span {
+  display: block;
+  float: left;
+  height: 40px;
+  margin-left: 42px;
+  margin-right: 19px;
+  position: relative;
+  top: 35px;
+  font-size: 19px;
+}
+.resultsTitle {
+  margin: 10px 5px 0 11px;
 }
 #results > div {
   float: left;
-  width: 307px;
-  height: 125px;
+  width: 220px;
+  height: 270px;
   margin-bottom: 10px;
   overflow-x: hidden;
   overflow-y: auto;
-  border: 1px solid #f6f6f6;
+  position: relative;
   margin-top: 10px;
   margin-left: 10px;
+  background: #f6f6f6;
+  box-shadow: 1px 1px 3px #666;
+}
+#results > div.open {
+  width: 450px;
+  height: 560px;
+}
+#results > div.open .desc {
+  font-size: 13px;
+  line-height: 15px;
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+}
+#results > div.open .desc .plus {
+  background: url("http://localhost:8001/static/carnatic/img/lessIcon.png") 0 0 no-repeat;
+}
+#results > div.open .descOpen {
+  display: block;
+  height: 205px;
+  left: 213px;
+  overflow-y: auto;
+  padding: 13px 21px 21px;
+  position: absolute;
+  top: 6px;
+  width: 231px;
+  background: rgba(256, 256, 256, 0.4);
+  box-shadow: inset 0px 0px 10px;
+}
+#results > div.open .lists {
+  display: block !important;
+  height: 277px;
+  left: 0;
+  position: absolute;
+  top: 218px;
+  width: 100%;
+  padding-left: 6px;
+  padding-right: 6px;
+  overflow: hidden;
+}
+#results > div.open .lists .left {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 207px;
+  height: 100%;
+  float: left;
+  background: url("../img/cloth_alikeTrans.png") repeat;
+}
+#results > div.open .lists .right {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 231px;
+  height: 100%;
+  float: left;
+}
+#results > div.open .lists .miniitem {
+  height: auto !important;
+  left: 0px;
+  position: relative;
+  top: 0px;
+  width: 100% !important;
+  background: none;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 6px;
+  padding-right: 15px;
+}
+#results > div.open .lists .miniitem label {
+  font-size: 11px;
+  line-height: 12px;
+}
+#results > div.open .lists .miniitem .disco {
+  float: left;
+  margin-right: 8px;
+}
+#results > div.open .lists .miniitem .disco a {
+  background: none;
+}
+#results > div.open .lists .miniitem .disco a img {
+  width: 40px !important;
+}
+#results > div.open .smallPlay {
+  position: absolute;
+  left: 200px;
+  top: 2px;
+  width: 23px;
+  height: 23px;
+  background: url("../img/smallPlay.png") 0 0 no-repeat;
+  z-index: 10;
+}
+#results > div .pict {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 207px !important;
+  height: 205px !important;
+  overflow: hidden;
+}
+#results > div .pict a {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  display: block;
+  background: #fff;
+}
+#results > div .pict a img {
+  width: 207px !important;
 }
 #results > div .desc {
-  padding: 10px;
+  overflow: hidden;
+  bottom: 0;
+  height: 57px;
+  padding: 6px;
+  position: absolute;
+  width: 100%;
+  font-size: 11px;
+  line-height: 12px;
+}
+#results > div .desc .plus {
+  position: relative;
+  float: right;
+  margin-top: 8px;
+  width: 23px;
+  height: 23px;
+  background: url("http://localhost:8001/static/carnatic/img/plusIcon.png") 0 0 no-repeat;
+  cursor: pointer;
 }
 #results > div .desc p {
   margin: 0px;
@@ -1647,15 +1861,31 @@ textarea {
 }
 #results > div .desc b,
 #results > div .desc a {
-  font-weight: normal;
+  font-weight: bold;
   display: block;
-  color: #fff;
+  color: #000;
   text-decoration: none;
 }
 #results > div .desc a:hover {
   text-decoration: underline;
 }
+#results > div .descOpen,
+#results > div .lists {
+  display: none;
+}
+#results > div .smallPlay {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  width: 23px;
+  height: 23px;
+  background: url("../img/smallPlay.png") 0 0 no-repeat;
+  z-index: 10;
+}
 #results .recording {
+  background: #97321f;
+}
+#results .recording .desc {
   background: #d95b43;
 }
 #results .recording:hover {
@@ -1667,82 +1897,84 @@ textarea {
   height: 90px;
   margin-right: 10px;
 }
-#results .album {
-  background: #d95b43;
-}
-#results .album:hover {
-  background: #97321f;
-}
-#results .album .disc {
-  float: left;
-  width: 127px;
-  height: 123px;
-  margin-right: 10px;
-}
-#results .artistCell {
-  background: #69d2e7;
-}
-#results .artistCell:hover {
+#results .artist {
   background: #20adca;
 }
-#results .artistCell .photo {
-  float: left;
-  width: 127px;
-  height: 123px;
-  margin-right: 10px;
+#results .artist .desc {
+  background: #69d2e7;
 }
-#results .artistCell .photo img {
-  width: 127px;
-  height: 123px;
+#results .concert {
+  background: #5fbdb8;
+}
+#results .concert .desc {
+  background: #a7dbd8;
+}
+#results .work {
+  background: #b7c189;
+}
+#results .work .desc {
+  background: #e0e4cc;
 }
 #results .track {
-  background: #d95b43;
+  ackground: #97321f;
 }
-#results .track:hover {
-  background: #97321f;
+#results .track .desc {
+  background: #d95b43;
 }
 #results .track h4 {
   margin: 0px;
   margin-bottom: 4px;
 }
-#results .instrumentCell {
-  background: #f38630;
-}
-#results .instrumentCell:hover {
+#results .instrument {
   background: #b3550a;
 }
-#results .instrumentCell h4 {
+#results .instrument .desc {
+  background: #f38630;
+}
+#results .instrument h4 {
   text-align: center;
   margin: 0px;
   margin-bottom: 4px;
 }
-#results .raagaCell {
-  background: #fa6900;
-}
-#results .raagaCell:hover {
+#results .raaga {
   background: #943e00;
 }
-#results .raagaCell h4 {
+#results .raaga .desc {
+  background: #fa6900;
+}
+#results .raaga h4 {
   text-align: center;
   margin: 0px;
   margin-bottom: 4px;
 }
-#results .taalaCell {
-  background: #ecd078;
-}
-#results .taalaCell:hover {
+#results .taala {
   background: #dfb01f;
 }
-#results .taalaCell h4 {
+#results .taala .desc {
+  background: #ecd078;
+}
+#results .taala h4 {
   text-align: center;
   margin: 0px;
   margin-bottom: 4px;
 }
-#results .artist {
-  background: #69d2e7;
+#results .recording {
+  background: #c24027;
 }
-#results .artist:hover {
+#results .recording .desc {
+  background: #d95b43;
+}
+#results .composer {
+  background: #ab253b;
+}
+#results .composer .desc {
+  background: #c02942;
+}
+#results .artist {
   background: #20adca;
+}
+#results .artist .desc {
+  background: #69d2e7;
 }
 #results .artist .artistFoto {
   position: relative;
@@ -1757,6 +1989,130 @@ textarea {
   float: left;
   padding: 5px;
   font-size: 11px;
+}
+#results .similarity h2 {
+  font-weight: normal;
+  color: #fff;
+  font-size: 11px;
+  text-align: center;
+  margin-bottom: 6px;
+  margin-top: 4px;
+}
+#results .similarity div {
+  float: right;
+  text-align: right;
+  right: 0px;
+  clear: right;
+  display: block;
+  height: 27px;
+  margin-bottom: 5px;
+  position: relative;
+  text-transform: uppercase;
+  padding-top: 5px;
+  padding-left: 5px;
+  border-left: 6px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+#results .similarity div.artist {
+  background: #69d2e7;
+  color: #1d9bb4;
+}
+#results .similarity div.concert {
+  background: #c02942;
+  color: #57131e;
+}
+#results .similarity div.work {
+  background: #e0e4cc;
+  color: #adb879;
+}
+#results .similarity div.instrument {
+  background: #f38630;
+  color: #9b4909;
+}
+#results .similarity div.raaga {
+  background: #fa6900;
+  color: #7a3300;
+}
+#results .similarity div.taala {
+  background: #ecd078;
+  color: #c89f1c;
+}
+#results .similarity div.recording {
+  background: #d95b43;
+  color: #822b1a;
+}
+#results .similarity div.composer {
+  background: #c02942;
+  color: #57131e;
+}
+#results .similarity div.active:after {
+  content: "";
+  height: 29px;
+  position: absolute;
+  right: -16px;
+  top: 0px;
+  width: 16px;
+  z-index: 10;
+  background: url("../img/simiMark.png") -2px 0 no-repeat;
+}
+#results .similarity div span {
+  position: absolute;
+  right: 4px;
+  font-weight: bold;
+}
+#results .similarList {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  display: none;
+}
+#results .similarList:before {
+  background-image: url("../img/simdegra.png");
+  background-position: -13px 0;
+  background-repeat: repeat-y;
+  background-size: 100% auto;
+  content: "";
+  height: 100%;
+  opacity: 1;
+  position: absolute;
+  width: 19px;
+  z-index: 0;
+}
+#results .similarList.active {
+  display: block;
+  box-shadow: inset 0px 0px 10px;
+}
+#results .similarList .miniitem:first-child {
+  margin-top: 15px !important;
+}
+#results .similarList .miniitem {
+  padding-left: 13px !important;
+}
+#results .similarList.artist {
+  background: #69d2e7 url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.concert {
+  background: #c02942 url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.work {
+  background: #e0e4cc url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.instrument {
+  background: #f38630 url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.raaga {
+  background: #fa6900 url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.taala {
+  background: #ecd078 url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.recording {
+  background-: #d95b43 url("../img/cloth_alikeTrans2.png") repeat;
+}
+#results .similarList.composer {
+  background: #c02942 url("../img/cloth_alikeTrans2.png") repeat;
 }
 /* ==========================================================================
    LOGIN
@@ -1846,41 +2202,70 @@ input[type="password"] {
   border: none;
   position: relative;
 }
-#detail.recording #header #summary {
-  height: 65px;
-  float: none;
+#detail.recording #header #scrollrec {
+  position: relative;
+  width: 100%;
+  height: 234px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-#detail.recording #header #summary #innerSummary span h1 {
+#detail.recording #header #scrollrec #summary {
+  height: auto;
+  float: none;
+  padding: 0px;
+  width: auto;
+}
+#detail.recording #header #scrollrec #summary #innerSummary {
+  position: relative;
+}
+#detail.recording #header #scrollrec #summary #innerSummary span {
+  padding: 10px;
+}
+#detail.recording #header #scrollrec #summary #innerSummary span h1 {
   font-size: 16px;
 }
-#detail.recording #header #summary #innerSummary span h2 {
+#detail.recording #header #scrollrec #summary #innerSummary span h2 {
   margin-top: 0px;
   font-size: 12px;
 }
-#detail.recording #header #meta {
+#detail.recording #header #scrollrec #meta {
   float: none;
   width: 100%;
+  height: auto;
 }
-#detail.recording #header #meta .metaBlock {
+#detail.recording #header #scrollrec #meta .metaBlock {
   width: 100%;
 }
-#detail.recording #header #meta .metaBlock .metaMask .metaContainer {
+#detail.recording #header #scrollrec #meta .metaBlock .metaMask {
+  overflow: hidden;
+}
+#detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer {
   width: 100%;
 }
-#detail.recording #header #meta .metaBlock .metaMask .metaContainer .metaDetails {
-  width: 221px;
+#detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails {
+  height: auto;
+  width: 100%;
 }
-#detail.recording #header #meta .metaBlock .metaMask .metaContainer .metaDetails label {
+#detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span {
+  width: 100%;
+}
+#detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
   width: 34% !important;
 }
-#detail.recording #header #meta .metaBlock .metaMask .metaContainer .metaDetails b {
+#detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span b {
   width: 64% !important;
 }
-#detail.recording #header #control {
+#detail.recording #header #totalcontrol {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  background: url("../img/controlBackground.jpg") 0 0 repeat;
+}
+#detail.recording #header #totalcontrol #control {
   position: relative;
   padding-left: 30px;
 }
-#detail.recording #header #control .revButton {
+#detail.recording #header #totalcontrol #control .revButton {
   position: relative;
   float: left;
   width: 48px;
@@ -1888,26 +2273,26 @@ input[type="password"] {
   background: url("../img/revButton.png") 0 0 repeat-y;
   margin-top: 7px;
 }
-#detail.recording #header #control .revButton:hover {
+#detail.recording #header #totalcontrol #control .revButton:hover {
   background: url("../img/revButton_hover.png") 0 0 repeat-y;
 }
-#detail.recording #header #control .plButton {
+#detail.recording #header #totalcontrol #control .plButton {
   position: relative;
   float: left;
   width: 64px;
   height: 66px;
   background: url("../img/plButton.png") 0 0 no-repeat;
 }
-#detail.recording #header #control .plButton:hover {
+#detail.recording #header #totalcontrol #control .plButton:hover {
   background: url("../img/plButton_hover.png") 0 0 no-repeat;
 }
-#detail.recording #header #control .plButton.stop {
+#detail.recording #header #totalcontrol #control .plButton.stop {
   background: url("../img/stopButton.png") 0 0 no-repeat;
 }
-#detail.recording #header #control .plButton.stop:hover {
+#detail.recording #header #totalcontrol #control .plButton.stop:hover {
   background: url("../img/stopButton_hover.png") 0 0 no-repeat;
 }
-#detail.recording #header #control .folButton {
+#detail.recording #header #totalcontrol #control .folButton {
   position: relative;
   float: left;
   width: 48px;
@@ -1915,74 +2300,35 @@ input[type="password"] {
   background: url("../img/folButton.png") 0 0 repeat-y;
   margin-top: 7px;
 }
-#detail.recording #header #control .folButton:hover {
+#detail.recording #header #totalcontrol #control .folButton:hover {
   background: url("../img/folButton_hover.png") 0 0 repeat-y;
 }
-#detail.recording #header #timecode {
-  position: absolute;
-  margin: 0;
-  padding: 15px;
-  display: block;
-  text-align: right;
-  text-decoration: none;
-  font-size: 18px;
-  color: #221F1F;
-  background: #eeeded;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-  top: 298px;
-  left: 58px;
-}
-#detail.recording #header #zooms {
-  position: absolute;
-  top: 434px;
-  width: 100%;
-  text-align: center;
-}
-#detail.recording #header #zooms span {
-  display: block;
-}
-#detail.recording #header #zooms a {
+#detail.recording #header .graph {
   position: relative;
-  display: inline-block;
-  color: #221F1F;
-  background: #eeeded;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-  padding: 8px;
-  text-decoration: none;
-}
-#detail.recording #header #zooms a.selected {
-  background: #333;
-  color: #fff !important;
+  width: 100%;
+  height: 234px;
+  text-align: right;
 }
 #detail.recording .alldata {
   float: left;
   width: 100%;
   margin-left: -220px;
 }
-#detail.recording .alldata .thedata {
+#detail.recording .alldata .container {
   margin-left: 220px;
 }
-#detail.recording .alldata .thedata #rendersMask {
+#detail.recording .alldata .container .thedata #rendersMask {
+  float: left;
   position: relative;
   width: 901px;
   overflow-y: hidden;
   overflow-x: scroll;
 }
-#detail.recording .alldata .thedata #rendersMask #renders {
+#detail.recording .alldata .container .thedata #rendersMask #renders {
   position: relative;
   width: 901px;
 }
-#detail.recording .alldata .thedata #rendersMask #renders #capcal {
+#detail.recording .alldata .container .thedata #rendersMask #renders #capcal {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -1990,23 +2336,61 @@ input[type="password"] {
   height: 100%;
   background: url("../img/capcal.png") -5px 0 repeat-y;
 }
-#detail.recording .alldata .thedata #rendersMask #renders #bigWave {
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigWave,
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigPitch {
+  position: relative;
   width: 100%;
 }
-#detail.recording .alldata .thedata #rendersMask #renders #bigWave img {
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigWave img,
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigPitch img {
   width: 100%;
   height: 234px;
 }
-#detail.recording .alldata .thedata #renderTotal {
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigWave #zooms,
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigPitch #zooms {
+  position: absolute;
+  bottom: 4px;
+  padding-right: 4px;
+  width: 100%;
+  text-align: right;
+}
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigWave #zooms span,
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigPitch #zooms span {
+  display: block;
+}
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigWave #zooms a,
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigPitch #zooms a {
+  position: relative;
+  display: inline-block;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.2);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 0px 1px 2px #ddd;
+  padding: 2px;
+  text-decoration: none;
+  width: 22px;
+}
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigWave #zooms a.selected,
+#detail.recording .alldata .container .thedata #rendersMask #renders #bigPitch #zooms a.selected {
+  background: #333;
+  color: #fff !important;
+}
+#detail.recording .alldata .container .thedata #renderTotal {
   position: relative;
   width: 901px;
 }
-#detail.recording .alldata .thedata #renderTotal img {
+#detail.recording .alldata .container .thedata #renderTotal img {
   width: 901px;
-  height: 30px;
+  height: 64px;
   opacity: 0.5;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
 }
-#detail.recording .alldata .thedata #renderTotal #capcalTotal {
+#detail.recording .alldata .container .thedata #renderTotal #capcalTotal {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -2015,39 +2399,79 @@ input[type="password"] {
   z-index: 2;
   background: url("../img/capcal.png") -5px 0 repeat-y;
 }
+#detail.recording .alldata .container .thedata .container2 {
+  width: 100%;
+  margin-left: -901px;
+  float: right;
+}
+#detail.recording .alldata .container .thedata .container2 #totalcontrol2 {
+  position: relative;
+  margin-left: 901px;
+  height: 64px;
+  width: 100%;
+  background: url("../img/controlBackground.jpg") 0 0 repeat;
+}
+#detail.recording .alldata .container .thedata .container2 #totalcontrol2 #timecode {
+  position: relative;
+  margin: 0;
+  padding: 8px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  color: #dcdcdc;
+  background: #3d3d3d;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px #888;
+  top: 3px;
+  left: 2px;
+  width: 104px;
+}
+#detail.recording .alldata .container .thedata .container2 #totalcontrol2 #timecode span {
+  font-size: 11px;
+  color: #aaa;
+  display: block;
+  position: relative;
+}
+#detail.recording .alldata .container .thedata .container2 .waveLabel {
+  position: relative;
+  margin-left: 901px;
+  height: 234px;
+  width: 100%;
+}
+#detail.recording .alldata .container .thedata .container2 .waveLabel h1 {
+  margin: 0px;
+  font-weight: normal;
+  padding: 10px;
+}
+#detail.recording .alldata .container .thedata .container2 .pitchLabel {
+  position: relative;
+  margin-left: 901px;
+  height: 234px;
+  width: 100%;
+}
+#detail.recording .alldata .container .thedata .container2 .pitchLabel h1 {
+  margin: 0px;
+  font-weight: normal;
+  padding: 10px;
+}
 /* ==========================================================================
    Entities Filters Colors
    ========================================================================== */
-#filterMask #filterArea .filterList ul li.artist {
-  background: #69d2e7;
-}
-#filterMask #filterArea .filterList ul li.concert {
-  background: #a7dbd8;
-}
-#filterMask #filterArea .filterList ul li.work {
-  background: #e0e4cc;
-}
-#filterMask #filterArea .filterList ul li.instrument {
-  background: #f38630;
-}
-#filterMask #filterArea .filterList ul li.raaga {
-  background: #fa6900;
-}
-#filterMask #filterArea .filterList ul li.taala {
-  background: #ecd078;
-}
-#filterMask #filterArea .filterList ul li.recording {
-  background: #d95b43;
-}
-#filterMask #filterArea .filterList ul li.composer {
-  background: #c02942;
-}
-#filterMask #filterArea .filterList ul li.entity_9 {
-  background: #542437;
-}
-#filterMask #filterArea .filterList ul li.entity_10 {
-  background: #53777a;
-}
+/*#filterMask #filterArea .filterList ul li.artist { background: @artist_color; }
+#filterMask #filterArea .filterList ul li.concert { background: @concert_color; }
+#filterMask #filterArea .filterList ul li.work { background: @work_color; }
+#filterMask #filterArea .filterList ul li.instrument { background: @instrument_color; }
+#filterMask #filterArea .filterList ul li.raaga { background: @raaga_color; }
+#filterMask #filterArea .filterList ul li.taala { background: @taala_color; }
+#filterMask #filterArea .filterList ul li.recording { background: @recording_color; }
+#filterMask #filterArea .filterList ul li.composer { background: @composer_color; }
+#filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
+#filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }*/
 #filterMask #filterArea .filterList ul li.artist.selected .colorCode {
   background: #20adca !important;
 }
@@ -2377,6 +2801,66 @@ input[type="password"] {
 #detail.entity_10 #header #summary span h2,
 #detail.entity_10 #header #summary span h2 a {
   color: #000101;
+}
+#filterMask #filterArea #entitiesList ul li.artist .colorCode {
+  border-color: #69d2e7;
+}
+#filterMask #filterArea #entitiesList ul li.concert .colorCode {
+  border-color: #a7dbd8;
+}
+#filterMask #filterArea #entitiesList ul li.work .colorCode {
+  border-color: #e0e4cc;
+}
+#filterMask #filterArea #entitiesList ul li.instrument .colorCode {
+  border-color: #f38630;
+}
+#filterMask #filterArea #entitiesList ul li.raaga .colorCode {
+  border-color: #fa6900;
+}
+#filterMask #filterArea #entitiesList ul li.taala .colorCode {
+  border-color: #ecd078;
+}
+#filterMask #filterArea #entitiesList ul li.recording .colorCode {
+  border-color: #d95b43;
+}
+#filterMask #filterArea #entitiesList ul li.composer .colorCode {
+  border-color: #c02942;
+}
+#filterMask #filterArea #entitiesList ul li.entity_9 .colorCode {
+  border-color: #542437;
+}
+#filterMask #filterArea #entitiesList ul li.entity_10 .colorCode {
+  border-color: #53777a;
+}
+.miniitem.artist .colorCode {
+  border-color: #69d2e7 !important;
+}
+.miniitem.concert .colorCode {
+  border-color: #a7dbd8 !important;
+}
+.miniitem.work .colorCode {
+  border-color: #e0e4cc !important;
+}
+.miniitem.instrument .colorCode {
+  border-color: #f38630 !important;
+}
+.miniitem.raaga .colorCode {
+  border-color: #fa6900 !important;
+}
+.miniitem.taala .colorCode {
+  border-color: #ecd078 !important;
+}
+.miniitem.recording .colorCode {
+  border-color: #d95b43 !important;
+}
+.miniitem.composer .colorCode {
+  border-color: #c02942 !important;
+}
+.miniitem.entity_9 .colorCode {
+  border-color: #542437 !important;
+}
+.miniitem.entity_10 .colorCode {
+  border-color: #53777a !important;
 }
 #detail.artist .tag-cloud-0 {
   background: #9ee2ef;

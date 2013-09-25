@@ -172,18 +172,18 @@ $(document).ready(function() {
         		<td>
 				    <div id="queryCont">
 				    		<span>Query</span>
-						<div id="query" class="shadow1" onClick="$('#results').isotope({ filter: '*' });">
+						<div id="query" class="shadow1" onClick="filterPackery({ filter: '*' });">
 						</div>
 					 </div>
 	 			</td>
-        		<td class="artist" onClick="$('#results').isotope({ filter: '.artist' });"><span>176</span> <b>Artists</b></td>
-        		<td class="concert" onClick="$('#results').isotope({ filter: '.concert' });"><span>181</span> <b>Concerts</b></td>
-        		<td class="work" onClick="$('#results').isotope({ filter: '.work' });"><span>96</span> <b>Works</b></td>
-        		<td class="instrument" onClick="$('#results').isotope({ filter: '.instrument' });"><span>13</span> <b>Instruments</b></td>
-        		<td class="raaga" onClick="$('#results').isotope({ filter: '.raaga' });"><span>59</span> <b>Raagas</b></td>
-        		<td class="taala" onClick="$('#results').isotope({ filter: '.taala' });"><span>19</span> <b>Taalas</b></td>
-        		<td class="recording" onClick="$('#results').isotope({ filter: '.recording' });"><span>1947</span> <b>Recordings</b></td>
-        		<td class="composer" onClick="$('#results').isotope({ filter: '.composer' });"><span>1947</span> <b>Composers</b></td>
+        		<td class="artist" onClick="filterPackery({ filter: '.artist' });"><span>176</span> <b>Artists</b></td>
+        		<td class="concert" onClick="filterPackery({ filter: '.concert' });"><span>181</span> <b>Concerts</b></td>
+        		<td class="work" onClick="filterPackery({ filter: '.work' });"><span>96</span> <b>Works</b></td>
+        		<td class="instrument" onClick="filterPackery({ filter: '.instrument' });"><span>13</span> <b>Instruments</b></td>
+        		<td class="raaga" onClick="filterPackery({ filter: '.raaga' });"><span>59</span> <b>Raagas</b></td>
+        		<td class="taala" onClick="filterPackery({ filter: '.taala' });"><span>19</span> <b>Taalas</b></td>
+        		<td class="recording" onClick="filterPackery({ filter: '.recording' });"><span>1947</span> <b>Recordings</b></td>
+        		<td class="composer" onClick="filterPackery({ filter: '.composer' });"><span>1947</span> <b>Composers</b></td>
         	</tr>
         </tbody></table>
      </div>
@@ -205,7 +205,7 @@ $(document).ready(function() {
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -249,7 +249,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -362,7 +362,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -406,7 +406,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -450,7 +450,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -494,7 +494,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -541,7 +541,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
@@ -587,7 +587,7 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
 
 He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
-        <div class="lists">
+        <div class="lists similar">
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
