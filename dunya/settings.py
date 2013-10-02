@@ -128,7 +128,7 @@ INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 import djcelery
 djcelery.setup_loader()
 BROKER_URL = 'django://'
-CELERY_IMPORTS = ["dashboard.jobs"]
+CELERY_IMPORTS = ["dashboard.jobs", "docserver.jobs"]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
