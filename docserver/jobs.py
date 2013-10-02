@@ -1,11 +1,24 @@
 import importlib
 import os
 import json
+import logging
 
 from docserver import models
 import celery
 
 from django.conf import settings
+
+class DatabaseLogHandler(logging.NullHandler):
+    def emit(self, record):
+        print "database log emit", record
+        print self.format(record)
+
+    def handle(self, record):
+        print "database log handle", record
+
+logger = logging.getLogger("essentia")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(DatabaseLogHandler())
 
 def _get_module_instance_by_path(modulepath):
     mod, clsname = modulepath.rsplit(".", 1)
