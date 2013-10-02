@@ -71,6 +71,7 @@ def import_release(releasepk):
     pk: a models.MusicbrainzRelease object PK
     """
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
+    original_ignore = release.ignore
     release.set_state_importing()
     release.add_log_message("Starting import")
     collection = release.collection
@@ -120,6 +121,10 @@ def import_release(releasepk):
 
         release.add_log_message("Release import finished")
         release.set_state_finished()
+        # If the release was ignored and we've successfully imported it, unignore
+        if original_ignore:
+            release.ignore = False
+            release.save()
     else:
         # 3c. If there was an error, set this release as "ignored"
         release.ignore = True
@@ -130,14 +135,18 @@ def import_release(releasepk):
 
 @celery.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):
-    """ Import all unimported and unignored releases in a collection."""
-    # TODO: Should this be 'unimported', or 'not finished'?
+    """ Import releases in a collection.
+    This will not import releases that are ignored, or have a state of 'finished'
+    It will also not import releases that are missing a matching directory.
+    """
     collection = models.Collection.objects.get(pk=collectionid)
     collection.set_state_importing()
     releases = collection.musicbrainzrelease_set.filter(ignore=False)
     unstarted = []
     for r in releases:
-        if r.get_current_state().state == 'n':
+        matched_paths = r.collectiondirectory_set.all()
+        # Only import if it's not finished and has a matched directory
+        if r.get_current_state().state != 'f' and len(matched_paths):
             unstarted.append(r)
     for r in unstarted:
         import_release(r.id)
