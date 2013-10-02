@@ -131,7 +131,9 @@ class Module(models.Model):
 
     def processed_files(self):
         latest = self.get_latest_version()
-        qs = Document.objects.filter(sourcefiles__file_type=self.source_type)
+        all_collections = self.collections.all()
+        qs = Document.objects.filter(collection__in=all_collections, 
+                sourcefiles__file_type=self.source_type)
         if latest:
             qs = qs.filter(derivedfiles__module_version=self.get_latest_version())
         else:
@@ -141,7 +143,9 @@ class Module(models.Model):
 
     def unprocessed_files(self):
         latest = self.get_latest_version()
-        qs = Document.objects.filter(sourcefiles__file_type=self.source_type)
+        all_collections = self.collections.all()
+        qs = Document.objects.filter(collection__in=all_collections,
+                sourcefiles__file_type=self.source_type)
         if latest:
             qs = qs.exclude(derivedfiles__module_version=self.get_latest_version())
         else:

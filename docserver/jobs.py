@@ -23,13 +23,13 @@ def create_module(modulepath, collections):
     module = models.Module.objects.create(name=modulepath.rsplit(".", 1)[1],
                     slug=instance.__slug__,
                     module=modulepath,
-                    source_type=sourcetype,
-                    collections=collections)
-    get_latest_module_version(module)
+                    source_type=sourcetype)
+    module.collections.add(*collections)
+    get_latest_module_version(module.pk)
 
-def get_latest_module_version(themod=None):
-    if themod:
-        modules = [themod]
+def get_latest_module_version(themod_id=None):
+    if themod_id:
+        modules = [models.Module.objects.get(pk=themod_id)]
     else:
         modules = models.Module.objects.all()
     for m in modules:
@@ -64,6 +64,7 @@ def process_document(documentid, moduleversionid):
 
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
+        # TODO: If there is more than 1 source file
         s = sfiles[0]
         fname = s.path.encode("utf-8")
         result = instance.run(fname)
@@ -78,12 +79,22 @@ def process_document(documentid, moduleversionid):
     else:
         return None
 
-def run_module_on_collection(collectionslug, moduleslug):
-    collection = models.Collection.objects.get(slug=collectionslug)
-    module = models.Module.objects.get(slug=moduleslug)
+def run_module(moduleid):
+    module = models.Module.objects.get(pk=moduleid)
+    collections = module.collections.all()
+    for c in collections:
+        run_module_on_collection.delay(c.pk, module.pk)
+
+@celery.task
+def run_module_on_collection(collectionid, moduleid):
+    collection = models.Collection.objects.get(pk=collectionid)
+    module = models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
+    print "running module", module, "on collection", collection
     if version:
-        docs = models.Document.objects.filter(sourcefile__file_type=module.source_type).exclude(derivedfiles__module_version=version)
+        print "version", version
+        # All documents that don't already have a derived file for this module version
+        docs = models.Document.objects.filter(sourcefiles__file_type=module.source_type).exclude(derivedfiles__module_version=version)
         for d in docs:
-            # TODO: Delay
+            print "  document", d
             process_document(d.pk, version.pk)

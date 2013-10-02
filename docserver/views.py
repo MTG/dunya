@@ -97,15 +97,20 @@ def is_staff(user):
 
 @user_passes_test(is_staff)
 def manager(request):
+    scan = request.GET.get("scan")
+    if scan is not None:
+        jobs.run_module(int(scan))
+        return HttpResponseRedirect(reverse('docserver-manager'))
     update = request.GET.get("update")
     if update is not None:
-        jobs.get_latest_module_version()
+        jobs.get_latest_module_version(int(update))
         return HttpResponseRedirect(reverse('docserver-manager'))
 
     essentias = models.EssentiaVersion.objects.all()
     modules = models.Module.objects.all()
+    collections = models.Collection.objects.all()
 
-    ret = {"essentias": essentias, "modules": modules}
+    ret = {"essentias": essentias, "modules": modules, "collections": collections}
     return render(request, 'docserver/manager.html', ret)
 
 @user_passes_test(is_staff)
@@ -135,7 +140,6 @@ def addmodule(request):
         form = forms.ModuleForm()
     ret = {"form": form}
     return render(request, 'docserver/addmodule.html', ret)
-
 
 @user_passes_test(is_staff)
 def files(request, slug):

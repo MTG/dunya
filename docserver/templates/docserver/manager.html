@@ -28,9 +28,11 @@
         <td>{{m.latest_version_number}}</td>
         <td>{{m.processed_files|length}}</td>
         <td>{{m.unprocessed_files|length}}</td>
-        <td>Scan all stuff<br>Get new version</td>
+        <td><a href="?scan={{m.pk}}">Scan all stuff</a><br>
+            <a href="?update={{m.pk}}">Get new version</a></td>
     </tr>
     {% endfor %}
+</table>
 {% else %}
 <p>(none)
 {% endif %}
