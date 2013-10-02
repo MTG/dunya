@@ -294,21 +294,23 @@ class CorrectMBID(CompletenessBase):
         for m in mbrelease.get("medium-list", []):
             for rec in m.get("track-list", []):
                 recid = rec["recording"]["id"]
-                recordings["recid"] = rec["recording"]
+                recordings[recid] = rec["recording"]
 
         mbrecordings = set(recordings.keys())
         cfiles = release.all_files()
         localrecordings = set([c.recordingid for c in cfiles])
+        # Recording IDs on musicbrainz that we don't have in file tags
         unmatchedmb = list(mbrecordings - localrecordings)
+        # Recording IDs in file tags that aren't part of this release
         badlocal = list(localrecordings - mbrecordings)
 
         retdata = {}
         if len(unmatchedmb):
-            retdata["unmatchedmb"] = {k: mbrecordings[k] for k in unmatchedmb}
+            retdata["unmatchedmb"] = {k: recordings[k] for k in unmatchedmb}
         if len(badlocal):
             retdata["badlocal"] = {}
             for b in badlocal:
-                retdata["badlocal"][b] = release.collectionfile_set.get(recordingid=b).title
+                retdata["badlocal"][b] = models.CollectionFile.objects.get(recordingid=b).name
 
-        retval = True if len(unmatchedmb) or len(badlocal) else False
+        retval = False if len(unmatchedmb) or len(badlocal) else True
         return (retval, retdata)
