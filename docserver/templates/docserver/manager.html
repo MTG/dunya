@@ -37,4 +37,13 @@
 <p><a href="{% url 'docserver-addmodule' %}">Add new module</a><br>
 <p><a href="?update">Update module versions</a>
 
+<h2>Collection files</h2>
+{% if collections %}
+<table><tr><th>Collection</th></tr>
+    {% for c in collections %}
+    <tr><td>{{c.name}}</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+
 {% endblock %}

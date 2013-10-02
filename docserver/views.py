@@ -126,10 +126,27 @@ def addmodule(request):
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
             module = form.cleaned_data["module"]
-            jobs.create_module(module)
+            collections = []
+            for i in form.cleaned_data['collections']:
+                collections.append(get_object_or_404(models.Collection, pk=int(i)))
+            jobs.create_module(module, collections)
             return HttpResponseRedirect(reverse('docserver-manager'))
     else:
         form = forms.ModuleForm()
     ret = {"form": form}
     return render(request, 'docserver/addmodule.html', ret)
+
+
+@user_passes_test(is_staff)
+def files(request, slug):
+    collection = get_object_or_404(models.Collection, slug=slug)
+    ret = {"collection": collection}
+    return render(request, 'docserver/files.html', ret)
+
+@user_passes_test(is_staff)
+def file(request, slug, uuid):
+    collection = get_object_or_404(models.Collection, slug=slug)
+    doc = collection.document_set.get_by_external_id(uuid)
+    ret = {"document": doc}
+    return render(request, 'docserver/file.html', ret)
 

@@ -8,3 +8,12 @@ class EssentiaVersionForm(forms.ModelForm):
 
 class ModuleForm(forms.Form):
     module = forms.CharField()
+
+    def __init__(self, *args, **kwargs):
+        super(ModuleForm, self).__init__(*args, **kwargs)
+
+        choices = []
+        for checker in models.Collection.objects.all():
+            choices.append( (checker.pk, checker.name) )
+
+        self.fields['collections'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=choices)

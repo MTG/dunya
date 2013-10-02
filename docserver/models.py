@@ -124,6 +124,8 @@ class Module(models.Model):
     module = models.CharField(max_length=200)
     source_type = models.ForeignKey(SourceFileType)
 
+    collections = models.ManyToManyField(Collection)
+
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.module)
 
@@ -167,4 +169,18 @@ class ModuleVersion(models.Model):
 
     def __unicode__(self):
         return "v%s for %s" % (self.version, self.module)
+
+class DocumentLogMessage(models.Model):
+    """ A log message about a document. Normally the log message refers to ModuleVersion
+    processing a specific SourceFile, but these can be blank """
+
+    class Meta:
+        ordering = ['-datetime']
+
+    document = models.ForeignKey(Document)
+    moduleversion = models.ForeignKey(ModuleVersion, blank=True, null=True)
+    sourcefile = models.ForeignKey(SourceFile, blank=True, null=True)
+    level = models.CharField(max_length=20)
+    message = models.TextField()
+    datetime = models.DateTimeField(default=django.utils.timezone.now)
 

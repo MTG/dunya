@@ -1,0 +1,14 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{file.name}}{% endblock %}
+
+{% block wrap %}
+
+<h2>
+    <span class="breadcrumbs">Collection
+        <li><a href="">{{document.collection.name}}</a></li>
+        <li>{{document.title}}</li>
+    </span>
+</h2>
+
+{% endblock %}
+

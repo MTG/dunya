@@ -13,7 +13,7 @@ def _get_module_instance_by_path(modulepath):
     cls = getattr(package, clsname)
     return cls()
 
-def create_module(modulepath):
+def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)
     try:
         sourcetype = models.SourceFileType.objects.get(extension=instance.__sourcetype__)
@@ -23,7 +23,8 @@ def create_module(modulepath):
     module = models.Module.objects.create(name=modulepath.rsplit(".", 1)[1],
                     slug=instance.__slug__,
                     module=modulepath,
-                    source_type=sourcetype)
+                    source_type=sourcetype,
+                    collections=collections)
     get_latest_module_version(module)
 
 def get_latest_module_version(themod=None):

@@ -1,0 +1,13 @@
+{% extends "dashboard/base.html" %}
+
+{% block wrap %}
+
+<h2>
+    <span class="breadcrumbs">Release
+        <li><a href="{{release.collection.get_absolute_url}}">{{release.collection.name}}</a></li>
+        <li>{{release.title}}</li>
+    </span>
+</h2>
+
+{% endblock %}
+
