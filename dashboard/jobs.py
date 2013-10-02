@@ -14,7 +14,7 @@ import docserver
 import docserver.util
 
 import completeness
-import populate_images
+#import populate_images
 
 class DunyaTask(celery.Task):
     abstract = True
@@ -73,10 +73,11 @@ def import_release(releasepk):
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
     release.set_state_importing()
     release.add_log_message("Starting import")
+    collection = release.collection
 
     # 1. Run release checkers
     abort = False
-    rcheckers = models.CompletenessChecker.objects.filter(type='r')
+    rcheckers = collection.checkers.filter(type='r')
     for check in rcheckers:
         inst = check.get_instance()
         release.add_log_message("Running release test %s" % inst.name)
@@ -92,7 +93,7 @@ def import_release(releasepk):
 
     cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
     # 2. Run file checkers
-    fcheckers = models.CompletenessChecker.objects.filter(type='f')
+    fcheckers = collection.checkers.filter(type='f')
     for cfile in cfiles:
         # 2a. Check file
         for check in fcheckers:
@@ -109,12 +110,13 @@ def import_release(releasepk):
     if not abort:
         for cfile in cfiles:
             # 3a. Import file to docserver
-            docserver.util.docserver_add_mp3(release.collection.id, release.mbid, cfile.path, cfile.recordingid)
+            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
             cfile.set_state_finished()
 
         # 3b. Import release to dunya database
-        ri = release_importer.ReleaseImporter(release.collection.id)
-        ri.import_release(release.mbid)
+        if collection.do_import:
+            ri = release_importer.ReleaseImporter(collection.id)
+            ri.import_release(release.mbid)
 
         release.add_log_message("Release import finished")
         release.set_state_finished()

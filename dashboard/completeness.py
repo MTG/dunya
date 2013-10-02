@@ -297,7 +297,7 @@ class CorrectMBID(CompletenessBase):
                 recordings["recid"] = rec["recording"]
 
         mbrecordings = set(recordings.keys())
-        cfiles = release.collectionfile_set.all()
+        cfiles = release.all_files()
         localrecordings = set([c.recordingid for c in cfiles])
         unmatchedmb = list(mbrecordings - localrecordings)
         badlocal = list(localrecordings - mbrecordings)

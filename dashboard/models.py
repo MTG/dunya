@@ -106,6 +106,11 @@ class Collection(models.Model):
     last_updated = models.DateTimeField(default=django.utils.timezone.now)
     root_directory = models.CharField(max_length=255)
 
+    # The Completeness Checkers to run on this collection
+    checkers = models.ManyToManyField(CompletenessChecker)
+    # If we want to import this collection to main Dunya
+    do_import = models.BooleanField(default=True)
+
     def __unicode__(self):
         return "%s (%s)" % (self.name, self.id)
 
@@ -208,6 +213,12 @@ class MusicbrainzRelease(models.Model):
 
     def __unicode__(self):
         return "%s (%s)" % (self.title, self.id)
+
+    def all_files(self):
+        ret = []
+        for directory in self.collectiondirectory_set.all():
+            ret.extend(directory.collectionfile_set.all())
+        return ret
 
     def get_absolute_url(self):
         return reverse("dashboard-release", args=[str(self.pk)])

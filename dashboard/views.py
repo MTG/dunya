@@ -28,7 +28,13 @@ def index(request):
             coll_id = form.cleaned_data['collectionid']
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
-            new_collection = models.Collection.objects.create(id=coll_id, name=coll_name, root_directory=path)
+            do_import = form.cleaned_data['do_import']
+            checkers = []
+            for i in form.cleaned_data['checkers']:
+                checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
+            new_collection = models.Collection.objects.create(id=coll_id, name=coll_name,
+                                    root_directory=path, do_import=do_import)
+            new_collection.checkers.add(*checkers) 
             docserver.models.Collection.objects.get_or_create(collectionid=coll_id, 
                     defaults={"root_directory":path, "name":coll_name})
             jobs.load_and_import_collection(new_collection.id)
