@@ -12,7 +12,7 @@ def get_image(entity, noimage):
     return image
 
 
-@register.inclusion_tag("badges/similar_album.html")
+@register.inclusion_tag("badges/similar_concert.html")
 def badge_similar_concert(concert):
     if not isinstance(concert, Concert):
         concert = Concert.objects.get(pk=concert)
@@ -24,7 +24,7 @@ def badge_similar_concert(concert):
             "image": get_image(concert, "noconcert")
            }
 
-@register.inclusion_tag("badges/album.html")
+@register.inclusion_tag("badges/concert.html")
 def badge_concert(concert):
     if not isinstance(concert, Concert):
         concert = Concert.objects.get(pk=concert)
