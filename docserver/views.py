@@ -142,15 +142,15 @@ def addmodule(request):
     return render(request, 'docserver/addmodule.html', ret)
 
 @user_passes_test(is_staff)
-def files(request, slug):
+def collection(request, slug):
     collection = get_object_or_404(models.Collection, slug=slug)
     ret = {"collection": collection}
-    return render(request, 'docserver/files.html', ret)
+    return render(request, 'docserver/collection.html', ret)
 
 @user_passes_test(is_staff)
 def file(request, slug, uuid):
     collection = get_object_or_404(models.Collection, slug=slug)
-    doc = collection.document_set.get_by_external_id(uuid)
+    doc = collection.documents.get_by_external_id(uuid)
     ret = {"document": doc}
     return render(request, 'docserver/file.html', ret)
 

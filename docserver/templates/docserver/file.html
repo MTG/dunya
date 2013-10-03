@@ -1,14 +1,48 @@
 {% extends "dashboard/base.html" %}
-{% block title %}{{file.name}}{% endblock %}
+{% block title %}{{document.title}}{% endblock %}
 
 {% block wrap %}
 
 <h2>
-    <span class="breadcrumbs">Collection
-        <li><a href="">{{document.collection.name}}</a></li>
+    <span class="breadcrumbs">Document
+        <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
         <li>{{document.title}}</li>
     </span>
 </h2>
+
+    {% if document.sourcefiles.all %}
+        <h3>Source files</h3>
+        {% for f in document.sourcefiles.all %}
+        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.file_type.extension}})</a>
+        {% endfor %}
+    {% endif %}
+
+    {% if document.derivedfiles.all %}
+        <h3>Derived files</h3>
+        {% for f in document.derivedfiles.all %}
+        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}/{{f.module_version.version}})</a>
+        {% endfor %}
+    {% endif %}
+
+    <div class="topbox">
+        <div class="topheader">Logs</div>
+    <table> 
+        <tr>
+            <th style="width:150px;">Date</th>
+            <th style="width:150px;">Module</th>
+            <th style="width:100px;">Level</th>
+            <th>Message</th>
+        </tr>
+        {% for l in document.logs.all %}
+        <tr>
+            <td>{{l.datetime}}</td>
+            <td>{{l.moduleversion.module.name}} ({{l.moduleversion.version}})</td>
+            <td>{{l.level}}</td>
+            <td>{{l.message}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
 
 {% endblock %}
 

@@ -1,0 +1,18 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Collection {{collection.name}}{% endblock %}
+
+{% block wrap %}
+
+<h2>
+    <span class="breadcrumbs">Collection
+        <li>{{collection.name}}</li>
+    </span>
+</h2>
+
+{% for d in collection.documents.all %}
+<li><a href="{{d.get_absolute_url}}">{{d.title}}</a>
+{% endfor %}
+
+{% endblock %}
+
+

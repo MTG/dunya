@@ -1,7 +1,10 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
+from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 import django.utils.timezone
+import urlparse
+import urllib
 
 import uuid
 
@@ -24,6 +27,9 @@ class Collection(models.Model):
             self.slug = slugify(self.name)
         super(Collection, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("docserver-collection", args=[self.slug])
+
 
 class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
@@ -42,6 +48,9 @@ class Document(models.Model):
     """If the file is known in a different database, the identifier
        for the item."""
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
+
+    def get_absolute_url(self):
+        return reverse("docserver-onefile", args=[self.collection.slug, self.external_identifier])
 
     def __unicode__(self):
         ret = ""
@@ -80,6 +89,10 @@ class SourceFile(models.Model):
     def extension(self):
         return self.file_type.extension
 
+    def get_absolute_url(self):
+        return reverse("ds-download-external", 
+                args=[self.document.external_identifier, self.file_type.extension])
+
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
@@ -104,6 +117,14 @@ class DerivedFile(models.Model):
     @property
     def extension(self):
         return self.module_version.module.slug
+
+    def get_absolute_url(self):
+        download_url = reverse("ds-download-external", 
+                args=[self.document.external_identifier, self.extension])
+        urlparts = list(urlparse.urlparse(download_url))
+        urlparts[4] = urllib.urlencode({"v": self.module_version.version})
+        download_url = urlparse.urlunparse(urlparts)
+        return download_url
 
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.module_version.module.slug, self.path)
@@ -181,7 +202,7 @@ class DocumentLogMessage(models.Model):
     class Meta:
         ordering = ['-datetime']
 
-    document = models.ForeignKey(Document)
+    document = models.ForeignKey(Document, related_name="logs")
     moduleversion = models.ForeignKey(ModuleVersion, blank=True, null=True)
     sourcefile = models.ForeignKey(SourceFile, blank=True, null=True)
     level = models.CharField(max_length=20)

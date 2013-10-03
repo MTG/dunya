@@ -34,17 +34,24 @@
 </div>
 
 <div class="topbox">
-    <div class="topheader">Source files</div>
-    {% for f in sourcefiles %}
-        <li><a href="{{f.url}}">{{f.title}}</a>
-    {% endfor %}
-</div>
+    <div class="topheader">Documents</div>
+    {% if docsrvdoc %}
+    <h3>Docserver</h3>
+    <a href="{{docsrvdoc.get_absolute_url}}">View in docserver</a>
+    {% endif %}
+    {% if sourcefiles %}
+        <h3>Source files</h3>
+        {% for f in sourcefiles %}
+        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.file_type.extension}})</a>
+        {% endfor %}
+    {% endif %}
 
-<div class="topbox">
-    <div class="topheader">Computed files</div>
-    {% for f in sourcefiles %}
-        <li><a href="{{f.url}}">{{f.title}}</a>
-    {% endfor %}
+    {% if derivedfiles %}
+        <h3>Derived files</h3>
+        {% for f in derivedfiles %}
+        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}/{{f.module_version.version}})</a>
+        {% endfor %}
+    {% endif %}
 </div>
 
 {% include "dashboard/log.html" with logs=log_messages %}

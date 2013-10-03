@@ -17,8 +17,8 @@ urlpatterns = patterns('',
     # Essentia management
     url(r'manager/addessentia/', views.addessentia, name='docserver-addessentia'),
     url(r'manager/addmodule', views.addmodule, name='docserver-addmodule'),
-    url(r'manager/files/(?P<slug>[^/]+)$', views.files, name='docserver-files'),
-    url(r'manager/files/(?P<slug>[^/]+)$/%s' % uuid_match, views.file, name='docserver-onefile'),
+    url(r'manager/files/(?P<slug>[^/]+)$', views.collection, name='docserver-collection'),
+    url(r'manager/files/(?P<slug>[^/]+)/%s$' % uuid_match, views.file, name='docserver-onefile'),
     url(r'manager/', views.manager, name='docserver-manager'),
 )
 

@@ -133,7 +133,24 @@ def file(request, fileid):
                        "others": thefile.get_rest_results_for_checker(r.checker.id)
                       })
 
-    ret = {"file": thefile, "results": allres, "log_messages": log}
+    collection = thefile.directory.collection
+    docid = thefile.recordingid
+    docsrvcoll = docserver.models.Collection.objects.get(collectionid=collection.id)
+    sourcefiles = []
+    derivedfiles = []
+    docsrvdoc = None
+    try:
+        docsrvdoc = docsrvcoll.documents.get(external_identifier=docid)
+        sourcefiles = docsrvdoc.sourcefiles.all()
+        derivedfiles = docsrvdoc.derivedfiles.all()
+    except docserver.models.Document.DoesNotExist:
+        pass
+    ret = {"file": thefile,
+            "results": allres,
+            "log_messages": log,
+            "sourcefiles": sourcefiles,
+            "derivedfiles": derivedfiles,
+            "docsrvdoc": docsrvdoc}
     return render(request, 'dashboard/file.html', ret)
 
 @user_passes_test(is_staff)
