@@ -204,6 +204,7 @@ def raagas(request):
            "entityn": "Raaga",
            "entitynpl": "Raagas",
            "entityurl": "dashboard-raagas",
+           "title": "Raaga editor"
            }
     if request.method == 'POST':
         # Add aliases
@@ -246,6 +247,7 @@ def taalas(request):
            "entityn": "Taala",
            "entitynpl": "Taalas",
            "entityurl": "dashboard-taalas",
+           "title": "Taala editor"
            }
     if request.method == 'POST':
         # Add aliases
@@ -290,6 +292,7 @@ def instruments(request):
            "entityn": "Instrument",
            "entitynpl": "Instruments",
            "entityurl": "dashboard-instruments",
+           "title": "Instrument editor"
            }
     if request.method == 'POST':
         # Add aliases
