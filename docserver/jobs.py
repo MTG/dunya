@@ -8,13 +8,36 @@ import celery
 
 from django.conf import settings
 
-class DatabaseLogHandler(logging.NullHandler):
-    def emit(self, record):
-        print "database log emit", record
-        print self.format(record)
-
+class DatabaseLogHandler(logging.Handler):
     def handle(self, record):
-        print "database log handle", record
+        documentid = getattr(record, "documentid", None)
+        sourcefileid = getattr(record, "sourcefileid", None)
+        modulename = getattr(record, "modulename", None)
+        moduleversion = getattr(record, "moduleversion")
+
+        modv = None
+        if modulename and moduleversion:
+            try:
+                mod = models.Module.objects.get(module=modulename)
+                modv = mod.moduleversion_set.get(version=moduleversion)
+            except (models.Module.DoesNotExist, models.ModuleVersion.DoesNotExist):
+                pass
+
+        sourcef = None
+        if sourcefileid:
+            try:
+                sourcef = models.SourceFile.objects.get(pk=int(sourcefileid))
+            except models.SourceFile.DoesNotExist:
+                pass
+        doc = None
+        if documentid:
+            try:
+                doc = models.Document.objects.get(pk=int(documentid))
+                models.DocumentLogMessage.objects.create(document=doc, moduleversion=modv, sourcefile=sourcef, level=record.levelname, message=record.getMessage())
+            except models.Document.DoesNotExist:
+                print "no document, can't create a log file"
+        else:
+            print "no document, can't create a log file"
 
 logger = logging.getLogger("essentia")
 logger.setLevel(logging.DEBUG)
@@ -80,7 +103,7 @@ def process_document(documentid, moduleversionid):
         # TODO: If there is more than 1 source file
         s = sfiles[0]
         fname = s.path.encode("utf-8")
-        result = instance.run(fname)
+        result = instance.process_document(document.pk, s.pk, fname)
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
