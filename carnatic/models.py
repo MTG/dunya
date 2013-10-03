@@ -193,7 +193,7 @@ class Work(CarnaticStyle, data.models.Work):
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-work-search'),
-               "name": "Work",
+               "name": "Composition",
                "data": [filters.Form().object, filters.Language().object, filters.WorkDate().object]
               }
         return ret

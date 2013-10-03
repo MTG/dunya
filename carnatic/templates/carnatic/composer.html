@@ -60,7 +60,7 @@ $(document).ready(function() {
 			 			<div class="metaContainer">
 							<div id="works" class="metaDetails">
 								<div class="inner">
-									<h3>Works</h3>
+									<h3>Compositions</h3>
 									<span class='list'>
 									{% for w in composer.work_set.all %}
 									{% inline_work w %}
@@ -120,7 +120,7 @@ $(document).ready(function() {
 
 {{composer.name}}
 <p>
-<h3>Works</h3>
+<h3>Compositions</h3>
 {% for w in composer.work_set.all %}
 <li>{% inline_work w %}
 {% endfor %}
