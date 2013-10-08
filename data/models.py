@@ -115,6 +115,7 @@ class Concert(BaseModel):
     location = models.ForeignKey('Location', blank=True, null=True)
     title = models.CharField(max_length=100)
     artists = models.ManyToManyField('Artist')
+    artistcredit = models.CharField(max_length=255)
     tracks = models.ManyToManyField('Recording')
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey('Label', blank=True, null=True)
