@@ -116,7 +116,9 @@ def import_release(releasepk):
 
         # 3b. Import release to dunya database
         if collection.do_import:
-            ri = release_importer.ReleaseImporter(collection.id)
+            # All the directories that make up the files in the collection
+            dirs = [c.full_path for c in collection.collectiondirectory_set.all()]
+            ri = release_importer.ReleaseImporter(collection.id, dirs)
             ri.import_release(release.mbid)
 
         release.add_log_message("Release import finished")

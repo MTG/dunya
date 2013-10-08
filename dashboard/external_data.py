@@ -6,6 +6,7 @@ import data.models
 from compmusic import wikipedia
 from compmusic import kutcheris
 from compmusic import image
+from compmusic import file
 
 def import_instrument_description(i):
     iname = wikipedia.search(i.name)
@@ -67,9 +68,11 @@ def import_artist_bio(a):
                 a.references.add(source)
         a.save()
 
-def import_concert_image(c):
+def import_concert_image(c, directories=[]):
     # TODO: Get from local files too
     i = image.get_coverart_from_caa(c.mbid)
+    if not i:
+        i = image.get_coverart_from_directories(directories)
     if i:
         im = data.models.Image()
         im.image.save("concert/%s.jpg" % c.mbid, ContentFile(i))
