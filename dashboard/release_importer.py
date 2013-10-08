@@ -10,11 +10,17 @@ import data
 from dashboard import external_data
 
 class ReleaseImporter(object):
-    def __init__(self, collectionid):
+    def __init__(self, collectionid, directories=[]):
         self.collectionid = collectionid
+        self.directories = directories
 
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
+        source = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
+        return source
+
+    def make_wikipedia_source(self, url):
+        sn = data.models.SourceName.objects.get(name="Wikipedia")
         source = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
         return source
 
@@ -37,7 +43,6 @@ class ReleaseImporter(object):
             source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbid)
             concert.source = source
             concert.save()
-
         for a in rel["artist-credit"]:
             artistid = a["artist"]["id"]
             artist = self.add_and_get_artist(artistid)
@@ -45,6 +50,10 @@ class ReleaseImporter(object):
             if not concert.artists.filter(pk=artist.pk).exists():
                 logger.info("  - adding to artist list")
                 concert.artists.add(artist)
+        credit_phrase = rel.get("artist-credit-phrase")
+        if credit_phrase:
+            concert.artistcredit = credit_phrase
+            concert.save()
         recordings = []
         for medium in rel["medium-list"]:
             for track in medium["track-list"]:
@@ -54,14 +63,14 @@ class ReleaseImporter(object):
             concert.tracks.add(recording)
 
         # TODO: Release hooks
-        external_data.import_concert_image(concert)
+        external_data.import_concert_image(concert, self.directories)
 
     def add_and_get_artist(self, artistid):
         try:
             artist = carnatic.models.Artist.objects.get(mbid=artistid)
         except carnatic.models.Artist.DoesNotExist:
             logger.info("  adding artist %s" % (artistid, ))
-            a = compmusic.mb.get_artist_by_id(artistid)["artist"]
+            a = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels"])["artist"]
             artist = carnatic.models.Artist(name=a["name"], mbid=artistid)
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
             artist.source = source
@@ -78,8 +87,16 @@ class ReleaseImporter(object):
                 artist.begin = dates.get("begin")
                 artist.end = dates.get("end")
             artist.save()
+            
+            # add wikipedia references if they exist
+            for rel in a["url-relation-list"]:
+                if rel["type"] == ["wikipedia"]:
+                    source = self.make_wikipedia_source(rel["url"])
+                    artist.references.add(source)
+
             # TODO: Artist hooks
-            external_data.import_artist_bio(artist)
+
+            external_data.import_artist_bio(artist.pk)
         return artist
 
     def _get_raaga(self, taglist):
