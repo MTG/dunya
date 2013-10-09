@@ -253,6 +253,9 @@ def scan_and_link(collectionid):
     collectionroot = coll.root_directory
     if not collectionroot.endswith("/"):
         collectionroot += "/"
+    if isinstance(collectionroot, str):
+        # Pass a unicode string to os.walk and it returns directories as unicode
+        collectionroot = collectionroot.decode("utf-8")
     found_directories = []
     for root, d, files in os.walk(collectionroot):
         mp3files = _get_mp3_files(files)
