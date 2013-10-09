@@ -96,7 +96,7 @@ class ReleaseImporter(object):
 
             # TODO: Artist hooks
 
-            external_data.import_artist_bio(artist.pk)
+            external_data.import_artist_bio(artist)
         return artist
 
     def _get_raaga(self, taglist):
