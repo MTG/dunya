@@ -11,7 +11,7 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 class AddCollectionForm(forms.Form):
     collectionid = forms.CharField(max_length=100, label="Musicbrainz collection ID")
     path = forms.CharField(max_length=200, label="Path to files on disk")
-    do_import = forms.BooleanField()
+    do_import = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(AddCollectionForm, self).__init__(*args, **kwargs)
