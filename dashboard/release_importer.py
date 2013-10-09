@@ -16,12 +16,12 @@ class ReleaseImporter(object):
 
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
-        source = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
+        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
         return source
 
     def make_wikipedia_source(self, url):
         sn = data.models.SourceName.objects.get(name="Wikipedia")
-        source = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
+        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
         return source
 
     def import_release(self, releaseid):

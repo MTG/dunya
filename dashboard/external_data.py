@@ -16,7 +16,7 @@ def import_instrument_description(i):
         img, b, u = wikipedia.get_artist_details(newname)
     if b:
         sn = data.models.SourceName.objects.get(name="Wikipedia")
-        source = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": i.name})
+        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": i.name})
         description = data.models.Description.objects.create(description=b, source=source)
         i.description = description
     if img:
@@ -51,7 +51,7 @@ def import_artist_bio(a):
             sn = data.models.SourceName.objects.get(name="kutcheris.com")
 
     if b:
-        source = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": a.name})
+        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": a.name})
         description = data.models.Description.objects.create(description=b, source=source)
         a.description = description
         if i:
@@ -64,7 +64,7 @@ def import_artist_bio(a):
                 # Currently we only have wikipedia additionals, but this may change
                 sn = data.models.SourceName.objects.get(name="Wikipedia")
                 title = u.split("/")[-1].replace("_", " ")
-                source = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": title})
+                source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": title})
                 a.references.add(source)
         a.save()
 
