@@ -1,0 +1,16 @@
+Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordingid}}">http://musicbrainz.org/recording/{{data.recordingid}}</a><br>
+
+{% if data.gotmakam  %}
+<h4>Makam</h4>
+{% if data.gotmakam %}Got makam tags: {{data.makam|join:", "}}{% else %}Missing makam tags{% endif %}
+{% endif %}
+
+{% if data.gotusul  %}
+<h4>Usul</h4>
+{% if data.gotusul %}Got usul tags: {{data.usul|join:", "}}{% else %}Missing usul tags{% endif %}
+{% endif %}
+
+{% if data.gotform  %}
+<h4>Form</h4>
+{% if data.gotform %}Got form tags: {{data.form|join:", "}}{% else %}Missing form tags{% endif %}
+{% endif %}

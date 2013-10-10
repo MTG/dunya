@@ -48,6 +48,49 @@ class CompletenessBase(object):
                 rs.save()
         return result
 
+class MakamTags(CompletenessBase):
+    """ Check that the makam and usul tags on this file's
+    recording page in musicbrainz have matching entries
+    in the local database """
+    type = 'f'
+    templatefile = 'makam.html'
+    name = 'Recording makam and usul'
+
+    def task(self, collectionfile_id):
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
+        meta = compmusic.file_metadata(fpath)
+        m = meta["meta"]
+        recordingid = m["recordingid"]
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
+        mbrec = mbrec["recording"]
+        tags = mbrec.get("tag-list", [])
+        res = {}
+        makams = []
+        usuls = []
+        forms = []
+        for t in tags:
+            tag = t["name"]
+            if compmusic.tags.has_makam(tag):
+                makams.append(compmusic.tags.parse_makam(tag))
+            if compmusic.tags.has_usul(tag):
+                usuls.append(compmusic.tags.parse_usul(tag))
+            if compmusic.tags.has_form(tag):
+                forms.append(compmusic.tags.parse_form(tag))
+        res["recordingid"] = recordingid
+        # TODO: Check that the makam/usul/form is in the Makam database
+
+        res["gotmakam"] = len(makams) > 0
+        res["gotusul"] = len(usuls) > 0
+        res["gotform"] = len(forms) > 0
+        res["makam"] = makams
+        res["usul"] = usuls
+        res["form"] = forms
+        if makams and usuls and forms:
+            return (True, res)
+        else:
+            return (False, res)
+
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
     recording page in musicbrainz have matching entries
