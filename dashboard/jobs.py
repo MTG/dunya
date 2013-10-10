@@ -109,6 +109,8 @@ def import_release(releasepk):
                 cfile.add_log_message(tb)
 
     if not abort:
+        # If there have been no errors, import to the docserver
+        # and to dunya
         for cfile in cfiles:
             # 3a. Import file to docserver
             docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
@@ -116,11 +118,19 @@ def import_release(releasepk):
 
         # 3b. Import release to dunya database
         if collection.do_import:
+            # TODO: Choose a different release importer based on each collection
             # All the directories that make up the files in the collection
             dirs = [c.full_path for c in collection.collectiondirectory_set.all()]
-            ri = release_importer.ReleaseImporter(collection.id, dirs)
-            ri.import_release(release.mbid)
+            try:
+                ri = release_importer.ReleaseImporter(collection.id, dirs)
+                ri.import_release(release.mbid)
+            except Exception as e:
+                abort = True
+                tb = traceback.format_exc()
+                release.add_log_message(tb)
 
+    if not abort:
+        # If the import succeeded, clean up.
         release.add_log_message("Release import finished")
         release.set_state_finished()
         # If the release was ignored and we've successfully imported it, unignore
@@ -131,7 +141,7 @@ def import_release(releasepk):
         # 3c. If there was an error, set this release as "ignored"
         release.ignore = True
         release.save()
-        release.add_log_message("Release import aborted due to failed test")
+        release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
 
