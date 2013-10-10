@@ -82,18 +82,18 @@ class RaagaTaalaFile(CompletenessBase):
                 carnatic.models.Raaga.objects.fuzzy(r)
             except carnatic.models.Raaga.DoesNotExist:
                 missingr.append(r)
-            if missingr:
-                res["missingr"] = missingr
+        if missingr:
+            res["missingr"] = missingr
         for t in taalas:
             try:
                 carnatic.models.Taala.objects.fuzzy(t)
             except carnatic.models.Taala.DoesNotExist:
                 missingt.append(t)
-            if missingt:
-                res["missingt"] = missingt
+        if missingt:
+            res["missingt"] = missingt
                 
         res["gotraaga"] = len(raagas) > 0
-        res["gottaala"] = len(taalas) > 1
+        res["gottaala"] = len(taalas) > 0
         res["raaga"] = raagas
         res["taala"] = taalas
         if raagas and taalas and not missingt and not missingr:
@@ -248,7 +248,12 @@ class ReleaseRelationships(CompletenessBase):
                 models.Instrument.objects.fuzzy(instrname)
                 return True
             except models.Instrument.DoesNotExist:
-                return False
+                try:
+                    models.InstrumentAlias.objects.fuzzy(instrname)
+                    return True
+                except models.InstrumentAlias.objects.DoesNotExist:
+                    pass
+            return False
 
         # Instrument exists in the DB for each performance
         # We test instruments in the 'release' test, not a separate 'recording'
