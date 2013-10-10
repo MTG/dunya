@@ -89,7 +89,7 @@ class ReleaseImporter(object):
             artist.save()
             
             # add wikipedia references if they exist
-            for rel in a["url-relation-list"]:
+            for rel in a.get("url-relation-list", []):
                 if rel["type"] == ["wikipedia"]:
                     source = self.make_wikipedia_source(rel["url"])
                     artist.references.add(source)
