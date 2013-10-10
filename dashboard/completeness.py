@@ -294,7 +294,7 @@ class ReleaseRelationships(CompletenessBase):
                 try:
                     models.InstrumentAlias.objects.fuzzy(instrname)
                     return True
-                except models.InstrumentAlias.objects.DoesNotExist:
+                except models.InstrumentAlias.DoesNotExist:
                     pass
             return False
 
