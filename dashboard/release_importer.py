@@ -44,12 +44,13 @@ class ReleaseImporter(object):
             concert.source = source
             concert.save()
         for a in rel["artist-credit"]:
-            artistid = a["artist"]["id"]
-            artist = self.add_and_get_artist(artistid)
-            logger.info("  artist: %s" % artist)
-            if not concert.artists.filter(pk=artist.pk).exists():
-                logger.info("  - adding to artist list")
-                concert.artists.add(artist)
+            if isinstance(a, dict):
+                artistid = a["artist"]["id"]
+                artist = self.add_and_get_artist(artistid)
+                logger.info("  artist: %s" % artist)
+                if not concert.artists.filter(pk=artist.pk).exists():
+                    logger.info("  - adding to artist list")
+                    concert.artists.add(artist)
         credit_phrase = rel.get("artist-credit-phrase")
         if credit_phrase:
             concert.artistcredit = credit_phrase
