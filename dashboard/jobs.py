@@ -198,9 +198,13 @@ def update_collection(collectionid):
 
     for relid in to_add:
         try:
-            mbrelease = compmusic.mb.get_release_by_id(relid)["release"]
+            mbrelease = compmusic.mb.get_release_by_id(relid, includes=["artists"])["release"]
             title = mbrelease["title"]
-            rel, created = models.MusicbrainzRelease.objects.get_or_create(mbid=relid, collection=coll, defaults={"title": title})
+            artist = mbrelease["artist-credit-phrase"]
+            rel, created = models.MusicbrainzRelease.objects.get_or_create(
+                    mbid=relid,
+                    collection=coll,
+                    defaults={"title": title, "artist": artist})
         except compmusic.mb.ResponseError:
             coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
 

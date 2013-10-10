@@ -63,7 +63,9 @@
         <th class="status">Current status</th>
     </tr>
 {% for r in releases %}
-<tr><td><a href="{{r.get_absolute_url}}">{{r.title}}</a>
+<tr><td><a href="{{r.get_absolute_url}}">
+            {% if r.artist %}{{r.artist}}<br>{% endif %}
+            {{r.title}}</a>
         {% if r.ignore %}(ignored){% endif %}
     </td>
         
