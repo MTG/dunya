@@ -51,7 +51,8 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = []
         ret.extend(self.concert_set.all())
         for concert, perf in self.performances():
-            ret.append(concert)
+            if concert not in ret:
+                ret.append(concert)
         return ret
 
     @classmethod
