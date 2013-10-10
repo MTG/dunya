@@ -1,0 +1,28 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Carnatic Statistics{% endblock %}
+
+{% block wrap %}
+
+<h1>Carnatic Statistics</h1>
+{% if missing %}
+Error: Carnatic collection is not imported
+{% else %}
+
+<li>Number of releases: {{releases}}
+<li>Number of releases missing audio: {{releases_missing}}
+<li>Number of releases currently ignored (bad data): {{releases_ignored}}
+<p>
+<li>Number of recordings: {{recordings}}
+<li>Number of raagas (raw tags): {{raagas}}
+<li>Number of taalas (raw tags): {{taalas}}
+<p>
+<li>Number of raagas (imported): {{raaga_objects}}
+<li>Number of taalas (imported): {{taala_objects}}
+<li>Number of composers (imported): {{composers}}
+<li>Number of lead artists (by relationships): {{lead_artists}}
+<li>Number of lead artists (by album performances): {{lead_artists_objects}}
+
+{% endif %}
+
+{% endblock %}
+

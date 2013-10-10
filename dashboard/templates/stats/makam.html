@@ -1,0 +1,22 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Makam Statistics{% endblock %}
+
+{% block wrap %}
+
+<h1>Makam Statistics</h1>
+{% if missing %}
+Error: Makam collection is not imported
+{% else %}
+
+<li>Number of releases: {{releases}}
+<li>Number of releases missing audio: {{releases_missing}}
+<li>Number of releases currently ignored (bad data): {{releases_ignored}}
+<p>
+<li>Number of recordings: {{recordings}}
+<li>Number of makams (raw tags): {{makams}}
+<li>Number of usuls (raw tags): {{usuls}}
+
+{% endif %}
+
+{% endblock %}
+
