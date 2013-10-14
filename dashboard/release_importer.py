@@ -142,15 +142,19 @@ class ReleaseImporter(object):
             for perf in mbrec.get("artist-relation-list", []):
                 if perf["type"] == "vocal":
                     artistid = perf["target"]
-                    is_lead = "lead" in perf["attribute-list"]
+                    attrs = perf.get("attribute-list", [])
+                    is_lead = False
+                    for a in attrs:
+                        if "lead" in a:
+                            is_lead = True
                     self.add_performance(recordingid, artistid, "vocal", is_lead)
                 elif perf["type"] == "instrument":
                     artistid = perf["target"]
-                    attrs = perf.get("atrribute-list", [])
+                    attrs = perf.get("attribute-list", [])
                     is_lead = False
-                    if "lead" in attrs:
-                        is_lead = "True"
-                        attrs.remove("lead")
+                    for a in attrs:
+                        if "lead" in a:
+                            is_lead = True
                     inst = perf["attribute-list"][0]
                     self.add_performance(recordingid, artistid, inst, is_lead)
 
