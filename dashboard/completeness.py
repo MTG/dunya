@@ -56,16 +56,7 @@ class MakamTags(CompletenessBase):
     templatefile = 'makam.html'
     name = 'Recording makam and usul'
 
-    def task(self, collectionfile_id):
-        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
-        fpath = thefile.path
-        meta = compmusic.file_metadata(fpath)
-        m = meta["meta"]
-        recordingid = m["recordingid"]
-        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
-        mbrec = mbrec["recording"]
-        tags = mbrec.get("tag-list", [])
-        res = {}
+    def _get_tags_from_list(self, tags):
         makams = []
         usuls = []
         forms = []
@@ -77,8 +68,59 @@ class MakamTags(CompletenessBase):
                 usuls.append(compmusic.tags.parse_usul(tag))
             if compmusic.tags.has_form(tag):
                 forms.append(compmusic.tags.parse_form(tag))
+        return makams, usuls, forms
+
+    def task(self, collectionfile_id):
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
+        meta = compmusic.file_metadata(fpath)
+        m = meta["meta"]
+        recordingid = m["recordingid"]
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, 
+                includes=["tags", "work-rels", "artist-rels"])["recording"]
+        tags = mbrec.get("tag-list", [])
+        res = {}
+        m, u, f = self._get_tags_from_list(tags)
+        res["workids"] = []
+        res["composerids"] = []
+        res["artistids"] = []
+        res["leadartistids"] = []
+        res["makams"] = m[:]
+        res["usuls"] = u[:]
+        res["forms"] = f[:]
+        works = mbrec.get("work-relation-list", [])
+
+        for arel in mbrec.get("artist-relation-list", []):
+            if arel["type"] in ["vocal", "instrument", "performer"]:
+                aid = arel["target"]
+                attrs = arel.get("attribute-list", [])
+                lead = False
+                for a in attrs:
+                    if "lead" in a:
+                        lead = True
+                if lead:
+                    res["leadartistids"].append(aid)
+                else:
+                    res["artistids"].append(aid)
+
+        # If there's a work, get its id and the id of its composer
+        # Also scan for makam/usul tags here too
+        for w in works:
+            if w["type"] == "performance":
+                wid = w["work"]["id"]
+                mbwork = compmusic.mb.get_work_by_id(wid, includes["tags", "artist-rels"])["work"]
+                res["workids"].append(wid)
+                for arel in mbwork.get("artist-relation-list", []):
+                    if arel["type"] == "composer":
+                        res["composerids"].append(arel["target"])
+                tags = mbwork.get("tag-list", [])
+                m, u, f = self._get_tags_from_list(tags)
+                res["makams"].extend(m)
+                res["usuls"].extend(u)
+                res["forms"].extend(f)
+
         res["recordingid"] = recordingid
-        # TODO: Check that the makam/usul/form is in the Makam database
+        # TODO: Check that the makam/usul/form is in our list of wanted ones
 
         res["gotmakam"] = len(makams) > 0
         res["gotusul"] = len(usuls) > 0
@@ -215,6 +257,7 @@ class ReleaseRelationships(CompletenessBase):
 
 
     def parse_recording(self, recordingid):
+        # TODO: If this is a recording of more than one work then we need to check it
         logging.info("Recordingid %s" % recordingid)
         recording = compmusic.mb.get_recording_by_id(recordingid, includes=["work-rels", "artist-rels"])
         recording = recording["recording"]
@@ -303,6 +346,8 @@ class ReleaseRelationships(CompletenessBase):
         # test because sometimes instrument rels are on the release.
         # ["instrumentname", ]
         missinginstruments = set()
+        # TODO: Bug if attribute list isn't set. Also need to check if vocals are
+        # set by looking at type. We should also store the instruments, and if there's a lead?
         for r in releaserels:
             if len(r["attribute-list"]):
                 instrumentname = r["attribute-list"][0]
