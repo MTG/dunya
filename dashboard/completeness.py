@@ -77,42 +77,21 @@ class MakamTags(CompletenessBase):
         m = meta["meta"]
         recordingid = m["recordingid"]
         mbrec = compmusic.mb.get_recording_by_id(recordingid, 
-                includes=["tags", "work-rels", "artist-rels"])["recording"]
+                includes=["tags", "work-rels"])["recording"]
         tags = mbrec.get("tag-list", [])
         res = {}
         m, u, f = self._get_tags_from_list(tags)
-        res["workids"] = []
-        res["composerids"] = []
-        res["artistids"] = []
-        res["leadartistids"] = []
         res["makams"] = m[:]
         res["usuls"] = u[:]
         res["forms"] = f[:]
         works = mbrec.get("work-relation-list", [])
-
-        for arel in mbrec.get("artist-relation-list", []):
-            if arel["type"] in ["vocal", "instrument", "performer"]:
-                aid = arel["target"]
-                attrs = arel.get("attribute-list", [])
-                lead = False
-                for a in attrs:
-                    if "lead" in a:
-                        lead = True
-                if lead:
-                    res["leadartistids"].append(aid)
-                else:
-                    res["artistids"].append(aid)
 
         # If there's a work, get its id and the id of its composer
         # Also scan for makam/usul tags here too
         for w in works:
             if w["type"] == "performance":
                 wid = w["work"]["id"]
-                mbwork = compmusic.mb.get_work_by_id(wid, includes["tags", "artist-rels"])["work"]
-                res["workids"].append(wid)
-                for arel in mbwork.get("artist-relation-list", []):
-                    if arel["type"] == "composer":
-                        res["composerids"].append(arel["target"])
+                mbwork = compmusic.mb.get_work_by_id(wid, includes["tags"])["work"]
                 tags = mbwork.get("tag-list", [])
                 m, u, f = self._get_tags_from_list(tags)
                 res["makams"].extend(m)
@@ -122,13 +101,10 @@ class MakamTags(CompletenessBase):
         res["recordingid"] = recordingid
         # TODO: Check that the makam/usul/form is in our list of wanted ones
 
-        res["gotmakam"] = len(makams) > 0
-        res["gotusul"] = len(usuls) > 0
-        res["gotform"] = len(forms) > 0
-        res["makam"] = makams
-        res["usul"] = usuls
-        res["form"] = forms
-        if makams and usuls and forms:
+        res["gotmakam"] = len(res["makams"]) > 0
+        res["gotusul"] = len(res["usuls"]) > 0
+        res["gotform"] = len(res["forms"]) > 0
+        if res["makams"] and res["usuls"] and res["forms"]:
             return (True, res)
         else:
             return (False, res)
@@ -257,76 +233,86 @@ class ReleaseRelationships(CompletenessBase):
 
 
     def parse_recording(self, recordingid):
-        # TODO: If this is a recording of more than one work then we need to check it
+        """ Get all works that make up this recording, including id, title, composer.
+        Also get the IDs of artists and lead artists
+        """
         logging.info("Recordingid %s" % recordingid)
         recording = compmusic.mb.get_recording_by_id(recordingid, includes=["work-rels", "artist-rels"])
         recording = recording["recording"]
-        artistrels = self.get_artist_rels(recording)
+
+        artists, leadartists = self.get_artist_performances(recording.get("artist-relation-list", []))
+
         workrels = recording.get("work-relation-list", [])
         works = [w["work"] for w in workrels if w["type"] == "performance"]
-        if len(works):
-            theworkid = works[0]["id"]
-            thework = compmusic.mb.get_work_by_id(theworkid, includes=["artist-rels"])["work"]
-            worktitle = thework["title"]
-        else:
-            theworkid = None
-            thework = None
-            worktitle = None
-        thecomposer = None
-        if thework:
-            composers = [w["artist"] for w in thework.get("artist-relation-list", []) if w["type"] == "composer"]
-            if len(composers):
-                thecomposer = composers[0]
-        return {"workid": theworkid, "worktitle": worktitle, "composer": thecomposer,\
-                "id": recording["id"], "title": recording["title"], "performers": artistrels}
+        retworks = []
+        for w in works:
+            thework = {"id": w["id"], "title": w["title"], "composers": []}
+            composers = [r["artist"] for r in w.get("artist-relation-list", []) if r["type"] == "composer"]
+            thework["composers"] = composers
+            retworks.append(thework)
 
+        return {"id": recording["id"], "title": recording["title"], "performers": artistrels, \
+                "works": retworks, "artists": artists, "leadartists": leadartists}
 
-    def get_artist_rels(self, release):
-        rels = release.get("artist-relation-list", [])
-        ret = []
-        for r in rels:
-            if r["type"] == "instrument" or r["type"] == "vocal":
-                ret.append(r)
-        return ret
+    def get_artist_performances(self, relationlist):
+        leadartists = []
+        artists = []
+        for arel in relationlist:
+            if arel["type"] in ["vocal", "instrument", "performer"]:
+                aid = arel["target"]
+                attrs = arel.get("attribute-list", [])
+                lead = False
+                for a in attrs:
+                    if "lead" in a:
+                        lead = True
+                if lead:
+                    leadartists.append(arel)
+                else:
+                    artists.append(arel)
+        return artists, leadartists
 
     def task(self, musicbrainzrelease_id):
         mbrelease = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
-        includes = ["recordings", "url-rels"]
+        includes = ["recordings", "url-rels", "artist-rels"]
         release = compmusic.mb.get_release_by_id(mbrelease.mbid, includes=includes)
-
         release = release["release"]
+
         recordings = []
         for m in release.get("medium-list", []):
             for rec in m.get("track-list", []):
                 recordings.append(self.parse_recording(rec["recording"]["id"]))
 
-        releaserels = self.get_artist_rels(release)
+        relartists, relleadartists = self.get_artist_performances(release.get("artist-relation-list", []))
 
-        # Work relationship for each of the recordings
+        # Missing a work relationship for each of the recordings
         # [{"id": recordingid, "title": recordingtitle}, ]
         missingworks = []
         for r in recordings:
-            if r["workid"] is None:
+            if len(r["works"]) == 0:
                 missingworks.append({"id": r["id"], "title": r["title"]})
 
-        # Composer relationship for each of the works 
+        # Missing a composer relationship for each of the works 
         # [{"id": workid, "title": worktitle}, ]
         missingcomposers = []
         for r in recordings:
-            if r["composer"] is None and r["workid"] is not None:
-                missingcomposers.append({"id": r["workid"], "title": r["worktitle"]})
+            for w in r["works"]:
+                if len(w["composers"]) == 0:
+                    missingcomposers.append({"id": w["id"], "title": w["title"]})
 
         # Performance relationship for the release or the recordings
         # Only populate this if there is no release-level relationships
         # and a recording has no relationships
         # [{"id": recordingid, "title": recordingtitle}, ]
         missingperformers = []
-        if not releaserels:
-            for r in recordings:
-                if not r["performers"]:
-                    missingperformers.append({"id": r["id"], "title": r["title"]})
+        if relartists or relleadartists:
+            # If the release has some artists set, we're fine
+            pass
         else:
-            print "have release_rels"
+            # Otherwise check that all recordings have either an artist or 
+            # a lead artist
+            for r in recordings:
+                if not r["artists"] and not r["leadartists"]:
+                    missingperformers.append({"id": r["id"], "title": r["title"]})
 
         def check_instrument(instrname):
             from carnatic import models
@@ -346,21 +332,37 @@ class ReleaseRelationships(CompletenessBase):
         # test because sometimes instrument rels are on the release.
         # ["instrumentname", ]
         missinginstruments = set()
-        # TODO: Bug if attribute list isn't set. Also need to check if vocals are
-        # set by looking at type. We should also store the instruments, and if there's a lead?
-        for r in releaserels:
-            if len(r["attribute-list"]):
+        for r in relartists:
+            if r["type"] == "instrument" and r.get("attribute-list"):
                 instrumentname = r["attribute-list"][0]
                 if not check_instrument(instrumentname):
                     missinginstruments.add(instrumentname)
-        for r in recordings:
-            for p in r["performers"]:
-                if len(p["attribute-list"]):
-                    instrumentname = p["attribute-list"][0]
+        for r in relleadartists:
+            if r["type"] == "instrument" and r.get("attribute-list"):
+                instrumentname = r["attribute-list"][0]
+                if not check_instrument(instrumentname):
+                    missinginstruments.add(instrumentname)
+        for rec in recordings:
+            for r in rec["artists"]:
+                if r["type"] == "instrument" and r.get("attribute-list"):
+                    instrumentname = r["attribute-list"][0]
+                    if not check_instrument(instrumentname):
+                        missinginstruments.add(instrumentname)
+            for r in rec["relleadartists"]:
+                if r["type"] == "instrument" and r.get("attribute-list"):
+                    instrumentname = r["attribute-list"][0]
                     if not check_instrument(instrumentname):
                         missinginstruments.add(instrumentname)
 
-        ret = {"missingworks": missingworks, "missingcomposers": missingcomposers, "missingperfomers": missingperformers, "missinginstruments": list(missinginstruments)}
+        ret = {
+                "missingworks": missingworks,
+                "missingcomposers": missingcomposers,
+                "missingperfomers": missingperformers,
+                "missinginstruments": list(missinginstruments),
+                "releaseartists": relartists,
+                "releaseleadartists": relleadartists,
+                "recordings": recordings
+                }
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
 
