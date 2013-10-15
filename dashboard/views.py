@@ -83,9 +83,13 @@ def collection(request, uuid):
             pass
     releases = sorted(releases, key=sortkey, reverse=True)
 
+    numfinished = sum(1 for _ in (r for r in releases if r.get_current_state().state == 'f'))
+    numtotal = sum(1 for _ in (r for r in releases if len(r.all_files())))
+
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
     log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
-    ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders}
+    ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders, \
+            "numtotal": numtotal, "numfinished": numfinished}
     return render(request, 'dashboard/collection.html', ret)
 
 @user_passes_test(is_staff)
