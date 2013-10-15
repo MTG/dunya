@@ -288,7 +288,7 @@ class ReleaseRelationships(CompletenessBase):
         artists = []
         for a in release.get("artist-credit", []):
             if isinstance(a, dict):
-                aid = a["id"]
+                aid = a["artist"]["id"]
                 if aid not in artistids:
                     artists.append(a)
                     artistids.add(aid)
