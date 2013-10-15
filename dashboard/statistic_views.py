@@ -64,6 +64,7 @@ def carnatic(request):
         composers = carnatic.models.Composer.objects
         ret["composers"] = composers.count()
         artists = carnatic.models.Artist.objects
+        ret["artists"] = artists.count()
 
         raaga_ob = carnatic.models.Raaga.objects
         taala_ob = carnatic.models.Taala.objects
