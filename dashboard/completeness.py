@@ -98,6 +98,11 @@ class MakamTags(CompletenessBase):
                 res["usuls"].extend(u)
                 res["forms"].extend(f)
 
+        # de-duplicate the lists
+        res["makams"] = list(set(res["makams"]))
+        res["usuls"] = list(set(res["usuls"]))
+        res["forms"] = list(set(res["forms"]))
+
         res["recordingid"] = recordingid
         # TODO: Check that the makam/usul/form is in our list of wanted ones
 
