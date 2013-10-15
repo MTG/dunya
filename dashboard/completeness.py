@@ -280,9 +280,14 @@ class ReleaseRelationships(CompletenessBase):
 
     def task(self, musicbrainzrelease_id):
         mbrelease = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
-        includes = ["recordings", "url-rels", "artist-rels"]
+        includes = ["recordings", "url-rels", "artist-rels", "artists"]
         release = compmusic.mb.get_release_by_id(mbrelease.mbid, includes=includes)
         release = release["release"]
+
+        artists = set()
+        for a in release.get("artist-credit", []):
+            if isinstance(a, dict):
+                artists.add(a)
 
         recordings = []
         for m in release.get("medium-list", []):
@@ -366,9 +371,10 @@ class ReleaseRelationships(CompletenessBase):
                 "missingcomposers": missingcomposers,
                 "missingperfomers": missingperformers,
                 "missinginstruments": list(missinginstruments),
-                "releaseartists": relartists,
-                "releaseleadartists": relleadartists,
-                "recordings": recordings
+                "releaseartistrels": relartists,
+                "releaseleadartistrels": relleadartists,
+                "recordings": recordings,
+                "artists": list(artists)
                 }
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
