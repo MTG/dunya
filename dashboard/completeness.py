@@ -284,10 +284,14 @@ class ReleaseRelationships(CompletenessBase):
         release = compmusic.mb.get_release_by_id(mbrelease.mbid, includes=includes)
         release = release["release"]
 
-        artists = set()
+        artistids = set()
+        artists = []
         for a in release.get("artist-credit", []):
             if isinstance(a, dict):
-                artists.add(a)
+                aid = a["id"]
+                if aid not in artistids:
+                    artists.append(a)
+                    artistids.add(aid)
 
         recordings = []
         for m in release.get("medium-list", []):
@@ -374,7 +378,7 @@ class ReleaseRelationships(CompletenessBase):
                 "releaseartistrels": relartists,
                 "releaseleadartistrels": relleadartists,
                 "recordings": recordings,
-                "artists": list(artists)
+                "artists": artists
                 }
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
