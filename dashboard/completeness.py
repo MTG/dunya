@@ -91,7 +91,7 @@ class MakamTags(CompletenessBase):
         for w in works:
             if w["type"] == "performance":
                 wid = w["work"]["id"]
-                mbwork = compmusic.mb.get_work_by_id(wid, includes["tags"])["work"]
+                mbwork = compmusic.mb.get_work_by_id(wid, includes=["tags"])["work"]
                 tags = mbwork.get("tag-list", [])
                 m, u, f = self._get_tags_from_list(tags)
                 res["makams"].extend(m)
@@ -246,12 +246,14 @@ class ReleaseRelationships(CompletenessBase):
         works = [w["work"] for w in workrels if w["type"] == "performance"]
         retworks = []
         for w in works:
+            workid = w["id"]
+            mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
             thework = {"id": w["id"], "title": w["title"], "composers": []}
-            composers = [r["artist"] for r in w.get("artist-relation-list", []) if r["type"] == "composer"]
+            composers = [r["artist"] for r in mbwork.get("artist-relation-list", []) if r["type"] == "composer"]
             thework["composers"] = composers
             retworks.append(thework)
 
-        return {"id": recording["id"], "title": recording["title"], "performers": artistrels, \
+        return {"id": recording["id"], "title": recording["title"], \
                 "works": retworks, "artists": artists, "leadartists": leadartists}
 
     def get_artist_performances(self, relationlist):
@@ -348,7 +350,7 @@ class ReleaseRelationships(CompletenessBase):
                     instrumentname = r["attribute-list"][0]
                     if not check_instrument(instrumentname):
                         missinginstruments.add(instrumentname)
-            for r in rec["relleadartists"]:
+            for r in rec["leadartists"]:
                 if r["type"] == "instrument" and r.get("attribute-list"):
                     instrumentname = r["attribute-list"][0]
                     if not check_instrument(instrumentname):
