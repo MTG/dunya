@@ -70,16 +70,32 @@ def carnatic(request):
         ret["raaga_objects"] = raaga_ob.count()
         ret["taala_objects"] = taala_ob.count()
 
-        performances = carnatic.models.InstrumentPerformance.objects.filter(lead=True)
-        # TODO: Unique artists
-        ret["lead_artists"] = performances.count()
+        lead_artists = carnatic.models.Artist.objects.filter(instrumentperformance__lead=True).distinct()
+        ret["lead_artists"] = lead_artists.count()
 
         leadartists = artists.annotate(Count('concert'))
         ret["lead_artists_objects"] = len([a for a in leadartists if a.concert__count > 0])
 
 
-    # Duration, number lead artists, number composers,
+    # Duration
     return render(request, 'stats/carnatic.html', ret)
+
+@user_passes_test(views.is_staff)
+def carnatic_releases(requests):
+    pass
+
+@user_passes_test(views.is_staff)
+def carnatic_artists(requests):
+    pass
+
+@user_passes_test(views.is_staff)
+def carnatic_recordings(requests):
+    pass
+
+@user_passes_test(views.is_staff)
+def carnatic_works(requests):
+    pass
+
 
 @user_passes_test(views.is_staff)
 def hindustani(request):
@@ -91,6 +107,37 @@ def hindustani(request):
         rata = _raaga_taala_by_results(collectionid)
         ret["raagas"] = rata["raagas"]
         ret["taalas"] = rata["taalas"]
+
+        relchecker = "dashboard.completeness.ReleaseRelationships"
+        artists = set()
+        composers = set()
+        works = set()
+        relartists = set()
+        results = models.MusicbrainzReleaseResult.objects.filter(
+               musicbrainzrelease__collection__id=collectionid).filter(checker__module=relchecker)
+        for r in results.all():
+            data = json.loads(r.data) if r.data else {}
+            for a in data["releaseartistrels"]:
+                artists.add(a["target"])
+            for a in data["releaseleadartistrels"]:
+                artists.add(a["target"])
+            for a in data["artists"]:
+                relartists.add(a["artist"]["id"])
+                artists.add(a["artist"]["id"])
+            for rec in data["recordings"]:
+                for a in rec["artists"]:
+                    artists.add(a["target"])
+                for a in rec["leadartists"]:
+                    artists.add(a["target"])
+                for w in rec["works"]:
+                    works.add(w["id"])
+                    for c in w["composers"]:
+                        composers.add(c["id"])
+
+        ret["artists"] = len(list(artists))
+        ret["composers"] = len(list(composers))
+        ret["works"] = len(list(works))
+        ret["releaseartists"] = len(list(relartists))
     # Duration, num lead artists
     return render(request, 'stats/hindustani.html', ret)
 
@@ -109,14 +156,45 @@ def makam(request):
                checker__module=makamchecker)
         for r in results.all():
             data = json.loads(r.data) if r.data else {}
-            thismakam = data.get("makam", [])
-            thisusul = data.get("usul", [])
+            thismakam = data.get("makams", [])
+            thisusul = data.get("usuls", [])
             [makams.add(tm) for tm in thismakam]
             [usuls.add(tu) for tu in thisusul]
-        ret["makams"] = len(makams)
-        ret["usuls"] = len(usuls)
+        ret["makams"] = len(list(makams))
+        ret["usuls"] = len(list(usuls))
 
-    # Duration, num artists, num composers, num works
+        relchecker = "dashboard.completeness.ReleaseRelationships"
+        artists = set()
+        composers = set()
+        works = set()
+        relartists = set()
+        results = models.MusicbrainzReleaseResult.objects.filter(
+               musicbrainzrelease__collection__id=collectionid).filter(checker__module=relchecker)
+        for r in results.all():
+            data = json.loads(r.data) if r.data else {}
+            for a in data["releaseartistrels"]:
+                artists.add(a["target"])
+            for a in data["releaseleadartistrels"]:
+                artists.add(a["target"])
+            for a in data["artists"]:
+                relartists.add(a["artist"]["id"])
+                artists.add(a["artist"]["id"])
+            for rec in data["recordings"]:
+                for a in rec["artists"]:
+                    artists.add(a["target"])
+                for a in rec["leadartists"]:
+                    artists.add(a["target"])
+                for w in rec["works"]:
+                    works.add(w["id"])
+                    for c in w["composers"]:
+                        composers.add(c["id"])
+
+        ret["artists"] = len(list(artists))
+        ret["composers"] = len(list(composers))
+        ret["works"] = len(list(works))
+        ret["releaseartists"] = len(list(relartists))
+
+    # Duration
     return render(request, 'stats/makam.html', ret)
 
 @user_passes_test(views.is_staff)

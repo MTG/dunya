@@ -16,10 +16,15 @@ urlpatterns = patterns('',
     url(r'data/taalas', views.taalas, name='dashboard-taalas'),
     url(r'data/instruments', views.instruments, name='dashboard-instruments'),
 
-    url(r'stats/carnatic', statistic_views.carnatic, name='dashboard-stats-carnatic'),
-    url(r'stats/hindustani', statistic_views.hindustani, name='dashboard-stats-hindustani'),
-    url(r'stats/makam', statistic_views.makam, name='dashboard-stats-makam'),
-    url(r'stats/beijing', statistic_views.beijing, name='dashboard-stats-beijing'),
-    url(r'stats/arabandalusian', statistic_views.andalusian, name='dashboard-stats-andalusian'),
+    url(r'carnatic', statistic_views.carnatic, name='dashboard-stats-carnatic'),
+    url(r'hindustani', statistic_views.hindustani, name='dashboard-stats-hindustani'),
+    url(r'makam', statistic_views.makam, name='dashboard-stats-makam'),
+    url(r'beijing', statistic_views.beijing, name='dashboard-stats-beijing'),
+    url(r'arabandalusian', statistic_views.andalusian, name='dashboard-stats-andalusian'),
+
+    url(r'carnatic/releases', statistic_views.carnatic_releases, name='dashboard-carnatic-releases'),
+    url(r'carnatic/artists', statistic_views.carnatic_artists, name='dashboard-carnatic-artists'),
+    url(r'carnatic/recordings', statistic_views.carnatic_recordings, name='dashboard-carnatic-recordings'),
+    url(r'carnatic/works', statistic_views.carnatic_works, name='dashboard-carnatic-works'),
 )
 

@@ -1,11 +1,11 @@
 {% extends "dashboard/base.html" %}
-{% block title %}Carnatic Statistics{% endblock %}
+{% block title %}Hindustani Statistics{% endblock %}
 
 {% block wrap %}
 
-<h1>Carnatic Statistics</h1>
+<h1>Hindustani Statistics</h1>
 {% if missing %}
-Error: Carnatic collection is not imported
+Error: Hindustani collection is not imported
 {% else %}
 
 <li>Number of releases: {{releases}}
@@ -15,6 +15,11 @@ Error: Carnatic collection is not imported
 <li>Number of recordings: {{recordings}}
 <li>Number of raagas (raw tags): {{raagas}}
 <li>Number of taalas (raw tags): {{taalas}}
+<p>
+<li>Number of artists: {{artists}}
+<li>Number of release artists: {{releaseartists}}
+<li>Number of composers: {{composers}}
+<li>Number of works: {{works}}
 
 {% endif %}
 
