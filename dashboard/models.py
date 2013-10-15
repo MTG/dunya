@@ -294,7 +294,7 @@ class CollectionDirectory(models.Model):
 
     collection = models.ForeignKey(Collection)
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
-    path = models.CharField(max_length=255)
+    path = models.CharField(max_length=500)
 
     @property
     def full_path(self):

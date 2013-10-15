@@ -83,7 +83,7 @@ class SourceFile(models.Model):
     """The filetype"""
     file_type = models.ForeignKey(SourceFileType)
     """The path on disk to the file"""
-    path = models.CharField(max_length=200)
+    path = models.CharField(max_length=500)
 
     @property
     def extension(self):
@@ -102,7 +102,7 @@ class DerivedFile(models.Model):
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
     """The path on disk to the file"""
-    path = models.CharField(max_length=200)
+    path = models.CharField(max_length=500)
     derived_from = models.ForeignKey(SourceFile)
     module_version = models.ForeignKey("ModuleVersion")
 
