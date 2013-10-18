@@ -1,6 +1,8 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
+from django.conf import settings
+import os
 
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
@@ -81,6 +83,17 @@ class Artist(BaseModel):
         viewname = "%s-artist" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
 
+    def get_image_url(self):
+        if self.images.all():
+            image = self.images.all()[0]
+            media = settings.MEDIA_URL
+            return os.path.join(media, image.image.name)
+        else:
+            return None
+
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/artist/%s" % self.mbid
+
     def recordings(self):
         perfs = self.performances()
         IPClass = self.get_object_map("performance")
@@ -140,6 +153,17 @@ class Concert(BaseModel):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
 
+    def get_image_url(self):
+        if self.images.all():
+            image = self.images.all()[0]
+            media = settings.MEDIA_URL
+            return os.path.join(media, image.image.name)
+        else:
+            return None
+
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/release/%s" % self.mbid
+
     def artistnames(self):
         artists = self.artists.all()
         if len(artists) > 1:
@@ -174,6 +198,9 @@ class Work(BaseModel):
     def get_absolute_url(self):
         viewname = "%s-work" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
+
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/work/%s" % self.mbid
 
     def concerts(self):
         ConcertClass = self.get_object_map("concert")
@@ -213,6 +240,9 @@ class Recording(BaseModel):
     def get_absolute_url(self):
         viewname = "%s-recording" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
+
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/recording/%s" % self.mbid
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
