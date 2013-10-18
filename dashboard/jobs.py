@@ -122,8 +122,9 @@ def import_release(releasepk):
             # All the directories that make up the files in the collection
             dirs = [c.full_path for c in collection.collectiondirectory_set.all()]
             try:
-                ri = release_importer.ReleaseImporter(collection.id, dirs)
-                ri.import_release(release.mbid)
+                ri = release_importer.ReleaseImporter(collection.id)
+                directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
+                ri.import_release(release.mbid, directories)
             except Exception as e:
                 abort = True
                 tb = traceback.format_exc()

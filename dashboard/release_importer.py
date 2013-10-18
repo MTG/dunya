@@ -10,9 +10,8 @@ import data
 from dashboard import external_data
 
 class ReleaseImporter(object):
-    def __init__(self, collectionid, directories=[]):
+    def __init__(self, collectionid):
         self.collectionid = collectionid
-        self.directories = directories
 
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
@@ -24,7 +23,7 @@ class ReleaseImporter(object):
         source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
         return source
 
-    def import_release(self, releaseid):
+    def import_release(self, releaseid, directories):
         # TODO: Can be more than one directory here
         rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists","recordings"])
         rel = rel["release"]
@@ -64,7 +63,7 @@ class ReleaseImporter(object):
             concert.tracks.add(recording)
 
         # TODO: Release hooks
-        external_data.import_concert_image(concert, self.directories)
+        external_data.import_concert_image(concert, directories)
 
     def add_and_get_artist(self, artistid):
         try:

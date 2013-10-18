@@ -1,5 +1,5 @@
-
 from django.core.files.base import ContentFile
+import os
 
 import data.models
 
@@ -68,14 +68,22 @@ def import_artist_bio(a):
                 a.references.add(source)
         a.save()
 
-def import_concert_image(c, directories=[]):
-    # TODO: Get from local files too
-    i = image.get_coverart_from_caa(c.mbid)
+def import_concert_image(concert, directories=[]):
+    for existing in concert.images.all():
+        name = os.path.splitext(os.path.basename(existing.image.name))
+        if name == concert.mbid:
+            print "Image for concert %s exists, skipping" % concert.mbid
+            return
+
+    i = image.get_coverart_from_caa(concert.mbid)
     if not i:
+        print "No image on CAA for %s, looking in directory" % concert.mbid
         i = image.get_coverart_from_directories(directories)
     if i:
         im = data.models.Image()
-        im.image.save("concert/%s.jpg" % c.mbid, ContentFile(i))
-        c.images.add(im)
-        c.save()
+        im.image.save("concert/%s.jpg" % concert.mbid, ContentFile(i))
+        concert.images.add(im)
+        concert.save()
+    else:
+        print "Can't find an image for %s" % concert.mbid
 
