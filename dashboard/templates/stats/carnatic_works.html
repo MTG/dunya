@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Carnatic Works{% endblock %}
+
+{% block wrap %}
+
+<h1>Carnatic Works</h1>
+
+<h2>Works missing composers</h2>
+{% for w in nocomposer %}
+    <li><a href="{{w.get_musicbrainz_url}}">{{w}}</a>
+{% endfor %}
+
+<h2>All Works</h2>
+{% for w in all %}
+    <li><a href="{{w.get_musicbrainz_url}}">{{w}}</a>
+{% endfor %}
+
+{% endblock %}
+
+

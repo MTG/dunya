@@ -36,6 +36,7 @@ def _raaga_taala_by_results(collectionid):
     raagachecker = "dashboard.completeness.RaagaTaalaFile"
     raagas = set()
     taalas = set()
+    # TODO: Only get the most rest CollectionFileResult for each file
     results = models.CollectionFileResult.objects.filter(
            collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
            checker__module=raagachecker)
@@ -50,7 +51,7 @@ def _raaga_taala_by_results(collectionid):
     return ret
 
 @user_passes_test(views.is_staff)
-def carnatic(request):
+def carnatic_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
 
     ret = _common_stats(collectionid)
@@ -82,24 +83,107 @@ def carnatic(request):
     return render(request, 'stats/carnatic.html', ret)
 
 @user_passes_test(views.is_staff)
-def carnatic_releases(requests):
-    pass
+def carnatic_releases(request):
+    releases = carnatic.models.Concert.objects.select_related('artists')
+    counted = releases.annotate(Count('images'))
+    noimages = [r for r in counted.all() if r.images__count == 0]
+    dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
+    checker = "dashboard.completeness.ReleaseCoverart"
+    nocaa = []
+    relids = [r.mbid for r in counted.all() if r.images__count > 0]
+    for dashrel in dashcoll.musicbrainzrelease_set.filter(mbid__in=relids):
+        results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
+        if results:
+            lastresult = results[0]
+            if lastresult.result == 'b': # Bad
+                nocaa.append(counted.get(mbid=dashrel.mbid))
+
+    noimageids = [r.mbid for r in noimages]
+    dashnoimage = dashcoll.musicbrainzrelease_set.filter(mbid__in=noimageids)
+
+    noi = []
+    for m, d in zip(noimages, dashnoimage):
+        noi.append({"model": m, "dashboard": d})
+
+    ret = {"noimages": noi, "nocaa": nocaa}
+    return render(request, 'stats/carnatic_releases.html', ret)
 
 @user_passes_test(views.is_staff)
-def carnatic_artists(requests):
-    pass
+def carnatic_artists(request):
+    artists = carnatic.models.Artist.objects
+    image_counted = artists.annotate(Count('images'))
+    bio_counted = artists.annotate(Count('description'))
+    noimages = [a for a in image_counted.all() if a.images__count == 0]
+    nobiographies = [a for a in bio_counted.all() if a.description__count == 0]
+    ret = {"noimages": noimages, "nobios": nobiographies, "all": artists.order_by('name').all()}
+    return render(request, 'stats/carnatic_artists.html', ret)
 
 @user_passes_test(views.is_staff)
-def carnatic_recordings(requests):
-    pass
+def carnatic_recordings(request):
+    recordings = carnatic.models.Recording.objects
+    work_counts = recordings.annotate(Count('work'))
+    performance_counts = recordings.annotate(Count('performance'))
+
+    nowork = [r for r in work_counts if r.work__count == 0]
+    noperf = [r for r in performance_counts if r.performance__count == 0]
+    ret = {"nowork": nowork,
+            "noperf": noperf
+            }
+    return render(request, 'stats/carnatic_recordings.html', ret)
 
 @user_passes_test(views.is_staff)
-def carnatic_works(requests):
-    pass
+def carnatic_raagataala(request):
+    recordings = carnatic.models.Recording.objects
+    raaga_count = recordings.annotate(Count('work__raaga'))
+    taala_count = recordings.annotate(Count('work__taala'))
+    missingr = []
+    missingt = []
+    no_raagas = [r for r in raaga_count if r.work__raaga__count == 0]
+    no_taalas = [r for r in taala_count if r.work__taala__count == 0]
+    for r in no_raagas:
+        if r.work:
+            otherrecs = r.work.recording_set.exclude(id=r.id)
+        else:
+            otherrecs = []
+        missingr.append({"recording": r, "otherrecs": otherrecs})
+    for r in no_taalas:
+        if r.work:
+            otherrecs = r.work.recording_set.exclude(id=r.id)
+        else:
+            otherrecs = []
+        missingt.append({"recording": r, "otherrecs": otherrecs})
+
+    dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
+    dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
+    nodbr = set()
+    nodbt = set()
+    checker = "dashboard.completeness.RaagaTaalaFile"
+    for f in dashfiles:
+        checks = f.collectionfileresult_set.filter(checker__module=checker)
+        if len(checks):
+            check = checks[0]
+            data = json.loads(check.data) if check.data else {}
+            [nodbt.add(t) for t in data.get("missingt", [])]
+            [nodbr.add(r) for r in data.get("missingr", [])]
+
+    ret = { "nodbr": list(nodbr),
+            "nodbt": list(nodbt),
+            "missingr": missingr,
+            "missingt": missingt
+            }
+    return render(request, 'stats/carnatic_raagataala.html', ret)
+
+@user_passes_test(views.is_staff)
+def carnatic_works(request):
+    works = carnatic.models.Work.objects
+    composer_counted = works.annotate(Count('composer'))
+    nocomposer = [w for w in composer_counted if w.composer__count == 0]
+    ret = {"nocomposer": nocomposer, "all": works.order_by('title').all()}
+    return render(request, 'stats/carnatic_works.html', ret)
 
 
 @user_passes_test(views.is_staff)
-def hindustani(request):
+def hindustani_stats(request):
 
     collectionid = compmusic.HINDUSTANI_COLLECTION
 
@@ -143,7 +227,7 @@ def hindustani(request):
     return render(request, 'stats/hindustani.html', ret)
 
 @user_passes_test(views.is_staff)
-def makam(request):
+def makam_stats(request):
     collectionid = compmusic.MAKAM_COLLECTION
 
     ret = _common_stats(collectionid)
@@ -199,7 +283,7 @@ def makam(request):
     return render(request, 'stats/makam.html', ret)
 
 @user_passes_test(views.is_staff)
-def beijing(request):
+def beijing_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
 
     releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid).all()
@@ -212,7 +296,7 @@ def beijing(request):
     return render(request, 'stats/beijing.html', ret)
 
 @user_passes_test(views.is_staff)
-def andalusian(request):
+def andalusian_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
 
     releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid).all()

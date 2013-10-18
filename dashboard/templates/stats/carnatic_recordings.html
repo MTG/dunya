@@ -1,0 +1,21 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Carnatic Recordings{% endblock %}
+
+{% block wrap %}
+
+<h1>Carnatic Recordings</h1>
+
+<h2>Recordings missing performer information</h2>
+{% for r in noperf %}
+    <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>
+{% endfor %}
+
+<h2>Recordings missing works</h2>
+{% for r in nowork %}
+    <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>
+{% endfor %}
+
+
+{% endblock %}
+
+
