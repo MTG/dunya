@@ -147,14 +147,20 @@ class RaagaTaalaFile(CompletenessBase):
             try:
                 carnatic.models.Raaga.objects.fuzzy(r)
             except carnatic.models.Raaga.DoesNotExist:
-                missingr.append(r)
+                try:
+                    carnatic.models.RaagaAlias.objects.fuzzy(r)
+                except carnatic.models.RaagaAlias.DoesNotExist:
+                    missingr.append(r)
         if missingr:
             res["missingr"] = missingr
         for t in taalas:
             try:
                 carnatic.models.Taala.objects.fuzzy(t)
             except carnatic.models.Taala.DoesNotExist:
-                missingt.append(t)
+                try:
+                    carnatic.models.TaalaAlias.objects.fuzzy(t)
+                except carnatic.models.TaalaAlias.DoesNotExist:
+                    missingt.append(t)
         if missingt:
             res["missingt"] = missingt
                 
