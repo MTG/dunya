@@ -28,12 +28,7 @@ def badge_similar_concert(concert):
 def badge_concert(concert):
     if not isinstance(concert, Concert):
         concert = Concert.objects.get(pk=concert)
-    return {"title": concert.title,
-            "artist": concert.artistnames(),
-            "detail": None,
-            "date": concert.year,
-            "url": concert.get_absolute_url(),
-            "image": get_image(concert, "noconcert")
+    return {"concert": concert
            }
 
 @register.inclusion_tag("badges/artist.html")
@@ -58,8 +53,7 @@ def badge_artist(artist):
         performance = perfs[0]
     else:
         performance = None
-    return {"performance": performance,
-            "image": get_image(artist, "noartist")
+    return {"artist": artist
            }
 
 @register.inclusion_tag("badges/recording.html")

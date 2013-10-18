@@ -84,12 +84,12 @@ class Artist(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def get_image_url(self):
+        media = settings.MEDIA_URL
         if self.images.all():
             image = self.images.all()[0]
-            media = settings.MEDIA_URL
             return os.path.join(media, image.image.name)
         else:
-            return None
+            return os.path.join(media, "missing", "artist.jpg")
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -100,6 +100,10 @@ class Artist(BaseModel):
         performances = IPClass.objects.filter(performer=self)
         recs = [p.recording for p in performances]
         return recs
+
+    def main_instrument(self):
+        InstrClass = self.get_object_map("instrument")
+        return InstrClass.objects.all()[0]
 
     def performances(self):
         ConcertClass = self.get_object_map("concert")
@@ -154,12 +158,12 @@ class Concert(BaseModel):
         return reverse(viewname, args=[str(self.id)])
 
     def get_image_url(self):
+        media = settings.MEDIA_URL
         if self.images.all():
             image = self.images.all()[0]
-            media = settings.MEDIA_URL
             return os.path.join(media, image.image.name)
         else:
-            return None
+            return os.path.join(media, "missing", "concert.jpg")
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -264,6 +268,14 @@ class Instrument(BaseModel):
 
     def __unicode__(self):
         return self.name
+
+    def get_image_url(self):
+        media = settings.MEDIA_URL
+        if self.images.all():
+            image = self.images.all()[0]
+            return os.path.join(media, image.image.name)
+        else:
+            return os.path.join(media, "missing", "instrument.jpg")
 
     def get_absolute_url(self):
         viewname = "%s-instrument" % (self.get_style(), )

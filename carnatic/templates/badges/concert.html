@@ -1,61 +1,83 @@
 {% load staticfiles %}
 {% load inline %}
+
 <div class="concert item">
-        <div class="smallPlay"></div>
-        <div class="disc pict">
-        <a href="http://localhost:8001/carnatic/concert/2"><img src="./Dunya_files/noconcert.jpg"></a>
-    </div>
-        <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/concert/2"><b>K. V. Narayanaswami concert at Music Academy 1967</b></a>
-        <p><a href="http://localhost:8001/carnatic/artist/5">K. V. Narayanaswami</a></p>
-        <p>1967</p>
-    </div>
-        <div class="descOpen">
-    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
-
-He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
-    </div>
-        <div class="lists">
-    	<div  class="left">
-    		
-    		<div class="miniitem artist">
-    		  <div class="colorCode shadow1"></div>
-    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-    		</div>
-    		<div class="miniitem artist">
-    		  <div class="colorCode shadow1"></div>
-    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-    		</div>
-    	
-    	</div>
-    	<div class="right">
-    	
-    	  <div class="miniitem instrument">
-    	    <div class="colorCode shadow1"></div>
-    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-    		</div>
-    		<div class="miniitem instrument">
-      		<div class="colorCode shadow1"></div>
-    		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-    		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-    		</div>
-    		
-    	</div>
-    </div>
+      <div class="disc pict">
+          <a href="{{concert.get_absolute_url}}"><img src="{{concert.get_image_url}}"></a>
       </div>
-
-<!--
-<div class="album">
-    <div class="disc">
-        <a href="{{url}}"><img src="{{image}}"></a>
+      <div class="desc">
+        <div class="plus"></div>
+        <a href="{{concert.get_absolute_url}}" class="title"><b>{{concert.title}}</b></a><span class="year">{{concert.year}}</span>
+        {% if concert.artists.all %}
+        <a href="{{concert.artists.all.0.get_absolute_url}}" class="belongs">{{concert.artists.all.0}}</a>
+        {% endif %}
+      </div>
+      <div class="descOpen">
+        <div class="meta">
+          <label>DATE</label><span class="value">1969</span>
+          <label>LENGTH</label><span class="value">02:26:57</span>
+          <!-- <label>SOURCE</label><span class="value">MusicBrainz</span> -->
+          <div class="clearer"></div>
+        </div>
+        <h3>DESCRIPTION</h3>
+        <p class="value"></p>
+      </div>
+      <div class="lists">
+        <div class="left">
+          <h3>Tracks</h3>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 1</b>01:50:21</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 2</b>01:38:33</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 3</b>01:5:25</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 4</b>01:34:45</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 5</b>01:50:21</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 6</b>01:38:33</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 7</b>01:5:25</label>
+            </div>
+            <div class="miniitem artist">
+              <div class="colorCode shadow1"></div>
+              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
+              <label><b>Track name 8</b>01:34:45</label>
+            </div>
+        </div>
+        <div class="right">   
+          <h3>Performers</h3>       
+            <div class="miniitem instrument">
+              <div class="colorCode shadow1"></div>
+                <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a></div>
+                <label><b>Artist name 1</b>Instrument</label>
+          </div>
+            <div class="miniitem instrument">
+              <div class="colorCode shadow1"></div>
+            <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a></div>
+            <label><b>Artist name 2</b>Instrument</label>
+          </div>            
+        </div>
+      </div>
     </div>
-    <div class="desc">
-        <a href="{{url}}"><b>{{ title }}</b></a>
-        <p>{% inline_artist artist %}</p>
-        <p>{{ date }}</p>
-    </div>
-</div>
--->

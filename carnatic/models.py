@@ -16,7 +16,8 @@ class CarnaticStyle(object):
                 "composer": Composer,
                 "artist": Artist,
                 "recording": Recording,
-                "work": Work
+                "work": Work,
+                "instrument": Instrument
                 }[key]
 
 class GeographicRegion(CarnaticStyle, models.Model):
