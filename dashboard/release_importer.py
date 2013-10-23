@@ -10,8 +10,13 @@ import data
 from dashboard import external_data
 
 class ReleaseImporter(object):
-    def __init__(self, collectionid):
-        self.collectionid = collectionid
+    def __init__(self, overwrite=False):
+        """Create a carnatic importer.
+        Arguments:
+          overwrite: If we replace everything in the database with new
+                     data even if it exists.
+        """
+        self.overwrite = overwrite
 
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
@@ -24,8 +29,7 @@ class ReleaseImporter(object):
         return source
 
     def import_release(self, releaseid, directories):
-        # TODO: Can be more than one directory here
-        rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists","recordings"])
+        rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels"])
         rel = rel["release"]
 
         mbid = rel["id"]
@@ -62,8 +66,12 @@ class ReleaseImporter(object):
             recording = self.add_and_get_recording(recid)
             concert.tracks.add(recording)
 
+        for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
+            artistid, instrument, is_lead = perf
+            self.add_release_performance(releaseid, artistid, instrument, is_lead)
+
         # TODO: Release hooks
-        external_data.import_concert_image(concert, directories)
+        external_data.import_concert_image(concert, directories, self.overwrite)
 
     def add_and_get_artist(self, artistid):
         try:
@@ -96,7 +104,7 @@ class ReleaseImporter(object):
 
             # TODO: Artist hooks
 
-            external_data.import_artist_bio(artist)
+            external_data.import_artist_bio(artist, self.overwrite)
         return artist
 
     def _get_raaga(self, taglist):
@@ -119,6 +127,23 @@ class ReleaseImporter(object):
                 seq += 1
         return ret
 
+    def _get_artist_performances(self, artistrelationlist):
+        performances = []
+        for perf in artistrelationlist:
+            if perf["type"] in ["vocal", "instrument"]:
+                artistid = perf["target"]
+                attrs = perf.get("attribute-list", [])
+                is_lead = False
+                for a in attrs:
+                    if "lead" in a:
+                        is_lead = True
+                if perf["type"] == "instrument":
+                    inst = perf["attribute-list"][0]
+                else:
+                    inst = "vocal"
+                performances.append(artistid, inst, is_lead)
+        return performances
+
     def add_and_get_recording(self, recordingid):
         try:
             rec = carnatic.models.Recording.objects.get(mbid=recordingid)
@@ -138,24 +163,10 @@ class ReleaseImporter(object):
             rec.length = mbrec.get("length")
             rec.title = mbrec["title"]
             rec.save()
-            for perf in mbrec.get("artist-relation-list", []):
-                if perf["type"] == "vocal":
-                    artistid = perf["target"]
-                    attrs = perf.get("attribute-list", [])
-                    is_lead = False
-                    for a in attrs:
-                        if "lead" in a:
-                            is_lead = True
-                    self.add_performance(recordingid, artistid, "vocal", is_lead)
-                elif perf["type"] == "instrument":
-                    artistid = perf["target"]
-                    attrs = perf.get("attribute-list", [])
-                    is_lead = False
-                    for a in attrs:
-                        if "lead" in a:
-                            is_lead = True
-                    inst = perf["attribute-list"][0]
-                    self.add_performance(recordingid, artistid, inst, is_lead)
+            
+            for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
+                artistid, instrument, is_lead = perf
+                self.add_recording_performance(recordingid, artistid, instrument, is_lead)
 
         # TODO: Recording hooks
         # TODO: Tests, update status
@@ -236,13 +247,23 @@ class ReleaseImporter(object):
             except carnatic.models.TaalaAlias.DoesNotExist, e:
                 return None
 
-    def add_performance(self, recordingid, artistid, instrument, is_lead):
-        logger.info("  Adding performance...")
+    def add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+        logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
         instrument = self.add_and_get_instrument(instrument)
         if instrument:
             recording = carnatic.models.Recording.objects.get(mbid=recordingid)
             perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf.save()
+
+    def add_release_performance(self, releaseid, artistid, instrument, is_lead):
+        # TODO: Can we de-duplicate this with the recording stuff above
+        logger.info("  Adding concert performance...")
+        artist = self.add_and_get_artist(artistid)
+        instrument = self.add_and_get_instrument(instrument)
+        if instrument:
+            concert = carnatic.models.Concert.objects.get(mbid=release)
+            perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
     def add_and_get_instrument(self, instname):

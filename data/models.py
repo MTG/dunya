@@ -36,6 +36,12 @@ class Image(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True)
     image = models.ImageField(upload_to="images")
 
+    def __unicode__(self):
+        ret = "%s" % (self.image.name, )
+        if self.source:
+            ret = "%s from %s" % (ret, self.source.uri)
+        return ret
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
@@ -136,6 +142,7 @@ class Concert(BaseModel):
     tracks = models.ManyToManyField('Recording')
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey('Label', blank=True, null=True)
+    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance")
 
     def length(self):
         tot_len = 0
@@ -284,6 +291,14 @@ class Instrument(BaseModel):
     def artists(self):
         ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(instrumentperformance__instrument=self).distinct().all()
+
+class InstrumentConcertPerformance(models.Model):
+    class Meta:
+        abstract = True
+    concert = models.ForeignKey('Concert')
+    performer = models.ForeignKey('Artist')
+    instrument = models.ForeignKey('Instrument')
+    lead = models.BooleanField(default=False)
 
 class InstrumentPerformance(models.Model):
     class Meta:

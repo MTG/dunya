@@ -12,6 +12,7 @@ class CarnaticStyle(object):
         return "carnatic"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
+                "concertperformance": InstrumentConcertPerformance,
                 "concert": Concert,
                 "composer": Composer,
                 "artist": Artist,
@@ -259,6 +260,15 @@ class Instrument(CarnaticStyle, data.models.Instrument):
             if p.performer not in artists:
                 ret.append(p)
                 artists.append(p.performer)
+
+        # TODO: This might be slow getting 2 sets of performances and doing tests
+        ICPClass = self.get_object_map("concertperformance")
+        performances = ICPClass.objects.filter(instrument=self).distinct()
+        for p in performances:
+            if p.performer not in artists:
+                ret.append(p)
+                artists.append(p.performer)
+
         return ret
 
     def references(self):
@@ -280,6 +290,9 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         return ret
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
+    pass
+
+class InstrumentConcertPerformance(CarnaticStyle, data.models.InstrumentConcertPerformance):
     pass
 
 class Composer(CarnaticStyle, data.models.Composer):
