@@ -38,8 +38,19 @@ class ReleaseDunyaTask(DunyaTask):
     ObjectClass = models.MusicbrainzRelease
 
 def load_and_import_collection(collectionid):
+    """ Scan the collection contents and import all releases that
+    haven't been imported before.
+    """
     # Note, use 'immutable subtasks' (.si()) which doesn't pass results from 1 method to the next
     chain = load_musicbrainz_collection.si(collectionid) | import_all_releases.si(collectionid)
+    chain.apply_async()
+
+def force_load_and_import_collection(collectionid):
+    """ Scan the collection contents and import every release again
+    (including ones already imported)
+    """
+    # Note, use 'immutable subtasks' (.si()) which doesn't pass results from 1 method to the next
+    chain = load_musicbrainz_collection.si(collectionid) | force_import_all_releases.si(collectionid)
     chain.apply_async()
 
 @celery.task(ignore_result=True)
@@ -145,6 +156,25 @@ def import_release(releasepk):
         release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
+@celery.task(base=CollectionDunyaTask)
+def force_import_all_releases(collectionid):
+    """ Reimport releases in a collection.
+    This will (re)import all releases that are in the collection, unless they
+    are missing a directory
+    """
+    collection = models.Collection.objects.get(pk=collectionid)
+    collection.set_state_importing()
+    # unline the non-force version, we select all releases, not 
+    # only ones that haven't been ignored
+    releases = collection.musicbrainzrelease_set.all()
+    unstarted = []
+    for r in releases:
+        matched_paths = r.collectiondirectory_set.all()
+        if len(matched_paths):
+            unstarted.append(r)
+    for r in unstarted:
+        import_release(r.id)
+    collection.set_state_finished()
 
 @celery.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):

@@ -54,8 +54,12 @@ def collection(request, uuid):
     if rescan is not None:
         jobs.load_and_import_collection(c.id)
         return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
-    order = request.GET.get("order")
+    forcescan = request.GET.get("forcescan")
+    if forcescan is not None:
+        jobs.force_load_and_import_collection(c.id)
+        return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
 
+    order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)
     if order == "date":
         def sortkey(rel):
