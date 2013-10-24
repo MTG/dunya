@@ -112,6 +112,7 @@ class Artist(BaseModel):
         return InstrClass.objects.all()[0]
 
     def performances(self):
+        # TODO: Concert performance args too
         ConcertClass = self.get_object_map("concert")
         IPClass = self.get_object_map("performance")
         concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self).distinct()
