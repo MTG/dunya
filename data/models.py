@@ -137,12 +137,14 @@ class Concert(BaseModel):
     mbid = UUIDField(blank=True, null=True)
     location = models.ForeignKey('Location', blank=True, null=True)
     title = models.CharField(max_length=100)
-    artists = models.ManyToManyField('Artist')
+    # Main artists on the concert
+    artists = models.ManyToManyField('Artist', related_name='primary_concerts')
     artistcredit = models.CharField(max_length=255)
     tracks = models.ManyToManyField('Recording')
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey('Label', blank=True, null=True)
-    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance")
+    # Other artists who played on this concert (musicbrainz relationships)
+    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
 
     def length(self):
         tot_len = 0
