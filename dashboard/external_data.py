@@ -13,7 +13,7 @@ def import_instrument_description(instrument, overwrite=False):
     img, imgurl, b, u = wikipedia.get_artist_details(instrument.name)
     if b and b.startswith("#REDIR"):
         newname = b.replace("#REDIRECT ", "")
-        img, b, u = wikipedia.get_artist_details(newname)
+        img, imgurl, b, u = wikipedia.get_artist_details(newname)
     if b:
         sn = data.models.SourceName.objects.get(name="Wikipedia")
         source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": instrument.name})
@@ -24,7 +24,7 @@ def import_instrument_description(instrument, overwrite=False):
         source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=imgurl, defaults={"title": instrument.name})
         imagefilename = instrument.name.replace(" ", "_")
         try:
-            existingimg = instrument.images.get(name="%s.jpg" % imagefilename)
+            existingimg = instrument.images.get(image__contains="%s" % imagefilename)
             if existingimg.image.size != len(img) or overwrite:
                 # If the imagesize has changed, or overwrite is set, remove the image
                 existingimage.delete()
@@ -36,12 +36,12 @@ def import_instrument_description(instrument, overwrite=False):
         instrument.images.add(im)
     instrument.save()
 
-def import_artist_bio(a):
+def import_artist_bio(a, overwrite):
     artist = kutcheris.search_artist(a.name)
     additional_urls = []
     if not len(artist):
         print "Looing for data on wikipedia"
-        i, b, u = wikipedia.get_artist_details(a.name)
+        i, iurl, b, u = wikipedia.get_artist_details(a.name)
         if u:
             additional_urls.append(u)
         #if not b:
@@ -69,7 +69,7 @@ def import_artist_bio(a):
             print "Found image"
 
             try:
-                existingimg = artist.images.get(name="%s.jpg" % a.mbid)
+                existingimg = a.images.get(image__contains="%s" % a.mbid)
                 if existingimg.image.size != len(img) or overwrite:
                     # If the imagesize has changed, or overwrite is set, remove the image
                     existingimage.delete()
@@ -113,7 +113,7 @@ def import_concert_image(concert, directories=[], overwrite=False):
         # If the image is a different size from one that already exists, then
         # replace it
         try:
-            existingimg = concert.images.get(name="%s.jpg" % concert.mbid)
+            existingimg = concert.images.get(image__contains="%s" % concert.mbid)
             if existingimg.image.size != len(i) or overwrite:
                 # If the imagesize has changed, or overwrite is set, remove the image
                 existingimage.delete()
