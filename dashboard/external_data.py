@@ -8,7 +8,7 @@ from compmusic import kutcheris
 from compmusic import image
 from compmusic import file
 
-def import_instrument_description(instrument, overwrite):
+def import_instrument_description(instrument, overwrite=False):
     iname = wikipedia.search(instrument.name)
     img, imgurl, b, u = wikipedia.get_artist_details(instrument.name)
     if b and b.startswith("#REDIR"):
@@ -88,7 +88,7 @@ def import_artist_bio(a):
                 a.references.add(source)
         a.save()
 
-def import_concert_image(concert, directories=[], overwrite):
+def import_concert_image(concert, directories=[], overwrite=False):
     for existing in concert.images.all():
         name = os.path.splitext(os.path.basename(existing.image.name))
         if name == concert.mbid:
