@@ -11,12 +11,14 @@ billiard==2.7.3.28
 celery==3.0.19
 distribute==0.6.34
 django-celery==3.0.17
+django-debug-toolbar==0.9.4
 django-extensions==1.0.1
 django-inplaceedit==0.94
 djangorestframework==2.3.2
 eyeD3==0.7.1
 ## FIXME: could not find svn URL in dependency_links for this package:
 flup==1.0.3.dev-20110405
+functools32==3.2.3-1
 ipdb==0.7
 ipython==0.13.1
 kombu==2.5.10
