@@ -95,7 +95,7 @@ class ReleaseImporter(object):
         """
         arguments: ArtistClass: models.Artist or models.Composer
         """
-        a = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels"])["artist"]
+        a = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels"])["artist"]
         artist, created = ArtistClass.objects.get_or_create(mbid=artistid,
                 defaults={"name": a["name"]})
 
@@ -117,6 +117,13 @@ class ReleaseImporter(object):
                 artist.begin = dates.get("begin")
                 artist.end = dates.get("end")
             artist.save()
+
+            if self.overwrite:
+                artist.group_members.clear()
+            for member in a.get("artist-relationship-list", []):
+                if "member" in member["type"]:
+                    memberartist = self._add_and_get_artist_composer(ArtistClass, member["target"])
+                    artist.group_members.add(memberartist)
             
             # add wikipedia references if they exist
             for rel in a.get("url-relation-list", []):
@@ -277,7 +284,7 @@ class ReleaseImporter(object):
         artist = self.add_and_get_artist(artistid)
         instrument = self.add_and_get_instrument(instrument)
         if instrument:
-            concert = carnatic.models.Concert.objects.get(mbid=release)
+            concert = carnatic.models.Concert.objects.get(mbid=releaseid)
             perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
