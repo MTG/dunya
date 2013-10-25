@@ -118,12 +118,14 @@ class ReleaseImporter(object):
                 artist.end = dates.get("end")
             artist.save()
 
-            if self.overwrite:
-                artist.group_members.clear()
-            for member in a.get("artist-relationship-list", []):
-                if "member" in member["type"]:
-                    memberartist = self._add_and_get_artist_composer(ArtistClass, member["target"])
-                    artist.group_members.add(memberartist)
+            # Annoying hack to only work on artists
+            if ArtistClass == carnatic.models.Artist:
+                if self.overwrite:
+                    artist.group_members.clear()
+                for member in a.get("artist-relationship-list", []):
+                    if "member" in member["type"]:
+                        memberartist = self._add_and_get_artist_composer(ArtistClass, member["target"])
+                        artist.group_members.add(memberartist)
             
             # add wikipedia references if they exist
             for rel in a.get("url-relation-list", []):
