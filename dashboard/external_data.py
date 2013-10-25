@@ -27,7 +27,7 @@ def import_instrument_description(instrument, overwrite=False):
             existingimg = instrument.images.get(image__contains="%s" % imagefilename)
             if existingimg.image.size != len(img) or overwrite:
                 # If the imagesize has changed, or overwrite is set, remove the image
-                existingimage.delete()
+                existingimg.delete()
         except data.models.Image.DoesNotExist:
             pass
 
@@ -72,7 +72,7 @@ def import_artist_bio(a, overwrite):
                 existingimg = a.images.get(image__contains="%s" % a.mbid)
                 if existingimg.image.size != len(i) or overwrite:
                     # If the imagesize has changed, or overwrite is set, remove the image
-                    existingimage.delete()
+                    existingimg.delete()
             except data.models.Image.DoesNotExist:
                 pass
 
@@ -116,7 +116,7 @@ def import_concert_image(concert, directories=[], overwrite=False):
             existingimg = concert.images.get(image__contains="%s" % concert.mbid)
             if existingimg.image.size != len(i) or overwrite:
                 # If the imagesize has changed, or overwrite is set, remove the image
-                existingimage.delete()
+                existingimg.delete()
         except data.models.Image.DoesNotExist:
             pass
 
