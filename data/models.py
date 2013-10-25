@@ -81,6 +81,7 @@ class Artist(BaseModel):
     end = models.CharField(max_length=10, blank=True, null=True)
     artist_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='P')
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
+    group_members = models.ManyToManyField('Artist', blank=True, null=True, related_name='groups')
 
     def __unicode__(self):
         return self.name
