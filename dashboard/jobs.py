@@ -171,6 +171,9 @@ def force_import_all_releases(collectionid):
     for r in releases:
         matched_paths = r.collectiondirectory_set.all()
         if len(matched_paths):
+            if r.ignore:
+                r.ignore = False
+                r.save()
             unstarted.append(r)
     for r in unstarted:
         import_release(r.id)
