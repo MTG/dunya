@@ -70,7 +70,7 @@ def import_artist_bio(a, overwrite):
 
             try:
                 existingimg = a.images.get(image__contains="%s" % a.mbid)
-                if existingimg.image.size != len(img) or overwrite:
+                if existingimg.image.size != len(i) or overwrite:
                     # If the imagesize has changed, or overwrite is set, remove the image
                     existingimage.delete()
             except data.models.Image.DoesNotExist:
