@@ -126,10 +126,6 @@ class Artist(BaseModel):
         recs = [p.recording for p in performances]
         return recs
 
-    def main_instrument(self):
-        InstrClass = self.get_object_map("instrument")
-        return InstrClass.objects.all()[0]
-
     def performances(self):
         # TODO: Concert performance args too
         ConcertClass = self.get_object_map("concert")
@@ -311,6 +307,9 @@ class InstrumentConcertPerformance(models.Model):
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return "% playing %s in %s" % (self.performer, self.instrument, self.concert)
+
 class InstrumentPerformance(models.Model):
     class Meta:
         abstract = True
@@ -318,6 +317,9 @@ class InstrumentPerformance(models.Model):
     performer = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "% playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 class Composer(BaseModel):
     missing_image = "artist.png"

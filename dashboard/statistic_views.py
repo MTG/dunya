@@ -75,8 +75,8 @@ def carnatic_stats(request):
         lead_artists = carnatic.models.Artist.objects.filter(instrumentperformance__lead=True).distinct()
         ret["lead_artists"] = lead_artists.count()
 
-        leadartists = artists.annotate(Count('concert'))
-        ret["lead_artists_objects"] = len([a for a in leadartists if a.concert__count > 0])
+        leadartists = artists.annotate(Count('primary_concerts'))
+        ret["lead_artists_objects"] = len([a for a in leadartists if a.primary_concerts__count > 0])
 
 
     # Duration
@@ -113,9 +113,10 @@ def carnatic_artists(request):
     artists = carnatic.models.Artist.objects
     image_counted = artists.annotate(Count('images'))
     bio_counted = artists.annotate(Count('description'))
-    noimages = [a for a in image_counted.all() if a.images__count == 0]
-    nobiographies = [a for a in bio_counted.all() if a.description__count == 0]
-    ret = {"noimages": noimages, "nobios": nobiographies, "all": artists.order_by('name').all()}
+    noimages = [a for a in image_counted.order_by("name").all() if a.images__count == 0]
+    nobiographies = [a for a in bio_counted.order_by("name").all() if a.description__count == 0]
+    noinstrument = [a for a in bio_counted.order_by("name").all() if not a.main_instrument]
+    ret = {"noimages": noimages, "nobios": nobiographies, "noinstrument": noinstrument, "all": artists.order_by('name').all()}
     return render(request, 'stats/carnatic_artists.html', ret)
 
 @user_passes_test(views.is_staff)

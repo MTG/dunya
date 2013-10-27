@@ -29,6 +29,13 @@
     {% endfor %}
 </ul>
 
+<h2>Artists without a main instrument</h2>
+<ul>
+    {% for a in noinstrument %}
+    <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
+    {% endfor %}
+</ul>
+
 <h2>All Artists</h2>
 {% for a in all %}
 <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
