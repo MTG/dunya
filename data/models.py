@@ -35,6 +35,7 @@ class Image(models.Model):
     """ An image of a thing in the database """
     source = models.ForeignKey(Source, blank=True, null=True)
     image = models.ImageField(upload_to="images")
+    small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
     def __unicode__(self):
         ret = "%s" % (self.image.name, )
@@ -54,7 +55,30 @@ class BaseModel(models.Model):
     def ref(self):
         u = {"url": self.source.uri, "title": self.source.source_name.name}
         return u
-        return [u]
+
+    def get_image_url(self):
+        media = settings.MEDIA_URL
+        if self.images.all():
+            image = self.images.all()[0]
+            return os.path.join(media, image.image.name)
+        else:
+            if not hasattr(self, "missing_imgage"):
+                missing_image = "artist.jpg"
+            else:
+                missing_image = self.missing_image
+            return os.path.join(media, "missing", missing_image)
+
+    def get_small_image_url(self):
+        media = settings.MEDIA_URL
+        if self.images.all():
+            image = self.images.all()[0]
+            return os.path.join(media, image.small_image.name)
+        else:
+            if not hasattr(self, "missing_imgage"):
+                missing_image = "artist.jpg"
+            else:
+                missing_image = self.missing_image
+            return os.path.join(media, "missing", missing_image)
 
     def get_style(self):
         raise Exception("need style")
@@ -63,6 +87,8 @@ class BaseModel(models.Model):
         raise Exception("need map")
 
 class Artist(BaseModel):
+    missing_image = "artist.png"
+
     class Meta:
         abstract = True
 
@@ -89,14 +115,6 @@ class Artist(BaseModel):
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
-
-    def get_image_url(self):
-        media = settings.MEDIA_URL
-        if self.images.all():
-            image = self.images.all()[0]
-            return os.path.join(media, image.image.name)
-        else:
-            return os.path.join(media, "missing", "artist.jpg")
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -134,6 +152,8 @@ class Label(BaseModel):
     name = models.CharField(max_length=100)
 
 class Concert(BaseModel):
+    missing_image = "concert.png"
+
     class Meta:
         abstract = True
     mbid = UUIDField(blank=True, null=True)
@@ -168,13 +188,6 @@ class Concert(BaseModel):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
 
-    def get_image_url(self):
-        media = settings.MEDIA_URL
-        if self.images.all():
-            image = self.images.all()[0]
-            return os.path.join(media, image.image.name)
-        else:
-            return os.path.join(media, "missing", "concert.jpg")
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -273,20 +286,14 @@ class InstrumentAlias(models.Model):
         return self.name
 
 class Instrument(BaseModel):
+    missing_image = "instrument.png"
+
     class Meta:
         abstract = True
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
-
-    def get_image_url(self):
-        media = settings.MEDIA_URL
-        if self.images.all():
-            image = self.images.all()[0]
-            return os.path.join(media, image.image.name)
-        else:
-            return os.path.join(media, "missing", "instrument.jpg")
 
     def get_absolute_url(self):
         viewname = "%s-instrument" % (self.get_style(), )
@@ -313,6 +320,8 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
 class Composer(BaseModel):
+    missing_image = "artist.png"
+
     class Meta:
         abstract = True
     GENDER_CHOICES = (

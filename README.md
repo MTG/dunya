@@ -18,6 +18,13 @@ To add tables to the database run
 
     fab setupdb
 
+* Using essentia and numpy in virtualenv
+* Installing PIL with jpeg support
+`ln -s ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so env/lib`
+`ln -s ln -s /usr/lib/x86_64-linux-gnu/libz.so env/lib`
+`ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so.6 env/lib`
+
+
 Running
 =======
 

@@ -35,7 +35,7 @@ class MusicalSchool(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
-    
+
     def instruments(self):
         insts = []
         for perf in self.instrumentperformance_set.all():
@@ -123,7 +123,9 @@ class FormAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Raaga(models.Model):
+class Raaga(data.models.BaseModel):
+    missing_image = "raaga.png"
+
     name = models.CharField(max_length=50)
 
     objects = managers.FuzzySearchManager()
@@ -160,7 +162,9 @@ class TaalaAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Taala(models.Model):
+class Taala(data.models.BaseModel):
+    missing_image = "raaga.png"
+
     name = models.CharField(max_length=50)
 
     objects = managers.FuzzySearchManager()
