@@ -58,6 +58,7 @@ def create_module(modulepath, collections):
 
     module = models.Module.objects.create(name=modulepath.rsplit(".", 1)[1],
                     slug=instance.__slug__,
+                    depends=instance.__depends__,
                     module=modulepath,
                     source_type=sourcetype)
     module.collections.add(*collections)
@@ -77,13 +78,13 @@ def get_latest_module_version(themod_id=None):
         if not len(versions):
             models.ModuleVersion.objects.create(module=m, version=v)
 
-def _save_file(collection, recording, slug, data):
-    fdir = os.path.join(settings.AUDIO_ROOT, collection, recording)
+def _save_file(collection, recordingid, slug, extension, data):
+    fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingid)
     try:
         os.makedirs(fdir)
     except OSError:
         pass
-    fname = "%s.json" % slug
+    fname = "%s.%s" % (slug, extension)
 
     fullname = os.path.join(fdir, fname)
     fp = open(fullname, "wb")
@@ -103,17 +104,22 @@ def process_document(documentid, moduleversionid):
         # TODO: If there is more than 1 source file
         s = sfiles[0]
         fname = s.path.encode("utf-8")
-        result = instance.process_document(document.pk, s.pk, fname)
+        results = instance.process_document(document.pk, s.pk, fname)
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
-        result_name = _save_file(collectionid, document.external_identifier, moduleslug, result)
-        # TODO: What if this file for this version already exists?
-        df = models.DerivedFile.objects.create(document=document, path=result_name, derived_from=s,
-                module_version=version)
-        return df
-    else:
-        return None
+        for name, contents in results.items():
+            outputdata = instance.__output__[name]
+            extension = outputdata["extension"]
+            mimetype = outputdata["mimetype"]
+            df = models.DerivedFile.objects.create(document=document, derived_from=s,
+                    module_version=version, outputname=name, extension=extension, mimetype=mimetype)
+
+            if not isinstance(contents, list):
+                contents = [contents]
+            for i, part in enumerate(contents, 1):
+                saved_name = _save_file(collectionid, document.external_identifier, moduleslug, extension, result)
+                df.save_part(i, saved_name, len(result))
 
 def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)

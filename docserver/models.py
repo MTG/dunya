@@ -90,11 +90,20 @@ class SourceFile(models.Model):
         return self.file_type.extension
 
     def get_absolute_url(self):
-        return reverse("ds-download-external", 
+        return reverse("ds-download-external",
                 args=[self.document.external_identifier, self.file_type.extension])
 
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
+
+class DerivedFilePart(models.Model):
+    derivedfile = models.ForeignKey("DerivedFile", related_name='parts')
+    part_order = models.IntegerField()
+    path = models.CharField(max_length=500)
+    size = models.IntegerField()
+
+    def __unicode__(self):
+        return "From %s: path %s" % (self.derivedfile, self.path)
 
 class DerivedFile(models.Model):
     """An actual file. References a document"""
@@ -102,24 +111,30 @@ class DerivedFile(models.Model):
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
     """The path on disk to the file"""
-    path = models.CharField(max_length=500)
     derived_from = models.ForeignKey(SourceFile)
+
+    # A module could output more than 1 file. The combination of
+    # module_version and (outputname/extension) refers to one
+    # unique file output.
     module_version = models.ForeignKey("ModuleVersion")
+    outputname = models.CharField(max_length=50)
+    extension = models.CharField(max_length=10)
+    mimetype = models.CharField(max_length=100)
 
     #essentia_version = models.ForeignKey("EssentiaVersion")
     date = models.DateTimeField(default=django.utils.timezone.now)
+
+    def save_part(self, part_order, path, size):
+        """Add a part to this file"""
+        return DerivedFilePart.objects.create(derivedfile=self, part_order=part_order, path=path, size=size)
 
     @property
     def versions(self):
         versions = self.module_version.module.moduleversion_set.all()
         return [v.version for v in versions]
 
-    @property
-    def extension(self):
-        return self.module_version.module.slug
-
     def get_absolute_url(self):
-        download_url = reverse("ds-download-external", 
+        download_url = reverse("ds-download-external",
                 args=[self.document.external_identifier, self.extension])
         urlparts = list(urlparse.urlparse(download_url))
         urlparts[4] = urllib.urlencode({"v": self.module_version.version})
@@ -128,6 +143,7 @@ class DerivedFile(models.Model):
 
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.module_version.module.slug, self.path)
+
 
 # Essentia management stuff
 
@@ -142,6 +158,7 @@ class EssentiaVersion(models.Model):
 class Module(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
+    depends = models.CharField(max_length=100)
     module = models.CharField(max_length=200)
     source_type = models.ForeignKey(SourceFileType)
 
@@ -153,7 +170,7 @@ class Module(models.Model):
     def processed_files(self):
         latest = self.get_latest_version()
         all_collections = self.collections.all()
-        qs = Document.objects.filter(collection__in=all_collections, 
+        qs = Document.objects.filter(collection__in=all_collections,
                 sourcefiles__file_type=self.source_type)
         if latest:
             qs = qs.filter(derivedfiles__module_version=self.get_latest_version())
