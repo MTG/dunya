@@ -4,6 +4,7 @@ import json
 import logging
 
 from docserver import models
+import dashboard
 import celery
 
 from django.conf import settings
@@ -78,17 +79,21 @@ def get_latest_module_version(themod_id=None):
         if not len(versions):
             models.ModuleVersion.objects.create(module=m, version=v)
 
-def _save_file(collection, recordingid, slug, extension, data):
-    fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingid)
+def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
+    fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingid, slug, version)
     try:
         os.makedirs(fdir)
     except OSError:
         pass
-    fname = "%s.%s" % (slug, extension)
+    fname = "%s-%s-%s.%s" % (slug, partslug, partnumber, extension)
 
     fullname = os.path.join(fdir, fname)
     fp = open(fullname, "wb")
-    json.dump(data, fp)
+    if extension == "json":
+        json.dump(data, fp)
+    else:
+        fp.write(data)
+    fp.close()
     return fullname
 
 @celery.task
@@ -108,24 +113,42 @@ def process_document(documentid, moduleversionid):
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
-        for name, contents in results.items():
-            outputdata = instance.__output__[name]
+        for dataslug, contents in results.items():
+            outputdata = instance.__output__[dataslug]
             extension = outputdata["extension"]
             mimetype = outputdata["mimetype"]
             df = models.DerivedFile.objects.create(document=document, derived_from=s,
-                    module_version=version, outputname=name, extension=extension, mimetype=mimetype)
+                    module_version=version, outputname=dataslug, extension=extension, mimetype=mimetype)
 
             if not isinstance(contents, list):
                 contents = [contents]
-            for i, part in enumerate(contents, 1):
-                saved_name = _save_file(collectionid, document.external_identifier, moduleslug, extension, result)
-                df.save_part(i, saved_name, len(result))
+            for i, partdata in enumerate(contents, 1):
+                saved_name = _save_file(collectionid, document.external_identifier, version.version,
+                        moduleslug, dataslug, i, extension, partdata)
+                df.save_part(i, saved_name, len(partdata))
 
 def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)
     collections = module.collections.all()
     for c in collections:
         run_module_on_collection.delay(c.pk, module.pk)
+
+@celery.task
+def run_module_on_recordings(moduleid, recids):
+    module = models.Module.objects.get(pk=moduleid)
+    version = module.get_latest_version()
+    print "running module %s on %s files" % (module, len(recids))
+    if version:
+        print "version", version, version.pk
+        # All documents that don't already have a derived file for this module version
+        docs = models.Document.objects.filter(
+                sourcefiles__file_type=module.source_type,
+                external_identifier__in=recids,
+                ).exclude(derivedfiles__module_version=version)
+        for d in docs:
+            print "  document", d
+            print "  docid", d.pk
+            process_document(d.pk, version.pk)
 
 @celery.task
 def run_module_on_collection(collectionid, moduleid):

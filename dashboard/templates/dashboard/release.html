@@ -29,6 +29,13 @@
     {% endif %}
 </div>
 
+<div class="topbox">
+    <div class="topheader">Run extractors</div>
+    {% for m in modules %}
+    <li><a href="?run={{m.pk}}">{{m}}</a></li>
+    {% endfor %}
+</div>
+
 {% if release.ignore %}
 <div class="topbox" style="background-color: #ff9999;">
     <div class="topheader">Ignored</div>

@@ -115,6 +115,14 @@ def release(request, releaseid):
         release.ignore = False
         release.save()
         return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+    run = request.GET.get("run")
+    if run is not None:
+        module = int(run)
+        # Get the recording ids in this release
+        files = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
+        recids = [r.recordingid for r in files]
+        docserver.jobs.run_module_on_recordings.delay(module, recids)
+        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
 
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
@@ -126,7 +134,9 @@ def release(request, releaseid):
                        "others": release.get_rest_results_for_checker(r.checker.id)
                       })
 
-    ret = {"release": release, "files": files, "results": allres, "log_messages": log}
+    modules = docserver.models.Module.objects.all()
+    ret = {"release": release, "files": files, "results": allres, "log_messages": log,
+            "modules": modules}
     return render(request, 'dashboard/release.html', ret)
 
 @user_passes_test(is_staff)
