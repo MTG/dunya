@@ -35,6 +35,7 @@ class MusicalSchool(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+    gurus = models.ManyToManyField("Artist", related_name="students")
 
     def instruments(self):
         insts = []
