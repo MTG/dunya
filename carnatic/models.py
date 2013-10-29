@@ -195,7 +195,8 @@ class Taala(data.models.BaseModel):
 class Work(CarnaticStyle, data.models.Work):
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
     taala = models.ManyToManyField('Taala', through="WorkTaala")
-    #form = models.ForeignKey('Form', blank=True, null=True)
+    form = models.ForeignKey('Form', blank=True, null=True)
+    language = models.ForeignKey('Language', blank=True, null=True)
 
     @classmethod
     def get_filter_criteria(cls):
