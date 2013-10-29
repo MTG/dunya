@@ -18,7 +18,6 @@
 	<link rel="stylesheet/less" type="text/css" href="{% static 'social/css/main.css' %}" />
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
 
-        <!--
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -29,7 +28,6 @@
       ga('send', 'pageview');
 
     </script>
-    -->
 
         <script src="{% static 'carnatic/js/vendor/less.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/modernizr-2.6.2.min.js' %}"></script>
@@ -80,16 +78,8 @@
     </head>
     <body>
 	
-	{% url 'social-auth-login' as login_url %}
-	{% url 'social-auth-logout' as logout_url %}
-	{% url 'social-auth-register' as register_url %}
-	{% url 'social-main' as social_main %}
-	{% url 'carnatic-main' as carnatic_main %}
-	{% url 'carnatic-overview' as carnatic_overview %}
-	{% url 'social-user-profile' as social_user_profile %}
-	{% url 'social-tag-autocomplete' as social_tag_autocomplete %}
-	{% url 'social-users-list' as social_users_list %}
-	{% url 'social-timeline-page' as social_timeline_page %}
+	
+	
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
@@ -105,29 +95,22 @@
             	<div id="globalMusic">
             		<label>Select Music Style</label>
             		<span id="gmSelected">Carnatic</span>
-            		<ul id="gmDropDown">
-            			<li>Music Style 1</li>
-            			<li>Music Style 2</li>
-            			<li>Music Style 3</li>
-            		</ul>
             	</div><!-- globalmusic -->
                 <nav id="mainmenu">
-			<!-- <a href="#">BOOKMARKS</a> -->
 			<a href="#">ABOUT</a>
-			<!-- <a href="#">SEARCH</a> -->
 			{% if user.is_authenticated %}
-			    <!--welcome {{ user.username }}-->
 				<div href="#" id="user">
 					<a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
 				    <div id="userOptions">
 				    	<div id="userArrow"></div>
 				    	<h3>Hi <b>{{ user.username }}!</b></h3>
 				    	<img src="{% static 'carnatic/img/develop/avatar.png' %}" />
-					    <a href="{{ logout_url }}?next={% firstof request.path '/' %}">LOGOUT</a>
-					    <a href="{{ social_user_profile }}">PROFILE</a>
-					    <a href="{{ social_users_list }}">USERS</a>
-					    <a href="{{ social_timeline_page }}">TIMELINE</a>
+					    <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">LOGOUT</a>
+                        <a href="{% url 'social-user-profile' %}">PROFILE</a>
+                        <a href="{% url 'social-users-list' %}">USERS</a>
+                        <a href="{% url 'social-timeline-page' %}">TIMELINE</a>
 				    </div>	
+
 			    </div>
 			{% else %}
 				<div href="#" id="guest">
@@ -135,8 +118,8 @@
 				    <div id="guestOptions">
 				    	<div id="userArrow"></div>
 				    	<h3>Hi! what do you want to do?</h3>
-					    <a href="{{ login_url }}?next={% firstof request.path '/' %}">LOGIN</a>
-					    <a href="{{ register_url }}">REGISTER</a>
+                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path '/' %}">LOGIN</a>
+					    <a href="{% url 'social-auth-register' %}">REGISTER</a>
 				    </div>
 				</div>
 			{% endif %}
@@ -146,20 +129,10 @@
         </div>
         <!-- //////  HEADER BLOCK end ////// -->
 
-
-
         <div class="main-container">
         {% block wrap %}
         {% endblock %}
         </div>
-
-<!--
-        <div class="footer-container">
-            <footer class="wrapper">
-                <h3>footer</h3>
-            </footer>
-        </div>
--->
 
         <div id="footage">
 
