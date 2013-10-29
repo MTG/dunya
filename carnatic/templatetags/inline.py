@@ -10,8 +10,6 @@ register = template.Library()
 def inline_artist(artist):
     if isinstance(artist, list) and len(artist):
         artist = artist[0]
-    else:
-        return "oopes"
     return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
 
 @register.simple_tag

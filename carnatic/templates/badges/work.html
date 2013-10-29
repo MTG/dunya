@@ -1,52 +1,31 @@
 {% load staticfiles %}
 {% load inline %}
+
 <div class="work item">
   <div class="disc pict">
-    <a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a>
+    <a href="{{work.get_absolute_url}}"><img src="{{work.get_image_url}}"></a>
 </div>
   <div class="desc">
     <div class="plus"></div>
-    <a href="http://localhost:8001/carnatic/concert/1" class="title"><b>Work title</b><span class="year">1939</span></a>
-    <a href="http://localhost:8001/carnatic/artist/1" class="belongs">Composer name</a>        
+    <a href="{{work.get_absolute_url}}" class="title"><b>Work title</b></a>
+    <a href="{{work.composer.get_absolute_url}}" class="belongs">{{work.composer}}</a>        
 </div>
   <div class="descOpen">
     <div class="meta">
-      <label>DATE</label><span class="value">1969</span>
-      <label>FORMAT</label><span class="value">CD</span>
-      <label>LENGTH</label><span class="value">02:26:57</span>
-      <label>STATUS</label><span class="value">Bootlegs</span>
-      <label>SCRIPT</label><span class="value">Latin</span>
       <div class="clearer"></div>
     </div>
     <h3>DESCRIPTION</h3>
-    <p class="value">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor...</p>
+    <p class="value"></p>
 </div>
   <div class="lists">
     <div class="left">
-      <h3>Recordings</h3> 
-        <div class="miniitem artist">
-          <div class="colorCode shadow1"></div>
-          <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
-        </div>
+      <h3>Recording artists</h3> 
         <div class="miniitem artist">
           <div class="colorCode shadow1"></div>
           <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
           <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
         </div>
     </div>
-    <div class="right">
-       <h3>Concerts</h3>        
-         <div class="miniitem instrument">
-        <div class="colorCode shadow1"></div>
-          <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
-        </div>
-        <div class="miniitem instrument">
-        <div class="colorCode shadow1"></div>
-          <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
-        </div>              
-    </div>
+    <div class="right"></div>
   </div>
 </div>
