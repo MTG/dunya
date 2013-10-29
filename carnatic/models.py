@@ -145,13 +145,13 @@ class Raaga(data.models.BaseModel):
         return reverse('carnatic-raaga', args=[str(self.id)])
 
     def works(self):
-        return self.work_set.all()
+        return self.work_set.distinct().all()
 
     def composers(self):
-        return Composer.objects.filter(work__raaga=self)
+        return Composer.objects.filter(work__raaga=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(concert__tracks__work__raaga=self)
+        return Artist.objects.filter(primary_concerts__tracks__work__raaga=self).distinct()
 
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -184,13 +184,13 @@ class Taala(data.models.BaseModel):
         return reverse('carnatic-taala', args=[str(self.id)])
 
     def works(self):
-        return self.work_set.all()
+        return self.work_set.distinct().all()
 
     def composers(self):
-        return Composer.objects.filter(work__taala=self)
+        return Composer.objects.filter(work__taala=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(concert__tracks__work__taala=self)
+        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
 
 class Work(CarnaticStyle, data.models.Work):
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
