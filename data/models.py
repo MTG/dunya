@@ -189,13 +189,7 @@ class Concert(BaseModel):
         return "http://musicbrainz.org/release/%s" % self.mbid
 
     def artistnames(self):
-        artists = self.artists.all()
-        if len(artists) > 1:
-            return artists
-        elif len(artists) == 0:
-            return None
-        else:
-            return artists[0]
+        return self.artists.all()
 
     def performers(self):
         IPClass = self.get_object_map("performance")

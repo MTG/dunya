@@ -8,8 +8,22 @@ register = template.Library()
 
 @register.simple_tag
 def inline_artist(artist):
-    if isinstance(artist, list) and len(artist):
-        artist = artist[0]
+    return inline_artist_part(artist)
+
+@register.simple_tag
+def inline_artist_list(artists):
+    artists = list(artists)
+    if len(artists) > 1:
+        firsts = artists[:-1]
+        last = artists[-1]
+        firsturls = [inline_artist_part(a) for a in firsts]
+        lasturl = inline_artist_part(last)
+        firststr = ", ".join(firsturls)
+        return "%s & %s" % (firststr, lasturl)
+    else:
+        return inline_artist_part(artists[0])
+
+def inline_artist_part(artist):
     return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
 
 @register.simple_tag
