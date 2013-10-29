@@ -158,7 +158,7 @@ class EssentiaVersion(models.Model):
 class Module(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
-    depends = models.CharField(max_length=100)
+    depends = models.CharField(max_length=100, blank=True, null=True)
     module = models.CharField(max_length=200)
     source_type = models.ForeignKey(SourceFileType)
 
