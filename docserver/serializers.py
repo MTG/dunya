@@ -9,9 +9,13 @@ class CollectionListSerializer(serializers.ModelSerializer):
 class DerivedFileSerializer(serializers.ModelSerializer):
     extension = serializers.Field(source='extension')
     versions = serializers.Field(source='versions')
+    outputname = serializers.Field(source='outputname')
+    numparts = serializers.Field(source='numparts')
+    slug = serializers.Field(source='module_version.module.slug')
+
     class Meta:
         model = models.DerivedFile
-        fields = ('extension', 'versions')
+        fields = ('extension', 'versions', 'outputname', 'numparts', 'slug')
 
 class DocumentSerializer(serializers.ModelSerializer):
     # The extension field isn't part of a SourceFile, but we get it from the filetype

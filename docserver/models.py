@@ -102,8 +102,20 @@ class DerivedFilePart(models.Model):
     path = models.CharField(max_length=500)
     size = models.IntegerField()
 
+    def get_absolute_url(self):
+        url = reverse('ds-download-external', 
+            args=[self.derivedfile.document.external_identifier, self.derivedfile.module_version.module.slug ])
+        v = self.derivedfile.module_version.version
+        sub = self.derivedfile.outputname
+        part = self.part_order
+        url = "%s?part=%s&v=%s&subtype=%s" % (url, part, v, sub)
+        return url
+
     def __unicode__(self):
-        return "From %s: path %s" % (self.derivedfile, self.path)
+        ret = "%s: path %s" % (self.derivedfile, self.path)
+        if self.part_order:
+            ret = "%s - part %s" % (ret, self.part_order)
+        return ret
 
 class DerivedFile(models.Model):
     """An actual file. References a document"""
@@ -133,6 +145,10 @@ class DerivedFile(models.Model):
         versions = self.module_version.module.moduleversion_set.all()
         return [v.version for v in versions]
 
+    @property
+    def numparts(self):
+        return self.parts.count()
+
     def get_absolute_url(self):
         download_url = reverse("ds-download-external",
                 args=[self.document.external_identifier, self.extension])
@@ -142,7 +158,7 @@ class DerivedFile(models.Model):
         return download_url
 
     def __unicode__(self):
-        return "%s (%s, %s)" % (self.document.title, self.module_version.module.slug, self.path)
+        return "%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
 
 
 # Essentia management stuff

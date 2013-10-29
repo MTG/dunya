@@ -65,19 +65,41 @@ def download_external(request, uuid, ftype):
         # otherwise try derived type
         try:
             module = models.Module.objects.get(slug=ftype)
-            qs = module.moduleversion_set
+            moduleversions = module.moduleversion_set
             # If there's a ?v= tag, use that version, otherwise get the latest
             version = request.GET.get("v")
             if version:
-                qs = qs.filter(version=version)
+                moduleversions = moduleversions.filter(version=version)
             else:
-                qs = qs.order_by("-date_added")
-            if len(qs):
-                modver = qs[0]
+                moduleversions = moduleversions.order_by("-date_added")
+
+            if len(moduleversions):
+                modver = moduleversions[0]
                 dfs = thedoc.derivedfiles.filter(module_version=modver).all()
-                if len(dfs):
-                    contents = open(dfs[0].path, 'rb').read()
-                    return HttpResponse(contents)
+                # filter by ?subtype
+                # if a file has many subtypes and it's not set, then this is an error
+                subtype = request.GET.get("subtype")
+                if subtype:
+                    dfs = dfs.filter(outputname=subtype)
+                if dfs.count() > 1:
+                    return HttpResponse(status=400)
+                elif dfs.count() == 1:
+                    # Select the part.
+                    # If the file has many parts and ?part is not set then it's an error
+                    parts = dfs[0].parts
+                    part = request.GET.get("part")
+                    if part:
+                        parts = parts.filter(part_order=int(part))
+                    else:
+                        parts = parts.all()
+                    mimetype = dfs[0].mimetype
+                    if parts.count() > 1:
+                        return HttpResponse(status=400)
+                    elif parts.count() == 1:
+                        contents = open(parts[0].path, 'rb').read()
+                        return HttpResponse(contents, mimetype)
+                    else:
+                        raise Http404
                 else:
                     # If no files, or none with this version
                     raise Http404
