@@ -24,6 +24,9 @@ To add tables to the database run
 `ln -s ln -s /usr/lib/x86_64-linux-gnu/libz.so env/lib`
 `ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so.6 env/lib`
 
+libsndfile1-dev is needed to create audio images
+lame is needed for converting mp3 to wav
+
 
 Running
 =======
