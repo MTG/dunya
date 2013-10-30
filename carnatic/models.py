@@ -167,7 +167,7 @@ class TaalaAlias(models.Model):
 
 # similarity matrix. key: a taala id, val: an ordered list of similarities (taala ids)
 # We fill in 'above' and 'below' the diagonal - e.g. 1: 2,3 / 2: 1
-taala_similar = {1: [5], 3, [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
+taala_similar = {1: [5], 3: [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
         7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4], 10: [7, 3], 11: [7, 3]}
 
 class Taala(data.models.BaseModel):
