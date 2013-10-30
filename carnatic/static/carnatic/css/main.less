@@ -1309,6 +1309,35 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			    width: 231px;
           background: rgba(256,256,256,0.4);
           box-shadow: inset 0px 0px 10px;
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          .meta {
+            position: relative;
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            padding: 5px;
+            label {
+              float: left;
+              width: 85px;
+              text-align: right;
+              padding-right: 4px;
+              font-weight: bold;
+              clear: left;
+            }
+            span {
+            clear: right;
+            float: left;
+            }
+          }
+          
+          h3 {
+            margin-top: 15px;
+            margin-bottom: 5px;
+          }
+          p.value {
+            margin-top: 0px;
+          }
 			}
 			.lists {
         display: block !important;
@@ -1327,8 +1356,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     			width: 207px;
     			height: 100%;
     			float: left;
-          background: url("../img/cloth_alikeTrans.png") repeat;
+    			border-right: 1px dashed rgba(256,256,256,0.5);
+    			overflow-y: auto;
+          h3 {
+            margin: 5px;
+            color: rgba(0,0,0,0.5);
+          }
   			}
+  			&.similar .left {
+            overflow: visible;
+            border-right: none;
+          }
   			.right {
     			position: relative;
     			top:0px;
@@ -1336,6 +1374,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     			width: 231px;
     			height: 100%;
     			float:left;
+    			padding-left: 5px;
+    			overflow-y: auto;
+    			h3 {
+            margin: 5px;
+            color: rgba(0,0,0,0.5);
+          }
   			} 
   			.miniitem {
   			  height: auto !important;
@@ -1345,16 +1389,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
           width:100% !important;
           background: none;
           margin-top: 5px;
-          margin-bottom: 15px;
           padding:6px;
     			padding-right: 15px;
+    			padding-bottom:5px;
+    			min-height: 50px;
           label {
-            font-size: 11px;
-            line-height: 12px;
+            font-size: 12px;
+            line-height: 14px;
+            display: block;
+            color: rgba(0,0,0,0.5);
+            b {
+              display: block;
+              color: #000;
+            }
           }
   			  .disco {
   			    float: left;
-  			    margin-right: 8px; 
+  			    margin-right: 8px;
+  			    margin-bottom: 15px; 
             a {
               background: none;
               img { width: 40px !important; }
@@ -1401,6 +1453,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		    width: 100%;
 		    font-size: 11px;
 		    line-height: 12px;
+		    a { 
+		      text-decoration: none; 
+		      color: rgba(0,0,0,0.5);
+		      b {
+		        color:#000; 
+		      }
+		    }
 			.plus {
 				position: relative;
 				float: right;
@@ -1410,8 +1469,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				background: url("http://localhost:8001/static/carnatic/img/plusIcon.png") 0 0 no-repeat;
 				cursor: pointer;
 			}
-			p { margin:0px; color: #333;}
-			b, a {font-weight: bold; display: block; color: #000; text-decoration: none; }
+			p { margin:0px; color: #666;}
+			.title { 
+			  font-weight: bold; 
+			  display: block; 
+			  color: #000; 
+			  text-decoration: none;
+			  b {
+  			  font-size: 14px;
+			  }
+			  .year {
+  			  margin-left: 4px;
+  			  opacity: 0.6;
+			  }
+      }
+      .belongs {
+        color: #000;
+        opacity: 0.6;
+        text-decoration: none;
+      }
 			a:hover { text-decoration: underline; } 
 		}
 		.descOpen, .lists {
@@ -1576,6 +1652,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
   	top: 0px;
   	left: 0px;
   	display: none;
+  	border-top-right-radius: 5px;
+  	border-bottom-right-radius: 5px;
   	&:before {
       background-image: url("../img/simdegra.png");
       background-position: -13px 0;
@@ -1787,7 +1865,7 @@ input[type="text"], input[type="password"] {
 		margin-left: -220px;
 		.container {
   		margin-left: 220px;
-      .thedata{
+      .thedata {
   		  #rendersMask {
 				  float: left;
 					position: relative;
@@ -1922,7 +2000,95 @@ input[type="text"], input[type="password"] {
 	}
 }
 
+#detail .thedata {
+  #results {
+    .artist {
+      border-right: none !important;
+      border-bottom: none !important;
+      padding: 0px;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
+  #results > div.open { 
+    width: auto;
+    height: 270px;
+    .pict {
+      position: relative;
+      display: inline-block;
+      float: left;
+    }
+    .lists {
+      display: block !important;
+      height: auto;
+      left: 0;
+      position: relative;
+      top: 0px;
+      width: auto;
+      padding-left: 6px;
+      padding-right: 6px;
+      overflow: hidden;
+      display: inline-block;
+      float: left;
+      .left {
+        .similarity>div {
+          height: 20px !important;
+          float: right;
+          margin-bottom: 2px;
+          padding-top: 3px;
+        }
+        .similarity div.active:after {
+          content: "";
+          height: 21px;
+          position: absolute;
+          right: -14px;
+          top: 0px;
+          width: 16px;
+          z-index: 10;
+          background: url("http://localhost:8001/static/detailpage/Dunya_files/../img/simiMark.png") -8px -3px no-repeat;
+        }
+      }      
+    }
+    .right {
+        display: none;
+        height: 200px;
+        .artist {
+          border-right: none !important;
+          border-bottom: none !important;
+        }
+        &>.artist {
+          float: none !important;
+          width: auto;
+          padding:  0px !important;
+          margin:  0px !important;
+          overflow-y: auto;
+          margin-top: 5px;
+          padding: 6px;
+          padding-right: 15px;
+          padding-bottom: 5px;
+          overflow: hidden;
+          .minitem {
+            height: auto !important;
+            left: 0px;
+            position: relative;
+            top: 0px;
+            width: 100% !important;
+            background: none;
+            margin-top: 5px !important;
+            padding: 6px !important;            
+            min-height: 50px;
+            border: none;
 
+          border-right: none !important;
+          border-bottom: none !important;
+          }
+        }
+        .recording {
+          height: 200px;
+        }
+      }
+  }
+}
 
 /* ==========================================================================
    Entities Filters Colors
@@ -2192,7 +2358,7 @@ input[type="text"], input[type="password"] {
 .invisible {
     visibility: hidden;
 }
-
+.clearer { clear: both; }
 .clearfix:before,
 .clearfix:after {
     content: " ";

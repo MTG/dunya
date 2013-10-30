@@ -238,10 +238,17 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+/**** Isotope Filtering ****/
+.isotope-item {
+  z-index: 2;
+}
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+/**** Isotope CSS3 transitions ****/
 .isotope,
 .isotope .isotope-item {
-  /* change duration value to whatever you like */
-
   -webkit-transition-duration: 0.8s;
   -moz-transition-duration: 0.8s;
   -ms-transition-duration: 0.8s;
@@ -261,16 +268,6 @@ table {
   -ms-transition-property: -ms-transform, opacity;
   -o-transition-property: -o-transform, opacity;
   transition-property: transform, opacity;
-}
-/**** disabling Isotope CSS3 transitions ****/
-.isotope.no-transition,
-.isotope.no-transition .isotope-item,
-.isotope .isotope-item.no-transition {
-  -webkit-transition-duration: 0s;
-  -moz-transition-duration: 0s;
-  -ms-transition-duration: 0s;
-  -o-transition-duration: 0s;
-  transition-duration: 0s;
 }
 .formSection {
   cursor: pointer;
@@ -988,40 +985,40 @@ textarea {
   border-left: 18.18181818181818px solid #ff0000;
 }
 #filterMask.querybar #breadcrumb .bread.artist .breadarrow {
-  border-left-color: #3dc5e0;
+  border-left-color: #45cee7;
 }
 #filterMask.querybar #breadcrumb .bread.artist .breadarrow:after {
-  border-left-color: #69d2e7;
+  border-left-color: #72daed;
 }
 #filterMask.querybar #breadcrumb .bread.concert .breadarrow {
-  border-left-color: #83ccc8;
+  border-left-color: #6dd6d2;
 }
 #filterMask.querybar #breadcrumb .bread.concert .breadarrow:after {
-  border-left-color: #a7dbd8;
+  border-left-color: #95e1de;
 }
 #filterMask.querybar #breadcrumb .bread.work .breadarrow {
-  border-left-color: #ccd2ab;
+  border-left-color: #d6d9ac;
 }
 #filterMask.querybar #breadcrumb .bread.work .breadarrow:after {
-  border-left-color: #e0e4cc;
+  border-left-color: #e7e9cf;
 }
 #filterMask.querybar #breadcrumb .bread.instrument .breadarrow {
-  border-left-color: #e36b0d;
+  border-left-color: #ec8206;
 }
 #filterMask.querybar #breadcrumb .bread.instrument .breadarrow:after {
-  border-left-color: #f38630;
+  border-left-color: #fa9b2b;
 }
 #filterMask.querybar #breadcrumb .bread.raaga .breadarrow {
-  border-left-color: #c75400;
+  border-left-color: #e26700;
 }
 #filterMask.querybar #breadcrumb .bread.raaga .breadarrow:after {
-  border-left-color: #fa6900;
+  border-left-color: #ff8016;
 }
 #filterMask.querybar #breadcrumb .bread.taala .breadarrow {
-  border-left-color: #e6c04b;
+  border-left-color: #dcb341;
 }
 #filterMask.querybar #breadcrumb .bread.taala .breadarrow:after {
-  border-left-color: #ecd078;
+  border-left-color: #e4c46c;
 }
 #filterMask.querybar #breadcrumb .bread.recording .breadarrow {
   border-left-color: #c24027;
@@ -1571,7 +1568,7 @@ textarea {
 }
 #tonic .inner span {
   display: inline-block !important;
-  background: #a7dbd8;
+  background: #95e1de;
   color: #222;
   padding: 4px;
   -webkit-border-radius: 4px;
@@ -1582,7 +1579,7 @@ textarea {
   font-size: 10px;
   text-align: center;
   margin: 2px !important;
-  border: 2px solid #83ccc8;
+  border: 2px solid #6dd6d2;
   box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
 }
 #tonic .inner span b {
@@ -1623,28 +1620,28 @@ textarea {
   margin-bottom: 5px;
 }
 #resultsstats .artist > span {
-  border-color: #69d2e7;
+  border-color: #72daed;
 }
 #resultsstats .composer > span {
   border-color: #c02942;
 }
 #resultsstats .concert > span {
-  border-color: #a7dbd8;
+  border-color: #95e1de;
 }
 #resultsstats .recording > span {
   border-color: #d95b43;
 }
 #resultsstats .raaga > span {
-  border-color: #fa6900;
+  border-color: #ff8016;
 }
 #resultsstats .taala > span {
-  border-color: #ecd078;
+  border-color: #e4c46c;
 }
 #resultsstats .work > span {
-  border-color: #e0e4cc;
+  border-color: #e7e9cf;
 }
 #resultsstats .instrument > span {
-  border-color: #f38630;
+  border-color: #fa9b2b;
 }
 #resultsstats table {
   position: relative;
@@ -1752,6 +1749,34 @@ textarea {
   width: 231px;
   background: rgba(256, 256, 256, 0.4);
   box-shadow: inset 0px 0px 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+#results > div.open .descOpen .meta {
+  position: relative;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 5px;
+}
+#results > div.open .descOpen .meta label {
+  float: left;
+  width: 85px;
+  text-align: right;
+  padding-right: 4px;
+  font-weight: bold;
+  clear: left;
+}
+#results > div.open .descOpen .meta span {
+  clear: right;
+  float: left;
+}
+#results > div.open .descOpen h3 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+#results > div.open .descOpen p.value {
+  margin-top: 0px;
 }
 #results > div.open .lists {
   display: block !important;
@@ -1771,7 +1796,16 @@ textarea {
   width: 207px;
   height: 100%;
   float: left;
-  background: url("../img/cloth_alikeTrans.png") repeat;
+  border-right: 1px dashed rgba(256, 256, 256, 0.5);
+  overflow-y: auto;
+}
+#results > div.open .lists .left h3 {
+  margin: 5px;
+  color: rgba(0, 0, 0, 0.5);
+}
+#results > div.open .lists.similar .left {
+  overflow: visible;
+  border-right: none;
 }
 #results > div.open .lists .right {
   position: relative;
@@ -1780,6 +1814,12 @@ textarea {
   width: 231px;
   height: 100%;
   float: left;
+  padding-left: 5px;
+  overflow-y: auto;
+}
+#results > div.open .lists .right h3 {
+  margin: 5px;
+  color: rgba(0, 0, 0, 0.5);
 }
 #results > div.open .lists .miniitem {
   height: auto !important;
@@ -1789,17 +1829,25 @@ textarea {
   width: 100% !important;
   background: none;
   margin-top: 5px;
-  margin-bottom: 15px;
   padding: 6px;
   padding-right: 15px;
+  padding-bottom: 5px;
+  min-height: 50px;
 }
 #results > div.open .lists .miniitem label {
-  font-size: 11px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
+  display: block;
+  color: rgba(0, 0, 0, 0.5);
+}
+#results > div.open .lists .miniitem label b {
+  display: block;
+  color: #000;
 }
 #results > div.open .lists .miniitem .disco {
   float: left;
   margin-right: 8px;
+  margin-bottom: 15px;
 }
 #results > div.open .lists .miniitem .disco a {
   background: none;
@@ -1846,6 +1894,13 @@ textarea {
   font-size: 11px;
   line-height: 12px;
 }
+#results > div .desc a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.5);
+}
+#results > div .desc a b {
+  color: #000;
+}
 #results > div .desc .plus {
   position: relative;
   float: right;
@@ -1857,13 +1912,24 @@ textarea {
 }
 #results > div .desc p {
   margin: 0px;
-  color: #333;
+  color: #666;
 }
-#results > div .desc b,
-#results > div .desc a {
+#results > div .desc .title {
   font-weight: bold;
   display: block;
   color: #000;
+  text-decoration: none;
+}
+#results > div .desc .title b {
+  font-size: 14px;
+}
+#results > div .desc .title .year {
+  margin-left: 4px;
+  opacity: 0.6;
+}
+#results > div .desc .belongs {
+  color: #000;
+  opacity: 0.6;
   text-decoration: none;
 }
 #results > div .desc a:hover {
@@ -1898,22 +1964,22 @@ textarea {
   margin-right: 10px;
 }
 #results .artist {
-  background: #20adca;
+  background: #1cbfdd;
 }
 #results .artist .desc {
-  background: #69d2e7;
+  background: #72daed;
 }
 #results .concert {
-  background: #5fbdb8;
+  background: #46cbc5;
 }
 #results .concert .desc {
-  background: #a7dbd8;
+  background: #95e1de;
 }
 #results .work {
-  background: #b7c189;
+  background: #c4c989;
 }
 #results .work .desc {
-  background: #e0e4cc;
+  background: #e7e9cf;
 }
 #results .track {
   ackground: #97321f;
@@ -1926,10 +1992,10 @@ textarea {
   margin-bottom: 4px;
 }
 #results .instrument {
-  background: #b3550a;
+  background: #bb6704;
 }
 #results .instrument .desc {
-  background: #f38630;
+  background: #fa9b2b;
 }
 #results .instrument h4 {
   text-align: center;
@@ -1937,10 +2003,10 @@ textarea {
   margin-bottom: 4px;
 }
 #results .raaga {
-  background: #943e00;
+  background: #af5000;
 }
 #results .raaga .desc {
-  background: #fa6900;
+  background: #ff8016;
 }
 #results .raaga h4 {
   text-align: center;
@@ -1948,10 +2014,10 @@ textarea {
   margin-bottom: 4px;
 }
 #results .taala {
-  background: #dfb01f;
+  background: #c69b24;
 }
 #results .taala .desc {
-  background: #ecd078;
+  background: #e4c46c;
 }
 #results .taala h4 {
   text-align: center;
@@ -1971,10 +2037,10 @@ textarea {
   background: #c02942;
 }
 #results .artist {
-  background: #20adca;
+  background: #1cbfdd;
 }
 #results .artist .desc {
-  background: #69d2e7;
+  background: #72daed;
 }
 #results .artist .artistFoto {
   position: relative;
@@ -2014,28 +2080,28 @@ textarea {
   cursor: pointer;
 }
 #results .similarity div.artist {
-  background: #69d2e7;
-  color: #1d9bb4;
+  background: #72daed;
+  color: #19abc6;
 }
 #results .similarity div.concert {
   background: #c02942;
   color: #57131e;
 }
 #results .similarity div.work {
-  background: #e0e4cc;
-  color: #adb879;
+  background: #e7e9cf;
+  color: #bbc178;
 }
 #results .similarity div.instrument {
-  background: #f38630;
-  color: #9b4909;
+  background: #fa9b2b;
+  color: #a25904;
 }
 #results .similarity div.raaga {
-  background: #fa6900;
-  color: #7a3300;
+  background: #ff8016;
+  color: #954400;
 }
 #results .similarity div.taala {
-  background: #ecd078;
-  color: #c89f1c;
+  background: #e4c46c;
+  color: #b08a20;
 }
 #results .similarity div.recording {
   background: #d95b43;
@@ -2067,6 +2133,8 @@ textarea {
   top: 0px;
   left: 0px;
   display: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 #results .similarList:before {
   background-image: url("../img/simdegra.png");
@@ -2091,22 +2159,22 @@ textarea {
   padding-left: 13px !important;
 }
 #results .similarList.artist {
-  background: #69d2e7 url("../img/cloth_alikeTrans2.png") repeat;
+  background: #72daed url("../img/cloth_alikeTrans2.png") repeat;
 }
 #results .similarList.concert {
   background: #c02942 url("../img/cloth_alikeTrans2.png") repeat;
 }
 #results .similarList.work {
-  background: #e0e4cc url("../img/cloth_alikeTrans2.png") repeat;
+  background: #e7e9cf url("../img/cloth_alikeTrans2.png") repeat;
 }
 #results .similarList.instrument {
-  background: #f38630 url("../img/cloth_alikeTrans2.png") repeat;
+  background: #fa9b2b url("../img/cloth_alikeTrans2.png") repeat;
 }
 #results .similarList.raaga {
-  background: #fa6900 url("../img/cloth_alikeTrans2.png") repeat;
+  background: #ff8016 url("../img/cloth_alikeTrans2.png") repeat;
 }
 #results .similarList.taala {
-  background: #ecd078 url("../img/cloth_alikeTrans2.png") repeat;
+  background: #e4c46c url("../img/cloth_alikeTrans2.png") repeat;
 }
 #results .similarList.recording {
   background-: #d95b43 url("../img/cloth_alikeTrans2.png") repeat;
@@ -2459,6 +2527,88 @@ input[type="password"] {
   font-weight: normal;
   padding: 10px;
 }
+#detail .thedata #results .artist {
+  border-right: none !important;
+  border-bottom: none !important;
+  padding: 0px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+#detail .thedata #results > div.open {
+  width: auto;
+  height: 270px;
+}
+#detail .thedata #results > div.open .pict {
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+#detail .thedata #results > div.open .lists {
+  display: block !important;
+  height: auto;
+  left: 0;
+  position: relative;
+  top: 0px;
+  width: auto;
+  padding-left: 6px;
+  padding-right: 6px;
+  overflow: hidden;
+  display: inline-block;
+  float: left;
+}
+#detail .thedata #results > div.open .lists .left .similarity > div {
+  height: 20px !important;
+  float: right;
+  margin-bottom: 2px;
+  padding-top: 3px;
+}
+#detail .thedata #results > div.open .lists .left .similarity div.active:after {
+  content: "";
+  height: 21px;
+  position: absolute;
+  right: -14px;
+  top: 0px;
+  width: 16px;
+  z-index: 10;
+  background: url("http://localhost:8001/static/detailpage/Dunya_files/../img/simiMark.png") -8px -3px no-repeat;
+}
+#detail .thedata #results > div.open .right {
+  display: none;
+  height: 200px;
+}
+#detail .thedata #results > div.open .right .artist {
+  border-right: none !important;
+  border-bottom: none !important;
+}
+#detail .thedata #results > div.open .right > .artist {
+  float: none !important;
+  width: auto;
+  padding: 0px !important;
+  margin: 0px !important;
+  overflow-y: auto;
+  margin-top: 5px;
+  padding: 6px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  overflow: hidden;
+}
+#detail .thedata #results > div.open .right > .artist .minitem {
+  height: auto !important;
+  left: 0px;
+  position: relative;
+  top: 0px;
+  width: 100% !important;
+  background: none;
+  margin-top: 5px !important;
+  padding: 6px !important;
+  min-height: 50px;
+  border: none;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+#detail .thedata #results > div.open .right .recording {
+  height: 200px;
+}
 /* ==========================================================================
    Entities Filters Colors
    ========================================================================== */
@@ -2473,22 +2623,22 @@ input[type="password"] {
 #filterMask #filterArea .filterList ul li.entity_9 { background: @entity_9_color; }
 #filterMask #filterArea .filterList ul li.entity_10 { background: @entity_10_color; }*/
 #filterMask #filterArea .filterList ul li.artist.selected .colorCode {
-  background: #20adca !important;
+  background: #1cbfdd !important;
 }
 #filterMask #filterArea .filterList ul li.concert.selected .colorCode {
-  background: #5fbdb8 !important;
+  background: #46cbc5 !important;
 }
 #filterMask #filterArea .filterList ul li.work.selected .colorCode {
-  background: #b7c189 !important;
+  background: #c4c989 !important;
 }
 #filterMask #filterArea .filterList ul li.instrument.selected .colorCode {
-  background: #b3550a !important;
+  background: #bb6704 !important;
 }
 #filterMask #filterArea .filterList ul li.raaga.selected .colorCode {
-  background: #943e00 !important;
+  background: #af5000 !important;
 }
 #filterMask #filterArea .filterList ul li.taala.selected .colorCode {
-  background: #dfb01f !important;
+  background: #c69b24 !important;
 }
 #filterMask #filterArea .filterList ul li.recording.selected .colorCode {
   background: #97321f !important;
@@ -2503,22 +2653,22 @@ input[type="password"] {
   background: #2a3c3d !important;
 }
 #detail.artist a {
-  color: #19889e !important;
+  color: #1698b0 !important;
 }
 #detail.concert a {
-  color: #44a5a0 !important;
+  color: #31aca7 !important;
 }
 #detail.work a {
-  color: #a3af68 !important;
+  color: #b3b966 !important;
 }
 #detail.instrument a {
-  color: #823e08 !important;
+  color: #894b03 !important;
 }
 #detail.raaga a {
-  color: #612900 !important;
+  color: #7c3800 !important;
 }
 #detail.taala a {
-  color: #b28d19 !important;
+  color: #9b791c !important;
 }
 #detail.recording a {
   color: #6d2416 !important;
@@ -2533,22 +2683,22 @@ input[type="password"] {
   color: #151e1f !important;
 }
 .filters.artist {
-  background: #c1ecf5;
+  background: #ccf2f9;
 }
 .filters.concert {
-  background: #cbeae8;
+  background: #bdecea;
 }
 .filters.work {
-  background: #eaeddd;
+  background: #f0f1e0;
 }
 .filters.instrument {
-  background: #f9be90;
+  background: #fcca8f;
 }
 .filters.raaga {
-  background: #ffa361;
+  background: #ffb87c;
 }
 .filters.taala {
-  background: #f9efd1;
+  background: #f4e7c2;
 }
 .filters.recording {
   background: #eaa598;
@@ -2563,22 +2713,22 @@ input[type="password"] {
   background: #86aaad;
 }
 .filters.artist {
-  background: rgba(105, 210, 231, 0.2);
+  background: rgba(114, 218, 237, 0.2);
 }
 .filters.concert {
-  background: rgba(167, 219, 216, 0.2);
+  background: rgba(149, 225, 222, 0.2);
 }
 .filters.work {
-  background: rgba(224, 228, 204, 0.2);
+  background: rgba(231, 233, 207, 0.2);
 }
 .filters.instrument {
-  background: rgba(243, 134, 48, 0.2);
+  background: rgba(250, 155, 43, 0.2);
 }
 .filters.raaga {
-  background: rgba(250, 105, 0, 0.2);
+  background: rgba(255, 128, 22, 0.2);
 }
 .filters.taala {
-  background: rgba(236, 208, 120, 0.2);
+  background: rgba(228, 196, 108, 0.2);
 }
 .filters.recording {
   background: rgba(217, 91, 67, 0.2);
@@ -2594,27 +2744,27 @@ input[type="password"] {
 }
 .artist .filterBall,
 .artist .filterList ul li.selected {
-  background: #69d2e7;
+  background: #72daed;
 }
 .concert .filterBall,
 .concert .filterList ul li.selected {
-  background: #a7dbd8;
+  background: #95e1de;
 }
 .work .filterBall,
 .work .filterList ul li.selected {
-  background: #e0e4cc;
+  background: #e7e9cf;
 }
 .instrument .filterBall,
 .instrument .filterList ul li.selected {
-  background: #f38630;
+  background: #fa9b2b;
 }
 .raaga .filterBall,
 .raaga .filterList ul li.selected {
-  background: #fa6900;
+  background: #ff8016;
 }
 .taala .filterBall,
 .taala .filterList ul li.selected {
-  background: #ecd078;
+  background: #e4c46c;
 }
 .recording .filterBall,
 .recording .filterList ul li.selected {
@@ -2633,22 +2783,22 @@ input[type="password"] {
   background: #53777a;
 }
 .artist .formFilter {
-  border-right: 4px solid #69d2e7;
+  border-right: 4px solid #72daed;
 }
 .concert .formFilter {
-  border-right: 4px solid #a7dbd8;
+  border-right: 4px solid #95e1de;
 }
 .work .formFilter {
-  border-right: 4px solid #e0e4cc;
+  border-right: 4px solid #e7e9cf;
 }
 .instrument .formFilter {
-  border-right: 4px solid #f38630;
+  border-right: 4px solid #fa9b2b;
 }
 .raaga .formFilter {
-  border-right: 4px solid #fa6900;
+  border-right: 4px solid #ff8016;
 }
 .taala .formFilter {
-  border-right: 4px solid #ecd078;
+  border-right: 4px solid #e4c46c;
 }
 .recording .formFilter {
   border-right: 4px solid #d95b43;
@@ -2663,22 +2813,22 @@ input[type="password"] {
   border-right: 4px solid #53777a;
 }
 .artist .formSectionOpen {
-  background: #69d2e7 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+  background: #72daed url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .concert .formSectionOpen {
-  background: #a7dbd8 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+  background: #95e1de url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .work .formSectionOpen {
-  background: #e0e4cc url("../img/formSectionOpen.png") 98% 4px no-repeat;
+  background: #e7e9cf url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .instrument .formSectionOpen {
-  background: #f38630 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+  background: #fa9b2b url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .raaga .formSectionOpen {
-  background: #fa6900 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+  background: #ff8016 url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .taala .formSectionOpen {
-  background: #ecd078 url("../img/formSectionOpen.png") 98% 4px no-repeat;
+  background: #e4c46c url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .recording .formSectionOpen {
   background: #d95b43 url("../img/formSectionOpen.png") 98% 4px no-repeat;
@@ -2693,28 +2843,28 @@ input[type="password"] {
   background: #53777a url("../img/formSectionOpen.png") 98% 4px no-repeat;
 }
 .artist #summary {
-  background: #69d2e7;
-  border-bottom: 10px solid #20adca;
+  background: #72daed;
+  border-bottom: 10px solid #1cbfdd;
 }
 .concert #summary {
-  background: #a7dbd8;
-  border-bottom: 10px solid #44a5a0;
+  background: #95e1de;
+  border-bottom: 10px solid #31aca7;
 }
 .work #summary {
-  background: #e0e4cc;
-  border-bottom: 10px solid #b7c189;
+  background: #e7e9cf;
+  border-bottom: 10px solid #c4c989;
 }
 .instrument #summary {
-  background: #f38630;
-  border-bottom: 10px solid #b3550a;
+  background: #fa9b2b;
+  border-bottom: 10px solid #bb6704;
 }
 .raaga #summary {
-  background: #fa6900;
-  border-bottom: 10px solid #943e00;
+  background: #ff8016;
+  border-bottom: 10px solid #af5000;
 }
 .taala #summary {
-  background: #ecd078;
-  border-bottom: 10px solid #dfb01f;
+  background: #e4c46c;
+  border-bottom: 10px solid #c69b24;
 }
 .recording #summary {
   background: #d95b43;
@@ -2733,22 +2883,22 @@ input[type="password"] {
   border-bottom: 10px solid #2a3c3d;
 }
 #summary.artist h1 {
-  color: #0f4f5c;
+  color: #0e5d6c;
 }
 #summary.concert h1 {
-  color: #2d6f6b;
+  color: #20716d;
 }
 #summary.work h1 {
-  color: #7a8446;
+  color: #8a9042;
 }
 #summary.instrument h1 {
-  color: #3a1c03;
+  color: #3e2201;
 }
 #summary.raaga h1 {
-  color: #140900;
+  color: #2f1600;
 }
 #summary.taala h1 {
-  color: #6f5810;
+  color: #5a4611;
 }
 #summary.recording h1 {
   color: #2d0f09;
@@ -2764,27 +2914,27 @@ input[type="password"] {
 }
 #detail.artist #header #summary span h2,
 #detail.artist #header #summary span h2 a {
-  color: #126272;
+  color: #117182;
 }
 #detail.concert #header #summary span h2,
 #detail.concert #header #summary span h2 a {
-  color: #35817d;
+  color: #268581;
 }
 #detail.work #header #summary span h2,
 #detail.work #header #summary span h2 a {
-  color: #89954f;
+  color: #9ba24a;
 }
 #detail.instrument #header #summary span h2,
 #detail.instrument #header #summary span h2 a {
-  color: #522705;
+  color: #573002;
 }
 #detail.raaga #header #summary span h2,
 #detail.raaga #header #summary span h2 a {
-  color: #2e1300;
+  color: #492100;
 }
 #detail.taala #header #summary span h2,
 #detail.taala #header #summary span h2 a {
-  color: #856a13;
+  color: #705714;
 }
 #detail.recording #header #summary span h2,
 #detail.recording #header #summary span h2 a {
@@ -2803,22 +2953,22 @@ input[type="password"] {
   color: #000101;
 }
 #filterMask #filterArea #entitiesList ul li.artist .colorCode {
-  border-color: #69d2e7;
+  border-color: #72daed;
 }
 #filterMask #filterArea #entitiesList ul li.concert .colorCode {
-  border-color: #a7dbd8;
+  border-color: #95e1de;
 }
 #filterMask #filterArea #entitiesList ul li.work .colorCode {
-  border-color: #e0e4cc;
+  border-color: #e7e9cf;
 }
 #filterMask #filterArea #entitiesList ul li.instrument .colorCode {
-  border-color: #f38630;
+  border-color: #fa9b2b;
 }
 #filterMask #filterArea #entitiesList ul li.raaga .colorCode {
-  border-color: #fa6900;
+  border-color: #ff8016;
 }
 #filterMask #filterArea #entitiesList ul li.taala .colorCode {
-  border-color: #ecd078;
+  border-color: #e4c46c;
 }
 #filterMask #filterArea #entitiesList ul li.recording .colorCode {
   border-color: #d95b43;
@@ -2833,22 +2983,22 @@ input[type="password"] {
   border-color: #53777a;
 }
 .miniitem.artist .colorCode {
-  border-color: #69d2e7 !important;
+  border-color: #72daed !important;
 }
 .miniitem.concert .colorCode {
-  border-color: #a7dbd8 !important;
+  border-color: #95e1de !important;
 }
 .miniitem.work .colorCode {
-  border-color: #e0e4cc !important;
+  border-color: #e7e9cf !important;
 }
 .miniitem.instrument .colorCode {
-  border-color: #f38630 !important;
+  border-color: #fa9b2b !important;
 }
 .miniitem.raaga .colorCode {
-  border-color: #fa6900 !important;
+  border-color: #ff8016 !important;
 }
 .miniitem.taala .colorCode {
-  border-color: #ecd078 !important;
+  border-color: #e4c46c !important;
 }
 .miniitem.recording .colorCode {
   border-color: #d95b43 !important;
@@ -2863,112 +3013,112 @@ input[type="password"] {
   border-color: #53777a !important;
 }
 #detail.artist .tag-cloud-0 {
-  background: #9ee2ef;
+  background: #a8e8f4;
 }
 #detail.artist .tag-cloud-1 {
-  background: #69d2e7;
+  background: #72daed;
 }
 #detail.artist .tag-cloud-2 {
-  background: #34c2df;
+  background: #3ccce6;
 }
 #detail.artist .tag-cloud-3 {
-  background: #1d9bb4;
+  background: #19abc6;
 }
 #detail.artist .tag-cloud-4 {
-  background: #146d7f;
+  background: #127d90;
 }
 #detail.artist .tag-cloud-5 {
-  background: #0b3c46;
+  background: #0b4a55;
 }
 #detail.concert .tag-cloud-0 {
-  background: #d2edeb;
+  background: #c5efed;
 }
 #detail.concert .tag-cloud-1 {
-  background: #a7dbd8;
+  background: #95e1de;
 }
 #detail.concert .tag-cloud-2 {
-  background: #7cc9c5;
+  background: #65d3cf;
 }
 #detail.concert .tag-cloud-3 {
-  background: #4db6b0;
+  background: #36c0bb;
 }
 #detail.concert .tag-cloud-4 {
-  background: #398c87;
+  background: #29908c;
 }
 #detail.concert .tag-cloud-5 {
-  background: #265d5a;
+  background: #1a5d5a;
 }
 #detail.work .tag-cloud-0 {
-  background: #f8f9f4;
+  background: #fcfcf9;
 }
 #detail.work .tag-cloud-1 {
-  background: #e0e4cc;
+  background: #e7e9cf;
 }
 #detail.work .tag-cloud-2 {
-  background: #c8cfa4;
+  background: #d2d6a5;
 }
 #detail.work .tag-cloud-3 {
-  background: #adb879;
+  background: #bbc178;
 }
 #detail.work .tag-cloud-4 {
-  background: #939f54;
+  background: #a5ac4f;
 }
 #detail.work .tag-cloud-5 {
-  background: #6b743d;
+  background: #7a7f3a;
 }
 #detail.instrument .tag-cloud-0 {
-  background: #f6a86a;
+  background: #fbb767;
 }
 #detail.instrument .tag-cloud-1 {
-  background: #f38630;
+  background: #fa9b2b;
 }
 #detail.instrument .tag-cloud-2 {
-  background: #d9670d;
+  background: #e27d05;
 }
 #detail.instrument .tag-cloud-3 {
-  background: #9b4909;
+  background: #a25904;
 }
 #detail.instrument .tag-cloud-4 {
-  background: #612e06;
+  background: #663802;
 }
 #detail.instrument .tag-cloud-5 {
-  background: #221002;
+  background: #251401;
 }
 #detail.raaga .tag-cloud-0 {
-  background: #ff8c38;
+  background: #ffa153;
 }
 #detail.raaga .tag-cloud-1 {
-  background: #fa6900;
+  background: #ff8016;
 }
 #detail.raaga .tag-cloud-2 {
-  background: #bd4f00;
+  background: #d86200;
 }
 #detail.raaga .tag-cloud-3 {
-  background: #7a3300;
+  background: #954400;
 }
 #detail.raaga .tag-cloud-4 {
-  background: #3d1a00;
+  background: #582800;
 }
 #detail.raaga .tag-cloud-5 {
-  background: #000000;
+  background: #160a00;
 }
 #detail.taala .tag-cloud-0 {
-  background: #f4e3ae;
+  background: #edd9a0;
 }
 #detail.taala .tag-cloud-1 {
-  background: #ecd078;
+  background: #e4c46c;
 }
 #detail.taala .tag-cloud-2 {
-  background: #e4bd42;
+  background: #dbaf38;
 }
 #detail.taala .tag-cloud-3 {
-  background: #c89f1c;
+  background: #b08a20;
 }
 #detail.taala .tag-cloud-4 {
-  background: #937415;
+  background: #7c6117;
 }
 #detail.taala .tag-cloud-5 {
-  background: #59460c;
+  background: #44360d;
 }
 #detail.recording .tag-cloud-0 {
   background: #e38776;
@@ -3073,6 +3223,9 @@ input[type="password"] {
 }
 .invisible {
   visibility: hidden;
+}
+.clearer {
+  clear: both;
 }
 .clearfix:before,
 .clearfix:after {
