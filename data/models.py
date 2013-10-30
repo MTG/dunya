@@ -278,6 +278,8 @@ class InstrumentAlias(models.Model):
 class Instrument(BaseModel):
     missing_image = "instrument.png"
 
+    percussion = models.BooleanField(default=False)
+
     class Meta:
         abstract = True
     name = models.CharField(max_length=50)

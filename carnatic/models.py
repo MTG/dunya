@@ -192,6 +192,9 @@ class Taala(data.models.BaseModel):
     def artists(self):
         return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
 
+    def percussion_artists(self):
+        return Artist.objects.filter(primary_concerts__tracks__work__taala=self, main_instrument__percussion=True).distinct()
+
 class Work(CarnaticStyle, data.models.Work):
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
     taala = models.ManyToManyField('Taala', through="WorkTaala")
