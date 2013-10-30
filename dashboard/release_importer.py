@@ -18,6 +18,7 @@ class ReleaseImporter(object):
                      data even if it exists.
         """
         self.overwrite = overwrite
+        self.date_import_started = django.utils.timezone.now()
 
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
@@ -44,6 +45,11 @@ class ReleaseImporter(object):
 
         concert, created = carnatic.models.Concert.objects.get_or_create(
                 mbid=mbid, defaults={"title": rel["title"]})
+        if not created:
+            delta = self.date_import_started - concert.source.last_updated
+            if delta.seconds < 3600 / 2:
+                print "Concert updated less than 30 minutes ago, not redoing"
+                return concert
         if created or self.overwrite:
             year = rel.get("date", "")[:4]
             if year:
@@ -99,6 +105,11 @@ class ReleaseImporter(object):
         artist, created = ArtistClass.objects.get_or_create(mbid=artistid,
                 defaults={"name": a["name"]})
 
+        if not created:
+            delta = self.date_import_started - artist.source.last_updated
+            if delta.seconds < 3600 / 2:
+                print "Artist updated less than 30 minutes ago, not redoing"
+                return artist
         if created or self.overwrite:
             logger.info("  adding artist/composer %s" % (artistid, ))
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
@@ -118,7 +129,7 @@ class ReleaseImporter(object):
                 artist.end = dates.get("end")
             artist.save()
 
-            # Annoying hack to only work on artists
+            # TODO: Annoying hack to only work on artists
             if ArtistClass == carnatic.models.Artist:
                 if self.overwrite:
                     artist.group_members.clear()
