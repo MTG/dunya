@@ -35,6 +35,8 @@ class MusicalSchool(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+    gurus = models.ManyToManyField("Artist", related_name="students")
+    hidden = models.BooleanField(default=False)
 
     def instruments(self):
         insts = []
@@ -162,8 +164,14 @@ class TaalaAlias(models.Model):
     def __unicode__(self):
         return self.name
 
+
+# similarity matrix. key: a taala id, val: an ordered list of similarities (taala ids)
+# We fill in 'above' and 'below' the diagonal - e.g. 1: 2,3 / 2: 1
+taala_similar = {1: [5], 3, [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
+        7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4], 10: [7, 3], 11: [7, 3]}
+
 class Taala(data.models.BaseModel):
-    missing_image = "raaga.png"
+    missing_image = "taala.png"
 
     name = models.CharField(max_length=50)
 
@@ -171,6 +179,12 @@ class Taala(data.models.BaseModel):
 
     def __unicode__(self):
         return self.name
+
+    def get_similar(self):
+        if self.pk in taala_similar:
+            return [Taala.objects.get(pk=id) for id in taala_similar[self.pk]]
+        else:
+            return []
 
     @classmethod
     def get_filter_criteria(cls):
