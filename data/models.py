@@ -72,7 +72,10 @@ class BaseModel(models.Model):
         media = settings.MEDIA_URL
         if self.images.all():
             image = self.images.all()[0]
-            return os.path.join(media, image.small_image.name)
+            if image.small_image:
+                return os.path.join(media, image.small_image.name)
+            else:
+                return os.path.join(media, image.image.name)
         else:
             if not hasattr(self, "missing_imgage"):
                 missing_image = "artist.jpg"
@@ -192,15 +195,25 @@ class Concert(BaseModel):
         return self.artists.all()
 
     def performers(self):
-        IPClass = self.get_object_map("performance")
-        perf = IPClass.objects.filter(recording__in=self.tracks.all()).distinct().all()
-        person = []
+        """ The performers on a concert are those who are in the performance relations,
+        both on the concert and the concerts recordings.
+        """
+        person = set()
         ret = []
-        # XXX: Do this as a group by query
-        for p in perf:
-            if p.performer.id not in person:
-                person.append(p.performer.id)
+        IPClass = self.get_object_map()["performance"]
+        ICPClass = self.get_object_map()["concertperformance"]
+        for p in self.performance.all():
+            print p
+            if p.id not in person:
+                person.add(p.id)
+                perf = ICPClass.objects.get(concert=self, performer=p)
                 ret.append(p)
+        for t in self.tracks.all():
+            for p in t.performance.all():
+                if p.id not in person:
+                    perf = IPClass.objects.get(recording=t, performer=p)
+                    person.add(p.id)
+                    ret.append(perf)
         return ret
 
 class Work(BaseModel):
