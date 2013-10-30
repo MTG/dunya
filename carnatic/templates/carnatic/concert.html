@@ -14,7 +14,10 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 
+{% block title %}{{concert.title}} - {% endblock %}
+
 {% block wrap %}
+<!--
     <div id="filterMask">
 	    <div id="filterArea">
 
@@ -42,7 +45,7 @@ $(document).ready(function() {
 
 	    </div>
      </div>
-
+     -->
 
      <div id="detail" class="concert">
      	<div id="header">
@@ -66,12 +69,8 @@ $(document).ready(function() {
 									<h3>Editorial Metadata</h3>
 									<div class="inner">
 										<span class='list'>
-										<label>date:</label><b>1969</b>
-										<label>format:</label><b>CD</b>
-                                        <label>length:</label><b>{{concert.length}}</b>
-										</span>
-                                        <h4>More information</h4>
-                                        <span class="list">
+                                            <label>Year:</label><b>{{concert.year}}</b>
+                                            <label>length:</label><b>{{concert.length}}</b>
                                             <label>Data source:</label><a href="{{concert.ref.url}}">{{concert.ref.title}}</a>
 									</div>
 								</div>
@@ -87,21 +86,6 @@ $(document).ready(function() {
 								</div>
 							</div>
 							
-		<!--	
-							<div id="artists" class="metaDetails">
-								<h3>Artists</h3>
-								<div class="inner">
-									<span class='list2'>
-									<label>ghatam:</label><b>Vikku Vinayakram</b>
-									<label>mridangam:</label><b>Palghat Raghu</b>
-									<label>violin:</label><b>Chalakudy Narayanaswamy Iyer</b>
-									<label>live recording of:</label><b>Chalamela</b>
-									<label>composer:</label><b>Kuppuswamy Iyer, Tiruvottiyur Thyagaiyer, Vadivelu</b>
-									<label>lyricist:</label><b>Kuppuswamy Iyer</b>
-									</span>
-								</div>
-							</div>
-                            -->
 			 			</div>
 			 		</div>
 			 	</div>
