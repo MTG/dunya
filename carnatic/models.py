@@ -49,7 +49,18 @@ class Artist(CarnaticStyle, data.models.Artist):
             return None
 
     def similar_artists(self):
-        pass
+        if self.pk == 9: #t.m krishna
+            ids = [15, 44, 166, 167, 16, 17]
+        else:
+            ids = []
+        return [Artist.objects.get(pk=pk) for pk in ids]
+
+    def collaborating_artists(self):
+        if self.pk == 9: #t.m krishna
+            ids = [44, 45, 81, 105, 88]
+        else:
+            ids = []
+        return [Artist.objects.get(pk=pk) for pk in ids]
 
     def concerts(self):
         ret = []

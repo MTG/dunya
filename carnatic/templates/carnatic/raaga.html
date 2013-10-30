@@ -7,7 +7,7 @@
 <script>
 $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
-    //parseAllFilters({{ filter_items|safe }});
+    parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
 });
 </script>
@@ -112,9 +112,6 @@ $(document).ready(function() {
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>
-
-
-<h2>Raaga {{raaga.name}}</h2>
 
 <h3>Artist</h3>
 {% for a in raaga.artists %}

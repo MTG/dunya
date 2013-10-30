@@ -1,22 +1,22 @@
-{% load staticfiles %}
 {% load inline %}
+{% load badges %}
 
 <div class="concert item">
       <div class="disc pict">
-          <a href="{{concert.get_absolute_url}}"><img src="{{concert.get_image_url}}"></a>
+          <a href="{{concert.get_absolute_url}}">
+              <img width="200" src="{{concert.get_small_image_url}}"></a>
       </div>
       <div class="desc">
         <div class="plus"></div>
-        <a href="{{concert.get_absolute_url}}" class="title"><b>{{concert.title}}</b></a><span class="year">{{concert.year}}</span>
+        <a href="{{concert.get_absolute_url}}" class="title"><b>{{concert.title}}</b></a>
         {% if concert.artists.all %}
         <a href="{{concert.artists.all.0.get_absolute_url}}" class="belongs">{{concert.artists.all.0}}</a>
         {% endif %}
       </div>
       <div class="descOpen">
         <div class="meta">
-          <label>DATE</label><span class="value">1969</span>
-          <label>LENGTH</label><span class="value">02:26:57</span>
-          <!-- <label>SOURCE</label><span class="value">MusicBrainz</span> -->
+            <label>Release year</label> <span class="value">{{concert.year}}</span><br>
+          <label>Length</label> <span class="value">02:26:57</span>
           <div class="clearer"></div>
         </div>
         <h3>DESCRIPTION</h3>
@@ -25,24 +25,16 @@
       <div class="lists">
         <div class="left">
           <h3>Tracks</h3>
-            <div class="miniitem artist">
-              <div class="colorCode shadow1"></div>
-              <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/notrack.jpg"></a></div>
-              <label><b>Track name 1</b>01:50:21</label>
-            </div>
+          {% for t in concert.tracks.all %}
+          {% badge_mini_recording t %}
+          {% endfor %}
         </div>
+
         <div class="right">   
           <h3>Performers</h3>       
-            <div class="miniitem instrument">
-              <div class="colorCode shadow1"></div>
-                <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a></div>
-                <label><b>Artist name 1</b>Instrument</label>
-          </div>
-            <div class="miniitem instrument">
-              <div class="colorCode shadow1"></div>
-            <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noartist.jpg"></a></div>
-            <label><b>Artist name 2</b>Instrument</label>
-          </div>            
+           {% for perf in concert.performers %}
+           {% badge_mini_performance perf %}
+           {% endfor %}
         </div>
       </div>
     </div>

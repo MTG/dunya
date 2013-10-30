@@ -27,8 +27,13 @@ def inline_artist_part(artist):
     return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
 
 @register.simple_tag
-def inline_concert(concert):
-    return '<a href="%s">%s</a>' % (concert.get_absolute_url(), concert.title)
+def inline_concert(concert, bold=False):
+    sb = ""
+    eb = ""
+    if bold:
+        sb = "<b>"
+        eb = "</b>"
+    return '<a href="%s">%s%s%s</a>' % (concert.get_absolute_url(), sb, concert.title, eb)
 
 @register.simple_tag
 def inline_composer(composer):

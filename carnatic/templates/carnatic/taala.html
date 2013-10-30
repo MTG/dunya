@@ -7,7 +7,7 @@
 <script>
 $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
-    //parseAllFilters({{ filter_items|safe }});
+    parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
 });
 </script>
@@ -58,9 +58,9 @@ $(document).ready(function() {
 			 			<div class="metaContainer">
 							<div id="artists" class="metaDetails">
 								<div class="inner">
-									<h3>Artist</h3>
+									<h3>Percussionists who play this taala</h3>
 									<span class='list'>
-									{% for a in taala.artists %}
+									{% for a in taala.percussion_artists %}
 										{% inline_artist a %}
 									{% endfor %}
 									</span>
@@ -68,7 +68,7 @@ $(document).ready(function() {
 							</div>
 							<div id="composers" class="metaDetails">
 								<div class="inner">
-									<h3>Composers</h3>
+									<h3>Composers who write in this taala</h3>
 									<span class="list">
 									{% for c in taala.composers %}
 									{% inline_composer c %}
@@ -79,7 +79,7 @@ $(document).ready(function() {
 							
 							<div id="works" class="metaDetails">
 								<div class="inner">
-									<h3>Compositions</h3>
+									<h3>Compositions written in this taala</h3>
 										<span class="list">
 										{% for w in taala.works %}
 										{% inline_work w %}
@@ -112,24 +112,5 @@ $(document).ready(function() {
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>
-
-
-<h2>Taala {{taala.name}}</h2>
-
-<h3>Artist</h3>
-{% for a in taala.artists %}
-<li>{% inline_artist a %}
-{% endfor %}
-
-<h3>Composers</h3>
-{% for c in taala.composers %}
-<li>{% inline_composer c %}
-{% endfor %}
-
-<h3>Compositions</h3>
-{% for w in taala.works %}
-<li>{% inline_work w %}
-{% endfor %}
-
 
 {% endblock %}

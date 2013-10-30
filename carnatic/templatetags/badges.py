@@ -4,11 +4,8 @@ from carnatic.models import *
 
 register = template.Library()
 
-@register.inclusion_tag("badges/similar_concert.html")
-def badge_similar_concert(concert):
-    if not isinstance(concert, Concert):
-        concert = Concert.objects.get(pk=concert)
-    return {"concert": concert}
+
+#### Badges for the front page
 
 @register.inclusion_tag("badges/concert.html")
 def badge_concert(concert):
@@ -64,7 +61,27 @@ def badge_work(work):
         work = Work.objects.get(pk=work)
     return {"work": work}
 
-#### Mini badges
+#### Badges for comparing an item to other things of the same type
+
+@register.inclusion_tag("badges/similar_concert.html")
+def badge_similar_concert(concert):
+    if not isinstance(concert, Concert):
+        concert = Concert.objects.get(pk=concert)
+    return {"concert": concert}
+
+#### Detail badges (for showing on the detail page of another item)
+@register.inclusion_tag("badges/detail_concert.html")
+def badge_detail_concert(concert):
+    if not isinstance(concert, Concert):
+        concert = Concert.objects.get(pk=concert)
+    return {"concert": concert}
+
+@register.inclusion_tag("badges/detail_artist.html")
+def badge_detail_artist(artist):
+    print "detail badge artist", artist
+    return {"artist": artist}
+
+#### Mini badges (for inside badges)
 
 @register.inclusion_tag("badges/mini_concert.html")
 def badge_mini_concert(concert):
@@ -74,8 +91,8 @@ def badge_mini_concert(concert):
 
 @register.inclusion_tag("badges/mini_performance.html")
 def badge_mini_performance(performance):
-    if not isinstance(performance, InstrumentPerformance):
-        performance = InstrumentPerformance.objects.get(pk=performance)
+    # TODO: Coordinate types?
+    """ Performance could be an instrumentperf or an instrumentconcertperf"""
     return {"performance": performance}
 
 @register.inclusion_tag("badges/mini_artist.html")

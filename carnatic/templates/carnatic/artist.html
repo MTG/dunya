@@ -17,9 +17,9 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block wrap %}
+<!--
 <div id="filterMask">
 	    <div id="filterArea">
-
 	    	<div id="entitiesList" class="filterList">
 	    		<h3>Chose your query</h3>
 	        	<ul>
@@ -41,111 +41,123 @@ $(document).ready(function() {
 	    			<span><a href="#">No selection</a></span>
 	    		</div>
 	    	</div>
-
 	    </div>
      </div>
+            -->
 
- <div id="detail" class="artist">
-     	<div id="header">
-     		<div id="summary">
-     			<div id="innerSummary">
+<div id="detail" class="artist">
+        <div id="header">
+            <div id="summary">
+                <div id="innerSummary">
 	     			<span>
 		     			<h1>{{artist.name}}</h1>
                         <h2>{% inline_instrument artist.instruments %}</h2>
 	     			</span>
-     			</div>
-     			<div id="summaryBack"></div>
-     			<div id="icon"></div>
-     		</div>
-            <div class="bigImage"><img src="{{image}}" /></div>
-     		<div id="meta">
-	     		<div class="metaBlock">
-			 		<div class="metaMask">
-			 			<div class="metaContainer">
-				 			<!-- NARROW WIDTH METADETAIL -->
-							<div class="metaDetails narrow">
-								<div class="inner">
-									<h3>Biography</h3>
-			                        <span>{{artist.description.description}}
-                                    {% if artist.description.description %}
-                                    <p><label>Description from </label> <a href="{{artist.description.source.uri}}">{{artist.description.source.source_name.name}}</a>
-                                    {% endif %}
-                                    </span>
-								</div>
-							</div>
-							
-							<!-- SPLIT VERTICAL METADETAIL -->
-							<div class="splitMeta">
-								<div class="metaDetails">
-									<div class="inner">
-										<h3>External references</h3>
+                </div>
+                <div id="summaryBack"></div>
+                <div id="icon"></div>
+            </div>
+            <div class="bigImage"><img src="{{artist.get_image_url}}"></div>
+            <div id="meta">
+<!--
+										<h3>Common raagas</h3>
 										<span>
                                             {% for ref in artist.reference_urls %}
                                             <a href="{{ref.url}}">{{ref.title}}</a>
 
                                             {% endfor %}
 										</span>
-									</div>
-								</div>
-								<div class="metaDetails">
-									<div class="inner">
-									</div>
-								</div>
-							</div>
-							
-						</div>
+-->
+                <div class="metaBlock">
+                    <div class="metaMask">
+                            <div class="metaContainer" style="width: 200px !important;">
+                            <div class="splitMeta">
+                                <div id="editorial" class="metaDetails">
+                                <h3>Biographical data</h3>
+                                    <div class="inner">
+                                        <span class="list">
+                                            <label>Date of birth:</label><b>22/01/1976</b>
+                                            <label>Region of birth:</label><b>Tamil Nadu</b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div id="samples" class="metaDetails">
+                                    <h3>Data sources</h3>
+                                    <div class="inner">
+                                        <span class="list">
+                                            <a href="">Musicbrainz</a>
+                                            <a href="">Kutcheris</a>
+                                            <a href="">Wikipedia</a>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <div class="metaContainer" style="width: 315px;">
+                            <div class="metaDetails">
+                                <h3>Biography</h3>
+                                {% if artist.description.description %}
+                                <span>{{artist.description.description}}
+                                <p><label>Description from </label> <a href="{{artist.description.source.uri}}">{{artist.description.source.source_name.name}}</a><br>
+                                Read more on <a href="">Wikipedia</a><br>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
-			 	</div>
-	     	</div>
+                </div>
+            </div>
 
-	 		<div class="clearfix"></div>
+            <div class="clearfix"></div>
 
-     	</div><!-- HEADER END -->
+        </div><!-- HEADER END -->
 
-	 	<div class="alldata">
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>Concerts</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata scrolldata">
-	                    <div class="scrollblock">                          
-	                        {% for concert in artist.concerts %}
-	                            {% badge_concert concert %}
-	                        {% endfor %}
-	                    </div>
-	     			</div>
-	     		</div>
-	     	</div>
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>Recordings</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata scrolldata nopad">
-	                    <div class="scrollblock">
-                            {% for rec in artist.recordings %}
-                            {% badge_recording rec %}
+            <div class="thedata">
+                <div class="leftdata">
+                    <h3>Concerts by this artist</h3>
+                </div>
+                <div class="rightdata">
+                    <div class="innerrightdata scrolldata">
+                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                            {% for concert in artist.concerts %}
+                                {% badge_detail_concert concert %}
                             {% endfor %}
-	                    </div>        
-	     			</div>
-	     		</div>
-	     	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-	     	<div class="thedata">
-	     		<div class="leftdata">
-		     		<h3>Artists who play the same instrument</h3>
-	     		</div>
-	     		<div class="rightdata">
-	     			<div class="innerrightdata scrolldata nopad">
-	                    <div class="scrollblock">
-                            {% for a in similar_artists %}
-                            {% badge_artist a %}
+            <div class="thedata">
+                <div class="leftdata">
+                    <h3>Similar artists</h3>
+                </div>
+                <div class="rightdata">
+                    <div class="innerrightdata scrolldata">
+                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                            {% for a in artist.similar_artists %}
+                                {% badge_detail_artist a %}
                             {% endfor %}
-	                    </div>        
-	     			</div>
-	     		</div>
-	     	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thedata">
+                <div class="leftdata">
+                    <h3>Common collaborating artists</h3>
+                </div>
+                <div class="rightdata">
+                    <div class="innerrightdata scrolldata">
+                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                            {% for a in artist.similar_artists %}
+                                {% badge_detail_artist a %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
 	     	
 	     	<!-- COMMENTS -->
 	        {% if tags %}	

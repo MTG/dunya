@@ -1,36 +1,8 @@
 {% load staticfiles %}
+<div class="miniitem instrument">
+  <div class="colorCode shadow1"></div>
+  <div class="disco"><a href="{{artist.get_absolute_url}}">
+          <img src="{{artist.get_small_image_url}}"></a></div>
+  <label><b>{% inline_artist artist %}</b></label>
+</div>
 
-<div class="artist item">
-  <div class="disc pict">
-    <a href="{{artist.get_absolute_url}}"><img src="{{artist.get_image_url}}"></a>
-</div>
-  <div class="desc">
-    <div class="plus"></div>
-    <a href="{{artist.get_absolute_url}}" class="title"><b>{{artist.name}}</b></a>
-{% if artist.begin %}
-<span class="year">{{artist.begin}}{% if artist.end %} - {{artist.end}}{% endif %}</span>
-{% endif %}
-    <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>        
-  </div>
-  <div class="descOpen">
-    {{artist.description.description}}
-  </div>
-  <div class="lists">
-    <div class="left">
-      <h3>Recordings</h3>
-        <div class="miniitem artist">
-          <div class="colorCode shadow1"></div>
-          <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
-        </div>
-    </div>
-    <div class="right">  
-      <h3>Concerts</h3>     
-        <div class="miniitem instrument">
-          <div class="colorCode shadow1"></div>
-        <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-        <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
-      </div>            
-    </div>
-  </div>
-</div>
