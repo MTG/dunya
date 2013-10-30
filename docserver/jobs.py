@@ -109,7 +109,7 @@ def process_document(documentid, moduleversionid):
         # TODO: If there is more than 1 source file
         s = sfiles[0]
         fname = s.path.encode("utf-8")
-        results = instance.process_document(document.pk, s.pk, fname)
+        results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
