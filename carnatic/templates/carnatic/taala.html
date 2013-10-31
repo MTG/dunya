@@ -44,14 +44,13 @@ $(document).ready(function() {
      		<div id="summary">
      			<div id="innerSummary">
 	     			<span>
-		     			<h1>Taala {{taala.name}}</h1>
-                        <!-- <h3>Translated name</h3> -->
+		     			<h1>{{taala.name}} taala</h1>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
      			<div id="icon"></div>
      		</div>
-     		<div class="bigImage"><img src="{% static 'carnatic/img/develop/taala.jpg' %}" /></div>
+            <div class="bigImage"><img src="{{taala.get_image_url}}" /></div>
      		<div id="meta">
      			<div class="metaBlock">
 					<div class="metaMask">
