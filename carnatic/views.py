@@ -261,7 +261,11 @@ def raagasearch(request):
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
 
-    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items())}
+    ids = [60, 36, 124]
+    
+    similar = [Raaga.objects.get(pk=i) for i in ids]
+
+    ret = {"raaga": raaga, "similar": similar, "filter_items": json.dumps(get_filter_items())}
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):

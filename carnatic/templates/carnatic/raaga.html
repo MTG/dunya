@@ -46,28 +46,18 @@ $(document).ready(function() {
      		<div id="summary">
      			<div id="innerSummary">
 	     			<span>
-		     			<h1>Raaga {{raaga.name}}</h1>
+		     			<h1>Raaga {{raaga.name|title}}</h1>
                         <!-- <h3>Translated name</h3> -->
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
      			<div id="icon"></div>
      		</div>
-     		<div class="bigImage"><img src="{% static 'carnatic/img/develop/taala.jpg' %}" /></div>
+            <div class="bigImage"><img src="{{raaga.get_image_url}}" /></div>
      		<div id="meta">
      			<div class="metaBlock">
 					<div class="metaMask">
 			 			<div class="metaContainer">
-							<div id="artists" class="metaDetails">
-								<div class="inner">
-									<h3>Artist</h3>
-									<span class='list'>
-									{% for a in raaga.artists %}
-									{% inline_artist a %}
-									{% endfor %}
-									</span>
-								</div>
-							</div>
 							<div id="composers" class="metaDetails">
 								<div class="inner">
 									<h3>Composers</h3>
@@ -101,12 +91,14 @@ $(document).ready(function() {
 	 	<div class="alldata">
 	     	<div class="thedata">
 	     		<div class="leftdata">
-		     		<h3>Performers</h3>
+		     		<h3>Similar raagas</h3>
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-	                    <div class="scrollblock">                          
-	                       
+	                    <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+	                       {% for r in similar %}
+                              {% badge_similar_raaga r %}
+                            {% endfor %}
 	                    </div>
 	     			</div>
 	     		</div>
@@ -114,21 +106,5 @@ $(document).ready(function() {
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>
-
-<h3>Artist</h3>
-{% for a in raaga.artists %}
-<li>{% inline_artist a %}
-{% endfor %}
-
-<h3>Composers</h3>
-{% for c in raaga.composers %}
-<li>{% inline_composer c %}
-{% endfor %}
-
-<h3>Compositions</h3>
-{% for w in raaga.works %}
-<li>{% inline_work w %}
-{% endfor %}
-
 
 {% endblock %}
