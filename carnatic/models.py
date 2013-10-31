@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 import data.models
 import managers
@@ -218,7 +219,12 @@ class Taala(data.models.BaseModel):
         return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
 
     def percussion_artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__taala=self, main_instrument__percussion=True).distinct()
+        artists = set()
+        for a in Artist.objects.filter(Q(instrumentconcertperformance__concert__tracks__work__taala=self) & Q(instrumentconcertperformance__instrument__percussion=True)).distinct():
+            artists.add(a)
+        for a in Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True)).distinct():
+            artists.add(a)
+        return artists
 
 class Work(CarnaticStyle, data.models.Work):
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")

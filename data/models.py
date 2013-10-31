@@ -317,7 +317,7 @@ class InstrumentConcertPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "% playing %s in %s" % (self.performer, self.instrument, self.concert)
+        return "%s playing %s in %s" % (self.performer, self.instrument, self.concert)
 
 class InstrumentPerformance(models.Model):
     class Meta:
@@ -328,7 +328,7 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "% playing %s on %s" % (self.performer, self.instrument, self.recording)
+        return "%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 class Composer(BaseModel):
     missing_image = "artist.png"
