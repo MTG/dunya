@@ -42,7 +42,7 @@ class Command(BaseCommand):
             print name
 
             i = models.Instrument.objects.get(name=name)
-            i.is_percussion = not not percussion
+            i.percussion = not not percussion
             if not picture and altpicture:
                 picture = altpicture
             if picture:
@@ -61,5 +61,5 @@ class Command(BaseCommand):
                     sourceob = None
                 descriptionob = data.models.Description.objects.create(description=description, source=sourceob)
                 i.description = descriptionob
-                i.save()
+            i.save()
 
