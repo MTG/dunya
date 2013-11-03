@@ -1,5 +1,8 @@
 from docserver import models
 import compmusic
+import tempfile
+import os
+import subprocess
 
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
@@ -32,6 +35,27 @@ def docserver_add_file(document_id, ftype, path):
     except models.SourceFile.DoesNotExist:
         sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
 
+def docserver_get_wav_filename(documentid):
+    """ Return a tuple (filename, tmp) containing the filename
+        of a wave file for this document. If tmp is True, it means
+        the file was generated on demand and you must delete it when
+        you're finished. Otherwise it's from the docserver
+    """
+    try:
+        filename = docserver_get_filename(documentid, "wav", "wave")
+        if not os.path.exists(filename):
+            raise Exception("File doesn't exist")
+        return filename, False
+    except: # Error getting file because it's not in the db or it doesn't exist
+        print "Error getting file, calculating again"
+        mp3filename = docserver_get_filename(documentid, "mp3")
+        fp, tmpname = tempfile.mkstemp(".wav")
+        os.close(fp)
+        proclist = ["lame", "--decode", mp3filename, tmpname]
+        p = subprocess.Popen(proclist)
+        p.communicate()
+        return tmpname, True
+
 def docserver_get_url(documentid, slug, subtype=None, part=None, version=None):
     part = _docserver_get_part(documentid, slug, subtype, part, version)
     url = part.get_absolute_url()
@@ -43,6 +67,18 @@ def docserver_get_filename(documentid, slug, subtype=None, part=None, version=No
 
 def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None):
     doc = models.Document.objects.get(external_identifier=documentid)
+    try:
+        sourcetype = models.SourceFileType.objects.get_by_extension(slug)
+    except models.SourceFileType.DoesNotExist:
+        sourcetype = None
+    if doc and sourcetype:
+        print "successful sourcetype", slug, "returning"
+        files = doc.sourcefiles.filter(file_type=sourcetype)
+        if len(files) == 0:
+            raise Exception("Looks like a sourcefile, but I can't find one")
+        else:
+            return files[0]
+
     module = models.Module.objects.get(slug=slug)
     moduleversions = module.moduleversion_set
     if version:
