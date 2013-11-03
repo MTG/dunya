@@ -20,10 +20,6 @@ def main(moduleid, mbid):
     module = docserver.models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
 
-    docs = models.Document.objects.filter(
-                sourcefiles__file_type=module.source_type,
-                external_identifier__in=recids,
-
     derived = docserver.models.DerivedFile.objects.filter(
         derived_from__file_type=module.source_type,
         module_version=version,
