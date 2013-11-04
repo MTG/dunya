@@ -22,6 +22,7 @@ To add tables to the database run
 
     ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
     ln -s /usr/lib/python2.7/dist-packages/numpy* env/lib/python2.7/site-packages
+    ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
 
 
 * Installing PIL with jpeg support
@@ -29,6 +30,9 @@ To add tables to the database run
     ln -s ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so env/lib
     ln -s ln -s /usr/lib/x86_64-linux-gnu/libz.so env/lib
     ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so.6 env/lib
+
+* If you install matplotlib with apt:
+    ln -s /usr/lib/pymodules/python2.7/matplotlib env/lib/python2.7/site-packages/
 
 libsndfile1-dev is needed to create audio images
 lame is needed for converting mp3 to wav
