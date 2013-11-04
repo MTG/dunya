@@ -36,8 +36,8 @@ def docserver_add_file(document_id, ftype, path):
         sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
 
 def docserver_get_wav_filename(documentid):
-    """ Return a tuple (filename, tmp) containing the filename
-        of a wave file for this document. If tmp is True, it means
+    """ Return a tuple (filename, created) containing the filename
+        of a wave file for this document. If created is True, it means
         the file was generated on demand and you must delete it when
         you're finished. Otherwise it's from the docserver
     """
