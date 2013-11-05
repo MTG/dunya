@@ -6,6 +6,7 @@ import logging
 from docserver import models
 import dashboard
 import celery
+import numpy as np
 
 from django.conf import settings
 
@@ -79,6 +80,12 @@ def get_latest_module_version(themod_id=None):
         if not len(versions):
             models.ModuleVersion.objects.create(module=m, version=v)
 
+class NumPyArangeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist() # or map(int, obj)
+        return json.JSONEncoder.default(self, obj)
+
 def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
     fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingid, slug, version)
     try:
@@ -90,11 +97,11 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
     fullname = os.path.join(fdir, fname)
     fp = open(fullname, "wb")
     if extension == "json":
-        json.dump(data, fp)
-    else:
-        fp.write(data)
+        data = json.dumps(data, fp, cls=NumPyArangeEncoder)
+
+    fp.write(data)
     fp.close()
-    return fullname
+    return fullname, len(data)
 
 @celery.task
 def process_document(documentid, moduleversionid):
@@ -114,18 +121,23 @@ def process_document(documentid, moduleversionid):
         collectionid = document.collection.collectionid
         moduleslug = module.slug
         for dataslug, contents in results.items():
+            print "data", dataslug
+            print "type", type(contents)
             outputdata = instance.__output__[dataslug]
             extension = outputdata["extension"]
             mimetype = outputdata["mimetype"]
             df = models.DerivedFile.objects.create(document=document, derived_from=s,
                     module_version=version, outputname=dataslug, extension=extension, mimetype=mimetype)
 
+            # TODO: This doens't separate between data that has many
+            # parts and data whose form is a list
+            # especially list of ints - len(partdata) fails
             if not isinstance(contents, list):
                 contents = [contents]
             for i, partdata in enumerate(contents, 1):
-                saved_name = _save_file(collectionid, document.external_identifier, version.version,
+                saved_name, saved_size = _save_file(collectionid, document.external_identifier, version.version,
                         moduleslug, dataslug, i, extension, partdata)
-                df.save_part(i, saved_name, len(partdata))
+                df.save_part(i, saved_name, saved_size)
 
 def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)
