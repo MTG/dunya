@@ -10,7 +10,7 @@
 {% if artist.begin %}
 <span class="year">{{artist.begin}}{% if artist.end %} - {{artist.end}}{% endif %}</span>
 {% endif %}
-    <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>        
+    <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>
   </div>
   <div class="descOpen">
     {{artist.description.description}}
@@ -24,13 +24,13 @@
           <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
         </div>
     </div>
-    <div class="right">  
-      <h3>Concerts</h3>     
+    <div class="right">
+      <h3>Concerts</h3>
         <div class="miniitem instrument">
           <div class="colorCode shadow1"></div>
         <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
         <label><b>M. D. Ramanathan Concert at Music Academy</b>1969</label>
-      </div>            
+      </div>
     </div>
   </div>
 </div>

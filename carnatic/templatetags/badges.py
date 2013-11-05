@@ -17,7 +17,8 @@ def badge_concert(concert):
 def badge_performance(performance):
     if not isinstance(performance, InstrumentPerformance):
         performance = InstrumentPerformance.objects.get(pk=performance)
-    return {"performance": performance}
+    artist = performance.performer
+    return {"performance": performance, "artist": artist}
 
 @register.inclusion_tag("badges/artist.html")
 def badge_artist(artist):

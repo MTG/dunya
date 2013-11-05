@@ -50,10 +50,19 @@ class Artist(CarnaticStyle, data.models.Artist):
             return None
 
     def similar_artists(self):
-        if self.pk == 9: #t.m krishna
-            ids = [15, 44, 166, 167, 16, 17]
-        else:
-            ids = []
+        idset = set()
+        # we are not similar to ourselves
+        idset.add(self.id)
+        ids = []
+        for g in self.gurus.all():
+            ids.append(g.id)
+            idset.add(g.id)
+        for g in self.gurus.all():
+            for s in g.students.all():
+                if s.id not in idset:
+                    idset.add(s.id)
+                    ids.append(s.id)
+
         return [Artist.objects.get(pk=pk) for pk in ids]
 
     def collaborating_artists(self):

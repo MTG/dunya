@@ -21,7 +21,10 @@ def inline_artist_list(artists):
         firststr = ", ".join(firsturls)
         return "%s & %s" % (firststr, lasturl)
     else:
-        return inline_artist_part(artists[0])
+        if len(artists):
+            return inline_artist_part(artists[0])
+        else:
+            return "(unknown)"
 
 def inline_artist_part(artist):
     return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)

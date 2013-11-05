@@ -11,7 +11,7 @@ $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
 	parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
-    
+
 });
 </script>
 {% endblock %}
@@ -78,8 +78,8 @@ $(document).ready(function() {
                                 <h3>Biographical data</h3>
                                     <div class="inner">
                                         <span class="list">
-                                            <label>Date of birth:</label><b>22/01/1976</b>
-                                            <label>Region of birth:</label><b>Tamil Nadu</b>
+                                            <label>Date of birth:</label><b>{{artist.begin}}</b>
+                                            <label>Region of birth:</label><b>{{artist.state.name}}</b>
                                         </span>
                                     </div>
                                 </div>
@@ -87,9 +87,15 @@ $(document).ready(function() {
                                     <h3>Data sources</h3>
                                     <div class="inner">
                                         <span class="list">
-                                            <a href="">Musicbrainz</a>
-                                            <a href="">Kutcheris</a>
-                                            <a href="">Wikipedia</a>
+                                            {% if mb %}
+                                            <a href="{{mb}}">Musicbrainz</a>
+                                            {% endif %}
+                                            {% if kutcheris %}
+                                            <a href="{{kutcheris}}">Kutcheris</a>
+                                            {% endif %}
+                                            {% if wiki %}
+                                            <a href="{{wiki}}">Wikipedia</a>
+                                            {% endif %}
                                         </span>
                                     </div>
                                 </div>
@@ -106,7 +112,7 @@ $(document).ready(function() {
                                     {% endif %}
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -160,9 +166,9 @@ $(document).ready(function() {
                     </div>
                 </div>
             </div>
-	     	
+
 	     	<!-- COMMENTS -->
-	        {% if tags %}	
+	        {% if tags %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Tags</h3>
@@ -177,7 +183,7 @@ $(document).ready(function() {
 
 
 	        {% get_comment_list for artist as comment_list %}
-	        {% if comment_list %}	
+	        {% if comment_list %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Comments</h3>
@@ -202,10 +208,10 @@ $(document).ready(function() {
 	     			</div>
 	     		</div>
 	     	</div>
-	        {% endif %}	
-	     	
+	        {% endif %}
+
 	     	{% if user.is_authenticated %}
-			 
+
 				 <div class="thedata">
 		     		<div class="leftdata">
 			     		<h3>Post comment</h3>
@@ -221,7 +227,7 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		     	</div>
-				  
+
 				<div class="thedata">
 		     		<div class="leftdata">
 			     		<h3>Post Tag</h3>
@@ -232,9 +238,9 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		     	</div>
-			
+
 			{% else %}
-			
+
 				<div class="thedata">
 		     		<div class="leftdata">
 			     		<h3></h3>
@@ -245,10 +251,10 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		 		</div>
-			    
+
 			{% endif %}
 
-	     	
+
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>

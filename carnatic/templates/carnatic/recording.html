@@ -130,7 +130,6 @@ function playrecord(){
 		    						</b>
 									{% endif %}
 
-
 									{% if recording.work.raaga %}
 									<label>Raaga</label><b>
 					     				{% for r in recording.work.raaga.all %}
@@ -138,7 +137,14 @@ function playrecord(){
 		    							{% endfor %}
 									</b>
 									{% endif %}
+
                                 {% endif %}
+									{% if tonic %}
+                                    <label>Tonic</label><b>{{tonic}} Hz </b>
+									{% endif %}
+									{% if akshara %}
+                                    <label>Akshara time period</label><b>{{akshara}} seconds </b>
+									{% endif %}
 
 								</span>
 							</div>
@@ -332,7 +338,7 @@ function playrecord(){
 -->
 
 <audio id="theaudio">
-	<source src="{% static 'carnatic/audio/8_Krishna_Nee_Begane.mp3' %}" type="audio/mp3" preload>
+    <source src="{{audio}}" type="audio/mp3" preload>
 </audio>
 
 

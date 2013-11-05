@@ -128,6 +128,16 @@ def artist(request, artistid):
         if i.performer not in similar_artists:
             similar_artists.append(i.performer)
 
+    if artist.main_instrument.percussion:
+        taalas = []
+    else:
+        taalas = []
+    # vocalist or violinist
+    if artist.main_instrument.id == 1 or artist.main_instrument.id == 2:
+        raagas = []
+    else:
+        raagas = []
+
     tags = tagging.tag_cloud(artistid, "artist")
 
     ret = {"filter_items": json.dumps(get_filter_items()),
@@ -211,6 +221,11 @@ def recording(request, recordingid):
     wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
     spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
     small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
+    audio = docserver.util.docserver_get_url(recording.mbid, "mp3")
+    tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
+    akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
+    tonic = str(round(float(tonic), 2))
+    akshara = str(round(float(akshara), 2))
 
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "recording": recording,
@@ -220,7 +235,10 @@ def recording(request, recordingid):
             "tags": tags,
             "waveform": wave,
             "spectrogram": spec,
-            "smallimage": small
+            "smallimage": small,
+            "audio": audio,
+            "tonic": tonic,
+            "akshara": akshara
     }
 
     return render(request, "carnatic/recording.html", ret)
