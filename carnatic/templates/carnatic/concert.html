@@ -85,7 +85,7 @@ $(document).ready(function() {
 									</div>
 								</div>
 							</div>
-							
+
 			 			</div>
 			 		</div>
 			 	</div>
@@ -106,7 +106,7 @@ $(document).ready(function() {
                             {% for t in concert.tracks.all %}
                             {% badge_recording t %}
                             {% endfor %}
-	                    </div>        
+	                    </div>
 	     			</div>
 	     		</div>
 	     	</div>
@@ -151,7 +151,7 @@ $(document).ready(function() {
 
 
 	     	<!-- COMMENTS -->
-	        {% if tags %}	
+	        {% if tags %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Tags</h3>
@@ -162,7 +162,7 @@ $(document).ready(function() {
 	     			</div>
 	     		</div>
 			 </div>
-	        {% endif %}	
+	        {% endif %}
             {% get_comment_list for concert as comment_list %}
             {% if comment_list %}
 	     	<div class="thedata">
@@ -189,10 +189,10 @@ $(document).ready(function() {
 	     			</div>
 	     		</div>
 	     	</div>
-	        {% endif %}	
-	     	
+	        {% endif %}
+
 	     	{% if user.is_authenticated %}
-			 
+
 				 <div class="thedata">
 		     		<div class="leftdata">
 			     		<h3>Post comment</h3>
@@ -208,7 +208,7 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		     	</div>
-				  
+
 				<div class="thedata">
 		     		<div class="leftdata">
 			     		<h3>Post Tag</h3>
@@ -219,9 +219,9 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		     	</div>
-			
+
 			{% else %}
-			
+
 				<div class="thedata">
 		     		<div class="leftdata">
 			     		<h3></h3>
@@ -232,14 +232,11 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		 		</div>
-			    
+
 			{% endif %}
-	     	
+
 		 	<div class="clearfix"></div>
-	 	</div>     	
+	 	</div>
 </div>
-
-<!-- {% include "carnatic/recordings_by_release_list.html" with concert=concert only %} -->
-
 
 {% endblock %}

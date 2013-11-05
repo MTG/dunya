@@ -6,6 +6,7 @@ import social.tagging as tagging
 from carnatic.models import *
 from social.forms import TagSaveForm
 import json
+import docserver
 
 def get_filter_items():
     filter_items = [
@@ -128,7 +129,7 @@ def artist(request, artistid):
             similar_artists.append(i.performer)
 
     tags = tagging.tag_cloud(artistid, "artist")
-    
+
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "artist": artist,
            "image": get_image(artist, "noartist"),
@@ -165,7 +166,7 @@ def concert(request, concertid):
     samples = concert.tracks.all()[:2]
 
     tags = tagging.tag_cloud(concertid, "concert")
-    
+
     # Other concerts by the same person
     # XXX: Sort by if there's an image
     artist_concerts = Concert.objects.filter(artists__in=concert.artists.all()).all().distinct()
@@ -204,17 +205,24 @@ def concert(request, concertid):
 
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
-    
+
     tags = tagging.tag_cloud(recordingid, "recording")
-    
+
+    wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
+    spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
+    small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
+
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "recording": recording,
            "form": TagSaveForm(),
             "objecttype": "recording",
             "objectid": recording.id,
             "tags": tags,
+            "waveform": wave,
+            "spectrogram": spec,
+            "smallimage": small
     }
-    
+
     return render(request, "carnatic/recording.html", ret)
 
 def worksearch(request):
@@ -228,7 +236,7 @@ def work(request, workid):
     work = get_object_or_404(Work, pk=workid)
 
     tags = tagging.tag_cloud(workid, "work")
-    
+
     ret = {"filter_items": json.dumps(get_filter_items()),
            "work": work,
            "form": TagSaveForm(),
@@ -248,7 +256,9 @@ def taalasearch(request):
 def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
 
-    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items())}
+    similar = taala.get_similar()
+
+    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items()), "similar": similar}
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -260,8 +270,9 @@ def raagasearch(request):
 
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
+    similar = raaga.get_similar()
 
-    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items())}
+    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items()), "similar": similar}
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):

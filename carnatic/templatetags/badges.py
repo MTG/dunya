@@ -27,8 +27,6 @@ def badge_artist(artist):
 
 @register.inclusion_tag("badges/recording.html")
 def badge_recording(recording):
-    if not isinstance(recording, Recording):
-        recording = Recording.objects.get(pk=recording)
     return {"recording": recording}
 
 @register.inclusion_tag("badges/instrument.html")

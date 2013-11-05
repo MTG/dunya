@@ -13,8 +13,8 @@
         <meta name="viewport" content="width=device-width">
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
-        <!--<link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.less' %}" />-->
-        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
+        <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.less' %}" />
+        <!--<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />-->
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
 
     <script>
@@ -32,12 +32,12 @@
         <script src="{% static 'carnatic/js/vendor/modernizr-2.6.2.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery-1.9.1.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
-        <script src="{% static 'carnatic/js/vendor/jquery.isotope.min.js' %}"></script> 
-        
+        <script src="{% static 'carnatic/js/vendor/jquery.isotope.min.js' %}"></script>
+
 
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
-	
+
 	<script src="{% static 'social/js/main.js' %}"></script>
 	<script src="{% static 'social/js/jquery.cookie.js' %}"></script>
 
@@ -76,15 +76,15 @@
         {% endblock %}
     </head>
     <body>
-	
-	
-	
+
+
+
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
             <div id="logo">
                 <a href="/carnatic">
-                <img src="{% static 'carnatic/img/logoDunya.png' %}">    
+                <img src="{% static 'carnatic/img/logoDunya.png' %}">
             </a>
             </div>
             	<div id="globalsearch">
@@ -108,7 +108,7 @@
                         <a href="{% url 'social-user-profile' %}">PROFILE</a>
                         <a href="{% url 'social-users-list' %}">USERS</a>
                         <a href="{% url 'social-timeline-page' %}">TIMELINE</a>
-				    </div>	
+				    </div>
 
 			    </div>
 			{% else %}

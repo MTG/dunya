@@ -277,7 +277,7 @@ class Recording(BaseModel):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        return ArtistClass.objects.filter(concert__tracks=self)
+        return ArtistClass.objects.filter(primary_concerts__tracks=self)
 
 class InstrumentAlias(models.Model):
     class Meta:
