@@ -200,8 +200,8 @@ class Concert(BaseModel):
         """
         person = set()
         ret = []
-        IPClass = self.get_object_map()["performance"]
-        ICPClass = self.get_object_map()["concertperformance"]
+        IPClass = self.get_object_map("performance")
+        ICPClass = self.get_object_map("concertperformance")
         for p in self.performance.all():
             print p
             if p.id not in person:
