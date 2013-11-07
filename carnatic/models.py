@@ -2,6 +2,8 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
+import collections
+
 import data.models
 import managers
 import filters
@@ -55,22 +57,31 @@ class Artist(CarnaticStyle, data.models.Artist):
         idset.add(self.id)
         ids = []
         for g in self.gurus.all():
-            ids.append(g.id)
+            # TODO: This should be inline_artist stuff
+            ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
             idset.add(g.id)
         for g in self.gurus.all():
             for s in g.students.all():
                 if s.id not in idset:
                     idset.add(s.id)
-                    ids.append(s.id)
+                    ids.append((s.id, "%s and %s share the same guru (%s)" % (self.name, s.name, g.name)))
 
-        return [Artist.objects.get(pk=pk) for pk in ids]
+        return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
     def collaborating_artists(self):
-        if self.pk == 9: #t.m krishna
-            ids = [44, 45, 81, 105, 88]
-        else:
-            ids = []
-        return [Artist.objects.get(pk=pk) for pk in ids]
+        # Get all concerts
+        # For each artist on the concerts (both types), add a counter
+        # top 10 artist ids + the concerts they collaborate on
+        c = collections.Counter()
+        concerts = collections.defaultdict(set)
+        for concert in self.concerts():
+            for p in concert.performers():
+                thea = p.performer
+                if thea.id != self.id:
+                    concerts[thea.id].add(concert)
+                    c[thea.id] += 1
+
+        return [(Artist.objects.get(pk=pk), list(concerts[pk])) for pk,count in c.most_common()]
 
     def concerts(self):
         ret = []
@@ -304,7 +315,10 @@ class Recording(CarnaticStyle, data.models.Recording):
             # (e.g. only 3?) then just return 1
             return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
         except:
-            return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
+            try:
+                return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
+            except:
+                return ""
 
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):

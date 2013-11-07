@@ -112,7 +112,25 @@ $(document).ready(function() {
                                     {% endif %}
                                 </div>
                             </div>
+                            <div class="metaContainer" style="width: 315px;">
+                                {% if artist.group_members.count %}
+                                <div class="metaDetails">
+                                <h3>Group members</h3>
+                                {% for member in artist.group_members.all %}
+                                {% badge_mini_artist member %}
+                                {% endfor %}
+                                </div>
+                                {% endif %}
 
+                                {% if artist.groups.count %}
+                                <div class="metaDetails">
+                                <h3>Part of group</h3>
+                                {% for member in artist.groups.all %}
+                                {% badge_mini_artist member %}
+                                {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,8 +162,8 @@ $(document).ready(function() {
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
                         <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
-                            {% for a in artist.similar_artists %}
-                                {% badge_detail_artist a %}
+                            {% for a, guru in artist.similar_artists %}
+                                {% badge_similar_artist a guru=guru %}
                             {% endfor %}
                         </div>
                     </div>
@@ -159,8 +177,8 @@ $(document).ready(function() {
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
                         <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
-                            {% for a in artist.similar_artists %}
-                                {% badge_detail_artist a %}
+                            {% for a, concerts in artist.collaborating_artists %}
+                                {% badge_similar_artist a concerts=concerts %}
                             {% endfor %}
                         </div>
                     </div>

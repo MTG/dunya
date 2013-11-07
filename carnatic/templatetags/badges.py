@@ -15,8 +15,6 @@ def badge_concert(concert):
 
 @register.inclusion_tag("badges/performance.html")
 def badge_performance(performance):
-    if not isinstance(performance, InstrumentPerformance):
-        performance = InstrumentPerformance.objects.get(pk=performance)
     artist = performance.performer
     return {"performance": performance, "artist": artist}
 
@@ -62,6 +60,12 @@ def badge_work(work):
 
 #### Badges for comparing an item to other things of the same type
 
+@register.inclusion_tag("badges/similar_artist.html")
+def badge_similar_artist(artist, concerts=None, guru=None):
+    if not isinstance(artist, Artist):
+        artist = Artist.objects.get(pk=artist)
+    return {"artist": artist, "concerts":concerts, "guru": guru}
+
 @register.inclusion_tag("badges/similar_concert.html")
 def badge_similar_concert(concert):
     if not isinstance(concert, Concert):
@@ -84,8 +88,6 @@ def badge_detail_artist(artist):
 
 @register.inclusion_tag("badges/mini_concert.html")
 def badge_mini_concert(concert):
-    if not isinstance(concert, Concert):
-        concert = Concert.objects.get(pk=concert)
     return {"concert": concert}
 
 @register.inclusion_tag("badges/mini_performance.html")
@@ -96,8 +98,6 @@ def badge_mini_performance(performance):
 
 @register.inclusion_tag("badges/mini_artist.html")
 def badge_mini_artist(artist):
-    if not isinstance(artist, Artist):
-        artist = Artist.objects.get(pk=artist)
     return {"artist": artist}
 
 @register.inclusion_tag("badges/mini_recording.html")

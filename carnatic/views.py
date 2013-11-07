@@ -128,12 +128,12 @@ def artist(request, artistid):
         if i.performer not in similar_artists:
             similar_artists.append(i.performer)
 
-    if artist.main_instrument.percussion:
+    if artist.main_instrument and artist.main_instrument.percussion:
         taalas = []
     else:
         taalas = []
     # vocalist or violinist
-    if artist.main_instrument.id == 1 or artist.main_instrument.id == 2:
+    if artist.main_instrument and artist.main_instrument.id in [1, 2]:
         raagas = []
     else:
         raagas = []
@@ -218,14 +218,32 @@ def recording(request, recordingid):
 
     tags = tagging.tag_cloud(recordingid, "recording")
 
-    wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
-    spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
-    small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
-    audio = docserver.util.docserver_get_url(recording.mbid, "mp3")
-    tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
-    akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
-    tonic = str(round(float(tonic), 2))
-    akshara = str(round(float(akshara), 2))
+    try:
+        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
+    except docserver.util.NoFileException:
+        wave = None
+    try:
+        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
+    except docserver.util.NoFileException:
+        spec = None
+    try:
+        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
+    except docserver.util.NoFileException:
+        small = None
+    try:
+        audio = docserver.util.docserver_get_url(recording.mbid, "mp3")
+    except docserver.util.NoFileException:
+        audio = None
+    try:
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
+        tonic = str(round(float(tonic), 2))
+    except docserver.util.NoFileException:
+        tonic = None
+    try:
+        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
+        akshara = str(round(float(akshara), 2))
+    except docserver.util.NoFileException:
+        akshara = None
 
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "recording": recording,

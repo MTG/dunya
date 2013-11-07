@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 import collections
+import carnatic
 
 register = template.Library()
 
@@ -27,7 +28,10 @@ def inline_artist_list(artists):
             return "(unknown)"
 
 def inline_artist_part(artist):
-    return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
+    if isinstance(artist, carnatic.models.Artist):
+        return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
+    else:
+        return ""
 
 @register.simple_tag
 def inline_concert(concert, bold=False):

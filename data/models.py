@@ -197,17 +197,17 @@ class Concert(BaseModel):
     def performers(self):
         """ The performers on a concert are those who are in the performance relations,
         both on the concert and the concerts recordings.
+        TODO: Should this return a performance object, or an artist?
         """
         person = set()
         ret = []
         IPClass = self.get_object_map("performance")
         ICPClass = self.get_object_map("concertperformance")
         for p in self.performance.all():
-            print p
             if p.id not in person:
                 person.add(p.id)
                 perf = ICPClass.objects.get(concert=self, performer=p)
-                ret.append(p)
+                ret.append(perf)
         for t in self.tracks.all():
             for p in t.performance.all():
                 if p.id not in person:

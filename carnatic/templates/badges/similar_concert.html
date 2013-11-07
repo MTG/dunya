@@ -1,17 +1,17 @@
+{% load inline %}
+{% load badges %}
+
 <div class="concert item">
       <div class="smallPlay"></div>
         <div class="disc pict">
-        <a href="http://localhost:8001/carnatic/concert/2"><img src="./Dunya_files/noconcert.jpg"></a>
+            <a href="{{concert.get_absolute_url}}"><img src="{{concert.get_image_url}}"></a>
     </div>
         <div class="desc"><div class="plus"></div>
-        <a href="http://localhost:8001/carnatic/concert/2"><b>K. V. Narayanaswami concert at Music Academy 1967</b></a>
-        <p><a href="http://localhost:8001/carnatic/artist/5">K. V. Narayanaswami</a></p>
+            <a href="{{concert.get_absolute_url}}"><b>{{concert.name}}</b></a>
+            <p>{%inline_artist_list concert.artistnames %}</p>
         <p>1967</p>
     </div>
         <div class="descOpen">
-    He learned music from Tiger Varadachariar, Sabesa Iyer, Ponniah Pillai, and Sathur Krishna Iyengar. He received a Ph.D. in ethnomusicology from Wesleyan University, Middletown, Connecticut, where he also taught.
-
-He had disciples who have carved names for themselves such as P.UnniKrishnan, S. Sowmya, Savithri Sathyamurthy, Seetha Narayanan, Vasumathi Nagarajan...
     </div>
         <div class="lists">
         	<div  class="left">
@@ -26,89 +26,49 @@ He had disciples who have carved names for themselves such as P.UnniKrishnan, S.
         		  <div class="recording" style="width:40px"><span>recording</span></div>
         		  <div class="composer" style="width:100px"><span>composer</span></div>
         		</div>
-        	
+
         	</div>
         	<div class="right">
         	  <div class="similarList artist">
-          	  <div class="miniitem artist">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem artist">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for a in c.artists %}
+                      {% badge_mini_artist a %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList concert">
-          	  <div class="miniitem concert">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem concert">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for c in c.concerts %}
+                      {% badge_mini_concert c %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList work">
-          	  <div class="miniitem work">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem work">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for w in c.works %}
+                      {% badge_mini_work w %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList instrument active">
-          	  <div class="miniitem instrument">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem instrument">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for i in c.instruments %}
+                      {% badge_mini_instrument i %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList raaga">
-          	  <div class="miniitem raaga">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem raaga">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for r in c.raagas %}
+                      {% badge_mini_raaga r %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList taala">
-          	  <div class="miniitem taala">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem taala">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for t in c.taalas %}
+                      {% badge_mini_taala t %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList recording">
-          	  <div class="miniitem recording">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem recording">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for r in c.recordings %}
+                      {% badge_mini_recording r %}
+                  {% endfor %}
         	  </div>
         	  <div class="similarList composer">
-          	  <div class="miniitem composer">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
-          		<div class="miniitem composer">
-          		  <div class="disco"><a href="http://localhost:8001/carnatic/concert/1"><img src="./Dunya_files/noconcert.jpg"></a></div>
-          		  <label><b>M. D. Ramanathan Concert at Music Academy 1969</b></label>
-          		</div>
+                  {% for c in c.composers %}
+                      {% badge_mini_composer c %}
+                  {% endfor %}
         	  </div>
         	</div>
-        </div> 
+        </div>
       </div>

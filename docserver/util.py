@@ -4,6 +4,9 @@ import tempfile
 import os
 import subprocess
 
+class NoFileException(Exception):
+    pass
+
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
     # TODO: We assume it's MP3 for now.
@@ -44,7 +47,7 @@ def docserver_get_wav_filename(documentid):
     try:
         filename = docserver_get_filename(documentid, "wav", "wave")
         if not os.path.exists(filename):
-            raise Exception("File doesn't exist")
+            raise NoFileException("Wave file doesn't exist")
         return filename, False
     except: # Error getting file because it's not in the db or it doesn't exist
         print "Error getting file, calculating again"
@@ -75,7 +78,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         print "successful sourcetype", slug, "returning"
         files = doc.sourcefiles.filter(file_type=sourcetype)
         if len(files) == 0:
-            raise Exception("Looks like a sourcefile, but I can't find one")
+            raise NoFileException("Looks like a sourcefile, but I can't find one")
         else:
             return files[0]
 
@@ -91,7 +94,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         if subtype:
             dfs = dfs.filter(outputname=subtype)
         if dfs.count() > 1:
-            raise Exception("Found more than 1 outputname per this modver without a subtype set")
+            raise NoFileException("Found more than 1 outputname per this modver without a subtype set")
         elif dfs.count() == 1:
             # Select the part.
             # If the file has many parts and ?part is not set then it's an error
@@ -101,16 +104,16 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
             else:
                 parts = parts.all()
             if parts.count() > 1:
-                raise Exception("Found more than 1 part without part set")
+                raise NoFileException("Found more than 1 part without part set")
             elif parts.count() == 1:
                 return parts[0]
             else:
-                raise Exception("Can't find")
+                raise NoFileException("No parts on this file")
         else:
             # If no files, or none with this version
-            raise Exception("Can't find")
+            raise NoFileException("No derived files with this type/subtype")
     else:
-        raise Exception("Can't find")
+        raise NoFileException("No known versions for this module")
 
 def docserver_get_contents(documentid, slug, subtype=None, part=None, version=None):
     return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
