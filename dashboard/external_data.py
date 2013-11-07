@@ -25,6 +25,7 @@ def import_instrument_description(instrument, overwrite=False):
         imagefilename = instrument.name.replace(" ", "_")
         try:
             existingimg = instrument.images.get(image__contains="%s" % imagefilename)
+            # TODO: If the image doesn't exist on disk this is an error. fix it.
             if existingimg.image.size != len(img) or overwrite:
                 # If the imagesize has changed, or overwrite is set, remove the image
                 existingimg.delete()
@@ -70,7 +71,9 @@ def import_artist_bio(a, overwrite):
 
             try:
                 existingimg = a.images.get(image__contains="%s" % a.mbid)
-                if existingimg.image.size != len(i) or overwrite:
+                # TODO: If the image doesn't exist on disk this is an error. fix it.
+                #if existingimg.image.size != len(i) or overwrite:
+                if overwrite:
                     # If the imagesize has changed, or overwrite is set, remove the image
                     existingimg.delete()
             except data.models.Image.DoesNotExist:
