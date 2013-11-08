@@ -1,6 +1,8 @@
 {% load inline %}
 {% load badges %}
 
+{% comment %} arguments: concert, works, similarworks, raaga, sraaga {% endcomment %}
+
 <div class="concert item">
       <div class="smallPlay"></div>
         <div class="disc pict">
@@ -17,57 +19,69 @@
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
-        		  <div class="artist" style="width:80px"><span>artist</span></div>
-        		  <div class="concert" style="width:50px"><span>concert</span></div>
+        		  <div class="artist active" style="width:80px"><span>artist</span></div>
         		  <div class="work" style="width:10px"><span>work</span></div>
-        		  <div class="instrument active" style="width:170px"><span>instrument</span></div>
         		  <div class="raaga" style="width:90px"><span>raaga</span></div>
         		  <div class="taala" style="width:20px"><span>taala</span></div>
-        		  <div class="recording" style="width:40px"><span>recording</span></div>
-        		  <div class="composer" style="width:100px"><span>composer</span></div>
         		</div>
 
         	</div>
         	<div class="right">
         	  <div class="similarList artist">
-                  {% for a in c.artists %}
+                {% if artistsame %}
+                Albums share these same artists:<br>
+                  {% for a in artistsame %}
                       {% badge_mini_artist a %}
                   {% endfor %}
-        	  </div>
-        	  <div class="similarList concert">
-                  {% for c in c.concerts %}
-                      {% badge_mini_concert c %}
+                {% endif %}
+                {% if artistsame %}
+                Albums share these similar artists:<br>
+                  {% for a in artistsimilar %}
+                      {% badge_mini_artist a %}
                   {% endfor %}
+                {% endif %}
         	  </div>
         	  <div class="similarList work">
-                  {% for w in c.works %}
+                {% if worksame %}
+                Albums share these same works:<br>
+                  {% for w in worksame %}
                       {% badge_mini_work w %}
                   {% endfor %}
-        	  </div>
-        	  <div class="similarList instrument active">
-                  {% for i in c.instruments %}
-                      {% badge_mini_instrument i %}
+                {% endif %}
+                {% if worksame %}
+                Albums share these similar works:<br>
+                  {% for w in worksimilar %}
+                      {% badge_mini_work w %}
                   {% endfor %}
+                {% endif %}
         	  </div>
         	  <div class="similarList raaga">
-                  {% for r in c.raagas %}
-                      {% badge_mini_raaga r %}
+                {% if raagasame %}
+                Albums share these same raagas:<br>
+                  {% for w in raagasame %}
+                      {% badge_mini_raaga w %}
                   {% endfor %}
+                {% endif %}
+                {% if raagasame %}
+                Albums share these similar raagas:<br>
+                  {% for w in raagasimilar %}
+                      {% badge_mini_raaga w %}
+                  {% endfor %}
+                {% endif %}
         	  </div>
         	  <div class="similarList taala">
-                  {% for t in c.taalas %}
-                      {% badge_mini_taala t %}
+                {% if taalasame %}
+                Albums share these same taalas:<br>
+                  {% for w in taalasame %}
+                      {% badge_mini_taala w %}
                   {% endfor %}
-        	  </div>
-        	  <div class="similarList recording">
-                  {% for r in c.recordings %}
-                      {% badge_mini_recording r %}
+                {% endif %}
+                {% if taalasame %}
+                Albums share these similar taalas:<br>
+                  {% for w in taalasimilar %}
+                      {% badge_mini_taala w %}
                   {% endfor %}
-        	  </div>
-        	  <div class="similarList composer">
-                  {% for c in c.composers %}
-                      {% badge_mini_composer c %}
-                  {% endfor %}
+                {% endif %}
         	  </div>
         	</div>
         </div>

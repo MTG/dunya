@@ -67,10 +67,25 @@ def badge_similar_artist(artist, concerts=None, guru=None):
     return {"artist": artist, "concerts":concerts, "guru": guru}
 
 @register.inclusion_tag("badges/similar_concert.html")
-def badge_similar_concert(concert):
+def badge_similar_concert(concert, similarity):
+    print "in concert similarity. sim object is"
+    print similarity
     if not isinstance(concert, Concert):
         concert = Concert.objects.get(pk=concert)
-    return {"concert": concert}
+    return {"concert": concert,
+            "worksame": similarity.get("worksame", []),
+            "worksimilar": similarity.get("worksimilar", []),
+            "worknum": similarity.get("worknum", []),
+            "taalasame": similarity.get("taalasame", []),
+            "taalasimilar": similarity.get("taalasimilar", []),
+            "taalanum": similarity.get("taalanum", []),
+            "raagasame": similarity.get("raagasame", []),
+            "raagasimilar": similarity.get("raagasimilar", []),
+            "raaganum": similarity.get("raaganum", []),
+            "artistsame": similarity.get("artistsame", []),
+            "artistsimilar": similarity.get("artistsimilar", []),
+            "artistnum": similarity.get("artistnum", []),
+            }
 
 #### Detail badges (for showing on the detail page of another item)
 @register.inclusion_tag("badges/detail_concert.html")

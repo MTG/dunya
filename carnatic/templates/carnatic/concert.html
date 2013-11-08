@@ -134,18 +134,9 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
 	                    <div class="scrollblock" id="results">
-	                        {% for concert in artist_concerts %}
-	                            {% badge_similar_concert concert %}
-	                        {% endfor %}
-	                        {% for concert in work_concerts %}
-	                            {% badge_similar_concert concert %}
-	                        {% endfor %}
-	                        {% for concert in raaga_concerts %}
-	                            {% badge_similar_concert concert %}
-	                        {% endfor %}
-	                        {% for concert in taala_concerts %}
-	                            {% badge_similar_concert concert %}
-	                        {% endfor %}
+                            {% for concert, similarity in similar_concerts.items %}
+                                {% badge_similar_concert concert similarity %}
+                            {% endfor %}
 	                    </div>
 	     			</div>
 	     		</div>

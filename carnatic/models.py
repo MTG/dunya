@@ -147,14 +147,15 @@ class Concert(CarnaticStyle, data.models.Concert):
                     concertcounts[c.pk] += 1
                     concertartists[c.pk].append(a)
             similar = a.similar_artists()
-            for similara in similar:
+            for similara, desc in similar:
                 if similara not in artists:
                     cs = Concert.objects.filter(Q(artists=similara) | Q(performance=similara) | Q(tracks__performance=similara)).distinct()
                     for c in cs:
                         if c.pk != self.pk:
-                            concertcounts[c.pk] += 1
-                            similarartists[c.pk].append(similara)
-        return concertcounts, concertartists, similarartists
+                            if similara not in similarartists[c.pk]:
+                                concertcounts[c.pk] += 1
+                                similarartists[c.pk].append(similara)
+        return len(artists), concertcounts, concertartists, similarartists
 
 
     def get_same_and_similar_by_raaga(self):
@@ -163,20 +164,24 @@ class Concert(CarnaticStyle, data.models.Concert):
         similarraagas = collections.defaultdict(list)
         concertcounts = collections.Counter()
         for r in raagas:
+            print "raaga", r
             cs = Concert.objects.filter(tracks__work__raaga=r)
+            print "got %s concerts" % cs.count()
             for c in cs:
                 if c.pk != self.pk:
-                    concertcounts[c.pk] += 1
-                    concertraagas[c.pk].append(r)
+                    if r not in concertraagas[c.pk]:
+                        concertcounts[c.pk] += 1
+                        concertraagas[c.pk].append(r)
             similars = r.get_similar()
             for sr in similars:
                 if sr not in raagas:
                     cs = Concert.objects.filter(tracks__work__taala=sr)
                     for c in cs:
                         if c.pk != self.pk:
-                            concertcounts[c.pk] += 1
-                            similarraagas[c.pk].append(sr)
-        return concertcounts, concertraagas, similarraagas
+                            if sr not in similarraagas[c.pk]:
+                                concertcounts[c.pk] += 1
+                                similarraagas[c.pk].append(sr)
+        return len(raagas), concertcounts, concertraagas, similarraagas
 
     def get_same_and_similar_by_taala(self):
         taalas = Taala.objects.filter(work__recording__concert=self)
@@ -187,17 +192,19 @@ class Concert(CarnaticStyle, data.models.Concert):
             cs = Concert.objects.filter(tracks__work__taala=t)
             for c in cs:
                 if c.pk != self.pk:
-                    concertcounts[c.pk] += 1
-                    concerttaalas[c.pk].append(t)
+                    if t not in concerttaalas[c.pk]:
+                        concertcounts[c.pk] += 1
+                        concerttaalas[c.pk].append(t)
             similars = t.get_similar()
             for st in similars:
                 if st not in taalas:
                     cs = Concert.objects.filter(tracks__work__taala=st)
                     for c in cs:
                         if c.pk != self.pk:
-                            concertcounts[c.pk] += 1
-                            similartaalas[c.pk].append(st)
-        return concertcounts, concerttaalas, similartaalas
+                            if st not in similartaalas[c.pk]:
+                                concertcounts[c.pk] += 1
+                                similartaalas[c.pk].append(st)
+        return len(taalas), concertcounts, concerttaalas, similartaalas
 
 
     def get_same_and_similar_by_work(self):
@@ -209,9 +216,10 @@ class Concert(CarnaticStyle, data.models.Concert):
             cs = Concert.objects.filter(tracks__work=w)
             for c in cs:
                 if c.pk != self.pk:
-                    concertcounts[c.pk] += 1
-                    concertworks[c.pk].append(w)
-        return concertcounts, concertworks, similarworks
+                    if w not in concertworks[c.pk]:
+                        concertcounts[c.pk] += 1
+                        concertworks[c.pk].append(w)
+        return len(works), concertcounts, concertworks, similarworks
 
     def get_similar(self):
         bywork = self.get_same_and_similar_by_work()
@@ -219,13 +227,39 @@ class Concert(CarnaticStyle, data.models.Concert):
         bytaala = self.get_same_and_similar_by_taala()
         byartist = self.get_same_and_similar_by_artist()
 
-        simiar = {}
+        ret = collections.defaultdict(dict)
+        wnum, wconcert, wsame, wsimilar = bywork
+        rnum, rconcert, rsame, rsimilar = byraaga
+        tnum, tconcert, tsame, tsimilar = bytaala
+        anum, aconcert, asame, asimilar = byartist
+
+        for cid, count in wconcert.most_common():
+            ret[cid]["worksame"] = wsame.get(cid, [])
+            ret[cid]["worksimilar"] = wsimilar.get(cid, [])
+            ret[cid]["worknum"] = wnum
+        for cid, count in rconcert.most_common():
+            ret[cid]["raagasame"] = rsame.get(cid, [])
+            ret[cid]["raagasimilar"] = rsimilar.get(cid, [])
+            ret[cid]["raaganum"] = wnum
+        for cid, count in tconcert.most_common():
+            ret[cid]["taalasame"] = tsame.get(cid, [])
+            ret[cid]["taalasimilar"] = tsimilar.get(cid, [])
+            ret[cid]["taalanum"] = wnum
+        for cid, count in aconcert.most_common():
+            ret[cid]["artistsame"] = asame.get(cid, [])
+            ret[cid]["artistsimilar"] = asimilar.get(cid, [])
+            ret[cid]["artistnum"] = wnum
+
+        # For each concert we need number of artists, works, raagas, taalas
         # similar: [{"concert": theconcert, "samework": [works], "similarworks": [similar], ...raaga, taala, artist}]
         # sort by number of raagas, taalas, works, artists, similar r, similart, similarw, similara
 
-        #return [(Concert.objects.get(pk=pk), concertartists[pk]) for pk, count in concertcounts.most_common()]
-        #return [(Concert.objects.get(pk=pk), concertworks[pk]) for pk, count in concertcounts.most_common()]
-        return [(Concert.objects.get(pk=pk), concertraagas[pk]) for pk, count in concertcounts.most_common()]
+        newret = {}
+        for k, v in ret.items():
+            concert = Concert.objects.get(pk=k)
+            newret[concert] = v
+        return newret
+
 
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
