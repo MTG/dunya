@@ -237,6 +237,10 @@ class Work(BaseModel):
         ConcertClass = self.get_object_map("concert")
         return ConcertClass.objects.filter(tracks__work=self).all()
 
+    def artists(self):
+        ArtistClass = self.get_object_map("artist")
+        return ArtistClass.objects.filter(primary_concerts__tracks__work=self).distinct()
+
 class WorkAttribute(models.Model):
     class Meta:
         abstract = True

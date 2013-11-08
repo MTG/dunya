@@ -89,8 +89,10 @@
             </a>
             </div>
             	<div id="globalsearch">
-	            	<input type="text" value="search..." />
+                    <form method="get" action="/carnatic">
+                        <input type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
 	            	<div class="button"></div>
+                </form>
             	</div><!-- globalserach -->
             	<div id="globalMusic">
             		<label>Select Music Style</label>

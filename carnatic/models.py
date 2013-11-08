@@ -187,13 +187,16 @@ class Raaga(data.models.BaseModel):
         return Composer.objects.filter(work__raaga=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__raaga=self).distinct()
+        return Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1,2]).distinct()
 
     def get_similar(self):
         if self.pk in raaga_similar:
             return [Raaga.objects.get(pk=id) for id in raaga_similar[self.pk]]
         else:
             return []
+
+    def recordings(self):
+        return Recording.objects.filter(work__raaga=self)
 
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -308,6 +311,13 @@ class Recording(CarnaticStyle, data.models.Recording):
             if ts:
                 return ts[0]
         return None
+
+    def artist(self):
+        aa = self.all_artists()
+        if aa:
+            return aa[0]
+        else:
+            return None
 
     def waveform_image(self):
         try:

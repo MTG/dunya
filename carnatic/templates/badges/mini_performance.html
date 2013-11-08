@@ -3,8 +3,8 @@
 <div class="miniitem instrument">
   <div class="colorCode shadow1"></div>
   <div class="disco"><a href="{{performance.artist.get_absolute_url}}">
-          <img src="{{performance.artist.get_small_image_url}}"></a></div>
-  <label><b>{% inline_artist performance.artist %}</b><br>
+          <img width="50" src="{{performance.performer.get_small_image_url}}"></a></div>
+  <label><b>{% inline_artist performance.performer %}</b><br>
       {% inline_instrument performance.instrument %}</label>
 </div>
 

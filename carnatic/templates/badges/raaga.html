@@ -1,5 +1,7 @@
 {% load staticfiles %}
 {% load inline %}
+{% load badges %}
+
 <div class="raaga item">
   <div class="disc pict" style="text-align: center">
   <a href="{{raaga.get_absolute_url}}"><img src="{{raaga.get_image_url}}" style="vertical-align: middle; width:190px !important;"></a>
@@ -11,9 +13,17 @@
   <div class="descOpen">
 </div>
   <div class="lists">
-  <div  class="left">
+  <div class="left">
+          <h3>Compositions</h3>
+          {% for w in raaga.works %}
+          {% badge_mini_work w %}
+          {% endfor %}
 </div>
   <div class="right">
+          <h3>Artists who perform</h3>
+            {% for a in raaga.artists %}
+            {% badge_mini_artist a %}
+            {% endfor %}
 </div>
 </div>
 </div>

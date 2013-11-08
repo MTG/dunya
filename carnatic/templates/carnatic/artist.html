@@ -62,7 +62,7 @@ $(document).ready(function() {
             <div class="bigImage"><img src="{{artist.get_image_url}}"></div>
             <div id="meta">
 <!--
-										<h3>Common raagas</h3>
+										<h3>references</h3>
 										<span>
                                             {% for ref in artist.reference_urls %}
                                             <a href="{{ref.url}}">{{ref.title}}</a>
@@ -112,6 +112,25 @@ $(document).ready(function() {
                                     {% endif %}
                                 </div>
                             </div>
+                            {% if raagas or taalas %}
+                                <div class="metaContainer" style="width: 315px;">
+                                    <div class="metaDetails">
+                                    {% if raagas %}
+                                    <h3>Common raagas</h3>
+                                    {% endif %}
+                                    {% if taalas %}
+                                    <h3>Common taalas</h3>
+                                    {% endif %}
+                                    {% for r, count in raagas %}
+                                        <li>{% inline_raaga r %}
+                                    {% endfor %}
+                                    {% for t, count in taalas %}
+                                        <li>{% inline_taala t %}
+                                    {% endfor %}
+                                    </div>
+
+                                </div>
+                            {% endif %}
                             <div class="metaContainer" style="width: 315px;">
                                 {% if artist.group_members.count %}
                                 <div class="metaDetails">
