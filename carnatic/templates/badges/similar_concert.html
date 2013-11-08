@@ -9,7 +9,7 @@
         <div class="desc"><div class="plus"></div>
             <a href="{{concert.get_absolute_url}}"><b>{{concert.name}}</b></a>
             <p>{%inline_artist_list concert.artistnames %}</p>
-        <p>1967</p>
+            {% if concert.year %}<p>{{concert.year}}</p>{% endif %}
     </div>
         <div class="descOpen">
     </div>
