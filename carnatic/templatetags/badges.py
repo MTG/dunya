@@ -87,7 +87,12 @@ def badge_similar_concert(concert, similarity):
             "artistnum": similarity.get("artistnum", []),
             }
 
+@register.inclusion_tag("badges/similar_raaga.html")
+def badge_similar_raaga(raaga):
+    return {"raaga": raaga}
+
 #### Detail badges (for showing on the detail page of another item)
+
 @register.inclusion_tag("badges/detail_concert.html")
 def badge_detail_concert(concert):
     if not isinstance(concert, Concert):
