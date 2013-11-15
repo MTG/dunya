@@ -254,10 +254,11 @@ class Concert(CarnaticStyle, data.models.Concert):
         # similar: [{"concert": theconcert, "samework": [works], "similarworks": [similar], ...raaga, taala, artist}]
         # sort by number of raagas, taalas, works, artists, similar r, similart, similarw, similara
 
-        newret = {}
+        newret = []
         for k, v in ret.items():
             concert = Concert.objects.get(pk=k)
-            newret[concert] = v
+            newret.append((concert, v))
+        newret = sorted(newret, reverse=True, key=lambda a: len(a[1].get("worksame", [])) + len(a[1].get("worksimilar", [])))
         return newret
 
 

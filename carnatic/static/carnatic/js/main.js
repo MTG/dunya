@@ -7,13 +7,13 @@ var globalSpeed  = 500;
 
 $(document).ready(function(){
 	//ScrollBlock
-	widthOfChildren(".scrollblock");	
+	widthOfChildren(".scrollblock");
 	$("#filterArea").on("click",".filterList.filterGlobalList ul li",function(){
         $(this).toggleClass("selected");
         entity = $(this).parent().parent().parent().attr("eid");
 		getResults2($(this), entity);
     });
-    
+
     $('#results').isotope({
       itemSelector : '.item',
       layoutMode : 'fitRows'
@@ -30,9 +30,9 @@ function removeFilter(entity_filter){
     $(".filterBall").addClass("filterBallClosed");
     $("#entitiesList").addClass("filterListClosed");
     $(".filters."+entity_filter).remove();
-    
+
     filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
-    
+
     delete filtersOutputArray["eid"+entity_filter];
     delete filtersLiteralOutputArray["eid"+entity_filter];
     delete EspecificOutputArray["eid"+entity_filter];
@@ -133,12 +133,14 @@ function loadClicks(){
 		$(this).parent().parent().toggleClass("open");
 		$('#results').isotope( 'reLayout');
 	});
-	
+
 	$('.item .similarity div').click(function(){
-    $('.item .similarity div').removeClass('active');	
+    $('.item .similarity div').removeClass('active');
       theparent = $(this).parent();
-      buscar = ".right .similarList "+$(this).attr('class');
+      buscar = ".right ."+$(this).attr('class');
+      theparent.parent().parent().find(".right .similarList").removeClass('active');
       theparent.parent().parent().find(buscar).addClass('active');
+      theparent.parent().parent().find(".right").fadeIn('slow');
       $(this).addClass("active");
     });
 
@@ -163,13 +165,13 @@ function loadClicks(){
         console.log(url);
         window.location.href = url;
 	});
-	
+
     /* Select Music Style */
     $("#gmSelected").click(function(){
         $("#gmDropDown").fadeIn();
     });
     $("#gmDropDown").click(function(){
-	   	$("#gmDropDown").fadeOut(); 
+	   	$("#gmDropDown").fadeOut();
     });
 
     $("#entitiesList ul li").click(function(){
@@ -240,11 +242,11 @@ function populateBreadcrumbs(){
 	entityHTML_bc = "";
 	hay= "no";
 	for( i in filtersArray){
-		entity_name = ("eid"+filtersArray[i]);	
+		entity_name = ("eid"+filtersArray[i]);
 		entity_realName = $("#entitiesList ul li[eid='"+entity_name+"']").text().toLowerCase();
 		entityHTML_bc += "<div class='bread entity_"+entity_name+" "+entity_realName+"'><div class='breadarrow'></div><span><a href='#'>";
 		entityHTML_bc += "<h3>"+entity_realName+"</h3>";
-		if(filtersLiteralOutputArray[entity_name]){			
+		if(filtersLiteralOutputArray[entity_name]){
 				$.each(filtersLiteralOutputArray[entity_name], function(key, info) {
 			           entityHTML_bc += key+"- "+info+"<br>";
 				});
@@ -255,22 +257,22 @@ function populateBreadcrumbs(){
 		for( i in EspecificOutputArray[entity_name]){
 			especific_name = EspecificOutputArray[entity_name][i];
 			entityHTML_bc += especific_name+" ";
-			hay = "yes";	
+			hay = "yes";
 		}
 		if(hay == "no"){
 			entityHTML_bc += "Nothing selected";
 		}
-		entityHTML_bc += "</a></span></div>";	
+		entityHTML_bc += "</a></span></div>";
 	}
-	
+
 	$("#breadcrumb").html(entityHTML_bc);
 }
 
 function sumarizeFilter(object){
 	entity_name = object.parent().attr("eid");
-	summaryHTML = "";	
+	summaryHTML = "";
 	if(jQuery.isEmptyObject(filtersLiteralOutputArray)){
-	
+
 	}else{
 		$.each(filtersLiteralOutputArray[entity_name], function(nom, valors) {
     		elsvalors = valors.join('<br>·');
@@ -278,7 +280,7 @@ function sumarizeFilter(object){
 		});
 	}
 	if(jQuery.isEmptyObject(EspecificOutputArray)){
-	
+
 	}else{
 		summaryHTML += "<b>Selection</b><br>";
 		$.each(EspecificOutputArray[entity_name], function(nom, valors) {
@@ -286,7 +288,7 @@ function sumarizeFilter(object){
 		});
 	}
 	    object.find(".filterSummary").html(summaryHTML);
-    
+
 }
 
 function showFilterData(data, entity_filter,filterName,eid){
@@ -347,7 +349,7 @@ function showFilterData(data, entity_filter,filterName,eid){
             console.log("change");
         }
     });
-  
+
 }
 
 function listFilterData(data, entity_filter){
@@ -401,7 +403,7 @@ function getResults(item){
             }
         }
     }
-    
+
     function getResults2(item, entity){
     	theValue = "";
 		theValue = item.html();
@@ -424,7 +426,7 @@ function getResults(item){
         		EspecificOutputArray[entity] = new Array();
 	        	EspecificOutputArray[entity].push(theValue);
         	}
-        	
+
         }
     }
 

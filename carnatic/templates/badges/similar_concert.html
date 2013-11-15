@@ -19,22 +19,31 @@
         	<div  class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
-        		  <div class="artist active" style="width:80px"><span>artist</span></div>
-        		  <div class="work" style="width:10px"><span>work</span></div>
+                  {% if artistsame|length or artistsimilar|length %}
+        		  <div class="artist active" style="width:90px"><span>artist</span></div>
+                  {% endif %}
+                  {% if worksame|length or worksimilar|length %}
+        		  <div class="work" style="width:90px"><span>work</span></div>
+                  {% endif %}
+                  {% if raagasame|length or raagasimilar|length %}
         		  <div class="raaga" style="width:90px"><span>raaga</span></div>
-        		  <div class="taala" style="width:20px"><span>taala</span></div>
+                  {% endif %}
+                  {% if taalasame|length or taalasimilar|length %}
+        		  <div class="taala" style="width:90px"><span>taala</span></div>
+                  {% endif %}
         		</div>
 
         	</div>
         	<div class="right">
         	  <div class="similarList artist">
-                {% if artistsame %}
+                {% if artistsame|length %}
                 Albums share these same artists:<br>
                   {% for a in artistsame %}
                       {% badge_mini_artist a %}
                   {% endfor %}
                 {% endif %}
-                {% if artistsame %}
+                <div class="clearer"></div>
+                {% if artistsimilar|length %}
                 Albums share these similar artists:<br>
                   {% for a in artistsimilar %}
                       {% badge_mini_artist a %}
@@ -48,7 +57,8 @@
                       {% badge_mini_work w %}
                   {% endfor %}
                 {% endif %}
-                {% if worksame %}
+                {% if worksimilar %}
+                <div class="clearer"></div>
                 Albums share these similar works:<br>
                   {% for w in worksimilar %}
                       {% badge_mini_work w %}
@@ -62,7 +72,8 @@
                       {% badge_mini_raaga w %}
                   {% endfor %}
                 {% endif %}
-                {% if raagasame %}
+                <div class="clearer"></div>
+                {% if raagasimilar %}
                 Albums share these similar raagas:<br>
                   {% for w in raagasimilar %}
                       {% badge_mini_raaga w %}
@@ -76,7 +87,8 @@
                       {% badge_mini_taala w %}
                   {% endfor %}
                 {% endif %}
-                {% if taalasame %}
+                <div class="clearer"></div>
+                {% if taalasimilar %}
                 Albums share these similar taalas:<br>
                   {% for w in taalasimilar %}
                       {% badge_mini_taala w %}

@@ -1,0 +1,30 @@
+{% load inline %}
+{% load badges %}
+
+  <div class="artist item">
+      <div class="smallPlay"></div>
+        <div class="disc pict">
+            <a href="{{artist.get_absolute_url}}"><img src="{{artist.get_image_url}}"></a>
+    </div>
+        <div class="desc"><div class="plus"></div>
+            {% inline_artist artist %}
+            <p>{% if artist.begin %}{{artist.begin}}{% else %}&nbsp;{% endif %}</p>
+        <p>Primary instrument: {% inline_instrument artist.main_instrument %}
+    </div>
+
+        <div class="lists similar">
+            <div class="left" style="padding:1em;">
+                {% if guru %}
+                    {{guru}}
+                {% endif %}
+                {% if concerts %}
+                Concerts that these artists collaborate on<br>
+                  {% for c in concerts %}
+                      {% badge_mini_concert c %}
+                  {% endfor %}
+                {% endif %}
+            </div>
+            <div class="right">
+            </div>
+        </div>
+      </div>
