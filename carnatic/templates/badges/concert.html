@@ -19,7 +19,7 @@
           <label>Length</label> <span class="value">02:26:57</span>
           <div class="clearer"></div>
         </div>
-        <h3>DESCRIPTION</h3>
+        <h3></h3>
         <p class="value"></p>
       </div>
       <div class="lists">
@@ -30,8 +30,8 @@
           {% endfor %}
         </div>
 
-        <div class="right">   
-          <h3>Performers</h3>       
+        <div class="right">
+          <h3>Performers</h3>
            {% for perf in concert.performers %}
            {% badge_mini_performance perf %}
            {% endfor %}

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 import collections
+import carnatic
 
 register = template.Library()
 
@@ -21,10 +22,16 @@ def inline_artist_list(artists):
         firststr = ", ".join(firsturls)
         return "%s & %s" % (firststr, lasturl)
     else:
-        return inline_artist_part(artists[0])
+        if len(artists):
+            return inline_artist_part(artists[0])
+        else:
+            return "(unknown)"
 
 def inline_artist_part(artist):
-    return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
+    if isinstance(artist, carnatic.models.Artist):
+        return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
+    else:
+        return ""
 
 @register.simple_tag
 def inline_concert(concert, bold=False):
@@ -49,11 +56,11 @@ def inline_work(work):
 
 @register.simple_tag
 def inline_raaga(raaga):
-    return '<a href="%s">%s</a>' % (raaga.get_absolute_url(), raaga.name)
+    return '<a href="%s">%s</a>' % (raaga.get_absolute_url(), raaga.name.title())
 
 @register.simple_tag
 def inline_taala(taala):
-    return '<a href="%s">%s</a>' % (taala.get_absolute_url(), taala.name)
+    return '<a href="%s">%s</a>' % (taala.get_absolute_url(), taala.name.title())
 
 @register.simple_tag
 def inline_instrument(instrument):

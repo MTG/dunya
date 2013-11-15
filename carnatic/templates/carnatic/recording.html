@@ -53,10 +53,10 @@ function updateProgress() {
     progress_minutes = Math.floor(audio.currentTime/60);
     resto = (progress_seconds-(progress_minutes*60));
     if(resto<10){
-		resto = "0"+resto;    
+		resto = "0"+resto;
     }
     if(progress_minutes<10){
-		progress_minutes = "0"+progress_minutes;    
+		progress_minutes = "0"+progress_minutes;
     }
     progress_percent = (audio.currentTime / audio.duration * 100);
 	ampleMask = rendersMask.width();
@@ -68,7 +68,7 @@ function updateProgress() {
     nouLeft2 = ((ampleRenderTotal*progress_percent)/100);
     capcal.css('left',nouLeft);
     capcalTotal.css('left',nouLeft2);
-    
+
     if(nouLeft>(ampleMask/2)){
     	decalatge = (nouLeft-(ampleMask/2))*(-1);
 	    renders.css('left',decalatge);
@@ -97,37 +97,11 @@ function playrecord(){
 
 {% block wrap %}
 
-<div id="filterMask">
-	    <div id="filterArea">
 
-	    	<div id="entitiesList" class="filterList">
-	    		<h3>Chose your query</h3>
-	        	<ul>
-
-	        	</ul>
-	    	</div>
-
-	    	<div id="breadcrumb">
-	    		<div class="bread entity_1 artist">
-	    			<div class="breadarrow"></div>
-	    			<span><a href="#">No selection</a></span>
-	    		</div>
-	    		<div class="bread entity_3 work">
-	    			<div class="breadarrow"></div>
-	    			<span><a href="#">No selection</a></span>
-	    		</div>
-	    		<div class="bread entity_4 instrument">
-	    			<div class="breadarrow"></div>
-	    			<span><a href="#">No selection</a></span>
-	    		</div>
-	    	</div>
-
-	    </div>
-     </div>
-
- <div id="detail" class="recording"> 
+<div id="detail" class="recording">
      	<div id="header">
-     		<div id="summary">
+     	   <div id="scrollrec">
+         <div id="summary">
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{recording.title}}</h1>
@@ -136,11 +110,10 @@ function playrecord(){
      			</div>
      			<div id="summaryBack"></div>
      		</div>
-	     		
-     		<div id="meta">
+         <div id="meta">
 	     		<div class="metaBlock">
 					<div class="metaMask">
-				 		<div class="metaContainer">	
+				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails">
 								<span class="list">
 									<label>From album</label><b>{% inline_concert recording.concert_set.get %}</b>
@@ -156,8 +129,7 @@ function playrecord(){
 		    							{% endfor %}
 		    						</b>
 									{% endif %}
-									
-									
+
 									{% if recording.work.raaga %}
 									<label>Raaga</label><b>
 					     				{% for r in recording.work.raaga.all %}
@@ -165,68 +137,124 @@ function playrecord(){
 		    							{% endfor %}
 									</b>
 									{% endif %}
+
                                 {% endif %}
-									
+									{% if tonic %}
+                                    <label>Tonic</label><b>{{tonic}} Hz </b>
+									{% endif %}
+									{% if akshara %}
+                                    <label>Akshara time period</label><b>{{akshara}} seconds </b>
+									{% endif %}
+
 								</span>
 							</div>
 				 		</div>
 					</div>
 	     		</div>
      		</div>
-	 		<div id="control">
-	 			<div class="revButton"></div>
-	 			<div class="plButton" onclick="playrecord();"></div>
-	 			<div class="folButton"></div>
-	 		</div>
-	 		<div id="timecode">00:00:00</div>
-	 		
-	 		<div id="zooms">
-	 			<span>zoom level</span>
-		 		<a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
-				<a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
-				<a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
-				<a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
-	 		</div>
-	 		
+     	   </div>
+         <div id="totalcontrol">
+          <div id="control">
+            <div class="revButton"></div>
+            <div class="plButton" onclick="playrecord();"></div>
+            <div class="folButton"></div>
+          </div>
+         </div>
+         <div class="graph">
+           <img src="./Dunya_files/graph.png">
+         </div>
 	     	<div class="clearfix"></div>
-
      	</div><!-- HEADER END -->
 
 	 	<div class="alldata">
+	 	    <div class="container">
 	     	<div class="thedata">
 	     		<div id="rendersMask">
 	     			<div id="renders">
 	     				<div id="capcal"></div>
 		     			<div id="bigWave">
-					 		<img src="{% static 'carnatic/img/develop/Waveform_markers.jpg' %}" />
-					 		<img src="{% static 'carnatic/img/develop/Pitch.jpg' %}" />
-					 	</div>
+                            <img src="{{waveform}}">
+		     			   <div id="zooms">
+                  <a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
+                  <a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
+                  <a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
+                  <a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+                </div>
+              </div>
+		     			<div id="renderTotal">
+		     			   <div id="capcalTotal"></div>
+                           <img src="{{smallimage}}">
+              </div>
+		     			<div id="bigPitch">
+                            <img src="{{spectrogram}}">
+		     			 <div id="zooms">
+                  <a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
+                  <a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
+                  <a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
+                  <a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+                </div>
+		     			</div>
 	     			</div>
 	     		</div>
-	     		<div id="renderTotal"><div id="capcalTotal"></div>
-	     		<img src="{% static 'carnatic/img/develop/Waveform_markers.jpg' %}" />
+	     		<div class="container2">
+	     		  <div class="waveLabel">
+	     		    <h1>rhythm</h1>
+	     		  </div>
+	     		  <div id="totalcontrol2">
+                      <!-- <div id="timecode">00:00:00<span>00:03:24</span></div> -->
+
+            </div>
+            <div class="pitchLabel">
+              <h1>melody</h1>
+            </div>
 	     		</div>
 	     	</div>
-	    
+	     	</div>
 		 	<div class="clearfix"></div>
 	 	</div>
-	 	
+
 	 		<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Performers</h3>
 	     		</div>
-	     		
+
 	     		<div class="rightdata">
 	     			<div class="innerrightdata nopad">
+                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
 	                    {% for performance in recording.instrumentperformance_set.all %}
-	                        {% badge_performance performance %}	                    
+	                        {% badge_performance performance %}
 	                    {% endfor %}
+                    </div>
 		     			<div class="clearfix"></div>
 	     			</div>
 	     		</div>
+
 	     	</div>
-	 	
+
 	 		<!-- COMMENTS -->
+
+				<div class="thedata">
+		     		<div class="leftdata">
+			     		<h3></h3>
+		     		</div>
+		     		<div class="rightdata">
+		     			<div class="innerrightdata">
+				 			<p>Please <a href="http://localhost:8001/social/login/?next=/carnatic/recording/1020">log in</a> to leave a comment or to add a tag.</p>
+		     			</div>
+		     		</div>
+		 		</div>
+
+
+	 	<div class="clearfix"></div>
+</div>
+<!--
+					 		<img src="{% static 'carnatic/img/develop/Waveform_markers.jpg' %}" />
+					 		<img src="{% static 'carnatic/img/develop/Pitch.jpg' %}" />
+	     		<div id="renderTotal"><div id="capcalTotal"></div>
+	     		<img src="{% static 'carnatic/img/develop/Waveform_markers.jpg' %}" />
+
+	     	</div>
+
             {% if tags %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
@@ -307,9 +335,10 @@ function playrecord(){
 
 	 	<div class="clearfix"></div>
 </div>
+-->
 
 <audio id="theaudio">
-	<source src="{% static 'carnatic/audio/8_Krishna_Nee_Begane.mp3' %}" type="audio/mp3" preload>
+    <source src="{{audio}}" type="audio/mp3" preload>
 </audio>
 
 

@@ -12,7 +12,7 @@ class Command(BaseCommand):
         insert = [{"id": "%s_%s" % (etype, i.pk),
                    "object_id_i": i.pk,
                    "type_s": etype,
-                   "title_s": getattr(i, namefield)
+                   "title_t": getattr(i, namefield)
                   } for i in data]
         return insert
 
@@ -40,4 +40,5 @@ class Command(BaseCommand):
         self.solr.add(insertconcert)
         self.solr.add(insertraaga)
         self.solr.add(inserttaala)
+        self.solr.commit()
 

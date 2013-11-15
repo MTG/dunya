@@ -28,7 +28,7 @@
         {% include "dashboard/release_check_stub.html" with item=item more=False hide=r.latest.pk only %}
         {% endfor %}
     {% endif %}
-    
+
     {% endfor %}
 </table>
 </div>
@@ -49,7 +49,7 @@
     {% if derivedfiles %}
         <h3>Derived files</h3>
         {% for f in derivedfiles %}
-        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}/{{f.module_version.version}})</a>
+        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}-{{f.outputname}}/{{f.module_version.version}})</a>
         {% endfor %}
     {% endif %}
 </div>

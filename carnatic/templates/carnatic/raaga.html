@@ -13,34 +13,10 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 
-{% block title %}{{raaga.name}} raaga - {% endblock %}
+{% block title %}{{raaga.name|title}} raaga - {% endblock %}
 
 {% block wrap %}
-<div id="filterMask">
-	<div id="filterArea">
-		<div id="entitiesList" class="filterList">
-	    	<h3>Chose your query</h3>
-        	<ul>
-        	</ul>
-    	</div>
-    	<div id="breadcrumb">
-    		<div class="bread entity_1 artist">
-    			<div class="breadarrow"></div>
-    			<span><a href="#">No selection</a></span>
-    		</div>
-    		<div class="bread entity_3 work">
-    			<div class="breadarrow"></div>
-    			<span><a href="#">No selection</a></span>
-    		</div>
-    		<div class="bread entity_4 instrument">
-    			<div class="breadarrow"></div>
-    			<span><a href="#">No selection</a></span>
-    		</div>
-    	</div>
-    </div>
- </div>
- 
- 
+
   <div id="detail" class="raaga">
      	<div id="header">
      		<div id="summary">
@@ -53,11 +29,21 @@ $(document).ready(function() {
      			<div id="summaryBack"></div>
      			<div id="icon"></div>
      		</div>
-            <div class="bigImage"><img src="{{raaga.get_image_url}}" /></div>
+            <div class="bigImage"><img src="{{raaga.get_image_url}}" style="overflow: visible !important; width: 280px !important;"/></div>
      		<div id="meta">
      			<div class="metaBlock">
 					<div class="metaMask">
 			 			<div class="metaContainer">
+							<div id="artists" class="metaDetails">
+								<div class="inner">
+									<h3>Artists who perform this raaga</h3>
+									<span class='list'>
+									{% for a in raaga.artists %}
+									{% inline_artist a %}
+									{% endfor %}
+									</span>
+								</div>
+							</div>
 							<div id="composers" class="metaDetails">
 								<div class="inner">
 									<h3>Composers</h3>
@@ -68,7 +54,7 @@ $(document).ready(function() {
 									</span>
 								</div>
 							</div>
-							
+
 							<div id="works" class="metaDetails">
 								<div class="inner">
 									<h3>Compositions</h3>
@@ -87,7 +73,7 @@ $(document).ready(function() {
 	     	<div class="clearfix"></div>
 
      	</div><!-- HEADER END -->
-	 	
+
 	 	<div class="alldata">
 	     	<div class="thedata">
 	     		<div class="leftdata">
@@ -95,9 +81,9 @@ $(document).ready(function() {
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-	                    <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
-	                       {% for r in similar %}
-                              {% badge_similar_raaga r %}
+                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                            {% for t in similar %}
+                                {% badge_raaga t %}
                             {% endfor %}
 	                    </div>
 	     			</div>

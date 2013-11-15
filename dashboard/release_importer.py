@@ -97,7 +97,7 @@ class ReleaseImporter(object):
         # TODO: Release hooks
         external_data.import_concert_image(concert, directories, self.overwrite)
 
-    def _add_and_get_artist_composer(self, ArtistClass, artistid):
+    def _add_and_get_artist_composer(self, ArtistClass, artistid, addgroups=True):
         """
         arguments: ArtistClass: models.Artist or models.Composer
         """
@@ -109,7 +109,7 @@ class ReleaseImporter(object):
             delta = self.date_import_started - artist.source.last_updated
             if delta.seconds < 3600 / 2:
                 print "Artist updated less than 30 minutes ago, not redoing"
-                return artist
+                #return artist
         if created or self.overwrite:
             logger.info("  adding artist/composer %s" % (artistid, ))
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
@@ -130,14 +130,14 @@ class ReleaseImporter(object):
             artist.save()
 
             # TODO: Annoying hack to only work on artists
-            if ArtistClass == carnatic.models.Artist:
+            if ArtistClass == carnatic.models.Artist and addgroups:
                 if self.overwrite:
                     artist.group_members.clear()
-                for member in a.get("artist-relationship-list", []):
-                    if "member" in member["type"]:
+                for member in a.get("artist-relation-list", []):
+                    if "member" in member["type"] and member.get("direction") == "backward":
                         memberartist = self._add_and_get_artist_composer(ArtistClass, member["target"])
                         artist.group_members.add(memberartist)
-            
+
             # add wikipedia references if they exist
             for rel in a.get("url-relation-list", []):
                 if rel["type"] == ["wikipedia"]:
@@ -212,7 +212,7 @@ class ReleaseImporter(object):
             rec.length = mbrec.get("length")
             rec.title = mbrec["title"]
             rec.save()
-            
+
         if not created and self.overwrite:
             rec.performance.clear()
         for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):

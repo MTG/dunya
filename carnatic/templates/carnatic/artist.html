@@ -11,7 +11,7 @@ $(document).ready(function() {
 	$("#filterMask").toggleClass('querybar');
 	parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
-    
+
 });
 </script>
 {% endblock %}
@@ -62,7 +62,7 @@ $(document).ready(function() {
             <div class="bigImage"><img src="{{artist.get_image_url}}"></div>
             <div id="meta">
 <!--
-										<h3>Common raagas</h3>
+										<h3>references</h3>
 										<span>
                                             {% for ref in artist.reference_urls %}
                                             <a href="{{ref.url}}">{{ref.title}}</a>
@@ -78,8 +78,8 @@ $(document).ready(function() {
                                 <h3>Biographical data</h3>
                                     <div class="inner">
                                         <span class="list">
-                                            <label>Date of birth:</label><b>22/01/1976</b>
-                                            <label>Region of birth:</label><b>Tamil Nadu</b>
+                                            <label>Date of birth:</label><b>{{artist.begin}}</b>
+                                            <label>Region of birth:</label><b>{{artist.state.name}}</b>
                                         </span>
                                     </div>
                                 </div>
@@ -87,9 +87,15 @@ $(document).ready(function() {
                                     <h3>Data sources</h3>
                                     <div class="inner">
                                         <span class="list">
-                                            <a href="">Musicbrainz</a>
-                                            <a href="">Kutcheris</a>
-                                            <a href="">Wikipedia</a>
+                                            {% if mb %}
+                                            <a href="{{mb}}">Musicbrainz</a>
+                                            {% endif %}
+                                            {% if kutcheris %}
+                                            <a href="{{kutcheris}}">Kutcheris</a>
+                                            {% endif %}
+                                            {% if wiki %}
+                                            <a href="{{wiki}}">Wikipedia</a>
+                                            {% endif %}
                                         </span>
                                     </div>
                                 </div>
@@ -106,7 +112,44 @@ $(document).ready(function() {
                                     {% endif %}
                                 </div>
                             </div>
-                            
+                            {% if raagas or taalas %}
+                                <div class="metaContainer" style="width: 315px;">
+                                    <div class="metaDetails">
+                                    {% if raagas %}
+                                    <h3>Common raagas</h3>
+                                    {% endif %}
+                                    {% if taalas %}
+                                    <h3>Common taalas</h3>
+                                    {% endif %}
+                                    {% for r, count in raagas %}
+                                        <li>{% inline_raaga r %}
+                                    {% endfor %}
+                                    {% for t, count in taalas %}
+                                        <li>{% inline_taala t %}
+                                    {% endfor %}
+                                    </div>
+
+                                </div>
+                            {% endif %}
+                            <div class="metaContainer" style="width: 315px;">
+                                {% if artist.group_members.count %}
+                                <div class="metaDetails">
+                                <h3>Group members</h3>
+                                {% for member in artist.group_members.all %}
+                                {% badge_mini_artist member %}
+                                {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                {% if artist.groups.count %}
+                                <div class="metaDetails">
+                                <h3>Part of group</h3>
+                                {% for member in artist.groups.all %}
+                                {% badge_mini_artist member %}
+                                {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,8 +181,8 @@ $(document).ready(function() {
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
                         <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
-                            {% for a in artist.similar_artists %}
-                                {% badge_detail_artist a %}
+                            {% for a, guru in artist.similar_artists %}
+                                {% badge_similar_artist a guru=guru %}
                             {% endfor %}
                         </div>
                     </div>
@@ -153,16 +196,16 @@ $(document).ready(function() {
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
                         <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
-                            {% for a in artist.similar_artists %}
-                                {% badge_detail_artist a %}
+                            {% for a, concerts in artist.collaborating_artists %}
+                                {% badge_similar_artist a concerts=concerts %}
                             {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
-	     	
+
 	     	<!-- COMMENTS -->
-	        {% if tags %}	
+	        {% if tags %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Tags</h3>
@@ -177,7 +220,7 @@ $(document).ready(function() {
 
 
 	        {% get_comment_list for artist as comment_list %}
-	        {% if comment_list %}	
+	        {% if comment_list %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Comments</h3>
@@ -202,10 +245,10 @@ $(document).ready(function() {
 	     			</div>
 	     		</div>
 	     	</div>
-	        {% endif %}	
-	     	
+	        {% endif %}
+
 	     	{% if user.is_authenticated %}
-			 
+
 				 <div class="thedata">
 		     		<div class="leftdata">
 			     		<h3>Post comment</h3>
@@ -221,7 +264,7 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		     	</div>
-				  
+
 				<div class="thedata">
 		     		<div class="leftdata">
 			     		<h3>Post Tag</h3>
@@ -232,9 +275,9 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		     	</div>
-			
+
 			{% else %}
-			
+
 				<div class="thedata">
 		     		<div class="leftdata">
 			     		<h3></h3>
@@ -245,10 +288,10 @@ $(document).ready(function() {
 		     			</div>
 		     		</div>
 		 		</div>
-			    
+
 			{% endif %}
 
-	     	
+
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>

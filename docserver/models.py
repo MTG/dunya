@@ -103,7 +103,7 @@ class DerivedFilePart(models.Model):
     size = models.IntegerField()
 
     def get_absolute_url(self):
-        url = reverse('ds-download-external', 
+        url = reverse('ds-download-external',
             args=[self.derivedfile.document.external_identifier, self.derivedfile.module_version.module.slug ])
         v = self.derivedfile.module_version.version
         sub = self.derivedfile.outputname
@@ -150,12 +150,12 @@ class DerivedFile(models.Model):
         return self.parts.count()
 
     def get_absolute_url(self):
-        download_url = reverse("ds-download-external",
-                args=[self.document.external_identifier, self.extension])
-        urlparts = list(urlparse.urlparse(download_url))
-        urlparts[4] = urllib.urlencode({"v": self.module_version.version})
-        download_url = urlparse.urlunparse(urlparts)
-        return download_url
+        url = reverse("ds-download-external",
+                args=[self.document.external_identifier, self.module_version.module.slug])
+        v = self.module_version.version
+        sub = self.outputname
+        url = "%s?v=%s&subtype=%s" % (url, v, sub)
+        return url
 
     def __unicode__(self):
         return "%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
