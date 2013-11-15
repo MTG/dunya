@@ -118,6 +118,7 @@ def import_release(releasepk):
                 abort = True
                 tb = traceback.format_exc()
                 cfile.add_log_message(tb)
+                cfile.set_state_error()
 
     if not abort:
         # If there have been no errors, import to the docserver
