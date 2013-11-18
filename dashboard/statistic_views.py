@@ -135,40 +135,50 @@ def carnatic_recordings(request):
 @user_passes_test(views.is_staff)
 def carnatic_raagataala(request):
     recordings = carnatic.models.Recording.objects
-    raaga_count = recordings.annotate(Count('work__raaga'))
-    taala_count = recordings.annotate(Count('work__taala'))
-    missingr = []
-    missingt = []
-    no_raagas = [r for r in raaga_count if r.work__raaga__count == 0]
-    no_taalas = [r for r in taala_count if r.work__taala__count == 0]
-    for r in no_raagas:
-        if r.work:
-            otherrecs = r.work.recording_set.exclude(id=r.id)
-        else:
-            otherrecs = []
-        missingr.append({"recording": r, "otherrecs": otherrecs})
-    for r in no_taalas:
-        if r.work:
-            otherrecs = r.work.recording_set.exclude(id=r.id)
-        else:
-            otherrecs = []
-        missingt.append({"recording": r, "otherrecs": otherrecs})
+    #raaga_count = recordings.annotate(Count('work__raaga'))
+    #taala_count = recordings.annotate(Count('work__taala'))
+    #missingr = []
+    #missingt = []
+    #no_raagas = [r for r in raaga_count if r.work__raaga__count == 0]
+    #no_taalas = [r for r in taala_count if r.work__taala__count == 0]
+    #for r in no_raagas:
+    #    if r.work:
+    #        otherrecs = r.work.recording_set.exclude(id=r.id)
+    #    else:
+    #        otherrecs = []
+    #    missingr.append({"recording": r, "otherrecs": otherrecs})
+    #for r in no_taalas:
+    #    if r.work:
+    #        otherrecs = r.work.recording_set.exclude(id=r.id)
+    #    else:
+    #        otherrecs = []
+    #    missingt.append({"recording": r, "otherrecs": otherrecs})
 
     dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
     dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
     nodbr = set()
     nodbt = set()
     checker = "dashboard.completeness.RaagaTaalaFile"
+    missingr = []
+    missingt = []
+    no_r = []
+    no_t = []
     for f in dashfiles:
-        checks = f.collectionfileresult_set.filter(checker__module=checker)
+        checks = f.collectionfileresult_set.filter(checker__module=checker).order_by('-datetime')
         if len(checks):
             check = checks[0]
             data = json.loads(check.data) if check.data else {}
-            [nodbt.add(t) for t in data.get("missingt", [])]
-            [nodbr.add(r) for r in data.get("missingr", [])]
+            if "missingt" in data:
+                missingt.append({"taalas": data.get("missingt"), "file": check.collectionfile})
+            if "missingr" in data:
+                missingr.append({"raagas": data.get("missingr"), "file": check.collectionfile})
+            if len(data["raaga"]) == 0:
+                no_r.append(check.collectionfile)
+            if len(data["taala"]) == 0:
+                no_t.append(check.collectionfile)
 
-    ret = { "nodbr": list(nodbr),
-            "nodbt": list(nodbt),
+    ret = { "no_r": no_r,
+            "no_t": no_t,
             "missingr": missingr,
             "missingt": missingt
             }

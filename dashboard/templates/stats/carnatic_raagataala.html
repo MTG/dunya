@@ -5,6 +5,7 @@
 
 <h1>Carnatic Raaga and Taala</h1>
 
+{% comment %}
 <h2>Recordings missing raaga or taala</h2>
 Raagas:<br>
 {% for r in missingr %}
@@ -30,14 +31,26 @@ Raagas:<br>
 {% endif %}
 {% endfor %}
 
+{% endcomment %}
+
 <h2>Raagas and taalas not in the Dunya database</h2>
 Raagas:<br>
-{% for r in nodbr %}
-    <li><a href="{% url 'dashboard-raagas' %}?newname={{r}}">{{r}}</a>
+{% for r in missingr %}
+    <li> <a href="{{r.file.get_absolute_url}}">{{r.file.name}}</a> ({{r.raagas|join:", "}})
 {% endfor %}
 <br>Taalas:<br>
-{% for t in nodbt %}
-    <li><a href="{% url 'dashboard-taalas' %}?newname={{t}}">{{t}}</a>
+{% for t in missingt %}
+    <li> <a href="{{t.file.get_absolute_url}}">{{t.file.name}}</a> ({{t.taalas|join:", "}})
+{% endfor %}
+
+<h2>Recordings with no or unparsable tags</h2>
+Raagas:<br>
+{% for r in no_r %}
+<li><a href="{{r.get_absolute_url}}">{{r.name}}</a>
+{% endfor %}
+Taala:<br>
+{% for t in no_t %}
+<li><a href="{{t.get_absolute_url}}">{{t.name}}</a>
 {% endfor %}
 
 {% endblock %}
