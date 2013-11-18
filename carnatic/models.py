@@ -146,15 +146,15 @@ class Concert(CarnaticStyle, data.models.Concert):
                 if c.pk != self.pk:
                     concertcounts[c.pk] += 1
                     concertartists[c.pk].append(a)
-            similar = a.similar_artists()
-            for similara, desc in similar:
-                if similara not in artists:
-                    cs = Concert.objects.filter(Q(artists=similara) | Q(performance=similara) | Q(tracks__performance=similara)).distinct()
-                    for c in cs:
-                        if c.pk != self.pk:
-                            if similara not in similarartists[c.pk]:
-                                concertcounts[c.pk] += 1
-                                similarartists[c.pk].append(similara)
+            #similar = a.similar_artists()
+            #for similara, desc in similar:
+            #    if similara not in artists:
+            #        cs = Concert.objects.filter(Q(artists=similara) | Q(performance=similara) | Q(tracks__performance=similara)).distinct()
+            #        for c in cs:
+            #            if c.pk != self.pk:
+            #                if similara not in similarartists[c.pk]:
+            #                    concertcounts[c.pk] += 1
+            #                    similarartists[c.pk].append(similara)
         return len(artists), concertcounts, concertartists, similarartists
 
 
@@ -172,15 +172,15 @@ class Concert(CarnaticStyle, data.models.Concert):
                     if r not in concertraagas[c.pk]:
                         concertcounts[c.pk] += 1
                         concertraagas[c.pk].append(r)
-            similars = r.get_similar()
-            for sr in similars:
-                if sr not in raagas:
-                    cs = Concert.objects.filter(tracks__work__taala=sr)
-                    for c in cs:
-                        if c.pk != self.pk:
-                            if sr not in similarraagas[c.pk]:
-                                concertcounts[c.pk] += 1
-                                similarraagas[c.pk].append(sr)
+            #similars = r.get_similar()
+            #for sr in similars:
+            #    if sr not in raagas:
+            #        cs = Concert.objects.filter(tracks__work__taala=sr)
+            #        for c in cs:
+            #            if c.pk != self.pk:
+            #                if sr not in similarraagas[c.pk]:
+            #                    concertcounts[c.pk] += 1
+            #                    similarraagas[c.pk].append(sr)
         return len(raagas), concertcounts, concertraagas, similarraagas
 
     def get_same_and_similar_by_taala(self):
@@ -195,15 +195,15 @@ class Concert(CarnaticStyle, data.models.Concert):
                     if t not in concerttaalas[c.pk]:
                         concertcounts[c.pk] += 1
                         concerttaalas[c.pk].append(t)
-            similars = t.get_similar()
-            for st in similars:
-                if st not in taalas:
-                    cs = Concert.objects.filter(tracks__work__taala=st)
-                    for c in cs:
-                        if c.pk != self.pk:
-                            if st not in similartaalas[c.pk]:
-                                concertcounts[c.pk] += 1
-                                similartaalas[c.pk].append(st)
+            #similars = t.get_similar()
+            #for st in similars:
+            #    if st not in taalas:
+            #        cs = Concert.objects.filter(tracks__work__taala=st)
+            #        for c in cs:
+            #            if c.pk != self.pk:
+            #                if st not in similartaalas[c.pk]:
+            #                    concertcounts[c.pk] += 1
+            #                    similartaalas[c.pk].append(st)
         return len(taalas), concertcounts, concerttaalas, similartaalas
 
 
@@ -258,7 +258,7 @@ class Concert(CarnaticStyle, data.models.Concert):
         for k, v in ret.items():
             concert = Concert.objects.get(pk=k)
             newret.append((concert, v))
-        newret = sorted(newret, reverse=True, key=lambda a: len(a[1].get("worksame", [])) + len(a[1].get("worksimilar", [])))
+        newret = sorted(newret, reverse=True, key=lambda a: len(a[1].get("worksame", [])))
         return newret
 
 
