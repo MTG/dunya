@@ -44,6 +44,7 @@ def inline_concert(concert, bold=False):
 
 @register.simple_tag
 def inline_composer(composer):
+    return composer.name
     return '<a href="%s">%s</a>' % (composer.get_absolute_url(), composer.name)
 
 @register.simple_tag
@@ -52,7 +53,9 @@ def inline_recording(recording):
 
 @register.simple_tag
 def inline_work(work):
-    return '<a href="%s">%s</a>' % (work.get_absolute_url(), work.title)
+    # TODO: Disable work links for now
+    return work.title
+    #return '<a href="%s">%s</a>' % (work.get_absolute_url(), work.title)
 
 @register.simple_tag
 def inline_raaga(raaga):
