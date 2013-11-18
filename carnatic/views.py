@@ -106,36 +106,6 @@ def main(request):
 
     return render(request, "carnatic/index.html", ret)
 
-def overview(request):
-    numartists = Artist.objects.count()
-    artists = Artist.objects.all()
-    numcomposers = Composer.objects.count()
-    composers = Composer.objects.all()
-    numrecordings = Recording.objects.count()
-    recordings = Recording.objects.all()
-    concerts = Concert.objects.all()
-    raagas = Raaga.objects.all()
-    taalas = Taala.objects.all()
-    instruments = Instrument.objects.all()
-    numraaga = Raaga.objects.count()
-    numtaala = Taala.objects.count()
-
-    ret = {"numartists": numartists,
-           "numcomposers": numcomposers,
-           "numrecordings": numrecordings,
-           "numraaga": numraaga,
-           "numtaala": numtaala,
-
-           "artists": artists,
-           "composers": composers,
-           "recordings": recordings,
-           "concerts": concerts,
-           "raagas": raagas,
-           "taalas": taalas,
-           "instruments": instruments
-           }
-    return render(request, "carnatic/overview.html", ret)
-
 def artistsearch(request):
     artists = Artist.objects.all()
     ret = []

@@ -37,7 +37,7 @@ def logout_page(request):
     logout(request)
     if request.GET.has_key("next"):
         return HttpResponseRedirect(request.GET['next'])
-    return HttpResponseRedirect(reverse('carnatic-overview'))
+    return HttpResponseRedirect(reverse('carnatic-main'))
 
 def register_page(request):
     if request.method == 'POST':

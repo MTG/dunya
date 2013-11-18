@@ -15,7 +15,7 @@
    {% if request.GET.next %}
    <input type="hidden" name="next" value="{{ request.GET.next }}" />
    {% else %}
-    <input type="hidden" name="next" value="{% url 'carnatic-overview' %}" />
+    <input type="hidden" name="next" value="{% url 'carnatic-main' %}" />
    {% endif %}
   </form>
 </div>
