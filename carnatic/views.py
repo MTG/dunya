@@ -201,32 +201,11 @@ def concert(request, concertid):
     tags = tagging.tag_cloud(concertid, "concert")
 
     # Other concerts by the same person
-    # XXX: Sort by if there's an image
-    artist_concerts = Concert.objects.filter(artists__in=concert.artists.all()).all().distinct()
-    works = [t.work for t in concert.tracks.all()]
-    work_concerts = Concert.objects.filter(tracks__work__in=works).all().distinct()
-    raagas = []
-    taalas = []
-    for t in concert.tracks.all():
-        if t.work:
-            raagas.extend(t.work.raaga.all())
-            taalas.extend(t.work.taala.all())
-    #raaga_concerts = Concert.objects.filter(tracks__work__raaga__in=raagas).all().distinct()
-    #taala_concerts = Concert.objects.filter(tracks__work__taala__in=taalas).all().distinct()
-    #work_concerts = sorted(work_concerts, key=lambda c: len(c.images.all()), reverse=True)
-    #raaga_concerts = sorted(raaga_concerts, key=lambda c: len(c.images.all()), reverse=True)
-    #taala_concerts = sorted(taala_concerts, key=lambda c: len(c.images.all()), reverse=True)
-    #artist_concerts = sorted(artist_concerts, key=lambda c: len(c.images.all()), reverse=True)
     similar = concert.get_similar()
-
 
     # Raaga in
     ret = {"filter_items": json.dumps(get_filter_items()),
            "concert": concert,
-	   #"artist_concerts": artist_concerts,
-	   #"work_concerts": work_concerts,
-	   #"raaga_concerts": raaga_concerts,
-	   #"taala_concerts": taala_concerts,
 	   "form": TagSaveForm(),
 	   "objecttype": "concert",
 	   "objectid": concert.id,
