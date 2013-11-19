@@ -1,6 +1,6 @@
 Django==1.6
 Fabric==1.8.0
-PIL==1.1.7
+Pillow==2.2.1
 PyYAML==3.10
 South==0.8.3
 Unidecode==0.04.14
