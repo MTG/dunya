@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from social.forms import *
 from social.models import *
 from datetime import datetime
-from django.utils import simplejson
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.utils.http import urlunquote_plus
@@ -193,7 +192,7 @@ def ajax_tag_autocomplete(request):
     for tag in tags:
         tag_dict = {'id':tag.id, 'label':tag.name, 'value':tag.name}
         results.append(tag_dict)
-    return HttpResponse(simplejson.dumps(results),mimetype='application/json')
+    return HttpResponse(json.dumps(results),mimetype='application/json')
 
 
 def __get_entity(entity_type, entity_id):
