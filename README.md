@@ -25,11 +25,12 @@ To add tables to the database run
     ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
 
 
-* Installing PIL with jpeg support
+* Installing Pillow with jpeg support
 
-    ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so env/lib
-    ln -s /usr/lib/x86_64-linux-gnu/libz.so env/lib
-    ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so.6 env/lib
+    sudo apt-get install libjpeg8-dev
+    ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
+    ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
+    ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
 
 * If you install matplotlib with apt:
     pip install python-dateutil
