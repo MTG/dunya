@@ -33,7 +33,7 @@ class Collection(models.Model):
 
 class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
-        return self.get_query_set().get(external_identifier=external_id)
+        return self.get_queryset().get(external_identifier=external_id)
 
 class Document(models.Model):
     """An item in the collection.
@@ -64,7 +64,7 @@ class Document(models.Model):
 class FileTypeManager(models.Manager):
     def get_by_extension(self, extension):
         extension = extension.lower()
-        return self.get_query_set().get(extension=extension)
+        return self.get_queryset().get(extension=extension)
 
 class SourceFileType(models.Model):
     objects = FileTypeManager()
