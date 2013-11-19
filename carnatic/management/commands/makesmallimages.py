@@ -4,7 +4,7 @@ from django.core.files.base import ContentFile
 from carnatic import models
 from django.conf import settings
 
-import Image
+from PIL import Image
 import os
 import cStringIO
 
