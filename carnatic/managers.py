@@ -6,7 +6,7 @@ class FuzzySearchManager(models.Manager):
     def fuzzy(self, name):
         name = name.lower()
         try:
-            self.model.objects.get(name__iexact=name)
+            return self.model.objects.get(name__iexact=name)
         except self.model.DoesNotExist:
             items = self.model.objects.all()
             names = [i.name.lower() for i in items]
