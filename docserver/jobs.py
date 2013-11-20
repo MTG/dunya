@@ -139,7 +139,7 @@ def process_document(documentid, moduleversionid):
                     module_version=version, outputname=dataslug, extension=extension,
                     mimetype=mimetype, computation_time=total_time)
 
-            if not multipart
+            if not multipart:
                 contents = [contents]
             for i, partdata in enumerate(contents, 1):
                 saved_name, saved_size = _save_file(collectionid, document.external_identifier,
