@@ -132,6 +132,7 @@ class DerivedFile(models.Model):
     outputname = models.CharField(max_length=50)
     extension = models.CharField(max_length=10)
     mimetype = models.CharField(max_length=100)
+    computation_time = models.IntegerField(blank=True, null=True)
 
     #essentia_version = models.ForeignKey("EssentiaVersion")
     date = models.DateTimeField(default=django.utils.timezone.now)

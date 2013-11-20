@@ -2,6 +2,7 @@ import importlib
 import os
 import json
 import logging
+import time
 
 from docserver import models
 import dashboard
@@ -87,7 +88,8 @@ class NumPyArangeEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
-    fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingid, slug, version)
+    recordingstub = recordingid[:2]
+    fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingstub, recordingid, slug, version)
     try:
         os.makedirs(fdir)
     except OSError:
@@ -99,6 +101,8 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
     if extension == "json":
         data = json.dumps(data, fp, cls=NumPyArangeEncoder)
 
+    if not isinstance(data, basestring):
+        print "Data is not a string-ish thing. instead it's %s" % type(data)
     fp.write(data)
     fp.close()
     return fullname, len(data)
@@ -116,7 +120,10 @@ def process_document(documentid, moduleversionid):
         # TODO: If there is more than 1 source file
         s = sfiles[0]
         fname = s.path.encode("utf-8")
+        starttime = time.time()
         results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
+        endtime = time.time()
+        total_time = int(endtime-starttime)
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
@@ -126,17 +133,17 @@ def process_document(documentid, moduleversionid):
             outputdata = instance.__output__[dataslug]
             extension = outputdata["extension"]
             mimetype = outputdata["mimetype"]
+            multipart = outputdata.get("parts", False)
+            print "multiparts", multipart
             df = models.DerivedFile.objects.create(document=document, derived_from=s,
-                    module_version=version, outputname=dataslug, extension=extension, mimetype=mimetype)
+                    module_version=version, outputname=dataslug, extension=extension,
+                    mimetype=mimetype, computation_time=total_time)
 
-            # TODO: This doens't separate between data that has many
-            # parts and data whose form is a list
-            # especially list of ints - len(partdata) fails
-            if not isinstance(contents, list):
+            if not multipart
                 contents = [contents]
             for i, partdata in enumerate(contents, 1):
-                saved_name, saved_size = _save_file(collectionid, document.external_identifier, version.version,
-                        moduleslug, dataslug, i, extension, partdata)
+                saved_name, saved_size = _save_file(collectionid, document.external_identifier,
+                        version.version, moduleslug, dataslug, i, extension, partdata)
                 df.save_part(i, saved_name, saved_size)
 
 def run_module(moduleid):
