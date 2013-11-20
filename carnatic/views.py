@@ -22,6 +22,15 @@ def get_filter_items():
     ]
     return filter_items
 
+def searchcomplete(request):
+    term = request.GET.get("term")
+    if term:
+        suggestions = search.autocomplete(term)
+        ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
+    else:
+        ret = []
+    return HttpResponse(json.dumps(ret), content_type="application/json")
+
 def main(request):
     qartist = []
     if "a" in request.GET:

@@ -4,6 +4,7 @@ from carnatic import views
 
 urlpatterns = patterns('',
     url(r'^$', views.main, name='carnatic-main'),
+    url(r'^searchcomplete$', views.searchcomplete, name='carnatic-searchcomplete'),
     url(r'^composer/(?P<composerid>\d+)$', views.composer, name='carnatic-composer'),
     url(r'^artist/search$', views.artistsearch, name='carnatic-artist-search'),
     url(r'^artist/(?P<artistid>\d+)$', views.artist, name='carnatic-artist'),

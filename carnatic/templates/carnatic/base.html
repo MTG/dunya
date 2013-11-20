@@ -69,11 +69,21 @@
 		    $(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
   		});
 		loadSocialFollowButtons();
+
+        $("#searchbox").autocomplete({
+            source: "/carnatic/searchcomplete",
+            minlength: 2,
+            select: function(event, ui) {
+                console.debug("select");
+                console.debug(ui);
+            }
+        });
+
 	});
 	</script>
         {% block script %}
         {% endblock %}
-	{% block extra_head %}
+        {% block extra_head %}
         {% endblock %}
     </head>
     <body>
@@ -90,7 +100,7 @@
             </div>
             	<div id="globalsearch">
                     <form method="get" action="/carnatic">
-                        <input type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
+                        <input id="searchbox" type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
 	            	<div class="button"></div>
                 </form>
             	</div><!-- globalserach -->

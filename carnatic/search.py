@@ -1,6 +1,7 @@
 import pysolr
 from django.conf import settings
 import collections
+import json
 
 from carnatic import models
 
@@ -26,6 +27,23 @@ def search(name):
             instance = klass.objects.get(pk=id)
             ret[type].append(instance)
     return ret
+
+def autocomplete(term):
+    # specify json encoding of results
+    params = {}
+    params['wt'] = 'json'
+    params['q'] = term
+    path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
+    response = solr._send_request('get', path)
+    res = json.loads(response)
+    check = res.get("spellcheck", {})
+    suggs = check.get("suggestions", [])
+    if term in suggs:
+        index = suggs.index(term) + 1
+        if index < len(suggs):
+            suggestions = suggs[index].get("suggestion", [])
+            return suggestions
+    return []
 
 def get_concerts_with_raagas(raagas):
     if not isinstance(raagas, list):
