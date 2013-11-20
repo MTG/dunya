@@ -3,6 +3,7 @@ import compmusic
 import tempfile
 import os
 import subprocess
+import json
 
 class NoFileException(Exception):
     pass
@@ -117,4 +118,8 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
 
 def docserver_get_contents(documentid, slug, subtype=None, part=None, version=None):
     return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
+
+def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
+    contents = open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
+    return json.loads(contents)
 
