@@ -1,4 +1,4 @@
-sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev
+sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev postgresql-server-dev-all libxml2-dev libxslt1-dev
 virtualenv env
 . env/bin/activate
 pip install --upgrade pip
@@ -12,5 +12,5 @@ ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
 ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
 ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
 ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
-
+pip install -r requirements
 
