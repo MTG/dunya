@@ -112,7 +112,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.comments',
     'inplaceeditform',
-    'kombu.transport.django',
     'djcelery',
     'data',
     'carnatic',
@@ -125,10 +124,7 @@ INSTALLED_APPS = (
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
 # Celery
-import djcelery
-djcelery.setup_loader()
-BROKER_URL = 'django://'
-CELERY_IMPORTS = ["dashboard.jobs", "docserver.jobs"]
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

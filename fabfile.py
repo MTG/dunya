@@ -4,6 +4,9 @@ import os
 def up(port="8001"):
     local("python manage.py runserver 0.0.0.0:%s"%port)
 
+def celery():
+    local("celery worker --app=dunya -l info")
+
 def setupdb():
     """ Run this when you are setting up a new installation
         or have deleted your database

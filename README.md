@@ -18,6 +18,20 @@ To add tables to the database run
 
     fab setupdb
 
+* Dependencies:
+
+    sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev
+
+Also install essentia + python libraries
+
+    git clone git@github.com:MTG/essentia.git
+    cd essentia
+    sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
+    ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
+    ./waf
+    sudo ./waf install
+
+
 * Using essentia and numpy in virtualenv
 
     ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
@@ -40,6 +54,20 @@ To add tables to the database run
 libsndfile1-dev is needed to create audio images
 lame is needed for converting mp3 to wav
 
+* Rabbitmq
+
+We use rabbitmq for sending job commands to workers. On the server you will need to run 
+(password values aren't important)
+
+    rabbitmqctl add_user dunyauser dunyapassword
+    rabbitmqctl add_vhost CompMusic
+    rabbitmqctl set_permissions -p CompMusic dunyauser ".*" ".*" ".*"
+
+* Rabbitmq configuration
+
+In `dunya/local_settings.py` you will need to add connection details:
+
+    BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 
 Running
 =======
@@ -48,6 +76,12 @@ To run the server:
 
     source env/bin/activate
     fab up
+
+To run jobs, make sure rabbitmq is running on the server
+
+And on each client you run celery
+
+    celery -A dunya worker -l info
 
 When you upgrade and there are database changes, you can run this to migrate them
 
