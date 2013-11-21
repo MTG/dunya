@@ -1,3 +1,4 @@
+from django.db import transaction
 from __future__ import absolute_import
 
 import importlib
@@ -129,24 +130,25 @@ def process_document(documentid, moduleversionid):
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
-        for dataslug, contents in results.items():
-            print "data", dataslug
-            print "type", type(contents)
-            outputdata = instance.__output__[dataslug]
-            extension = outputdata["extension"]
-            mimetype = outputdata["mimetype"]
-            multipart = outputdata.get("parts", False)
-            print "multiparts", multipart
-            df = models.DerivedFile.objects.create(document=document, derived_from=s,
-                    module_version=version, outputname=dataslug, extension=extension,
-                    mimetype=mimetype, computation_time=total_time)
+        with transaction.atomic():
+            for dataslug, contents in results.items():
+                print "data", dataslug
+                print "type", type(contents)
+                outputdata = instance.__output__[dataslug]
+                extension = outputdata["extension"]
+                mimetype = outputdata["mimetype"]
+                multipart = outputdata.get("parts", False)
+                print "multiparts", multipart
+                df = models.DerivedFile.objects.create(document=document, derived_from=s,
+                        module_version=version, outputname=dataslug, extension=extension,
+                        mimetype=mimetype, computation_time=total_time)
 
-            if not multipart:
-                contents = [contents]
-            for i, partdata in enumerate(contents, 1):
-                saved_name, saved_size = _save_file(collectionid, document.external_identifier,
-                        version.version, moduleslug, dataslug, i, extension, partdata)
-                df.save_part(i, saved_name, saved_size)
+                if not multipart:
+                    contents = [contents]
+                for i, partdata in enumerate(contents, 1):
+                    saved_name, saved_size = _save_file(collectionid, document.external_identifier,
+                            version.version, moduleslug, dataslug, i, extension, partdata)
+                    df.save_part(i, saved_name, saved_size)
 
 def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)
@@ -180,7 +182,8 @@ def run_module_on_collection(collectionid, moduleid):
     if version:
         print "version", version
         # All documents that don't already have a derived file for this module version
-        docs = models.Document.objects.filter(sourcefiles__file_type=module.source_type).exclude(derivedfiles__module_version=version)
-        for d in docs:
-            print "  document", d
+        docs = models.Document.objects.filter(sourcefiles__file_type=module.source_type,
+                collection=collection).exclude(derivedfiles__module_version=version)
+        for i, d in enumerate(docs, 1):
+            print "  document %s/%s - %s" % (i, len(docs), d)
             process_document.delay(d.pk, version.pk)
