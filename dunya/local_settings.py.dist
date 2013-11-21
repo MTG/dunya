@@ -31,3 +31,6 @@ AUDIO_ROOT = ''
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
+
+SOLR_URL = 'http://dunya.compmusic.upf.edu:8080/solr'
+
