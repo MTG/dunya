@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import os
 import traceback
+import celery
 
 from dashboard import models
 from dashboard.log import logger
@@ -14,7 +15,7 @@ import data
 import docserver
 import docserver.util
 
-import completeness
+from dashboard import completeness
 #import populate_images
 from dunya.celery import app
 
