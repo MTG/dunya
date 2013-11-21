@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import importlib
 import os
 import json
@@ -6,10 +8,10 @@ import time
 
 from docserver import models
 import dashboard
-import celery
 import numpy as np
 
 from django.conf import settings
+from dunya.celery import app
 
 class DatabaseLogHandler(logging.Handler):
     def handle(self, record):
@@ -107,7 +109,7 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
     fp.close()
     return fullname, len(data)
 
-@celery.task
+@app.task
 def process_document(documentid, moduleversionid):
     version = models.ModuleVersion.objects.get(pk=moduleversionid)
     module = version.module
@@ -152,7 +154,7 @@ def run_module(moduleid):
     for c in collections:
         run_module_on_collection.delay(c.pk, module.pk)
 
-@celery.task
+@app.task
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
@@ -169,7 +171,7 @@ def run_module_on_recordings(moduleid, recids):
             print "  docid", d.pk
             process_document(d.pk, version.pk)
 
-@celery.task
+@app.task
 def run_module_on_collection(collectionid, moduleid):
     collection = models.Collection.objects.get(pk=collectionid)
     module = models.Module.objects.get(pk=moduleid)

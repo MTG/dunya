@@ -1,4 +1,5 @@
-import celery
+from __future__ import absolute_import
+
 import os
 import traceback
 
@@ -15,6 +16,7 @@ import docserver.util
 
 import completeness
 #import populate_images
+from dunya.celery import app
 
 class DunyaTask(celery.Task):
     abstract = True
@@ -53,13 +55,13 @@ def force_load_and_import_collection(collectionid):
     chain = load_musicbrainz_collection.si(collectionid) | force_import_all_releases.si(collectionid)
     chain.apply_async()
 
-@celery.task(ignore_result=True)
+@app.task(ignore_result=True)
 def rematch_unknown_directory(collectiondirectory_id):
     """ Try and match a CollectionDirectory to a release in the collection. """
     cd = models.CollectionDirectory.objects.get(pk=collectiondirectory_id)
     _match_directory_to_release(cd.collection.id, cd.full_path)
 
-@celery.task(base=CollectionDunyaTask)
+@app.task(base=CollectionDunyaTask)
 def load_musicbrainz_collection(collectionid):
     """ Load a musicbrainz collection into the dashboard database
         and scan collection root to match directories to releases.
@@ -75,7 +77,7 @@ def load_musicbrainz_collection(collectionid):
     coll.add_log_message("Collection scan finished")
     return collectionid
 
-@celery.task(base=ReleaseDunyaTask)
+@app.task(base=ReleaseDunyaTask)
 def import_release(releasepk):
     """ Import a single release into the database.
     Arguments:
@@ -157,7 +159,7 @@ def import_release(releasepk):
         release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
-@celery.task(base=CollectionDunyaTask)
+@app.task(base=CollectionDunyaTask)
 def force_import_all_releases(collectionid):
     """ Reimport releases in a collection.
     This will (re)import all releases that are in the collection, unless they
@@ -180,7 +182,7 @@ def force_import_all_releases(collectionid):
         import_release(r.id)
     collection.set_state_finished()
 
-@celery.task(base=CollectionDunyaTask)
+@app.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):
     """ Import releases in a collection.
     This will not import releases that are ignored, or have a state of 'finished'
