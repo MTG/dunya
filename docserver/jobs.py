@@ -169,7 +169,7 @@ def run_module_on_recordings(moduleid, recids):
         for d in docs:
             print "  document", d
             print "  docid", d.pk
-            process_document(d.pk, version.pk)
+            process_document.delay(d.pk, version.pk)
 
 @app.task
 def run_module_on_collection(collectionid, moduleid):
@@ -183,4 +183,4 @@ def run_module_on_collection(collectionid, moduleid):
         docs = models.Document.objects.filter(sourcefiles__file_type=module.source_type).exclude(derivedfiles__module_version=version)
         for d in docs:
             print "  document", d
-            process_document(d.pk, version.pk)
+            process_document.delay(d.pk, version.pk)
