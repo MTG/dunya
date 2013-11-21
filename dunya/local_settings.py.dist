@@ -18,9 +18,13 @@ DATABASES = {
     }
 }
 
+# Celery broker. On a default install this won't need to be changed
+BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
+# for example, images
 MEDIA_ROOT = ''
+# Where generated files live (e.g. extracted features)
 AUDIO_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
