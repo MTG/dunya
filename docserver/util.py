@@ -76,7 +76,6 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
     except models.SourceFileType.DoesNotExist:
         sourcetype = None
     if doc and sourcetype:
-        print "successful sourcetype", slug, "returning"
         files = doc.sourcefiles.filter(file_type=sourcetype)
         if len(files) == 0:
             raise NoFileException("Looks like a sourcefile, but I can't find one")
@@ -90,10 +89,15 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
     else:
         moduleversions = moduleversions.order_by("-date_added")
     if len(moduleversions):
-        mv = moduleversions[0]
-        dfs = doc.derivedfiles.filter(module_version=mv).all()
-        if subtype:
-            dfs = dfs.filter(outputname=subtype)
+        dfs = None
+        for mv in moduleversions:
+            # go through all the versions until we find a file of that version
+            dfs = doc.derivedfiles.filter(module_version=mv).all()
+            if subtype:
+                dfs = dfs.filter(outputname=subtype)
+            if dfs.count() > 0:
+                # We found some files, break
+                break
         if dfs.count() > 1:
             raise NoFileException("Found more than 1 outputname per this modver without a subtype set")
         elif dfs.count() == 1:
