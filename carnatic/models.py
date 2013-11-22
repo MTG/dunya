@@ -5,6 +5,7 @@ from django.db.models import Q
 import collections
 
 import data.models
+from carnatic import search
 import managers
 import filters
 import random
@@ -131,136 +132,36 @@ class Concert(CarnaticStyle, data.models.Concert):
               }
         return ret
 
-    def get_same_and_similar_by_artist(self):
+    def get_similar(self):
+
         artists = set(self.artists.all())
         for p in self.performers():
             artists.add(p.performer)
-        concerts = []
-        concertcounts = collections.Counter()
-        concertartists = collections.defaultdict(list)
-        similarartists = collections.defaultdict(list)
-        for a in artists:
-            # See how many artists each concert has in common with this one
-            cs = Concert.objects.filter(Q(artists=a) | Q(performance=a) | Q(tracks__performance=a)).distinct()
-            for c in cs:
-                if c.pk != self.pk:
-                    concertcounts[c.pk] += 1
-                    concertartists[c.pk].append(a)
-            #similar = a.similar_artists()
-            #for similara, desc in similar:
-            #    if similara not in artists:
-            #        cs = Concert.objects.filter(Q(artists=similara) | Q(performance=similara) | Q(tracks__performance=similara)).distinct()
-            #        for c in cs:
-            #            if c.pk != self.pk:
-            #                if similara not in similarartists[c.pk]:
-            #                    concertcounts[c.pk] += 1
-            #                    similarartists[c.pk].append(similara)
-        return len(artists), concertcounts, concertartists, similarartists
-
-
-    def get_same_and_similar_by_raaga(self):
-        raagas = Raaga.objects.filter(work__recording__concert=self)
-        concertraagas = collections.defaultdict(list)
-        similarraagas = collections.defaultdict(list)
-        concertcounts = collections.Counter()
-        for r in raagas:
-            print "raaga", r
-            cs = Concert.objects.filter(tracks__work__raaga=r)
-            print "got %s concerts" % cs.count()
-            for c in cs:
-                if c.pk != self.pk:
-                    if r not in concertraagas[c.pk]:
-                        concertcounts[c.pk] += 1
-                        concertraagas[c.pk].append(r)
-            #similars = r.get_similar()
-            #for sr in similars:
-            #    if sr not in raagas:
-            #        cs = Concert.objects.filter(tracks__work__taala=sr)
-            #        for c in cs:
-            #            if c.pk != self.pk:
-            #                if sr not in similarraagas[c.pk]:
-            #                    concertcounts[c.pk] += 1
-            #                    similarraagas[c.pk].append(sr)
-        return len(raagas), concertcounts, concertraagas, similarraagas
-
-    def get_same_and_similar_by_taala(self):
-        taalas = Taala.objects.filter(work__recording__concert=self)
-        concerttaalas = collections.defaultdict(list)
-        similartaalas = collections.defaultdict(list)
-        concertcounts = collections.Counter()
-        for t in taalas:
-            cs = Concert.objects.filter(tracks__work__taala=t)
-            for c in cs:
-                if c.pk != self.pk:
-                    if t not in concerttaalas[c.pk]:
-                        concertcounts[c.pk] += 1
-                        concerttaalas[c.pk].append(t)
-            #similars = t.get_similar()
-            #for st in similars:
-            #    if st not in taalas:
-            #        cs = Concert.objects.filter(tracks__work__taala=st)
-            #        for c in cs:
-            #            if c.pk != self.pk:
-            #                if st not in similartaalas[c.pk]:
-            #                    concertcounts[c.pk] += 1
-            #                    similartaalas[c.pk].append(st)
-        return len(taalas), concertcounts, concerttaalas, similartaalas
-
-
-    def get_same_and_similar_by_work(self):
         works = Work.objects.filter(recording__concert=self)
-        concertworks = collections.defaultdict(list)
-        similarworks = collections.defaultdict(list)
-        concertcounts = collections.Counter()
-        for w in works:
-            cs = Concert.objects.filter(tracks__work=w)
-            for c in cs:
-                if c.pk != self.pk:
-                    if w not in concertworks[c.pk]:
-                        concertcounts[c.pk] += 1
-                        concertworks[c.pk].append(w)
-        return len(works), concertcounts, concertworks, similarworks
+        raagas = Raaga.objects.filter(work__recording__concert=self)
+        taalas = Taala.objects.filter(work__recording__concert=self)
 
-    def get_similar(self):
-        bywork = self.get_same_and_similar_by_work()
-        byraaga = self.get_same_and_similar_by_raaga()
-        bytaala = self.get_same_and_similar_by_taala()
-        byartist = self.get_same_and_similar_by_artist()
+        aid = [a.id for a in artists]
+        wid = [w.id for w in works]
+        rid = [r.id for r in raagas]
+        tid = [t.id for t in taalas]
 
-        ret = collections.defaultdict(dict)
-        wnum, wconcert, wsame, wsimilar = bywork
-        rnum, rconcert, rsame, rsimilar = byraaga
-        tnum, tconcert, tsame, tsimilar = bytaala
-        anum, aconcert, asame, asimilar = byartist
+        similar = search.get_similar_concerts(wid, rid, tid, aid)
+        similar = sorted(similar, reverse=True, 
+                key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
 
-        for cid, count in wconcert.most_common():
-            ret[cid]["worksame"] = wsame.get(cid, [])
-            ret[cid]["worksimilar"] = wsimilar.get(cid, [])
-            ret[cid]["worknum"] = wnum
-        for cid, count in rconcert.most_common():
-            ret[cid]["raagasame"] = rsame.get(cid, [])
-            ret[cid]["raagasimilar"] = rsimilar.get(cid, [])
-            ret[cid]["raaganum"] = wnum
-        for cid, count in tconcert.most_common():
-            ret[cid]["taalasame"] = tsame.get(cid, [])
-            ret[cid]["taalasimilar"] = tsimilar.get(cid, [])
-            ret[cid]["taalanum"] = wnum
-        for cid, count in aconcert.most_common():
-            ret[cid]["artistsame"] = asame.get(cid, [])
-            ret[cid]["artistsimilar"] = asimilar.get(cid, [])
-            ret[cid]["artistnum"] = wnum
+        similar = similar[:10]
+        ret = []
+        for s, v in similar:
+            concert = Concert.objects.get(pk=s)
+            works = [Work.objects.get(pk=w) for w in v["works"]]
+            raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
+            taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
+            artists = [Artist.objects.get(pk=a) for a in v["artists"]]
+            ret.append((concert, 
+                {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
 
-        # For each concert we need number of artists, works, raagas, taalas
-        # similar: [{"concert": theconcert, "samework": [works], "similarworks": [similar], ...raaga, taala, artist}]
-        # sort by number of raagas, taalas, works, artists, similar r, similart, similarw, similara
-
-        newret = []
-        for k, v in ret.items():
-            concert = Concert.objects.get(pk=k)
-            newret.append((concert, v))
-        newret = sorted(newret, reverse=True, key=lambda a: len(a[1].get("worksame", [])))
-        return newret
-
+        return ret
 
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)

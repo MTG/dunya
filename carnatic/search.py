@@ -3,7 +3,7 @@ from django.conf import settings
 import collections
 import json
 
-from carnatic import models
+#from carnatic import models
 
 solr = pysolr.Solr(settings.SOLR_URL)
 def search(name):
@@ -57,26 +57,30 @@ def get_concerts_with_raagas(raagas):
         ret.append(models.Concert.objects.get(pk=concertid))
     return ret
 
-def get_concerts_with_taalas(taalas):
-    if not isinstance(taalas, list):
-        taalas = [taalas]
-    taalas = " ".join(taalas)
-    query = "doctype_s:concertsimilar AND taala_is:(%s)" % taalas
-    results = solr.search(query, rows=100)
-    ret = []
-    for d in results.docs:
-        concertid = d["concertid_i"]
-        ret.append(models.Concert.objects.get(pk=concertid))
-    return ret
+def get_similar_concerts(works, raagas, taalas, artists):
+    workids = set(works)
+    raagaids = set(raagas)
+    taalaids = set(taalas)
+    artistids = set(artists)
+    raagas = " ".join(map(str, raagaids))
+    taalas = " ".join(map(str, taalaids))
+    works = " ".join(map(str, workids))
+    artists = " ".join(map(str, artistids))
 
-def get_concerts_with_works(works):
-    if not isinstance(works, list):
-        works = [works]
-    works = " ".join(works)
-    query = "doctype_s:concertsimilar AND work_is:(%s)" % works
+    query = "doctype_s:concertsimilar AND (taala_is:(%s) raaga_is:(%s) work_is:(%s) artist_is:(%s))" % (taalas, raagas, works, artists)
     results = solr.search(query, rows=100)
+
     ret = []
     for d in results.docs:
         concertid = d["concertid_i"]
-        ret.append(models.Concert.objects.get(pk=concertid))
+        dr = set(d.get("raaga_is", []))
+        dt = set(d.get("taala_is", []))
+        dw = set(d.get("work_is", []))
+        da = set(d.get("artist_is", []))
+        commonr = list(raagaids & dr)
+        commont = list(taalaids & dt)
+        commona = list(artistids & da)
+        commonw = list(workids & dw)
+
+        ret.append((concertid, {"works": commonw, "raagas": commonr, "taalas": commont, "artists": commona}))
     return ret
