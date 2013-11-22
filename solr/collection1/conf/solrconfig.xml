@@ -964,23 +964,8 @@
        <str name="f.content.hl.fragsize">200</str>
        <str name="f.content.hl.alternateField">content</str>
        <str name="f.content.hl.maxAlternateFieldLength">750</str>
+   </lst>
 
-       <!-- Spell checking defaults -->
-       <str name="spellcheck">on</str>
-       <str name="spellcheck.extendedResults">false</str>       
-       <str name="spellcheck.count">5</str>
-       <str name="spellcheck.alternativeTermCount">2</str>
-       <str name="spellcheck.maxResultsForSuggest">5</str>       
-       <str name="spellcheck.collate">true</str>
-       <str name="spellcheck.collateExtendedResults">true</str>  
-       <str name="spellcheck.maxCollationTries">5</str>
-       <str name="spellcheck.maxCollations">3</str>           
-     </lst>
-
-     <!-- append spellchecking to our list of components -->
-     <arr name="last-components">
-       <str>spellcheck</str>
-     </arr>
   </requestHandler>
 
 
