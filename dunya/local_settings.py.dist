@@ -21,8 +21,7 @@ DATABASES = {
 # Celery broker. On a default install this won't need to be changed
 BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 # Celery result backend - where to store data
-CELERY_RESULT_BACKEND='db+postgresql://dunya:dunya@sitar.s.upf.edu/dunya'
-
+CELERY_RESULT_BACKEND='redis://sitar.s.upf.edu/0'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # for example, images
