@@ -123,9 +123,6 @@ INSTALLED_APPS = (
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
-# Celery
-CELERY_RESULT_BACKEND='db+postgresql://dunya:dunya@localhost/dunya'
-
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
