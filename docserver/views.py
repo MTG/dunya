@@ -80,7 +80,7 @@ def download_external(request, uuid, ftype):
                 dfs = None
                 for mv in moduleversions:
                     # go through all the versions until we find a file of that version
-                    dfs = doc.derivedfiles.filter(module_version=mv).all()
+                    dfs = thedoc.derivedfiles.filter(module_version=mv).all()
                     if subtype:
                         dfs = dfs.filter(outputname=subtype)
                     if dfs.count() > 0:
