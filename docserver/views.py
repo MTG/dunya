@@ -74,13 +74,18 @@ def download_external(request, uuid, ftype):
                 moduleversions = moduleversions.order_by("-date_added")
 
             if len(moduleversions):
-                modver = moduleversions[0]
-                dfs = thedoc.derivedfiles.filter(module_version=modver).all()
                 # filter by ?subtype
                 # if a file has many subtypes and it's not set, then this is an error
                 subtype = request.GET.get("subtype")
-                if subtype:
-                    dfs = dfs.filter(outputname=subtype)
+                dfs = None
+                for mv in moduleversions:
+                    # go through all the versions until we find a file of that version
+                    dfs = doc.derivedfiles.filter(module_version=mv).all()
+                    if subtype:
+                        dfs = dfs.filter(outputname=subtype)
+                    if dfs.count() > 0:
+                        # We found some files, break
+                        break
                 if dfs.count() > 1:
                     return HttpResponse(status=400)
                 elif dfs.count() == 1:
