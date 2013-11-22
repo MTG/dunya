@@ -124,7 +124,7 @@ INSTALLED_APPS = (
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
 # Celery
-CELERY_ACCEPT_CONTENT = ['json']
+CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
