@@ -69,6 +69,23 @@ In `dunya/local_settings.py` you will need to add connection details:
 
     BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 
+* Solr
+
+Search, search autocompletion, and similar concerts use solr to make things faster
+
+Download the solr package from https://github.com/alastair/solr-mvn-template
+
+Copy in the configuration from `dunya/solr`
+
+run
+
+    mvn jetty:run-war
+
+To import data into solr
+
+    python manage.py solrdelete
+    python manage.py solrimport
+
 Running
 =======
 
