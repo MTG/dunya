@@ -253,7 +253,7 @@ def recording(request, recordingid):
         tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
         notenames = ["A", "B♭", "B", "C", "C♯", "D", "E♭", "F", "F♯", "G", "A♭"]
         tonic = round(float(tonic), 2)
-        thebin = 12 * math.log(tonic/440.0) / math.log(2)
+        thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
         thebin = int(math.ceil(thebin))
         tonic = str(tonic) 
         if thebin < 10 and thebin >= 0:
@@ -261,7 +261,7 @@ def recording(request, recordingid):
         else:
             print "bin is", thebin, "weird"
             print tonic
-            print 12 * math.log(tonic/440.0) / math.log(2)
+            print (12 * math.log(tonic/440.0) / math.log(2))
     except docserver.util.NoFileException:
         tonic = None
         tonicname = None
