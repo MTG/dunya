@@ -7,6 +7,9 @@ def up(port="8001"):
 def celery():
     local("celery worker --app=dunya -l info")
 
+def less():
+    local("lessc carnatic/static/carnatic/css/main.less --source-map-map-inline carnatic/static/carnatic/css/main.css")
+
 def setupdb():
     """ Run this when you are setting up a new installation
         or have deleted your database
