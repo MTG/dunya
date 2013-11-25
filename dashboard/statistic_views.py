@@ -10,6 +10,7 @@ import docserver
 import carnatic
 
 import json
+import collections
 import compmusic
 
 def _common_stats(collectionid):
@@ -84,6 +85,28 @@ def carnatic_stats(request):
 
 @user_passes_test(views.is_staff)
 def carnatic_releases(request):
+    dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
+    checker = "dashboard.completeness.CorrectMBID"
+    unmatchedreleases = {}
+    for dashrel in dashcoll.musicbrainzrelease_set.all():
+        results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
+        if results:
+            lastresult = results[0]
+            if lastresult.result == 'b': # Bad
+                data = json.loads(lastresult.data)
+                unmatched = data.get("unmatchedmb", {})
+                if unmatched:
+                    if dashrel not in unmatchedreleases:
+                        unmatchedreleases[dashrel] = []
+                    unmatchedreleases[dashrel].extend(unmatched.values())
+
+    print unmatchedreleases.keys()
+    ret = {"unmatched": unmatchedreleases}
+    print ret
+    return render(request, 'stats/carnatic_releases.html', ret)
+
+@user_passes_test(views.is_staff)
+def carnatic_coverart(request):
     releases = carnatic.models.Concert.objects.select_related('artists')
     counted = releases.annotate(Count('images'))
     noimages = [r for r in counted.all() if r.images__count == 0]
@@ -106,7 +129,7 @@ def carnatic_releases(request):
         noi.append({"model": m, "dashboard": d})
 
     ret = {"noimages": noi, "nocaa": nocaa}
-    return render(request, 'stats/carnatic_releases.html', ret)
+    return render(request, 'stats/carnatic_coverart.html', ret)
 
 @user_passes_test(views.is_staff)
 def carnatic_artists(request):

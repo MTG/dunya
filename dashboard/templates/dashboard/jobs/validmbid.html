@@ -1,10 +1,10 @@
 {% if data.unmatchedmb %}
 Recordings on MusicBrainz but not in files:<br>
-{% for id in data.unmatchedmb %}
-    <li><a href="http://musicbrainz.org/recording/{{data.unmatchedmb.id.id}}">{{data.unmatchedmb.id.title}}</a>
+{% for id, item in data.unmatchedmb.items %}
+    <li><a href="http://musicbrainz.org/recording/{{item.id}}">{{item.title}}</a>
 {% endfor %}
 {% endif %}
-
+<p>
 {% if data.badlocal %}
 Recording IDs in files, but not on MusicBrainz<br>
 {% for id in data.badlocal %}

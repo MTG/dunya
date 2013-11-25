@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'data/taalas', views.taalas, name='dashboard-taalas'),
     url(r'data/instruments', views.instruments, name='dashboard-instruments'),
 
+    url(r'carnatic/coverart/', statistic_views.carnatic_coverart, name='dashboard-carnatic-coverart'),
     url(r'carnatic/releases/', statistic_views.carnatic_releases, name='dashboard-carnatic-releases'),
     url(r'carnatic/artists/', statistic_views.carnatic_artists, name='dashboard-carnatic-artists'),
     url(r'carnatic/recordings/', statistic_views.carnatic_recordings, name='dashboard-carnatic-recordings'),
