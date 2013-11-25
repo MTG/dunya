@@ -153,6 +153,9 @@ class Concert(CarnaticStyle, data.models.Concert):
         similar = similar[:10]
         ret = []
         for s, v in similar:
+            # Don't show this concert as similar
+            if s == self.id:
+                continue
             concert = Concert.objects.get(pk=s)
             works = [Work.objects.get(pk=w) for w in v["works"]]
             raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]

@@ -209,7 +209,7 @@ def concert(request, concertid):
 
     tags = tagging.tag_cloud(concertid, "concert")
 
-    # Other concerts by the same person
+    # Other similar concerts
     similar = concert.get_similar()
 
     # Raaga in

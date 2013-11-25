@@ -3,7 +3,7 @@ from django.conf import settings
 import collections
 import json
 
-#from carnatic import models
+import carnatic
 
 solr = pysolr.Solr(settings.SOLR_URL)
 def search(name):
@@ -11,13 +11,13 @@ def search(name):
     query = "doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
-    klass_map = {"instrument": models.Instrument,
-                 "raaga": models.Raaga,
-                 "taala": models.Taala,
-                 "concert": models.Concert,
-                 "artist": models.Artist,
-                 "work": models.Work,
-                 "composer": models.Composer}
+    klass_map = {"instrument": carnatic.models.Instrument,
+                 "raaga": carnatic.models.Raaga,
+                 "taala": carnatic.models.Taala,
+                 "concert": carnatic.models.Concert,
+                 "artist": carnatic.models.Artist,
+                 "work": carnatic.models.Work,
+                 "composer": carnatic.models.Composer}
     for d in results.docs:
         type = d["type_s"]
         id = d["object_id_i"]
@@ -44,18 +44,6 @@ def autocomplete(term):
             suggestions = suggs[index].get("suggestion", [])
             return suggestions
     return []
-
-def get_concerts_with_raagas(raagas):
-    if not isinstance(raagas, list):
-        raagas = [raagas]
-    raagas = " ".join(raagas)
-    query = "doctype_s:concertsimilar AND raaga_is:(%s)" % raagas
-    results = solr.search(query, rows=100)
-    ret = []
-    for d in results.docs:
-        concertid = d["concertid_i"]
-        ret.append(models.Concert.objects.get(pk=concertid))
-    return ret
 
 def get_similar_concerts(works, raagas, taalas, artists):
     workids = set(works)

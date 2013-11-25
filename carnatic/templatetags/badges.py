@@ -73,18 +73,10 @@ def badge_similar_concert(concert, similarity):
     if not isinstance(concert, Concert):
         concert = Concert.objects.get(pk=concert)
     return {"concert": concert,
-            "worksame": similarity.get("worksame", []),
-            "worksimilar": similarity.get("worksimilar", []),
-            "worknum": similarity.get("worknum", []),
-            "taalasame": similarity.get("taalasame", []),
-            "taalasimilar": similarity.get("taalasimilar", []),
-            "taalanum": similarity.get("taalanum", []),
-            "raagasame": similarity.get("raagasame", []),
-            "raagasimilar": similarity.get("raagasimilar", []),
-            "raaganum": similarity.get("raaganum", []),
-            "artistsame": similarity.get("artistsame", []),
-            "artistsimilar": similarity.get("artistsimilar", []),
-            "artistnum": similarity.get("artistnum", []),
+            "works": similarity.get("works", []),
+            "taalas": similarity.get("taalas", []),
+            "raagas": similarity.get("raagas", []),
+            "artists": similarity.get("artists", []),
             }
 
 @register.inclusion_tag("badges/similar_raaga.html")
