@@ -256,7 +256,12 @@ def recording(request, recordingid):
         thebin = 12 * math.log(tonic/440.0) / math.log(2)
         thebin = int(math.ceil(thebin))
         tonic = str(tonic) 
-        tonicname = notenames[thebin]
+        if thebin < 10 and thebin >= 0:
+            tonicname = notenames[thebin]
+        else:
+            print "bin is", thebin, "weird"
+            print tonic
+            print 12 * math.log(tonic/440.0) / math.log(2)
     except docserver.util.NoFileException:
         tonic = None
         tonicname = None
