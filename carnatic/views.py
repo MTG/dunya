@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -10,6 +11,7 @@ from social.forms import TagSaveForm
 import json
 import docserver
 import collections
+import math
 
 def get_filter_items():
     filter_items = [
@@ -249,14 +251,24 @@ def recording(request, recordingid):
         audio = None
     try:
         tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
-        tonic = str(round(float(tonic), 2))
+        notenames = ["A", "B♭", "B", "C", "C♯", "D", "E♭", "F", "F♯", "G", "A♭"]
+        tonic = round(float(tonic), 2)
+        thebin = 12 * math.log(tonic/440.0) / math.log(2)
+        thebin = int(math.ceil(thebin))
+        tonic = str(tonic) 
+        tonicname = notenames[thebin]
     except docserver.util.NoFileException:
         tonic = None
+        tonicname = None
     try:
         akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
         akshara = str(round(float(akshara), 2))
     except docserver.util.NoFileException:
         akshara = None
+
+    nextrecording = None
+    prevrecording = None
+    mbid = recording.mbid
 
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "recording": recording,
@@ -269,7 +281,9 @@ def recording(request, recordingid):
             "smallimage": small,
             "audio": audio,
             "tonic": tonic,
-            "akshara": akshara
+            "tonicname": tonicname,
+            "akshara": akshara,
+            "mbid": mbid,
     }
 
     return render(request, "carnatic/recording.html", ret)
