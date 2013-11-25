@@ -156,9 +156,17 @@ function playrecord(){
      	   </div>
          <div id="totalcontrol">
           <div id="control">
-            <div class="revButton"></div>
-            <div class="plButton" onclick="playrecord();"></div>
-            <div class="folButton"></div>
+              {% if prevrecording %}
+                  <a href="{{prevrecording.get_absolute_url}}"><div class="revButton active"></div></a>
+              {% else %}
+                  <div class="revButton"></div>
+              {% endif %}
+              <div class="plButton" onclick="playrecord();"></div>
+              {% if nextrecording %}
+                  <a href="{{nextrecording.get_absolute_url}}"><div class="folButton active"></div></a>
+              {% else %}
+                  <div class="folButton"></div>
+              {% endif %}
           </div>
          </div>
          <div class="graph">

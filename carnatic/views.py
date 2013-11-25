@@ -266,8 +266,15 @@ def recording(request, recordingid):
     except docserver.util.NoFileException:
         akshara = None
 
+    concert = recording.concert_set.get()
+    tracks = list(concert.tracks.all())
+    recordingpos = tracks.index(recording)
     nextrecording = None
     prevrecording = None
+    if recordingpos > 0:
+        prevrecording = tracks[recordingpos-1]
+    if recordingpos+1 < len(tracks):
+        nextrecording = tracks[recordingpos+1]
     mbid = recording.mbid
 
     ret = {"filter_items": json.dumps(get_filter_items()),
@@ -284,6 +291,8 @@ def recording(request, recordingid):
             "tonicname": tonicname,
             "akshara": akshara,
             "mbid": mbid,
+            "nextrecording": nextrecording,
+            "prevrecording": prevrecording
     }
 
     return render(request, "carnatic/recording.html", ret)
