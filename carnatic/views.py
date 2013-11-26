@@ -261,7 +261,7 @@ def recording(request, recordingid):
         audio = None
     try:
         tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
-        notenames = ["A", "B♭", "B", "C", "C♯", "D", "E♭", "F", "F♯", "G", "A♭"]
+        notenames = ["A", "B♯", "B", "C", "C♯", "D", "E♯", "F", "F♯", "G", "A♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
         thebin = int(math.ceil(thebin))
