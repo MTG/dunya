@@ -107,6 +107,8 @@ class Artist(CarnaticStyle, data.models.Artist):
     def concerts(self):
         ret = []
         ret.extend(self.primary_concerts.all())
+        for a in self.groups.all():
+            ret.extend([c for c in a.concerts() if c not in ret])
         for concert, perf in self.performances():
             if concert not in ret:
                 ret.append(concert)
