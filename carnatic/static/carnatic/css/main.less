@@ -304,7 +304,7 @@ textarea {
 	    	background: #eeeded;
 	    	padding:15px;
 	    	z-index:40;
-	    	opacity: 0;
+	    	opacity: 1;
 	    	margin-top:5px;
 	    	>img {
 		    	width: 150px;
@@ -351,7 +351,7 @@ textarea {
 	    	background: #eeeded;
 	    	padding:15px;
 	    	z-index:40;
-	    	opacity: 0;
+	    	opacity: 1;
 	    	margin-top:5px;
 	    	>img {
 		    	width: 150px;
@@ -820,13 +820,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				margin-left: 516px;
 				.metaMask {
 					position: relative;
-					width: auto;
 					height: 100%;
 					overflow-x: auto;
 					overflow-y: hidden;
 					.metaContainer {
 					position: relative;
-					width: 3000px;
 						.metaDetails {
 							display: inline-block;
 							position: relative;
@@ -860,6 +858,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 							span {
 								display: block;
 								margin:10px;
+                                overflow-y: auto;
 								.player {
 									background: url("../img/playButton.png") 0 50% no-repeat;
 									padding-left: 38px;
@@ -885,14 +884,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 									float: left;
 									font-weight: normal;
 									width:68%;
-								}
-							}
-							span.list2{
-								label {
-									display: block;
-								}
-								b {
-									display: block;
 								}
 							}
 							&.narrow { width: 450px; }
@@ -966,14 +957,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 											float: left;
 											font-weight: normal;
 											width:68%;
-										}
-									}
-									span.list2{
-										label {
-											display: block;
-										}
-										b {
-											display: block;
 										}
 									}
 								}

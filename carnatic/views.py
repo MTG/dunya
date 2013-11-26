@@ -124,14 +124,6 @@ def artistsearch(request):
         ret.append({"mbid": a.mbid, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def get_image(entity, noimage):
-    images = entity.images.all()
-    if images:
-        image = images[0].image.url
-    else:
-        image = "/media/images/%s.jpg" % noimage
-    return image
-
 def artist(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
 
@@ -171,17 +163,35 @@ def artist(request, artistid):
         raagas = []
 
     tags = tagging.tag_cloud(artistid, "artist")
+    musicbrainz = artist.get_musicbrainz_url()
+    k = data.models.SourceName.objects.get(name="kutcheris.com")
+    w = data.models.SourceName.objects.get(name="Wikipedia")
+    kutcheris = None
+    wikipedia = None
+    kr = artist.references.filter(artist_source_set=k)
+    if kr.count():
+        kutcheris = kr[0].uri
+    wr = artist.references.filter(artist_source_set=w)
+    if wr.count():
+        wikipedia = wr[0].uri
+    desc = artist.description
+    if desc and desc.source.source_name == k:
+        kutcheris = artist.description.source.uri
+    elif desc and desc.source.source_name == w:
+        wikipedia = artist.description.source.uri
 
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "artist": artist,
-           "image": get_image(artist, "noartist"),
            "form": TagSaveForm(),
             "objecttype": "artist",
             "objectid": artist.id,
             "tags": tags,
             "similar_artists": similar_artists,
             "raagas": raagas,
-            "taalas": taalas
+            "taalas": taalas,
+            "mb": musicbrainz,
+            "kutcheris": kutcheris,
+            "wiki": wikipedia
     }
 
     return render(request, "carnatic/artist.html", ret)

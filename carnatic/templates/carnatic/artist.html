@@ -61,25 +61,18 @@ $(document).ready(function() {
             </div>
             <div class="bigImage"><img src="{{artist.get_image_url}}"></div>
             <div id="meta">
-<!--
-										<h3>references</h3>
-										<span>
-                                            {% for ref in artist.reference_urls %}
-                                            <a href="{{ref.url}}">{{ref.title}}</a>
-
-                                            {% endfor %}
-										</span>
--->
                 <div class="metaBlock">
                     <div class="metaMask">
-                            <div class="metaContainer" style="width: 200px !important;">
+                            <div class="metaContainer">
                             <div class="splitMeta">
                                 <div id="editorial" class="metaDetails">
                                 <h3>Biographical data</h3>
                                     <div class="inner">
                                         <span class="list">
-                                            <label>Date of birth:</label><b>{{artist.begin}}</b>
+                                            <label>Date of birth:</label><b>{% if artist.begin %}{{artist.begin}}{% else %}(unknown){% endif %}</b>
+                                            {% if artist.state %}
                                             <label>Region of birth:</label><b>{{artist.state.name}}</b>
+                                            {% endif %}
                                         </span>
                                     </div>
                                 </div>
@@ -91,7 +84,7 @@ $(document).ready(function() {
                                             <a href="{{mb}}">Musicbrainz</a>
                                             {% endif %}
                                             {% if kutcheris %}
-                                            <a href="{{kutcheris}}">Kutcheris</a>
+                                            <a href="{{kutcheris}}">Kutcheris.com</a>
                                             {% endif %}
                                             {% if wiki %}
                                             <a href="{{wiki}}">Wikipedia</a>
@@ -101,19 +94,19 @@ $(document).ready(function() {
                                 </div>
 
                             </div>
-                        <div class="metaContainer" style="width: 315px;">
+                        <div class="metaContainer">
                             <div class="metaDetails">
                                 <h3>Biography</h3>
+                                <div class="inner">
                                 {% if artist.description.description %}
                                 <span>{{artist.description.description}}
-                                <p><label>Description from </label> <a href="{{artist.description.source.uri}}">{{artist.description.source.source_name.name}}</a><br>
-                                Read more on <a href="">Wikipedia</a><br>
-                                    </span>
+                                    <p></p></span>
                                     {% endif %}
+                                </div>
                                 </div>
                             </div>
                             {% if raagas or taalas %}
-                                <div class="metaContainer" style="width: 315px;">
+                                <div class="metaContainer">
                                     <div class="metaDetails">
                                     {% if raagas %}
                                     <h3>Common raagas</h3>
@@ -121,32 +114,43 @@ $(document).ready(function() {
                                     {% if taalas %}
                                     <h3>Common taalas</h3>
                                     {% endif %}
+                                <div class="inner">
+                                    <span>
                                     {% for r, count in raagas %}
                                         <li>{% inline_raaga r %}
                                     {% endfor %}
                                     {% for t, count in taalas %}
                                         <li>{% inline_taala t %}
                                     {% endfor %}
+                                </span>
+                            </div>
                                     </div>
 
                                 </div>
                             {% endif %}
-                            <div class="metaContainer" style="width: 315px;">
+                            <div class="metaContainer">
                                 {% if artist.group_members.count %}
                                 <div class="metaDetails">
                                 <h3>Group members</h3>
+                                <div class="inner">
+                                    <span>
                                 {% for member in artist.group_members.all %}
                                 {% badge_mini_artist member %}
                                 {% endfor %}
+                            </span>
+                        </div>
                                 </div>
                                 {% endif %}
 
                                 {% if artist.groups.count %}
                                 <div class="metaDetails">
                                 <h3>Part of group</h3>
+                                <div class="inner">
+                                    <span>
                                 {% for member in artist.groups.all %}
                                 {% badge_mini_artist member %}
                                 {% endfor %}
+                                </span></div>
                                 </div>
                                 {% endif %}
                             </div>
