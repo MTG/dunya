@@ -13,6 +13,8 @@ import os
 import dashboard.models
 import docserver.models
 
+from django.conf import settings
+
 class Command(BaseCommand):
     help = 'Run a module on a recording or a release'
     args = '<moduleid> <mbid>'
