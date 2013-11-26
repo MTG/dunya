@@ -260,8 +260,6 @@ textarea {
 				    width: 20px;
 			    }
 		    }
-		    &.open {
-		    }
 	    }
 	    #guest {
     		float: left;
@@ -289,10 +287,9 @@ textarea {
 				    width: 20px;
 			    }
 		    }
-		    &.open {
-		    }
 	    }
     	#userOptions {
+            display: none;
 	    	position: absolute;
 	    	right: 9px;
 			top: 30px;
@@ -304,7 +301,6 @@ textarea {
 	    	background: #eeeded;
 	    	padding:15px;
 	    	z-index:40;
-	    	opacity: 1;
 	    	margin-top:5px;
 	    	>img {
 		    	width: 150px;
@@ -334,12 +330,12 @@ textarea {
 		    	top: -9px;
 				right: 8px;
 	    	}
-	    	&.open {
-		    	margin-top:0px;
-		    	opacity: 1;
-	    	}
+            &.open {
+               margin-top:0px;
+            }
 	    }
 	    #guestOptions {
+            display: none;
 	    	position: absolute;
 	    	right: 9px;
 			top: 30px;
@@ -351,7 +347,6 @@ textarea {
 	    	background: #eeeded;
 	    	padding:15px;
 	    	z-index:40;
-	    	opacity: 1;
 	    	margin-top:5px;
 	    	>img {
 		    	width: 150px;
@@ -381,10 +376,9 @@ textarea {
 		    	top: -9px;
 				right: 8px;
 	    	}
-	    	&.open {
-		    	margin-top:0px;
-		    	opacity: 1;
-	    	}
+            &.open {
+               margin-top:0px;
+            }
 	    }
     	li:first-child a {
    			margin-left: 0;
