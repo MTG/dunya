@@ -15,38 +15,38 @@ Dependencies
 
 * Also install essentia + python libraries
 
-    git clone git@github.com:MTG/essentia.git
-    cd essentia
-    sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
-    ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
-    ./waf
-    sudo ./waf install
+        git clone git@github.com:MTG/essentia.git
+        cd essentia
+        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
+        ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
+        ./waf
+        sudo ./waf install
 
-* Creating a virtualenv
+* Create a virtualenv
 
-    virtualenv --no-site-packages env
-    source env/bin/activate
-    pip install --upgrade distribute
-    pip install -r requirements
+        virtualenv --no-site-packages env
+        source env/bin/activate
+        pip install --upgrade distribute
+        pip install -r requirements
 
 * Using essentia, numpy, and scipy in virtualenv
 
-    ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
-    ln -s /usr/lib/python2.7/dist-packages/numpy* env/lib/python2.7/site-packages
-    ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
+        ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
+        ln -s /usr/lib/python2.7/dist-packages/numpy* env/lib/python2.7/site-packages
+        ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
 
 * Installing Pillow with jpeg support
 
-    sudo apt-get install libjpeg8-dev
-    ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
-    ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
-    ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
+        sudo apt-get install libjpeg8-dev
+        ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
+        ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
+        ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
 
 * If you install matplotlib with apt:
 
-    pip install python-dateutil
-    ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
-    ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
+        pip install python-dateutil
+        ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
+        ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
 
 Database
 --------
@@ -59,7 +59,7 @@ To add tables to the database run
     fab setupdb
 
 Alternatively, you may want to create a postgres dump, since the django json dump
-is over 500mb. Set up postgres as normal and run
+is over 500mb. Set up postgres and run
 
     # on the server
     pg_dump -O dunya > dunya_pg.sql
@@ -73,9 +73,10 @@ Updating file locations
 -----------------------
 
 Dunya has files in 3 locations:
-    * Audio files
-    * Derived files (images, wav files, features)
-    * Media files (see below section)
+
+* Audio files
+* Derived files (images, wav files, features)
+* Media files (see below section)
 
 The database stores the location of all files in docserver. If you copied audio and
 derived files from the server then you need to update the location. Run
@@ -84,6 +85,9 @@ derived files from the server then you need to update the location. Run
 
 where `collectionid` is the musicbrainz id of the collection and `audiodir` is the
 location where the audio now lives.
+This takes a while (For just carnatic we have close to 1.5m rows to update). In the
+future we may suggest a method that accesses the database directly instead of
+using django.
 
 Media files (entity images)
 ---------------------------
@@ -112,7 +116,8 @@ In `dunya/local_settings.py` you will need to add connection details:
 Solr
 ----
 
-This is not needed if you are not developing search. You can use the main solr server.
+This is not needed if you are not developing search. You can use the main solr
+server configured in `local_settings.py.dist`.
 
 Search, search autocompletion, and similar concerts use solr to make things faster
 
