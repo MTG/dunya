@@ -57,8 +57,9 @@ def import_artist_bio(a, overwrite):
 
     else:
         print "Found data on kutcheris.com"
-        i, b, u = kutcheris.get_artist_details(artist.values()[0])
-        u = "http://kutcheris.com/artist.php?id=%s" % artist
+        aid = artist.values()[0]
+        i, b, u = kutcheris.get_artist_details(aid)
+        u = "http://kutcheris.com/artist.php?id=%s" % aid
         if b:
             sn = data.models.SourceName.objects.get(name="kutcheris.com")
 
