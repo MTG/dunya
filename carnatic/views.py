@@ -371,7 +371,6 @@ def instrumentsearch(request):
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
-    ret = {"instrument": instrument, "filter_items": json.dumps(get_filter_items()),
-           "image": get_image(instrument, "noinstrument")}
+    ret = {"instrument": instrument, "filter_items": json.dumps(get_filter_items())}
 
     return render(request, "carnatic/instrument.html", ret)
