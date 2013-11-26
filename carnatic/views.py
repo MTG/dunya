@@ -277,7 +277,7 @@ def recording(request, recordingid):
         tonicname = None
     try:
         akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
-        akshara = str(round(float(akshara), 2))
+        akshara = str(round(float(akshara), 3) * 1000)
     except docserver.util.NoFileException:
         akshara = None
 
