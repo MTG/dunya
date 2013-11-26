@@ -57,15 +57,35 @@ class Artist(CarnaticStyle, data.models.Artist):
         # we are not similar to ourselves
         idset.add(self.id)
         ids = []
+        gurus = []
+        students = []
+        siblings = []
         for g in self.gurus.all():
             # TODO: This should be inline_artist stuff
-            ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
-            idset.add(g.id)
+            gurus.append(g)
+        for s in self.students.all():
+            students.append(s)
         for g in self.gurus.all():
             for s in g.students.all():
-                if s.id not in idset:
-                    idset.add(s.id)
-                    ids.append((s.id, "%s and %s share the same guru (%s)" % (self.name, s.name, g.name)))
+                siblings.append(s)
+
+        # sort each group by age
+        ourage = int(self.begin[:4]) if self.begin else 9999
+        gurus = sorted(gurus, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
+        students = sorted(students, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
+        siblings = sorted(siblings, key=lambda a: abs((int(a.begin[:4]) if a.begin else 9999)-ourage))
+
+        for g in gurus:
+            ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
+            idset.add(g.id)
+        for s in students:
+            if s.id not in idset:
+                idset.add(s.id)
+                ids.append((s.id, "%s is a student of %s" % (s.name, self.name)))
+        for s in siblings:
+            if s.id not in idset:
+                idset.add(s.id)
+                ids.append((s.id, "%s and %s share the same guru (%s)" % (self.name, s.name, g.name)))
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
