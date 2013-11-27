@@ -37,32 +37,26 @@ $(document).ready(function() {
 							<div id="artists" class="metaDetails">
 								<div class="inner">
 									<h3>Artists who perform this raaga</h3>
-									<span class='list'>
 									{% for a in raaga.artists %}
-									{% inline_artist a %}
+									{% badge_mini_artist a %}
 									{% endfor %}
-									</span>
 								</div>
 							</div>
 							<div id="composers" class="metaDetails">
 								<div class="inner">
 									<h3>Composers</h3>
-									<span class="list">
 									{% for c in raaga.composers %}
-									{% inline_composer c %}
+									{% badge_mini_composer c %}
 									{% endfor %}
-									</span>
 								</div>
 							</div>
 
 							<div id="works" class="metaDetails">
 								<div class="inner">
 									<h3>Compositions</h3>
-										<span class="list">
-										{% for w in raaga.works %}
-										{% inline_work w %}
-										{% endfor %}
-										</span>
+                                    {% for w in raaga.works %}
+                                    {% badge_mini_work w %}
+                                    {% endfor %}
 								</div>
 							</div>
 			 			</div>
@@ -77,7 +71,7 @@ $(document).ready(function() {
 	 	<div class="alldata">
 	     	<div class="thedata">
 	     		<div class="leftdata">
-		     		<h3>Similar raagas</h3>
+                    <h3>Related raagas,<br>based on pitch histogram similarity</h3>
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">

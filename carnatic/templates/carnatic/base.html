@@ -76,15 +76,19 @@
 		    }
 		});
 		$('#user').click(function() {
+            $("#userOptions").show({easing: "easeInOutQuad"});
 			$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
 		});
 		$('#user').mouseleave(function() {
+            $("#userOptions").hide({easing: "easeInOutQuad"});
 			$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
 		});
 		$('#guest').click(function() {
+            $("#guestOptions").show({easing: "easeInOutQuad"});
 		    $(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
 		});
 		$('#guest').mouseleave(function() {
+            $("#guestOptions").hide({easing: "easeInOutQuad"});
 		    $(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
   		});
 		loadSocialFollowButtons();
@@ -149,12 +153,12 @@
 			    </div>
 			{% else %}
 				<div href="#" id="guest">
-					<a href="#">USER<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+					<a href="#">Login<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
 				    <div id="guestOptions">
 				    	<div id="userArrow"></div>
 				    	<h3>Hi! what do you want to do?</h3>
-                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path '/' %}">LOGIN</a>
-					    <a href="{% url 'social-auth-register' %}">REGISTER</a>
+                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path '/' %}">Login</a>
+					    <a href="{% url 'social-auth-register' %}">Register</a>
 				    </div>
 				</div>
 			{% endif %}

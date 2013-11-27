@@ -5,11 +5,51 @@ The CompMusic Browser
 Installation
 ============
 
-    apt-get install postgresql python-dev python-virtualenv
-    virtualenv --no-site-packages env
-    source env/bin/activate
-    pip install --upgrade distribute
-    pip install -r requirements
+On ubuntu-like machines you can run `bash setup.sh` to install dependencies from
+apt, create symlinks into the python environment, and install all python packages.
+
+Dependencies
+------------
+
+    sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev 
+
+* Also install essentia + python libraries
+
+        git clone git@github.com:MTG/essentia.git
+        cd essentia
+        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
+        ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
+        ./waf
+        sudo ./waf install
+
+* Create a virtualenv
+
+        virtualenv --no-site-packages env
+        source env/bin/activate
+        pip install --upgrade distribute
+        pip install -r requirements
+
+* Using essentia, numpy, and scipy in virtualenv
+
+        ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
+        ln -s /usr/lib/python2.7/dist-packages/numpy* env/lib/python2.7/site-packages
+        ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
+
+* Installing Pillow with jpeg support
+
+        sudo apt-get install libjpeg8-dev
+        ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
+        ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
+        ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
+
+* If you install matplotlib with apt:
+
+        pip install python-dateutil
+        ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
+        ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
+
+Database
+--------
 
 Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and edit it
 to point to your database. It does not matter if you use postgres, mysql, or sqlite.
@@ -18,43 +58,47 @@ To add tables to the database run
 
     fab setupdb
 
-* Dependencies:
+Alternatively, you may want to create a postgres dump, since the django json dump
+is over 500mb. Set up postgres and run
 
-    sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev
+    # on the server
+    pg_dump -O dunya > dunya_pg.sql
 
-Also install essentia + python libraries
+    # on the new machine
+    psql dunya < dunya_pg.sql
 
-    git clone git@github.com:MTG/essentia.git
-    cd essentia
-    sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
-    ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
-    ./waf
-    sudo ./waf install
+Where `dunya` is the name of the database
 
+Updating file locations
+-----------------------
 
-* Using essentia and numpy in virtualenv
+Dunya has files in 3 locations:
 
-    ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
-    ln -s /usr/lib/python2.7/dist-packages/numpy* env/lib/python2.7/site-packages
-    ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
+* Audio files
+* Derived files (images, wav files, features)
+* Media files (see below section)
 
+The database stores the location of all files in docserver. If you copied audio and
+derived files from the server then you need to update the location. Run
 
-* Installing Pillow with jpeg support
+    python manage.py moveaudiodata <collectionid> <audiodir>
 
-    sudo apt-get install libjpeg8-dev
-    ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
-    ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
-    ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
+where `collectionid` is the musicbrainz id of the collection and `audiodir` is the
+location where the audio now lives.
+This takes a while (For just carnatic we have close to 1.5m rows to update). In the
+future we may suggest a method that accesses the database directly instead of
+using django.
 
-* If you install matplotlib with apt:
-    pip install python-dateutil
-    ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
-    ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
+Media files (entity images)
+---------------------------
 
-libsndfile1-dev is needed to create audio images
-lame is needed for converting mp3 to wav
+On the server, these files are stored in `/mnt/compmusic/compmusicweb/dunya`.
+You need to copy the directory to the `MEDIA_ROOT` location in `local_settings.py`
 
-* Rabbitmq
+Rabbitmq
+--------
+
+This is not needed if you don't want to use the extractors.
 
 We use rabbitmq for sending job commands to workers. On the server you will need to run 
 (password values aren't important)
@@ -69,13 +113,17 @@ In `dunya/local_settings.py` you will need to add connection details:
 
     BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 
-* Solr
+Solr
+----
+
+This is not needed if you are not developing search. You can use the main solr
+server configured in `local_settings.py.dist`.
 
 Search, search autocompletion, and similar concerts use solr to make things faster
 
 Download the solr package from https://github.com/alastair/solr-mvn-template
 
-Copy in the configuration from `dunya/solr`
+Copy in the configuration files from `dunya/solr`
 
 run
 
@@ -99,10 +147,6 @@ To run jobs, make sure rabbitmq is running on the server
 And on each client you run celery
 
     celery -A dunya worker -l info
-
-When you upgrade and there are database changes, you can run this to migrate them
-
-    fab updatedb
 
 To make a complete dump of the database to a file called `dunya_data.json` or to
 load it again, run

@@ -3,6 +3,7 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 import os
+import time
 
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
@@ -169,12 +170,8 @@ class Concert(BaseModel):
 
     def length(self):
         tot_len = 0
-        print "tracks"
-        print self.tracks.all()
         for t in self.tracks.all():
-            tot_len += t.length
-            print t.length
-        import time
+            tot_len += t.length/1000
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
     def __unicode__(self):

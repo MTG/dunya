@@ -260,8 +260,6 @@ textarea {
 				    width: 20px;
 			    }
 		    }
-		    &.open {
-		    }
 	    }
 	    #guest {
     		float: left;
@@ -289,10 +287,9 @@ textarea {
 				    width: 20px;
 			    }
 		    }
-		    &.open {
-		    }
 	    }
     	#userOptions {
+            display: none;
 	    	position: absolute;
 	    	right: 9px;
 			top: 30px;
@@ -304,7 +301,6 @@ textarea {
 	    	background: #eeeded;
 	    	padding:15px;
 	    	z-index:40;
-	    	opacity: 1;
 	    	margin-top:5px;
 	    	>img {
 		    	width: 150px;
@@ -334,12 +330,12 @@ textarea {
 		    	top: -9px;
 				right: 8px;
 	    	}
-	    	&.open {
-		    	margin-top:0px;
-		    	opacity: 1;
-	    	}
+            &.open {
+               margin-top:0px;
+            }
 	    }
 	    #guestOptions {
+            display: none;
 	    	position: absolute;
 	    	right: 9px;
 			top: 30px;
@@ -351,7 +347,6 @@ textarea {
 	    	background: #eeeded;
 	    	padding:15px;
 	    	z-index:40;
-	    	opacity: 1;
 	    	margin-top:5px;
 	    	>img {
 		    	width: 150px;
@@ -381,10 +376,9 @@ textarea {
 		    	top: -9px;
 				right: 8px;
 	    	}
-	    	&.open {
-		    	margin-top:0px;
-		    	opacity: 1;
-	    	}
+            &.open {
+               margin-top:0px;
+            }
 	    }
     	li:first-child a {
    			margin-left: 0;
@@ -830,7 +824,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					overflow-x: auto;
 					overflow-y: hidden;
 					.metaContainer {
-					position: relative;
+    					position: relative;
 						.metaDetails {
 							display: inline-block;
 							position: relative;
@@ -874,7 +868,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 								a {
 									color: @vermell;
 									display: block;
-									margin-bottom:8px;
 								}
 							}
 							span.list{
@@ -885,6 +878,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 									clear: left;
 									margin-right: 4px;
 									font-weight: bold;
+                                    margin-bottom:8px;
 								}
 								b {
 									float: left;
@@ -895,6 +889,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 							&.narrow { width: 450px; }
 							&.close { width: 150px; }
 						}
+                        .recordingDetails {
+                            padding-top: 0px;
+                        }
 						.splitMeta {
 							display: inline-block;
 							position: relative;
