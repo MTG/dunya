@@ -55,7 +55,17 @@ def get_similar_concerts(works, raagas, taalas, artists):
     works = " ".join(map(str, workids))
     artists = " ".join(map(str, artistids))
 
-    query = "doctype_s:concertsimilar AND (taala_is:(%s) raaga_is:(%s) work_is:(%s) artist_is:(%s))" % (taalas, raagas, works, artists)
+    searchitems = []
+    if taalas:
+        searchitems.append("taala_is:(%s)" % taalas)
+    if raagas:
+        searchitems.append("raaga_is:(%s)" % raagas)
+    if works:
+        searchitems.append("work_is:(%s)" % works)
+    if artists:
+        searchitems.append("artist_is:(%s)" % artists)
+
+    query = "doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
     results = solr.search(query, rows=100)
 
     ret = []
