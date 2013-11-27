@@ -1,9 +1,13 @@
-import json
+import json, os
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
+
+from django.core.servers.basehttp import FileWrapper
+from django.conf import settings
+
 
 from docserver import models
 from docserver import forms
@@ -41,7 +45,6 @@ class DocumentDetail(generics.RetrieveAPIView):
 def download_external(request, uuid, ftype):
     # TODO we could replace this with
     # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py
-
     try:
         thetype = models.SourceFileType.objects.get_by_extension(ftype)
     except models.SourceFileType.DoesNotExist:
@@ -60,7 +63,9 @@ def download_external(request, uuid, ftype):
         else:
             fname = files[0].path
             contents = open(fname, 'rb').read()
-            return HttpResponse(contents)
+            response = HttpResponse(contents)
+            response['Content-Length'] = len(contents)
+            return response
     elif thedoc and not thetype:
         # otherwise try derived type
         try:

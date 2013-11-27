@@ -1129,6 +1129,7 @@ textarea {
   background: url("../img/playButtonBig.png") 0 0 no-repeat;
   z-index: 4;
 }
+
 #detail #header #summary #innerSummary {
   position: absolute;
   z-index: 3;

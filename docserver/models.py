@@ -84,6 +84,7 @@ class SourceFile(models.Model):
     file_type = models.ForeignKey(SourceFileType)
     """The path on disk to the file"""
     path = models.CharField(max_length=500)
+    size = models.IntegerField()
 
     @property
     def extension(self):

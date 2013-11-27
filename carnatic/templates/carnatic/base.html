@@ -17,6 +17,11 @@
         <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.less' %}" />
         <!--<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />-->
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
+		
+		<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/360player.css' %}" />
+		<!-- soundManager.useFlashBlock: related CSS -->
+		<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/flashblock.css' %}" />
+		
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -35,9 +40,23 @@
         <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery.isotope.min.js' %}"></script>
 
-
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
+		
+		<!-- Apache-licensed animation library -->
+		<script src="{% static 'carnatic/js/berniecode-animator.js' %}"></script>
+
+		
+		<script src="{% static 'carnatic/js/soundmanager2.js' %}"></script>
+		<script src="{% static 'carnatic/js/360player.js' %}"></script>
+		
+		<script>
+		soundManager.setup({
+		  //useFlashBlock: true, // optional - if used, required flashblock.css
+		  url: "{% static 'carnatic/swf/' %}" // required: path to directory containing SM2 SWF files
+		});
+		</script>
+
 
 	<script src="{% static 'social/js/main.js' %}"></script>
 	<script src="{% static 'social/js/jquery.cookie.js' %}"></script>
@@ -87,8 +106,12 @@
         {% endblock %}
     </head>
     <body>
-
-
+	<!-- SCM Music Player http://scmplayer.net -->
+		<script type="text/javascript" src="http://scmplayer.net/script.js" 
+		data-config="{'skin':'skins/scmOrange/skin.css','volume':50,'autoplay':false,'shuffle':false,'repeat':1,'placement':'bottom','showplaylist':false,'display': 'hidden', 'playlist':[]}" >
+			
+		</script>
+		<!-- SCM Music Player script end -->
 
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
@@ -147,7 +170,7 @@
         </div>
 
         <div id="footage">
-
+			
         	<!-- //////////////// -->
         	<!-- FILTER BASE MODEL -->
         	<!-- //////////////// -->

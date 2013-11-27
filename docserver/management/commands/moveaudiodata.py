@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.db import transaction
 from optparse import make_option
 
 import sys
@@ -14,6 +15,13 @@ import dashboard.models
 import docserver.models
 
 from django.conf import settings
+
+def chunks(l, n):
+    """ Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+
 
 class Command(BaseCommand):
     help = 'Run a module on a recording or a release'
@@ -49,23 +57,29 @@ class Command(BaseCommand):
 
             sourcefiles = docserver.models.SourceFile.objects.all()
             print "Updating source files"
-            for s in sourcefiles:
-                oldpath = s.path
-                newpath = oldpath.replace(oldroot, audiodir)
-                s.path = newpath
-                s.save()
+            with transaction.atomic():
+                for s in sourcefiles:
+                    oldpath = s.path
+                    newpath = oldpath.replace(oldroot, audiodir)
+                    s.path = newpath
+                    s.save()
         else:
             print "Argument %s is not a directory" % audiodir
             return
 
         derivedparts = docserver.models.DerivedFilePart.objects.all()
         print "updating derived files"
-        for dp in derivedparts:
-            # Find the bit in the path where the collectionid starts, then
-            # replace up to that with the new settings.AUDIO_ROOT
-            pth = dp.path
-            loc = pth.find(collmbid)
-            if loc != -1:
-                pth = os.path.join(derivedlocation, pth[loc:])
-                dp.path = pth
-                dp.save()
+        dp = derivedparts[0]
+        loc = dp.path.find(collmbid)
+        if loc != -1:
+            for chunk in chunks(derivedparts, 100000):
+                print "100000"
+                with transaction.atomic():
+                    for dp in chunk:
+                        # Find the bit in the path where the collectionid starts, then
+                        # replace up to that with the new settings.AUDIO_ROOT
+                        pth = dp.path
+                        pth = os.path.join(derivedlocation, pth[loc:])
+                        dp.path = pth
+                        dp.save()
+                        dp = None
