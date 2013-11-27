@@ -5,10 +5,8 @@
 
 {% block script %}
 <script>
-$(document).ready(function() {
-    parseAllFilters({{ filter_items|safe }});
-});
 </script>
+<script src="{% static 'carnatic/js/main.js' %}"></script>
 {% endblock %}
 
 {% block title %}{% if query %}{{query}} - {% endif %}{% endblock %}

@@ -14,8 +14,7 @@
 
         <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>-->
         <link href='{% static 'carnatic/css/font.css' %}' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet/less" type="text/css" href="{% static 'carnatic/css/main.less' %}" />
-        <!--<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />-->
+        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
 
     <script>
@@ -29,7 +28,6 @@
 
     </script>
 
-        <script src="{% static 'carnatic/js/vendor/less.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/modernizr-2.6.2.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery-1.9.1.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
@@ -39,60 +37,12 @@
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 
-	<script src="{% static 'social/js/main.js' %}"></script>
-	<script src="{% static 'social/js/jquery.cookie.js' %}"></script>
-
-	<script>
-	$(document).ready(function() {
-		function csrfSafeMethod(method) {
-			// these HTTP methods do not require CSRF protection
-			return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-		}
-		$.ajaxSetup({
-		    crossDomain: false, // obviates need for sameOrigin test
-		    beforeSend: function(xhr, settings) {
-			if (!csrfSafeMethod(settings.type)) {
-			    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
-			}
-		    }
-		});
-		$('#user').click(function() {
-            $("#userOptions").show({easing: "easeInOutQuad"});
-			$(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
-		});
-		$('#user').mouseleave(function() {
-            $("#userOptions").hide({easing: "easeInOutQuad"});
-			$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
-		});
-		$('#guest').click(function() {
-            $("#guestOptions").show({easing: "easeInOutQuad"});
-		    $(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
-		});
-		$('#guest').mouseleave(function() {
-            $("#guestOptions").hide({easing: "easeInOutQuad"});
-		    $(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
-  		});
-		loadSocialFollowButtons();
-
-        $("#searchbox").autocomplete({
-            source: "/carnatic/searchcomplete",
-            minlength: 2,
-            select: function(event, ui) {
-                console.debug("select");
-                console.debug(ui);
-            }
-        });
-
-	});
-	</script>
         {% block script %}
         {% endblock %}
         {% block extra_head %}
         {% endblock %}
     </head>
     <body>
-
-
 
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
@@ -166,7 +116,6 @@
         		<div class="formFilter"></div>
 	            <div class="filterList filterGlobalList"></div>
         	</div>
-
         </div>
 
     </body>

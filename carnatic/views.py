@@ -281,6 +281,17 @@ def recording(request, recordingid):
     except docserver.util.NoFileException:
         akshara = None
 
+    try:
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch")
+        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram")
+        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks")
+        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve")
+    except docserver.util.NoFileException:
+        pitchtrackurl = None
+        histogramurl = None
+        rhythmurl = None
+        aksharaurl = None
+
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
     recordingpos = tracks.index(recording)
@@ -307,7 +318,11 @@ def recording(request, recordingid):
             "akshara": akshara,
             "mbid": mbid,
             "nextrecording": nextrecording,
-            "prevrecording": prevrecording
+            "prevrecording": prevrecording,
+            "pitchtrackurl": pitchtrackurl,
+            "histogramurl": histogramurl,
+            "rhythmurl": rhythmurl,
+            "aksharaurl": aksharaurl
     }
 
     return render(request, "carnatic/recording.html", ret)
