@@ -12,6 +12,14 @@ $(document).ready(function() {
 
     $("#performers").isotope();
     $("#similarconcerts").isotope();
+	
+	$("#icon").on("click", function(){	
+		{% for t in tracks %}
+				SCM.queue({title:'{{t.title}}', url:window.location.protocol+"//"+window.location.host+'{{t.audio}}'});
+        {% endfor %}
+		SCM.play();
+     });
+	
 });
 </script>
 {% endblock %}
@@ -48,7 +56,6 @@ $(document).ready(function() {
 	    </div>
      </div>
      -->
-
      <div id="detail" class="concert">
      	<div id="header">
      		<div id="summary">
@@ -58,6 +65,7 @@ $(document).ready(function() {
 		     			<h2>Release by {%inline_artist_list concert.artistnames %}</h2>
 	     			</span>
      			</div>
+				
      			<div id="summaryBack"></div>
      			<div id="icon"></div>
      		</div>
@@ -81,7 +89,13 @@ $(document).ready(function() {
 									<div class="inner">
 										<span>
                                             {% for s in samples %}
-                                            <div class="player"><a href="{{s.get_absolute_url}}">{{s.title}}</a></div>
+                                            
+											<!--<div class="player"><a href="{{s.get_absolute_url}}">{{s.title}}</a></div>-->
+											<!--<a href="http://www.schillmania.com/projects/soundmanager2/demo/_mp3/office_lobby.mp3" title="Play &quot;{{s.title}}&quot;" class="sm2_button">{{s.title}}</a>-->
+											<!--<a href="{{s.audio}}" title="{{s.title}}" class="sm2_button">{{s.title}}</a>-->
+											<!--<div class="ui360"><a href="http://freshly-ground.com/data/audio/mpc/20090119%20-%20Untitled%20Groove.mp3">{{s.title}}</a></div>-->
+											<div class="ui360"><a href="{{s.audio}}">{{s.title}}</a></div>
+		
                                             {% endfor %}
 										</span>
 									</div>

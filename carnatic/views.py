@@ -12,6 +12,7 @@ import json
 import docserver
 import collections
 import math
+import random
 
 def get_filter_items():
     filter_items = [
@@ -180,6 +181,14 @@ def artist(request, artistid):
     elif desc and desc.source.source_name == w:
         wikipedia = artist.description.source.uri
 
+    recordings = Artist.recordings(artist)
+    sample = random.sample(recordings,1)[0]
+    try:
+        audio = docserver.util.docserver_get_url(sample.mbid, "mp3")
+    except docserver.util.NoFileException:
+        audio = None
+    setattr(sample, "audio", audio)
+
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "artist": artist,
            "form": TagSaveForm(),
@@ -189,6 +198,7 @@ def artist(request, artistid):
             "similar_artists": similar_artists,
             "raagas": raagas,
             "taalas": taalas,
+			"sample": sample,
             "mb": musicbrainz,
             "kutcheris": kutcheris,
             "wiki": wikipedia
@@ -216,8 +226,16 @@ def concert(request, concertid):
         image = images[0].image.url
     else:
         image = "/media/images/noconcert.jpg"
-
-    samples = concert.tracks.all()[:2]
+    #samples = concert.tracks.all()[:2]
+    tracks = []
+    for t in concert.tracks.all():
+        try:
+            audio = docserver.util.docserver_get_url(t.mbid, "mp3")
+        except docserver.util.NoFileException:
+            audio = None
+        setattr(t, "audio", audio)
+        tracks.append(t)
+    samples = tracks[:2]
 
     tags = tagging.tag_cloud(concertid, "concert")
 
@@ -232,6 +250,7 @@ def concert(request, concertid):
 	   "objectid": concert.id,
 	   "tags": tags,
        "image": image,
+	   "tracks": tracks,
        "samples": samples,
        "similar_concerts": similar
        }
