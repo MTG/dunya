@@ -25,17 +25,12 @@
 
 
 
-function widthOfChildren(object){
+function widthOfChildren(object, more){
+    more = typeof more !== 'undefined' ? more : 10;
 	$(object).each(function(){
-        console.debug("each child");
-        console.debug(this);
 		var sum=0;
-		$(this).children('div').each( function(){ sum += ($('div',this).width()+5); });
-		$(this).width( sum+10 );
+		$(this).children('div').each( function(){ 
+            sum += ($('div',this).width()+5); });
+		$(this).width( sum+more );
 	});
-
-	//var sum=0;
-	//$(object+'>div').each( function(){ sum += ($(this).outerWidth()+5); });
-	//$(object).width( sum+10 );
-	
 }

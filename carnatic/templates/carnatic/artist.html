@@ -9,11 +9,9 @@
 <script>
 $(document).ready(function() {
     widthOfChildren('.metaContainer');
-    $(document).ready(function(){
-        $('.scrollblock').isotope({
-          itemSelector : '.item',
-          layoutMode : 'straightAcross'
-        });
+    $('.scrollblock').isotope({
+      itemSelector : '.item',
+      layoutMode : 'straightAcross'
     });
 });
 </script>
@@ -179,11 +177,17 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
+                        {% if artist.similar_artists %}
                         <div class="scrollblock" id="results" style="height: 290px;">
                             {% for a, guru in artist.similar_artists %}
                                 {% badge_similar_artist a guru=guru %}
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

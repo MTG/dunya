@@ -6,9 +6,11 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	$("#filterMask").toggleClass('querybar');
-    parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
+    $('.scrollblock').isotope({
+      itemSelector : '.item',
+      layoutMode : 'straightAcross'
+    });
 });
 </script>
 {% endblock %}
@@ -16,6 +18,7 @@ $(document).ready(function() {
 {% block title %}{{instrument.name}} - {% endblock %}
 
 {% block wrap %}
+<!--
 <div id="filterMask">
 	<div id="filterArea">
 		<div id="entitiesList" class="filterList">
@@ -39,6 +42,7 @@ $(document).ready(function() {
     	</div>
     </div>
  </div>
+ -->
 
  <div id="detail" class="instrument">
      	<div id="header">
@@ -93,7 +97,7 @@ $(document).ready(function() {
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                        <div class="scrollblock" id="results" style="height: 290px;">
 	                        {% for p in instrument.performers %}
 	                            {% badge_performance p %}
 	                        {% endfor %}
