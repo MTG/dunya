@@ -56,6 +56,12 @@ def inline_recording(recording):
     return '<a href="%s">%s</a>' % (recording.get_absolute_url(), recording.title)
 
 @register.simple_tag
+def inline_recording_artist(recording):
+    if recording.artist() is not None:
+        return recording.artist().name
+    return "unknown"
+
+@register.simple_tag
 def inline_work(work):
     # TODO: Disable work links for now
     return work.title

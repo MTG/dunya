@@ -6,6 +6,14 @@
 {% block script %}
 <script>
 $(document).ready(function() {
+	
+	$("#icon").on("click", function(){
+		{% for t in tracks %}
+			SCM.queue({title:'{{t.title}} by {% inline_recording_artist t %}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
+        {% endfor %}
+		SCM.play();
+     });
+	
 	$("#filterMask").toggleClass('querybar');
     parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
@@ -71,7 +79,8 @@ $(document).ready(function() {
 									<h3>Samples</h3>
 									<span>
 			                            {% for s in instrument.samples %}
-			                                {% badge_sample s %}
+			                                <!--{% badge_sample s %}-->
+											<div class="ui360"><a href="{{s.absolute_mp3_url}}">{{s.title}}</a></div>
 			                            {% endfor %}
 									</span>
 								</div>
