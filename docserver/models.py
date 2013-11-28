@@ -90,8 +90,8 @@ class SourceFile(models.Model):
     def extension(self):
         return self.file_type.extension
 
-    def get_absolute_url(self):
-        return reverse("ds-download-external",
+    def get_absolute_url(self, url_slug='ds-download-external'):
+        return reverse(url_slug,
                 args=[self.document.external_identifier, self.file_type.extension])
 
     def __unicode__(self):

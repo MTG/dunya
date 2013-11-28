@@ -355,6 +355,13 @@ class WorkAttributeTypeValue(CarnaticStyle, data.models.WorkAttributeTypeValue):
 
 class Recording(CarnaticStyle, data.models.Recording):
 
+    def absolute_mp3_url(self):
+        try:
+            url = docserver.util.docserver_get_mp3_url(self.mbid)
+        except docserver.util.NoFileException:
+            url = None
+        return url
+
     def raaga(self):
         if self.work:
             rs = self.work.raaga.all()

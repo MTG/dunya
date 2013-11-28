@@ -226,15 +226,7 @@ def concert(request, concertid):
         image = images[0].image.url
     else:
         image = "/media/images/noconcert.jpg"
-    #samples = concert.tracks.all()[:2]
-    tracks = []
-    for t in concert.tracks.all():
-        try:
-            audio = docserver.util.docserver_get_mp3_url(t.mbid, "mp3")
-        except docserver.util.NoFileException:
-            audio = None
-        setattr(t, "audio", audio)
-        tracks.append(t)
+    tracks = concert.tracks.all()
     samples = tracks[:2]
 
     tags = tagging.tag_cloud(concertid, "concert")

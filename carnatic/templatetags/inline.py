@@ -8,6 +8,10 @@ import carnatic
 register = template.Library()
 
 @register.simple_tag
+def url_host_and_path(request, url):
+    return request.build_absolute_uri(url)
+
+@register.simple_tag
 def inline_artist(artist):
     return inline_artist_part(artist)
 

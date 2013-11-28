@@ -6,16 +6,16 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	$("#filterMask").toggleClass('querybar');
-    parseAllFilters({{ filter_items|safe }});
-    widthOfChildren('.metaContainer');
+	//$("#filterMask").toggleClass('querybar');
+    //parseAllFilters({{ filter_items|safe }});
+    //widthOfChildren('.metaContainer');
 
     $("#performers").isotope();
     $("#similarconcerts").isotope();
 	
 	$("#icon").on("click", function(){	
 		{% for t in tracks %}
-				SCM.queue({title:'{{t.title}}', url:window.location.protocol+"//"+window.location.host+'{{t.audio}}'});
+        SCM.queue({title:'{{t.title}}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
         {% endfor %}
 		SCM.play();
      });
