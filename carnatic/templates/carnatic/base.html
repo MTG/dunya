@@ -55,7 +55,23 @@
 		});
 		</script>
 
-
+		<script>
+			$(document).ready(function() {
+				
+				$( "#playback_dialog" ).dialog({
+				  autoOpen: false,
+				  show: {
+					effect: "blind",
+					duration: 100
+				  },
+				  hide: {
+					effect: "explode",
+					duration: 100
+				  }
+				});
+				
+			});
+		</script>
         {% block script %}
         {% endblock %}
         {% block extra_head %}
@@ -68,6 +84,10 @@
 			
 		</script>
 		<!-- SCM Music Player script end -->
+		
+		<div id="playback_dialog" title="Playback dialog">
+		<p>Sorry, only registered users can play music in bunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
+	    </div>
 
     	<!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">

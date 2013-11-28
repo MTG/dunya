@@ -8,11 +8,15 @@
 $(document).ready(function() {
 	
 	$("#icon").on("click", function(){
-		{% for t in tracks %}
-			SCM.queue({title:'{{t.title}} by {% inline_recording_artist t %}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
-        {% endfor %}
-		SCM.play();
-    });
+		{% if user.is_authenticated %}
+				{% for t in tracks %}
+						SCM.queue({title:'{{t.title}} by {% inline_recording_artist t %}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
+				{% endfor %}
+				SCM.play();
+		{% else %}
+				$( "#playback_dialog" ).dialog( "open" );
+		{% endif %}
+     });
 	
 	$("#filterMask").toggleClass('querybar');
     parseAllFilters({{ filter_items|safe }});
