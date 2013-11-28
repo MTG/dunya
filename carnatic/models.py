@@ -252,8 +252,11 @@ class Raaga(data.models.BaseModel):
         else:
             return []
 
-    def recordings(self):
-        return Recording.objects.filter(work__raaga=self)
+    def recordings(self, limit=None):
+        recordings = Recording.objects.filter(work__raaga=self)
+        if recordings is not None:
+            recordings = recordings[:limit]
+        return recordings
 
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -313,6 +316,12 @@ class Taala(data.models.BaseModel):
         for a in Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True)).distinct():
             artists.add(a)
         return artists
+    
+    def recordings(self, limit=None):
+        recordings = Recording.objects.filter(work__taala=self)
+        if recordings is not None:
+            recordings = recordings[:limit]
+        return recordings
 
 class Work(CarnaticStyle, data.models.Work):
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
@@ -427,11 +436,11 @@ class Instrument(CarnaticStyle, data.models.Instrument):
     def references(self):
         pass
 
-    def samples(self):
+    def samples(self, limit=2):
         IPClass = self.get_object_map("performance")
         performances = list(IPClass.objects.filter(instrument=self).all())
         random.shuffle(performances)
-        perf = performances[:2]
+        perf = performances[:limit]
         return [p.recording for p in perf]
 
     @classmethod
