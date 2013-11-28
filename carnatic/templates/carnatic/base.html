@@ -49,14 +49,12 @@
 		<script src="{% static 'carnatic/js/360player.js' %}"></script>
 		
 		<script>
-		soundManager.setup({
-		  //useFlashBlock: true, // optional - if used, required flashblock.css
-		  url: "{% static 'carnatic/swf/' %}" // required: path to directory containing SM2 SWF files
-		});
-		</script>
-
-		<script>
 			$(document).ready(function() {
+
+                soundManager.setup({
+                  //useFlashBlock: true, // optional - if used, required flashblock.css
+                  url: "{% static 'carnatic/swf/' %}" // required: path to directory containing SM2 SWF files
+                });
 				
 				$( "#playback_dialog" ).dialog({
 				  autoOpen: false,
