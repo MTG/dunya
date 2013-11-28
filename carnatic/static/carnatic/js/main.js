@@ -1,16 +1,5 @@
 var globalSpeed  = 500;
 
-$(document).ready(function(){
-	//ScrollBlock
-	widthOfChildren(".scrollblock");
-
-    $('#results').isotope({
-      itemSelector : '.item',
-      layoutMode : 'fitRows'
-    });
-
-});
-
 $(document).ready(function() {
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
