@@ -103,8 +103,8 @@ class DerivedFilePart(models.Model):
     path = models.CharField(max_length=500)
     size = models.IntegerField()
 
-    def get_absolute_url(self):
-        url = reverse('ds-download-external',
+    def get_absolute_url(self, url_slug='ds-download-external'):
+        url = reverse(url_slug,
             args=[self.derivedfile.document.external_identifier, self.derivedfile.module_version.module.slug ])
         v = self.derivedfile.module_version.version
         sub = self.derivedfile.outputname

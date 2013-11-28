@@ -65,6 +65,11 @@ def docserver_get_url(documentid, slug, subtype=None, part=None, version=None):
     url = part.get_absolute_url()
     return url
 
+def docserver_get_mp3_url(documentid):
+    part = _docserver_get_part(documentid, "mp3")
+    url = part.get_absolute_url("ds-download-mp3")
+    return url
+
 def docserver_get_filename(documentid, slug, subtype=None, part=None, version=None):
     part = _docserver_get_part(documentid, slug, subtype, part, version)
     return part.path

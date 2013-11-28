@@ -230,7 +230,7 @@ def concert(request, concertid):
     tracks = []
     for t in concert.tracks.all():
         try:
-            audio = docserver.util.docserver_get_url(t.mbid, "mp3")
+            audio = docserver.util.docserver_get_mp3_url(t.mbid, "mp3")
         except docserver.util.NoFileException:
             audio = None
         setattr(t, "audio", audio)
