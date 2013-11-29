@@ -15,17 +15,21 @@ $(document).ready(function() {
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
 	});*/
+     $(".zoom").click(function() {
+         var level = $(this).data("length")
+         zoom(level);
+     });
      loaddata();
 });
 
 function spectrogram(context, view) {
-    console.debug(view.length);
     var waszero = false;
     context.moveTo(0, 10);
     context.lineTo(10, 10);
     context.moveTo(0,0);
     for (var i = 0; i < 900; i++) {
-        var tmp = 255-view[i*8];
+        var skip = secondsPerView / 4;
+        var tmp = 255-view[i*skip];
         // We choose 0 if the pitch is unknown, or 255 if it's
         // higher than the 3 octaves above tonic. If so, we don't
         // want to draw something, just skip until the next value
@@ -41,6 +45,7 @@ function spectrogram(context, view) {
             }
         }
     }
+    context.strokeStyle = "#eee";
     context.lineWidth = 2;
     context.stroke();
     context.beginPath();
@@ -132,17 +137,16 @@ function plottempo(context, data) {
         }
     }
     high = high * 1.2;
-    low = low * 1.2;
+    low = low * 0.8;
     var factor = 128 / (high - low);
 
-    var secPerPixel = 900 / 32;
+    var secPerPixel = 900 / secondsPerView;
     for (var i = 0; i < data.length; i++) {
         var x = data[i][0] * secPerPixel; // Data points are every 0.5 seconds
         if (x > 900) {
             break;
         }
         var y = (data[i][1]-low) * factor;
-        console.debug(data[i][0]+","+data[i][1]);
         context.lineTo(x, 256-y);
     }
     context.strokeStyle = "#eee";
@@ -221,7 +225,7 @@ function updateProgress() {
     if(progress_minutes<10){
 		progress_minutes = "0"+progress_minutes;
     }
-    progress_percent = (audio.currentTime / 32 * 100);
+    progress_percent = (audio.currentTime / secondsPerView * 100);
 	ampleMask = rendersMask.width();
 	ampleRenders = renders.width();
 	ampleRenderTotal = renderTotal.width();
@@ -237,12 +241,14 @@ function updateProgress() {
     timecodeHtml = ""+progress_minutes+":"+resto;
     timecode.html(timecodeHtml);
 };
-function zoom(factor){
-	//zoomFactor = factor;
-	//renders.width((factor*901));
-	//zooms.removeClass("selected");
-	//$("#zoom"+factor).addClass("selected");
+
+function zoom(level){
+    secondsPerView = level;
+    waveformurl = waveformurl.replace(/waveform[0-9]{1,2}/, "waveform"+level);
+    specurl = specurl.replace(/spectrum[0-9]{1,2}/, "spectrum"+level);
+    loaddata();
 }
+
 function playrecord(){
 	if(plButton.hasClass("stop")){
 		pause();

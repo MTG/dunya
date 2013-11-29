@@ -15,6 +15,7 @@
     var aksharaurl = "{{aksharaurl|safe}}";
     var waveformurl = "{{waveform|safe}}";
     var specurl = "{{spectrogram|safe}}";
+    var secondsPerView = 32;
 </script>
 {% endblock %}
 
@@ -107,10 +108,10 @@
                             <canvas id="rhythmcanvas" style="width:900px; height:256px;"></canvas>
                             <!--<img src="{{waveform}}">-->
 		     			   <div id="zooms">
-                  <a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
-                  <a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
-                  <a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
-                  <a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+                  <a class="zoom" data-length="32" href="#">x1</a>
+                  <a class="zoom" data-length="16" href="#">x2</a>
+                  <a class="zoom" data-length="8" href="#">x3</a>
+                  <a class="zoom" data-length="4" href="#">x4</a>
                 </div>
               </div>
 		     			<div id="renderTotal">
@@ -121,10 +122,10 @@
                             <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
                             <!--<img src="{{spectrogram}}">-->
 		     			 <div id="zooms">
-                  <a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
-                  <a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
-                  <a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
-                  <a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+                  <a class="zoom" data-length="32" href="#">x1</a>
+                  <a class="zoom" data-length="16" href="#">x2</a>
+                  <a class="zoom" data-length="8" href="#">x3</a>
+                  <a class="zoom" data-length="4" href="#">x4</a>
                 </div>
 		     			</div>
 	     			</div>
