@@ -266,6 +266,9 @@ class Recording(BaseModel):
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
 
+    def length_format(self):
+        return time.strftime('%M:%S', time.gmtime(self.length/1000))
+
     def __unicode__(self):
         return self.title
 
