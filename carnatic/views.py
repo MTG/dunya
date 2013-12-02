@@ -199,7 +199,7 @@ def artist(request, artistid):
             "raagas": raagas,
             "taalas": taalas,
 			"sample": sample,
-			"tracks": recordings[:10],
+			"tracks": random.sample(recordings,1),
             "mb": musicbrainz,
             "kutcheris": kutcheris,
             "wiki": wikipedia
@@ -249,7 +249,7 @@ def concert(request, concertid):
 	   "objectid": concert.id,
 	   "tags": tags,
        "image": image,
-	   "tracks": tracks,
+	   "tracks": random.sample(tracks,1),
        "samples": samples,
        "similar_concerts": similar
        }
@@ -362,7 +362,7 @@ def work(request, workid):
            "form": TagSaveForm(),
             "objecttype": "work",
             "objectid": work.id,
-			"tracks": work.recording_set.all(),
+			"tracks": random.sample(work.recording_set.all(),1),
             "tags": tags,
     }
     return render(request, "carnatic/work.html", ret)
@@ -379,7 +379,7 @@ def taala(request, taalaid):
 
     similar = taala.get_similar()
 
-    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items()), "tracks": taala.recordings(10), "similar": similar}
+    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items()), "tracks": random.sample(taala.recordings(10),1), "similar": similar}
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -393,7 +393,7 @@ def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
 
-    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items()), "tracks": raaga.recordings(10), "similar": similar}
+    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items()), "tracks": random.sample(raaga.recordings(10),1), "similar": similar}
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):
@@ -405,6 +405,6 @@ def instrumentsearch(request):
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
-    ret = {"instrument": instrument, "tracks": instrument.samples(10), "filter_items": json.dumps(get_filter_items())}
+    ret = {"instrument": instrument, "tracks": random.sample(instrument.samples(10),1), "filter_items": json.dumps(get_filter_items())}
 
     return render(request, "carnatic/instrument.html", ret)

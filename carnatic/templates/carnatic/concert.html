@@ -12,20 +12,13 @@ $(document).ready(function() {
       itemSelector : '.item',
       layoutMode : 'straightAcross'
     });
-
-	$("#icon").on("click", function(){
-		{% if user.is_authenticated %}
-				{% for t in tracks %}
-						SCM.queue({title:'{{t.title}} by {% inline_recording_artist t %}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
-				{% endfor %}
-				SCM.play();
-		{% else %}
-				$( "#playback_dialog" ).dialog( "open" );
-		{% endif %}
-     });
 	
 	$( ".player" ).click(function() {
       console.log($(this).prop("tagName"));
+      $( "#playback_dialog" ).dialog( "open" );
+    });
+	
+	$( "#icon" ).click(function() {
       $( "#playback_dialog" ).dialog( "open" );
     });
 	
@@ -76,7 +69,13 @@ $(document).ready(function() {
      			</div>
 				
      			<div id="summaryBack"></div>
-     			<div id="icon"></div>
+				{% if user.is_authenticated %}
+     			<div id="icon1">
+						<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
+				</div>
+				{% else %}
+				<div id="icon"></div>
+				{% endif %}
      		</div>
             <div class="bigImage"><img src="{{image}}" /></div>
      		<div id="meta">
@@ -93,7 +92,7 @@ $(document).ready(function() {
                                             <label>Data source:</label><b><a href="{{concert.ref.url}}">{{concert.ref.title}}</a></b>
 									</div>
 								</div>
-								<div id="samples" class="metaDetails">
+								<!--<div id="samples" class="metaDetails">
 									<h3>Samples</h3>
 									<div class="inner">
 										<span>
@@ -109,7 +108,7 @@ $(document).ready(function() {
 										    {% endif %}
 										</span>
 									</div>
-								</div>
+								</div>-->
 							</div>
 
 			 			</div>

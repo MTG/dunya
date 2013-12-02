@@ -6,16 +6,6 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	$("#icon").on("click", function(){
-		{% if user.is_authenticated %}
-				{% for t in tracks %}
-						SCM.queue({title:'{{t.title}} by {% inline_recording_artist t %}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
-				{% endfor %}
-				SCM.play();
-		{% else %}
-				$( "#playback_dialog" ).dialog( "open" );
-		{% endif %}
-     });
 	
     widthOfChildren('.metaContainer');
     $('.scrollblock').isotope({
@@ -40,7 +30,13 @@ $(document).ready(function() {
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
-     			<div id="icon"></div>
+     			<div id="icon1">
+						{% if user.is_authenticated %}
+								<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
+						{% else %}
+								<div class="player">{{tracks.0.title}}</div>
+						{% endif %}
+				</div>
      		</div>
             <div class="bigImage"><img src="{{taala.get_image_url}}" /></div>
      		<div id="meta">
