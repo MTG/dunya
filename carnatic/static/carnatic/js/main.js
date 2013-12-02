@@ -13,21 +13,28 @@ $(document).ready(function() {
 //        }
 //        }
 //    });
+	var myTimer=false;
+	$("#userOptions").hover(function(){ clearTimeout(myTimer);});
+	$("#guestOptions").hover(function(){ clearTimeout(myTimer);});
     $('#user').click(function() {
         $("#userOptions").show({easing: "easeInOutQuad"});
         $(this).find('#userOptions').addClass( "open", globalSpeed, "easeInOutQuad");
     });
     $('#user').mouseleave(function() {
-        $("#userOptions").hide({easing: "easeInOutQuad"});
-        $(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		myTimer = setTimeout(function(){
+			$("#userOptions").hide({easing: "easeInOutQuad"});
+			$(this).find('#userOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		}, 500)
     });
     $('#guest').click(function() {
         $("#guestOptions").show({easing: "easeInOutQuad"});
         $(this).find('#guestOptions').addClass( "open", globalSpeed, "easeInOutQuad");
     });
     $('#guest').mouseleave(function() {
-        $("#guestOptions").hide({easing: "easeInOutQuad"});
-        $(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		myTimer = setTimeout(function(){
+			$("#guestOptions").hide({easing: "easeInOutQuad"});
+			$(this).find('#guestOptions').removeClass( "open", globalSpeed, "easeInOutQuad");
+		}, 500)
     });
 
     $("#searchbox").autocomplete({

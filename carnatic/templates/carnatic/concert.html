@@ -18,6 +18,10 @@ $(document).ready(function() {
       $( "#playback_dialog" ).dialog( "open" );
     });
 	
+	$( "#icon" ).click(function() {
+      $( "#playback_dialog" ).dialog( "open" );
+    });
+	
 });
 </script>
 {% endblock %}
@@ -65,13 +69,13 @@ $(document).ready(function() {
      			</div>
 				
      			<div id="summaryBack"></div>
+				{% if user.is_authenticated %}
      			<div id="icon1">
-						{% if user.is_authenticated %}
-								<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
-						{% else %}
-								<div class="player">{{tracks.0.title}}</div>
-						{% endif %}
+						<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
 				</div>
+				{% else %}
+				<div id="icon"></div>
+				{% endif %}
      		</div>
             <div class="bigImage"><img src="{{image}}" /></div>
      		<div id="meta">
