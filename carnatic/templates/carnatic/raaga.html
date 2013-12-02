@@ -6,7 +6,6 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	
 	$("#icon").on("click", function(){
 		{% if user.is_authenticated %}
 				{% for t in tracks %}
@@ -18,8 +17,6 @@ $(document).ready(function() {
 		{% endif %}
      });
 	
-	$("#filterMask").toggleClass('querybar');
-    parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
 });
 </script>
@@ -87,10 +84,16 @@ $(document).ready(function() {
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
-                            {% for t in similar %}
-                                {% badge_raaga t %}
-                            {% endfor %}
+                        <div class="scrollblock" id="results" style="height: 290px;">
+                        {% if similar %}
+                        {% for t in similar %}
+                            {% badge_raaga t %}
+                        {% endfor %}
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        </div>
+                        {% endif %}
 	                    </div>
 	     			</div>
 	     		</div>

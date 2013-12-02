@@ -13,6 +13,9 @@
     var histogramurl = "{{histogramurl|safe}}";
     var rhythmurl = "{{rhythmurl|safe}}";
     var aksharaurl = "{{aksharaurl|safe}}";
+    var waveformurl = "{{waveform|safe}}";
+    var specurl = "{{spectrogram|safe}}";
+    var secondsPerView = 32;
 </script>
 {% endblock %}
 
@@ -91,7 +94,6 @@
          </div>
          <div class="graph">
              <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
-             <!--<img src="./Dunya_files/graph.png">-->
          </div>
 	     	<div class="clearfix"></div>
      	</div><!-- HEADER END -->
@@ -103,12 +105,13 @@
 	     			<div id="renders">
 	     				<div id="capcal"></div>
 		     			<div id="bigWave">
-                            <img src="{{waveform}}">
+                            <canvas id="rhythmcanvas" style="width:900px; height:256px;"></canvas>
+                            <!--<img src="{{waveform}}">-->
 		     			   <div id="zooms">
-                  <a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
-                  <a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
-                  <a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
-                  <a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+                  <a class="zoom" data-length="32" href="#">x1</a>
+                  <a class="zoom" data-length="16" href="#">x2</a>
+                  <a class="zoom" data-length="8" href="#">x3</a>
+                  <a class="zoom" data-length="4" href="#">x4</a>
                 </div>
               </div>
 		     			<div id="renderTotal">
@@ -116,13 +119,13 @@
                            <img src="{{smallimage}}">
               </div>
 		     			<div id="bigPitch">
-                            <canvas id="thecanvas" style="width:900px; height:256px;"></canvas>
+                            <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
                             <!--<img src="{{spectrogram}}">-->
 		     			 <div id="zooms">
-                  <a class="zoom" id="zoom1" href="#" onclick="zoom(1);">x1</a>
-                  <a class="zoom" id="zoom2" href="#" onclick="zoom(2);">x2</a>
-                  <a class="zoom" id="zoom3" href="#" onclick="zoom(3);">x3</a>
-                  <a class="zoom" id="zoom4" href="#" onclick="zoom(4);">x4</a>
+                  <a class="zoom" data-length="32" href="#">x1</a>
+                  <a class="zoom" data-length="16" href="#">x2</a>
+                  <a class="zoom" data-length="8" href="#">x3</a>
+                  <a class="zoom" data-length="4" href="#">x4</a>
                 </div>
 		     			</div>
 	     			</div>
@@ -130,9 +133,15 @@
 	     		<div class="container2">
 	     		  <div class="waveLabel">
 	     		    <h1>rhythm</h1>
+                    <div>Showing automatically extracted akshara pulse between
+                        <span id="pulseFrom">00:00</span> and <span id="pulseTo">00:00</span>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="showRhythm"><label for="showRhythm">Show beats</label>
+                    </div>
 	     		  </div>
 	     		  <div id="totalcontrol2">
-                      <div id="timecode">00:00<span>03:24</span></div>
+                      <div id="timecode">00:00<span>{{recording.length_format}}</span></div>
 
             </div>
             <div class="pitchLabel">

@@ -8,6 +8,11 @@
 {% block script %}
 <script>
 $(document).ready(function() {
+    widthOfChildren('.metaContainer');
+    $('.scrollblock').isotope({
+      itemSelector : '.item',
+      layoutMode : 'straightAcross'
+    });
 	
 	$("#icon").on("click", function(){
 		{% if user.is_authenticated %}
@@ -19,12 +24,6 @@ $(document).ready(function() {
 				$( "#playback_dialog" ).dialog( "open" );
 		{% endif %}
      });
-	
-	$("#filterMask").toggleClass('querybar');
-	parseAllFilters({{ filter_items|safe }});
-    widthOfChildren('.metaContainer');
-	
-	
 });
 </script>
 {% endblock %}
@@ -108,7 +107,6 @@ $(document).ready(function() {
                                 </div>
 
                             </div>
-                        <div class="metaContainer">
                             <div class="metaDetails">
                                 <h3>Biography</h3>
                                 <div class="inner">
@@ -117,10 +115,8 @@ $(document).ready(function() {
                                     <p></p></span>
                                     {% endif %}
                                 </div>
-                                </div>
                             </div>
                             {% if raagas or taalas %}
-                                <div class="metaContainer">
                                     <div class="metaDetails">
                                     {% if raagas %}
                                     <h3>Common raagas</h3>
@@ -138,11 +134,8 @@ $(document).ready(function() {
                                     {% endfor %}
                                 </span>
                             </div>
-                                    </div>
-
                                 </div>
                             {% endif %}
-                            <div class="metaContainer">
                                 {% if artist.group_members.count %}
                                 <div class="metaDetails">
                                 <h3>Group members</h3>
@@ -168,7 +161,6 @@ $(document).ready(function() {
                                 </div>
                                 {% endif %}
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -183,7 +175,7 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                        <div class="scrollblock" id="results" style="height: 290px">
                             {% for concert in artist.concerts %}
                                 {% badge_detail_concert concert %}
                             {% endfor %}
@@ -191,18 +183,23 @@ $(document).ready(function() {
                     </div>
                 </div>
             </div>
-
             <div class="thedata">
                 <div class="leftdata">
                     <h3>Similar artists</h3>
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                        {% if artist.similar_artists %}
+                        <div class="scrollblock" id="results" style="height: 290px;">
                             {% for a, guru in artist.similar_artists %}
                                 {% badge_similar_artist a guru=guru %}
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -213,7 +210,7 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                        <div class="scrollblock" id="results" style="height: 290px;">
                             {% for a, concerts in artist.collaborating_artists %}
                                 {% badge_similar_artist a concerts=concerts %}
                             {% endfor %}

@@ -698,9 +698,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		height: 22px;
 		margin-left: -32px;
 		cursor: pointer;
-		background: url("..img/tabControl.png") 0 0 repeat-x;
+		background: url("../img/tabControl.png") 0 0 repeat-x;
 		&:hover {
-			background: url("..img/tabControl_hover.png")  0 0 repeat-x;
+			background: url("../img/tabControl_hover.png")  0 0 repeat-x;
 		}
 	}
 }
@@ -990,6 +990,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			margin-left: -220px;
 			.scrolldata { overflow-x: auto;
 				.scrollblock { width: 100%; }
+                .tracklist { overflow-y: none; }
 			}
 			.innerrightdata {
 				padding: 10px;
@@ -1870,6 +1871,7 @@ input[type="text"], input[type="password"] {
 							width:13px;
 							height: 100%;
 							background: url("../img/capcal.png") -5px 0 repeat-y;
+                            z-index: 1;
 						}
 						#bigWave, #bigPitch {
 						  position: relative;
@@ -1878,6 +1880,11 @@ input[type="text"], input[type="password"] {
 								width:100%;
 								height: 256px;
 							}
+                            canvas {
+                                height: 256px;
+                                border: 0;
+                                margin: 0;
+                            }
 							#zooms {
           			position: absolute;
           			bottom: 4px;
@@ -1951,11 +1958,12 @@ input[type="text"], input[type="password"] {
         			top: 3px;
         			left: 2px;
         			width: 104px;
+                    bottom: 3px;
         			span {
-          			font-size: 11px;
-          			color: #aaa;
-          			display: block;
-          			position: relative;
+                        font-size: 11px;
+                        color: #aaa;
+                        display: block;
+                        position: relative;
         			}
             }
 
@@ -1970,6 +1978,9 @@ input[type="text"], input[type="password"] {
               font-weight: normal;
               padding: 10px;
             }
+            div {
+              padding: 10px;
+            }
           }
           .pitchLabel {
             position: relative;
@@ -1979,6 +1990,9 @@ input[type="text"], input[type="password"] {
             h1 {
               margin: 0px;
               font-weight: normal;
+              padding: 10px;
+            }
+            div {
               padding: 10px;
             }
           }

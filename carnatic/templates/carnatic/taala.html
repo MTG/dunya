@@ -6,7 +6,6 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	
 	$("#icon").on("click", function(){
 		{% if user.is_authenticated %}
 				{% for t in tracks %}
@@ -18,9 +17,11 @@ $(document).ready(function() {
 		{% endif %}
      });
 	
-	$("#filterMask").toggleClass('querybar');
-    parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
+    $('.scrollblock').isotope({
+      itemSelector : '.item',
+      layoutMode : 'straightAcross'
+    });
 });
 </script>
 {% endblock %}
@@ -49,32 +50,26 @@ $(document).ready(function() {
 							<div id="artists" class="metaDetails">
 								<div class="inner">
 									<h3>Percussionists who play this taala</h3>
-									<span class='list'>
 									{% for a in taala.percussion_artists %}
-										{% inline_artist a %}
+										{% badge_mini_artist a %}
 									{% endfor %}
-									</span>
 								</div>
 							</div>
 							<div id="composers" class="metaDetails">
 								<div class="inner">
 									<h3>Composers who write in this taala</h3>
-									<span class="list">
 									{% for c in taala.composers %}
-									{% inline_composer c %}
+									{% badge_mini_composer c %}
 									{% endfor %}
-									</span>
 								</div>
 							</div>
 
 							<div id="works" class="metaDetails">
 								<div class="inner">
 									<h3>Compositions written in this taala</h3>
-										<span class="list">
-										{% for w in taala.works %}
-										{% inline_work w %}
-										{% endfor %}
-										</span>
+                                    {% for w in taala.works %}
+                                    {% badge_mini_work w %}
+                                    {% endfor %}
 								</div>
 							</div>
 			 			</div>
@@ -93,11 +88,17 @@ $(document).ready(function() {
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-                        <div class="scrollblock isotope" id="results" style="width: 34785px; position: relative; overflow: hidden; height: 290px;">
+                        {% if similar %}
+                        <div class="scrollblock" id="results" style="height: 290px;">
                             {% for t in similar %}
                                 {% badge_taala t %}
                             {% endfor %}
 	                    </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        </div>
+                        {% endif %}
 	     			</div>
 	     		</div>
 	     	</div>

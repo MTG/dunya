@@ -49,14 +49,12 @@
 		<script src="{% static 'carnatic/js/360player.js' %}"></script>
 		
 		<script>
-		soundManager.setup({
-		  //useFlashBlock: true, // optional - if used, required flashblock.css
-		  url: "{% static 'carnatic/swf/' %}" // required: path to directory containing SM2 SWF files
-		});
-		</script>
-
-		<script>
 			$(document).ready(function() {
+
+                soundManager.setup({
+                  //useFlashBlock: true, // optional - if used, required flashblock.css
+                  url: "{% static 'carnatic/swf/' %}" // required: path to directory containing SM2 SWF files
+                });
 				
 				$( "#playback_dialog" ).dialog({
 				  autoOpen: false,
@@ -86,7 +84,7 @@
 		<!-- SCM Music Player script end -->
 		
 		<div id="playback_dialog" title="Playback dialog">
-		<p>Sorry, only registered users can play music in bunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
+		<p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
 	    </div>
 
     	<!-- //////  HEADER BLOCK  ////// -->
