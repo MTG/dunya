@@ -16,6 +16,10 @@
     var waveformurl = "{{waveform|safe}}";
     var specurl = "{{spectrogram|safe}}";
     var secondsPerView = 32;
+    var pitchtrackdata = null;
+    var histogramdata = null;
+    var rhythmdata = null;
+    var aksharadata = null;
 </script>
 {% endblock %}
 
@@ -127,18 +131,27 @@
                   <a class="zoom" data-length="8" href="#">x3</a>
                   <a class="zoom" data-length="4" href="#">x4</a>
                 </div>
+                    <div id="timecodes">
+                    <span class="timecode1"></span>
+                    <span class="timecode2"></span>
+                    <span class="timecode3"></span>
+                    <span class="timecode4"></span>
+                    <span class="timecode5"></span>
+                </div>
 		     			</div>
 	     			</div>
 	     		</div>
 	     		<div class="container2">
 	     		  <div class="waveLabel">
 	     		    <h1>rhythm</h1>
-                    <div>Showing automatically extracted akshara pulse between
+                    <div>Showing automatically<br>extracted akshara pulse<br>between
                         <span id="pulseFrom">00:00</span> and <span id="pulseTo">00:00</span>
                     </div>
                     <div>
-                        <input type="checkbox" id="showRhythm"><label for="showRhythm">Show beats</label>
+                        <input type="checkbox" checked id="showRhythm"><label for="showRhythm"> Show beats</label>
                     </div>
+                  <span class="tempoup"></span>
+                  <span class="tempodown"></span>
 	     		  </div>
 	     		  <div id="totalcontrol2">
                       <div id="timecode">00:00<span>{{recording.length_format}}</span></div>
@@ -146,6 +159,8 @@
             </div>
             <div class="pitchLabel">
               <h1>melody</h1>
+              <span class="sao">Ṡ</span>
+              <span class="sa">S</span>
             </div>
 	     		</div>
 	     	</div>

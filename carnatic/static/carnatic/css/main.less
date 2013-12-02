@@ -1860,7 +1860,7 @@ input[type="text"], input[type="password"] {
 					position: relative;
 					width:901px;
 					overflow-y: hidden;
-					overflow-x: scroll;
+					overflow-x: hidden;
 					#renders {
 						position: relative;
 						width: 901px;
@@ -1910,6 +1910,40 @@ input[type="text"], input[type="password"] {
           				}
           			}
           		}
+                div#timecodes {
+                position: relative;
+                height:20px;
+                span.timecode1 {
+                    position: absolute;
+                    left: 0px;
+                    height: 25px;
+                    margin: 2px;
+                }
+                span.timecode2 {
+                    position: absolute;
+                    left: 220px;
+                    height: 25px;
+                    margin: 2px;
+                }
+                span.timecode3 {
+                    position: absolute;
+                    left: 445px;
+                    height: 25px;
+                    margin: 2px;
+                }
+                span.timecode4 {
+                    position: absolute;
+                    left: 670px;
+                    height: 25px;
+                    margin: 2px;
+                }
+                span.timecode5 {
+                    position: absolute;
+                    right: 0px;
+                    height: 25px;
+                    margin: 2px;
+                }
+                }
 						}
 					}
 				}
@@ -1978,6 +2012,17 @@ input[type="text"], input[type="password"] {
               font-weight: normal;
               padding: 10px;
             }
+            span.tempoup {
+                position: absolute;
+                // 20% lower than midpoint
+                top:150px;
+                padding-left: 10px;
+            }
+            span.tempodown {
+                position: absolute;
+                bottom: 20px;
+                padding-left: 10px;
+            }
             div {
               padding: 10px;
             }
@@ -1991,6 +2036,19 @@ input[type="text"], input[type="password"] {
               margin: 0px;
               font-weight: normal;
               padding: 10px;
+            }
+            span.sao {
+                position: absolute;
+                // This sits at 128px, but we want the text centered
+                // so move it up just a bit.
+                top:124px;
+                padding-left: 10px;
+            }
+            span.sa {
+                font-weight:bold;
+                position: absolute;
+                top:188px;
+                padding-left: 10px;
             }
             div {
               padding: 10px;

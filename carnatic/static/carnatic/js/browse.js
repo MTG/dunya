@@ -4,8 +4,6 @@ var filtersLiteralOutputArray = new Object();
 var EspecificOutputArray = new Object();
 
 $(document).ready(function() {
-    parseAllFilters({{ filter_items|safe }});
-
 	$("#filterArea").on("click",".filterList.filterGlobalList ul li",function(){
         $(this).toggleClass("selected");
         entity = $(this).parent().parent().parent().attr("eid");
