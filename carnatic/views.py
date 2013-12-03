@@ -71,12 +71,10 @@ def main(request):
         recordings = []
 
         numartists = len(artists)
-        numcomposers = len(composers)
         numraagas = len(raagas)
         numtaalas = len(taalas)
         numconcerts = len(concerts)
         numinstruments = len(instruments)
-        numworks = len(works)
         results = True
     else:
         print "something else"
@@ -271,7 +269,7 @@ def recording(request, recordingid):
     except docserver.util.NoFileException:
         small = None
     try:
-        audio = docserver.util.docserver_get_url(recording.mbid, "mp3")
+        audio = docserver.util.docserver_get_mp3_url(recording.mbid)
     except docserver.util.NoFileException:
         audio = None
     try:

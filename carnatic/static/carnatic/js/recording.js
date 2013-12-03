@@ -13,6 +13,8 @@ $(document).ready(function() {
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
+     // The 900 pitch values currently on screen
+     pitchvals = new Array(900);
 	/* waveform.click(function(e) {
 	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
@@ -27,9 +29,35 @@ $(document).ready(function() {
      $("#showRhythm").click(function(e) {
         drawwaveform();
      });
+
+     soundManager.onready(function() {
+         pagesound = soundManager.createSound({
+               url: audiourl
+         });
+
+     });
 });
 
+function plotsa(context) {
+    // Sa and sa+1 line.
+    context.beginPath();
+    // sa+1, dotted
+    context.moveTo(0, 128);
+    for (var i = 0; i < 900; i+=10) {
+        context.moveTo(i, 128.5);
+        context.lineTo(i+5, 128.5);
+    }
+    // sa, solid
+    context.moveTo(0, 192.5);
+    context.lineTo(900, 192.5);
+    context.strokeStyle = "#eee";
+    context.lineWidth = 1;
+    context.stroke();
+    context.closePath()
+}
+
 function spectrogram(context, view) {
+    plotsa(context);
     var waszero = false;
     context.moveTo(0, 10);
     context.lineTo(10, 10);
@@ -38,17 +66,22 @@ function spectrogram(context, view) {
     // Start is in samples
     var start = (beginningOfView / secondsPerView) * 900 * skip;
     // Number of pixels we draw
-    var end = Math.min(900+start, view.length/skip);
+    var end = Math.min(900+start, start+(view.length-start)/skip);
+    var remaining = view.length-start;
     //console.debug("length " + view.length);
+    //console.debug(remaining + " samples remaining");
+    //console.debug("with skip, " + (remaining/skip) + " rem");
     //console.debug("skip " + skip);
     //console.debug("draw from " + start + " to " + end);
+    context.beginPath();
     for (var i = start; i < end; i++) {
         // Find our point
-        var dataindex = i*skip;
-        var data = view[dataindex];
         var xpos = i-start;
+        var dataindex = start + xpos*skip;
+        var data = view[dataindex];
         // Invert on canvas
         var tmp = 255-data;
+        //console.debug(" at ("+xpos+","+tmp+") data " + dataindex);
         // We choose 0 if the pitch is unknown, or 255 if it's
         // higher than the 3 octaves above tonic. If so, we don't
         // want to draw something, just skip until the next value
@@ -63,26 +96,25 @@ function spectrogram(context, view) {
                 context.lineTo(xpos, tmp);
             }
         }
+        // Set the pitchvals so we can draw the histogram
+        pitchvals[xpos] = tmp;
     }
-    context.strokeStyle = "#eee";
+    
+    context.strokeStyle = "#e71d25";
     context.lineWidth = 2;
     context.stroke();
-    context.beginPath();
-    context.moveTo(0, 128);
-    context.lineTo(900, 128);
-    context.moveTo(0, 192);
-    context.lineTo(900, 192);
-    context.stroke();
+    context.closePath();
 }
 
-function plothistogram() {
+function plothistogram(pitch) {
+    pitch = pitch || 0;
     var histogram = $("#histogramcanvas")[0];
     histogram.width = 200;
     histogram.height = 256;
     var context = histogram.getContext("2d");
-    context.moveTo(180, 10);
-    context.lineTo(200, 10);
-    context.moveTo(200, 256);
+    //context.moveTo(180, 10);
+    //context.lineTo(200, 10);
+    //context.moveTo(200, 256);
     var max = 0;
     var data = histogramdata;
     for (var i = 0; i < data.length; i++) {
@@ -91,18 +123,32 @@ function plothistogram() {
         }
     }
     var factor = 150 / max;
+    context.beginPath();
     for (var i = 0; i < data.length; i++) {
         v = data[i] * factor;
         context.lineTo(200-v, 256-i);
     }
     context.lineWidth = 2;
+    context.strokeStyle = "#e71d25";
     context.stroke();
+    context.closePath();
+    
+    // Pitch
+    if (pitch > 0 && pitch < 255) {
+        context.beginPath();
+        context.moveTo(0, pitch);
+        context.lineTo(200, pitch);
+        context.lineWidth = 1;
+        context.strokeStyle = "#fbe808";
+        context.stroke();
+        context.closePath();
+    }
 }
 
 function plotpitch() {
     // In order to account for slow internet connections,
     // we always load one image ahead of what we need.
-    // TODO: We need to know when the last image is.
+    // TODO: We need to know when the final image is.
     var spec = new Image();
     spec.src = specurl;
     var view = new Uint8Array(pitchdata);
@@ -125,8 +171,8 @@ function drawwaveform() {
     var context = canvas.getContext("2d");
     wave.onload = function() {
         context.drawImage(wave, 0, 0);
-        plotticks(context, rhythmdata);
         plottempo(context, aksharadata);
+        plotticks(context, rhythmdata);
     }
 }
 
@@ -146,20 +192,21 @@ function plotticks(context, data) {
 
     if ((secondsPerView == 8 || secondsPerView == 4) && show) {
         context.beginPath();
-        console.debug("draw ticks");
+        //console.debug("draw ticks");
         for (var i = 0; i < data.length; i++) {
             var val = data[i];
             var endVal = beginningOfView+secondsPerView;
             if (val > beginningOfView && val < endVal) {
-                console.debug("got a tick at " + val);
+                //console.debug("got a tick at " + val);
                 // We draw it.
-                var position = val / endVal * 900;
+                var position = (val-beginningOfView) / secondsPerView * 900;
                 position = Math.floor(position) + 0.5;
-                console.debug("drawing at " + position);
+                //console.debug("drawing at " + position);
                 context.moveTo(position, 0);
                 context.lineTo(position, 255);
             }
         context.lineWidth = 1;
+        context.strokeStyle = "#e71d25";
         context.stroke();
         }
         context.closePath();
@@ -186,6 +233,7 @@ function plottempo(context, data) {
 
     var secPerPixel = 900 / secondsPerView;
     var moved = false;
+    context.beginPath();
     for (var i = 0; i < data.length; i++) {
         var time = data[i][0];
         if (time >= beginningOfView) {
@@ -196,16 +244,19 @@ function plottempo(context, data) {
                 break;
             }
             var y = (data[i][1]-low) * factor;
+            y = Math.floor(y) + 0.5;
             if (!moved) {
                 context.moveTo(0, 256-y);
                 moved = true;
             }
             context.lineTo(x, 256-y);
+            //console.debug("line at position "+y);
         }
     }
     context.strokeStyle = "#eee";
-    context.lineWidth = 2;
+    context.lineWidth = 1;
     context.stroke();
+    context.closePath();
 }
 
 function loaddata() {
@@ -281,11 +332,13 @@ function mouPlay(desti){
 	audio.currentTime = Math.ceil(nouPunt);
 }
 function play() {
-    audio.play();
+    pagesound.play({onfinish: function() {
+        window.clearInterval(int);
+    }});
     int = window.setInterval(updateProgress, 30);
 }
 function pause() {
-    audio.pause();
+    pagesound.pause();
     window.clearInterval(int);
 }
 
@@ -293,6 +346,11 @@ function formatseconds(seconds) {
     progress_seconds = Math.ceil(seconds);
     progress_minutes = Math.floor(seconds/60);
     resto = (progress_seconds-(progress_minutes*60));
+    // never show :60 in seconds part
+    if (resto >= 60) {
+        resto = 0;
+        progress_minutes += 1;
+    }
     if(resto<10){
 		resto = "0"+resto;
     }
@@ -300,14 +358,15 @@ function formatseconds(seconds) {
 		progress_minutes = "0"+progress_minutes;
     }
     timecodeHtml = ""+progress_minutes+":"+resto;
-    console.debug("format seconds " + seconds);
-    console.debug("format output  " + timecodeHtml);
     return timecodeHtml;
 }
 
 function updateProgress() {
-    formattime = formatseconds(audio.currentTime);
-    progress_percent = (audio.currentTime-beginningOfView) / secondsPerView * 100;
+    var currentTime = pagesound.position / 1000;
+    // formatseconds appears to run 1 second ahead of time, 
+    // so correct for it here
+    formattime = formatseconds(currentTime-1);
+    progress_percent = (currentTime-beginningOfView) / secondsPerView * 100;
 	ampleMask = rendersMask.width();
 	ampleRenders = renders.width();
 	ampleRenderTotal = renderTotal.width();
@@ -323,7 +382,12 @@ function updateProgress() {
         specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
         drawdata();
     }
-    timecode.html(formattime);
+    timecode.html(formattime + "<span>"+recordinglength+"</span>");
+
+    // Current pitch
+    var pitchindex = Math.floor(nouLeft);
+    var p = pitchvals[pitchindex];
+    plothistogram(p);
 };
 
 function zoom(level){
