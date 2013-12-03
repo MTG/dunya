@@ -5,8 +5,12 @@
 
 {% block script %}
 <script>
+$(document).ready(function() {
+    parseAllFilters({{ filter_items|safe }});
+});
 </script>
-<script src="{% static 'carnatic/js/main.js' %}"></script>
+
+<script src="{% static 'carnatic/js/browse.js' %}"></script>
 {% endblock %}
 
 {% block title %}{% if query %}{{query}} - {% endif %}{% endblock %}
@@ -78,14 +82,6 @@
 
         {% for i in instruments %}
             {% badge_instrument i %}
-        {% endfor %}
-
-        {% for c in composers %}
-            {% badge_composer c %}
-        {% endfor %}
-
-        {% for w in works %}
-            {% badge_work w %}
         {% endfor %}
      </div>
     </div>

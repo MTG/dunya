@@ -171,7 +171,7 @@ def run_module_on_recordings(moduleid, recids):
         for d in docs:
             print "  document", d
             print "  docid", d.pk
-            process_document.delay(d.pk, version.pk)
+            process_document(d.pk, version.pk)
 
 @app.task
 def run_module_on_collection(collectionid, moduleid):

@@ -18,7 +18,6 @@ def get_filter_items():
     filter_items = [
             Artist.get_filter_criteria(),
             Concert.get_filter_criteria(),
-            Work.get_filter_criteria(),
             Instrument.get_filter_criteria(),
             Raaga.get_filter_criteria(),
             Taala.get_filter_criteria()
@@ -69,8 +68,6 @@ def main(request):
         concerts = results.get("concert", [])
         raagas = results.get("raaga", [])
         taalas = results.get("taala", [])
-        works = results.get("work", [])
-        composers = results.get("composer", [])
         recordings = []
 
         numartists = len(artists)
@@ -83,16 +80,22 @@ def main(request):
         results = True
     else:
         print "something else"
-        artists = Artist.objects.all()[:6]
-        concerts = Concert.objects.all()[:6]
-        instruments = Instrument.objects.all()[:6]
+        #artists = Artist.objects.all()[:6]
+        #concerts = Concert.objects.all()[:6]
+        #instruments = Instrument.objects.all()[:6]
         results = None
 
-        composers = Composer.objects.all()[:6]
-        recordings = Recording.objects.all()[:6]
-        raagas = Raaga.objects.all()[:6]
-        taalas = Taala.objects.all()[:6][:6]
-        works = Work.objects.all()[:6][:6]
+        #recordings = Recording.objects.all()[:6]
+        #raagas = Raaga.objects.all()[:6]
+        #taalas = Taala.objects.all()[:6]
+
+        artists = []
+        concerts = []
+        instruments = []
+        recordings = []
+        raagas = []
+        taalas = []
+
 
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
@@ -104,13 +107,10 @@ def main(request):
            "numinstruments": numinstruments,
 
            "artists": artists,
-           "composers": composers,
-           "recordings": recordings,
            "concerts": concerts,
            "raagas": raagas,
            "taalas": taalas,
            "instruments": instruments,
-           "works": works,
            "results": results,
 
            "query": query
@@ -181,13 +181,11 @@ def artist(request, artistid):
     elif desc and desc.source.source_name == w:
         wikipedia = artist.description.source.uri
 
-    recordings = Artist.recordings(artist)
-    sample = random.sample(recordings,1)[0]
-    try:
-        audio = docserver.util.docserver_get_url(sample.mbid, "mp3")
-    except docserver.util.NoFileException:
-        audio = None
-    setattr(sample, "audio", audio)
+    recordings = artist.recordings()
+    if len(recordings) > 0:
+        sample = random.sample(recordings,1)[0]
+    else:
+        sample = None
 
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "artist": artist,
@@ -198,8 +196,7 @@ def artist(request, artistid):
             "similar_artists": similar_artists,
             "raagas": raagas,
             "taalas": taalas,
-			"sample": sample,
-			"tracks": random.sample(recordings,1),
+            "sample": sample,
             "mb": musicbrainz,
             "kutcheris": kutcheris,
             "wiki": wikipedia
