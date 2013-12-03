@@ -124,10 +124,10 @@
 		     			   <div id="capcalTotal"></div>
                            <img src="{{smallimage}}">
               </div>
-		     			<div id="bigPitch">
+		     			<div id="bigPitch" style="height:286px;">
                             <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
                             <!--<img src="{{spectrogram}}">-->
-		     			 <div id="zooms">
+		     			 <div id="zooms" style="bottom: 34px;">
                   <a class="zoom" data-length="32" href="#">x1</a>
                   <a class="zoom" data-length="16" href="#">x2</a>
                   <a class="zoom" data-length="8" href="#">x3</a>
@@ -172,9 +172,5 @@
 
 	 	<div class="clearfix"></div>
 </div>
-
-<audio id="theaudio">
-    <source src="{{audio}}" type="audio/mp3" preload>
-</audio>
 
 {% endblock %}
