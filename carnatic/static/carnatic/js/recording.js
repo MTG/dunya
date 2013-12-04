@@ -135,11 +135,12 @@ function plothistogram(pitch) {
     
     // Pitch
     if (pitch > 0 && pitch < 255) {
+        pitch = Math.floor(pitch) + 0.5;
         context.beginPath();
         context.moveTo(0, pitch);
         context.lineTo(200, pitch);
         context.lineWidth = 1;
-        context.strokeStyle = "#fbe808";
+        context.strokeStyle = "#000";
         context.stroke();
         context.closePath();
     }
@@ -370,10 +371,10 @@ function updateProgress() {
 	ampleMask = rendersMask.width();
 	ampleRenders = renders.width();
 	ampleRenderTotal = renderTotal.width();
-    nouLeft = ((ampleRenders*progress_percent)/100);
+    leftLargeView = ((ampleRenders*progress_percent)/100);
     nouLeft2 = ((ampleRenderTotal*progress_percent)/100);
-    capcal.css('left',nouLeft);
-    capcalTotal.css('left',nouLeft2);
+    capcal.css('left',nouLeft-5);
+    capcalTotal.css('left',nouLeft2-5);
 
     if (nouLeft2 > 900) {
         beginningOfView += secondsPerView;
