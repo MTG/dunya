@@ -106,7 +106,10 @@ def download_external(request, uuid, ftype):
                     if parts.count() > 1:
                         return HttpResponse(status=400)
                     elif parts.count() == 1:
-                        contents = open(parts[0].path, 'rb').read()
+                        derived_root = settings.AUDIO_ROOT
+                        file_path = parts[0].path
+                        full_path = os.path.join(derived_root, file_path)
+                        contents = open(full_path, 'rb').read()
                         return HttpResponse(contents, mimetype)
                     else:
                         raise Http404

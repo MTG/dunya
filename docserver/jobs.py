@@ -92,7 +92,8 @@ class NumPyArangeEncoder(json.JSONEncoder):
 
 def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
     recordingstub = recordingid[:2]
-    fdir = os.path.join(settings.AUDIO_ROOT, collection, recordingstub, recordingid, slug, version)
+    reldir = os.path.join(collection, recordingstub, recordingid, slug, version)
+    fdir = os.path.join(settings.AUDIO_ROOT, reldir)
     try:
         os.makedirs(fdir)
     except OSError:
@@ -100,6 +101,7 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
     fname = "%s-%s-%s.%s" % (slug, partslug, partnumber, extension)
 
     fullname = os.path.join(fdir, fname)
+    fullrelname = os.path.join(reldir, fname)
     fp = open(fullname, "wb")
     if extension == "json":
         data = json.dumps(data, fp, cls=NumPyArangeEncoder)
@@ -108,7 +110,7 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
         print "Data is not a string-ish thing. instead it's %s" % type(data)
     fp.write(data)
     fp.close()
-    return fullname, len(data)
+    return fullname, fullrelname, len(data)
 
 @app.task
 def process_document(documentid, moduleversionid):
@@ -146,9 +148,9 @@ def process_document(documentid, moduleversionid):
                 if not multipart:
                     contents = [contents]
                 for i, partdata in enumerate(contents, 1):
-                    saved_name, saved_size = _save_file(collectionid, document.external_identifier,
+                    saved_name, rel_path, saved_size = _save_file(collectionid, document.external_identifier,
                             version.version, moduleslug, dataslug, i, extension, partdata)
-                    df.save_part(i, saved_name, saved_size)
+                    df.save_part(i, rel_path, saved_size)
 
 def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)
