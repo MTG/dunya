@@ -11,14 +11,14 @@
        <div class="trackMeta">
            <label>Raaga:</label>
            {% if recording.raaga %}
-           <b><a href="{{recording.raaga.get_absolute_url}}">{{recording.raaga}}</a></b>
+           <b>{% inline_raaga recording.raaga %}</b>
            {% else %}
            unknown
            {% endif %}
 
            <label>Taala:</label>
            {% if recording.taala %}
-           <b><a href="{{recording.taala.get_absolute_url}}">{{recording.taala}}</a></b>
+           <b>{% inline_taala recording.taala %}</b>
            {% else %}
            unknown
            {% endif %}

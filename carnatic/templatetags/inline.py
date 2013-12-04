@@ -69,10 +69,12 @@ def inline_work(work):
 
 @register.simple_tag
 def inline_raaga(raaga):
+    return raaga.name.title()
     return '<a href="%s">%s</a>' % (raaga.get_absolute_url(), raaga.name.title())
 
 @register.simple_tag
 def inline_taala(taala):
+    return taala.name.title()
     return '<a href="%s">%s</a>' % (taala.get_absolute_url(), taala.name.title())
 
 @register.simple_tag
