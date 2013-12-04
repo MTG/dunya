@@ -77,17 +77,6 @@ $(document).ready(function() {
                                     </span>
 								</div>
 							</div>
-							<div id="samples" class="metaDetails">
-								<div class="inner">
-									<h3>Samples</h3>
-									<span>
-			                            {% for s in instrument.samples %}
-			                                <!--{% badge_sample s %}-->
-											<div class="ui360"><a href="{{s.absolute_mp3_url}}">{{s.title}}</a></div>
-			                            {% endfor %}
-									</span>
-								</div>
-							</div>
 
 			 			</div>
 			 		</div>
@@ -106,7 +95,7 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
                         <div class="scrollblock" id="results" style="height: 290px;">
-	                        {% for p in instrument.performers %}
+	                        {% for p in instrument.ordered_performers|slice:":10" %}
 	                            {% badge_performance p %}
 	                        {% endfor %}
 	                    </div>

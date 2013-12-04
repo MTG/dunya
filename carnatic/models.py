@@ -413,12 +413,20 @@ class Instrument(CarnaticStyle, data.models.Instrument):
     def description(self):
         return "The description of an instrument"
 
+    def ordered_performers(self):
+        perfs, counts = self.performers()
+        perfs = sorted(perfs, key=lambda p: counts[p.performer], reverse=True)
+        return perfs
+
     def performers(self):
         IPClass = self.get_object_map("performance")
         performances = IPClass.objects.filter(instrument=self).distinct()
         ret = []
         artists = []
+        # Sort how many performances this artist makes
+        artistcount = collections.Counter()
         for p in performances:
+            artistcount[p.performer] += 1
             if p.performer not in artists:
                 ret.append(p)
                 artists.append(p.performer)
@@ -427,11 +435,12 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         ICPClass = self.get_object_map("concertperformance")
         performances = ICPClass.objects.filter(instrument=self).distinct()
         for p in performances:
+            artistcount[p.performer] += 1
             if p.performer not in artists:
                 ret.append(p)
                 artists.append(p.performer)
 
-        return ret
+        return ret, artistcount
 
     def references(self):
         pass
