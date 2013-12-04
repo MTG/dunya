@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 import os
 import time
+import math
 
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
@@ -267,7 +268,20 @@ class Recording(BaseModel):
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
 
     def length_format(self):
-        return time.strftime('%M:%S', time.gmtime(self.length/1000))
+        numsecs = self.length/1000
+        minutes = math.floor(numsecs / 60.0)
+        hours = math.floor(minutes / 60.0)
+        minutes = math.floor(minutes - hours*60)
+        seconds = math.floor(numsecs - hours*3600 - minutes*60)
+        if hours:
+            val = "%02d:%02d:%02d" % (hours, minutes, seconds)
+        else:
+            val = "%02d:%02d" % (minutes, seconds)
+
+        return val
+
+    def length_seconds(self):
+        return self.length / 1000
 
     def __unicode__(self):
         return self.title

@@ -368,25 +368,26 @@ function updateProgress() {
     // so correct for it here
     formattime = formatseconds(currentTime-1);
     progress_percent = (currentTime-beginningOfView) / secondsPerView * 100;
+    total_progress_frac = (currentTime/recordinglengthseconds);
 	ampleMask = rendersMask.width();
 	ampleRenders = renders.width();
 	ampleRenderTotal = renderTotal.width();
     leftLargeView = ((ampleRenders*progress_percent)/100);
-    nouLeft2 = ((ampleRenderTotal*progress_percent)/100);
-    capcal.css('left',nouLeft-5);
-    capcalTotal.css('left',nouLeft2-5);
+    leftSmallView = ampleRenderTotal*total_progress_frac;
+    capcal.css('left', leftLargeView-5);
+    capcalTotal.css('left', leftSmallView-6);
 
-    if (nouLeft2 > 900) {
+    if (leftLargeView > 900) {
         beginningOfView += secondsPerView;
         pnum = Math.floor(beginningOfView / secondsPerView + 1);
         waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
         specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
         drawdata();
     }
-    timecode.html(formattime + "<span>"+recordinglength+"</span>");
+    timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
 
     // Current pitch
-    var pitchindex = Math.floor(nouLeft);
+    var pitchindex = Math.floor(leftLargeView);
     var p = pitchvals[pitchindex];
     plothistogram(p);
 };

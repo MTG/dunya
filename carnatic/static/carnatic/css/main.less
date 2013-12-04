@@ -828,6 +828,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					.metaContainer {
     					position: relative;
 						.metaDetails {
+                            .withpadding {
+                                padding-left: 10px;
+                                padding-top: 10px;
+                            }
 							display: inline-block;
 							position: relative;
 							float:left;
@@ -890,6 +894,41 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 							}
 							&.narrow { width: 450px; }
 							&.close { width: 150px; }
+                        // TODO: This duplicates badge miniitem
+                        // we can combine them somehow
+                        .miniitem {
+                            height: auto !important;
+                            left: 0px;
+                            position: relative;
+                            top: 0px;
+                            width:100% !important;
+                            background: none;
+                            margin-top: 5px;
+                            padding:6px;
+                            padding-right: 15px;
+                            padding-bottom:5px;
+                            min-height: 50px;
+                            label {
+                                font-size: 12px;
+                                line-height: 14px;
+                                display: block;
+                                color: rgba(0,0,0,0.5);
+                                b {
+                                    display: block;
+                                    color: #000;
+                                }
+                            }
+                            .disco {
+                                float: left;
+                                margin-right: 8px;
+                                margin-bottom: 15px;
+                                height: 40px;
+                                overflow: hidden;
+                                img {
+                                    width: 40px;
+                                }
+                        }
+            }
 						}
                         .recordingDetails {
                             padding-top: 0px;
@@ -1372,43 +1411,42 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             color: rgba(0,0,0,0.5);
           }
   			}
-  			.miniitem {
-  			  height: auto !important;
-          left: 0px;
-          position: relative;
-          top: 0px;
-          width:100% !important;
-          background: none;
-          margin-top: 5px;
-          padding:6px;
-    			padding-right: 15px;
-    			padding-bottom:5px;
-    			min-height: 50px;
-          label {
-            font-size: 12px;
-            line-height: 14px;
-            display: block;
-            color: rgba(0,0,0,0.5);
-            b {
-              display: block;
-              color: #000;
+            .miniitem {
+                height: auto !important;
+                left: 0px;
+                position: relative;
+                top: 0px;
+                width:100% !important;
+                background: none;
+                margin-top: 5px;
+                padding:6px;
+                padding-right: 15px;
+                padding-bottom:5px;
+                min-height: 50px;
+                label {
+                    font-size: 12px;
+                    line-height: 14px;
+                    display: block;
+                    color: rgba(0,0,0,0.5);
+                    b {
+                        display: block;
+                        color: #000;
+                    }
+                }
+                .disco {
+                    float: left;
+                    margin-right: 8px;
+                    margin-bottom: 15px;
+                    img {
+                        width: 40px;
+                    }
             }
-          }
-  			  .disco {
-  			    float: left;
-  			    margin-right: 8px;
-  			    margin-bottom: 15px;
-            a {
-              background: none;
-              img { width: 40px !important; }
-              }
-          }
-        }
+            }
 			}
 			.smallPlay {
     		position: absolute;
     		left: 200px;
-        top: 2px;
+            top: 2px;
     		width: 23px;
     		height: 23px;
     		background: url("../img/smallPlay.png") 0 0  no-repeat;
@@ -1434,6 +1472,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					width: 207px !important;
                     top: 0;
                     bottom: 0;
+                    left: 0;
+                    right: 0;
                     margin: auto;
                     position: absolute;
 				}
@@ -1963,12 +2003,12 @@ input[type="text"], input[type="password"] {
 					}
 					#capcalTotal {
 						position: absolute;
-						left:0px;
+						left:-6px;
 						top:0px;
-						width:13px;
+						width:7px;
 						height: 100%;
 						z-index:3;
-						background: url("../img/capcal.png") -5px 0 repeat-y;
+						background: url("../img/capcal.png") 0 0 repeat-y;
 					}
 				}
         .container2 {
