@@ -43,7 +43,7 @@ def main(request):
     else:
         query = None
 
-    numartists = Artist.objects.count()
+    numartists = Artist.objects.filter(dummy=False).count()
     numcomposers = Composer.objects.count()
     numraagas = Raaga.objects.count()
     numtaalas = Taala.objects.count()
@@ -56,7 +56,7 @@ def main(request):
         instruments = []
         concerts = []
         for aname in qartist:
-            art = Artist.objects.get(name=aname)
+            art = Artist.objects.get(name=aname, dummy=False)
             artists.append(art)
             instruments.append(art.instruments())
         concerts = Concert.objects.filter(artists__in=artists).all()
@@ -117,7 +117,7 @@ def main(request):
     return render(request, "carnatic/index.html", ret)
 
 def artistsearch(request):
-    artists = Artist.objects.all()
+    artists = Artist.objects.filter(dummy=False)
     ret = []
     for a in artists:
         ret.append({"mbid": a.mbid, "name": a.name})

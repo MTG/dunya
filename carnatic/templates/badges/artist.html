@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load badges %}
+{% load inline %}
 
 <div class="artist item">
   <div class="disc pict">
@@ -7,7 +8,7 @@
 </div>
   <div class="desc">
     <div class="plus"></div>
-    <a href="{{artist.get_absolute_url}}" class="title"><b>{{artist.name}}</b></a>
+    {% inline_artist artist %}
 {% if artist.begin %}
 <span class="year">{{artist.begin}}{% if artist.end %} - {{artist.end}}{% endif %}</span>
 {% endif %}

@@ -8,7 +8,9 @@
         <div class="desc"><div class="plus"></div>
             {% inline_artist artist %}
             <p>{% if artist.begin %}{{artist.begin}}{% else %}&nbsp;{% endif %}</p>
+            {% if artist.main_instrument %}
         <p>Primary instrument: {% inline_instrument artist.main_instrument %}
+        {% endif %}
     </div>
 
         <div class="lists similar">

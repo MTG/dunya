@@ -33,9 +33,12 @@ def inline_artist_list(artists):
 
 def inline_artist_part(artist):
     if isinstance(artist, carnatic.models.Artist):
-        return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
+        if artist.dummy:
+            return artist.name
+        else:
+            return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
     else:
-        return ""
+        return artist.name
 
 @register.simple_tag
 def inline_concert(concert, bold=False):

@@ -19,7 +19,7 @@ class Command(BaseCommand):
 
     def create_search_index(self):
         instruments = models.Instrument.objects.all()
-        artists = models.Artist.objects.all()
+        artists = models.Artist.objects.filter(dummy=False)
         composers = models.Composer.objects.all()
         works = models.Work.objects.all()
         concerts = models.Concert.objects.all()

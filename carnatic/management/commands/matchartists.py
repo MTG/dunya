@@ -26,7 +26,8 @@ class Command(BaseCommand):
                 continue
 
             a = models.Artist.objects.get(pk=int(id))
-            print "Artist", name
+            print "Artist", name, a.id
+            a.gurus.clear()
 
             for g in guru.split(","):
                 g = g.strip()
@@ -35,6 +36,10 @@ class Command(BaseCommand):
                     a.gurus.add(gobject)
                 except models.Artist.DoesNotExist:
                     print "  * cannot find guru", g
+                    print "  * making a dummy one"
+                    gobject = models.Artist.objects.create(name=g, dummy=True)
+                    a.gurus.add(gobject)
+
             try:
                 gr = models.GeographicRegion.objects.get(name=place)
                 a.state = gr
