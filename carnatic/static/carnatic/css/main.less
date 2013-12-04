@@ -800,9 +800,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			background: white;
 			z-index: 2;
             img {
-                display: inline-block;
-                vertical-align: middle;
-                width: 297px;
+                width: 296px;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                position: absolute;
             }
 		}
 		#image {
@@ -1430,6 +1432,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				background: #fff;
 				img {
 					width: 207px !important;
+                    top: 0;
+                    bottom: 0;
+                    margin: auto;
+                    position: absolute;
 				}
 			}
 		}
