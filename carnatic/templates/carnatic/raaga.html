@@ -6,8 +6,7 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	
-    widthOfChildren('.metaContainer');
+    widthOfChildren('.metaContainer', 30);
 });
 </script>
 {% endblock %}
@@ -40,27 +39,33 @@ $(document).ready(function() {
 					<div class="metaMask">
 			 			<div class="metaContainer">
 							<div id="artists" class="metaDetails">
-								<div class="inner">
+								<div class="inner withpadding">
 									<h3>Artists who perform this raaga</h3>
 									{% for a in raaga.artists %}
 									{% badge_mini_artist a %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
 									{% endfor %}
 								</div>
 							</div>
 							<div id="composers" class="metaDetails">
-								<div class="inner">
+								<div class="inner withpadding">
 									<h3>Composers</h3>
 									{% for c in raaga.composers %}
 									{% badge_mini_composer c %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
 									{% endfor %}
 								</div>
 							</div>
 
 							<div id="works" class="metaDetails">
-								<div class="inner">
+								<div class="inner withpadding">
 									<h3>Compositions</h3>
                                     {% for w in raaga.works %}
                                     {% badge_mini_work w %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
                                     {% endfor %}
 								</div>
 							</div>
@@ -80,17 +85,17 @@ $(document).ready(function() {
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-                        <div class="scrollblock" id="results" style="height: 290px;">
                         {% if similar %}
+                        <div class="scrollblock" id="results" style="height: 290px;">
                         {% for t in similar %}
                             {% badge_raaga t %}
                         {% endfor %}
+                    </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
-	                    </div>
 	     			</div>
 	     		</div>
 	     	</div>

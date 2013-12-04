@@ -373,8 +373,14 @@ def taala(request, taalaid):
     taala = get_object_or_404(Taala, pk=taalaid)
 
     similar = taala.get_similar()
+    tracks = taala.recordings(10)
+    if len(tracks):
+        tracks = random.sample(tracks, 1)
 
-    ret = {"taala": taala, "filter_items": json.dumps(get_filter_items()), "tracks": random.sample(taala.recordings(10),1), "similar": similar}
+    ret = {"taala": taala,
+           "tracks": tracks,
+           "similar": similar
+          }
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -387,8 +393,14 @@ def raagasearch(request):
 def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
+    tracks = raaga.recordings(10)
+    if len(tracks):
+        tracks = random.sample(tracks, 1)
 
-    ret = {"raaga": raaga, "filter_items": json.dumps(get_filter_items()), "tracks": random.sample(raaga.recordings(10),1), "similar": similar}
+    ret = {"raaga": raaga,
+           "tracks": tracks,
+           "similar": similar
+    }
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):

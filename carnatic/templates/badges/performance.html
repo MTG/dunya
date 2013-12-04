@@ -13,7 +13,9 @@
     <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>
   </div>
   <div class="descOpen">
+    {% if artist.description.description %}
     {{artist.description.description}}
+    {% else %}Sorry, we have no description for this artist{% endif %}
   </div>
   <div class="lists">
     <div class="left"></div>

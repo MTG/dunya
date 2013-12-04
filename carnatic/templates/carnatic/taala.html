@@ -7,7 +7,7 @@
 <script>
 $(document).ready(function() {
 	
-    widthOfChildren('.metaContainer');
+    widthOfChildren('.metaContainer', 30);
     $('.scrollblock').isotope({
       itemSelector : '.item',
       layoutMode : 'straightAcross'
@@ -44,27 +44,33 @@ $(document).ready(function() {
 					<div class="metaMask">
 			 			<div class="metaContainer">
 							<div id="artists" class="metaDetails">
-								<div class="inner">
+								<div class="inner withpadding">
 									<h3>Percussionists who play this taala</h3>
 									{% for a in taala.percussion_artists %}
 										{% badge_mini_artist a %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
 									{% endfor %}
 								</div>
 							</div>
 							<div id="composers" class="metaDetails">
-								<div class="inner">
+								<div class="inner withpadding">
 									<h3>Composers who write in this taala</h3>
 									{% for c in taala.composers %}
 									{% badge_mini_composer c %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
 									{% endfor %}
 								</div>
 							</div>
 
 							<div id="works" class="metaDetails">
-								<div class="inner">
+								<div class="inner withpadding">
 									<h3>Compositions written in this taala</h3>
                                     {% for w in taala.works %}
                                     {% badge_mini_work w %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
                                     {% endfor %}
 								</div>
 							</div>
@@ -91,8 +97,8 @@ $(document).ready(function() {
                             {% endfor %}
 	                    </div>
                         {% else %}
-                        <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        <div style="height: 290px; border: none;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
 	     			</div>

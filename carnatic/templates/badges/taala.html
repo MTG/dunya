@@ -7,11 +7,11 @@
       <a href="{{taala.get_absolute_url}}"><img src="{{taala.get_image_url}}" width="297" style="vertical-align: middle"></a>
 </div>
   <div class="desc">
-    <div class="plus"></div>
     <a href="{{taala.get_absolute_url}}" class="title"><b>{{taala.name|title}} taala</b></a>
 </div>
   <div class="descOpen">
 </div>
+{% comment %}
   <div class="lists">
     <div class="left">
           <h3>Compositions</h3>
@@ -26,4 +26,5 @@
     {% endfor %}
     </div>
   </div>
+  {% endcomment %}
 </div>

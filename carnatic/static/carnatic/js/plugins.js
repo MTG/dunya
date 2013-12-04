@@ -23,8 +23,6 @@
 
 // Place any jQuery/helper plugins in here.
 
-
-
 function widthOfChildren(object, more){
     more = typeof more !== 'undefined' ? more : 10;
 	$(object).each(function(){

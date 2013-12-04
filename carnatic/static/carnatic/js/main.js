@@ -46,4 +46,10 @@ $(document).ready(function() {
         }
     });
 
+    // When you click on the (+) on a badge, expand it open
+    $("#results .desc .plus").click(function(){
+        $(this).parent().parent().toggleClass("open");
+        $('#results').isotope( 'reLayout');
+    });
+
 });
