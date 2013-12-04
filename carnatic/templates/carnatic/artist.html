@@ -167,11 +167,17 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
+                        {% if artist.concerts %}
                         <div class="scrollblock inforight" style="height: 290px">
                             {% for concert in artist.concerts %}
                                 {% badge_detail_concert concert %}
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -190,7 +196,7 @@ $(document).ready(function() {
                         </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
                     </div>
@@ -203,11 +209,17 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
+                        {% if artist.collaborating_artists %}
                         <div class="scrollblock inforight" style="height: 290px;">
                             {% for a, concerts in artist.collaborating_artists %}
                                 {% badge_similar_artist a concerts=concerts %}
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
