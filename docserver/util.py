@@ -4,6 +4,7 @@ import tempfile
 import os
 import subprocess
 import json
+from django.conf import settings
 
 class NoFileException(Exception):
     pass
@@ -72,7 +73,10 @@ def docserver_get_mp3_url(documentid):
 
 def docserver_get_filename(documentid, slug, subtype=None, part=None, version=None):
     part = _docserver_get_part(documentid, slug, subtype, part, version)
-    return part.path
+    derived_root = settings.AUDIO_ROOT
+    file_path = part.path
+    full_path = os.path.join(derived_root, file_path)
+    return full_path
 
 def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None):
     doc = models.Document.objects.get(external_identifier=documentid)
