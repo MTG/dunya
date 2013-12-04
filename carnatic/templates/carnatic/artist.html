@@ -77,10 +77,8 @@ $(document).ready(function() {
                                 <h3>Biographical data</h3>
                                     <div class="inner">
                                         <span class="list">
-                                            <label>Date of birth:</label><b>{% if artist.begin %}{{artist.begin}}{% else %}(unknown){% endif %}</b>
-                                            {% if artist.state %}
-                                            <label>Region of birth:</label><b>{{artist.state.name}}</b>
-                                            {% endif %}
+                                            <label>Date of birth:</label><b>{% firstof artist.begin "(unknown)" %}</b>
+                                            <label>Region of birth:</label><b>{% firstof artist.state.name "(unknown)" %}</b>
                                         </span>
                                     </div>
                                 </div>
@@ -105,10 +103,9 @@ $(document).ready(function() {
                             <div class="metaDetails">
                                 <h3>Biography</h3>
                                 <div class="inner">
-                                {% if artist.description.description %}
-                                <span>{{artist.description.description}}
-                                    <p></p></span>
-                                    {% endif %}
+                                <span>
+                                    {% if artist.description.description %} {{artist.description.description}} {% else %}Sorry, we have no information for this section{% endif %}
+                                    </span>
                                 </div>
                             </div>
                             {% if raagas or taalas %}
@@ -170,7 +167,7 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        <div class="scrollblock" id="results" style="height: 290px">
+                        <div class="scrollblock inforight" style="height: 290px">
                             {% for concert in artist.concerts %}
                                 {% badge_detail_concert concert %}
                             {% endfor %}
@@ -185,7 +182,8 @@ $(document).ready(function() {
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
                         {% if artist.similar_artists %}
-                        <div class="scrollblock" id="results" style="height: 290px;">
+                        <div class="scrollblock inforight" style="height: 290px;">
+
                             {% for a, guru in artist.similar_artists %}
                                 {% badge_similar_artist a guru=guru %}
                             {% endfor %}
@@ -205,7 +203,7 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        <div class="scrollblock" id="results" style="height: 290px;">
+                        <div class="scrollblock inforight" style="height: 290px;">
                             {% for a, concerts in artist.collaborating_artists %}
                                 {% badge_similar_artist a concerts=concerts %}
                             {% endfor %}

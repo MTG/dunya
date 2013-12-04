@@ -1,10 +1,10 @@
 {% load inline %}
-
   <div class="concert item">
         <div class="disc pict">
             <a href="{{concert.get_absolute_url}}"><img src="{{concert.get_image_url}}"></a>
     </div>
-        <div class="desc"><div class="plus"></div>
+    {% comment %} TODO: Show track listing {% endcomment %}
+        <div class="desc">
             {% inline_concert concert 1 %}
         <p>{% inline_artist_list concert.artists.all %}</p>
         <p>{{concert.year}}</p>

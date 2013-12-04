@@ -94,7 +94,7 @@ $(document).ready(function() {
 	     		</div>
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
-                        <div class="scrollblock" id="results" style="height: 290px;">
+                        <div class="scrollblock inforight" style="height: 290px;">
 	                        {% for p in instrument.ordered_performers|slice:":10" %}
 	                            {% badge_performance p %}
 	                        {% endfor %}
