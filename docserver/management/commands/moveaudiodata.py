@@ -67,19 +67,4 @@ class Command(BaseCommand):
             print "Argument %s is not a directory" % audiodir
             return
 
-        derivedparts = docserver.models.DerivedFilePart.objects.all()
-        print "updating derived files"
-        dp = derivedparts[0]
-        loc = dp.path.find(collmbid)
-        if loc != -1:
-            for chunk in chunks(derivedparts, 100000):
-                print "100000"
-                with transaction.atomic():
-                    for dp in chunk:
-                        # Find the bit in the path where the collectionid starts, then
-                        # replace up to that with the new settings.AUDIO_ROOT
-                        pth = dp.path
-                        pth = os.path.join(derivedlocation, pth[loc:])
-                        dp.path = pth
-                        dp.save()
-                        dp = None
+        print "done"
