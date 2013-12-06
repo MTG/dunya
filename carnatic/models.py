@@ -169,7 +169,7 @@ class Concert(CarnaticStyle, data.models.Concert):
         tid = [t.id for t in taalas]
 
         similar = search.get_similar_concerts(wid, rid, tid, aid)
-        similar = sorted(similar, reverse=True, 
+        similar = sorted(similar, reverse=True,
                 key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
 
         similar = similar[:10]
@@ -183,7 +183,7 @@ class Concert(CarnaticStyle, data.models.Concert):
             raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
             taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
             artists = [Artist.objects.get(pk=a) for a in v["artists"]]
-            ret.append((concert, 
+            ret.append((concert,
                 {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
 
         return ret
@@ -307,7 +307,7 @@ class Taala(data.models.BaseModel):
         return Composer.objects.filter(work__taala=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
+        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).filter(main_instrument__percussion=True).distinct()
 
     def percussion_artists(self):
         artists = set()
@@ -316,7 +316,7 @@ class Taala(data.models.BaseModel):
         for a in Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True)).distinct():
             artists.add(a)
         return artists
-    
+
     def recordings(self, limit=None):
         recordings = Recording.objects.filter(work__taala=self)
         if recordings is not None:

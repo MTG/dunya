@@ -97,19 +97,37 @@ def main(request):
     elif qraaga:
         querybrowse = True
         # raaga, people
-        # if instrument, only people who play that
-        pass
+        for rid in qraaga:
+            ra = Raaga.objects.get(pk=rid)
+            displayres.append(("raaga", ra))
+            artists = ra.artists()
+            if qinstr:
+                # if instrument, only people who play that
+                artists = artists.filter(main_instrument__in=qinstr)
+            for a in artists:
+                displayres.append(("artist", a))
     elif qtaala:
         querybrowse = True
         # taala, people
-        # if instrument, only people who play that
-        pass
+        for tid in qtaala:
+            ta = Taala.objects.get(pk=tid)
+            displayres.append(("taala", ta))
+            artists = ta.artists()
+            if qinstr:
+                # if instrument, only people who play that
+                artists = artists.filter(main_instrument__in=qinstr)
+            for a in artists:
+                displayres.append(("artist", a))
     elif qconcert:
         querybrowse = True
-        displayres = []
         # concert, people
-        # if instrument, only people who play that
-        pass
+        for cid in qconcert:
+            con = Concert.objects.get(pk=cid)
+            displayres.append(("concert", con))
+            artists = con.performers()
+            for a in artists:
+                displayres.append(("artist", a.performer))
+                # if instrument, only people who play that?
     elif query:
         results = search.search(query)
         artists = results.get("artist", [])

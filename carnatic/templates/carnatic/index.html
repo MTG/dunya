@@ -43,8 +43,11 @@ $(document).ready(function() {
         var eid = "eid3";
         toggleCategory($("div#entitiesList .instrument"));
         var thelist = $("div.entity_3 div.filterList ul li");
-        thelist.each(function(theitem) {
-            console.debug("theitem"+theitem);
+        console.debug(thelist);
+        thelist.each(function(index) {
+            var theitem = $(thelist[index]);
+            console.debug("theitem")
+            console.debug(theitem);
             if ($.inArray(theitem.data("id"), qinstr)) {
                 theitem.toggleClass("selected");
                 getResults2(theitem, eid);
