@@ -8,9 +8,9 @@
 </div>
   <div class="desc">
     <div class="plus"></div>
-    {% inline_artist artist %}
+    {% inline_artist artist %}<br>
 {% if artist.begin %}
-<span class="year">{{artist.begin}}{% if artist.end %} - {{artist.end}}{% endif %}</span>
+<span class="year">{{artist.begin}}{% if artist.end %} - {{artist.end}}{% endif %}</span><br>
 {% endif %}
     <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>
   </div>

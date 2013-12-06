@@ -35,11 +35,31 @@ def searchcomplete(request):
 
 def main(request):
     qartist = []
+    qinstr = []
+    qraaga = []
+    qtaala = []
+    qconcert = []
     if "a" in request.GET:
-        for x in request.GET.getlist("a"):
-            qartist.append(x)
+        for i in request.GET.getlist("a"):
+            qartist.append(int(i))
+    if "i" in request.GET:
+        for i in request.GET.getlist("i"):
+            qinstr.append(int(i))
+    if "c" in request.GET:
+        for i in request.GET.getlist("c"):
+            qconcert.append(int(i))
+    if "r" in request.GET:
+        for i in request.GET.getlist("r"):
+            qraaga.append(int(i))
+    if "t" in request.GET:
+        for i in request.GET.getlist("t"):
+            qtaala.append(int(i))
     if "q" in request.GET:
         query = request.GET.get("q")
+        # special case, we have this so we can put a ? in the arglist
+        # but it's actually a browse
+        if query == "1":
+            query = None
     else:
         query = None
 
@@ -51,16 +71,45 @@ def main(request):
     numinstruments = Instrument.objects.count()
     numworks = Work.objects.count()
 
+    displayres = []
+    querybrowse = False
+
     if qartist:
-        artists = []
-        instruments = []
-        concerts = []
-        for aname in qartist:
-            art = Artist.objects.get(name=aname, dummy=False)
-            artists.append(art)
-            instruments.append(art.instruments())
-        concerts = Concert.objects.filter(artists__in=artists).all()
-        results = True
+        # If instrument set, only show artists who perform this instrument
+        querybrowse = True
+
+        for aid in qartist:
+            art = Artist.objects.get(pk=aid, dummy=False)
+            displayres.append(("artist", art))
+            if art.main_instrument:
+                displayres.append(("instrument", art.main_instrument))
+            for c in art.concerts()[:2]:
+                displayres.append(("concert", c))
+    elif qinstr: # instrument query, but no artist
+        querybrowse = True
+        # instrument, people
+        for iid in qinstr:
+            instr = Instrument.objects.get(pk=iid)
+            displayres.append(("instrument", instr))
+            for p in instr.ordered_performers()[:5]:
+                displayres.append(("artist", p.performer))
+
+    elif qraaga:
+        querybrowse = True
+        # raaga, people
+        # if instrument, only people who play that
+        pass
+    elif qtaala:
+        querybrowse = True
+        # taala, people
+        # if instrument, only people who play that
+        pass
+    elif qconcert:
+        querybrowse = True
+        displayres = []
+        # concert, people
+        # if instrument, only people who play that
+        pass
     elif query:
         results = search.search(query)
         artists = results.get("artist", [])
@@ -68,7 +117,18 @@ def main(request):
         concerts = results.get("concert", [])
         raagas = results.get("raaga", [])
         taalas = results.get("taala", [])
-        recordings = []
+
+        displayres = []
+        for a in artists:
+            displayres.append(("artist", a))
+        for i in instruments:
+            displayres.append(("instrument", i))
+        for c in concerts:
+            displayres.append(("concert", c))
+        for r in raagas:
+            displayres.append(("raaga", r))
+        for t in taalas:
+            displayres.append(("taala", t))
 
         numartists = len(artists)
         numraagas = len(raagas)
@@ -77,23 +137,9 @@ def main(request):
         numinstruments = len(instruments)
         results = True
     else:
-        print "something else"
-        #artists = Artist.objects.all()[:6]
-        #concerts = Concert.objects.all()[:6]
-        #instruments = Instrument.objects.all()[:6]
         results = None
 
-        #recordings = Recording.objects.all()[:6]
-        #raagas = Raaga.objects.all()[:6]
-        #taalas = Taala.objects.all()[:6]
-
-        artists = []
-        concerts = []
-        instruments = []
-        recordings = []
-        raagas = []
-        taalas = []
-
+        displayres = []
 
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
@@ -104,14 +150,15 @@ def main(request):
            "numworks": numworks,
            "numinstruments": numinstruments,
 
-           "artists": artists,
-           "concerts": concerts,
-           "raagas": raagas,
-           "taalas": taalas,
-           "instruments": instruments,
-           "results": results,
+           "results": displayres,
 
-           "query": query
+           "querytext": query,
+           "querybrowse": querybrowse,
+           "qartist": json.dumps(qartist),
+           "qinstr": json.dumps(qinstr),
+           "qraaga": json.dumps(qraaga),
+           "qtaala": json.dumps(qtaala),
+           "qconcert": json.dumps(qconcert)
            }
 
     return render(request, "carnatic/index.html", ret)

@@ -103,11 +103,22 @@ function parseAllFilters(data){
     loadClicks();
 }
 
+function toggleCategory(item) {
+    // Expand out the bubble if you click a name on the left-hand side
+    if(item.hasClass("selected")){
+        removeFilter(item.attr("class").split(" ")[0]);
+    }else{
+        loadFilter(item.data("filter"), item.attr("entity_id"),item.attr("eid"));
+    }
+    item.toggleClass("selected");
+    $("#summary").attr("class",item.attr("class"));
+}
+
 function loadClicks(){
 
-	$("#results .desc .plus").click(function(){
+	$(".inforight .desc .plus").click(function(){
 		$(this).parent().parent().toggleClass("open");
-		$('#results').isotope( 'reLayout');
+		$('.inforight').isotope( 'reLayout');
 	});
 
 	$('.item .similarity div').click(function(){
@@ -121,6 +132,7 @@ function loadClicks(){
     });
 
 	$('#query').click(function(){
+        /*
 		console.log("filtersArray");
 		console.log(filtersArray);
 		console.log("-------------------------");
@@ -133,6 +145,7 @@ function loadClicks(){
 		console.log("EspecificOutputArray");
 		console.log(EspecificOutputArray);
 		console.log("-------------------------");
+        */
         var url = "/carnatic/?q=1";
         var selected = EspecificOutputArray;
         // Artist
@@ -171,7 +184,7 @@ function loadClicks(){
             }
         }
         console.log(url);
-        //window.location.href = url;
+        window.location.href = url;
 	});
 
     /* Select Music Style */
@@ -183,14 +196,7 @@ function loadClicks(){
     });
 
     $("#entitiesList ul li").click(function(){
-        if($(this).hasClass("selected")){
-            //removeFilter($(this).attr("entity_id"));
-            removeFilter($(this).attr("class").split(" ")[0]);
-        }else{
-            loadFilter($(this).data("filter"), $(this).attr("entity_id"),$(this).attr("eid"));
-        }
-        $(this).toggleClass("selected");
-        $("#summary").attr("class",$(this).attr("class"));
+        toggleCategory($(this));
     });
 
     $(".formFilterItem ul li").click(function(){
