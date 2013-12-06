@@ -16,11 +16,11 @@
         <link href='{% static 'carnatic/css/font.css' %}' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
-		
+
 		<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/360player.css' %}" />
 		<!-- soundManager.useFlashBlock: related CSS -->
 		<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/flashblock.css' %}" />
-		
+
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -40,22 +40,22 @@
 
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
-		
+
 		<!-- Apache-licensed animation library -->
 		<script src="{% static 'carnatic/js/berniecode-animator.js' %}"></script>
 
-		
+
 		<script src="{% static 'carnatic/js/soundmanager2.js' %}"></script>
 		<script src="{% static 'carnatic/js/360player.js' %}"></script>
-		
+
 		<script>
 			$(document).ready(function() {
 
                 soundManager.setup({
-                  //useFlashBlock: true, // optional - if used, required flashblock.css
-                  url: "{% static 'carnatic/swf/' %}" // required: path to directory containing SM2 SWF files
+                  //useFlashBlock: true,
+                  url: "{% static 'carnatic/swf/' %}"
                 });
-				
+
 				$( "#playback_dialog" ).dialog({
 				  autoOpen: false,
 				  show: {
@@ -67,7 +67,11 @@
 					duration: 100
 				  }
 				});
-				
+
+                $("#aboutbutton").click(function() {
+
+                });
+
 			});
 		</script>
         {% block script %}
@@ -76,7 +80,7 @@
         {% endblock %}
     </head>
     <body>
-		
+
 		<div id="playback_dialog" title="Playback dialog">
 		<p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
 	    </div>
@@ -96,11 +100,11 @@
                 </form>
             	</div><!-- globalserach -->
             	<div id="globalMusic">
-            		<label>Select Music Style</label>
+            		<label>Exploring music style</label>
             		<span id="gmSelected">Carnatic</span>
             	</div><!-- globalmusic -->
                 <nav id="mainmenu">
-			<a href="#">ABOUT</a>
+			<a href="#" id="aboutbutton">About</a>
 			{% if user.is_authenticated %}
 				<div href="#" id="user">
 					<a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
@@ -108,10 +112,7 @@
 				    	<div id="userArrow"></div>
 				    	<h3>Hi <b>{{ user.username }}!</b></h3>
 				    	<img src="{% static 'carnatic/img/develop/avatar.png' %}" />
-					    <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">LOGOUT</a>
-                        <a href="{% url 'social-user-profile' %}">PROFILE</a>
-                        <a href="{% url 'social-users-list' %}">USERS</a>
-                        <a href="{% url 'social-timeline-page' %}">TIMELINE</a>
+					    <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">Logout</a>
 				    </div>
 
 			    </div>
@@ -138,7 +139,7 @@
         </div>
 
         <div id="footage">
-			
+
         	<!-- //////////////// -->
         	<!-- FILTER BASE MODEL -->
         	<!-- //////////////// -->
@@ -150,7 +151,7 @@
         			<div class="filterSummary shadow1">No selection yet</div>
         			<div class="closeFilter"></div><div class="resizeFilter"></div>
         		</div>
-        		<div class="formFilter"></div>
+                <!--<div class="formFilter"></div>-->
 	            <div class="filterList filterGlobalList"></div>
         	</div>
         </div>
