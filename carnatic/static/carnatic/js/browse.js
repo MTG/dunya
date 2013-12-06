@@ -97,7 +97,8 @@ function parseAllFilters(data){
             }
         });
         formHTML += "</form></div>";
-        $("#footage").append(formHTML);
+        // TODO: We've removed the middle form for now
+        //$("#footage").append(formHTML);
     });
     loadClicks();
 }
@@ -133,12 +134,44 @@ function loadClicks(){
 		console.log(EspecificOutputArray);
 		console.log("-------------------------");
         var url = "/carnatic/?q=1";
-        for (var i=0; i< EspecificOutputArray.eid1.length; i++) {
-            n = EspecificOutputArray.eid1[i];
-            url += "&a="+n;
-    }
+        var selected = EspecificOutputArray;
+        // Artist
+        if (selected.eid1) {
+            for (var i=0; i < selected.eid1.length; i++) {
+                var n = selected.eid1[i];
+                url += "&a="+n[0];
+            }
+        }
+        // Concert
+        if (selected.eid2) {
+            for (var i=0; i < selected.eid2.length; i++) {
+                var n = selected.eid2[i];
+                url += "&c="+n[0];
+            }
+        }
+        // Instrument
+        if (selected.eid3) {
+            for (var i=0; i < selected.eid3.length; i++) {
+                var n = selected.eid3[i];
+                url += "&i="+n[0];
+            }
+        }
+        // Raaga
+        if (selected.eid4) {
+            for (var i=0; i < selected.eid4.length; i++) {
+                var n = selected.eid4[i];
+                url += "&r="+n[0];
+            }
+        }
+        // Taala
+        if (selected.eid5) {
+            for (var i=0; i < selected.eid5.length; i++) {
+                var n = selected.eid5[i];
+                url += "&t="+n[0];
+            }
+        }
         console.log(url);
-        window.location.href = url;
+        //window.location.href = url;
 	});
 
     /* Select Music Style */
@@ -259,7 +292,7 @@ function sumarizeFilter(object){
 	}else{
 		summaryHTML += "<b>Selection</b><br>";
 		$.each(EspecificOutputArray[entity_name], function(nom, valors) {
-    	    summaryHTML += valors + "</br>";
+    	    summaryHTML += valors[1] + "</br>";
 		});
 	}
 	    object.find(".filterSummary").html(summaryHTML);
@@ -331,9 +364,9 @@ function listFilterData(data, entity_filter){
     list = "<ul>";
     $.each(data, function(index, element) {
         if (element.name) {
-            list += "<li>"+element.name+"</li>";
+            list += "<li data-id='"+element.id+"'>"+element.name+"</li>";
         } else {
-            list += "<li>"+element.title+"</li>";
+            list += "<li data-id='"+element.id+"'>"+element.title+"</li>";
         }
     });
     list += "</ul>";
@@ -380,8 +413,7 @@ function getResults(item){
     }
 
     function getResults2(item, entity){
-    	theValue = "";
-		theValue = item.html();
+		theValue = [item.data("id"), item.html()];
         if(jQuery.isEmptyObject(EspecificOutputArray)){
             EspecificOutputArray[entity] = new Array();
             EspecificOutputArray[entity].push(theValue);
@@ -389,7 +421,8 @@ function getResults(item){
         	if (EspecificOutputArray.hasOwnProperty(entity)) {
         		existeix = "no";
 				for(var u in EspecificOutputArray[entity]){
-	        	   	if(EspecificOutputArray[entity][u] == theValue){
+                    // Remove this item if it already exists (we deselected it)
+	        	   	if(EspecificOutputArray[entity][u][0] == theValue[0]){
 						EspecificOutputArray[entity].splice(u, 1);
 						existeix = "si";
 					}

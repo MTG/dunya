@@ -431,8 +431,10 @@ textarea {
 					cursor:pointer;
 					margin: 0px;
 					&.selected {
-						color:#fff;
-						background: url("../img/sticker.png") 0 50% no-repeat;
+						//color:#fff;
+						background-image: url("../img/sticker.png");
+                        background-repeat: no-repeat;
+                        background-position: 0 50%;
 					}
 				}
 			}
@@ -1751,7 +1753,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	}
 }
 
-input[type="button"], input[type="submit"] {
+input[type="button"], input[type="submit"], input[type="email"] {
 	position: relative;
 	text-align: center;
 	.rounded(5px);

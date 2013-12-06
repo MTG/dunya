@@ -120,7 +120,7 @@ def artistsearch(request):
     artists = Artist.objects.filter(dummy=False)
     ret = []
     for a in artists:
-        ret.append({"mbid": a.mbid, "name": a.name})
+        ret.append({"id": a.id, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def artist(request, artistid):
@@ -218,7 +218,7 @@ def concertsearch(request):
     concerts = Concert.objects.all()
     ret = []
     for c in concerts:
-        ret.append({"mbid": c.mbid, "title": c.title})
+        ret.append({"id": c.id, "title": c.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def concert(request, concertid):
@@ -278,7 +278,7 @@ def recording(request, recordingid):
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
         thebin = int(math.ceil(thebin))
-        tonic = str(tonic) 
+        tonic = str(tonic)
         if thebin <= 11 and thebin >= 0:
             tonicname = notenames[thebin]
         else:
@@ -344,7 +344,7 @@ def worksearch(request):
     works = Work.objects.all()
     ret = []
     for w in works:
-        ret.append({"mbid": w.mbid, "title": w.title})
+        ret.append({"id": w.id, "title": w.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def work(request, workid):
@@ -366,7 +366,7 @@ def taalasearch(request):
     taalas = Taala.objects.all()
     ret = []
     for t in taalas:
-        ret.append({"pk": t.pk, "name": t.name})
+        ret.append({"id": t.id, "name": t.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def taala(request, taalaid):
@@ -387,7 +387,7 @@ def raagasearch(request):
     raagas = Raaga.objects.all()
     ret = []
     for r in raagas:
-        ret.append({"pk": r.pk, "name": r.name})
+        ret.append({"id": r.id, "name": r.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def raaga(request, raagaid):
@@ -407,7 +407,7 @@ def instrumentsearch(request):
     instruments = Instrument.objects.all()
     ret = []
     for i in instruments:
-        ret.append({"pk": i.pk, "name": i.name})
+        ret.append({"id": i.id, "name": i.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def instrument(request, instrumentid):
