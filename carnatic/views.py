@@ -213,7 +213,7 @@ def main(request):
     return render(request, "carnatic/index.html", ret)
 
 def artistsearch(request):
-    artists = Artist.objects.filter(dummy=False)
+    artists = Artist.objects.filter(dummy=False).order_by('name')
     ret = []
     for a in artists:
         ret.append({"id": a.id, "name": a.name})
@@ -317,7 +317,7 @@ def composer(request, composerid):
     return render(request, "carnatic/composer.html", ret)
 
 def concertsearch(request):
-    concerts = Concert.objects.all()
+    concerts = Concert.objects.all().order_by('title')
     ret = []
     for c in concerts:
         ret.append({"id": c.id, "title": c.title})
@@ -465,7 +465,7 @@ def work(request, workid):
     return render(request, "carnatic/work.html", ret)
 
 def taalasearch(request):
-    taalas = Taala.objects.all()
+    taalas = Taala.objects.all().order_by('name')
     ret = []
     for t in taalas:
         ret.append({"id": t.id, "name": t.name})
@@ -486,7 +486,7 @@ def taala(request, taalaid):
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
-    raagas = Raaga.objects.all()
+    raagas = Raaga.objects.all().order_by('name')
     ret = []
     for r in raagas:
         ret.append({"id": r.id, "name": r.name})
@@ -506,7 +506,7 @@ def raaga(request, raagaid):
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):
-    instruments = Instrument.objects.all()
+    instruments = Instrument.objects.all().order_by('name')
     ret = []
     for i in instruments:
         ret.append({"id": i.id, "name": i.name})
