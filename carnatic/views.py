@@ -183,6 +183,13 @@ def main(request):
 
         displayres = []
 
+    if displayres:
+        numartists = len([i for i in displayres if i[0] == "artist"])
+        numraagas = len([i for i in displayres if i[0] == "raaga"])
+        numtaalas = len([i for i in displayres if i[0] == "taala"])
+        numconcerts = len([i for i in displayres if i[0] == "concert"])
+        numinstruments = len([i for i in displayres if i[0] == "instrument"])
+
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
            "numcomposers": numcomposers,
@@ -267,6 +274,12 @@ def artist(request, artistid):
         kutcheris = artist.description.source.uri
     elif desc and desc.source.source_name == w:
         wikipedia = artist.description.source.uri
+    kr = artist.references.filter(source_name=k)
+    if kr.count() and not kutcheris:
+        kutcheris = kr[0].uri
+    wr = artist.references.filter(source_name=w)
+    if wr.count() and not wikipedia:
+        wikipedia = wr[0].uri
 
     recordings = artist.recordings()
     if len(recordings) > 0:
