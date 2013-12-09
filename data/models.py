@@ -132,11 +132,16 @@ class Artist(BaseModel):
         recs = [p.recording for p in performances]
         return recs
 
-    def performances(self):
+    def performances(self, raagas=[], taalas=[]):
         # TODO: Concert performance args too
         ConcertClass = self.get_object_map("concert")
         IPClass = self.get_object_map("performance")
-        concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self).distinct()
+        concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self)
+        if raagas:
+            concerts = concerts.filter(tracks__work__raaga__in=raagas)
+        if taalas:
+            concerts = concerts.filter(tracks__work__taala__in=taalas)
+        concerts = concerts.distinct()
         ret = []
         for c in concerts:
             performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
