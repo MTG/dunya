@@ -104,15 +104,21 @@ def main(request):
             if qinstr:
                 # if instrument, only people who play that
                 artists = artists.filter(main_instrument__in=qinstr)
-            for a in artists:
+            for a in artists[:5]:
                 displayres.append(("artist", a))
     elif qtaala:
         querybrowse = True
         # taala, people
-        for tid in qtaala:
+        for tid in qtaala[:5]:
             ta = Taala.objects.get(pk=tid)
             displayres.append(("taala", ta))
-            artists = ta.artists()
+            percussionists = ta.percussion_artists()
+            for a in ta.artists():
+                if a not in percussionists:
+                    percussionists.append(a)
+            # TODO: We could order by percussionists, or by number of times they've
+            # performed this taala, or by people with images
+            artists = percussionists[:5]
             if qinstr:
                 # if instrument, only people who play that
                 artists = artists.filter(main_instrument__in=qinstr)

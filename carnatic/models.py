@@ -307,7 +307,7 @@ class Taala(data.models.BaseModel):
         return Composer.objects.filter(work__taala=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).filter(main_instrument__percussion=True).distinct()
+        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
 
     def percussion_artists(self):
         artists = set()
@@ -315,7 +315,7 @@ class Taala(data.models.BaseModel):
             artists.add(a)
         for a in Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True)).distinct():
             artists.add(a)
-        return artists
+        return list(artists)
 
     def recordings(self, limit=None):
         recordings = Recording.objects.filter(work__taala=self)
