@@ -24,6 +24,12 @@ $(document).ready(function() {
                     getResults2(theitem, "eid1");
                 }
             }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
+                }
+            }
         });
         // Show artist bubble (minimised)
     }
@@ -35,6 +41,12 @@ $(document).ready(function() {
                 if (qconcert.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
                     getResults2(theitem, "eid2");
+                }
+            }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
                 }
             }
         });
@@ -49,6 +61,12 @@ $(document).ready(function() {
                     getResults2(theitem, "eid3");
                 }
             }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
+                }
+            }
         });
     }
     if (qraaga.length) {
@@ -61,6 +79,12 @@ $(document).ready(function() {
                     getResults2(theitem, "eid4");
                 }
             }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
+                }
+            }
         });
     }
     if (qtaala.length) {
@@ -71,6 +95,12 @@ $(document).ready(function() {
                 if (qtaala.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
                     getResults2(theitem, "eid5");
+                }
+            }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
                 }
             }
         });
