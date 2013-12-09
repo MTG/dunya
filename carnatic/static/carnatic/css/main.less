@@ -809,13 +809,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 margin: auto;
                 position: absolute;
             }
-            &.raaga img {
-                bottom: 0;
-            }
-            &.taala img {
-                bottom: 0;
-            }
-
 		}
 		#image {
 			background: url("../img/artistImage.jpg") 0 0 no-repeat;
@@ -1184,6 +1177,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			}
 		}
 	}
+    &.taala .bigImage img {
+        // Taalas need to be center-aligned
+        bottom: 0;
+    }
+
 }
 
 #tonic {
