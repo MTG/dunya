@@ -41,10 +41,10 @@ def main(request):
     qconcert = []
     if len(request.GET) == 0:
         # We have a 'default' query. If there's no other query we pre-seed it
-        # M.S. Subbulakshmi
-        qartist = [67]
-        # bhairavi raaga
-        qraaga = [10]
+        # G. N. Balasubramaniam
+        qartist = [10]
+        # thodi raaga
+        qraaga = [55]
     if "a" in request.GET:
         for i in request.GET.getlist("a"):
             qartist.append(int(i))
