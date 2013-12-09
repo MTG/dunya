@@ -806,10 +806,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             img {
                 width: 296px;
                 top: 0;
-                bottom: 0;
                 margin: auto;
                 position: absolute;
             }
+            &.raaga img {
+                bottom: 0;
+            }
+            &.taala img {
+                bottom: 0;
+            }
+
 		}
 		#image {
 			background: url("../img/artistImage.jpg") 0 0 no-repeat;
@@ -1398,7 +1404,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
           }
   			}
   			&.similar .left {
-            overflow: visible;
+            overflow: scroll;
             border-right: none;
           }
   			.right {
@@ -2119,7 +2125,6 @@ input[type="text"], input[type="password"] {
     }
   }
   .inforight > div.open {
-    width: auto;
     height: 270px;
     .pict {
       position: relative;
