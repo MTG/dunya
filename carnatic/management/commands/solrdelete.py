@@ -9,6 +9,6 @@ class Command(BaseCommand):
     solr = pysolr.Solr(settings.SOLR_URL)
 
     def handle(self, *args, **options):
-        self.solr.delete("*:*")
+        self.solr.delete(q="*:*")
         self.solr.commit()
 
