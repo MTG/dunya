@@ -67,13 +67,13 @@ class Artist(CarnaticStyle, data.models.Artist):
             students.append(s)
         for g in self.gurus.all():
             for s in g.students.all():
-                siblings.append(s)
+                siblings.append((g, s))
 
         # sort each group by age
         ourage = int(self.begin[:4]) if self.begin else 9999
         gurus = sorted(gurus, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
         students = sorted(students, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
-        siblings = sorted(siblings, key=lambda a: abs((int(a.begin[:4]) if a.begin else 9999)-ourage))
+        siblings = sorted(siblings, key=lambda a: abs((int(a[1].begin[:4]) if a[1].begin else 9999)-ourage))
 
         for g in gurus:
             ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
@@ -82,10 +82,12 @@ class Artist(CarnaticStyle, data.models.Artist):
             if s.id not in idset:
                 idset.add(s.id)
                 ids.append((s.id, "%s is a student of %s" % (s.name, self.name)))
-        for s in siblings:
+        for sib in siblings:
+            guru = sib[0]
+            s = sib[1]
             if s.id not in idset:
                 idset.add(s.id)
-                ids.append((s.id, "%s and %s share the same guru (%s)" % (self.name, s.name, g.name)))
+                ids.append((s.id, "%s and %s share the same guru (%s)" % (self.name, s.name, guru.name)))
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
