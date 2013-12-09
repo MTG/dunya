@@ -15,67 +15,62 @@ $(document).ready(function() {
     // If we made a query, re-fill out the search
 
     if (qartist.length) {
-        var eid = "eid1";
         toggleCategory($("div#entitiesList .artist"), function() {
             var thelist = $("div.entity_1 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
                 if (qartist.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
-                    getResults2(theitem, eid);
+                    getResults2(theitem, "eid1");
                 }
             }
         });
         // Show artist bubble (minimised)
     }
     if (qconcert.length) {
-        var eid = "eid2";
         toggleCategory($("div#entitiesList .concert"), function() {
             var thelist = $("div.entity_2 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
                 if (qconcert.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
-                    getResults2(theitem, eid);
+                    getResults2(theitem, "eid2");
                 }
             }
         });
     }
     if (qinstr.length) {
-        var eid = "eid3";
         toggleCategory($("div#entitiesList .instrument"), function() {
             var thelist = $("div.entity_3 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
                 if (qinstr.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
-                    getResults2(theitem, eid);
+                    getResults2(theitem, "eid3");
                 }
             }
         });
     }
     if (qraaga.length) {
-        var eid = "eid4";
         toggleCategory($("div#entitiesList .raaga"), function() {
             var thelist = $("div.entity_4 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
                 if (qraaga.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
-                    getResults2(theitem, eid);
+                    getResults2(theitem, "eid4");
                 }
             }
         });
     }
     if (qtaala.length) {
-        var eid = "eid5";
         toggleCategory($("div#entitiesList .taala"), function() {
             var thelist = $("div.entity_5 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
                 if (qtaala.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
-                    getResults2(theitem, eid);
+                    getResults2(theitem, "eid5");
                 }
             }
         });
