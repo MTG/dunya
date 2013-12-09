@@ -104,11 +104,20 @@ class Artist(CarnaticStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), list(concerts[pk])) for pk,count in c.most_common()]
 
-    def concerts(self):
+    def concerts(self, raagas=[], taalas=[]):
+        """ Get all the concerts that this artist performs in
+        If `raagas` or `taalas` is set, only show concerts where
+        these raagas or taalas were performed.
+        """
         ret = []
-        ret.extend(self.primary_concerts.all())
+        concerts = self.primary_concerts
+        if raagas:
+            concerts = concerts.filter(tracks__work__raaga__in=raagas)
+        if taalas:
+            concerts = concerts.filter(tracks__work__taala__in=taalas)
+        ret.extend(concerts.all())
         for a in self.groups.all():
-            ret.extend([c for c in a.concerts() if c not in ret])
+            ret.extend([c for c in a.concerts(raagas, taalas) if c not in ret])
         for concert, perf in self.performances():
             if concert not in ret:
                 ret.append(concert)
