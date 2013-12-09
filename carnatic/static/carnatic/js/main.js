@@ -49,7 +49,7 @@ $(document).ready(function() {
     // When you click on the (+) on a badge, expand it open
     $(".inforight .desc .plus").click(function(){
         $(this).parent().parent().toggleClass("open");
-        $('.scrollblock').isotope('reLayout');
+        $(this).parents(".scrollblock").isotope('reLayout');
     });
 
 });
