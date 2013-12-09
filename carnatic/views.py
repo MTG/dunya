@@ -39,6 +39,12 @@ def main(request):
     qraaga = []
     qtaala = []
     qconcert = []
+    if len(request.GET) == 0:
+        # We have a 'default' query. If there's no other query we pre-seed it
+        # M.S. Subbulakshmi
+        qartist = [67]
+        # bhairavi raaga
+        qraaga = [10]
     if "a" in request.GET:
         for i in request.GET.getlist("a"):
             qartist.append(int(i))
@@ -83,7 +89,19 @@ def main(request):
             displayres.append(("artist", art))
             if art.main_instrument:
                 displayres.append(("instrument", art.main_instrument))
-            for c in art.concerts()[:2]:
+            rlist = []
+            tlist = []
+            if qraaga:
+                for rid in qraaga:
+                    ra = Raaga.objects.get(pk=rid)
+                    rlist.append(ra)
+                    displayres.append(("raaga", ra))
+            if qtaala:
+                for tid in qtaala:
+                    ta = Taala.objects.get(pk=tid)
+                    tlist.append(ta)
+                    displayres.append(("taala", ta))
+            for c in art.concerts(raagas=rlist, taalas=tlist):
                 displayres.append(("concert", c))
     elif qinstr: # instrument query, but no artist
         querybrowse = True
