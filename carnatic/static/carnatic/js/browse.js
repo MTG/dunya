@@ -183,7 +183,6 @@ function loadClicks(){
                 url += "&t="+n[0];
             }
         }
-        console.log(url);
         window.location.href = url;
 	});
 
