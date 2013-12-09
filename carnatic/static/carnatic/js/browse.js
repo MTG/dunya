@@ -26,7 +26,7 @@ function removeFilter(entity_filter){
     delete EspecificOutputArray["eid"+entity_filter];
 }
 
-function loadFilter(filterdata, entity_filter,eid){
+function loadFilter(filterdata, entity_filter,eid,after){
 
     $(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
     $(".filterBall").parent().find(".filterGlobalList").addClass("filterListClosed");
@@ -34,16 +34,16 @@ function loadFilter(filterdata, entity_filter,eid){
     $(".filterBall").addClass("filterBallClosed");
     $("#entitiesList").addClass("filterListClosed");
 
-    getFilterData(filterdata.url, entity_filter, filterdata.name, eid);
+    getFilterData(filterdata.url, entity_filter, filterdata.name, eid,after);
 }
 
-function getFilterData(filterFile,entity_filter,filterName,eid){
+function getFilterData(filterFile,entity_filter,filterName,eid,after){
     $.ajax({
     	url: filterFile,
 		type: "GET",
 		dataType: "json",
 		success: function(source){
-			showFilterData(source, entity_filter,filterName,eid);
+			showFilterData(source, entity_filter,filterName,eid,after);
 		},
 		error: function(dato){
 			alert("ERROR while loading JSON");
@@ -103,12 +103,12 @@ function parseAllFilters(data){
     loadClicks();
 }
 
-function toggleCategory(item) {
+function toggleCategory(item,after) {
     // Expand out the bubble if you click a name on the left-hand side
     if(item.hasClass("selected")){
         removeFilter(item.attr("class").split(" ")[0]);
     }else{
-        loadFilter(item.data("filter"), item.attr("entity_id"),item.attr("eid"));
+        loadFilter(item.data("filter"), item.attr("entity_id"),item.attr("eid"),after);
     }
     item.toggleClass("selected");
     $("#summary").attr("class",item.attr("class"));
@@ -305,7 +305,7 @@ function sumarizeFilter(object){
 
 }
 
-function showFilterData(data, entity_filter,filterName,eid){
+function showFilterData(data, entity_filter,filterName,eid,after){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
     $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
@@ -363,7 +363,9 @@ function showFilterData(data, entity_filter,filterName,eid){
             console.log("change");
         }
     });
-
+    if (after) {
+        after();
+    }
 }
 
 function listFilterData(data, entity_filter){

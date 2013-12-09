@@ -16,67 +16,69 @@ $(document).ready(function() {
 
     if (qartist.length) {
         var eid = "eid1";
-        toggleCategory($("div#entitiesList .artist"));
-        var thelist = $("div.entity_1 div.filterList ul li");
-        for (var i = 0; i < thelist.length; i++) {
-            var theitem = $(thelist[i]);
-            if ($.inArray(theitem.data("id"), qartist)) {
-                theitem.toggleClass("selected");
-                getResults2(theitem, eid);
+        toggleCategory($("div#entitiesList .artist"), function() {
+            var thelist = $("div.entity_1 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qartist.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, eid);
+                }
             }
-        }
+        });
         // Show artist bubble (minimised)
     }
     if (qconcert.length) {
         var eid = "eid2";
-        toggleCategory($("div#entitiesList .concert"));
-        var thelist = $("div.entity_2 div.filterList ul li");
-        for (var i = 0; i < thelist.length; i++) {
-            var theitem = $(thelist[i]);
-            if ($.inArray(theitem.data("id"), qconcert)) {
-                theitem.toggleClass("selected");
-                getResults2(theitem, eid);
+        toggleCategory($("div#entitiesList .concert"), function() {
+            var thelist = $("div.entity_2 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qconcert.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, eid);
+                }
             }
-        }
+        });
     }
     if (qinstr.length) {
         var eid = "eid3";
-        toggleCategory($("div#entitiesList .instrument"));
-        var thelist = $("div.entity_3 div.filterList ul li");
-        console.debug(thelist);
-        thelist.each(function(index) {
-            var theitem = $(thelist[index]);
-            console.debug("theitem")
-            console.debug(theitem);
-            if ($.inArray(theitem.data("id"), qinstr)) {
-                theitem.toggleClass("selected");
-                getResults2(theitem, eid);
+        toggleCategory($("div#entitiesList .instrument"), function() {
+            var thelist = $("div.entity_3 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qinstr.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, eid);
+                }
             }
         });
     }
     if (qraaga.length) {
         var eid = "eid4";
-        toggleCategory($("div#entitiesList .raaga"));
-        var thelist = $("div.entity_4 div.filterList ul li");
-        for (var i = 0; i < thelist.length; i++) {
-            var theitem = $(thelist[i]);
-            if ($.inArray(theitem.data("id"), qraaga)) {
-                theitem.toggleClass("selected");
-                getResults2(theitem, eid);
+        toggleCategory($("div#entitiesList .raaga"), function() {
+            var thelist = $("div.entity_4 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qraaga.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, eid);
+                }
             }
-        }
+        });
     }
     if (qtaala.length) {
         var eid = "eid5";
-        toggleCategory($("div#entitiesList .taala"));
-        var thelist = $("div.entity_5 div.filterList ul li");
-        for (var i = 0; i < thelist.length; i++) {
-            var theitem = $(thelist[i]);
-            if ($.inArray(theitem.data("id"), qtaala)) {
-                theitem.toggleClass("selected");
-                getResults2(theitem, eid);
+        toggleCategory($("div#entitiesList .taala"), function() {
+            var thelist = $("div.entity_5 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qtaala.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, eid);
+                }
             }
-        }
+        });
     }
 });
 </script>
