@@ -37,7 +37,7 @@ class Command(BaseCommand):
                 except models.Artist.DoesNotExist:
                     print "  * cannot find guru", g
                     print "  * making a dummy one"
-                    gobject = models.Artist.objects.create(name=g, dummy=True)
+                    gobject, created = models.Artist.objects.get_or_create(name=g, dummy=True)
                     a.gurus.add(gobject)
 
             try:
