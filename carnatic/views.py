@@ -281,11 +281,13 @@ def artist(request, artistid):
     if wr.count() and not wikipedia:
         wikipedia = wr[0].uri
 
-    recordings = artist.recordings()
-    if len(recordings) > 0:
-        sample = random.sample(recordings,1)[0]
-    else:
-        sample = None
+    # Sample is the first track of any of their concerts (Vignesh, Dec 9)
+    concerts = artist.concerts()
+    sample = None
+    if concerts:
+        tracks = concerts[0].tracks.all()
+        if tracks:
+            sample = tracks[0]
 
     ret = {"filter_items": json.dumps(get_filter_items()),
     	   "artist": artist,
