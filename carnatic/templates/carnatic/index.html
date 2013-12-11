@@ -146,11 +146,11 @@ $(document).ready(function() {
 						</div>
 					 </div>
 	 			</td>
-                <td class="artist" onClick="$('.inforight').isotope({ filter: '.artist' });"><span>{{numartists}}</span> <b>Artists</b></td>
-                <td class="concert" onClick="$('.inforight').isotope({ filter: '.concert' });"><span>{{numconcerts}}</span> <b>Concerts</b></td>
-                <td class="instrument" onClick="$('.inforight').isotope({ filter: '.instrument' });"><span>{{numinstruments}}</span> <b>Instruments</b></td>
-                <td class="raaga" onClick="$('.inforight').isotope({ filter: '.raaga' });"><span>{{numraagas}}</span> <b>Raagas</b></td>
-                <td class="taala" onClick="$('.inforight').isotope({ filter: '.taala' });"><span>{{numtaalas}}</span> <b>Taalas</b></td>
+                <td class="artist" onClick="$('.inforight').isotope({ filter: '.artist' });"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
+                <td class="concert" onClick="$('.inforight').isotope({ filter: '.concert' });"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
+                <td class="instrument" onClick="$('.inforight').isotope({ filter: '.instrument' });"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
+                <td class="raaga" onClick="$('.inforight').isotope({ filter: '.raaga' });"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
+                <td class="taala" onClick="$('.inforight').isotope({ filter: '.taala' });"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
         	</tr>
         </tbody></table>
      </div>
