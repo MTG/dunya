@@ -6,7 +6,7 @@ $(document).ready(function() {
      capcalTotal = $('#capcalTotal');
      renderTotal = $('#renderTotal');
      zoomFactor = "";
-     waveform = $('#bigWave img');
+     waveform = $('#renderTotal img');
      plButton = $("#control .plButton");
      timecode = $("#timecode");
      zooms = $(".zoom");
@@ -323,19 +323,17 @@ function drawdata() {
 
 function mouPlay(desti){
     console.debug("play click!");
-	posicio = renders.position();
-	distclick = Math.abs(posicio.left)+desti;
-	percent = distclick/waveform.width();
+	percent = desti/waveform.width();
 
-	nouPunt = pagesound.duration * percentPunt;
-	console.log(nouPunt+" - "+pagesound.duration);
+	clicktime = pagesound.duration * percent;
+	console.log(clicktime+" - "+pagesound.duration);
 
-    durseconds = pagesound.duration / 1000;
-    part = Math.floor(durseconds % secondsPerView);
-    replacepart(part);
+    posseconds = clicktime / 1000;
+    part = Math.ceil(posseconds % secondsPerView);
 
 	pagesound.pause();
-    pagesound.setposition(clicktime);
+    pagesound.setPosition(clicktime);
+    replacepart(part);
 	pagesound.play();
 }
 
