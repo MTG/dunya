@@ -5,6 +5,8 @@ from django import forms
 class RegistrationForm(forms.Form):
 	required_css_class = 'required'
 	username = forms.CharField(label=u'Username', max_length=30)
+	fist_name = forms.CharField(label=u'First name', max_length=30)
+	last_name = forms.CharField(label=u'Last name', max_length=30)
 	email = forms.EmailField(label=u'Email')
 	password1 = forms.CharField(label=u'Password',widget=forms.PasswordInput())
 	password2 = forms.CharField(label=u'Password (Again)',widget=forms.PasswordInput())

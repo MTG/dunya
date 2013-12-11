@@ -19,6 +19,7 @@ $(document).ready(function() {
 {% block title %}{{work.title}} - {% endblock %}
 
 {% block wrap %}
+	<!--
 <div id="filterMask">
 	    <div id="filterArea">
 
@@ -45,7 +46,7 @@ $(document).ready(function() {
 	    	</div>
 
 	    </div>
-     </div>
+     </div>-->
 
  <div id="detail" class="work">
      	<div id="header">
@@ -69,13 +70,13 @@ $(document).ready(function() {
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
+     			{% if user.is_authenticated %}
      			<div id="icon1">
-						{% if user.is_authenticated %}
-								<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
-						{% else %}
-								<div class="player">{{tracks.0.title}}</div>
-						{% endif %}
+						<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
 				</div>
+				{% else %}
+				<div id="icon"></div>
+				{% endif %}
      		</div>
      		<div class="bigImage"></div>
      		<div id="meta">
@@ -100,6 +101,7 @@ $(document).ready(function() {
      	</div><!-- HEADER END -->
 
 	 	<div class="alldata">
+			<!--
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>List of concerts</h3>
@@ -131,7 +133,13 @@ $(document).ready(function() {
             {% comment %}
             {% include "carnatic/social.html" %}
             {% endcomment %}
-
+			-->
+			<div class="missingdata">
+				<h2>Sorry</h2>
+				<p>
+					We are still missing some information about this work.<br/> Our team is working on it. <br/> We are very sorry for the inconvenience.
+				</p>
+			</div>
      		<div class="clearfix"></div>
 	 	</div>
      </div>

@@ -17,10 +17,11 @@ $(document).ready(function() {
 				$( "#playback_dialog" ).dialog( "open" );
 		{% endif %}
      });*/
-	
+
 	$("#filterMask").toggleClass('querybar');
     //parseAllFilters({{ filter_items|safe }});
     widthOfChildren('.metaContainer');
+	
 });
 </script>
 {% endblock %}
@@ -29,7 +30,7 @@ $(document).ready(function() {
 
 {% block wrap %}
 
-
+<!--
 <div id="filterMask">
 	<div id="filterArea">
 		<div id="entitiesList" class="filterList">
@@ -53,7 +54,7 @@ $(document).ready(function() {
     	</div>
     </div>
  </div>
- 
+ -->
  
   <div id="detail" class="composer">
      	<div id="header">
@@ -119,6 +120,7 @@ $(document).ready(function() {
      	</div><!-- HEADER END -->
 	 	
 	 	<div class="alldata">
+			<!--
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>Performers</h3>
@@ -126,11 +128,17 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata">
 	                    <div class="scrollblock">                          
-	                       
+	                       PRUEBA
 	                    </div>
 	     			</div>
 	     		</div>
-	     	</div>
+			</div>-->
+			<div class="missingdata">
+				<h2>Sorry</h2>
+				<p>
+					We are still missing some information about this composer.<br/> Our team is working on it. <br/> We are very sorry for the inconvenience.
+				</p>
+			</div>
 	     	<div class="clearfix"></div>
 	 	</div>
 </div>

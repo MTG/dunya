@@ -67,12 +67,22 @@
 					duration: 100
 				  }
 				});
+				
+				$( ".player" ).click(function() {
+					$( "#playback_dialog" ).dialog( "open" );
+				});
 
                 $("#aboutbutton").click(function() {
 
                 });
+				
+				$( "#icon" ).click(function() {
+					$( "#playback_dialog" ).dialog( "open" );
+				});
 
 			});
+			
+			
 		</script>
         {% block script %}
         {% endblock %}

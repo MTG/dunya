@@ -1137,6 +1137,14 @@ textarea {
   left: 3px;
   z-index: 4;
 }
+
+#detail #header #summary #icon1 .player{
+  background: url("../img/playButton.png") 0 50% no-repeat;
+  padding-left: 38px;
+  padding-top: 10px;
+  padding-bottom: 11px;
+}
+
 #detail #header #summary #innerSummary {
   position: absolute;
   z-index: 3;
@@ -2640,6 +2648,16 @@ input[type="password"] {
 #detail.recording .alldata .container .thedata .container2 .pitchLabel div {
   padding: 10px;
 }
+
+#detail .alldata .missingdata{
+  width:100%;
+  text-align: center;
+  font-size: x-large;
+  height: 500px;
+  padding-top: 50px;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+}
+
 #detail .thedata .inforight .artist {
   border-right: none !important;
   border-bottom: none !important;
