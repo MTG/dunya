@@ -122,8 +122,8 @@ class Artist(CarnaticStyle, data.models.Artist):
             ret.extend([c for c in a.concerts(raagas, taalas) if c not in ret])
         for concert, perf in self.performances(raagas, taalas):
             if concert not in ret:
-                print "in perfs add concert", concert
                 ret.append(concert)
+        ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
 
     @classmethod
