@@ -81,28 +81,57 @@ def main(request):
     querybrowse = False
 
     if qartist:
-        # If instrument set, only show artists who perform this instrument
+        # TODO: If instrument set, only show artists who perform this instrument
         querybrowse = True
 
-        for aid in qartist:
-            art = Artist.objects.get(pk=aid, dummy=False)
+        # If raaga or taala is set, make a list to filter concerts by
+        rlist = []
+        tlist = []
+        if qraaga:
+            for rid in qraaga:
+                ra = Raaga.objects.get(pk=rid)
+                rlist.append(ra)
+        if qtaala:
+            for tid in qtaala:
+                ta = Taala.objects.get(pk=tid)
+                tlist.append(ta)
+
+        if len(qartist) == 1:
+            # If there is one artist selected, show their concerts
+            # (optionally filtered by raaga or taala)
+            aid = qartist[0]
+            art = Artist.objects.get(pk=aid)
             displayres.append(("artist", art))
             if art.main_instrument:
                 displayres.append(("instrument", art.main_instrument))
-            rlist = []
-            tlist = []
-            if qraaga:
-                for rid in qraaga:
-                    ra = Raaga.objects.get(pk=rid)
-                    rlist.append(ra)
-                    displayres.append(("raaga", ra))
-            if qtaala:
-                for tid in qtaala:
-                    ta = Taala.objects.get(pk=tid)
-                    tlist.append(ta)
-                    displayres.append(("taala", ta))
+            for ra in rlist:
+                displayres.append(("raaga", ra))
+            for ta in tlist:
+                displayres.append(("taala", ta))
             for c in art.concerts(raagas=rlist, taalas=tlist):
                 displayres.append(("concert", c))
+        else:
+            # Otherwise if more than one artist is selected,
+            # show only concerts that all artists perform in
+            allconcerts = []
+            for aid in qartist:
+                art = Artist.objects.get(pk=aid)
+                displayres.append(("artist", art))
+                if art.main_instrument:
+                    displayres.append(("instrument", art.main_instrument))
+                alist.append(art)
+                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist))
+                allconcerts.append(thisconcerts)
+            combinedconcerts = reduce(lambda x, y: x & y, allconcerts)
+
+            for ra in rlist:
+                displayres.append(("raaga", ra))
+            for ta in tlist:
+                displayres.append(("taala", ta))
+
+            for c in list(combinedconcerts):
+                displayres.append(("concert", c))
+
     elif qinstr: # instrument query, but no artist
         querybrowse = True
         # instrument, people
