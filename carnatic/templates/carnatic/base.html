@@ -67,7 +67,7 @@
 					duration: 100
 				  }
 				});
-				
+
 				$( ".player" ).click(function() {
 					$( "#playback_dialog" ).dialog( "open" );
 				});
@@ -75,14 +75,14 @@
                 $("#aboutbutton").click(function() {
 
                 });
-				
+
 				$( "#icon" ).click(function() {
 					$( "#playback_dialog" ).dialog( "open" );
 				});
 
 			});
-			
-			
+
+
 		</script>
         {% block script %}
         {% endblock %}
@@ -91,7 +91,7 @@
     </head>
     <body>
 
-		<div id="playback_dialog" title="Playback dialog">
+		<div id="playback_dialog" title="Audio playback">
 		<p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
 	    </div>
 
