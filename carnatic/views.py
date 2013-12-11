@@ -119,7 +119,6 @@ def main(request):
                 displayres.append(("artist", art))
                 if art.main_instrument:
                     displayres.append(("instrument", art.main_instrument))
-                alist.append(art)
                 thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist))
                 allconcerts.append(thisconcerts)
             combinedconcerts = reduce(lambda x, y: x & y, allconcerts)
