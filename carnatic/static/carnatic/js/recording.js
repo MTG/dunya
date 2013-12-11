@@ -19,9 +19,16 @@ $(document).ready(function() {
 	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
-	});
+	 });
+     waveform.mouseenter(function() {
+         if (pagesound.duration) {
+             waveform.css("cursor", "pointer");
+         } else {
+             waveform.css("cursor", "wait");
+         }
+     });
      $(".zoom").click(function() {
-         var level = $(this).data("length")
+         var level = $(this).data("length");
          zoom(level);
      });
      loaddata();
@@ -332,10 +339,13 @@ function mouPlay(desti){
     posms = clickseconds * 1000;
     part = Math.ceil(clickseconds / secondsPerView);
 
-	pagesound.pause();
-    pagesound.setPosition(posms);
-    replacepart(part);
-	pagesound.play();
+    if (pagesound.duration) {
+        // We can only set a position if it's fully loaded
+        pagesound.pause();
+        pagesound.setPosition(posms);
+        replacepart(part);
+        pagesound.play();
+    }
 }
 
 function play() {
