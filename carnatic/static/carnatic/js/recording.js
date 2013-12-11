@@ -338,6 +338,8 @@ function mouPlay(desti){
 
     posms = clickseconds * 1000;
     part = Math.ceil(clickseconds / secondsPerView);
+    // Update the internal position counter
+    beginningOfView = part * secondsPerView;
 
     if (pagesound.duration) {
         // We can only set a position if it's fully loaded
