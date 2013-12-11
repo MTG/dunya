@@ -15,11 +15,11 @@ $(document).ready(function() {
      beginningOfView = 0;
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
-	/* waveform.click(function(e) {
+	 waveform.click(function(e) {
 	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
-	});*/
+	});
      $(".zoom").click(function() {
          var level = $(this).data("length")
          zoom(level);
@@ -99,7 +99,7 @@ function spectrogram(context, view) {
         // Set the pitchvals so we can draw the histogram
         pitchvals[xpos] = tmp;
     }
-    
+
     context.strokeStyle = "#e71d25";
     context.lineWidth = 2;
     context.stroke();
@@ -132,7 +132,7 @@ function plothistogram(pitch) {
     context.strokeStyle = "#e71d25";
     context.stroke();
     context.closePath();
-    
+
     // Pitch
     if (pitch > 0 && pitch < 255) {
         pitch = Math.floor(pitch) + 0.5;
@@ -277,7 +277,7 @@ function loaddata() {
         }
     };
     oReq.send();
-    $.ajax(histogramurl, {dataType: "json", type: "GET", 
+    $.ajax(histogramurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             histogramdata = data;
             histogramDone = true;
@@ -287,14 +287,14 @@ function loaddata() {
     var ticksDone = false;
     var rhythmDone = false;
 
-    $.ajax(rhythmurl, {dataType: "json", type: "GET", 
+    $.ajax(rhythmurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             rhythmdata = data;
             ticksDone = true;
             dodraw();
     }});
 
-    $.ajax(aksharaurl, {dataType: "json", type: "GET", 
+    $.ajax(aksharaurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             aksharadata = data;
             rhythmDone = true;
@@ -322,16 +322,23 @@ function drawdata() {
 }
 
 function mouPlay(desti){
+    console.debug("play click!");
 	posicio = renders.position();
 	distclick = Math.abs(posicio.left)+desti;
-	percentPunt = (distclick*100)/(waveform.width());
-	nouPunt = (audio.duration*percentPunt)/100;
-	console.log(nouPunt+" - "+audio.duration);
-	audio.pause();
-	audio.currentTime = Math.ceil(nouPunt);
-	audio.play();
-	audio.currentTime = Math.ceil(nouPunt);
+	percent = distclick/waveform.width();
+
+	nouPunt = pagesound.duration * percentPunt;
+	console.log(nouPunt+" - "+pagesound.duration);
+
+    durseconds = pagesound.duration / 1000;
+    part = Math.floor(durseconds % secondsPerView);
+    replacepart(part);
+
+	pagesound.pause();
+    pagesound.setposition(clicktime);
+	pagesound.play();
 }
+
 function play() {
     pagesound.play({onfinish: function() {
         window.clearInterval(int);
@@ -362,9 +369,15 @@ function formatseconds(seconds) {
     return timecodeHtml;
 }
 
+function replacepart(pnum) {
+    waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
+    specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
+    drawdata();
+}
+
 function updateProgress() {
     var currentTime = pagesound.position / 1000;
-    // formatseconds appears to run 1 second ahead of time, 
+    // formatseconds appears to run 1 second ahead of time,
     // so correct for it here
     formattime = formatseconds(currentTime-1);
     progress_percent = (currentTime-beginningOfView) / secondsPerView * 100;
@@ -380,9 +393,7 @@ function updateProgress() {
     if (leftLargeView > 900) {
         beginningOfView += secondsPerView;
         pnum = Math.floor(beginningOfView / secondsPerView + 1);
-        waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
-        specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
-        drawdata();
+        replacepart(pnum)
     }
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
 
