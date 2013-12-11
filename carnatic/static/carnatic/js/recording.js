@@ -324,15 +324,16 @@ function drawdata() {
 function mouPlay(desti){
     console.debug("play click!");
 	percent = desti/waveform.width();
+    console.debug("percent - "+percent);
 
-	clicktime = pagesound.duration * percent;
-	console.log(clicktime+" - "+pagesound.duration);
+    clickseconds = recordinglengthseconds * percent
+	console.log(clickseconds+" - "+ recordinglengthseconds);
 
-    posseconds = clicktime / 1000;
-    part = Math.ceil(posseconds % secondsPerView);
+    posms = clickseconds * 1000;
+    part = Math.ceil(clickseconds / secondsPerView);
 
 	pagesound.pause();
-    pagesound.setPosition(clicktime);
+    pagesound.setPosition(posms);
     replacepart(part);
 	pagesound.play();
 }
