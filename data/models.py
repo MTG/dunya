@@ -2,6 +2,7 @@ from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.db.models import Q
 import os
 import time
 import math
@@ -133,10 +134,9 @@ class Artist(BaseModel):
         return recs
 
     def performances(self, raagas=[], taalas=[]):
-        # TODO: Concert performance args too
         ConcertClass = self.get_object_map("concert")
         IPClass = self.get_object_map("performance")
-        concerts = ConcertClass.objects.filter(tracks__instrumentperformance__performer=self)
+        concerts = ConcertClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
         if raagas:
             concerts = concerts.filter(tracks__work__raaga__in=raagas)
         if taalas:
@@ -144,6 +144,9 @@ class Artist(BaseModel):
         concerts = concerts.distinct()
         ret = []
         for c in concerts:
+            # If the relation is on the track, we'll have lots of performances,
+            # restrict the list to just one instance
+            # TODO: If more than one person plays the same instrument this won't work well
             performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
             # Unique the instrument list
             instruments = []
