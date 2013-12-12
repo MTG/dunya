@@ -58,7 +58,7 @@
                   url: "{% static 'carnatic/swf/' %}"
                 });
 
-				$( "#playback_dialog" ).dialog({
+				$("#playback_dialog").dialog({
 				  autoOpen: false,
 				  show: {
 					effect: "blind",
@@ -70,12 +70,16 @@
 				  }
 				});
 
-				$( ".player" ).click(function() {
-					$( "#playback_dialog" ).dialog( "open" );
+				$(".player").click(function() {
+					$("#playback_dialog").dialog("open");
+				});
+
+				$("#aboutdialog").dialog({
+				  autoOpen: false,
 				});
 
                 $("#aboutbutton").click(function() {
-
+                    $("#aboutdialog").dialog("open");
                 });
 
 				$( "#icon" ).click(function() {
@@ -83,8 +87,6 @@
 				});
 
 			});
-
-
 		</script>
         {% block script %}
         {% endblock %}
@@ -95,6 +97,10 @@
 
 		<div id="playback_dialog" title="Audio playback">
 		<p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
+	    </div>
+
+		<div id="aboutdialog" title="Dunya">
+            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories. For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a></p>
 	    </div>
 
     	<!-- //////  HEADER BLOCK  ////// -->
