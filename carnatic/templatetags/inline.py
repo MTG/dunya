@@ -13,7 +13,10 @@ def url_host_and_path(request, url):
 
 @register.simple_tag
 def inline_artist(artist):
-    return inline_artist_part(artist)
+    if artist:
+        return inline_artist_part(artist)
+    else:
+        return ""
 
 @register.simple_tag
 def inline_artist_list(artists):
