@@ -82,3 +82,14 @@ def get_similar_concerts(works, raagas, taalas, artists):
 
         ret.append((concertid, {"works": commonw, "raagas": commonr, "taalas": commont, "artists": commona}))
     return ret
+
+def similar_recordings(mbid):
+    query = "doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
+    results = solr.search(query)
+    docs = results.docs
+    if len(docs):
+        similar = docs[0]["similar_s"]
+        return json.loads(similar)
+    else:
+        return None
+

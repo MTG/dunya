@@ -437,6 +437,8 @@ def recording(request, recordingid):
         rhythmurl = None
         aksharaurl = None
 
+    similar = search.similar_recordings(recording.mbid)
+
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
     recordingpos = tracks.index(recording)
@@ -467,7 +469,8 @@ def recording(request, recordingid):
             "pitchtrackurl": pitchtrackurl,
             "histogramurl": histogramurl,
             "rhythmurl": rhythmurl,
-            "aksharaurl": aksharaurl
+            "aksharaurl": aksharaurl,
+            "similar": similar
     }
 
     return render(request, "carnatic/recording.html", ret)
