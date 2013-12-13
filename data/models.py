@@ -222,17 +222,18 @@ class Concert(BaseModel):
                     perf = IPClass.objects.get(recording=t, performer=p)
                     person.add(p.id)
                     ret.append(perf)
-        maina = self.artists.all()[0]
-        if maina.id not in person:
-            dummyp = ICPClass()
-            dummyp.performer = maina
-            dummyp.concert = self
-            if maina.main_instrument:
-                dummyp.instrument = maina.main_instrument
-            else:
-                # TODO: If we don't know the instrument it's almost certainly a vocalist
-                dummyp.instrument = IClass.objects.get(pk=1)
-            ret.insert(0, dummyp)
+        if len(self.artists.all()):
+            maina = self.artists.all()[0]
+            if maina.id not in person:
+                dummyp = ICPClass()
+                dummyp.performer = maina
+                dummyp.concert = self
+                if maina.main_instrument:
+                    dummyp.instrument = maina.main_instrument
+                else:
+                    # TODO: If we don't know the instrument it's almost certainly a vocalist
+                    dummyp.instrument = IClass.objects.get(pk=1)
+                ret.insert(0, dummyp)
         return ret
 
 class Work(BaseModel):
