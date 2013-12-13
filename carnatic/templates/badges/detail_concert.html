@@ -7,15 +7,15 @@
         <div class="desc">
             {% inline_concert concert 1 %}
         <p>{% inline_artist_list concert.artists.all %}</p>
-        <p>{{concert.year}}</p>
+        {% if concert.year %}<p>{{concert.year}}</p>{% endif %}
     </div>
-        
+
         <div class="lists similar">
             <div  class="left">
-            
+
             </div>
             <div class="right">
             </div>
-        </div> 
+        </div>
       </div>
 
