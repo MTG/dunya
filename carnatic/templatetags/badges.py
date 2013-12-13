@@ -83,6 +83,10 @@ def badge_similar_concert(concert, similarity):
 def badge_similar_raaga(raaga):
     return {"raaga": raaga}
 
+@register.inclusion_tag("badges/similar_recording.html")
+def badge_similar_recording(recording):
+    return {"recording": recording}
+
 #### Detail badges (for showing on the detail page of another item)
 
 @register.inclusion_tag("badges/detail_concert.html")

@@ -437,7 +437,12 @@ def recording(request, recordingid):
         rhythmurl = None
         aksharaurl = None
 
-    similar = search.similar_recordings(recording.mbid)
+    similar_mbids = search.similar_recordings(recording.mbid)
+    similar = []
+    for m in similar_mbids:
+        rec = Recording.objects.get(mbid=m[0])
+        print rec
+        similar.append(rec)
 
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
