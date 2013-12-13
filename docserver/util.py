@@ -130,9 +130,14 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         raise NoFileException("No known versions for this module")
 
 def docserver_get_contents(documentid, slug, subtype=None, part=None, version=None):
-    return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
+    try:
+        return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
+    except IOError:
+        raise NoFileException
 
 def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
-    contents = open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
-    return json.loads(contents)
-
+    try:
+        contents = open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
+        return json.loads(contents)
+    except IOError:
+        raise NoFileException
