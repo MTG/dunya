@@ -256,7 +256,17 @@ class Raaga(data.models.BaseModel):
         return Composer.objects.filter(work__raaga=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1,2]).distinct()
+        artistmap = {}
+        artistcounter = collections.Counter()
+        artists = Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1,2])
+        for a in artists:
+            artistcounter[a.pk] += 1
+            if a.pk not in artistmap:
+                artistmap[a.pk] = a
+        artists = []
+        for aid, count in artistcounter.most_common():
+            artists.append(artistmap[aid])
+        return artists
 
     def get_similar(self):
         if self.pk in raaga_similar:
@@ -322,12 +332,23 @@ class Taala(data.models.BaseModel):
         return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
 
     def percussion_artists(self):
-        artists = set()
-        for a in Artist.objects.filter(Q(instrumentconcertperformance__concert__tracks__work__taala=self) & Q(instrumentconcertperformance__instrument__percussion=True)).distinct():
-            artists.add(a)
-        for a in Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True)).distinct():
-            artists.add(a)
-        return list(artists)
+
+        artistmap = {}
+        artistcounter = collections.Counter()
+        artists = Artist.objects.filter(Q(instrumentconcertperformance__concert__tracks__work__taala=self) & Q(instrumentconcertperformance__instrument__percussion=True))
+        for a in artists:
+            artistcounter[a.pk] += 1
+            if a.pk not in artistmap:
+                artistmap[a.pk] = a
+        artists = Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True))
+        for a in artists:
+            artistcounter[a.pk] += 1
+            if a.pk not in artistmap:
+                artistmap[a.pk] = a
+        artists = []
+        for aid, count in artistcounter.most_common():
+            artists.append(artistmap[aid])
+        return artists
 
     def recordings(self, limit=None):
         recordings = Recording.objects.filter(work__taala=self)
