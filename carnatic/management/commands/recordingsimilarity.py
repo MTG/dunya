@@ -3,36 +3,103 @@ from django.core.management.base import BaseCommand, CommandError
 from carnatic import models
 from django.conf import settings
 import pysolr
-import intonation
-import pypeaks
+import json
+import os
+
+from compmusic.essentia.similaritylib import recording
+from docserver import util
+import docserver
 
 class Command(BaseCommand):
     help = 'Calculate recording similarity between recordings of the same raaga'
     solr = pysolr.Solr(settings.SOLR_URL)
     intonationmap = {}
+    distancemap = {}
 
-    def make_search_data(self, data, etype, namefield):
-        insert = {"id": "%s_%s" % (etype, i.pk),
-                   "object_id_i": i.pk,
-                   "type_s": etype,
-                   "title_t": getattr(i, namefield),
+    def make_data(self, obj):
+        mbid = obj["mbid"]
+        sim = obj["similar"]
+        if not sim:
+            return None
+        insert = {"id": "sim_%s" % (mbid, ),
+                   "similar_s": json.dumps(sim),
+                   "mbid_t": mbid,
                    "doctype_s": "recordingsimilarity"
                   }
         return insert
 
-    def foo(self):
+    def import_solr(self):
+        files = os.listdir("similarity")
+        ret = []
+        for f in files:
+            path = os.path.join("similarity", f)
+            data = json.load(open(path))
+            val = self.make_data(data)
+            if val:
+                ret.append(val)
         self.solr.add(ret)
         self.solr.commit()
 
-    def calculate_similarity(self):
+    def compute_distance(self, a, b):
+        if a in self.intonationmap:
+            #print " -hit a"
+            adata = self.intonationmap[a]
+        else:
+            try:
+                adata = util.docserver_get_json(a, "normalisedpitch", "drawhistogram")
+            except docserver.models.Document.DoesNotExist:
+                return None
+            self.intonationmap[a] = adata
+        if b in self.intonationmap:
+            #print " -hit b"
+            bdata = self.intonationmap[b]
+        else:
+            try:
+                bdata = util.docserver_get_json(b, "normalisedpitch", "drawhistogram")
+            except docserver.models.Document.DoesNotExist:
+                return None
+            self.intonationmap[b] = bdata
+
+        if (a, b) in self.distancemap:
+            #print " -hit d-ab"
+            distance = self.distancemap[(a, b)]
+        elif (b, a) in self.distancemap:
+            #print " -hit d-ba"
+            distance = self.distancemap[(b, a)]
+        else:
+            distance = recording.kldiv(adata, bdata)
+            self.distancemap[(a, b)] = distance
+        return distance
+
+    def compute_similarity(self, rec):
+        raaga = rec.raaga()
+        otherrecordings = models.Recording.objects.filter(work__raaga__in=[raaga]).exclude(pk=rec.pk)
+        rid = rec.mbid
+        try:
+            os.makedirs("similarity")
+        except OSError:
+            pass
+        sims = []
+        for o in otherrecordings:
+            oid = o.mbid
+            distance = self.compute_distance(rid, oid)
+            if distance:
+                sims.append((oid, distance))
+        sims = sorted(sims, key=lambda a: a[1], reverse=True)
+        name = "similarity/%s.json" % rid
+        ret = {"mbid": rid, "similar": sims}
+        json.dump(ret, open(name, "wb"))
+
+    def compute_matrix(self):
         recordings = models.Recording.objects.all()
-        for r in recordings:
-            pitch = intonation.pitch.Pitch()
-            rec = intonation.recording.Recording(pitch)
-            # We calculated the histogram ourselves, so let's fake it
-            rec.histogram = pypeaks.Data(hist, 256)
-            raaga = recording.raaga()
-            otherrecordings = models.Recording.objects.filter(work__raaga__in=[raaga]).exclude(pk=r.pk)
+        total = len(recordings)
+        for i, r in enumerate(recordings, 1):
+            print "Recording %s (%s/%s)" % (r, i, total)
+            self.compute_similarity(r)
 
     def handle(self, *args, **options):
-        self.calculate_similarity()
+        if len(args) and args[0] == "import":
+            print "importing"
+            self.import_solr()
+        else:
+            self.compute_matrix()
