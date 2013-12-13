@@ -10,7 +10,11 @@
 {% if artist.begin %}
 <span class="year">{{artist.begin}}{% if artist.end %} - {{artist.end}}{% endif %}</span><br>
 {% endif %}
+{% if artist.main_instrument %}
     <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>
+    {% elif performance.instrument %}
+    <a href="{{performance.instrument.get_absolute_url}}" class="belongs">{{performance.instrument.name}}</a>
+    {% endif %}
   </div>
   <div class="descOpen">
     {% if artist.description.description %}
