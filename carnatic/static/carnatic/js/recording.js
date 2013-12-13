@@ -428,13 +428,4 @@ function zoom(level){
     drawdata();
 }
 
-function playrecord(){
-	if(plButton.hasClass("stop")){
-		pause();
-		plButton.removeClass("stop");
-	}else{
-		play();
-		plButton.addClass("stop");
-	}
-}
 
