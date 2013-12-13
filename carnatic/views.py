@@ -483,13 +483,19 @@ def work(request, workid):
     work = get_object_or_404(Work, pk=workid)
 
     tags = tagging.tag_cloud(workid, "work")
+    tracks = work.recording_set.all()
+    if len(tracks):
+        sample = random.sample(tracks, 1)
+    else:
+        sample = None
+
 
     ret = {"filter_items": json.dumps(get_filter_items()),
            "work": work,
            "form": TagSaveForm(),
             "objecttype": "work",
             "objectid": work.id,
-			"tracks": random.sample(work.recording_set.all(),1),
+			"sample": sample,
             "tags": tags,
     }
     return render(request, "carnatic/work.html", ret)
