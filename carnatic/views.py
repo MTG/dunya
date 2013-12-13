@@ -544,6 +544,13 @@ def instrumentsearch(request):
 
 def instrument(request, instrumentid):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
-    ret = {"instrument": instrument, "tracks": random.sample(instrument.samples(10),1), "filter_items": json.dumps(get_filter_items())}
+    samples = instrument.samples(10)
+    sample = None
+    if samples:
+        sample = samples[0]
+    ret = {"instrument": instrument,
+           "tracks": sample,
+           "filter_items": json.dumps(get_filter_items())
+          }
 
     return render(request, "carnatic/instrument.html", ret)
