@@ -107,7 +107,8 @@ function spectrogram(context, view) {
         pitchvals[xpos] = tmp;
     }
 
-    context.strokeStyle = "#e71d25";
+    //context.strokeStyle = "#e71d25";
+    context.strokeStyle = "#eee";
     context.lineWidth = 2;
     context.stroke();
     context.closePath();
@@ -214,7 +215,8 @@ function plotticks(context, data) {
                 context.lineTo(position, 255);
             }
         context.lineWidth = 1;
-        context.strokeStyle = "#e71d25";
+        //context.strokeStyle = "#e71d25";
+        context.strokeStyle = "#eee";
         context.stroke();
         }
         context.closePath();
