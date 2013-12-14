@@ -417,7 +417,7 @@ def recording(request, recordingid):
         else:
             print "bin is", thebin, "weird"
             print tonic
-            print "%s" % (12 * math.log(tonic/440.0) / math.log(2), )
+            tonicname = ""
     except docserver.util.NoFileException:
         tonic = None
         tonicname = None
@@ -440,10 +440,11 @@ def recording(request, recordingid):
 
     similar_mbids = search.similar_recordings(recording.mbid)
     similar = []
-    for m in similar_mbids:
-        rec = Recording.objects.get(mbid=m[0])
-        print rec
-        similar.append(rec)
+    if similar_mbids:
+        for m in similar_mbids:
+            rec = Recording.objects.get(mbid=m[0])
+            print rec
+            similar.append(rec)
 
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
