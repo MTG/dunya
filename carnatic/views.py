@@ -361,7 +361,9 @@ def concert(request, concertid):
     else:
         image = "/media/images/noconcert.jpg"
     tracks = concert.tracks.all()
-    samples = tracks[:2]
+    sample = None
+    if tracks:
+        sample = tracks[:1]
 
     tags = tagging.tag_cloud(concertid, "concert")
 
@@ -376,8 +378,7 @@ def concert(request, concertid):
 	   "objectid": concert.id,
 	   "tags": tags,
        "image": image,
-	   "tracks": random.sample(tracks,1),
-       "samples": samples,
+       "sample": sample,
        "similar_concerts": similar
        }
 
