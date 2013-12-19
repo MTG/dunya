@@ -91,5 +91,5 @@ def similar_recordings(mbid):
         similar = docs[0]["similar_s"]
         return json.loads(similar)
     else:
-        return None
+        return []
 

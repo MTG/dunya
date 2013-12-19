@@ -440,11 +440,9 @@ def recording(request, recordingid):
 
     similar_mbids = search.similar_recordings(recording.mbid)
     similar = []
-    if similar_mbids:
-        for m in similar_mbids:
-            rec = Recording.objects.get(mbid=m[0])
-            print rec
-            similar.append(rec)
+    for m in similar_mbids:
+        rec = Recording.objects.get(mbid=m[0])
+        similar.append(rec)
 
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
