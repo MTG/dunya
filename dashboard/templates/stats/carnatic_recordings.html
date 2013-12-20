@@ -5,6 +5,29 @@
 
 <h1>Carnatic Recordings</h1>
 
+{% for c in concerts %}
+{% if not c.got_perf or not c.got_works %}
+    <h3><a href="{{c.get_musicbrainz_url}}">{{c}}</a></h3>
+    {% if not c.got_works %}
+        Tracks missing works:<br>
+        {% for t in c.tracks.all %}
+            {% if not t.work %}
+            <li><a href="{{t.get_musicbrainz_url}}">{{t}}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if not c.got_track_perf and not c.got_perf %}
+        Tracks missing performance information<br>
+        {% for t in c.tracks.all %}
+            {% if not t.performance.count %}
+            <li><a href="{{t.get_musicbrainz_url}}">{{t}}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}
+{% endfor %}
+
 <h2>Recordings missing performer information</h2>
 {% for r in noperf %}
     <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>

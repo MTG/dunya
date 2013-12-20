@@ -144,14 +144,27 @@ def carnatic_artists(request):
 
 @user_passes_test(views.is_staff)
 def carnatic_recordings(request):
-    recordings = carnatic.models.Recording.objects
-    work_counts = recordings.annotate(Count('work'))
-    performance_counts = recordings.annotate(Count('performance'))
+    # TODO: Also check if album artist has a relationship
+    # TODO: Also make sure rels are on tracks not album (preferred)
+    # TODO: Also check there is at least one 'lead' performer
 
-    nowork = [r for r in work_counts if r.work__count == 0]
-    noperf = [r for r in performance_counts if r.performance__count == 0]
-    ret = {"nowork": nowork,
-            "noperf": noperf
+    concerts = carnatic.models.Concert.objects.all()
+    for c in concerts:
+        got_works = True
+        got_track_perf = True
+        got_perf = True
+        for t in c.tracks.all():
+            if not t.work:
+                got_works = False
+            if t.performance.count() == 0:
+                got_track_perf = False
+        if c.performance.count() == 0:
+            got_perf = False
+        c.got_track_perf = got_track_perf
+        c.got_works = got_works
+        c.got_perf = got_perf and got_track_perf
+
+    ret = {"concerts": concerts,
             }
     return render(request, 'stats/carnatic_recordings.html', ret)
 

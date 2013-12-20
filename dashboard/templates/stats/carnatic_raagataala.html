@@ -5,50 +5,27 @@
 
 <h1>Carnatic Raaga and Taala</h1>
 
-{% comment %}
-<h2>Recordings missing raaga or taala</h2>
-Raagas:<br>
-{% for r in missingr %}
-<li><a href="{{r.recording.get_musicbrainz_url}}">{{r.recording}}</a>
-{% if r.otherrecs %}
-<ul>
-    {% for other in r.otherrecs %}
-        <li><a href="{{other.get_musicbrainz_url}}">{{other}}</a>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endfor %}
+<a href="#notdb">Raagas and taalas not in the Dunya database</a><br>
+<a href="#notag">Recordings with no or unparsable tags</a><br>
 
-<br>Taalas:<br>
-{% for r in missingt %}
-<li><a href="{{r.recording.get_musicbrainz_url}}">{{r.recording}}</a>
-{% if r.otherrecs %}
-<ul>
-    {% for other in r.otherrecs %}
-        <li><a href="{{other.get_musicbrainz_url}}">{{other}}</a>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endfor %}
-
-{% endcomment %}
-
+<a name="notdb"></a>
 <h2>Raagas and taalas not in the Dunya database</h2>
-Raagas:<br>
+<h3>Raagas</h3>
 {% for r in missingr %}
     <li> <a href="{{r.file.get_absolute_url}}">{{r.file.name}}</a> ({{r.raagas|join:", "}})
 {% endfor %}
-<br>Taalas:<br>
+<h3>Taalas</h3>
 {% for t in missingt %}
     <li> <a href="{{t.file.get_absolute_url}}">{{t.file.name}}</a> ({{t.taalas|join:", "}})
 {% endfor %}
 
+<a name="notag"></a>
 <h2>Recordings with no or unparsable tags</h2>
-Raagas:<br>
+<h3>Raagas</h3>
 {% for r in no_r %}
 <li><a href="{{r.get_absolute_url}}">{{r.name}}</a>
 {% endfor %}
-Taala:<br>
+<h3>Taalas</h3>
 {% for t in no_t %}
 <li><a href="{{t.get_absolute_url}}">{{t.name}}</a>
 {% endfor %}
