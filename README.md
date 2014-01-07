@@ -41,6 +41,7 @@ Dependencies
         ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
         ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
         ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
+        pip install pillow
 
 * If you install matplotlib with apt:
 
@@ -248,3 +249,27 @@ When linking to an entity, never construct a link manually. Instead, make sure t
 
 and use the provided `{% inline_x thex %}` methods. These will automatically create a link and
 the best form of the objects name.
+
+Server configuration
+====================
+
+Find an nginx configuration file in the `admin/` directory.
+Use this configuration for supervisor.
+
+    [program:dunya]
+    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8'
+    user=dunya
+    directory=/srv/dunya
+    command=/srv/dunya/env/bin/python manage.py runfcgi daemonize=false socket=/tmp/dunya.sock
+    umask=0
+    redirect_stderr=true
+    stopasgroup=true
+
+    [program:dunyacelery]
+    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8'
+    user=dunya
+    directory=/srv/dunya
+    command=/srv/dunya/env/bin/celery -A dunya worker -l info
+    redirect_stderr=true
+    stopasgroup=true
+
