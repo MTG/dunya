@@ -57,7 +57,7 @@ def dumpfixture(modname):
 
 def dumpdata(fname="dunya_data.json"):
     with hide('running', 'status'):
-        modules = ["browse", "carnatic", "data", "docserver", "social", "comments", "auth", "dashboard"]
+        modules = ["carnatic", "data", "docserver", "social", "comments", "auth", "dashboard"]
         local("python manage.py dumpdata --indent=4 %s > %s" % (" ".join(modules), fname))
         print "dumped data to %s" % fname
 
@@ -67,6 +67,3 @@ def loaddata(fname="dunya_data.json"):
         local("python manage.py loaddata %s" % fname)
     else:
         print " (missing!)"
-
-def test():
-    local("python manage.py test browser")

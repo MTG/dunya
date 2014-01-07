@@ -1,4 +1,4 @@
-# Django settings for browser project.
+# Django settings for dunya project.
 
 # To change database settings, copy local_settings.py.dist to
 # to local_settings.py and edit
@@ -117,7 +117,6 @@ INSTALLED_APPS = (
     'carnatic',
     'dashboard',
     'docserver',
-    'browse',
     'social',
 )
 

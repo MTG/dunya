@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url, static
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.comments.models import Comment
+from django.views.generic.base import RedirectView
 
 admin.autodiscover()
 
@@ -11,7 +12,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^/?', include('browse.urls')),
+    url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^hindustani', include('hindustani.urls')),
     url(r'^makam', include('makam.urls')),

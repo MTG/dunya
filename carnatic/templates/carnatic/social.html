@@ -49,7 +49,7 @@
         <div class="rightdata">
             <div class="innerrightdata">
                 {% get_comment_form for concert as form_comment %}
-                {% include "browse/form-comment.html" %}
+                {% include "social/form-comment.html" %}
                 <input type="hidden" name="next" value="{% url 'carnatic-concert' concert.id %}" />
                 <input type="submit" value="Add comment" id="id_submit" />
                 <input type="submit" name="preview" value="Preview">
