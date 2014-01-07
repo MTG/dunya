@@ -29,6 +29,7 @@ server {
         set $path_info $uri;
 
         fastcgi_pass unix:/tmp/dunya.sock;
+        fastcgi_intercept_errors on;
 
         fastcgi_param  SCRIPT_NAME      $script;
         fastcgi_param  PATH_INFO        $path_info;
@@ -49,4 +50,7 @@ server {
         fastcgi_param  SERVER_PORT        $server_port;
         fastcgi_param  SERVER_NAME        $server_name;
     }
+
+    error_page 404 /static/error/404.html;
+    error_page 500 /static/error/500.html;
 }
