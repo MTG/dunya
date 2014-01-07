@@ -16,7 +16,7 @@ import json
 import social.timeline as timeline
 
 def main_page(request):
-    return render_to_response('main_page.html',RequestContext(request))
+    return render_to_response('social/main_page.html',RequestContext(request))
 
 #def user_page(request, username):
 #    try:
@@ -70,7 +70,7 @@ def user_profile(request):
         'user_profile': user_profile,
         'timeline': timelines
     })
-    return render_to_response('user-profile.html', variables)
+    return render_to_response('social/user-profile.html', variables)
 
 
 def user_profile_save(request):
@@ -84,7 +84,7 @@ def user_profile_save(request):
     variables = RequestContext(request, {
         'user_profile': user_profile
     })
-    return render_to_response('user-profile.html', variables)
+    return render_to_response('social/user-profile.html', variables)
 
 def users_list(request):
     numusers = User.objects.count()
@@ -93,7 +93,7 @@ def users_list(request):
     ret = {"numusers": numusers,
            "users": users,
            }
-    return render(request, "users_list.html", ret)
+    return render(request, "social/users_list.html", ret)
 
 def user_page(request, username):
     other_user = get_object_or_404(User, username=username)
@@ -118,7 +118,7 @@ def user_page(request, username):
            "follow": follow
     }
 
-    return render(request, "user_page.html", ret)
+    return render(request, "social/user_page.html", ret)
 
 def timeline_page(request):
     
@@ -136,7 +136,7 @@ def timeline_page(request):
     variables = RequestContext(request, {
         'timeline': timelines
     })
-    return render_to_response('timeline-page.html', variables)
+    return render_to_response('social/timeline-page.html', variables)
 
 
 @csrf_protect
@@ -182,7 +182,7 @@ def tag_save_page(request):
     variables = RequestContext(request, {
         'form': form
     })
-    return render_to_response('form-tag.html', variables)
+    return render_to_response('social/form-tag.html', variables)
 
 
 def ajax_tag_autocomplete(request):
@@ -220,6 +220,6 @@ def tag_page(request, tagname, modeltype="concert"):
         'tag_name': tagname,
         'modeltype': modeltype,
     })
-    return render_to_response('tag_page.html', variables)
+    return render_to_response('social/tag_page.html', variables)
 
 
