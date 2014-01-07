@@ -1,5 +1,10 @@
-from fabric.api import *
+from fabric.api import local, settings, env, roles, run, cd
 import os
+
+env.roledefs["web"] = ["sitar.s.upf.edu"]
+env.roledefs["workers"] = ["itri.s.upf.edu", "devaraya.s.upf.edu", "amirkhusro.s.upf.edu", "kora.s.upf.edu", "guqin.s.upf.edu", "ziryab.s.upf.edu"]
+env.use_ssh_config = True
+env.forward_agent = True
 
 def up(port="8001"):
     local("python manage.py runserver 0.0.0.0:%s"%port)
@@ -7,8 +12,41 @@ def up(port="8001"):
 def celery():
     local("celery worker --app=dunya -l info")
 
+@roles("web")
+def updateweb():
+    """Update the webserver"""
+    with cd("/srv/dunya"):
+        run("git pull")
+        # compile and compress less
+        # compress javascript
+        run("env/bin/python manage.py collectstatic --noinput")
+    with cd("/srv/dunya/env/src/pycompmusic"):
+        run("git pull")
+    run("sudo supervisorctl restart dunya")
+
+@roles("workers")
+@roles("web")
+def essentia(branch=None):
+    """Update essentia on all workers"""
+    with cd("/srv/essentia"):
+        run("git pull")
+        run("./waf -j4")
+        run("sudo ./waf install")
+
+@roles("workers")
+def updatecelery():
+    """Update the code for celery on all workers and restart"""
+    with cd("/srv/dunya"):
+        run("git pull")
+    with cd("/srv/dunya/env/src/pycompmusic"):
+        run("git pull")
+    run("sudo supervisorctl restart dunyacelery")
+
 def less():
     local("lessc carnatic/static/carnatic/css/main.less --source-map-map-inline carnatic/static/carnatic/css/main.css")
+
+def lesscompress():
+    local("lessc carnatic/static/carnatic/css/main.less carnatic/static/carnatic/css/main.css")
 
 def setupdb():
     """ Run this when you are setting up a new installation
@@ -23,28 +61,7 @@ def updatedb():
     """ Run this when someone has committed some changes to the
         database migration scripts
     """
-    local("python manage.py migrate data")
-    local("python manage.py migrate carnatic")
-    local("python manage.py migrate dashboard")
-    local("python manage.py migrate docserver")
-    local("python manage.py migrate social")
-
-def migratedb():
-    """ Run this if you make some changes to the models """
-    with settings(warn_only=True):
-        local("python manage.py schemamigration data --auto")
-    with settings(warn_only=True):
-        local("python manage.py schemamigration carnatic --auto")
-    with settings(warn_only=True):
-        local("python manage.py schemamigration dashboard --auto")
-    with settings(warn_only=True):
-        local("python manage.py schemamigration docserver --auto")
-    with settings(warn_only=True):
-        local("python manage.py schemamigration social --auto")
-
-def initialdb(modulename):
-    """ Use this to tell south to manage a new django app """
-    local("python manage.py schemamigration %s --initial" % modulename)
+    local("python manage.py migrate")
 
 def dumpfixture(modname):
     redir = "%s/fixtures/initial_data.json" % modname
