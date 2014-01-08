@@ -12,6 +12,7 @@ large repositories. For more information: http://compmusic.upf.edu
 License
 =======
 Dunya is Copyright 2013 Music Technology Group - Universitat Pompeu Fabra
+
 Dunya is released under the terms of the GNU Affero General Public
 License (v3 or later). See the COPYING file for more information.
 
