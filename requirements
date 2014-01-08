@@ -49,7 +49,6 @@ requests==2.0.1
 scikits.audiolab==0.11.0
 scipy
 six==1.4.1
-solrpy==0.9.5
 sqlparse==0.1.10
 ssh==1.8.0
 wikitools==1.1.1
