@@ -411,7 +411,7 @@ def recording(request, recordingid):
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
-        thebin = int(math.round(thebin))
+        thebin = int(round(thebin))
         tonic = str(tonic)
         if thebin <= 11 and thebin >= 0:
             tonicname = notenames[thebin]
