@@ -1,12 +1,29 @@
 The CompMusic Browser
 =====================
 
+Introduction
+------------
+Dunya is a prototype being developed in the context of CompMusic, a
+research project that studies several world music traditions from the
+point of view of the information technologies, with the aim to
+facilitate the cataloging and discovery of music recordings within
+large repositories. For more information: http://compmusic.upf.edu
+
+License
+=======
+Dunya is Copyright 2013 Music Technology Group - Universitat Pompeu Fabra
+Dunya is released under the terms of the GNU Affero General Public
+License (v3 or later). See the COPYING file for more information.
+
+If you would prefer to get a (non FOSS) commercial license, please
+contact us at mtg@upf.edu
 
 Installation
 ============
 
 On ubuntu-like machines you can run `bash setup.sh` to install dependencies from
 apt, create symlinks into the python environment, and install all python packages.
+Otherwise, read on
 
 Dependencies
 ------------
