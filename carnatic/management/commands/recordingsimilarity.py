@@ -46,7 +46,7 @@ class Command(BaseCommand):
             adata = self.intonationmap[a]
         else:
             try:
-                adata = util.docserver_get_json(a, "normalisedpitch", "drawhistogram")
+                adata = util.docserver_get_json(a, "normalisedpitch", "normalisedhistogram")
             except docserver.models.Document.DoesNotExist:
                 return None
             self.intonationmap[a] = adata
@@ -55,7 +55,7 @@ class Command(BaseCommand):
             bdata = self.intonationmap[b]
         else:
             try:
-                bdata = util.docserver_get_json(b, "normalisedpitch", "drawhistogram")
+                bdata = util.docserver_get_json(b, "normalisedpitch", "normalisedhistogram")
             except docserver.models.Document.DoesNotExist:
                 return None
             self.intonationmap[b] = bdata
