@@ -1,6 +1,7 @@
 sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev postgresql-server-dev-all libxml2-dev libxslt1-dev
 virtualenv env
 . env/bin/activate
+pip install --upgrade setuptools
 pip install --upgrade pip
 pip install python-dateutil
 ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
