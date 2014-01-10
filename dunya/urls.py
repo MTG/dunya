@@ -12,6 +12,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     # Examples:
+    url(r'^$', RedirectView.as_view(pattern_name="carnatic-main")),
     url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^hindustani', include('hindustani.urls')),
