@@ -403,7 +403,6 @@ def concert(request, concertid):
 
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
-    show_sim = request.GET.get("s")
 
     tags = tagging.tag_cloud(recordingid, "recording")
 
@@ -494,7 +493,6 @@ def recording(request, recordingid):
             "rhythmurl": rhythmurl,
             "aksharaurl": aksharaurl,
             "similar": similar,
-            "show_similar": show_sim,
     }
 
     return render(request, "carnatic/recording.html", ret)
