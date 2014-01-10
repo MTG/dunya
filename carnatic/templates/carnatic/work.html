@@ -49,59 +49,6 @@ $(document).ready(function() {
      </div>-->
 
  <div id="detail" class="work">
-     	<div id="header">
-     		<div id="summary">
-     			<div id="innerSummary">
-	     			<span>
-		     			<h1>{{ work.title }}</h1>
-                        {% if work.composer %}
-		     			<h2>Composed by: {% inline_composer work.composer %}</h2>
-                        {% endif %}
-		     			<h3>
-			     			{% if work.raaga %}
-			     				{% for r in work.raaga.all %}
-									Raaga: {% inline_raaga r %}<br>
-    							{% endfor %}
-							{% endif %}
-							{% if work.taala %}
-								{% for t in work.taala.all %}
-								    Taala: {% inline_taala t %}<br>
-    							{% endfor %}
-							{% endif %}
-		     			</h3>
-	     			</span>
-     			</div>
-     			<div id="summaryBack"></div>
-     			{% if user.is_authenticated and sample %}
-     			<div id="icon1">
-						<div class="ui360"><a href="{{sample.absolute_mp3_url}}">{{sample.title}}</a></div>
-				</div>
-				{% else %}
-				<div id="icon"></div>
-				{% endif %}
-     		</div>
-     		<div class="bigImage"></div>
-     		<div id="meta">
-     			<div class="metaBlock">
-     				<div class="metaMask">
-		 				<div class="metaContainer">
-			     			<div id="editorial" class="metaDetails">
-			     				<div class="inner">
-									<h3>Metadata</h3>
-									<span class='list'>
-                                        <!-- <label>quality:</label><b>Normal</b> -->
-									</span>
-			     				</div>
-							</div>
-						</div>
-		 			</div>
-	 			</div>
-     		</div>
-
-	     	<div class="clearfix"></div>
-
-     	</div><!-- HEADER END -->
-
 	 	<div class="alldata">
 			<!--
 	     	<div class="thedata">
