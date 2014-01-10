@@ -1,4 +1,21 @@
 # -*- coding: UTF-8 -*-
+
+# Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
+# 
+# This file is part of Dunya
+# 
+# Dunya is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation (FSF), either version 3 of the License, or (at your option) any later
+# version.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program.  If not, see http://www.gnu.org/licenses/
+
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -13,6 +30,7 @@ import docserver
 import collections
 import math
 import random
+import pysolr
 
 def get_filter_items():
     filter_items = [
@@ -26,11 +44,14 @@ def get_filter_items():
 
 def searchcomplete(request):
     term = request.GET.get("term")
+    ret = []
+    error = False
     if term:
-        suggestions = search.autocomplete(term)
-        ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
-    else:
-        ret = []
+        try:
+            suggestions = search.autocomplete(term)
+            ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
+        except pysolr.SolrError:
+            error = True
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def main(request):
@@ -79,6 +100,7 @@ def main(request):
 
     displayres = []
     querybrowse = False
+    searcherror = False
 
     if qartist:
         # TODO: If instrument set, only show artists who perform this instrument
@@ -181,7 +203,11 @@ def main(request):
                 displayres.append(("artist", a.performer))
                 # if instrument, only people who play that?
     elif query:
-        results = search.search(query)
+        try:
+            results = search.search(query)
+        except pysolr.SolrError:
+            searcherror = True
+            results = {}
         artists = results.get("artist", [])
         instruments = results.get("instrument", [])
         concerts = results.get("concert", [])
@@ -235,7 +261,8 @@ def main(request):
            "qinstr": json.dumps(qinstr),
            "qraaga": json.dumps(qraaga),
            "qtaala": json.dumps(qtaala),
-           "qconcert": json.dumps(qconcert)
+           "qconcert": json.dumps(qconcert),
+           "searcherror": searcherror
            }
 
     return render(request, "carnatic/index.html", ret)
@@ -386,7 +413,6 @@ def concert(request, concertid):
 
 def recording(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
-    show_sim = request.GET.get("s")
 
     tags = tagging.tag_cloud(recordingid, "recording")
 
@@ -439,11 +465,15 @@ def recording(request, recordingid):
         rhythmurl = None
         aksharaurl = None
 
-    similar_mbids = search.similar_recordings(recording.mbid)
     similar = []
-    for m in similar_mbids:
-        rec = Recording.objects.get(mbid=m[0])
-        similar.append(rec)
+    try:
+        similar_mbids = search.similar_recordings(recording.mbid)
+        for m in similar_mbids:
+            rec = Recording.objects.get(mbid=m[0])
+            similar.append(rec)
+    except pysolr.SolrError:
+        # TODO: Show error in similar recordings page instead of empty
+        pass
 
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
@@ -477,7 +507,6 @@ def recording(request, recordingid):
             "rhythmurl": rhythmurl,
             "aksharaurl": aksharaurl,
             "similar": similar,
-            "show_similar": show_sim,
     }
 
     return render(request, "carnatic/recording.html", ret)

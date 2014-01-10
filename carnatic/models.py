@@ -1,3 +1,19 @@
+# Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
+# 
+# This file is part of Dunya
+# 
+# Dunya is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation (FSF), either version 3 of the License, or (at your option) any later
+# version.
+# 
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along with
+# this program.  If not, see http://www.gnu.org/licenses/
+
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -10,6 +26,7 @@ import managers
 import filters
 import random
 import docserver
+import pysolr
 
 class CarnaticStyle(object):
     def get_style(self):
@@ -180,23 +197,27 @@ class Concert(CarnaticStyle, data.models.Concert):
         rid = [r.id for r in raagas]
         tid = [t.id for t in taalas]
 
-        similar = search.get_similar_concerts(wid, rid, tid, aid)
-        similar = sorted(similar, reverse=True,
-                key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
-
-        similar = similar[:10]
         ret = []
-        for s, v in similar:
-            # Don't show this concert as similar
-            if s == self.id:
-                continue
-            concert = Concert.objects.get(pk=s)
-            works = [Work.objects.get(pk=w) for w in v["works"]]
-            raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
-            taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
-            artists = [Artist.objects.get(pk=a) for a in v["artists"]]
-            ret.append((concert,
-                {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
+        try:
+            similar = search.get_similar_concerts(wid, rid, tid, aid)
+            similar = sorted(similar, reverse=True,
+                    key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
+
+            similar = similar[:10]
+            for s, v in similar:
+                # Don't show this concert as similar
+                if s == self.id:
+                    continue
+                concert = Concert.objects.get(pk=s)
+                works = [Work.objects.get(pk=w) for w in v["works"]]
+                raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
+                taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
+                artists = [Artist.objects.get(pk=a) for a in v["artists"]]
+                ret.append((concert,
+                    {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
+        except pysolr.SolrError:
+            # TODO: Should show an error message
+            pass
 
         return ret
 

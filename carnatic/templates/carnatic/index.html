@@ -154,7 +154,9 @@ $(document).ready(function() {
         	</tr>
         </tbody></table>
      </div>
-     {% if query %}
+     {% if searcherror %}
+        <h2 class="resultsTitle">Sorry, we are having trouble searching. Please try again.</h2>
+     {% elif query %}
         <h2 class="resultsTitle">Query results:</h2>
      {% else %}
          <h2 class="resultsTitle">Some items from our collection:</h2>
