@@ -30,6 +30,7 @@ import docserver
 import collections
 import math
 import random
+import pysolr
 
 def get_filter_items():
     filter_items = [
@@ -43,11 +44,14 @@ def get_filter_items():
 
 def searchcomplete(request):
     term = request.GET.get("term")
+    ret = []
+    error = False
     if term:
-        suggestions = search.autocomplete(term)
-        ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
-    else:
-        ret = []
+        try:
+            suggestions = search.autocomplete(term)
+            ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
+        except pysolr.SolrError:
+            error = True
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def main(request):
@@ -96,6 +100,7 @@ def main(request):
 
     displayres = []
     querybrowse = False
+    searcherror = False
 
     if qartist:
         # TODO: If instrument set, only show artists who perform this instrument
@@ -198,7 +203,11 @@ def main(request):
                 displayres.append(("artist", a.performer))
                 # if instrument, only people who play that?
     elif query:
-        results = search.search(query)
+        try:
+            results = search.search(query)
+        except pysolr.SolrError:
+            searcherror = True
+            results = {}
         artists = results.get("artist", [])
         instruments = results.get("instrument", [])
         concerts = results.get("concert", [])
@@ -252,7 +261,8 @@ def main(request):
            "qinstr": json.dumps(qinstr),
            "qraaga": json.dumps(qraaga),
            "qtaala": json.dumps(qtaala),
-           "qconcert": json.dumps(qconcert)
+           "qconcert": json.dumps(qconcert),
+           "searcherror": searcherror
            }
 
     return render(request, "carnatic/index.html", ret)
@@ -455,11 +465,15 @@ def recording(request, recordingid):
         rhythmurl = None
         aksharaurl = None
 
-    similar_mbids = search.similar_recordings(recording.mbid)
     similar = []
-    for m in similar_mbids:
-        rec = Recording.objects.get(mbid=m[0])
-        similar.append(rec)
+    try:
+        similar_mbids = search.similar_recordings(recording.mbid)
+        for m in similar_mbids:
+            rec = Recording.objects.get(mbid=m[0])
+            similar.append(rec)
+    except pysolr.SolrError:
+        # TODO: Show error in similar recordings page instead of empty
+        pass
 
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())

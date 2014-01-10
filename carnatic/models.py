@@ -26,6 +26,7 @@ import managers
 import filters
 import random
 import docserver
+import pysolr
 
 class CarnaticStyle(object):
     def get_style(self):
@@ -196,23 +197,27 @@ class Concert(CarnaticStyle, data.models.Concert):
         rid = [r.id for r in raagas]
         tid = [t.id for t in taalas]
 
-        similar = search.get_similar_concerts(wid, rid, tid, aid)
-        similar = sorted(similar, reverse=True,
-                key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
-
-        similar = similar[:10]
         ret = []
-        for s, v in similar:
-            # Don't show this concert as similar
-            if s == self.id:
-                continue
-            concert = Concert.objects.get(pk=s)
-            works = [Work.objects.get(pk=w) for w in v["works"]]
-            raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
-            taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
-            artists = [Artist.objects.get(pk=a) for a in v["artists"]]
-            ret.append((concert,
-                {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
+        try:
+            similar = search.get_similar_concerts(wid, rid, tid, aid)
+            similar = sorted(similar, reverse=True,
+                    key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
+
+            similar = similar[:10]
+            for s, v in similar:
+                # Don't show this concert as similar
+                if s == self.id:
+                    continue
+                concert = Concert.objects.get(pk=s)
+                works = [Work.objects.get(pk=w) for w in v["works"]]
+                raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
+                taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
+                artists = [Artist.objects.get(pk=a) for a in v["artists"]]
+                ret.append((concert,
+                    {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
+        except pysolr.SolrError:
+            # TODO: Should show an error message
+            pass
 
         return ret
 
