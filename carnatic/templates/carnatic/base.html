@@ -1,5 +1,4 @@
 {% load staticfiles %}
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -14,79 +13,86 @@
         <meta name="google" content="notranslate" />
         <meta http-equiv="Content-Language" content="en_US" />
 
-        <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>-->
-        <link href='{% static 'carnatic/css/font.css' %}' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
+        {% if debug %}
+        <link href="{% static 'carnatic/css/font.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
+        {% load less %}
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/main.less' %}" />
+        {% else %}
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
+        {% endif %}
 
-		<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/360player.css' %}" />
-		<!-- soundManager.useFlashBlock: related CSS -->
-		<link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/flashblock.css' %}" />
-    {% if not request.debug %}
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/360player.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/flashblock.css' %}" />
+        {% if not debug %}
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-45126878-1', 'upf.edu');
-      ga('send', 'pageview');
+          ga('create', 'UA-45126878-1', 'upf.edu');
+          ga('send', 'pageview');
 
-    </script>
-    {% endif %}
+        </script>
+        {% endif %}
         <script src="{% static 'carnatic/js/vendor/modernizr-2.6.2.min.js' %}"></script>
+        {% if debug %}
         <script src="{% static 'carnatic/js/vendor/jquery-1.9.1.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
-        <script src="{% static 'carnatic/js/vendor/jquery.isotope.min.js' %}"></script>
+        {% else %}
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+        {% endif %}
+        <script src="{% static 'carnatic/js/vendor/packery.pkgd.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/berniecode-animator.js' %}"></script>
+        <script src="{% static 'carnatic/js/soundmanager2.js' %}"></script>
+        <script src="{% static 'carnatic/js/360player.js' %}"></script>
 
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 
-		<!-- Apache-licensed animation library -->
-		<script src="{% static 'carnatic/js/berniecode-animator.js' %}"></script>
-
-
-		<script src="{% static 'carnatic/js/soundmanager2.js' %}"></script>
-		<script src="{% static 'carnatic/js/360player.js' %}"></script>
-
-		<script>
-			$(document).ready(function() {
-
+        <script>
+            $(document).ready(function() {
                 soundManager.setup({
                   //useFlashBlock: true,
                   url: "{% static 'carnatic/swf/' %}"
                 });
 
-				$("#playback_dialog").dialog({
-				  autoOpen: false,
-				  show: {
-					effect: "blind",
-					duration: 100
-				  },
-				  hide: {
-					effect: "explode",
-					duration: 100
-				  }
-				});
+                $("#playback_dialog").dialog({
+                  autoOpen: false,
+                  show: {
+                    effect: "blind",
+                    duration: 100
+                  },
+                  hide: {
+                    effect: "explode",
+                    duration: 100
+                  }
+                });
 
-				$(".player").click(function() {
-					$("#playback_dialog").dialog("open");
-				});
+                $(".player").click(function() {
+                    $("#playback_dialog").dialog("open");
+                });
 
-				$("#aboutdialog").dialog({
-				  autoOpen: false,
-				});
+                $("#aboutdialog").dialog({
+                  autoOpen: false,
+                });
 
                 $("#aboutbutton").click(function() {
                     $("#aboutdialog").dialog("open");
                 });
 
-				$( "#icon" ).click(function() {
-					$( "#playback_dialog" ).dialog( "open" );
-				});
+                $( "#icon" ).click(function() {
+                    $( "#playback_dialog" ).dialog( "open" );
+                });
 
-			});
-		</script>
+            });
+        </script>
         {% block script %}
         {% endblock %}
         {% block extra_head %}
@@ -94,15 +100,15 @@
     </head>
     <body>
 
-		<div id="playback_dialog" title="Audio playback">
-		<p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
-	    </div>
+        <div id="playback_dialog" title="Audio playback">
+        <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
+        </div>
 
-		<div id="aboutdialog" title="Dunya">
+        <div id="aboutdialog" title="Dunya">
             <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories. For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a></p>
-	    </div>
+        </div>
 
-    	<!-- //////  HEADER BLOCK  ////// -->
+        <!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
             <div id="logo">
@@ -110,39 +116,39 @@
                 <img src="{% static 'carnatic/img/logoDunya.png' %}">
             </a>
             </div>
-            	<div id="globalsearch">
+                <div id="globalsearch">
                     <form method="get" action="/carnatic">
                         <input id="searchbox" type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
-	            	<button type="submit" class="button"/>
+                    <button type="submit" class="button"/>
                 </form>
-            	</div><!-- globalserach -->
-            	<div id="globalMusic">
-            		<label>Exploring music style</label>
-            		<span id="gmSelected">Carnatic</span>
-            	</div><!-- globalmusic -->
+                </div><!-- globalserach -->
+                <div id="globalMusic">
+                    <label>Exploring music style</label>
+                    <span id="gmSelected">Carnatic</span>
+                </div><!-- globalmusic -->
                 <nav id="mainmenu">
-			<a href="#" id="aboutbutton">About</a>
-			{% if user.is_authenticated %}
-				<div href="#" id="user">
-					<a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
-				    <div id="userOptions">
-				    	<div id="userArrow"></div>
-				    	<h3>Hi <b>{{ user.username }}!</b></h3>
-					    <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">Logout</a>
-				    </div>
+            <a href="#" id="aboutbutton">About</a>
+            {% if user.is_authenticated %}
+                <div href="#" id="user">
+                    <a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+                    <div id="userOptions">
+                        <div id="userArrow"></div>
+                        <h3>Hi <b>{{ user.username }}!</b></h3>
+                        <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">Logout</a>
+                    </div>
 
-			    </div>
-			{% else %}
-				<div href="#" id="guest">
-					<a href="#">Login<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
-				    <div id="guestOptions">
-				    	<div id="userArrow"></div>
-				    	<h3>Hi! what do you want to do?</h3>
+                </div>
+            {% else %}
+                <div href="#" id="guest">
+                    <a href="#">Login<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+                    <div id="guestOptions">
+                        <div id="userArrow"></div>
+                        <h3>Hi! what do you want to do?</h3>
                         <a href="{% url 'social-auth-login' %}?next={% firstof request.path '/' %}">Login</a>
-					    <a href="{% url 'social-auth-register' %}">Register</a>
-				    </div>
-				</div>
-			{% endif %}
+                        <a href="{% url 'social-auth-register' %}">Register</a>
+                    </div>
+                </div>
+            {% endif %}
                 </nav>
                 <div class="clearfix"></div>
             </header>
@@ -156,20 +162,20 @@
 
         <div id="footage">
 
-        	<!-- //////////////// -->
-        	<!-- FILTER BASE MODEL -->
-        	<!-- //////////////// -->
+            <!-- //////////////// -->
+            <!-- FILTER BASE MODEL -->
+            <!-- //////////////// -->
 
-        	<div id="filterModel" class="filters">
-        		<div class="filterBall shadow1">
-        			<span>new filter</span>
-        			<div class="arrow"></div>
-        			<div class="filterSummary shadow1">No selection yet</div>
-        			<div class="closeFilter"></div><div class="resizeFilter"></div>
-        		</div>
+            <div id="filterModel" class="filters">
+                <div class="filterBall shadow1">
+                    <span>new filter</span>
+                    <div class="arrow"></div>
+                    <div class="filterSummary shadow1">No selection yet</div>
+                    <div class="closeFilter"></div><div class="resizeFilter"></div>
+                </div>
                 <!--<div class="formFilter"></div>-->
-	            <div class="filterList filterGlobalList"></div>
-        	</div>
+                <div class="filterList filterGlobalList"></div>
+            </div>
         </div>
 
     </body>
