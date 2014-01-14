@@ -4,26 +4,26 @@
 
 
 
-.formSection {
-	cursor: pointer;
-	background: url("../img/formSectionClose.png") 98% 4px no-repeat;
-	padding:5px;
-	padding-right: 10px;
-	padding-left: 10px;
-	position: relative;
-	display: block;
-	font-weight: bold;
+.formSection { 
+	cursor: pointer; 
+	background: url("../img/formSectionClose.png") 98% 4px no-repeat; 
+	padding:5px; 
+	padding-right: 10px; 
+	padding-left: 10px; 
+	position: relative; 
+	display: block; 
+	font-weight: bold; 
 }
-.formSectionText {
-	cursor: pointer;
-	background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat;
-	background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat;
-	padding:5px;
-	padding-right: 10px;
-	padding-left: 10px;
-	width: 100%;
-	position: relative;
-	display: block;
+.formSectionText { 
+	cursor: pointer; 
+	background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; 
+	background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; 
+	padding:5px; 
+	padding-right: 10px; 
+	padding-left: 10px; 
+	width: 100%; 
+	position: relative; 
+	display: block; 
 	border-bottom: 2px solid #ccc;
 }
 
@@ -34,11 +34,11 @@ fieldset { margin-bottom: 6px; }
 .formSectionOpen { -webkit-border-bottom-left-radius:0px; -webkit-border-bottom-right-radius:0px; -moz-border-bottom-left-radius:0px; -moz-border-bottom-right-radius:0px; border-bottom-left-radius:0px; border-bottom-right-radius:0px; }
 .filterList h2 { margin: 8px; font-size: 17px; background: #777; border-radius: 10px; padding: 4px; font-weight: normal; padding-left: 10px; color: #dcdcdc; }
 .ui-slider { margin-bottom: 12px; margin-top: 13px; margin-right:20px; margin-left: 20px; }
-.formFilterClosed { width: 0px !important; padding:0px !important; }
-.filterListClosed { width: 0px !important; }
+.formFilterClosed { width: 0px !important; padding:0px !important; } 
+.filterListClosed { width: 0px !important; } 
 
 .filterBallClosed { top: 6px !important; }
-.filterSummary {
+.filterSummary { 
 	position: absolute;
 	top: 115px;
 	padding: 10px;
@@ -50,10 +50,9 @@ fieldset { margin-bottom: 6px; }
 	color: #666;
 	width: 174px;
 	left: -30px;
-	height: 178px;
+	height: 178px;	
 	overflow-y: auto;
 	overflow-x: hidden;
-    text-transform: capitalize;
 }
 
 .filterBallClosed .filterSummary { display: block; }
@@ -73,7 +72,7 @@ fieldset { margin-bottom: 6px; }
 /* ==========================================================================
 	GLOBAL COLORS
    ========================================================================== */
-
+   
 
 /* ==========================================================================
 	BASE ELEMENTS
@@ -142,19 +141,19 @@ textarea {
 #entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
 
 /* ==========================================================================
-   HEADER
+   HEADER 
    ========================================================================== */
 
 .header-container {
-	position: relative;
-	width: 100%;
-	#logo {
-		position: relative;
-		top:8px;
-		left: 0px;
-		width:57px;
-		height: 59px;
-		float: left;
+	position: relative; 
+	width: 100%; 
+	#logo { 
+		position: relative; 
+		top:8px; 
+		left: 0px; 
+		width:57px; 
+		height: 59px; 
+		float: left; 
 		margin-left:15px;
 		margin-bottom: 13px;
 	}
@@ -163,7 +162,7 @@ textarea {
 		top:15px;
 		float: left;
 		margin-left: 15px;
-		input {
+		input {  
 			background: url("../img/searchBackground.png") 0 0 no-repeat;
 			border:none;
 			width: 411px;
@@ -175,7 +174,7 @@ textarea {
 			box-shadow: inset 0px 1px 5px #aaa;
 			.rounded(4px);
 		}
-		.button {
+		.button {  
 			background: url("../img/icon_search.png") 0 0 no-repeat;
 			width: 28px;
 			height: 29px;
@@ -185,16 +184,16 @@ textarea {
 			right: 5px;
 		}
 	}
-	#globalMusic {
+	#globalMusic { 
 		position: relative;
 		float:left;
-		top:16px;
+		top:16px; 
 		margin-left: 15px;
 		label {
 			position: relative;
 			font-size: 10px;
 		}
-		#gmSelected {
+		#gmSelected { 
 			position: absolute;
 			top:16px;
 			left: 0px;
@@ -300,7 +299,7 @@ textarea {
 	    	font-size: 12px;
 	    	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
 		    color: #221F1F;
-	    	background: #eeeded;
+	    	background: #eeeded;  
 	    	padding:15px;
 	    	z-index:40;
 	    	margin-top:5px;
@@ -323,7 +322,7 @@ textarea {
 		    	color: #000;
 		    	display: block;
 		    	white-space: nowrap;
-	    	}
+	    	}  
 	    	#userArrow {
 		    	position: absolute;
 		    	width: 27px;
@@ -331,10 +330,10 @@ textarea {
 		    	background: url("../img/userArrow.png") 0 0 no-repeat;
 		    	top: -9px;
 				right: 8px;
+	    	}	
+	    	&.open {
+		    	margin-top:0px;
 	    	}
-            &.open {
-               margin-top:0px;
-            }
 	    }
 	    #guestOptions {
             display: none;
@@ -346,7 +345,7 @@ textarea {
 	    	font-size: 12px;
 	    	box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
 		    color: #221F1F;
-	    	background: #eeeded;
+	    	background: #eeeded;  
 	    	padding:15px;
 	    	z-index:40;
 	    	margin-top:5px;
@@ -369,7 +368,7 @@ textarea {
 		    	color: #000;
 		    	display: block;
 		    	white-space: nowrap;
-	    	}
+	    	}  
 	    	#userArrow {
 		    	position: absolute;
 		    	width: 27px;
@@ -377,10 +376,10 @@ textarea {
 		    	background: url("../img/userArrow.png") 0 0 no-repeat;
 		    	top: -9px;
 				right: 8px;
+	    	}	
+	    	&.open {
+		    	margin-top:0px;
 	    	}
-            &.open {
-               margin-top:0px;
-            }
 	    }
     	li:first-child a {
    			margin-left: 0;
@@ -401,40 +400,39 @@ textarea {
 /* ==========================================================================
    FILTERS
    ========================================================================== */
-
-#filterMask {
-	position: relative;
-	width:100%; height: 300px;
-	overflow: hidden;
-	overflow-x: auto;
-	background: url("../img/cloth_alike.png") 0 0 repeat;
-	#filterArea {
-		position: relative;
-		width: 100%;
-		height: 300px;
-
-		.filterList {
-			position: relative;
-			float:left;
-			height: 300px;
-			overflow-y: auto;
-			border-left:1px solid #A7A8AC;
+      
+#filterMask { 
+	position: relative; 
+	width:100%; height: 300px; 
+	overflow: hidden; 
+	overflow-x: auto; 
+	background: url("../img/cloth_alike.png") 0 0 repeat; 
+	#filterArea { 
+		position: relative; 
+		width: 100%; 
+		height: 300px; 
+		
+		.filterList { 
+			position: relative; 
+			float:left; 
+			height: 300px; 
+			overflow-y: auto; 
+			border-left:1px solid #A7A8AC; 
 			border-right:1px solid #A7A8AC;
-			ul {
-				list-style: none;
-				margin: 0px;
-				padding: 0px;
-				li {
+			ul { 
+				list-style: none; 
+				margin: 0px; 
+				padding: 0px; 
+				li { 
 					color: #fff;
 					text-shadow: 1px 1px 1px #555555;
-					font-weight: bold;
+					font-weight: bold; 
 					padding: 9px 9px 9px 24px;
-					text-transform: capitalize;
-					cursor:pointer;
+					text-transform: capitalize; 
+					cursor:pointer; 
 					margin: 0px;
-					&.selected {
-						//color:#fff;
-						background-image: url("../img/sticker.png");
+					&.selected { 
+                        background-image: url("../img/sticker.png");
                         background-repeat: no-repeat;
                         background-position: 0 50%;
 					}
@@ -471,74 +469,74 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			}
 			ul {
 				li {
-					.colorCode {
-						position: relative;
-						display: inline-block;
-						width:18px;
-						height: 18px;
+					.colorCode { 
+						position: relative; 
+						display: inline-block; 
+						width:18px; 
+						height: 18px; 
 						.rounded(20px);
-						background: #fff;
-						margin-right: 5px;
-						top: 3px;
-						opacity: 1;
+						background: #fff; 
+						margin-right: 5px; 
+						top: 3px; 
+						opacity: 1; 
 						border: 5px solid #f00;
-					}
-				}
+					}		
+				}	
 			}
 		}
-		.filters {
-			.filterBall {
-				-webkit-transition: all 0.5s ease 0;
-				-moz-transition: all 0.5s ease 0;
-				-o-transition: all 0.5s ease 0;
-				transition:all 0.5s ease 0;
-				position: relative;
-				float: left;
-				width: 120px;
-				height: 120px;
-				.rounded(120px);
-				display: table;
-				top: 86px;
-				margin-left: 30px;
-				cursor: pointer;
-				margin-right: 25px;
-				&:hover {
+		.filters { 
+			.filterBall { 
+				-webkit-transition: all 0.5s ease 0; 
+				-moz-transition: all 0.5s ease 0; 
+				-o-transition: all 0.5s ease 0; 
+				transition:all 0.5s ease 0; 
+				position: relative; 
+				float: left; 
+				width: 120px; 
+				height: 120px; 
+				.rounded(120px); 
+				display: table; 
+				top: 86px; 
+				margin-left: 30px; 
+				cursor: pointer; 
+				margin-right: 25px; 
+				&:hover { 
 					box-shadow: 0px 0px 10px #000;
 				}
 				&:hover .arrowClosed{ display: block; }
 				&:hover .arrow{ display: block; }
-				& span {
-					display: table-cell;
-					position: relative;
-					top:0px;
-					left: 0px;
-					width: 100%;
-					height: 100%;
-					vertical-align: middle;
-					text-align: center;
-					padding: 0px;
-					color:#fff;
-					text-shadow: 0px 1px 3px black;
-					font-size: 16px;
-					text-transform: uppercase;
+				& span { 
+					display: table-cell; 
+					position: relative; 
+					top:0px; 
+					left: 0px; 
+					width: 100%; 
+					height: 100%; 
+					vertical-align: middle; 
+					text-align: center; 
+					padding: 0px; 
+					color:#fff; 
+					text-shadow: 0px 1px 3px black; 
+					font-size: 16px; 
+					text-transform: uppercase; 
 				}
-				& .arrow {
-					position: absolute; top:50%;
-					margin-top:-15px;
-					right: -11px;
-					background: url("../img/greyTriangle.png") 0 0 no-repeat;
-					width: 15px;
-					height: 30px;
-					display: none;
+				& .arrow { 
+					position: absolute; top:50%; 
+					margin-top:-15px; 
+					right: -11px; 
+					background: url("../img/greyTriangle.png") 0 0 no-repeat; 
+					width: 15px; 
+					height: 30px; 
+					display: none; 
 				}
-				& .arrowClosed {
-					position: absolute;
-					top:50%;
-					margin-top:-15px;
-					right: -20px;
-					background: url("../img/greyTriangleClosed.png") 0 0 no-repeat;
-					width: 15px;
-					height: 30px;
+				& .arrowClosed { 
+					position: absolute; 
+					top:50%; 
+					margin-top:-15px; 
+					right: -20px; 
+					background: url("../img/greyTriangleClosed.png") 0 0 no-repeat; 
+					width: 15px; 
+					height: 30px; 
 					display: none;
 				}
 				& .filterSummary {
@@ -546,33 +544,33 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					& b { color: #000; }
 				}
 			}
-			.formFilter {
-				position: relative;
-				float:left;
-				width:240px;
-				height: 300px;
-				overflow-y: auto;
-				padding:15px;
-				overflow-y: auto;
-				color:#000;
-				& fieldset span.output {
-					color: #333;
-					display: block;
-					text-align: center;
-					background: #fff;
-					position: relative;
+			.formFilter { 
+				position: relative; 
+				float:left; 
+				width:240px; 
+				height: 300px; 
+				overflow-y: auto; 
+				padding:15px; 
+				overflow-y: auto; 
+				color:#000; 
+				& fieldset span.output { 
+					color: #333; 
+					display: block; 
+					text-align: center; 
+					background: #fff; 
+					position: relative; 
 				}
-				& .filterList {
-					max-height: 234px;
-					height: auto;
+				& .filterList { 
+					max-height: 234px; 
+					height: auto; 
 				}
-				& .formFilterItem {
-					display: none;
-					background: #fff;
-					background: rgba(256,256,256,0.8);
-					width: 100%;
-					border: 1px solid #ccc;
-					overflow: hidden;
+				& .formFilterItem { 
+					display: none; 
+					background: #fff; 
+					background: rgba(256,256,256,0.8); 
+					width: 100%; 
+					border: 1px solid #ccc; 
+					overflow: hidden; 
 					input[type="text"] {
 						padding: 7px;
 						padding-top:8px;
@@ -589,9 +587,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	}
 	#breadcrumb { display: none; }
 	&.querybar {
-		position: relative;
+		position: relative; 
 		width:100%;
-		height: 64px;
+		height: 64px; 
 		background: url("../img/compactBar.png") 0 0 repeat-x;
 		box-shadow: inset 0px 0px 8px #444;
 		.arrowItem {
@@ -599,7 +597,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		}
 		#filterArea {
 			#entitiesBall, #entitiesList, .filters {
-				display: none;
+				display: none;	
 			}
 		}
 		#breadcrumb {
@@ -619,44 +617,44 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					top:10px;
 					left:0px;
 				}
-				&.artist .breadarrow {
-					border-left-color: darken(@artist_color, 10%);
+				&.artist .breadarrow { 
+					border-left-color: darken(@artist_color, 10%); 
 					&:after { border-left-color: @artist_color; }
 				}
-				&.concert .breadarrow {
-					border-left-color: darken(@concert_color, 10%);
+				&.concert .breadarrow { 
+					border-left-color: darken(@concert_color, 10%); 
 					&:after { border-left-color: @concert_color; }
 				}
-				&.work .breadarrow {
-					border-left-color: darken(@work_color, 10%);
+				&.work .breadarrow { 
+					border-left-color: darken(@work_color, 10%); 
 					&:after { border-left-color: @work_color; }
 				}
-				&.instrument .breadarrow {
-					border-left-color: darken(@instrument_color, 10%);
+				&.instrument .breadarrow { 
+					border-left-color: darken(@instrument_color, 10%); 
 					&:after { border-left-color: @instrument_color; }
 				}
-				&.raaga .breadarrow {
-					border-left-color: darken(@raaga_color, 10%);
+				&.raaga .breadarrow { 
+					border-left-color: darken(@raaga_color, 10%); 
 					&:after { border-left-color: @raaga_color; }
 				}
-				&.taala .breadarrow {
-					border-left-color: darken(@taala_color, 10%);
+				&.taala .breadarrow { 
+					border-left-color: darken(@taala_color, 10%); 
 					&:after { border-left-color: @taala_color; }
 				}
-				&.recording .breadarrow {
-					border-left-color: darken(@recording_color, 10%);
+				&.recording .breadarrow { 
+					border-left-color: darken(@recording_color, 10%); 
 					&:after { border-left-color: @recording_color; }
 				}
-				&.composer .breadarrow {
-					border-left-color: darken(@composer_color, 10%);
+				&.composer .breadarrow { 
+					border-left-color: darken(@composer_color, 10%); 
 					&:after { border-left-color: @composer_color; }
 				}
-				&.entity_9 .breadarrow {
-					border-left-color: darken(@entity_9_color, 10%);
+				&.entity_9 .breadarrow { 
+					border-left-color: darken(@entity_9_color, 10%); 
 					&:after { border-left-color: @entity_9_color; }
 				}
-				&.entity_10 .breadarrow {
-					border-left-color: darken(@entity_10_color, 10%);
+				&.entity_10 .breadarrow { 
+					border-left-color: darken(@entity_10_color, 10%); 
 					&:after { border-left-color: @entity_10_color; }
 				}
 				span {
@@ -665,7 +663,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					padding-left: 5px;
 					vertical-align: middle;
 					a {
-						text-decoration: none;
+						text-decoration: none; 
 						color:#222;
 						display: inline-block;
 						padding:2px;
@@ -686,7 +684,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	}
 }
 
-#tab {
+#tab {  
 	position: absolute;
 	top: 350px;
 	left: 0px;
@@ -710,7 +708,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 /* ==========================================================================
-   DETAIL
+   DETAIL 
    ========================================================================== */
 
 #detail {
@@ -732,32 +730,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			width:220px;
 			height: 296px;
 			padding: 10px;
-			#icon {
-				position: absolute;
+			#previewicon { 
+				position: absolute; 
 				bottom: 3px;
-				left: 3px;
-				width: 87px;
-				height: 90px;
-				background: url("../img/playButtonBig.png") 0 0 no-repeat;
-				z-index: 4;
-			}
-			#icon1 {
-				position: absolute;
-				bottom: 3px;
-				left: 3px;
-				z-index: 4;
-				.player {
-					background: url("../img/playButton.png") 0 50% no-repeat;
-					padding-left: 38px;
-					padding-top: 10px;
-					padding-bottom: 11px;
-				}
+				left: 3px; 
+				z-index: 4; 
+                &.disabled {
+                    width: 87px; 
+                    height: 90px; 
+                    background: url("../img/playButtonBig.png") 0 0 no-repeat; 
+                    cursor: pointer;
+                }
 			}
 			#innerSummary { position: absolute; z-index: 3; display: table; width: 100%; height: 100%; }
 			#summaryBack {
 				position: absolute;
 				top: 0px;
-				left: 0px;
+				left: 0px; 
 				width: 100%;
 				height: 100%;
 				z-index: 2;
@@ -767,7 +756,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			#summaryBack2 {
 				position: absolute;
 				top: 0px;
-				left: 0px;
+				left: 0px; 
 				width: 100%;
 				height: 100%;
 				z-index: -2;
@@ -775,52 +764,49 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			span{
 				z-index: 2;
 				vertical-align: middle;
-				display: table-cell;
+				display: table-cell;			
 				text-align: right;
-				h1 {
-					font-size: 22px;
-					line-height: 22px;
-					margin:0px;
+				h1 { 
+					font-size: 22px; 
+					line-height: 22px; 
+					margin:0px; 
 					color:#fff;
 					text-shadow: 1px 1px 4px #000;
 				}
-				h2 {
+				h2 { 
 					font-size: 16px;
-					font-weight: normal;
-					margin:0px;
+					font-weight: normal; 
+					margin:0px; 
 					line-height: 16px;
 					margin-top: 7px;
 					a { text-decoration: none; }
 				}
-				h3 {
-					color:#fff;
-					margin:0px;
-					font-weight: normal;
+				h3 { 
+					color:#fff; 
+					margin:0px; 
+					font-weight: normal; 
 					a { color: #fff; text-decoration: none; }
 				}
 				#icon {}
 			}
 		}
 		.bigImage {
-			position: relative;
+			position: relative; 
 			float: left;
 			width: 296px;
 			height: 296px;
 			overflow: hidden;
-			background: white;
+			background: #333;
 			z-index: 2;
             img {
-                width: 296px;
-                top: 0;
-                margin: auto;
-                position: absolute;
+                width: 297px;
             }
 		}
 		#image {
 			background: url("../img/artistImage.jpg") 0 0 no-repeat;
 		}
 		#meta {
-			position: relative;
+			position: relative; 
 			float: left;
 			width: 100%;
 			margin-left:-516px;
@@ -830,21 +816,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				height: 100%;
 				margin-left: 516px;
 				.metaMask {
-					position: relative;
+					position: relative;					
+					width: auto;
 					height: 100%;
 					overflow-x: auto;
 					overflow-y: hidden;
 					.metaContainer {
-    					position: relative;
+					position: relative;
+					width: 3000px;
 						.metaDetails {
-                            .withpadding {
-                                padding-left: 10px;
-                                padding-top: 10px;
-                            }
 							display: inline-block;
 							position: relative;
 							float:left;
-							width:300px;
+							width:300px;	
 							height: 297px;
 							border-right:1px solid @grisD;
 							font-size:11px;
@@ -854,7 +838,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 								overflow-y: auto;
 								height: 100%;
 							}
-							h3 {
+							h3 { 
 								top:0px;
 								padding: 10px;
 								padding-top: 5px;
@@ -870,83 +854,52 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 								font-size: 9px;
 								font-weight: normal;
 							}
-							span {
-								display: block;
-								margin:10px;
-                                overflow-y: auto;
-								.player {
+							span { 
+								display: block; 
+								margin:10px; 
+								.player { 
 									background: url("../img/playButton.png") 0 50% no-repeat;
 									padding-left: 38px;
 									padding-top: 10px;
 									padding-bottom: 11px;
 								}
-								a {
+								a { 
 									color: @vermell;
 									display: block;
+									margin-bottom:8px;
 								}
 							}
 							span.list{
-								label {
-									float:left;
-									width:28%;
-									text-align: right;
-									clear: left;
-									margin-right: 4px;
+								label { 
+									float:left; 
+									width:28%; 
+									text-align: right; 
+									clear: left; 
+									margin-right: 4px; 
 									font-weight: bold;
-                                    margin-bottom:8px;
 								}
-								b {
-									float: left;
-									font-weight: normal;
-									width:68%;
+								b { 
+									float: left; 
+									font-weight: normal; 
+									width:68%; 
+								}
+							}
+							span.list2{
+								label { 
+									display: block;
+								}
+								b { 
+									display: block;
 								}
 							}
 							&.narrow { width: 450px; }
 							&.close { width: 150px; }
-                        // TODO: This duplicates badge miniitem
-                        // we can combine them somehow
-                        .miniitem {
-                            height: auto !important;
-                            left: 0px;
-                            position: relative;
-                            top: 0px;
-                            width:100% !important;
-                            background: none;
-                            margin-top: 5px;
-                            padding:6px;
-                            padding-right: 15px;
-                            padding-bottom:5px;
-                            min-height: 50px;
-                            label {
-                                font-size: 12px;
-                                line-height: 14px;
-                                display: block;
-                                color: rgba(0,0,0,0.5);
-                                b {
-                                    display: block;
-                                    color: #000;
-                                }
-                            }
-                            .disco {
-                                float: left;
-                                margin-right: 8px;
-                                margin-bottom: 15px;
-                                height: 40px;
-                                overflow: hidden;
-                                img {
-                                    width: 40px;
-                                }
-                        }
-            }
 						}
-                        .recordingDetails {
-                            padding-top: 0px;
-                        }
 						.splitMeta {
 							display: inline-block;
 							position: relative;
 							float:left;
-							width:300px;
+							width:300px;	
 							height: 297px;
 							border-right:1px solid @grisD;
 							font-size:11px;
@@ -957,7 +910,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 									display: inline-block;
 									position: relative;
 									float:left;
-									width:100%;
+									width:100%;	
 									height: 142px;
 									//font-size:11px;
 									padding-top:24px;
@@ -967,7 +920,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 										overflow-y: auto;
 										height: 100%;
 									}
-									h3 {
+									h3 { 
 										top:0px;
 										padding: 10px;
 										padding-top: 5px;
@@ -983,33 +936,41 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 										font-size: 10px;
 										font-weight: normal;
 									}
-									span {
-										display: block;
-										margin:10px;
-										.player {
+									span { 
+										display: block; 
+										margin:10px; 
+										.player { 
 											background: url("../img/playButton.png") 0 50% no-repeat;
 											padding-left: 38px;
 											padding-top: 10px;
 											padding-bottom: 11px;
 										}
-										a {
+										a { 
 											color: @vermell;
 											display: block;
 											margin-bottom:8px;
 										}
 									}
 									span.list{
-										label {
-											float:left;
-											width:28%;
-											text-align: right;
-											clear: left;
-											margin-right: 4px;
+										label { 
+											float:left; 
+											width:28%; 
+											text-align: right; 
+											clear: left; 
+											margin-right: 4px; 
 										}
-										b {
-											float: left;
-											font-weight: normal;
-											width:68%;
+										b { 
+											float: left; 
+											font-weight: normal; 
+											width:68%; 
+										}
+									}
+									span.list2{
+										label { 
+											display: block;
+										}
+										b { 
+											display: block;
 										}
 									}
 								}
@@ -1019,7 +980,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			}
 		}
 	}
-
+	
 	.thedata {
 		border-bottom:1px solid @gris;
 		display: block;
@@ -1027,7 +988,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		.leftdata {
 			width:220px;
 			float:left;
-			h3 {
+			h3 { 
 				font-weight: normal;
 				text-align: right;
 				font-size: 14px;
@@ -1038,9 +999,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			float:left;
 			width: 100%;
 			margin-left: -220px;
-			.scrolldata { overflow-x: auto;
+			.scrolldata { overflow-x: auto; 
 				.scrollblock { width: 100%; }
-                .tracklist { overflow-y: none; }
 			}
 			.innerrightdata {
 				padding: 10px;
@@ -1058,11 +1018,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					height: 100px;
 					.disc {
 						float: left;
-						width: 127px;
+						width: 127px; 
 						height: 90px;
 						margin-right:10px;
 					}
-					.desc {
+					.desc { 
 						p { margin:0px; color: #888;}
 						b {font-weight: normal; display: block; color: #000; }
 					}
@@ -1074,14 +1034,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					margin-right: 38px;
 					.disc {
 						float: left;
-						width: 127px;
+						width: 127px; 
 						height: 123px;
 						margin-right:10px;
                         img {
                             width:123px;
                         }
 					}
-					.desc {
+					.desc { 
 						p { margin:0px; color: #888;}
 						b {font-weight: normal; display: block; color: #000; }
 					}
@@ -1098,14 +1058,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					margin-left: 10px;
 					.photo {
 						float: left;
-						width: 55px;
+						width: 55px; 
 						height: 63px;
 						margin-right:10px;
                         img {
                             width: 55px;
                         }
 					}
-					.desc {
+					.desc { 
 						p { margin:0px; color: #888; }
 						p a { color: @gris6 !important; }
 						b { font-weight: bold; display: block; }
@@ -1118,11 +1078,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					border-bottom: 1px solid darken(@grisf6,8%);
 					margin-bottom: -1px;
 					margin-top: 1px;
-					width: 300px !important;
+					width: 300px !important; 
 					h4 {
 						margin: 0px;
 						margin-bottom:4px;
-
+						
 					}
 				}
 				.instrumentCell {
@@ -1151,7 +1111,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 						margin: 0px;
 						margin-bottom:4px;
 					}
-				} /*
+				}
 				.artist {
 					border-right:1px solid darken(@grisf6,8%);
 					border-bottom:1px solid darken(@grisf6,8%);
@@ -1161,13 +1121,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					margin-bottom: -1px;
 					margin-top:1px;
 					overflow-y: auto;
-					.artistFoto {
+					.artistFoto { 
 						position: relative;
 						width: 51px;
 						height: 63px;
 						float:left;
 					}
-					.artistName {
+					.artistName { 
 						position: relative;
 						width: 150px;
 						height: 63px;
@@ -1179,20 +1139,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 					.artist2 { background: url("../img/artist2.jpg") 0 0 no-repeat; }
 					.artist3 { background: url("../img/artist3.jpg") 0 0 no-repeat; }
 					.artist4 { background: url("../img/artist4.jpg") 0 0 no-repeat; }
-				} */
+				}
 			}
 		}
 	}
-    &.taala .bigImage img {
-        // Taalas need to be center-aligned
-        bottom: 0;
-    }
-
 }
 
-#tonic {
+#tonic {	
 	.inner {
-		text-align: center;
+		text-align: center;	
 		padding-top:6px;
 		span {
 			display: inline-block !important;
@@ -1202,7 +1157,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			.rounded (4px);
 			font-size: 10px;
 			text-align: center;
-			margin: 2px !important;
+			margin: 2px !important; 
 			border: 2px solid darken(@concert_color, 10%);
 			box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
 			b {
@@ -1230,20 +1185,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	#queryCont {
 		background: #fff url("../img/icon_search.png") 0 50% no-repeat;
 		#query {
-			position: relative;
-			display: inline-block;
-			width: 80px;
-			height: 80px;
+			position: relative; 
+			display: inline-block; 
+			width: 80px; 
+			height: 80px; 
 			.rounded(40px);
 			background: #fff url("../img/playSearch.png") 53% 53% no-repeat;
-			margin-right: 5px;
-			top: 3px;
-			opacity: 1;
+			margin-right: 5px; 
+			top: 3px; 
+			opacity: 1; 
 			border: 5px solid #EEEEEE;
 			margin-top:8px;
 			margin-bottom:5px;
 			&:hover {
-
+				
 			}
 		}
 	}
@@ -1288,8 +1243,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				color:#bbb;
 				.shadow1;
 			}
-			b {
-				font-size: 12px;
+			b { 
+				font-size: 12px; 
 				color: #000;
 				text-shadow: none;
 				display: block;
@@ -1318,7 +1273,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	}
 }
 .resultsTitle { margin: 10px 5px 0 11px; }
-.inforight {
+#results {
 	&>div {
 		float:left;
 		width: 220px;
@@ -1329,7 +1284,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		position: relative;
 		margin-top: 10px;
 		margin-left: 10px;
-		background: #f6f6f6;
+		background: #f6f6f6; 
 		.shadow1;
 		&.open {
 			width: 450px;
@@ -1374,7 +1329,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             float: left;
             }
           }
-
+          
           h3 {
             margin-top: 15px;
             margin-bottom: 5px;
@@ -1408,7 +1363,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
           }
   			}
   			&.similar .left {
-            overflow: scroll;
+            overflow: visible;
             border-right: none;
           }
   			.right {
@@ -1424,43 +1379,44 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             margin: 5px;
             color: rgba(0,0,0,0.5);
           }
-  			}
-            .miniitem {
-                height: auto !important;
-                left: 0px;
-                position: relative;
-                top: 0px;
-                width:100% !important;
-                background: none;
-                margin-top: 5px;
-                padding:6px;
-                padding-right: 15px;
-                padding-bottom:5px;
-                min-height: 50px;
-                label {
-                    font-size: 12px;
-                    line-height: 14px;
-                    display: block;
-                    color: rgba(0,0,0,0.5);
-                    b {
-                        display: block;
-                        color: #000;
-                    }
-                }
-                .disco {
-                    float: left;
-                    margin-right: 8px;
-                    margin-bottom: 15px;
-                    img {
-                        width: 40px;
-                    }
+  			} 
+  			.miniitem {
+  			  height: auto !important;
+          left: 0px;
+          position: relative;
+          top: 0px;
+          width:100% !important;
+          background: none;
+          margin-top: 5px;
+          padding:6px;
+    			padding-right: 15px;
+    			padding-bottom:5px;
+    			min-height: 50px;
+          label {
+            font-size: 12px;
+            line-height: 14px;
+            display: block;
+            color: rgba(0,0,0,0.5);
+            b {
+              display: block;
+              color: #000;
             }
-            }
+          }
+  			  .disco {
+  			    float: left;
+  			    margin-right: 8px;
+  			    margin-bottom: 15px; 
+            a {
+              background: none;
+              img { width: 40px !important; }
+              }
+          }
+        }
 			}
 			.smallPlay {
     		position: absolute;
     		left: 200px;
-            top: 2px;
+        top: 2px;
     		width: 23px;
     		height: 23px;
     		background: url("../img/smallPlay.png") 0 0  no-repeat;
@@ -1474,7 +1430,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 			width: 207px !important;
 			height: 205px !important;
 			overflow: hidden;
-			a {
+			a { 
 				position: relative;
 				width: 100%;
 				height: 100%;
@@ -1482,14 +1438,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				left: 0px;
 				display: block;
 				background: #fff;
-				img {
+				img { 
 					width: 207px !important;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    margin: auto;
-                    position: absolute;
 				}
 			}
 		}
@@ -1502,11 +1452,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		    width: 100%;
 		    font-size: 11px;
 		    line-height: 12px;
-		    a {
-		      text-decoration: none;
+		    a { 
+		      text-decoration: none; 
 		      color: rgba(0,0,0,0.5);
 		      b {
-		        color:#000;
+		        color:#000; 
 		      }
 		    }
 			.plus {
@@ -1519,10 +1469,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 				cursor: pointer;
 			}
 			p { margin:0px; color: #666;}
-			.title {
-			  font-weight: bold;
-			  display: block;
-			  color: #000;
+			.title { 
+			  font-weight: bold; 
+			  display: block; 
+			  color: #000; 
 			  text-decoration: none;
 			  b {
   			  font-size: 14px;
@@ -1537,10 +1487,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
         opacity: 0.6;
         text-decoration: none;
       }
-			a:hover { text-decoration: underline; }
+			a:hover { text-decoration: underline; } 
 		}
 		.descOpen, .lists {
-			display: none;
+			display: none; 
 		}
 		.smallPlay {
   		position: absolute;
@@ -1558,7 +1508,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		&:hover { background: darken( @recording_color, 20% ); }
 		.disc {
 			float: left;
-			width: 127px;
+			width: 127px; 
 			height: 90px;
 			margin-right:10px;
 		}
@@ -1569,11 +1519,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		background: darken( @artist_color, 20% );
 
 	}
-	.concert {
+	.concert { 
 	  .desc { background: @concert_color; }
 		background: darken( @concert_color, 20% );
   }
-  .work {
+  .work { 
 	  .desc { background: @work_color; }
 		background: darken( @work_color, 20% );
   }
@@ -1584,7 +1534,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		h4 {
 			margin: 0px;
 			margin-bottom:4px;
-
+			
 		}
 	}
 	.instrument {
@@ -1631,13 +1581,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		//background: @artist_color;
 		.desc { background: @artist_color; }
 		background: darken( @artist_color, 20% );
-		.artistFoto {
+		.artistFoto { 
 			position: relative;
 			width: 51px;
 			height: 63px;
 			float:left;
 		}
-		.artistName {
+		.artistName { 
 			position: relative;
 			width: 150px;
 			height: 63px;
@@ -1647,9 +1597,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 		}
 	}
 	.similarity {
-	  h2 {
-	    font-weight: normal;
-	    color: #fff;
+	  h2 { 
+	    font-weight: normal; 
+	    color: #fff; 
 	    font-size: 11px;
 	    text-align: center;
       margin-bottom: 6px;
@@ -1694,7 +1644,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
       }
     }
 	}
-	.similarList {
+	.similarList { 
   	height: 100%;
   	position: absolute;
   	width: 100%;
@@ -1750,7 +1700,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	color: #333;
 	margin-top: 100px;
 	text-align: center;
-	h1 {
+	h1 { 
 		text-shadow: 1px 2px 2px black;
 		color:#ddd;
 	}
@@ -1762,10 +1712,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	}
 	&.logCenter label {
 		text-align: center;
-	}
+	} 
 }
 
-input[type="button"], input[type="submit"], input[type="email"] {
+input[type="button"], input[type="submit"] {
 	position: relative;
 	text-align: center;
 	.rounded(5px);
@@ -1811,7 +1761,7 @@ input[type="text"], input[type="password"] {
 		#scrollrec {
 		  position: relative;
 		  width: 100%;
-		  height: 256px;
+		  height: 234px;
 		  overflow-y: auto;
 		  overflow-x: hidden;
 		  #summary {
@@ -1825,11 +1775,11 @@ input[type="text"], input[type="password"] {
 			      padding:10px;
             h1 { font-size: 16px; }
             h2 { margin-top:0px; font-size: 12px; }
-          }
+          }	
         }
       }
-		  #meta {
-			float:none;
+		  #meta { 
+			float:none; 
 			width: 100%;
 			height: auto;
 			.metaBlock {
@@ -1841,8 +1791,8 @@ input[type="text"], input[type="password"] {
   					.metaDetails {
   					  height: auto;
   						width: 100%;
-  						span {
-    						width: 100%;
+  						span { 
+    						width: 100%;				
                 label { width: 34% !important; }
   						  b { width: 64% !important; }
               }
@@ -1860,42 +1810,42 @@ input[type="text"], input[type="password"] {
 		  #control {
 			position: relative;
 			padding-left: 30px;
-			.revButton {
+			.revButton { 
 				position: relative;
 				float: left;
 				width:48px;
 				height: 50px;
 				background: url("../img/revButton.png") 0 0 repeat-y;
 				margin-top: 7px;
-				&.active:hover {
-					background: url("../img/revButton_hover.png") 0 0 repeat-y;
+				&:hover {
+					background: url("../img/revButton_hover.png") 0 0 repeat-y;	
 				}
 			}
-			.plButton {
+			.plButton { 
 				position: relative;
 				float: left;
 				width:64px;
 				height: 66px;
 				background: url("../img/plButton.png") 0 0 no-repeat;
 				&:hover {
-					background: url("../img/plButton_hover.png") 0 0 no-repeat;
+					background: url("../img/plButton_hover.png") 0 0 no-repeat;	
 				}
 				&.stop {
-					background: url("../img/stopButton.png") 0 0 no-repeat;
+					background: url("../img/stopButton.png") 0 0 no-repeat;	
 					&:hover {
-						background: url("../img/stopButton_hover.png") 0 0 no-repeat;
+						background: url("../img/stopButton_hover.png") 0 0 no-repeat;	
 					}
 				}
 			}
-			.folButton {
+			.folButton { 
 				position: relative;
 				float: left;
 				width:48px;
 				height: 50px;
 				background: url("../img/folButton.png") 0 0 repeat-y;
 				margin-top: 7px;
-				&.active:hover {
-					background: url("../img/folButton_hover.png") 0 0 repeat-y;
+				&:hover {
+					background: url("../img/folButton_hover.png") 0 0 repeat-y;	
 				}
 			}
 		}
@@ -1908,108 +1858,62 @@ input[type="text"], input[type="password"] {
 		}
 	}
 
-	.alldata {
+	.alldata { 
 		float:left;
 		width:100%;
 		margin-left: -220px;
-		.missingdata{
-			width:100%;
-			text-align: center;
-			font-size: x-large;
-			height: 500px;
-			padding-top: 50px;
-			background: url("../img/cloth_alike.png") 0 0 repeat;
-		}
 		.container {
   		margin-left: 220px;
-		
       .thedata {
   		  #rendersMask {
 				  float: left;
 					position: relative;
 					width:901px;
 					overflow-y: hidden;
-					overflow-x: hidden;
+					overflow-x: scroll;
 					#renders {
 						position: relative;
 						width: 901px;
 						#capcal {
 							position: absolute;
-							left:-5px;
+							left:0px;
 							top:0px;
-							width:8px;
+							width:13px;
 							height: 100%;
-							background: url("../img/capcal.png") 0 0  repeat-y;
-                            z-index: 1;
+							background: url("../img/capcal.png") -5px 0 repeat-y;
 						}
-						#bigWave, #bigPitch {
+						#bigWave, #bigPitch { 
 						  position: relative;
-                            height: 256px;
-							width:100%;
-                            canvas {
-                                height: 256px;
-                                border: 0;
-                                margin: 0;
-                            }
+							width:100%; 
+							img {
+								width:100%; 
+								height: 234px;
+							}
 							#zooms {
-                                position: absolute;
-                                bottom: 4px;
-                                padding-right: 4px;
-                                width: 100%;
-                                text-align: right;
-                                span {
-                                    display: block;
-                                }
-                                a {
-                                    position: relative;
-                                    display: inline-block;
-                                    color: #fff !important;
-                                    background: rgba(255, 255, 255, 0.2);
-                                    .rounded(3px);
-                                    box-shadow: 0px 1px 2px #ddd;
-                                    padding:2px;
-                                    text-decoration: none;
-                                    width: 22px;
-                                    &.selected {
-                                        background: #333;
-                                        color:#fff !important;
-                                    }
-                                }
-                            }
-                div#timecodes {
-                position: relative;
-                height:20px;
-                span.timecode1 {
-                    position: absolute;
-                    left: 0px;
-                    height: 25px;
-                    margin: 2px;
-                }
-                span.timecode2 {
-                    position: absolute;
-                    left: 220px;
-                    height: 25px;
-                    margin: 2px;
-                }
-                span.timecode3 {
-                    position: absolute;
-                    left: 445px;
-                    height: 25px;
-                    margin: 2px;
-                }
-                span.timecode4 {
-                    position: absolute;
-                    left: 670px;
-                    height: 25px;
-                    margin: 2px;
-                }
-                span.timecode5 {
-                    position: absolute;
-                    right: 0px;
-                    height: 25px;
-                    margin: 2px;
-                }
-                }
+          			position: absolute;
+          			bottom: 4px;
+          			padding-right: 4px;
+          			width: 100%;
+          			text-align: right;
+          			span {
+          				display: block;
+          			}
+          			a {
+          				position: relative;
+          				display: inline-block;
+          				color: #fff !important;
+          				background: rgba(255, 255, 255, 0.2);
+          				.rounded(3px);
+          				box-shadow: 0px 1px 2px #ddd;
+          				padding:2px;
+          				text-decoration: none;
+          				width: 22px;
+          				&.selected {
+          					background: #333;
+          					color:#fff !important;
+          				}
+          			}
+          		}
 						}
 					}
 				}
@@ -2022,16 +1926,15 @@ input[type="text"], input[type="password"] {
 						opacity: 0.5;
 						border-top:1px solid #fff;
 						border-bottom:1px solid #fff;
-						z-index:2;
 					}
 					#capcalTotal {
 						position: absolute;
-						left:-6px;
+						left:0px;
 						top:0px;
-						width:7px;
+						width:13px;
 						height: 100%;
-						z-index:3;
-						background: url("../img/capcal.png") 0 0 repeat-y;
+						z-index:2;
+						background: url("../img/capcal.png") -5px 0 repeat-y;
 					}
 				}
         .container2 {
@@ -2046,7 +1949,7 @@ input[type="text"], input[type="password"] {
             background: url("../img/controlBackground.jpg") 0 0 repeat;
              #timecode {
         			position: relative;
-        			margin: 0;
+        			margin: 0;			
         			padding: 8px;
         			display: block;
         			text-align: center;
@@ -2059,12 +1962,11 @@ input[type="text"], input[type="password"] {
         			top: 3px;
         			left: 2px;
         			width: 104px;
-                    bottom: 3px;
         			span {
-                        font-size: 11px;
-                        color: #aaa;
-                        display: block;
-                        position: relative;
+          			font-size: 11px;
+          			color: #aaa;
+          			display: block;
+          			position: relative;
         			}
             }
 
@@ -2072,52 +1974,22 @@ input[type="text"], input[type="password"] {
           .waveLabel {
             position: relative;
             margin-left: 901px;
-            height: 256px;
+            height: 234px;
             width: 100%;
-            h1 {
-              margin: 0px;
+            h1 { 
+              margin: 0px; 
               font-weight: normal;
-              padding: 10px;
-            }
-            span.tempoup {
-                position: absolute;
-                // 20% lower than midpoint
-                top:150px;
-                padding-left: 10px;
-            }
-            span.tempodown {
-                position: absolute;
-                bottom: 20px;
-                padding-left: 10px;
-            }
-            div {
               padding: 10px;
             }
           }
           .pitchLabel {
             position: relative;
             margin-left: 901px;
-            height: 256px;
+            height: 234px;
             width: 100%;
-            h1 {
-              margin: 0px;
+            h1 { 
+              margin: 0px; 
               font-weight: normal;
-              padding: 10px;
-            }
-            span.sao {
-                position: absolute;
-                // This sits at 128px, but we want the text centered
-                // so move it up just a bit.
-                top:122px;
-                padding-left: 10px;
-            }
-            span.sa {
-                font-weight:bold;
-                position: absolute;
-                top:186px;
-                padding-left: 10px;
-            }
-            div {
               padding: 10px;
             }
           }
@@ -2128,7 +2000,7 @@ input[type="text"], input[type="password"] {
 }
 
 #detail .thedata {
-  .inforight {
+  #results {
     .artist {
       border-right: none !important;
       border-bottom: none !important;
@@ -2137,7 +2009,8 @@ input[type="text"], input[type="password"] {
       margin-left: 10px;
     }
   }
-  .inforight > div.open {
+  #results > div.open { 
+    width: auto;
     height: 270px;
     .pict {
       position: relative;
@@ -2173,7 +2046,7 @@ input[type="text"], input[type="password"] {
           z-index: 10;
           background: url("../img/simiMark.png") -8px -3px no-repeat;
         }
-      }
+      }      
     }
     .right {
         display: none;
@@ -2201,7 +2074,7 @@ input[type="text"], input[type="password"] {
             width: 100% !important;
             background: none;
             margin-top: 5px !important;
-            padding: 6px !important;
+            padding: 6px !important;            
             min-height: 50px;
             border: none;
 
@@ -2219,7 +2092,7 @@ input[type="text"], input[type="password"] {
 /* ==========================================================================
    Entities Filters Colors
    ========================================================================== */
-
+   
 /*#filterMask #filterArea .filterList ul li.artist { background: @artist_color; }
 #filterMask #filterArea .filterList ul li.concert { background: @concert_color; }
 #filterMask #filterArea .filterList ul li.work { background: @work_color; }
@@ -2249,7 +2122,7 @@ input[type="text"], input[type="password"] {
 #detail.work a { color: darken( @work_color, 30% ) !important; }
 #detail.instrument a { color: darken( @instrument_color, 30% ) !important; }
 #detail.raaga a { color: darken( @raaga_color, 30% ) !important; }
-#detail.taala a { color: darken( @taala_color, 30% ) !important; }
+#detail.taala a { color: darken( @taala_color, 30% ) !important; } 
 #detail.recording a { color: darken( @recording_color, 30% ) !important; }
 #detail.composer a { color: darken( @composer_color, 30% ) !important; }
 #detail.entity_9 a { color: darken( @entity_9_color, 30% ) !important; }
@@ -2347,28 +2220,28 @@ input[type="text"], input[type="password"] {
 #detail.entity_10 #header #summary span h2, #detail.entity_10 #header #summary span h2 a { color: darken(@entity_10_color, 40%); }
 
 
-#filterMask #filterArea #entitiesList ul li.artist .colorCode { border-color: @artist_color; }
-#filterMask #filterArea #entitiesList ul li.concert .colorCode { border-color: @concert_color; }
-#filterMask #filterArea #entitiesList ul li.work .colorCode { border-color: @work_color; }
-#filterMask #filterArea #entitiesList ul li.instrument .colorCode { border-color: @instrument_color; }
-#filterMask #filterArea #entitiesList ul li.raaga .colorCode { border-color: @raaga_color; }
-#filterMask #filterArea #entitiesList ul li.taala .colorCode { border-color: @taala_color; }
-#filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; }
-#filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; }
-#filterMask #filterArea #entitiesList ul li.entity_9 .colorCode { border-color: @entity_9_color; }
-#filterMask #filterArea #entitiesList ul li.entity_10 .colorCode { border-color: @entity_10_color; }
+#filterMask #filterArea #entitiesList ul li.artist .colorCode { border-color: @artist_color; } 
+#filterMask #filterArea #entitiesList ul li.concert .colorCode { border-color: @concert_color; } 
+#filterMask #filterArea #entitiesList ul li.work .colorCode { border-color: @work_color; } 
+#filterMask #filterArea #entitiesList ul li.instrument .colorCode { border-color: @instrument_color; } 
+#filterMask #filterArea #entitiesList ul li.raaga .colorCode { border-color: @raaga_color; } 
+#filterMask #filterArea #entitiesList ul li.taala .colorCode { border-color: @taala_color; } 
+#filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; } 
+#filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; } 
+#filterMask #filterArea #entitiesList ul li.entity_9 .colorCode { border-color: @entity_9_color; } 
+#filterMask #filterArea #entitiesList ul li.entity_10 .colorCode { border-color: @entity_10_color; } 
 
 
-.miniitem.artist .colorCode { border-color: @artist_color !important; }
-.miniitem.concert .colorCode { border-color: @concert_color !important; }
-.miniitem.work .colorCode { border-color: @work_color !important; }
-.miniitem.instrument .colorCode { border-color: @instrument_color !important; }
-.miniitem.raaga .colorCode { border-color: @raaga_color !important; }
-.miniitem.taala .colorCode { border-color: @taala_color !important; }
-.miniitem.recording .colorCode { border-color: @recording_color !important; }
-.miniitem.composer .colorCode { border-color: @composer_color !important; }
-.miniitem.entity_9 .colorCode { border-color: @entity_9_color !important; }
-.miniitem.entity_10 .colorCode { border-color: @entity_10_color !important; }
+.miniitem.artist .colorCode { border-color: @artist_color !important; } 
+.miniitem.concert .colorCode { border-color: @concert_color !important; } 
+.miniitem.work .colorCode { border-color: @work_color !important; } 
+.miniitem.instrument .colorCode { border-color: @instrument_color !important; } 
+.miniitem.raaga .colorCode { border-color: @raaga_color !important; } 
+.miniitem.taala .colorCode { border-color: @taala_color !important; } 
+.miniitem.recording .colorCode { border-color: @recording_color !important; } 
+.miniitem.composer .colorCode { border-color: @composer_color !important; } 
+.miniitem.entity_9 .colorCode { border-color: @entity_9_color !important; } 
+.miniitem.entity_10 .colorCode { border-color: @entity_10_color !important; } 
 
 
 #detail.artist .tag-cloud-0 { background: lighten(@artist_color, 12%); }
@@ -2458,7 +2331,7 @@ input[type="text"], input[type="password"] {
 }
 
 @media only screen and (min-width: 1140px) {
-
+   
 }
 
 /* ==========================================================================
