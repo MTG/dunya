@@ -543,7 +543,7 @@ def taalasearch(request):
     taalas = Taala.objects.all().order_by('name')
     ret = []
     for t in taalas:
-        ret.append({"id": t.id, "name": t.name})
+        ret.append({"id": t.id, "name": str(t)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def taala(request, taalaid):
@@ -564,7 +564,7 @@ def raagasearch(request):
     raagas = Raaga.objects.all().order_by('name')
     ret = []
     for r in raagas:
-        ret.append({"id": r.id, "name": r.name})
+        ret.append({"id": r.id, "name": str(r)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def raaga(request, raagaid):

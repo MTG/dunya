@@ -257,7 +257,7 @@ class Raaga(data.models.BaseModel):
     objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
-        return self.name
+        return self.name.capitalize()
 
     @classmethod
     def get_filter_criteria(cls):
@@ -324,7 +324,7 @@ class Taala(data.models.BaseModel):
     objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
-        return self.name
+        return self.name.capitalize()
 
     def get_similar(self):
         if self.pk in taala_similar:
