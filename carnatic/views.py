@@ -594,7 +594,7 @@ def instrument(request, instrumentid):
     if samples:
         sample = samples[0]
     ret = {"instrument": instrument,
-           "tracks": sample,
+           "sample": sample,
            "filter_items": json.dumps(get_filter_items())
           }
 

@@ -66,11 +66,11 @@ $(document).ready(function() {
 
      			<div id="summaryBack"></div>
 				{% if user.is_authenticated %}
-     			<div id="icon1">
+				<div id="previewicon" class="enabled">
 						<div class="ui360"><a href="{{sample.absolute_mp3_url}}">{{sample.title}}</a></div>
 				</div>
 				{% else %}
-				<div id="icon"></div>
+				<div id="previewicon" class="disabled"></div>
 				{% endif %}
      		</div>
             <div class="bigImage"><img src="{{image}}" /></div>
