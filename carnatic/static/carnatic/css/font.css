@@ -3,6 +3,7 @@
   font-style: normal;
   font-weight: 300;
   src: local('Open Sans Light'), local('OpenSans-Light'), url(http://localhost:8001/static/carnatic/font/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
 
 @font-face {
   font-family: 'Open Sans';
