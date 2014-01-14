@@ -56,11 +56,4 @@ $(document).ready(function() {
             console.debug(ui);
         }
     });
-
-    // When you click on the (+) on a badge, expand it open
-    $(".inforight .desc .plus").click(function(){
-        $(this).parent().parent().toggleClass("open");
-        $(this).parents(".scrollblock").isotope('reLayout');
-    });
-
 });

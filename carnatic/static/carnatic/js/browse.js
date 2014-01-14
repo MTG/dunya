@@ -9,6 +9,17 @@ $(document).ready(function() {
         entity = $(this).parent().parent().parent().attr("eid");
 		getResults2($(this), entity);
     });
+
+    $("#results .desc .plus").click(function() {
+        $(this).parent().parent().toggleClass("open");
+        if( !$("body").hasClass('detail') ){
+            var $container = $('#results');
+            $container.packery({
+                itemSelector: '.item',
+                gutter: 0
+            });
+        }
+    });
 });
 
 function removeFilter(entity_filter){
