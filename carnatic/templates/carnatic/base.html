@@ -128,27 +128,25 @@
                 </div><!-- globalmusic -->
                 <nav id="mainmenu">
             <a href="#" id="aboutbutton">About</a>
+            <div href="#" id="usermenu">
             {% if user.is_authenticated %}
-                <div href="#" id="user">
-                    <a href="#">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
-                    <div id="userOptions">
+                    <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+                    <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
                         <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">Logout</a>
                     </div>
 
-                </div>
             {% else %}
-                <div href="#" id="guest">
                     <a href="#">Login<img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
-                    <div id="guestOptions">
+                    <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi! what do you want to do?</h3>
                         <a href="{% url 'social-auth-login' %}?next={% firstof request.path '/' %}">Login</a>
                         <a href="{% url 'social-auth-register' %}">Register</a>
                     </div>
-                </div>
             {% endif %}
+                </div>
                 </nav>
                 <div class="clearfix"></div>
             </header>
