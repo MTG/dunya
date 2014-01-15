@@ -15,7 +15,7 @@
 
         {% if debug %}
         <link href="{% static 'carnatic/css/font.css' %}" rel="stylesheet" type="text/css">
-        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.3.min.css' %}" rel="stylesheet" type="text/css" />
         {% load less %}
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/main.less' %}" />
@@ -41,8 +41,8 @@
         {% endif %}
         <script src="{% static 'carnatic/js/vendor/modernizr-2.6.2.min.js' %}"></script>
         {% if debug %}
-        <script src="{% static 'carnatic/js/vendor/jquery-1.9.1.min.js' %}"></script>
-        <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.1.custom.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/vendor/jquery-1.10.2.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.3.min.js' %}"></script>
         {% else %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
