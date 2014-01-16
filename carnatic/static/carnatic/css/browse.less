@@ -1,0 +1,947 @@
+@import "variables.less";
+@import "mixins.less";
+
+.formSection { 
+    cursor: pointer; 
+    background: url("../img/formSectionClose.png") 98% 4px no-repeat; 
+    padding:5px; 
+    padding-right: 10px; 
+    padding-left: 10px; 
+    position: relative; 
+    display: block; 
+    font-weight: bold; 
+}
+.formSectionText { 
+    cursor: pointer; 
+    background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; 
+    background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; 
+    padding:5px; 
+    padding-right: 10px; 
+    padding-left: 10px; 
+    width: 100%; 
+    position: relative; 
+    display: block; 
+    border-bottom: 2px solid #ccc;
+}
+
+.filterBallClosed .filterSummary { display: block; }
+
+fieldset { margin-bottom: 6px; }
+.noScroll { overflow: hidden; }
+
+.formSectionOpen { -webkit-border-bottom-left-radius:0px; -webkit-border-bottom-right-radius:0px; -moz-border-bottom-left-radius:0px; -moz-border-bottom-right-radius:0px; border-bottom-left-radius:0px; border-bottom-right-radius:0px; }
+.filterList h2 { margin: 8px; font-size: 17px; background: #777; border-radius: 10px; padding: 4px; font-weight: normal; padding-left: 10px; color: #dcdcdc; }
+.ui-slider { margin-bottom: 12px; margin-top: 13px; margin-right:20px; margin-left: 20px; }
+.formFilterClosed { width: 0px !important; padding:0px !important; } 
+.filterListClosed { width: 0px !important; } 
+
+.filterBallClosed { top: 6px !important; }
+.filterSummary { 
+    position: absolute;
+    top: 115px;
+    padding: 10px;
+    background: #f0f0f0;
+    background: rgba(256, 256, 256, 0.5);
+    width: 155px;
+    left: -19px;
+    display: none;
+    color: #666;
+    width: 174px;
+    left: -30px;
+    height: 178px;    
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/*   SHADOW OF THE CIRCLES   */
+.shadow1 { box-shadow: 1px 1px 3px #666; }
+
+#footage { display: none; }
+
+.artistPopularity {}
+#filterArea>div { position: relative; display: inline-block; }
+
+
+#filterMask { 
+    position: relative; 
+    width:100%; height: 300px; 
+    overflow: hidden; 
+    overflow-x: auto; 
+    background: url("../img/cloth_alike.png") 0 0 repeat; 
+    #filterArea { 
+        position: relative; 
+        width: 100%; 
+        height: 300px; 
+        
+        .filterList { 
+            position: relative; 
+            float:left; 
+            height: 300px; 
+            overflow-y: auto; 
+            border-left:1px solid #A7A8AC; 
+            border-right:1px solid #A7A8AC;
+            ul { 
+                list-style: none; 
+                margin: 0px; 
+                padding: 0px; 
+                li { 
+                    color: #fff;
+                    text-shadow: 1px 1px 1px #555555;
+                    font-weight: bold; 
+                    padding: 9px 9px 9px 24px;
+                    text-transform: capitalize; 
+                    cursor:pointer; 
+                    margin: 0px;
+                    &.selected { 
+                        background-image: url("../img/sticker.png");
+                        background-repeat: no-repeat;
+                        background-position: 0 50%;
+                    }
+                }
+            }
+        }
+        .formFilterItem { height: auto; }
+        #entitiesList {
+            ul {
+                position: absolute;
+                width: 100%;
+            }
+            h3 {
+                position: absolute;
+                top: 0px;
+                text-align: center;
+                color: #fff;
+                width: 100%;
+                text-shadow: 1px 2px 2px black;
+                margin: 0px;
+                left: 0px;
+                height: 81px;
+                opacity: 0.6;
+                padding-top: 50px;
+                background: #fff;
+                background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0)));
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
+
+            }
+            ul {
+                li {
+                    .colorCode { 
+                        position: relative; 
+                        display: inline-block; 
+                        width:18px; 
+                        height: 18px; 
+                        .rounded(20px);
+                        background: #fff; 
+                        margin-right: 5px; 
+                        top: 3px; 
+                        opacity: 1; 
+                        border: 5px solid #f00;
+                    }        
+                }    
+            }
+        }
+        .filters { 
+            .filterBall { 
+                -webkit-transition: all 0.5s ease 0; 
+                -moz-transition: all 0.5s ease 0; 
+                -o-transition: all 0.5s ease 0; 
+                transition:all 0.5s ease 0; 
+                position: relative; 
+                float: left; 
+                width: 120px; 
+                height: 120px; 
+                .rounded(120px); 
+                display: table; 
+                top: 86px; 
+                margin-left: 30px; 
+                cursor: pointer; 
+                margin-right: 25px; 
+                &:hover { 
+                    box-shadow: 0px 0px 10px #000;
+                }
+                &:hover .arrowClosed{ display: block; }
+                &:hover .arrow{ display: block; }
+                & span { 
+                    display: table-cell; 
+                    position: relative; 
+                    top:0px; 
+                    left: 0px; 
+                    width: 100%; 
+                    height: 100%; 
+                    vertical-align: middle; 
+                    text-align: center; 
+                    padding: 0px; 
+                    color:#fff; 
+                    text-shadow: 0px 1px 3px black; 
+                    font-size: 16px; 
+                    text-transform: uppercase; 
+                }
+                & .arrow { 
+                    position: absolute; top:50%; 
+                    margin-top:-15px; 
+                    right: -11px; 
+                    background: url("../img/greyTriangle.png") 0 0 no-repeat; 
+                    width: 15px; 
+                    height: 30px; 
+                    display: none; 
+                }
+                & .arrowClosed { 
+                    position: absolute; 
+                    top:50%; 
+                    margin-top:-15px; 
+                    right: -20px; 
+                    background: url("../img/greyTriangleClosed.png") 0 0 no-repeat; 
+                    width: 15px; 
+                    height: 30px; 
+                    display: none;
+                }
+                & .filterSummary {
+                    font-size: 10px;
+                    & b { color: #000; }
+                }
+            }
+            .formFilter { 
+                position: relative; 
+                float:left; 
+                width:240px; 
+                height: 300px; 
+                overflow-y: auto; 
+                padding:15px; 
+                overflow-y: auto; 
+                color:#000; 
+                & fieldset span.output { 
+                    color: #333; 
+                    display: block; 
+                    text-align: center; 
+                    background: #fff; 
+                    position: relative; 
+                }
+                & .filterList { 
+                    max-height: 234px; 
+                    height: auto; 
+                }
+                & .formFilterItem { 
+                    display: none; 
+                    background: #fff; 
+                    background: rgba(256,256,256,0.8); 
+                    width: 100%; 
+                    border: 1px solid #ccc; 
+                    overflow: hidden; 
+                    input[type="text"] {
+                        padding: 7px;
+                        padding-top:8px;
+                        background: rgba(256,256,256,0.4);
+                        margin:10px;
+                    }
+                }
+            }
+
+
+
+            h3 { padding:10px; }
+        }
+    }
+    #breadcrumb { display: none; }
+    &.querybar {
+        position: relative; 
+        width:100%;
+        height: 64px; 
+        background: url("../img/compactBar.png") 0 0 repeat-x;
+        box-shadow: inset 0px 0px 8px #444;
+        .arrowItem {
+            .arrow(20px);
+        }
+        #filterArea {
+            #entitiesBall, #entitiesList, .filters {
+                display: none;    
+            }
+        }
+        #breadcrumb {
+            display: block;
+            position: relative;
+            top:0px;
+            left: 0px;
+            .bread {
+                float:left;
+                position: relative;
+                height: 64px;
+                border-left:1px solid @gris;
+                display: table;
+                .breadarrow {
+                    .arrow(20px);
+                    position: absolute;
+                    top:10px;
+                    left:0px;
+                }
+                &.artist .breadarrow { 
+                    border-left-color: darken(@artist_color, 10%); 
+                    &:after { border-left-color: @artist_color; }
+                }
+                &.concert .breadarrow { 
+                    border-left-color: darken(@concert_color, 10%); 
+                    &:after { border-left-color: @concert_color; }
+                }
+                &.work .breadarrow { 
+                    border-left-color: darken(@work_color, 10%); 
+                    &:after { border-left-color: @work_color; }
+                }
+                &.instrument .breadarrow { 
+                    border-left-color: darken(@instrument_color, 10%); 
+                    &:after { border-left-color: @instrument_color; }
+                }
+                &.raaga .breadarrow { 
+                    border-left-color: darken(@raaga_color, 10%); 
+                    &:after { border-left-color: @raaga_color; }
+                }
+                &.taala .breadarrow { 
+                    border-left-color: darken(@taala_color, 10%); 
+                    &:after { border-left-color: @taala_color; }
+                }
+                &.recording .breadarrow { 
+                    border-left-color: darken(@recording_color, 10%); 
+                    &:after { border-left-color: @recording_color; }
+                }
+                &.composer .breadarrow { 
+                    border-left-color: darken(@composer_color, 10%); 
+                    &:after { border-left-color: @composer_color; }
+                }
+                &.entity_9 .breadarrow { 
+                    border-left-color: darken(@entity_9_color, 10%); 
+                    &:after { border-left-color: @entity_9_color; }
+                }
+                &.entity_10 .breadarrow { 
+                    border-left-color: darken(@entity_10_color, 10%); 
+                    &:after { border-left-color: @entity_10_color; }
+                }
+                span {
+                    display: table-cell;
+                    padding-right:10px;
+                    padding-left: 5px;
+                    vertical-align: middle;
+                    a {
+                        text-decoration: none; 
+                        color:#222;
+                        display: inline-block;
+                        padding:2px;
+                        padding-left: 15px;
+                        padding-right: 5px;
+                        .rounded (2px);
+                        float:left;
+                        clear:left;
+                        &:hover {
+                            background:#666;
+                            color:#fff;
+                        }
+                        h3 { margin:0px;}
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* ==========================================================================
+   FILTERS
+   ========================================================================== */
+      
+#tab {  
+    position: absolute;
+    top: 350px;
+    left: 0px;
+    width: 100%;
+    height: 29px;
+    background: url("../img/tabBack.png") 50% 50% repeat-x;
+    z-index: 10;
+    #tabControl {
+        position: absolute;
+        top:0px;
+        left: 50%;
+        width: 65px;
+        height: 22px;
+        margin-left: -32px;
+        cursor: pointer;
+        background: url("../img/tabControl.png") 0 0 repeat-x;
+        &:hover {
+            background: url("../img/tabControl_hover.png")  0 0 repeat-x;
+        }
+    }
+}
+
+/* ==========================================================================
+   Entities Filters Colors
+   ========================================================================== */
+   
+#filterMask #filterArea .filterList ul li.artist.selected .colorCode { background: darken( @artist_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.concert.selected .colorCode { background: darken( @concert_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.work.selected .colorCode { background: darken( @work_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.instrument.selected .colorCode { background: darken( @instrument_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.raaga.selected .colorCode { background: darken( @raaga_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.taala.selected .colorCode { background: darken( @taala_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.recording.selected .colorCode { background: darken( @recording_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.composer.selected .colorCode { background: darken( @composer_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.entity_9.selected .colorCode { background: darken( @entity_9_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.entity_10.selected .colorCode { background: darken( @entity_10_color, 20% ) !important; }
+
+
+.filters.artist { background: lighten(@artist_color, 20%); }
+.filters.concert { background: lighten(@concert_color, 10%); }
+.filters.work { background: lighten(@work_color, 5%); }
+.filters.instrument { background: lighten(@instrument_color, 20%); }
+.filters.raaga { background: lighten(@raaga_color, 20%); }
+.filters.taala { background: lighten(@taala_color, 20%); }
+.filters.recording { background: lighten(@recording_color, 20%); }
+.filters.composer { background: lighten(@composer_color, 20%); }
+.filters.entity_9 { background: lighten(@entity_9_color, 20%); }
+.filters.entity_10 { background: lighten(@entity_10_color, 20%); }
+
+
+.filters.artist { background: fade(@artist_color, 20%); }
+.filters.concert { background: fade(@concert_color, 20%); }
+.filters.work { background: fade(@work_color, 20%); }
+.filters.instrument { background: fade(@instrument_color, 20%); }
+.filters.raaga { background: fade(@raaga_color, 20%); }
+.filters.taala { background: fade(@taala_color, 20%); }
+.filters.recording { background: fade(@recording_color, 20%); }
+.filters.composer { background: fade(@composer_color, 20%); }
+.filters.entity_9 { background: fade(@entity_9_color, 20%); }
+.filters.entity_10 { background: fade(@entity_10_color, 20%); }
+
+
+/* RESULTS FOR DEMO */
+#resultsstats {
+    display: block;
+    background: url("../img/cloth_alike.png") 0 0 repeat;
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    #queryCont {
+        background: #fff url("../img/icon_search.png") 0 50% no-repeat;
+        #query {
+            position: relative; 
+            display: inline-block; 
+            width: 80px; 
+            height: 80px; 
+            .rounded(40px);
+            background: #fff url("../img/playSearch.png") 53% 53% no-repeat;
+            margin-right: 5px; 
+            top: 3px; 
+            opacity: 1; 
+            border: 5px solid #EEEEEE;
+            margin-top:8px;
+            margin-bottom:5px;
+            &:hover {
+                
+            }
+        }
+    }
+  .artist>span{ border-color: @artist_color; }
+  .composer>span { border-color: @composer_color; }
+  .concert>span { border-color: @concert_color; }
+  .recording>span { border-color: @recording_color; }
+  .raaga>span { border-color: @raaga_color; }
+  .taala>span { border-color: @taala_color; }
+  .work>span { border-color: @work_color; }
+  .instrument>span { border-color: @instrument_color; }
+    table {
+        position: relative;
+        width: 100%;
+        height: 48px;
+        border-bottom:1px solid #333;
+        td {
+            padding-left: 10px;
+            border-bottom: 1px solid @gris;
+            border-left: 1px solid @gris;
+            background: #fff;
+            cursor: pointer;
+            &:hover {
+                box-shadow: 1px 1px 6px #666666;
+                &>span {
+                    color: #000;
+                }
+            }
+            &>span {
+                .rounded(40px);
+                width: 65px;
+                height: 65px;
+                position: relative;
+                display: block;
+                float: left;
+                margin-top:8px;
+                border: 5px solid #EEEEEE;
+                font-weight: 900;
+                text-align: center;
+                padding-top: 12px;
+                font-size: 23px;
+                color:#bbb;
+                .shadow1;
+            }
+            b { 
+                font-size: 12px; 
+                color: #000;
+                text-shadow: none;
+                display: block;
+                margin-left: 71px;
+        margin-top: 33px;
+            }
+            h3 { font-size: 14px; }
+        }
+        td:first-child {
+            width: 230px;
+            border-left: none;
+            color:#666;
+            text-shadow: none;
+            font-size: 12px;
+            span {
+                display: block;
+                float: left;
+                height: 40px;
+                margin-left: 42px;
+                margin-right: 19px;
+                position: relative;
+                top: 35px;
+                font-size: 19px;
+            }
+        }
+    }
+}
+
+.resultsTitle { margin: 10px 5px 0 11px; }
+#searchresults {
+    &>div {
+        float:left;
+        width: 220px;
+        height: 270px;
+        margin-bottom:10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: relative;
+        margin-top: 10px;
+        margin-left: 10px;
+        background: #f6f6f6; 
+        .shadow1;
+        &.open {
+            width: 450px;
+            height: 560px;
+            .desc {
+              font-size: 13px;
+              line-height: 15px;
+              border-top:2px solid rgba(255,255,255,0.5);
+                .plus {
+                    background: url("../img/lessIcon.png") 0 0 no-repeat;
+                }
+            }
+            .descOpen {
+                display: block;
+                height: 205px;
+                left: 213px;
+                overflow-y: auto;
+                padding: 13px 21px 21px;
+                position: absolute;
+                top: 6px;
+                width: 231px;
+          background: rgba(256,256,256,0.4);
+          box-shadow: inset 0px 0px 10px;
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          .meta {
+            position: relative;
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            padding: 5px;
+            label {
+              float: left;
+              width: 85px;
+              text-align: right;
+              padding-right: 4px;
+              font-weight: bold;
+              clear: left;
+            }
+            span {
+            clear: right;
+            float: left;
+            }
+          }
+          
+          h3 {
+            margin-top: 15px;
+            margin-bottom: 5px;
+          }
+          p.value {
+            margin-top: 0px;
+          }
+            }
+            .lists {
+        display: block !important;
+        height: 277px;
+        left: 0;
+        position: absolute;
+        top: 218px;
+        width: 100%;
+        padding-left: 6px;
+        padding-right: 6px;
+        overflow: hidden;
+              .left {
+                position: relative;
+                top:0px;
+                left:0px;
+                width: 207px;
+                height: 100%;
+                float: left;
+                border-right: 1px dashed rgba(256,256,256,0.5);
+                overflow-y: auto;
+          h3 {
+            margin: 5px;
+            color: rgba(0,0,0,0.5);
+          }
+              }
+              &.similar .left {
+            overflow: visible;
+            border-right: none;
+          }
+              .right {
+                position: relative;
+                top:0px;
+                left:0px;
+                width: 231px;
+                height: 100%;
+                float:left;
+                padding-left: 5px;
+                overflow-y: auto;
+                h3 {
+            margin: 5px;
+            color: rgba(0,0,0,0.5);
+          }
+              } 
+              .miniitem {
+                height: auto !important;
+          left: 0px;
+          position: relative;
+          top: 0px;
+          width:100% !important;
+          background: none;
+          margin-top: 5px;
+          padding:6px;
+                padding-right: 15px;
+                padding-bottom:5px;
+                min-height: 50px;
+          label {
+            font-size: 12px;
+            line-height: 14px;
+            display: block;
+            color: rgba(0,0,0,0.5);
+            b {
+              display: block;
+              color: #000;
+            }
+          }
+                .disco {
+                  float: left;
+                  margin-right: 8px;
+                  margin-bottom: 15px; 
+            a {
+              background: none;
+              img { width: 40px !important; }
+              }
+          }
+        }
+            }
+            .smallPlay {
+            position: absolute;
+            left: 200px;
+        top: 2px;
+            width: 23px;
+            height: 23px;
+            background: url("../img/smallPlay.png") 0 0  no-repeat;
+            z-index: 10;
+      }
+        }
+        .pict {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 207px !important;
+            height: 205px !important;
+            overflow: hidden;
+            a { 
+                position: relative;
+                width: 100%;
+                height: 100%;
+                top: 0px;
+                left: 0px;
+                display: block;
+                background: #fff;
+                img { 
+                    width: 207px !important;
+                }
+            }
+        }
+        .desc {
+            overflow: hidden;
+            bottom: 0;
+            height: 57px;
+            padding: 6px;
+            position: absolute;
+            width: 100%;
+            font-size: 11px;
+            line-height: 12px;
+            a { 
+              text-decoration: none; 
+              color: rgba(0,0,0,0.5);
+              b {
+                color:#000; 
+              }
+            }
+            .plus {
+                position: relative;
+                float: right;
+                margin-top:8px;
+                width: 23px;
+                height: 23px;
+                background: url("../img/plusIcon.png") 0 0 no-repeat;
+                cursor: pointer;
+            }
+            p { margin:0px; color: #666;}
+            .title { 
+              font-weight: bold; 
+              display: block; 
+              color: #000; 
+              text-decoration: none;
+              b {
+                font-size: 14px;
+              }
+              .year {
+                margin-left: 4px;
+                opacity: 0.6;
+              }
+      }
+      .belongs {
+        color: #000;
+        opacity: 0.6;
+        text-decoration: none;
+      }
+            a:hover { text-decoration: underline; } 
+        }
+        .descOpen, .lists {
+            display: none; 
+        }
+        .smallPlay {
+          position: absolute;
+          right: 0;
+      top: 2px;
+          width: 23px;
+          height: 23px;
+          background: url("../img/smallPlay.png") 0 0  no-repeat;
+          z-index: 10;
+        }
+    }
+    .recording {
+        background: darken( @recording_color, 20% );
+        .desc { background: @recording_color; }
+        &:hover { background: darken( @recording_color, 20% ); }
+        .disc {
+            float: left;
+            width: 127px; 
+            height: 90px;
+            margin-right:10px;
+        }
+    }
+    .artist {
+        //background: @artist_color;
+        .desc { background: @artist_color; }
+        background: darken( @artist_color, 20% );
+
+    }
+    .concert { 
+      .desc { background: @concert_color; }
+        background: darken( @concert_color, 20% );
+  }
+  .work { 
+      .desc { background: @work_color; }
+        background: darken( @work_color, 20% );
+  }
+    .track {
+        .desc { background: @recording_color; }
+        background: darken( @recording_color, 20% );
+        h4 {
+            margin: 0px;
+            margin-bottom:4px;
+            
+        }
+    }
+    .instrument {
+        .desc { background: @instrument_color; }
+        background: darken( @instrument_color, 20% );
+        h4 {
+            text-align: center;
+            margin: 0px;
+            margin-bottom:4px;
+        }
+    }
+    .raaga {
+        .desc { background: @raaga_color; }
+        background: darken( @raaga_color, 20% );
+        h4 {
+            text-align: center;
+            margin: 0px;
+            margin-bottom:4px;
+        }
+    }
+    .taala {
+        .desc { background: @taala_color; }
+        background: darken( @taala_color, 20% );
+        h4 {
+            text-align: center;
+            margin: 0px;
+            margin-bottom:4px;
+        }
+    }
+    .recording {
+        .desc { background: @recording_color; }
+        background: darken( @recording_color, 10% );
+    }
+    .composer {
+        .desc { background: @composer_color; }
+        background: darken( @composer_color, 5% );
+    }
+    .artist {
+        .desc { background: @artist_color; }
+        background: darken( @artist_color, 20% );
+        .artistFoto { 
+            position: relative;
+            width: 51px;
+            height: 63px;
+            float:left;
+        }
+        .artistName { 
+            position: relative;
+            width: 150px;
+            height: 63px;
+            float:left;
+            padding: 5px;
+            font-size: 11px;
+        }
+    }
+    .similarity {
+      h2 { 
+        font-weight: normal; 
+        color: #fff; 
+        font-size: 11px;
+        text-align: center;
+      margin-bottom: 6px;
+      margin-top: 4px;
+    }
+      div {
+        float: right;
+        text-align: right;
+        right: 0px;
+        clear: right;
+        display: block;
+        height: 27px;
+      margin-bottom: 5px;
+      position: relative;
+      text-transform: uppercase;
+      padding-top: 5px;
+      padding-left: 5px;
+      border-left: 6px solid rgba(255,255,255,0.5);
+      cursor: pointer;
+      &.artist { background: @artist_color; color:darken(@artist_color, 25%); }
+      &.concert { background: @composer_color; color:darken(@composer_color, 25%); }
+      &.work { background: @work_color; color:darken(@work_color, 25%); }
+      &.instrument { background: @instrument_color; color:darken(@instrument_color, 25%); }
+      &.raaga { background: @raaga_color; color:darken(@raaga_color, 25%); }
+      &.taala { background: @taala_color; color:darken(@taala_color, 25%); }
+      &.recording { background: @recording_color; color:darken(@recording_color, 25%); }
+      &.composer { background: @composer_color; color:darken(@composer_color, 25%); }
+      &.active:after {
+        content: "";
+        height: 29px;
+        position: absolute;
+        right: -16px;
+        top: 0px;
+        width: 16px;
+        z-index: 10;
+        background: url("../img/simiMark.png") -2px 0 no-repeat;
+      }
+      span {
+        position: absolute;
+        right: 4px;
+        font-weight: bold;
+      }
+    }
+    }
+    .similarList { 
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      top: 0px;
+      left: 0px;
+      display: none;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      &:before {
+      background-image: url("../img/simdegra.png");
+      background-position: -13px 0;
+      background-repeat: repeat-y;
+      background-size: 100% auto;
+      content: "";
+      height: 100%;
+      opacity: 1;
+      position: absolute;
+      width: 19px;
+      z-index: 0;
+      }
+      &.active { display: block; box-shadow: inset 0px 0px 10px; }
+      .miniitem:first-child {
+        margin-top:15px !important;
+      }
+      .miniitem { padding-left: 13px !important; }
+      &.artist { background: @artist_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.concert { background: @composer_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.work { background: @work_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.instrument { background: @instrument_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.raaga { background: @raaga_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.taala { background: @taala_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.recording { background-: @recording_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.composer { background: @composer_color url("../img/cloth_alikeTrans2.png") repeat; }
+  }
+}
+
+.artist .filterBall, .artist .filterList ul li.selected { background: @artist_color; }
+.concert .filterBall, .concert .filterList ul li.selected { background: @concert_color; }
+.work .filterBall, .work .filterList ul li.selected { background: @work_color; }
+.instrument .filterBall, .instrument .filterList ul li.selected { background: @instrument_color; }
+.raaga .filterBall, .raaga .filterList ul li.selected { background: @raaga_color; }
+.taala .filterBall, .taala .filterList ul li.selected { background: @taala_color; }
+.recording .filterBall, .recording .filterList ul li.selected { background: @recording_color; }
+.composer .filterBall, .composer .filterList ul li.selected { background: @composer_color; }
+.entity_9 .filterBall, .entity_9 .filterList ul li.selected { background: @entity_9_color; }
+.entity_10 .filterBall, .entity_10 .filterList ul li.selected { background: @entity_10_color; }
+
+.artist .formFilter { border-right: 4px solid @artist_color; }
+.concert .formFilter { border-right: 4px solid @concert_color; }
+.work .formFilter { border-right: 4px solid @work_color; }
+.instrument .formFilter { border-right: 4px solid @instrument_color; }
+.raaga .formFilter { border-right: 4px solid @raaga_color; }
+.taala .formFilter { border-right: 4px solid @taala_color; }
+.recording .formFilter { border-right: 4px solid @recording_color; }
+.composer .formFilter { border-right: 4px solid @composer_color; }
+.entity_9 .formFilter { border-right: 4px solid @entity_9_color; }
+.entity_10 .formFilter { border-right: 4px solid @entity_10_color; }
+
+.artist .formSectionOpen { background: @artist_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.concert .formSectionOpen  { background: @concert_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.work .formSectionOpen  { background: @work_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.instrument .formSectionOpen  { background: @instrument_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.raaga .formSectionOpen  { background: @raaga_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.taala .formSectionOpen  { background: @taala_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.recording .formSectionOpen  { background: @recording_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.composer .formSectionOpen  { background: @composer_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.entity_9 .formSectionOpen  { background: @entity_9_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.entity_10 .formSectionOpen  { background: @entity_10_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }

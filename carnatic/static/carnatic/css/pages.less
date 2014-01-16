@@ -1,0 +1,572 @@
+/* ==========================================================================
+   DETAIL 
+   ========================================================================== */
+
+#detail {
+    border-bottom: 30px solid #333;
+    /*
+    a:after {
+            content: url("../img/link.png") !important;
+            top:2px !important;
+            margin-left: 2px !important;
+            position: relative !important;
+    }
+    */
+    #header {
+        background: #fff;
+        border-bottom:1px solid @grisD;
+        #summary {
+            position: relative;
+            float:left;
+            width:220px;
+            height: 296px;
+            padding: 10px;
+            #previewicon { 
+                position: absolute; 
+                bottom: 3px;
+                left: 3px; 
+                z-index: 4; 
+                &.disabled {
+                    width: 87px; 
+                    height: 90px; 
+                    background: url("../img/playButtonBig.png") 0 0 no-repeat; 
+                    cursor: pointer;
+                }
+            }
+            #innerSummary { position: absolute; z-index: 3; display: table; width: 100%; height: 100%; }
+            #summaryBack {
+                position: absolute;
+                top: 0px;
+                left: 0px; 
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                background: url("../img/noisy.png") 0 0 repeat;
+                opacity: 0.15;
+            }
+            #summaryBack2 {
+                position: absolute;
+                top: 0px;
+                left: 0px; 
+                width: 100%;
+                height: 100%;
+                z-index: -2;
+            }
+            span{
+                z-index: 2;
+                vertical-align: middle;
+                display: table-cell;            
+                text-align: right;
+                h1 { 
+                    font-size: 22px; 
+                    line-height: 22px; 
+                    margin:0px; 
+                    color:#fff;
+                    text-shadow: 1px 1px 4px #000;
+                }
+                h2 { 
+                    font-size: 16px;
+                    font-weight: normal; 
+                    margin:0px; 
+                    line-height: 16px;
+                    margin-top: 7px;
+                    a { text-decoration: none; }
+                }
+                h3 { 
+                    color:#fff; 
+                    margin:0px; 
+                    font-weight: normal; 
+                    a { color: #fff; text-decoration: none; }
+                }
+                #icon {}
+            }
+        }
+        .bigImage {
+            position: relative; 
+            float: left;
+            width: 296px;
+            height: 296px;
+            overflow: hidden;
+            background: #333;
+            z-index: 2;
+            img {
+                width: 297px;
+            }
+        }
+        #image {
+            background: url("../img/artistImage.jpg") 0 0 no-repeat;
+        }
+        #meta {
+            position: relative; 
+            float: left;
+            width: 100%;
+            margin-left:-516px;
+            height: 296px;
+            .metaBlock {
+                position: relative;
+                height: 100%;
+                margin-left: 516px;
+                .metaMask {
+                    position: relative;                    
+                    width: auto;
+                    height: 100%;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    .metaContainer {
+                    position: relative;
+                    width: 3000px;
+                        .metaDetails {
+                            display: inline-block;
+                            position: relative;
+                            float:left;
+                            width:300px;    
+                            height: 297px;
+                            border-right:1px solid @grisD;
+                            font-size:11px;
+                            padding-top:24px;
+                            position: relative;
+                            .inner {
+                                overflow-y: auto;
+                                height: 100%;
+                            }
+                            h3 { 
+                                top:0px;
+                                padding: 10px;
+                                padding-top: 5px;
+                                padding-bottom: 4px;
+                                border-bottom:1px solid darken(@grisf6,5%);
+                                border-top: 1px solid @grisD;
+                                background: @grisf6;
+                                color:darken(@grisf6,30%);
+                                margin: 0px;
+                                position: absolute;
+                                width: 100%;
+                                text-transform: uppercase;
+                                font-size: 9px;
+                                font-weight: normal;
+                            }
+                            span { 
+                                display: block; 
+                                margin:10px; 
+                                .player { 
+                                    background: url("../img/playButton.png") 0 50% no-repeat;
+                                    padding-left: 38px;
+                                    padding-top: 10px;
+                                    padding-bottom: 11px;
+                                }
+                                a { 
+                                    color: @vermell;
+                                    display: block;
+                                    margin-bottom:8px;
+                                }
+                            }
+                            span.list{
+                                label { 
+                                    float:left; 
+                                    width:28%; 
+                                    text-align: right; 
+                                    clear: left; 
+                                    margin-right: 4px; 
+                                    font-weight: bold;
+                                }
+                                b { 
+                                    float: left; 
+                                    font-weight: normal; 
+                                    width:68%; 
+                                }
+                            }
+                            span.list2{
+                                label { 
+                                    display: block;
+                                }
+                                b { 
+                                    display: block;
+                                }
+                            }
+                            &.narrow { width: 450px; }
+                            &.close { width: 150px; }
+                        }
+                        .splitMeta {
+                            display: inline-block;
+                            position: relative;
+                            float:left;
+                            width:300px;    
+                            height: 297px;
+                            border-right:1px solid @grisD;
+                            font-size:11px;
+                            position: relative;
+                            &.narrow { width: 450px; }
+                            &.close { width: 150px; }
+                            .metaDetails {
+                                    display: inline-block;
+                                    position: relative;
+                                    float:left;
+                                    width:100%;    
+                                    height: 142px;
+                                    //font-size:11px;
+                                    padding-top:24px;
+                                    position: relative;
+                                    border:none;
+                                    .inner {
+                                        overflow-y: auto;
+                                        height: 100%;
+                                    }
+                                    h3 { 
+                                        top:0px;
+                                        padding: 10px;
+                                        padding-top: 5px;
+                                        padding-bottom: 4px;
+                                        border-bottom:1px solid darken(@grisf6,5%);
+                                        border-top: 1px solid @grisD;
+                                        background: @grisf6;
+                                        color:darken(@grisf6,30%);
+                                        margin: 0px;
+                                        position: absolute;
+                                        width: 100%;
+                                        text-transform: uppercase;
+                                        font-size: 10px;
+                                        font-weight: normal;
+                                    }
+                                    span { 
+                                        display: block; 
+                                        margin:10px; 
+                                        .player { 
+                                            background: url("../img/playButton.png") 0 50% no-repeat;
+                                            padding-left: 38px;
+                                            padding-top: 10px;
+                                            padding-bottom: 11px;
+                                        }
+                                        a { 
+                                            color: @vermell;
+                                            display: block;
+                                            margin-bottom:8px;
+                                        }
+                                    }
+                                    span.list{
+                                        label { 
+                                            float:left; 
+                                            width:28%; 
+                                            text-align: right; 
+                                            clear: left; 
+                                            margin-right: 4px; 
+                                        }
+                                        b { 
+                                            float: left; 
+                                            font-weight: normal; 
+                                            width:68%; 
+                                        }
+                                    }
+                                    span.list2{
+                                        label { 
+                                            display: block;
+                                        }
+                                        b { 
+                                            display: block;
+                                        }
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    .thedata {
+        border-bottom:1px solid @gris;
+        display: block;
+        clear: both;
+        .leftdata {
+            width:220px;
+            float:left;
+            h3 { 
+                font-weight: normal;
+                text-align: right;
+                font-size: 14px;
+                margin: 10px;
+            }
+        }
+        .rightdata {
+            float:left;
+            width: 100%;
+            margin-left: -220px;
+            .scrolldata { overflow-x: auto; 
+                .scrollblock { width: 100%; }
+            }
+            .innerrightdata {
+                padding: 10px;
+                margin-left: 220px;
+                border-left:1px solid @gris;
+                min-height: 40px;
+                textarea {
+                    margin-bottom: 10px;
+                    box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+                    .rounded(5px);
+                    border:none;
+                }
+                .recording {
+                    float:left;
+                    height: 100px;
+                    .disc {
+                        float: left;
+                        width: 127px; 
+                        height: 90px;
+                        margin-right:10px;
+                    }
+                    .desc { 
+                        p { margin:0px; color: #888;}
+                        b {font-weight: normal; display: block; color: #000; }
+                    }
+                }
+                .album {
+                    float:left;
+                    height: 140px;
+                    width: 290px;
+                    margin-right: 38px;
+                    .disc {
+                        float: left;
+                        width: 127px; 
+                        height: 123px;
+                        margin-right:10px;
+                        img {
+                            width:123px;
+                        }
+                    }
+                    .desc { 
+                        p { margin:0px; color: #888;}
+                        b {font-weight: normal; display: block; color: #000; }
+                    }
+                }
+                .artistCell {
+                    float:left;
+                    width: 235px;
+                    height: 63px;
+                    margin-bottom:10px;
+                    overflow: hidden;
+                    border: 1px solid @grisf6;
+                    //font-size: 10px;
+                    margin-top: 10px;
+                    margin-left: 10px;
+                    .photo {
+                        float: left;
+                        width: 55px; 
+                        height: 63px;
+                        margin-right:10px;
+                        img {
+                            width: 55px;
+                        }
+                    }
+                    .desc { 
+                        p { margin:0px; color: #888; }
+                        p a { color: @gris6 !important; }
+                        b { font-weight: bold; display: block; }
+                    }
+                }
+                .track {
+                    float:left;
+                    padding:10px;
+                    border-right: 1px solid darken(@grisf6,8%);
+                    border-bottom: 1px solid darken(@grisf6,8%);
+                    margin-bottom: -1px;
+                    margin-top: 1px;
+                    width: 300px !important; 
+                    h4 {
+                        margin: 0px;
+                        margin-bottom:4px;
+                        
+                    }
+                }
+                .instrumentCell {
+                    float:left;
+                    padding:10px;
+                    border-right: 1px solid darken(@grisf6,8%);
+                    border-bottom: 1px solid darken(@grisf6,8%);
+                    margin-bottom: -1px;
+                    margin-top: 1px;
+                    h4 {
+                        text-align: center;
+                        margin: 0px;
+                        margin-bottom:4px;
+                    }
+                }
+                .raagaCell {
+                    float:left;
+                    padding:10px;
+                    border-right: 1px solid darken(@grisf6,8%);
+                    border-bottom: 1px solid darken(@grisf6,8%);
+                    margin-bottom: -1px;
+                    margin-top: 1px;
+                    width: 138px;
+                    h4 {
+                        text-align: center;
+                        margin: 0px;
+                        margin-bottom:4px;
+                    }
+                }
+                .artist {
+                    border-right:1px solid darken(@grisf6,8%);
+                    border-bottom:1px solid darken(@grisf6,8%);
+                    float:left;
+                    width: 222px;
+                    padding:10px;
+                    margin-bottom: -1px;
+                    margin-top:1px;
+                    overflow-y: auto;
+                    .artistFoto { 
+                        position: relative;
+                        width: 51px;
+                        height: 63px;
+                        float:left;
+                    }
+                    .artistName { 
+                        position: relative;
+                        width: 150px;
+                        height: 63px;
+                        float:left;
+                        padding: 5px;
+                        font-size: 11px;
+                    }
+                    .artist1 { background: url("../img/artist1.jpg") 0 0 no-repeat; }
+                    .artist2 { background: url("../img/artist2.jpg") 0 0 no-repeat; }
+                    .artist3 { background: url("../img/artist3.jpg") 0 0 no-repeat; }
+                    .artist4 { background: url("../img/artist4.jpg") 0 0 no-repeat; }
+                }
+            }
+        }
+    }
+}
+#detail .thedata {
+  #results {
+    .artist {
+      border-right: none !important;
+      border-bottom: none !important;
+      padding: 0px;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
+  #results > div.open { 
+    width: auto;
+    height: 270px;
+    .pict {
+      position: relative;
+      display: inline-block;
+      float: left;
+    }
+    .lists {
+      display: block !important;
+      height: auto;
+      left: 0;
+      position: relative;
+      top: 0px;
+      width: auto;
+      padding-left: 6px;
+      padding-right: 6px;
+      overflow: hidden;
+      display: inline-block;
+      float: left;
+      .left {
+        .similarity>div {
+          height: 20px !important;
+          float: right;
+          margin-bottom: 2px;
+          padding-top: 3px;
+        }
+        .similarity div.active:after {
+          content: "";
+          height: 21px;
+          position: absolute;
+          right: -14px;
+          top: 0px;
+          width: 16px;
+          z-index: 10;
+          background: url("../img/simiMark.png") -8px -3px no-repeat;
+        }
+      }      
+    }
+    .right {
+        display: none;
+        height: 200px;
+        .artist {
+          border-right: none !important;
+          border-bottom: none !important;
+        }
+        &>.artist {
+          float: none !important;
+          width: auto;
+          padding:  0px !important;
+          margin:  0px !important;
+          overflow-y: auto;
+          margin-top: 5px;
+          padding: 6px;
+          padding-right: 15px;
+          padding-bottom: 5px;
+          overflow: hidden;
+          .minitem {
+            height: auto !important;
+            left: 0px;
+            position: relative;
+            top: 0px;
+            width: 100% !important;
+            background: none;
+            margin-top: 5px !important;
+            padding: 6px !important;            
+            min-height: 50px;
+            border: none;
+
+          border-right: none !important;
+          border-bottom: none !important;
+          }
+        }
+        .recording {
+          height: 200px;
+        }
+      }
+  }
+}
+
+
+
+#detail.artist a { color: darken( @artist_color, 30% ) !important; }
+#detail.concert a { color: darken( @concert_color, 30% ) !important; }
+#detail.work a { color: darken( @work_color, 30% ) !important; }
+#detail.instrument a { color: darken( @instrument_color, 30% ) !important; }
+#detail.raaga a { color: darken( @raaga_color, 30% ) !important; }
+#detail.taala a { color: darken( @taala_color, 30% ) !important; } 
+#detail.recording a { color: darken( @recording_color, 30% ) !important; }
+#detail.composer a { color: darken( @composer_color, 30% ) !important; }
+#detail.entity_9 a { color: darken( @entity_9_color, 30% ) !important; }
+#detail.entity_10 a { color: darken( @entity_10_color, 30% ) !important; }
+
+.artist #summary { background: @artist_color; border-bottom:10px solid darken(@artist_color, 20%); }
+.concert #summary { background: @concert_color; border-bottom:10px solid darken(@concert_color, 30%); }
+.work #summary { background: @work_color; border-bottom:10px solid darken(@work_color, 20%); }
+.instrument #summary { background: @instrument_color; border-bottom:10px solid darken(@instrument_color, 20%); }
+.raaga #summary { background: @raaga_color; border-bottom:10px solid darken(@raaga_color, 20%); }
+.taala #summary { background: @taala_color; border-bottom:10px solid darken(@taala_color, 20%); }
+.recording #summary { background: @recording_color; border-bottom:10px solid darken(@recording_color, 20%); }
+.composer #summary { background: @composer_color; border-bottom:10px solid darken(@composer_color, 20%); }
+.entity_9 #summary { background: @entity_9_color; border-bottom:10px solid darken(@entity_9_color, 20%); }
+.entity_10 #summary { background: @entity_10_color; border-bottom:10px solid darken(@entity_10_color, 20%); }
+
+#summary.artist h1 { color: darken(@artist_color,45%); }
+#summary.concert h1 { color: darken(@concert_color,45%); }
+#summary.work h1 { color: darken(@work_color,45%); }
+#summary.instrument h1 { color: darken(@instrument_color,45%); }
+#summary.raaga h1 { color: darken(@raaga_color,45%); }
+#summary.taala h1 { color: darken(@taala_color,45%); }
+#summary.recording h1 { color: darken(@recording_color,45%); }
+#summary.composer h1 { color: darken(@composer_color,45%); }
+#summary.entity_9 h1 { color: darken(@entity_9_color,45%); }
+#summary.entity_10 h1 { color: darken(@entity_10_color,45%); }
+
+#detail.artist #header #summary span h2, #detail.artist #header #summary span h2 a { color: darken(@artist_color, 40%); }
+#detail.concert #header #summary span h2, #detail.concert #header #summary span h2 a { color: darken(@concert_color, 40%); }
+#detail.work #header #summary span h2, #detail.work #header #summary span h2 a { color: darken(@work_color, 40%); }
+#detail.instrument #header #summary span h2, #detail.instrument #header #summary span h2 a { color: darken(@instrument_color, 40%); }
+#detail.raaga #header #summary span h2, #detail.raaga #header #summary span h2 a { color: darken(@raaga_color, 40%); }
+#detail.taala #header #summary span h2, #detail.taala #header #summary span h2 a { color: darken(@taala_color, 40%); }
+#detail.recording #header #summary span h2, #detail.recording #header #summary span h2 a { color: darken(@recording_color, 40%); }
+#detail.composer #header #summary span h2, #detail.composer #header #summary span h2 a { color: darken(@composer_color, 40%); }
+#detail.entity_9 #header #summary span h2, #detail.entity_9 #header #summary span h2 a { color: darken(@entity_9_color, 40%); }
+#detail.entity_10 #header #summary span h2, #detail.entity_10 #header #summary span h2 a { color: darken(@entity_10_color, 40%); }
