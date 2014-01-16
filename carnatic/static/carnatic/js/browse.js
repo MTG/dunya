@@ -22,6 +22,17 @@ $(document).ready(function() {
     });
 });
 
+function filterPackery(className){
+    $("#results .item").css('display','none');
+    $("#results .item"+className.filter).css('display','block');
+    console.log(className.filter);  
+    var $container = $('#results');
+    $container.packery({
+        itemSelector: '.item',
+        gutter: 0
+    });
+}
+
 function removeFilter(entity_filter){
     $(".filterBall").parent().find(".formFilter").addClass("formFilterClosed");
     $(".filterBall").parent().find(".filterGlobalList").addClass("filterListClosed");

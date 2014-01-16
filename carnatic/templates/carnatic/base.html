@@ -24,6 +24,8 @@
         <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
         {% endif %}
+        {% block extra_css %}
+        {% endblock %}
 
         <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/360player.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/flashblock.css' %}" />

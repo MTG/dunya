@@ -112,6 +112,11 @@ $(document).ready(function() {
 
 <script src="{% static 'carnatic/js/browse.js' %}"></script>
 {% endblock %}
+{% block extra_css %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/browse.less' %}" />
+{% endblock %}
 
 {% block title %}{% if querytext %}{{querytext}} - {% elif querybrowse %}Browsing - {% endif %}{% endblock %}
 
@@ -148,11 +153,11 @@ $(document).ready(function() {
                         </div>
                      </div>
                  </td>
-                <td class="artist" onClick="$('.inforight').isotope({ filter: '.artist' });"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
-                <td class="concert" onClick="$('.inforight').isotope({ filter: '.concert' });"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
-                <td class="instrument" onClick="$('.inforight').isotope({ filter: '.instrument' });"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
-                <td class="raaga" onClick="$('.inforight').isotope({ filter: '.raaga' });"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
-                <td class="taala" onClick="$('.inforight').isotope({ filter: '.taala' });"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
+                 <td class="artist" onClick="filterPackery({filter: '.artist'});"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
+                 <td class="concert" onClick="filterPackery({filter: '.concert'});"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
+                 <td class="instrument" onClick="filterPackery({filter: '.instrument'});"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
+                 <td class="raaga" onClick="filterPackery({filter: '.raaga'});"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
+                 <td class="taala" onClick="filterPackery({filter: '.taala'});"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
             </tr>
         </tbody></table>
      </div>
@@ -163,7 +168,7 @@ $(document).ready(function() {
      {% else %}
          <h2 class="resultsTitle">Some items from our collection:</h2>
      {% endif %}
-     <div id="results">
+     <div id="searchresults">
         {% for type, item in results %}
             {% if type == "concert" %}
                 {% badge_concert item %}
