@@ -75,6 +75,13 @@ def register_page(request):
     })
     return render_to_response('registration/register.html',variables)
 
+def forgotten_password(request):
+    form = ForgotForm()
+    variables = RequestContext(request, {
+            'form': form
+    })
+    return render_to_response('registration/forgot.html', variables)
+
 def user_profile(request):
     user_profile = request.user.get_profile()
     

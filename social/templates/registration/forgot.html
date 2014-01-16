@@ -1,0 +1,16 @@
+{% extends "carnatic/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<div id="login">
+    <h1>Forgot password</h1>
+    If you have forgotten your password, enter your username or email address here
+    <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="register" />
+    </form>
+</div>
+{% endblock %}
+
+

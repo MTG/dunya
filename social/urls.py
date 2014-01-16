@@ -9,9 +9,6 @@ from social import views
 site_media = os.path.join(
     os.path.dirname(__file__), 'site_media'
 )
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.main_page, name='social-main'),
@@ -23,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
     url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media}),
     url(r'^register/$', views.register_page, name='social-auth-register'),
+    url(r'^forgot/$', views.forgotten_password, name='social-auth-forgot'),
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
     url(r'^tag/$', views.tag_save_page, name='tag-form'),
     

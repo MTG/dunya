@@ -18,6 +18,9 @@ import re
 from django.contrib.auth.models import User
 from django import forms
 
+class ForgotForm(forms.Form):
+    username = forms.CharField(label=u'Username/Email', max_length=100)
+
 class RegistrationForm(forms.Form):
     required_css_class = 'required'
     username = forms.CharField(label=u'Username', max_length=30)
