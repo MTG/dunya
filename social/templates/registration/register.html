@@ -3,12 +3,12 @@
 
 {% block wrap %}
 <div id="login">
-	<h1>Register</h1>
-	<form method="post" action=".">
-		{% csrf_token %}
-		{{ form.as_p }}
-		<input type="submit" value="register" />
-	</form>
+    <h1>Register</h1>
+    <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="send" />
+    </form>
 </div>
 {% endblock %}
 
