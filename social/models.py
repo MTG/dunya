@@ -36,6 +36,7 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     birthday = models.DateField(null=True, blank=True)
     avatar = models.ImageField(upload_to='gallery', blank=True)
+    affiliation = models.CharField(max_length=200, blank=True)
     def __unicode__(self):
         return unicode(self.user)
 
