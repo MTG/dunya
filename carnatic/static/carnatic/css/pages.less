@@ -4,14 +4,6 @@
 
 #detail {
     border-bottom: 30px solid #333;
-    /*
-    a:after {
-            content: url("../img/link.png") !important;
-            top:2px !important;
-            margin-left: 2px !important;
-            position: relative !important;
-    }
-    */
     #header {
         background: #fff;
         border-bottom:1px solid @grisD;
@@ -113,8 +105,8 @@
                     overflow-x: auto;
                     overflow-y: hidden;
                     .metaContainer {
-                    position: relative;
-                    width: 3000px;
+                        position: relative;
+                        width: 3000px;
                         .metaDetails {
                             display: inline-block;
                             position: relative;
@@ -175,14 +167,6 @@
                                     width:68%; 
                                 }
                             }
-                            span.list2{
-                                label { 
-                                    display: block;
-                                }
-                                b { 
-                                    display: block;
-                                }
-                            }
                             &.narrow { width: 450px; }
                             &.close { width: 150px; }
                         }
@@ -198,73 +182,73 @@
                             &.narrow { width: 450px; }
                             &.close { width: 150px; }
                             .metaDetails {
-                                    display: inline-block;
-                                    position: relative;
-                                    float:left;
-                                    width:100%;    
-                                    height: 142px;
-                                    //font-size:11px;
-                                    padding-top:24px;
-                                    position: relative;
-                                    border:none;
-                                    .inner {
-                                        overflow-y: auto;
-                                        height: 100%;
+                                display: inline-block;
+                                position: relative;
+                                float:left;
+                                width:100%;    
+                                height: 142px;
+                                //font-size:11px;
+                                padding-top:24px;
+                                position: relative;
+                                border:none;
+                                .inner {
+                                    overflow-y: auto;
+                                    height: 100%;
+                                }
+                                h3 { 
+                                    top:0px;
+                                    padding: 10px;
+                                    padding-top: 5px;
+                                    padding-bottom: 4px;
+                                    border-bottom:1px solid darken(@grisf6,5%);
+                                    border-top: 1px solid @grisD;
+                                    background: @grisf6;
+                                    color:darken(@grisf6,30%);
+                                    margin: 0px;
+                                    position: absolute;
+                                    width: 100%;
+                                    text-transform: uppercase;
+                                    font-size: 10px;
+                                    font-weight: normal;
+                                }
+                                span { 
+                                    display: block; 
+                                    margin:10px; 
+                                    .player { 
+                                        background: url("../img/playButton.png") 0 50% no-repeat;
+                                        padding-left: 38px;
+                                        padding-top: 10px;
+                                        padding-bottom: 11px;
                                     }
-                                    h3 { 
-                                        top:0px;
-                                        padding: 10px;
-                                        padding-top: 5px;
-                                        padding-bottom: 4px;
-                                        border-bottom:1px solid darken(@grisf6,5%);
-                                        border-top: 1px solid @grisD;
-                                        background: @grisf6;
-                                        color:darken(@grisf6,30%);
-                                        margin: 0px;
-                                        position: absolute;
-                                        width: 100%;
-                                        text-transform: uppercase;
-                                        font-size: 10px;
-                                        font-weight: normal;
-                                    }
-                                    span { 
-                                        display: block; 
-                                        margin:10px; 
-                                        .player { 
-                                            background: url("../img/playButton.png") 0 50% no-repeat;
-                                            padding-left: 38px;
-                                            padding-top: 10px;
-                                            padding-bottom: 11px;
-                                        }
-                                        a { 
-                                            color: @vermell;
-                                            display: block;
-                                            margin-bottom:8px;
-                                        }
-                                    }
-                                    span.list{
-                                        label { 
-                                            float:left; 
-                                            width:28%; 
-                                            text-align: right; 
-                                            clear: left; 
-                                            margin-right: 4px; 
-                                        }
-                                        b { 
-                                            float: left; 
-                                            font-weight: normal; 
-                                            width:68%; 
-                                        }
-                                    }
-                                    span.list2{
-                                        label { 
-                                            display: block;
-                                        }
-                                        b { 
-                                            display: block;
-                                        }
+                                    a { 
+                                        color: @vermell;
+                                        display: block;
+                                        margin-bottom:8px;
                                     }
                                 }
+                                span.list{
+                                    label { 
+                                        float:left; 
+                                        width:28%; 
+                                        text-align: right; 
+                                        clear: left; 
+                                        margin-right: 4px; 
+                                    }
+                                    b { 
+                                        float: left; 
+                                        font-weight: normal; 
+                                        width:68%; 
+                                    }
+                                }
+                                span.list2{
+                                    label { 
+                                        display: block;
+                                    }
+                                    b { 
+                                        display: block;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -344,7 +328,6 @@
                     margin-bottom:10px;
                     overflow: hidden;
                     border: 1px solid @grisf6;
-                    //font-size: 10px;
                     margin-top: 10px;
                     margin-left: 10px;
                     .photo {
@@ -403,129 +386,103 @@
                         margin-bottom:4px;
                     }
                 }
-                .artist {
-                    border-right:1px solid darken(@grisf6,8%);
-                    border-bottom:1px solid darken(@grisf6,8%);
-                    float:left;
-                    width: 222px;
-                    padding:10px;
-                    margin-bottom: -1px;
-                    margin-top:1px;
-                    overflow-y: auto;
-                    .artistFoto { 
-                        position: relative;
-                        width: 51px;
-                        height: 63px;
-                        float:left;
-                    }
-                    .artistName { 
-                        position: relative;
-                        width: 150px;
-                        height: 63px;
-                        float:left;
-                        padding: 5px;
-                        font-size: 11px;
-                    }
-                    .artist1 { background: url("../img/artist1.jpg") 0 0 no-repeat; }
-                    .artist2 { background: url("../img/artist2.jpg") 0 0 no-repeat; }
-                    .artist3 { background: url("../img/artist3.jpg") 0 0 no-repeat; }
-                    .artist4 { background: url("../img/artist4.jpg") 0 0 no-repeat; }
-                }
             }
         }
     }
 }
+
 #detail .thedata {
-  #results {
-    .artist {
-      border-right: none !important;
-      border-bottom: none !important;
-      padding: 0px;
-      margin-top: 10px;
-      margin-left: 10px;
-    }
-  }
-  #results > div.open { 
-    width: auto;
-    height: 270px;
-    .pict {
-      position: relative;
-      display: inline-block;
-      float: left;
-    }
-    .lists {
-      display: block !important;
-      height: auto;
-      left: 0;
-      position: relative;
-      top: 0px;
-      width: auto;
-      padding-left: 6px;
-      padding-right: 6px;
-      overflow: hidden;
-      display: inline-block;
-      float: left;
-      .left {
-        .similarity>div {
-          height: 20px !important;
-          float: right;
-          margin-bottom: 2px;
-          padding-top: 3px;
-        }
-        .similarity div.active:after {
-          content: "";
-          height: 21px;
-          position: absolute;
-          right: -14px;
-          top: 0px;
-          width: 16px;
-          z-index: 10;
-          background: url("../img/simiMark.png") -8px -3px no-repeat;
-        }
-      }      
-    }
-    .right {
-        display: none;
-        height: 200px;
+
+    #results {
         .artist {
-          border-right: none !important;
-          border-bottom: none !important;
+            border-right: none !important;
+            border-bottom: none !important;
+            padding: 0px;
+            margin-top: 10px;
+            margin-left: 10px;
         }
-        &>.artist {
-          float: none !important;
-          width: auto;
-          padding:  0px !important;
-          margin:  0px !important;
-          overflow-y: auto;
-          margin-top: 5px;
-          padding: 6px;
-          padding-right: 15px;
-          padding-bottom: 5px;
-          overflow: hidden;
-          .minitem {
-            height: auto !important;
-            left: 0px;
+    }
+
+    #results > div.open { 
+        width: auto;
+        height: 270px;
+        .pict {
+            position: relative;
+            display: inline-block;
+            float: left;
+        }
+
+        .lists {
+            display: block !important;
+            height: auto;
+            left: 0;
             position: relative;
             top: 0px;
-            width: 100% !important;
-            background: none;
-            margin-top: 5px !important;
-            padding: 6px !important;            
-            min-height: 50px;
-            border: none;
+            width: auto;
+            padding-left: 6px;
+            padding-right: 6px;
+            overflow: hidden;
+            display: inline-block;
+            float: left;
 
-          border-right: none !important;
-          border-bottom: none !important;
-          }
+            .left {
+                .similarity>div {
+                    height: 20px !important;
+                    float: right;
+                    margin-bottom: 2px;
+                    padding-top: 3px;
+                }
+                .similarity div.active:after {
+                    content: "";
+                    height: 21px;
+                    position: absolute;
+                    right: -14px;
+                    top: 0px;
+                    width: 16px;
+                    z-index: 10;
+                    background: url("../img/simiMark.png") -8px -3px no-repeat;
+                }
+            }      
         }
-        .recording {
-          height: 200px;
+        .right {
+            display: none;
+            height: 200px;
+            .artist {
+               border-right: none !important;
+               border-bottom: none !important;
+            }
+            &>.artist {
+                float: none !important;
+                width: auto;
+                padding:  0px !important;
+                margin:  0px !important;
+                overflow-y: auto;
+                margin-top: 5px;
+                padding: 6px;
+                padding-right: 15px;
+                padding-bottom: 5px;
+                overflow: hidden;
+                .minitem {
+                    height: auto !important;
+                    left: 0px;
+                    position: relative;
+                    top: 0px;
+                    width: 100% !important;
+                    background: none;
+                    margin-top: 5px !important;
+                    padding: 6px !important;            
+                    min-height: 50px;
+                    border: none;
+                    border-right: none !important;
+                    border-bottom: none !important;
+                }
+            }
+            .recording {
+                height: 200px;
+            }
         }
-      }
-  }
+    }
 }
-
-
 
 #detail.artist a { color: darken( @artist_color, 30% ) !important; }
 #detail.concert a { color: darken( @concert_color, 30% ) !important; }

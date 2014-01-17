@@ -1,6 +1,10 @@
 @import "variables.less";
 @import "mixins.less";
 
+/* ====================
+   Browse interface
+   ================== */
+
 .formSection { 
     cursor: pointer; 
     background: url("../img/formSectionClose.png") 98% 4px no-repeat; 
@@ -11,6 +15,7 @@
     display: block; 
     font-weight: bold; 
 }
+
 .formSectionText { 
     cursor: pointer; 
     background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; 
@@ -53,14 +58,12 @@ fieldset { margin-bottom: 6px; }
     overflow-x: hidden;
 }
 
-/*   SHADOW OF THE CIRCLES   */
 .shadow1 { box-shadow: 1px 1px 3px #666; }
 
 #footage { display: none; }
 
 .artistPopularity {}
 #filterArea>div { position: relative; display: inline-block; }
-
 
 #filterMask { 
     position: relative; 
@@ -412,7 +415,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .filters.entity_10 { background: fade(@entity_10_color, 20%); }
 
 
-/* RESULTS FOR DEMO */
+/* Number bar showing number of results */
 #resultsstats {
     display: block;
     background: url("../img/cloth_alike.png") 0 0 repeat;
@@ -427,7 +430,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             display: inline-block; 
             width: 80px; 
             height: 80px; 
-            .rounded(40px);
             background: #fff url("../img/playSearch.png") 53% 53% no-repeat;
             margin-right: 5px; 
             top: 3px; 
@@ -487,7 +489,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 text-shadow: none;
                 display: block;
                 margin-left: 71px;
-        margin-top: 33px;
+                margin-top: 33px;
             }
             h3 { font-size: 14px; }
         }
@@ -512,9 +514,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 .resultsTitle { margin: 10px 5px 0 11px; }
+
+/* Actual search results */
+
 #searchresults {
+    /* A regular box */
     &>div {
-        float:left;
+        float: left;
         width: 220px;
         height: 270px;
         margin-bottom:10px;
@@ -525,6 +531,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
         margin-left: 10px;
         background: #f6f6f6; 
         .shadow1;
+
+        /* An expanded box. ~2x the size of a normal box */
         &.open {
             width: 450px;
             height: 560px;
@@ -545,122 +553,122 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 position: absolute;
                 top: 6px;
                 width: 231px;
-          background: rgba(256,256,256,0.4);
-          box-shadow: inset 0px 0px 10px;
-          border-top-right-radius: 5px;
-          border-bottom-right-radius: 5px;
-          .meta {
-            position: relative;
-            width: 100%;
-            background: rgba(0,0,0,0.2);
-            border-radius: 5px;
-            padding: 5px;
-            label {
-              float: left;
-              width: 85px;
-              text-align: right;
-              padding-right: 4px;
-              font-weight: bold;
-              clear: left;
-            }
-            span {
-            clear: right;
-            float: left;
-            }
-          }
+                background: rgba(256,256,256,0.4);
+                box-shadow: inset 0px 0px 10px;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                .meta {
+                    position: relative;
+                    width: 100%;
+                    background: rgba(0,0,0,0.2);
+                    border-radius: 5px;
+                    padding: 5px;
+                    label {
+                        float: left;
+                        width: 85px;
+                        text-align: right;
+                        padding-right: 4px;
+                        font-weight: bold;
+                        clear: left;
+                    }
+                    span {
+                        clear: right;
+                        float: left;
+                    }
+                }
           
-          h3 {
-            margin-top: 15px;
-            margin-bottom: 5px;
-          }
-          p.value {
-            margin-top: 0px;
-          }
+                h3 {
+                    margin-top: 15px;
+                    margin-bottom: 5px;
+                }
+                p.value {
+                    margin-top: 0px;
+                }
             }
             .lists {
-        display: block !important;
-        height: 277px;
-        left: 0;
-        position: absolute;
-        top: 218px;
-        width: 100%;
-        padding-left: 6px;
-        padding-right: 6px;
-        overflow: hidden;
-              .left {
-                position: relative;
-                top:0px;
-                left:0px;
-                width: 207px;
-                height: 100%;
-                float: left;
-                border-right: 1px dashed rgba(256,256,256,0.5);
-                overflow-y: auto;
-          h3 {
-            margin: 5px;
-            color: rgba(0,0,0,0.5);
-          }
-              }
-              &.similar .left {
-            overflow: visible;
-            border-right: none;
-          }
-              .right {
-                position: relative;
-                top:0px;
-                left:0px;
-                width: 231px;
-                height: 100%;
-                float:left;
-                padding-left: 5px;
-                overflow-y: auto;
-                h3 {
-            margin: 5px;
-            color: rgba(0,0,0,0.5);
-          }
-              } 
-              .miniitem {
-                height: auto !important;
-          left: 0px;
-          position: relative;
-          top: 0px;
-          width:100% !important;
-          background: none;
-          margin-top: 5px;
-          padding:6px;
-                padding-right: 15px;
-                padding-bottom:5px;
-                min-height: 50px;
-          label {
-            font-size: 12px;
-            line-height: 14px;
-            display: block;
-            color: rgba(0,0,0,0.5);
-            b {
-              display: block;
-              color: #000;
-            }
-          }
-                .disco {
-                  float: left;
-                  margin-right: 8px;
-                  margin-bottom: 15px; 
-            a {
-              background: none;
-              img { width: 40px !important; }
-              }
-          }
-        }
+                display: block !important;
+                height: 277px;
+                left: 0;
+                position: absolute;
+                top: 218px;
+                width: 100%;
+                padding-left: 6px;
+                padding-right: 6px;
+                overflow: hidden;
+                .left {
+                    position: relative;
+                    top:0px;
+                    left:0px;
+                    width: 207px;
+                    height: 100%;
+                    float: left;
+                    border-right: 1px dashed rgba(256,256,256,0.5);
+                    overflow-y: auto;
+                    h3 {
+                        margin: 5px;
+                        color: rgba(0,0,0,0.5);
+                    }
+                }
+                &.similar .left {
+                    overflow: visible;
+                    border-right: none;
+                }
+                .right {
+                    position: relative;
+                    top:0px;
+                    left:0px;
+                    width: 231px;
+                    height: 100%;
+                    float:left;
+                    padding-left: 5px;
+                    overflow-y: auto;
+                    h3 {
+                        margin: 5px;
+                        color: rgba(0,0,0,0.5);
+                    }
+                } 
+                .miniitem {
+                    height: auto !important;
+                    left: 0px;
+                    position: relative;
+                    top: 0px;
+                    width:100% !important;
+                    background: none;
+                    margin-top: 5px;
+                    padding:6px;
+                    padding-right: 15px;
+                    padding-bottom:5px;
+                    min-height: 50px;
+                    label {
+                        font-size: 12px;
+                        line-height: 14px;
+                        display: block;
+                        color: rgba(0,0,0,0.5);
+                        b {
+                            display: block;
+                            color: #000;
+                        }
+                    }
+                    .disco {
+                        float: left;
+                        margin-right: 8px;
+                        margin-bottom: 15px; 
+                        a {
+                            background: none;
+                            img { width: 40px !important; }
+                        }
+                    }
+                }
             }
             .smallPlay {
-            position: absolute;
-            left: 200px;
-        top: 2px;
-            width: 23px;
-            height: 23px;
-            background: url("../img/smallPlay.png") 0 0  no-repeat;
-            z-index: 10;
-      }
+                position: absolute;
+                left: 200px;
+                top: 2px;
+                width: 23px;
+                height: 23px;
+                background: url("../img/smallPlay.png") 0 0  no-repeat;
+                z-index: 10;
+            }
         }
         .pict {
             position: absolute;
@@ -707,44 +715,52 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 background: url("../img/plusIcon.png") 0 0 no-repeat;
                 cursor: pointer;
             }
-            p { margin:0px; color: #666;}
+            p {
+                margin:0px; color: #666;
+            }
             .title { 
-              font-weight: bold; 
-              display: block; 
-              color: #000; 
-              text-decoration: none;
-              b {
-                font-size: 14px;
-              }
-              .year {
-                margin-left: 4px;
+                font-weight: bold; 
+                display: block; 
+                color: #000; 
+                text-decoration: none;
+                b {
+                    font-size: 14px;
+                }
+                .year {
+                    margin-left: 4px;
+                    opacity: 0.6;
+                }
+            }
+            .belongs {
+                color: #000;
                 opacity: 0.6;
-              }
-      }
-      .belongs {
-        color: #000;
-        opacity: 0.6;
-        text-decoration: none;
-      }
-            a:hover { text-decoration: underline; } 
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
         }
         .descOpen, .lists {
             display: none; 
         }
         .smallPlay {
-          position: absolute;
-          right: 0;
-      top: 2px;
-          width: 23px;
-          height: 23px;
-          background: url("../img/smallPlay.png") 0 0  no-repeat;
-          z-index: 10;
+            position: absolute;
+            right: 0;
+            top: 2px;
+            width: 23px;
+            height: 23px;
+            background: url("../img/smallPlay.png") 0 0  no-repeat;
+            z-index: 10;
         }
     }
     .recording {
         background: darken( @recording_color, 20% );
-        .desc { background: @recording_color; }
-        &:hover { background: darken( @recording_color, 20% ); }
+        .desc {
+            background: @recording_color;
+        }
+        &:hover {
+            background: darken( @recording_color, 20% );
+        }
         .disc {
             float: left;
             width: 127px; 
@@ -753,30 +769,37 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
         }
     }
     .artist {
-        //background: @artist_color;
-        .desc { background: @artist_color; }
+        .desc {
+            background: @artist_color;
+        }
         background: darken( @artist_color, 20% );
-
     }
     .concert { 
-      .desc { background: @concert_color; }
+        .desc {
+            background: @concert_color;
+        }
         background: darken( @concert_color, 20% );
-  }
-  .work { 
-      .desc { background: @work_color; }
+    }
+    .work { 
+        .desc {
+            background: @work_color;
+        }
         background: darken( @work_color, 20% );
-  }
+    }
     .track {
-        .desc { background: @recording_color; }
+        .desc {
+            background: @recording_color;
+        }
         background: darken( @recording_color, 20% );
         h4 {
             margin: 0px;
             margin-bottom:4px;
-            
         }
     }
     .instrument {
-        .desc { background: @instrument_color; }
+        .desc {
+            background: @instrument_color;
+        }
         background: darken( @instrument_color, 20% );
         h4 {
             text-align: center;
@@ -813,12 +836,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     .artist {
         .desc { background: @artist_color; }
         background: darken( @artist_color, 20% );
-        .artistFoto { 
-            position: relative;
-            width: 51px;
-            height: 63px;
-            float:left;
-        }
         .artistName { 
             position: relative;
             width: 150px;
@@ -837,72 +854,73 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
       margin-bottom: 6px;
       margin-top: 4px;
     }
-      div {
+    div {
         float: right;
         text-align: right;
         right: 0px;
         clear: right;
         display: block;
         height: 27px;
-      margin-bottom: 5px;
-      position: relative;
-      text-transform: uppercase;
-      padding-top: 5px;
-      padding-left: 5px;
-      border-left: 6px solid rgba(255,255,255,0.5);
-      cursor: pointer;
-      &.artist { background: @artist_color; color:darken(@artist_color, 25%); }
-      &.concert { background: @composer_color; color:darken(@composer_color, 25%); }
-      &.work { background: @work_color; color:darken(@work_color, 25%); }
-      &.instrument { background: @instrument_color; color:darken(@instrument_color, 25%); }
-      &.raaga { background: @raaga_color; color:darken(@raaga_color, 25%); }
-      &.taala { background: @taala_color; color:darken(@taala_color, 25%); }
-      &.recording { background: @recording_color; color:darken(@recording_color, 25%); }
-      &.composer { background: @composer_color; color:darken(@composer_color, 25%); }
-      &.active:after {
+        margin-bottom: 5px;
+        position: relative;
+        text-transform: uppercase;
+        padding-top: 5px;
+        padding-left: 5px;
+        border-left: 6px solid rgba(255,255,255,0.5);
+        cursor: pointer;
+        &.artist { background: @artist_color; color:darken(@artist_color, 25%); }
+        &.concert { background: @composer_color; color:darken(@composer_color, 25%); }
+        &.work { background: @work_color; color:darken(@work_color, 25%); }
+        &.instrument { background: @instrument_color; color:darken(@instrument_color, 25%); }
+        &.raaga { background: @raaga_color; color:darken(@raaga_color, 25%); }
+        &.taala { background: @taala_color; color:darken(@taala_color, 25%); }
+        &.recording { background: @recording_color; color:darken(@recording_color, 25%); }
+        &.composer { background: @composer_color; color:darken(@composer_color, 25%); }
+        &.active:after {
+            content: "";
+            height: 29px;
+            position: absolute;
+            right: -16px;
+            top: 0px;
+            width: 16px;
+            z-index: 10;
+            background: url("../img/simiMark.png") -2px 0 no-repeat;
+        }
+        span {
+            position: absolute;
+            right: 4px;
+            font-weight: bold;
+        }
+    }
+}
+
+.similarList { 
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    display: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    &:before {
+        background-image: url("../img/simdegra.png");
+        background-position: -13px 0;
+        background-repeat: repeat-y;
+        background-size: 100% auto;
         content: "";
-        height: 29px;
+        height: 100%;
+        opacity: 1;
         position: absolute;
-        right: -16px;
-        top: 0px;
-        width: 16px;
-        z-index: 10;
-        background: url("../img/simiMark.png") -2px 0 no-repeat;
-      }
-      span {
-        position: absolute;
-        right: 4px;
-        font-weight: bold;
-      }
+        width: 19px;
+        z-index: 0;
     }
-    }
-    .similarList { 
-      height: 100%;
-      position: absolute;
-      width: 100%;
-      top: 0px;
-      left: 0px;
-      display: none;
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-      &:before {
-      background-image: url("../img/simdegra.png");
-      background-position: -13px 0;
-      background-repeat: repeat-y;
-      background-size: 100% auto;
-      content: "";
-      height: 100%;
-      opacity: 1;
-      position: absolute;
-      width: 19px;
-      z-index: 0;
-      }
-      &.active { display: block; box-shadow: inset 0px 0px 10px; }
-      .miniitem:first-child {
+    &.active { display: block; box-shadow: inset 0px 0px 10px; }
+    .miniitem:first-child {
         margin-top:15px !important;
-      }
-      .miniitem { padding-left: 13px !important; }
-      &.artist { background: @artist_color url("../img/cloth_alikeTrans2.png") repeat; }
+    }
+    .miniitem { padding-left: 13px !important; }
+    &.artist { background: @artist_color url("../img/cloth_alikeTrans2.png") repeat; }
     &.concert { background: @composer_color url("../img/cloth_alikeTrans2.png") repeat; }
     &.work { background: @work_color url("../img/cloth_alikeTrans2.png") repeat; }
     &.instrument { background: @instrument_color url("../img/cloth_alikeTrans2.png") repeat; }
@@ -910,7 +928,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     &.taala { background: @taala_color url("../img/cloth_alikeTrans2.png") repeat; }
     &.recording { background-: @recording_color url("../img/cloth_alikeTrans2.png") repeat; }
     &.composer { background: @composer_color url("../img/cloth_alikeTrans2.png") repeat; }
-  }
+}
 }
 
 .artist .filterBall, .artist .filterList ul li.selected { background: @artist_color; }
