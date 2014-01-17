@@ -17,6 +17,11 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+{% block extra_css %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+{% endblock %}
 
 {% block title %}{{artist.name}} - {% endblock %}
 
