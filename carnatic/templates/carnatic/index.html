@@ -149,15 +149,15 @@ $(document).ready(function() {
                 <td>
                     <div id="queryCont">
                             <span>Query</span>
-                        <div id="query" class="shadow1" onClick="$('.inforight').isotope({ filter: '*' });">
+                        <div id="query" class="shadow1">
                         </div>
                      </div>
                  </td>
-                 <td class="artist" onClick="filterPackery({filter: '.artist'});"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
-                 <td class="concert" onClick="filterPackery({filter: '.concert'});"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
-                 <td class="instrument" onClick="filterPackery({filter: '.instrument'});"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
-                 <td class="raaga" onClick="filterPackery({filter: '.raaga'});"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
-                 <td class="taala" onClick="filterPackery({filter: '.taala'});"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
+                 <td class="artist" onClick="filterPackery('.artist');"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
+                 <td class="concert" onClick="filterPackery('.concert');"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
+                 <td class="instrument" onClick="filterPackery('.instrument');"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
+                 <td class="raaga" onClick="filterPackery('.raaga');"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
+                 <td class="taala" onClick="filterPackery('.taala');"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
             </tr>
         </tbody></table>
      </div>

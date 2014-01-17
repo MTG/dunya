@@ -10,10 +10,10 @@ $(document).ready(function() {
 		getResults2($(this), entity);
     });
 
-    $("#results .desc .plus").click(function() {
+    $("#searchresults .desc .plus").click(function() {
         $(this).parent().parent().toggleClass("open");
         if( !$("body").hasClass('detail') ){
-            var $container = $('#results');
+            var $container = $('#searchresults');
             $container.packery({
                 itemSelector: '.item',
                 gutter: 0
@@ -23,10 +23,9 @@ $(document).ready(function() {
 });
 
 function filterPackery(className){
-    $("#results .item").css('display','none');
-    $("#results .item"+className.filter).css('display','block');
-    console.log(className.filter);  
-    var $container = $('#results');
+    $("#searchresults .item").css('display','none');
+    $("#searchresults .item"+className).css('display','block');
+    var $container = $('#searchresults');
     $container.packery({
         itemSelector: '.item',
         gutter: 0
