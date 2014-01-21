@@ -17,7 +17,6 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
@@ -32,21 +31,7 @@ import json
 import social.timeline as timeline
 
 def main_page(request):
-    return render_to_response('social/main_page.html',RequestContext(request))
-
-#def user_page(request, username):
-#    try:
-#        user = User.objects.get(username=username)
-#    except User.DoesNotExist:
-#        raise Http404(u'Requested user not found.')
-#
-#    fullname = user.get_full_name()
-#
-#    variables = RequestContext(request, {
-#            'username': username,
-#            'fullname': fullname
-#    })
-#    return render_to_response('user_page.html', variables)
+    return render(request, "social/main_page.html")
 
 def logout_page(request):
     logout(request)
@@ -70,17 +55,11 @@ def register_page(request):
             return HttpResponseRedirect(reverse('social-auth-register-success'))
     else:
         form = RegistrationForm()
-    variables = RequestContext(request, {
-            'form': form
-    })
-    return render_to_response('registration/register.html',variables)
 
-def forgotten_password(request):
-    form = ForgotForm()
-    variables = RequestContext(request, {
-            'form': form
-    })
-    return render_to_response('registration/forgot.html', variables)
+    ret = {
+        'form': form
+    }
+    return render(request, 'registration/register.html', ret)
 
 def user_profile(request):
     user_profile = request.user.get_profile()
@@ -90,25 +69,11 @@ def user_profile(request):
     
     timelines = timeline.timeline(users_id)
     
-    variables = RequestContext(request, {
+    ret = {
         'user_profile': user_profile,
         'timeline': timelines
-    })
-    return render_to_response('social/user-profile.html', variables)
-
-
-def user_profile_save(request):
-    user_profile = request.user.get_profile()
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST)
-
-    else:
-        form = UserProfileForm()
-    
-    variables = RequestContext(request, {
-        'user_profile': user_profile
-    })
-    return render_to_response('social/user-profile.html', variables)
+    }
+    return render(request, 'social/user-profile.html', ret)
 
 def users_list(request):
     numusers = User.objects.count()
@@ -129,12 +94,9 @@ def user_page(request, username):
     else:
         follow = True
     
-    
     users_id = []
     users_id.append(other_user.id)
-    
     timelines = timeline.timeline(users_id)
-    
     
     ret = {"other_user": other_user,
            "profile": profile,
@@ -145,7 +107,6 @@ def user_page(request, username):
     return render(request, "social/user_page.html", ret)
 
 def timeline_page(request):
-    
     follower = request.user
     users_followed = UserFollowsUser.objects.filter(user_follower=follower).values('user_followed_id')
     users_id = []
@@ -154,14 +115,12 @@ def timeline_page(request):
     for user in users_followed:
         users_id.append(user['user_followed_id'])
     
-    
     timelines = timeline.timeline(users_id)
     
-    variables = RequestContext(request, {
+    ret = {
         'timeline': timelines
-    })
-    return render_to_response('social/timeline-page.html', variables)
-
+    }
+    return render(request, 'social/timeline-page.html', ret)
 
 @csrf_protect
 def user_follow(request):
@@ -203,10 +162,11 @@ def tag_save_page(request):
             return HttpResponseRedirect('/carnatic/%s/%s' % (objecttype, objectid))
     else:
         form = TagSaveForm()
-    variables = RequestContext(request, {
+
+    ret = {
         'form': form
-    })
-    return render_to_response('social/form-tag.html', variables)
+    }
+    return render(request, 'social/form-tag.html', ret)
 
 
 def ajax_tag_autocomplete(request):
@@ -239,11 +199,10 @@ def tag_page(request, tagname, modeltype="concert"):
     for lista in lists:
         objects.append([__get_entity(modeltype, lista['entity_id']), lista['freq']])
       
-    variables = RequestContext(request, {
+    ret = {
         'objects': objects,
         'tag_name': tagname,
         'modeltype': modeltype,
-    })
-    return render_to_response('social/tag_page.html', variables)
-
+    }
+    return render(request, 'social/tag_page.html', ret)
 

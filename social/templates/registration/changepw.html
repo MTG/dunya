@@ -1,0 +1,19 @@
+{%extends "carnatic/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<div id="login" class="logCenter">
+	<h1>Change password</h1>
+ {% if form.errors %}
+ There was an error changing your password.
+ {% endif %}
+  Please enter your old password and your new password, twice.
+  <form method="post" action="">
+   {% csrf_token %}
+   {{form.as_p}}
+   <input type="submit" value="Change password"/>
+  </form>
+</div>
+{% endblock %}
+
+

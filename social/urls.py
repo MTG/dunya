@@ -12,19 +12,25 @@ site_media = os.path.join(
 
 urlpatterns = patterns('',
     url(r'^$', views.main_page, name='social-main'),
+    # Change password
+    url(r'^user/password$',  'django.contrib.auth.views.password_change', {'post_change_redirect': '/', 'template_name': 'registration/changepw.html'}, name='social-user-changepw'),
+    # reset password
+    url(r'^user/reset/sent$', 'django.contrib.auth.views.password_reset_done', name='social-pwreset-done'),
+    url(r'^user/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$', 'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': 'social-pwreset-complete'}, name='social-pwreset-confirm'),
+    url(r'^user/reset/complete$', 'django.contrib.auth.views.password_reset_complete', name='social-pwreset-complete'),
+    url(r'^user/reset/$', 'django.contrib.auth.views.password_reset', {'post_reset_redirect': 'social-pwreset-done', 'template_name': 'registration/pwreset.html', 'email_template_name': 'registration/pwreset_email.html'}, name='social-pwreset'),
+
     url(r'^user/follow$', views.user_follow, name='social-user-follow'),
     url(r'^user/unfollow$', views.user_unfollow, name='social-user-unfollow'),
     url(r'^user/(\w+)/$', views.user_page, name='social-auth-user'),
+    
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='social-auth-login'),
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
-    url(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media}),
     url(r'^register/$', views.register_page, name='social-auth-register'),
-    url(r'^forgot/$', views.forgotten_password, name='social-auth-forgot'),
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
     url(r'^tag/$', views.tag_save_page, name='tag-form'),
     
-    url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^timeline/$', views.timeline_page, name='social-timeline-page'),
     url(r'^users/(?P<username>\w+)$', views.user_page, name='social-user-page'),
 
@@ -32,17 +38,5 @@ urlpatterns = patterns('',
     # Ajax
     url(r'^ajax/tag/autocomplete/$', views.ajax_tag_autocomplete, name='social-tag-autocomplete'),
     # Tag page
-    #url(r'^tags/(?P<tag_name>\w+)/(?P<modeltype>\w+)/$', views.tag_page, name='social-tag-page'),
     url(r'^tags/(?P<tagname>[\w\+]+)/(?P<modeltype>\w+)$', views.tag_page, name='social-tag-page'),
-
-
-    # Examples:
-    # url(r'^$', 'Dunya.views.home', name='home'),
-    # url(r'^Dunya/', include('Dunya.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
 )
