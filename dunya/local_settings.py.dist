@@ -13,6 +13,12 @@ TEMPLATE_DEBUG = DEBUG
 # LESS_OPTIONS  = ["--source-map-map-inline", "--source-map-rootpath=/static/carnatic/css"]
 # LESS_ROOT = "carnatic/static/"
 
+# For development this sets up a dummy email server
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = '/tmp/app-messages'
+# Otherwise, this default
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
