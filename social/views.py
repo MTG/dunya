@@ -47,10 +47,12 @@ def register_page(request):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
-                affiliation=form.cleaned_data['affiliation']
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name']
             )
-            
             user.save()
+            user.userprofile.affiliation=form.cleaned_data['affiliation']
+            user.userprofile.save()
             
             return HttpResponseRedirect(reverse('social-auth-register-success'))
     else:

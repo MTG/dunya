@@ -18,13 +18,10 @@ import re
 from django.contrib.auth.models import User
 from django import forms
 
-class ForgotForm(forms.Form):
-    username = forms.CharField(label=u'Username/Email', max_length=100)
-
 class RegistrationForm(forms.Form):
     required_css_class = 'required'
     username = forms.CharField(label=u'Username', max_length=30)
-    fist_name = forms.CharField(label=u'First name', max_length=30)
+    first_name = forms.CharField(label=u'First name', max_length=30)
     last_name = forms.CharField(label=u'Last name', max_length=30)
     affiliation = forms.CharField(label="Affiliation", max_length=100)
     email = forms.EmailField(label=u'Email')

@@ -25,15 +25,7 @@ from django.db.models.signals import post_save
 ################ SOCIAL PART #########################
 
 class UserProfile(models.Model):
-    #The primary attributes of the default user are:
-    #username
-    #password
-    #email
-    #first name
-    #last name
-    user = models.ForeignKey(User, unique=True)
-    first_name = models.CharField(max_length=100, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
+    user = models.OneToOneField(User, unique=True)
     birthday = models.DateField(null=True, blank=True)
     avatar = models.ImageField(upload_to='gallery', blank=True)
     affiliation = models.CharField(max_length=200, blank=True)
@@ -48,7 +40,6 @@ def user_post_save(sender, instance, created, **kwargs):
         p.save()
 
 post_save.connect(user_post_save, sender=User)
-
 
 class Playlist(models.Model):
     #la PK id ya la genera django automaticamente
