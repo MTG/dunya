@@ -228,6 +228,12 @@ class Concert(BaseModel):
     def artistnames(self):
         return self.artists.all()
 
+    def tracklist(self):
+        """Return an ordered list of recordings in this concert"""
+        tracks = self.get_object_map("recording").objects.filter(
+                concertrecording__concert=self).order_by('concertrecording__track')
+        return tracks
+
     def performers(self):
         """ The performers on a concert are those who are in the performance relations,
         both on the concert and the concerts recordings.

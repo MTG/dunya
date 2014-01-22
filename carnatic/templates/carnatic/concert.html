@@ -106,7 +106,7 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="tracklist">
-                            {% for t in concert.tracks.all %}
+                            {% for t in tracks %}
                             {% badge_recording t %}
                             {% endfor %}
 	                    </div>

@@ -172,6 +172,9 @@ class Sabbah(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
 
+class ConcertRecording(CarnaticStyle, data.models.ConcertRecording):
+    pass
+
 class Concert(CarnaticStyle, data.models.Concert):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
 

@@ -99,10 +99,13 @@ class ReleaseImporter(object):
 
         if not created and self.overwrite:
             concert.tracks.clear()
+        trackorder = 1
         for recid in recordings:
             recording = self.add_and_get_recording(recid)
             if not concert.tracks.filter(pk=recording.pk).exists():
-                concert.tracks.add(recording)
+                carnatic.models.ConcertRecording.objects.create(
+                        concert=concert, recording=recording, track=trackorder)
+            trackorder += 1
 
         if not created and self.overwrite:
             concert.performance.clear()

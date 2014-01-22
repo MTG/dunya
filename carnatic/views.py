@@ -387,8 +387,8 @@ def concert(request, concertid):
         image = images[0].image.url
     else:
         image = "/media/images/noconcert.jpg"
-    tracks = concert.tracks.all()
     sample = None
+    tracks = concert.tracklist()
     if tracks:
         sample = tracks[:1]
 
@@ -406,7 +406,8 @@ def concert(request, concertid):
 	   "tags": tags,
        "image": image,
        "sample": sample,
-       "similar_concerts": similar
+       "similar_concerts": similar,
+       "tracks": tracks,
        }
 
     return render(request, "carnatic/concert.html", ret)
