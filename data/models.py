@@ -177,6 +177,17 @@ class Artist(BaseModel):
 class Label(BaseModel):
     name = models.CharField(max_length=100)
 
+class ConcertRecording(BaseModel):
+    class Meta:
+        abstract = True
+    concert = models.ForeignKey('Concert')
+    recording = models.ForeignKey('Recording')
+    # The number that the track comes in the concert. Numerical 1-n
+    track = models.IntegerField()
+
+    def __unicode__(self):
+        return "%s: %s from %s" % (self.track, self.recording, self.concert)
+
 class Concert(BaseModel):
     missing_image = "concert.png"
 
@@ -188,7 +199,7 @@ class Concert(BaseModel):
     # Main artists on the concert
     artists = models.ManyToManyField('Artist', related_name='primary_concerts')
     artistcredit = models.CharField(max_length=255)
-    tracks = models.ManyToManyField('Recording')
+    tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey('Label', blank=True, null=True)
     # Other artists who played on this concert (musicbrainz relationships)
@@ -420,4 +431,14 @@ class Location(BaseModel):
 
     def __unicode__(self):
         return self.name
+
+class VisitLog(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    user = models.CharField(max_length=100, blank=True, null=True)
+    # ipv4 only!
+    ip = models.CharField(max_length=16)
+    path = models.CharField(max_length=256)
+
+    def __unicode__(self):
+        return "%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
 

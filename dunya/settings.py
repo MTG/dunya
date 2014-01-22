@@ -78,6 +78,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'dunya.middleware.PageLoggerMiddleware',
 )
 
 ROOT_URLCONF = 'dunya.urls'
