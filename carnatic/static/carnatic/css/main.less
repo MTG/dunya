@@ -249,6 +249,42 @@ textarea {
     }
 }
 
+/* ==========================
+ * Common to all pages
+ * ======================== */
+.miniitem {
+    height: auto !important;
+    left: 0px;
+    position: relative;
+    top: 0px;
+    width:100% !important;
+    background: none;
+    margin-top: 5px;
+    padding:6px;
+    padding-right: 15px;
+    padding-bottom:5px;
+    min-height: 50px;
+    label {
+        font-size: 12px;
+        line-height: 14px;
+        display: block;
+        color: rgba(0,0,0,0.5);
+        b {
+            display: block;
+            color: #000;
+        }
+    }
+    .disco {
+        float: left;
+        margin-right: 8px;
+        margin-bottom: 15px; 
+        a {
+            background: none;
+            img { width: 40px !important; }
+        }
+    }
+}
+
 /* ==========================================================================
    LOGIN
    ========================================================================== */
@@ -330,8 +366,6 @@ input[type="text"], input[type="password"], input[type="email"] {
 #filterMask #filterArea #entitiesList ul li.taala .colorCode { border-color: @taala_color; } 
 #filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; } 
 #filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; } 
-#filterMask #filterArea #entitiesList ul li.entity_9 .colorCode { border-color: @entity_9_color; } 
-#filterMask #filterArea #entitiesList ul li.entity_10 .colorCode { border-color: @entity_10_color; } 
 
 /******************************
  * Small things inside badges or on page lists
@@ -345,8 +379,6 @@ input[type="text"], input[type="password"], input[type="email"] {
 .miniitem.taala .colorCode { border-color: @taala_color !important; } 
 .miniitem.recording .colorCode { border-color: @recording_color !important; } 
 .miniitem.composer .colorCode { border-color: @composer_color !important; } 
-.miniitem.entity_9 .colorCode { border-color: @entity_9_color !important; } 
-.miniitem.entity_10 .colorCode { border-color: @entity_10_color !important; } 
 
 /* ==========================================================================
    Helper classes

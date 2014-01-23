@@ -1,3 +1,6 @@
+@import "variables.less";
+@import "mixins.less";
+
 /* ==========================================================================
    DETAIL 
    ========================================================================== */
@@ -256,7 +259,102 @@
         }
     }
     
-    .thedata {
+}
+
+.similarList { 
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    display: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    &:before {
+        background-image: url("../img/simdegra.png");
+        background-position: -13px 0;
+        background-repeat: repeat-y;
+        background-size: 100% auto;
+        content: "";
+        height: 100%;
+        opacity: 1;
+        position: absolute;
+        width: 19px;
+        z-index: 0;
+    }
+    &.active { display: block; box-shadow: inset 0px 0px 10px; }
+    .miniitem:first-child {
+        margin-top:15px !important;
+    }
+    .miniitem { padding-left: 13px !important; }
+    &.artist { background: @artist_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.concert { background: @composer_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.work { background: @work_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.instrument { background: @instrument_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.raaga { background: @raaga_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.taala { background: @taala_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.recording { background-: @recording_color url("../img/cloth_alikeTrans2.png") repeat; }
+    &.composer { background: @composer_color url("../img/cloth_alikeTrans2.png") repeat; }
+}
+
+/** For example, tag/comment input box */
+.rightdata textarea {
+    margin-bottom: 10px;
+    box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+    .rounded(5px);
+    border:none;
+}
+
+    .similarity {
+        h2 { 
+            font-weight: normal; 
+            color: #fff; 
+            font-size: 11px;
+            text-align: center;
+            margin-bottom: 6px;
+            margin-top: 4px;
+        }
+        div {
+        float: right;
+        text-align: right;
+        right: 0px;
+        clear: right;
+        display: block;
+        height: 27px;
+        margin-bottom: 5px;
+        position: relative;
+        text-transform: uppercase;
+        padding-top: 5px;
+        padding-left: 5px;
+        border-left: 6px solid rgba(255,255,255,0.5);
+        cursor: pointer;
+        &.artist { background: @artist_color; color:darken(@artist_color, 25%); }
+        &.concert { background: @composer_color; color:darken(@composer_color, 25%); }
+        &.work { background: @work_color; color:darken(@work_color, 25%); }
+        &.instrument { background: @instrument_color; color:darken(@instrument_color, 25%); }
+        &.raaga { background: @raaga_color; color:darken(@raaga_color, 25%); }
+        &.taala { background: @taala_color; color:darken(@taala_color, 25%); }
+        &.recording { background: @recording_color; color:darken(@recording_color, 25%); }
+        &.composer { background: @composer_color; color:darken(@composer_color, 25%); }
+        &.active:after {
+            content: "";
+            height: 29px;
+            position: absolute;
+            right: -16px;
+            top: 0px;
+            width: 16px;
+            z-index: 10;
+            background: url("../img/simiMark.png") -2px 0 no-repeat;
+        }
+        span {
+            position: absolute;
+            right: 4px;
+            font-weight: bold;
+        }
+    }
+}
+
+.thedata {
         border-bottom:1px solid @gris;
         display: block;
         clear: both;
@@ -282,12 +380,6 @@
                 margin-left: 220px;
                 border-left:1px solid @gris;
                 min-height: 40px;
-                textarea {
-                    margin-bottom: 10px;
-                    box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-                    .rounded(5px);
-                    border:none;
-                }
                 .recording {
                     float:left;
                     height: 100px;
@@ -302,96 +394,8 @@
                         b {font-weight: normal; display: block; color: #000; }
                     }
                 }
-                .album {
-                    float:left;
-                    height: 140px;
-                    width: 290px;
-                    margin-right: 38px;
-                    .disc {
-                        float: left;
-                        width: 127px; 
-                        height: 123px;
-                        margin-right:10px;
-                        img {
-                            width:123px;
-                        }
-                    }
-                    .desc { 
-                        p { margin:0px; color: #888;}
-                        b {font-weight: normal; display: block; color: #000; }
-                    }
-                }
-                .artistCell {
-                    float:left;
-                    width: 235px;
-                    height: 63px;
-                    margin-bottom:10px;
-                    overflow: hidden;
-                    border: 1px solid @grisf6;
-                    margin-top: 10px;
-                    margin-left: 10px;
-                    .photo {
-                        float: left;
-                        width: 55px; 
-                        height: 63px;
-                        margin-right:10px;
-                        img {
-                            width: 55px;
-                        }
-                    }
-                    .desc { 
-                        p { margin:0px; color: #888; }
-                        p a { color: @gris6 !important; }
-                        b { font-weight: bold; display: block; }
-                    }
-                }
-                .track {
-                    float:left;
-                    padding:10px;
-                    border-right: 1px solid darken(@grisf6,8%);
-                    border-bottom: 1px solid darken(@grisf6,8%);
-                    margin-bottom: -1px;
-                    margin-top: 1px;
-                    width: 300px !important; 
-                    h4 {
-                        margin: 0px;
-                        margin-bottom:4px;
-                        
-                    }
-                }
-                .instrumentCell {
-                    float:left;
-                    padding:10px;
-                    border-right: 1px solid darken(@grisf6,8%);
-                    border-bottom: 1px solid darken(@grisf6,8%);
-                    margin-bottom: -1px;
-                    margin-top: 1px;
-                    h4 {
-                        text-align: center;
-                        margin: 0px;
-                        margin-bottom:4px;
-                    }
-                }
-                .raagaCell {
-                    float:left;
-                    padding:10px;
-                    border-right: 1px solid darken(@grisf6,8%);
-                    border-bottom: 1px solid darken(@grisf6,8%);
-                    margin-bottom: -1px;
-                    margin-top: 1px;
-                    width: 138px;
-                    h4 {
-                        text-align: center;
-                        margin: 0px;
-                        margin-bottom:4px;
-                    }
-                }
             }
         }
-    }
-}
-
-#detail .thedata {
 
     #results {
         .artist {
@@ -403,7 +407,7 @@
         }
     }
 
-    #results > div.open { 
+    div.open { 
         width: auto;
         height: 270px;
         .pict {
@@ -492,8 +496,6 @@
 #detail.taala a { color: darken( @taala_color, 30% ) !important; } 
 #detail.recording a { color: darken( @recording_color, 30% ) !important; }
 #detail.composer a { color: darken( @composer_color, 30% ) !important; }
-#detail.entity_9 a { color: darken( @entity_9_color, 30% ) !important; }
-#detail.entity_10 a { color: darken( @entity_10_color, 30% ) !important; }
 
 .artist #summary { background: @artist_color; border-bottom:10px solid darken(@artist_color, 20%); }
 .concert #summary { background: @concert_color; border-bottom:10px solid darken(@concert_color, 30%); }
@@ -503,8 +505,6 @@
 .taala #summary { background: @taala_color; border-bottom:10px solid darken(@taala_color, 20%); }
 .recording #summary { background: @recording_color; border-bottom:10px solid darken(@recording_color, 20%); }
 .composer #summary { background: @composer_color; border-bottom:10px solid darken(@composer_color, 20%); }
-.entity_9 #summary { background: @entity_9_color; border-bottom:10px solid darken(@entity_9_color, 20%); }
-.entity_10 #summary { background: @entity_10_color; border-bottom:10px solid darken(@entity_10_color, 20%); }
 
 #summary.artist h1 { color: darken(@artist_color,45%); }
 #summary.concert h1 { color: darken(@concert_color,45%); }
@@ -514,8 +514,6 @@
 #summary.taala h1 { color: darken(@taala_color,45%); }
 #summary.recording h1 { color: darken(@recording_color,45%); }
 #summary.composer h1 { color: darken(@composer_color,45%); }
-#summary.entity_9 h1 { color: darken(@entity_9_color,45%); }
-#summary.entity_10 h1 { color: darken(@entity_10_color,45%); }
 
 #detail.artist #header #summary span h2, #detail.artist #header #summary span h2 a { color: darken(@artist_color, 40%); }
 #detail.concert #header #summary span h2, #detail.concert #header #summary span h2 a { color: darken(@concert_color, 40%); }
@@ -525,5 +523,3 @@
 #detail.taala #header #summary span h2, #detail.taala #header #summary span h2 a { color: darken(@taala_color, 40%); }
 #detail.recording #header #summary span h2, #detail.recording #header #summary span h2 a { color: darken(@recording_color, 40%); }
 #detail.composer #header #summary span h2, #detail.composer #header #summary span h2 a { color: darken(@composer_color, 40%); }
-#detail.entity_9 #header #summary span h2, #detail.entity_9 #header #summary span h2 a { color: darken(@entity_9_color, 40%); }
-#detail.entity_10 #header #summary span h2, #detail.entity_10 #header #summary span h2 a { color: darken(@entity_10_color, 40%); }
