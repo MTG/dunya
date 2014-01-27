@@ -6,24 +6,15 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-	
-	/*$("#icon").on("click", function(){
-		{% if user.is_authenticated %}
-				{% for t in tracks %}
-						SCM.queue({title:'{{t.title}} by {% inline_recording_artist t %}', url: '{% url_host_and_path request t.absolute_mp3_url %}'});
-				{% endfor %}
-				SCM.play();
-		{% else %}
-				$( "#playback_dialog" ).dialog( "open" );
-		{% endif %}
-     });*/
-
-	$("#filterMask").toggleClass('querybar');
-    //parseAllFilters({{ filter_items|safe }});
-    widthOfChildren('.metaContainer');
-	
+    //widthOfChildren('.metaContainer');
 });
 </script>
+{% endblock %}
+{% block extra_css %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/box.less' %}" />
 {% endblock %}
 
 {% block title %}{{composer.name}} - {% endblock %}
@@ -57,7 +48,6 @@ $(document).ready(function() {
  -->
  
   <div id="detail" class="composer">
-	 	<div class="alldata">
 			<!--
 	     	<div class="thedata">
 	     		<div class="leftdata">
@@ -78,7 +68,6 @@ $(document).ready(function() {
 				</p>
 			</div>
 	     	<div class="clearfix"></div>
-	 	</div>
 </div>
 
 {% endblock %}

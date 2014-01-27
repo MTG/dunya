@@ -8,12 +8,21 @@
 {% block script %}
 <script>
 $(document).ready(function() {
+    widthOfChildren('.inforight');
     widthOfChildren('.metaContainer');
-    $('.scrollblock').isotope({
-      itemSelector : '.item',
-      layoutMode : 'straightAcross'
-    });
-	
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
+
+	$(".inforight .desc .plus").click(function() {
+		$(this).parent().parent().toggleClass("open");
+        widthOfChildren('.inforight');
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
+	});
 });
 </script>
 {% endblock %}

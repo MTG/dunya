@@ -6,9 +6,19 @@
 {% block script %}
 <script>
 $(document).ready(function() {
-    widthOfChildren('.metaContainer', 30);
+    widthOfChildren('.metaContainer');
+    widthOfChildren('.inforight');
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
 });
 </script>
+{% endblock %}
+{% block extra_css %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
 {% endblock %}
 
 {% block title %}{{raaga.name|title}} raaga - {% endblock %}

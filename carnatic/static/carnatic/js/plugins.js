@@ -28,7 +28,9 @@ function widthOfChildren(object, more){
 	$(object).each(function(){
 		var sum=0;
 		$(this).children('div').each( function(){ 
-            sum += ($('div',this).width()+5); });
+            w = $(this).outerWidth(true);
+            sum += w;
+        });
 		$(this).width( sum+more );
 	});
 }

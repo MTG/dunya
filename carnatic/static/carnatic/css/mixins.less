@@ -1,5 +1,28 @@
 .shadow1 { box-shadow: 1px 1px 3px #666; }
 
+/** This goes at the top right of a 4x4 box or right on a 1x2 box. */
+.openDescriptionBlock() {
+    display: block;
+    height: 205px;
+    left: 213px;
+    overflow-y: auto;
+    padding: 13px 21px 21px;
+    position: absolute;
+    top: 6px;
+    width: 231px;
+    background: rgba(256,256,256,0.4);
+    box-shadow: inset 0px 0px 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    h3 {
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+    p {
+        margin-top: 0px;
+    }
+}
+
 .animate (){
     -webkit-transition: all 0 ease 0; 
     -moz-transition: all 0 ease 0; 

@@ -3,6 +3,28 @@
 
 /* A regular box */
 div.item {
+    .descOpen, .lists {
+        display: none; 
+    }
+    &.open .descOpen {
+        .openDescriptionBlock;
+
+        display: block;
+        height: 277px;
+        left: 0;
+        position: relative;
+        top: 0px;
+        width: 100%;
+        padding-left: 6px;
+        padding-right: 6px;
+        float: left;
+            overflow: visible;
+            border-right: none;
+            position: relative;
+            width: 207px;
+            height: 100%;
+            overflow-y: auto;
+    }
     float: left;
     width: 220px;
     height: 270px;
@@ -14,6 +36,7 @@ div.item {
     margin-left: 10px;
     background: #f6f6f6; 
     .shadow1;
+    /* The photo */
     .pict {
         position: absolute;
         top: 6px;
@@ -30,8 +53,11 @@ div.item {
             display: block;
             background: #fff;
         }
+        img {
+            width: 100%;
+        }
     }
-
+    /* The description at the bottom */
     .desc {
         overflow: hidden;
         bottom: 0;
@@ -57,6 +83,7 @@ div.item {
             background: url("../img/plusIcon.png") 0 0 no-repeat;
             cursor: pointer;
         }
+
         p {
             margin:0px; color: #666;
         }
@@ -82,12 +109,9 @@ div.item {
             text-decoration: underline;
         }
     }
-    .descOpen, .lists {
-        display: none; 
-    }
     .smallPlay {
         position: absolute;
-        right: 0;
+        left: 200px;
         top: 2px;
         width: 23px;
         height: 23px;

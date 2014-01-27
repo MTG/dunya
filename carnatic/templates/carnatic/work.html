@@ -15,6 +15,12 @@ $(document).ready(function() {
 });
 </script>
 {% endblock %}
+{% block extra_css %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/box.less' %}" />
+{% endblock %}
 
 {% block title %}{{work.title}} - {% endblock %}
 
@@ -49,7 +55,6 @@ $(document).ready(function() {
      </div>-->
 
  <div id="detail" class="work">
-	 	<div class="alldata">
 			<!--
 	     	<div class="thedata">
 	     		<div class="leftdata">
@@ -90,7 +95,6 @@ $(document).ready(function() {
 				</p>
 			</div>
      		<div class="clearfix"></div>
-	 	</div>
      </div>
 
 {% endblock %}

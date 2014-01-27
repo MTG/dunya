@@ -1,11 +1,21 @@
 @import "variables.less";
 @import "mixins.less";
+@import "box.less";
 
 /* ==========================================================================
    DETAIL 
    ========================================================================== */
 
 #detail {
+    .missingdata{
+        width: 100%;
+        text-align: center;
+        font-size: x-large;
+        height: 500px;
+        padding-top: 50px;
+        background: url("../img/cloth_alike.png") 0 0 repeat;
+    }
+
     border-bottom: 30px solid #333;
     #header {
         background: #fff;
@@ -109,7 +119,6 @@
                     overflow-y: hidden;
                     .metaContainer {
                         position: relative;
-                        width: 3000px;
                         .metaDetails {
                             display: inline-block;
                             position: relative;
@@ -190,7 +199,6 @@
                                 float:left;
                                 width:100%;    
                                 height: 142px;
-                                //font-size:11px;
                                 padding-top:24px;
                                 position: relative;
                                 border:none;
@@ -397,16 +405,6 @@
             }
         }
 
-    #results {
-        .artist {
-            border-right: none !important;
-            border-bottom: none !important;
-            padding: 0px;
-            margin-top: 10px;
-            margin-left: 10px;
-        }
-    }
-
     div.open { 
         width: auto;
         height: 270px;
@@ -415,76 +413,67 @@
             display: inline-block;
             float: left;
         }
-
-        .lists {
-            display: block !important;
-            height: auto;
-            left: 0;
+    .lists {
+        display: block;
+        height: 277px;
+        left: 0;
+        position: relative;
+        top: 0px;
+        width: 100%;
+        padding-left: 6px;
+        padding-right: 6px;
+        overflow: hidden;
+        float: left;
+        &.similar .left {
+            overflow: visible;
+            border-right: none;
+        }
+        .left {
             position: relative;
-            top: 0px;
-            width: auto;
-            padding-left: 6px;
-            padding-right: 6px;
-            overflow: hidden;
-            display: inline-block;
+            top:0px;
+            left:0px;
+            width: 207px;
+            height: 100%;
             float: left;
-
-            .left {
-                .similarity>div {
-                    height: 20px !important;
-                    float: right;
-                    margin-bottom: 2px;
-                    padding-top: 3px;
-                }
-                .similarity div.active:after {
-                    content: "";
-                    height: 21px;
-                    position: absolute;
-                    right: -14px;
-                    top: 0px;
-                    width: 16px;
-                    z-index: 10;
-                    background: url("../img/simiMark.png") -8px -3px no-repeat;
-                }
-            }      
+            border-right: 1px dashed rgba(256,256,256,0.5);
+            overflow-y: auto;
+            h3 {
+                margin: 5px;
+                color: rgba(0,0,0,0.5);
+            }
+            .similarity>div {
+                height: 20px !important;
+                float: right;
+                margin-bottom: 2px;
+                padding-top: 3px;
+            }
+            .similarity div.active:after {
+                content: "";
+                height: 21px;
+                position: absolute;
+                right: -14px;
+                top: 0px;
+                width: 16px;
+                z-index: 10;
+                background: url("../img/simiMark.png") -8px -3px no-repeat;
+            }
         }
         .right {
             display: none;
+            position: relative;
+            top:0px;
+            left:0px;
+            width: 231px;
             height: 200px;
-            .artist {
-               border-right: none !important;
-               border-bottom: none !important;
+            float:left;
+            padding-left: 5px;
+            overflow-y: auto;
+            h3 {
+                margin: 5px;
+                color: rgba(0,0,0,0.5);
             }
-            &>.artist {
-                float: none !important;
-                width: auto;
-                padding:  0px !important;
-                margin:  0px !important;
-                overflow-y: auto;
-                margin-top: 5px;
-                padding: 6px;
-                padding-right: 15px;
-                padding-bottom: 5px;
-                overflow: hidden;
-                .minitem {
-                    height: auto !important;
-                    left: 0px;
-                    position: relative;
-                    top: 0px;
-                    width: 100% !important;
-                    background: none;
-                    margin-top: 5px !important;
-                    padding: 6px !important;            
-                    min-height: 50px;
-                    border: none;
-                    border-right: none !important;
-                    border-bottom: none !important;
-                }
-            }
-            .recording {
-                height: 200px;
-            }
-        }
+        } 
+    }
     }
 }
 

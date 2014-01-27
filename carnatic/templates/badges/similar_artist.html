@@ -12,9 +12,7 @@
         <p>Primary instrument: {% inline_instrument artist.main_instrument %}
         {% endif %}
     </div>
-
-        <div class="lists similar">
-            <div class="left" style="padding:1em;">
+    <div class="descOpen">
                 {% if guru %}
                     {{guru}}
                 {% endif %}
@@ -24,8 +22,11 @@
                       {% badge_mini_concert c %}
                   {% endfor %}
                 {% endif %}
-            </div>
-            <div class="right">
+    </div>
+<!--
+        <div class="lists similar">
+            <div class="left" style="padding:1em;">
             </div>
         </div>
+-->
       </div>

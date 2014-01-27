@@ -137,10 +137,6 @@ function toggleCategory(item,after) {
 
 function loadClicks(){
 
-	$(".inforight .desc .plus").click(function(){
-		$(this).parent().parent().toggleClass("open");
-		$('.inforight').isotope( 'reLayout');
-	});
 
 	$('#query').click(function(){
         /*
