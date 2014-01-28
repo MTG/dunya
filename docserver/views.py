@@ -24,7 +24,6 @@ from django.core.urlresolvers import reverse
 from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
 
-
 from docserver import models
 from docserver import forms
 from docserver import jobs
