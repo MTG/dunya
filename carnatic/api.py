@@ -28,6 +28,17 @@ class TaalaList(generics.ListAPIView):
     queryset = models.Taala.objects.all()
     serializer_class = TaalaListSerializer
 
+class TaalaDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Taala
+        fields = ['id', 'name']
+
+class TaalaDetail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = models.Taala.objects.all()
+    serializer_class = TaalaDetailSerializer
+
+
 class RaagaListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Raaga
@@ -36,6 +47,17 @@ class RaagaListSerializer(serializers.ModelSerializer):
 class RaagaList(generics.ListAPIView):
     queryset = models.Raaga.objects.all()
     serializer_class = RaagaListSerializer
+
+class RaagaDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Raaga
+        fields = ['id', 'name']
+
+class RaagaDetail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = models.Raaga.objects.all()
+    serializer_class = RaagaDetailSerializer
+
 
 class InstrumentListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,6 +68,17 @@ class InstrumentList(generics.ListAPIView):
     queryset = models.Instrument.objects.all()
     serializer_class = InstrumentListSerializer
 
+class InstrumentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Instrument
+        fields = ['id', 'name']
+
+class InstrumentDetail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = models.Instrument.objects.all()
+    serializer_class = InstrumentDetailSerializer
+
+
 class WorkListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Work
@@ -54,6 +87,17 @@ class WorkListSerializer(serializers.ModelSerializer):
 class WorkList(generics.ListAPIView):
     queryset = models.Work.objects.all()
     serializer_class = WorkListSerializer
+
+class WorkDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Work
+        fields = ['mbid', 'title']
+
+class WorkDetail(generics.RetrieveAPIView):
+    lookup_field = 'mbid'
+    queryset = models.Work.objects.all()
+    serializer_class = WorkDetailSerializer
+
 
 class RecordingListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,14 +108,16 @@ class RecordingList(generics.ListAPIView):
     queryset = models.Recording.objects.all()
     serializer_class = RecordingListSerializer
 
-class ConcertListSerializer(serializers.ModelSerializer):
+class RecordingDetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Concert
+        model = models.Recording
         fields = ['mbid', 'title']
 
-class ConcertList(generics.ListAPIView):
-    queryset = models.Concert.objects.all()
-    serializer_class = ConcertListSerializer
+class RecordingDetail(generics.RetrieveAPIView):
+    lookup_field = 'mbid'
+    queryset = models.Recording.objects.all()
+    serializer_class = RecordingDetailSerializer
+
 
 class ArtistListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,3 +127,44 @@ class ArtistListSerializer(serializers.ModelSerializer):
 class ArtistList(generics.ListAPIView):
     queryset = models.Artist.objects.all()
     serializer_class = ArtistListSerializer
+
+class ArtistDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Artist
+        fields = ['mbid', 'name']
+
+class ArtistDetail(generics.RetrieveAPIView):
+    lookup_field = 'mbid'
+    queryset = models.Artist.objects.all()
+    serializer_class = ArtistDetailSerializer
+
+class ConcertListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Concert
+        fields = ['mbid', 'title']
+
+class ConcertList(generics.ListAPIView):
+    queryset = models.Concert.objects.all()
+    serializer_class = ConcertListSerializer
+
+class ConcertArtistSerializer(serializers.ModelSerializer):
+    name = serializers.Field(source='performer.name')
+    mbid = serializers.Field(source='performer.mbid')
+    instrument = serializers.Field(source='instrument.name')
+    class Meta:
+        model = models.Artist
+        fields = ['mbid', 'name', 'instrument']
+
+class ConcertDetailSerializer(serializers.ModelSerializer):
+    tracks = RecordingDetailSerializer(many=True)
+    artists = ConcertArtistSerializer(source='performers')
+    class Meta:
+        model = models.Concert
+        fields = ['mbid', 'title', 'tracks', 'artists']
+
+class ConcertDetail(generics.RetrieveAPIView):
+    lookup_field = 'mbid'
+    queryset = models.Concert.objects.all()
+    serializer_class = ConcertDetailSerializer
+
+
