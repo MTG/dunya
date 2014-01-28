@@ -25,6 +25,7 @@ logging.basicConfig(level=logging.INFO)
 from dashboard import models
 
 import carnatic
+import makam
 import compmusic
 from musicbrainzngs import caa
 
@@ -70,7 +71,7 @@ class MakamTags(CompletenessBase):
     in the local database """
     type = 'f'
     templatefile = 'makam.html'
-    name = 'Recording makam and usul'
+    name = 'Recording makam, usul, and form'
 
     def _get_tags_from_list(self, tags):
         makams = []
@@ -97,10 +98,14 @@ class MakamTags(CompletenessBase):
         tags = mbrec.get("tag-list", [])
         res = {}
         m, u, f = self._get_tags_from_list(tags)
-        res["makams"] = m[:]
-        res["usuls"] = u[:]
-        res["forms"] = f[:]
+        recms = m[:]
+        recus = u[:]
+        recfs = f[:]
         works = mbrec.get("work-relation-list", [])
+
+        wkms = []
+        wkus = []
+        wkfs = []
 
         # If there's a work, get its id and the id of its composer
         # Also scan for makam/usul tags here too
@@ -110,17 +115,58 @@ class MakamTags(CompletenessBase):
                 mbwork = compmusic.mb.get_work_by_id(wid, includes=["tags"])["work"]
                 tags = mbwork.get("tag-list", [])
                 m, u, f = self._get_tags_from_list(tags)
-                res["makams"].extend(m)
-                res["usuls"].extend(u)
-                res["forms"].extend(f)
+                wkms.extend(m)
+                wkus.extend(u)
+                wkfs.extend(f)
+
+        wkms = set(wkms)
+        wkus = set(wkus)
+        wkfs = set(wkfs)
+        recms = set(recms)
+        recus = set(recus)
+        recfs = set(recfs)
+
+        res["makamerr"] = []
+        res["usulerr"] = []
+        res["formerr"] = []
+        if wkms and recms and wkms != recms:
+            res["makamerr"].append("Work and Recording makams don't match")
+        if wkus and recus and wkus != recus:
+            res["usulerr"].append("Work and Recording usuls don't match")
+        if wkfs and recfs and wkfs != recfs:
+            res["formerr"].append("Work and Recording forms don't match")
+
 
         # de-duplicate the lists
-        res["makams"] = list(set(res["makams"]))
-        res["usuls"] = list(set(res["usuls"]))
-        res["forms"] = list(set(res["forms"]))
+        res["makams"] = list(wkms | recms)
+        res["usuls"] = list(wkus | recus)
+        res["forms"] = list(wkfs | recfs)
 
         res["recordingid"] = recordingid
-        # TODO: Check that the makam/usul/form is in our list of wanted ones
+
+        missingm = []
+        for m in res["makams"]:
+            try:
+                makam.models.Makam.objects.fuzzy(name=m)
+            except makam.models.Makam.DoesNotExist:
+                missingm.append(m)
+        for u in res["usuls"]:
+            try:
+                makam.models.Usul.objects.fuzzy(name=u)
+            except makam.models.Usul.DoesNotExist:
+                missingu.append(u)
+        for f in res["form"]:
+            try:
+                makam.models.Form.objects.fuzzy(name=f)
+            except makam.models.Form.DoesNotExist:
+                missingf.append(f)
+
+        if missingm:
+            res["missingm"] = missingm
+        if missingu:
+            res["missingu"] = missingu
+        if missingf:
+            res["missingf"] = missingf
 
         res["gotmakam"] = len(res["makams"]) > 0
         res["gotusul"] = len(res["usuls"]) > 0
@@ -251,13 +297,12 @@ class FileTags(CompletenessBase):
         return (complete, data)
 
 
-class ReleaseRelationships(CompletenessBase):
+class ReleaseRelationships(object):
     """ Check that a release on MB has relationships for composers,
     performers, and wikipedia links. """
     type = 'r'
     name = 'Release relationships'
     templatefile = 'releaserels.html'
-
 
     def parse_recording(self, recordingid):
         """ Get all works that make up this recording, including id, title, composer.
@@ -352,18 +397,6 @@ class ReleaseRelationships(CompletenessBase):
                 if not r["artists"] and not r["leadartists"]:
                     missingperformers.append({"id": r["id"], "title": r["title"]})
 
-        def check_instrument(instrname):
-            from carnatic import models
-            try:
-                models.Instrument.objects.fuzzy(instrname)
-                return True
-            except models.Instrument.DoesNotExist:
-                try:
-                    models.InstrumentAlias.objects.fuzzy(instrname)
-                    return True
-                except models.InstrumentAlias.DoesNotExist:
-                    pass
-            return False
 
         # Instrument exists in the DB for each performance
         # We test instruments in the 'release' test, not a separate 'recording'
@@ -373,23 +406,23 @@ class ReleaseRelationships(CompletenessBase):
         for r in relartists:
             if r["type"] == "instrument" and r.get("attribute-list"):
                 instrumentname = r["attribute-list"][0]
-                if not check_instrument(instrumentname):
+                if not self.check_instrument(instrumentname):
                     missinginstruments.add(instrumentname)
         for r in relleadartists:
             if r["type"] == "instrument" and r.get("attribute-list"):
                 instrumentname = r["attribute-list"][0]
-                if not check_instrument(instrumentname):
+                if not self.check_instrument(instrumentname):
                     missinginstruments.add(instrumentname)
         for rec in recordings:
             for r in rec["artists"]:
                 if r["type"] == "instrument" and r.get("attribute-list"):
                     instrumentname = r["attribute-list"][0]
-                    if not check_instrument(instrumentname):
+                    if not self.check_instrument(instrumentname):
                         missinginstruments.add(instrumentname)
             for r in rec["leadartists"]:
                 if r["type"] == "instrument" and r.get("attribute-list"):
                     instrumentname = r["attribute-list"][0]
-                    if not check_instrument(instrumentname):
+                    if not self.check_instrument(instrumentname):
                         missinginstruments.add(instrumentname)
 
         ret = {
@@ -404,6 +437,31 @@ class ReleaseRelationships(CompletenessBase):
                 }
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
+
+class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
+    name = 'Carnatic release relationships'
+    def check_instrument(self, instrname):
+        from carnatic import models
+        try:
+            models.Instrument.objects.fuzzy(instrname)
+            return True
+        except models.Instrument.DoesNotExist:
+            try:
+                models.InstrumentAlias.objects.fuzzy(instrname)
+                return True
+            except models.InstrumentAlias.DoesNotExist:
+                pass
+        return False
+
+class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):
+    name = 'Makam release relationships'
+    def check_instrument(self, instrname):
+        try:
+            makam.models.Instrument.objects.fuzzy(instrname)
+            return True
+        except makam.models.Instrument.DoesNotExist:
+            pass
+        return False
 
 class CorrectMBID(CompletenessBase):
     """Check that the Musicbrainz IDs in the file tags are correct.
