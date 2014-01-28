@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', RedirectView.as_view(pattern_name="carnatic-main")),
     url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
+    url(r'^api/', include('dunya.api_urls')),
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^hindustani', include('hindustani.urls')),
     url(r'^makam', include('makam.urls')),

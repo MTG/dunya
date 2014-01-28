@@ -126,6 +126,13 @@ INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 # Celery
 CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 
+# Django rest framework
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 100, # Default
+    'PAGINATE_BY_PARAM': 'count',  # Allow client to override default
+    'MAX_PAGINATE_BY': 200         # Maximum limit allowed to override
+}
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
