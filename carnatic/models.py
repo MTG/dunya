@@ -172,11 +172,20 @@ class Sabbah(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
 
-class ConcertRecording(CarnaticStyle, data.models.ConcertRecording):
-    pass
+class ConcertRecording(models.Model):
+    concert = models.ForeignKey('Concert')
+    recording = models.ForeignKey('Recording')
+    # The number that the track comes in the concert. Numerical 1-n
+    track = models.IntegerField()
+
+    def __unicode__(self):
+        return "%s: %s from %s" % (self.track, self.recording, self.concert)
 
 class Concert(CarnaticStyle, data.models.Concert):
+    location = models.ForeignKey('Location', blank=True, null=True)
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
+    tracks = models.ManyToManyField('Recording', through="ConcertRecording")
+    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
 
     @classmethod
     def get_filter_criteria(cls):
@@ -420,6 +429,7 @@ class WorkAttributeTypeValue(CarnaticStyle, data.models.WorkAttributeTypeValue):
     pass
 
 class Recording(CarnaticStyle, data.models.Recording):
+    work = models.ForeignKey('Work', blank=True, null=True)
 
     def absolute_mp3_url(self):
         try:
@@ -520,8 +530,14 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
 
-class InstrumentConcertPerformance(CarnaticStyle, data.models.InstrumentConcertPerformance):
-    pass
+class InstrumentConcertPerformance(models.Model):
+    concert = models.ForeignKey('Concert')
+    performer = models.ForeignKey('Artist')
+    instrument = models.ForeignKey('Instrument')
+    lead = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "%s playing %s in %s" % (self.performer, self.instrument, self.concert)
 
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)

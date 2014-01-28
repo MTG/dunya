@@ -66,10 +66,10 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    source = models.ForeignKey(Source, blank=True, null=True, related_name="%(class)s_source_set")
-    references = models.ManyToManyField(Source, blank=True, null=True, related_name="%(class)s_reference_set")
-    description = models.ForeignKey(Description, blank=True, null=True)
-    images = models.ManyToManyField(Image, related_name="%(class)s_image_set")
+    source = models.ForeignKey(Source, blank=True, null=True, related_name="%(app_label)s_%(class)s_source_set")
+    references = models.ManyToManyField(Source, blank=True, null=True, related_name="%(app_label)s_%(class)s_reference_set")
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
+    images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
 
     def ref(self):
         u = {"url": self.source.uri, "title": self.source.source_name.name}
@@ -177,33 +177,21 @@ class Artist(BaseModel):
 class Label(BaseModel):
     name = models.CharField(max_length=100)
 
-class ConcertRecording(BaseModel):
-    class Meta:
-        abstract = True
-    concert = models.ForeignKey('Concert')
-    recording = models.ForeignKey('Recording')
-    # The number that the track comes in the concert. Numerical 1-n
-    track = models.IntegerField()
-
-    def __unicode__(self):
-        return "%s: %s from %s" % (self.track, self.recording, self.concert)
-
 class Concert(BaseModel):
     missing_image = "concert.png"
 
     class Meta:
         abstract = True
     mbid = UUIDField(blank=True, null=True)
-    location = models.ForeignKey('Location', blank=True, null=True)
     title = models.CharField(max_length=100)
     # Main artists on the concert
     artists = models.ManyToManyField('Artist', related_name='primary_concerts')
     artistcredit = models.CharField(max_length=255)
-    tracks = models.ManyToManyField('Recording', through="ConcertRecording")
+    #tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey('Label', blank=True, null=True)
     # Other artists who played on this concert (musicbrainz relationships)
-    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
+    #performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
 
     def length(self):
         tot_len = 0
@@ -317,7 +305,7 @@ class Recording(BaseModel):
     class Meta:
         abstract = True
     title = models.CharField(max_length=100)
-    work = models.ForeignKey('Work', blank=True, null=True)
+    #work = models.ForeignKey('Work', blank=True, null=True)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
@@ -362,12 +350,11 @@ class InstrumentAlias(models.Model):
         return self.name
 
 class Instrument(BaseModel):
+    class Meta:
+        abstract = True
     missing_image = "instrument.png"
 
     percussion = models.BooleanField(default=False)
-
-    class Meta:
-        abstract = True
     name = models.CharField(max_length=50)
 
     def __unicode__(self):

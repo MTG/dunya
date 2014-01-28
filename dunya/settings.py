@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'dashboard',
     'docserver',
     'social',
+    'makam',
 )
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
