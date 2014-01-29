@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -81,7 +81,7 @@ class BaseModel(models.Model):
             image = self.images.all()[0]
             return os.path.join(media, image.image.name)
         else:
-            if not hasattr(self, "missing_imgage"):
+            if not hasattr(self, "missing_image"):
                 missing_image = "artist.jpg"
             else:
                 missing_image = self.missing_image
@@ -96,7 +96,7 @@ class BaseModel(models.Model):
             else:
                 return os.path.join(media, image.image.name)
         else:
-            if not hasattr(self, "missing_imgage"):
+            if not hasattr(self, "missing_image"):
                 missing_image = "artist.jpg"
             else:
                 missing_image = self.missing_image
@@ -142,6 +142,11 @@ class Artist(BaseModel):
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
 
+    def concerts(self):
+        ReleaseClass = self.get_object_map("release")
+        concerts = ReleaseClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
+        return concerts.all()
+
     def recordings(self):
         perfs = self.performances()
         IPClass = self.get_object_map("performance")
@@ -150,9 +155,9 @@ class Artist(BaseModel):
         return recs
 
     def performances(self, raagas=[], taalas=[]):
-        ConcertClass = self.get_object_map("concert")
+        ReleaseClass = self.get_object_map("release")
         IPClass = self.get_object_map("performance")
-        concerts = ConcertClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
+        concerts = ReleaseClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
         if raagas:
             concerts = concerts.filter(tracks__work__raaga__in=raagas)
         if taalas:
@@ -174,10 +179,7 @@ class Artist(BaseModel):
             ret.append((c, theperf))
         return ret
 
-class Label(BaseModel):
-    name = models.CharField(max_length=100)
-
-class Concert(BaseModel):
+class Release(BaseModel):
     missing_image = "concert.png"
 
     class Meta:
@@ -187,11 +189,14 @@ class Concert(BaseModel):
     # Main artists on the concert
     artists = models.ManyToManyField('Artist', related_name='primary_concerts')
     artistcredit = models.CharField(max_length=255)
-    #tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     year = models.IntegerField(blank=True, null=True)
-    label = models.ForeignKey('Label', blank=True, null=True)
+
+    # These fields are specified on the concrete model classes because they might use
+    # different spellings (Release/Concert)
     # Other artists who played on this concert (musicbrainz relationships)
-    #performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
+    #performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_concerts')
+    # Ordered tracks
+    #tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
 
     def length(self):
         tot_len = 0
@@ -201,14 +206,11 @@ class Concert(BaseModel):
 
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.artists.all()])
-        if self.location:
-            ret += " at " + unicode(self.location)
         return "%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
-
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -275,40 +277,33 @@ class Work(BaseModel):
         return "http://musicbrainz.org/work/%s" % self.mbid
 
     def concerts(self):
-        ConcertClass = self.get_object_map("concert")
-        return ConcertClass.objects.filter(tracks__work=self).all()
+        ReleaseClass = self.get_object_map("concert")
+        return ReleaseClass.objects.filter(tracks__work=self).all()
 
     def artists(self):
         ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(primary_concerts__tracks__work=self).distinct()
 
-class WorkAttribute(models.Model):
-    class Meta:
-        abstract = True
-    work = models.ForeignKey('Work')
-    attribute_type = models.ForeignKey('WorkAttributeType')
-    attribute_value_free = models.CharField(max_length=100, blank=True, null=True)
-    attribute_value = models.ForeignKey('WorkAttributeTypeValue', blank=True, null=True)
-
-class WorkAttributeType(models.Model):
-    class Meta:
-        abstract = True
-    type_name = models.CharField(max_length=100)
-
-class WorkAttributeTypeValue(models.Model):
-    class Meta:
-        abstract = True
-    attribute_type = models.ForeignKey('WorkAttributeType')
-    value = models.CharField(max_length=100)
-
 class Recording(BaseModel):
     class Meta:
         abstract = True
     title = models.CharField(max_length=100)
-    #work = models.ForeignKey('Work', blank=True, null=True)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
+
+    # On concrete class because a recording may have >1 work in some styles
+    #work = models.ForeignKey('Work', blank=True, null=True)
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        viewname = "%s-recording" % (self.get_style(), )
+        return reverse(viewname, args=[str(self.id)])
+
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/recording/%s" % self.mbid
 
     def length_format(self):
         numsecs = self.length/1000
@@ -325,16 +320,6 @@ class Recording(BaseModel):
 
     def length_seconds(self):
         return self.length / 1000
-
-    def __unicode__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        viewname = "%s-recording" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
-
-    def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/recording/%s" % self.mbid
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
@@ -368,17 +353,6 @@ class Instrument(BaseModel):
         ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(instrumentperformance__instrument=self).distinct().all()
 
-class InstrumentConcertPerformance(models.Model):
-    class Meta:
-        abstract = True
-    concert = models.ForeignKey('Concert')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
-    lead = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return "%s playing %s in %s" % (self.performer, self.instrument, self.concert)
-
 class InstrumentPerformance(models.Model):
     class Meta:
         abstract = True
@@ -411,19 +385,6 @@ class Composer(BaseModel):
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
         return reverse(viewname, args=[str(self.id)])
-
-class Location(BaseModel):
-    class Meta:
-        abstract = True
-    name = models.CharField(max_length=200)
-    city = models.CharField(max_length=100, blank=True, null=True)
-    region = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    lat = models.CharField(max_length=10, blank=True, null=True)
-    lng = models.CharField(max_length=10, blank=True, null=True)
-
-    def __unicode__(self):
-        return self.name
 
 class VisitLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)

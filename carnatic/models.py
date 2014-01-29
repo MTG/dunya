@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -33,8 +33,8 @@ class CarnaticStyle(object):
         return "carnatic"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "concertperformance": InstrumentConcertPerformance,
-                "concert": Concert,
+                "releaseperformance": InstrumentConcertPerformance,
+                "release": Concert,
                 "composer": Composer,
                 "artist": Artist,
                 "recording": Recording,
@@ -181,8 +181,7 @@ class ConcertRecording(models.Model):
     def __unicode__(self):
         return "%s: %s from %s" % (self.track, self.recording, self.concert)
 
-class Concert(CarnaticStyle, data.models.Concert):
-    location = models.ForeignKey('Location', blank=True, null=True)
+class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
@@ -365,7 +364,6 @@ class Taala(data.models.BaseModel):
         return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
 
     def percussion_artists(self):
-
         artistmap = {}
         artistcounter = collections.Counter()
         artists = Artist.objects.filter(Q(instrumentconcertperformance__concert__tracks__work__taala=self) & Q(instrumentconcertperformance__instrument__percussion=True))
@@ -418,15 +416,6 @@ class WorkTaala(models.Model):
 
     def __unicode__(self):
         return "%s, seq %d %s" % (self.work, self.sequence, self.taala)
-
-class WorkAttribute(CarnaticStyle, data.models.WorkAttribute):
-    pass
-
-class WorkAttributeType(CarnaticStyle, data.models.WorkAttributeType):
-    pass
-
-class WorkAttributeTypeValue(CarnaticStyle, data.models.WorkAttributeTypeValue):
-    pass
 
 class Recording(CarnaticStyle, data.models.Recording):
     work = models.ForeignKey('Work', blank=True, null=True)
@@ -499,7 +488,7 @@ class Instrument(CarnaticStyle, data.models.Instrument):
                 artists.append(p.performer)
 
         # TODO: This might be slow getting 2 sets of performances and doing tests
-        ICPClass = self.get_object_map("concertperformance")
+        ICPClass = self.get_object_map("releaseperformance")
         performances = ICPClass.objects.filter(instrument=self).distinct()
         for p in performances:
             artistcount[p.performer] += 1
@@ -546,7 +535,4 @@ class Composer(CarnaticStyle, data.models.Composer):
 
     def taalas(self):
         return Taala.objects.filter(work__composer=self).all()
-
-class Location(CarnaticStyle, data.models.Location):
-    pass
 

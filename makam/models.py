@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -27,8 +27,8 @@ class MakamStyle(object):
         return "makam"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "concertperformance": InstrumentConcertPerformance,
-                "concert": Concert,
+                "releaseperformance": InstrumentReleasePerformance,
+                "release": Release,
                 "composer": Composer,
                 "artist": Artist,
                 "recording": Recording,
@@ -45,10 +45,10 @@ class Composer(MakamStyle, data.models.Composer):
 class Lyricist(MakamStyle, data.models.Composer):
     pass
 
-class Release(MakamStyle, data.models.Concert):
-    isConcert = models.BooleanField()
+class Release(MakamStyle, data.models.Release):
+    is_concert = models.BooleanField(default=False)
     tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
-    performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_concerts')
+    performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_releases')
 
 class ReleaseRecording(models.Model):
     release = models.ForeignKey('Release')
@@ -129,5 +129,5 @@ class Work(MakamStyle, data.models.Work):
     makam = models.ManyToManyField(Makam)
     usul = models.ManyToManyField(Usul)
     form = models.ForeignKey(Form)
-    isTaksim = models.BooleanField(default=False)
+    is_taksim = models.BooleanField(default=False)
 
