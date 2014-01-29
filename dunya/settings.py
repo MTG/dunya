@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.comments',
@@ -119,8 +120,8 @@ INSTALLED_APPS = (
     'dashboard',
     'docserver',
     'social',
-    'makam',
 )
+#'makam',
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
@@ -131,7 +132,14 @@ CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 REST_FRAMEWORK = {
     'PAGINATE_BY': 100, # Default
     'PAGINATE_BY_PARAM': 'count',  # Allow client to override default
-    'MAX_PAGINATE_BY': 200         # Maximum limit allowed to override
+    'MAX_PAGINATE_BY': 200,         # Maximum limit allowed to override
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
 }
 
 # A sample logging configuration. The only tangible logging
@@ -165,5 +173,6 @@ LOGGING = {
 
 #Social part_PROFILE
 AUTH_PROFILE_MODULE = "social.UserProfile"
+AUTH_USER_MODULE = "django.contrib.auth.models.User"
 
 from local_settings import *

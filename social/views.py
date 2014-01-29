@@ -26,6 +26,7 @@ from datetime import datetime
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.utils.http import urlunquote_plus
+from rest_framework.authtoken.models import Token
 
 import json
 import social.timeline as timeline
@@ -70,10 +71,11 @@ def user_profile(request):
     users_id.append(request.user.id)
     
     timelines = timeline.timeline(users_id)
+    token = Token.objects.get(user=request.user)
     
     ret = {
         'user_profile': user_profile,
-        'timeline': timelines
+        'token': token.key
     }
     return render(request, 'social/user-profile.html', ret)
 

@@ -13,15 +13,14 @@
 
 <ul class="user-profile">
 <li><b>Username:</b> {{ user.username }}</li>
-<!--<li><b>Email:</b> {{ user.email }}</li>-->
 <li><b>Email:</b> {% inplace_edit "user.email" %} </li>
-<li><b>First Name:</b> {% inplace_edit "user_profile.first_name|safe" %} </li>
-<li><b>Last Name:</b> {% inplace_edit "user_profile.last_name|safe" %}</li>
-<li><b>Birthday:</b> {% inplace_edit "user_profile.birthday|date:'d m Y'" %}</li>
-<!--<p>Avatar: {{ user.avatar }}</p>-->
+<li><b>First Name:</b> {% inplace_edit "user.first_name|safe" %} </li>
+<li><b>Last Name:</b> {% inplace_edit "user.last_name|safe" %}</li>
 </ul>
 
-{% include "timeline.html" %}
+<h2>API Access</h2>
+<p><b>API token:</b> {{token}}</p>
+
 
 </div>
 {% endblock %}
