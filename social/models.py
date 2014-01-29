@@ -20,6 +20,7 @@ from django.db import models
 from django.db.models.base import Model
 from carnatic.models import *
 from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
 
 
 ################ SOCIAL PART #########################
@@ -38,6 +39,7 @@ def user_post_save(sender, instance, created, **kwargs):
         p = UserProfile()
         p.user = instance
         p.save()
+        Token.objects.create(user=instance)
 
 post_save.connect(user_post_save, sender=User)
 
