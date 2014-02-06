@@ -479,9 +479,10 @@ def recording(request, recordingid):
 
     try:
         concert = recording.concert_set.get()
+        tracks = list(concert.tracks.all())
     except Concert.DoesNotExist:
         concert = None
-    tracks = list(concert.tracks.all())
+        tracks = []
     recordingpos = tracks.index(recording)
     nextrecording = None
     prevrecording = None
@@ -512,6 +513,7 @@ def recording(request, recordingid):
             "rhythmurl": rhythmurl,
             "aksharaurl": aksharaurl,
             "similar": similar,
+            "concert": concert,
     }
 
     return render(request, "carnatic/recording.html", ret)

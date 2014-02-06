@@ -75,7 +75,7 @@
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
 								<span class="list">
-									<label>From album</label><b>{% inline_concert recording.concert_set.get %}</b>
+									<label>From album</label><b>{% inline_concert concert %}</b>
                                     {% if recording.work %}
 									<label>Performing</label><b>{% inline_work recording.work %}</b>
                                     {% if recording.work.composer %}
