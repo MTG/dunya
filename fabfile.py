@@ -46,10 +46,10 @@ def less():
     local("lessc carnatic/static/carnatic/css/main.less --source-map-map-inline carnatic/static/carnatic/css/main.css")
 
 def lesscompress():
-    local("lessc carnatic/static/carnatic/css/main.less carnatic/static/carnatic/css/main.css")
-    local("lessc carnatic/static/carnatic/css/browse.less carnatic/static/carnatic/css/main.css")
-    local("lessc carnatic/static/carnatic/css/recording.less carnatic/static/carnatic/css/main.css")
-    local("lessc carnatic/static/carnatic/css/pages.less carnatic/static/carnatic/css/main.css")
+    local("lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
+    local("lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
+    local("lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
+    local("lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
 
 def setupdb():
     """ Run this when you are setting up a new installation
