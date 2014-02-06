@@ -477,7 +477,10 @@ def recording(request, recordingid):
         pass
     similar = similar[:10]
 
-    concert = recording.concert_set.get()
+    try:
+        concert = recording.concert_set.get()
+    except Concert.DoesNotExist:
+        concert = None
     tracks = list(concert.tracks.all())
     recordingpos = tracks.index(recording)
     nextrecording = None
