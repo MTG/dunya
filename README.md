@@ -153,6 +153,29 @@ To import data into solr
     python manage.py solrdelete
     python manage.py solrimport
 
+Less stylesheets
+----------------
+We use the less css compiler for stylesheets. You'll need `lessc` installed in order
+to update them. This might be as simple as one of these:
+
+    npm install -g less
+    sudo apt-get install node-less
+
+You can also install node and less directly into your virtualenv if system versions
+of node are too old:
+
+    wget http://nodejs.org/dist/v0.10.25/node-v0.10.25.tar.gz
+    tar xfz node-v0.10.25.tar.gz
+    cd node-v0.10.25
+    ./configure --prefix=/srv/dunya/env
+    make && make install
+    hash -r
+    npm install -g less
+
+Compile all the less files to css by running
+
+    fab lesscompress
+
 Running
 =======
 
