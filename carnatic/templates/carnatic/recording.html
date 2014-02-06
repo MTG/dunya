@@ -75,7 +75,9 @@
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
 								<span class="list">
+                                    {% if concert %}
 									<label>From album</label><b>{% inline_concert concert %}</b>
+                                    {% endif %}
                                     {% if recording.work %}
 									<label>Performing</label><b>{% inline_work recording.work %}</b>
                                     {% if recording.work.composer %}
