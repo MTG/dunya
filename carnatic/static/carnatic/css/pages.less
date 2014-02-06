@@ -313,16 +313,16 @@
     border:none;
 }
 
-    .similarity {
-        h2 { 
-            font-weight: normal; 
-            color: #fff; 
-            font-size: 11px;
-            text-align: center;
-            margin-bottom: 6px;
-            margin-top: 4px;
-        }
-        div {
+.similarity {
+    h2 { 
+        font-weight: normal; 
+        color: #fff; 
+        font-size: 11px;
+        text-align: center;
+        margin-bottom: 6px;
+        margin-top: 4px;
+    }
+    div {
         float: right;
         text-align: right;
         right: 0px;
@@ -363,120 +363,114 @@
 }
 
 .thedata {
-        border-bottom:1px solid @gris;
-        display: block;
-        clear: both;
-        .leftdata {
-            width:220px;
-            float:left;
-            h3 { 
-                font-weight: normal;
-                text-align: right;
-                font-size: 14px;
-                margin: 10px;
-            }
+    border-bottom:1px solid @gris;
+    display: block;
+    clear: both;
+    .leftdata {
+        width:220px;
+        float:left;
+        h3 { 
+            font-weight: normal;
+            text-align: right;
+            font-size: 14px;
+            margin: 10px;
         }
-        .rightdata {
-            float:left;
-            width: 100%;
-            margin-left: -220px;
-            .scrolldata { overflow-x: auto; 
-                .scrollblock { width: 100%; }
-            }
-            .innerrightdata {
-                padding: 10px;
-                margin-left: 220px;
-                border-left:1px solid @gris;
-                min-height: 40px;
-                .recording {
-                    float:left;
-                    height: 100px;
-                    .disc {
-                        float: left;
-                        width: 127px; 
-                        height: 90px;
-                        margin-right:10px;
-                    }
-                    .desc { 
-                        p { margin:0px; color: #888;}
-                        b {font-weight: normal; display: block; color: #000; }
-                    }
+    }
+    .rightdata {
+        float:left;
+        width: 100%;
+        margin-left: -220px;
+        .scrolldata { overflow-x: auto; 
+            .scrollblock { width: 100%; }
+        }
+        .innerrightdata {
+            padding: 10px;
+            margin-left: 220px;
+            border-left:1px solid @gris;
+            min-height: 40px;
+            .recording {
+                float:left;
+                height: 100px;
+                .disc {
+                    float: left;
+                    width: 127px; 
+                    height: 90px;
+                    margin-right:10px;
+                }
+                .desc { 
+                    p { margin:0px; color: #888;}
+                    b {font-weight: normal; display: block; color: #000; }
                 }
             }
         }
+    }
 
     div.open { 
-        width: auto;
+        width: 450px;
         height: 270px;
         .pict {
             position: relative;
             display: inline-block;
             float: left;
         }
-    .lists {
-        display: block;
-        height: 277px;
-        left: 0;
-        position: relative;
-        top: 0px;
-        width: 100%;
-        padding-left: 6px;
-        padding-right: 6px;
-        overflow: hidden;
-        float: left;
-        &.similar .left {
-            overflow: visible;
-            border-right: none;
-        }
-        .left {
+        .lists {
+            display: block !important;
+            height: auto;
+            left: 0;
             position: relative;
-            top:0px;
-            left:0px;
-            width: 207px;
-            height: 100%;
+            top: 0px;
+            width: auto;
+            padding-left: 6px;
+            padding-right: 6px;
+            overflow: hidden;
+            display: inline-block;
             float: left;
-            border-right: 1px dashed rgba(256,256,256,0.5);
-            overflow-y: auto;
-            h3 {
-                margin: 5px;
-                color: rgba(0,0,0,0.5);
-            }
-            .similarity>div {
-                height: 20px !important;
-                float: right;
-                margin-bottom: 2px;
-                padding-top: 3px;
-            }
-            .similarity div.active:after {
-                content: "";
-                height: 21px;
-                position: absolute;
-                right: -14px;
+            .left {
+                position: relative;
                 top: 0px;
-                width: 16px;
-                z-index: 10;
-                background: url("../img/simiMark.png") -8px -3px no-repeat;
+                left: 0px;
+                width: 207px;
+                height: 100%;
+                float: left;
+                overflow-y: auto;
+                .similarity>div {
+                    height: 20px !important;
+                    float: right;
+                    margin-bottom: 2px;
+                    padding-top: 3px;
+                }
+                .similarity div.active:after {
+                    content: "";
+                    height: 21px;
+                    position: absolute;
+                    right: -14px;
+                    top: 0px;
+                    width: 16px;
+                    z-index: 10;
+                    background: url("../img/simiMark.png") -8px -3px no-repeat;
+                }
             }
+            .right {
+                position: relative;
+                top:0px;
+                left:0px;
+                width: 231px;
+                height: 100%;
+                float:left;
+                padding-left: 5px;
+                overflow-y: auto;
+                display:none;
+            } 
         }
-        .right {
-            display: none;
-            position: relative;
-            top:0px;
-            left:0px;
-            width: 231px;
-            height: 200px;
-            float:left;
-            padding-left: 5px;
-            overflow-y: auto;
-            h3 {
-                margin: 5px;
-                color: rgba(0,0,0,0.5);
-            }
-        } 
-    }
+
     }
 }
 
+#detail.artist {
+    a, .title {
+        color: darken( @artist_color, 30% ) !important;
+    }
+}
 #detail.artist a { color: darken( @artist_color, 30% ) !important; }
 #detail.concert a { color: darken( @concert_color, 30% ) !important; }
 #detail.work a { color: darken( @work_color, 30% ) !important; }

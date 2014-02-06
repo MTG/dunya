@@ -53,9 +53,9 @@ def inline_artist_list(artists):
 def inline_artist_part(artist):
     if isinstance(artist, carnatic.models.Artist):
         if artist.dummy:
-            return artist.name
+            return '<span class="title">%s</span>' % artist.name
         else:
-            return '<a href="%s">%s</a>' % (artist.get_absolute_url(), artist.name)
+            return '<a href="%s" class="title">%s</a>' % (artist.get_absolute_url(), artist.name)
     else:
         return artist.name
 

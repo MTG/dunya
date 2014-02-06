@@ -12,10 +12,8 @@
             <p>{%inline_artist_list concert.artistnames %}</p>
             {% if concert.year %}<p>{{concert.year}}</p>{% endif %}
     </div>
-        <div class="descOpen">
-    </div>
-        <div class="lists">
-        	<div  class="left">
+        <div class="lists similar">
+        	<div class="left">
         		<div class="similarity">
         		  <h2>Index of similarity</h2>
                   {% if artists|length %}

@@ -10,11 +10,18 @@
 $(document).ready(function() {
     widthOfChildren('.inforight');
     widthOfChildren('.metaContainer');
+/*
       $(".inforight").packery({
         itemSelector: '.item',
         gutter: 0
       });
+*/
 
+	$(".inforight .desc .plus").click(function() {
+		$(this).parent().parent().toggleClass("open");
+        widthOfChildren('.inforight');
+       });
+/*
 	$(".inforight .desc .plus").click(function() {
 		$(this).parent().parent().toggleClass("open");
         widthOfChildren('.inforight');
@@ -23,6 +30,7 @@ $(document).ready(function() {
         gutter: 0
       });
 	});
+*/
 });
 </script>
 {% endblock %}

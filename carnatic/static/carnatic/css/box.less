@@ -8,25 +8,9 @@ div.item {
     }
     &.open .descOpen {
         .openDescriptionBlock;
-
-        display: block;
-        height: 277px;
-        left: 0;
-        position: relative;
-        top: 0px;
-        width: 100%;
-        padding-left: 6px;
-        padding-right: 6px;
-        float: left;
-            overflow: visible;
-            border-right: none;
-            position: relative;
-            width: 207px;
-            height: 100%;
-            overflow-y: auto;
     }
     float: left;
-    width: 220px;
+    width: 218px;
     height: 270px;
     margin-bottom:10px;
     overflow-x: hidden;
@@ -58,6 +42,14 @@ div.item {
         }
     }
     /* The description at the bottom */
+    &.open .desc {
+        font-size: 13px;
+        line-height: 15px;
+        .plus {
+            // Change the (+) icon to a (-) icon
+            background: url("../img/lessIcon.png") 0 0 no-repeat;
+        }
+    }
     .desc {
         overflow: hidden;
         bottom: 0;
@@ -67,12 +59,12 @@ div.item {
         width: 100%;
         font-size: 11px;
         line-height: 12px;
-        a { 
+        .title { 
+            font-weight: bold;
             text-decoration: none; 
-            color: rgba(0,0,0,0.5);
-            b {
-                color:#000; 
-            }
+        }
+        a {
+            text-decoration: none;
         }
         .plus {
             position: relative;
@@ -86,19 +78,6 @@ div.item {
 
         p {
             margin:0px; color: #666;
-        }
-        .title { 
-            font-weight: bold; 
-            display: block; 
-            color: #000; 
-            text-decoration: none;
-            b {
-                font-size: 14px;
-            }
-            .year {
-                margin-left: 4px;
-                opacity: 0.6;
-            }
         }
         .belongs {
             color: #000;
