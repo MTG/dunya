@@ -480,10 +480,11 @@ def recording(request, recordingid):
     try:
         concert = recording.concert_set.get()
         tracks = list(concert.tracks.all())
+        recordingpos = tracks.index(recording)
     except Concert.DoesNotExist:
         concert = None
         tracks = []
-    recordingpos = tracks.index(recording)
+        recordingpos = 0
     nextrecording = None
     prevrecording = None
     if recordingpos > 0:
