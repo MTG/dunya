@@ -318,10 +318,10 @@ def artist(request, artistid):
     w = data.models.SourceName.objects.get(name="Wikipedia")
     kutcheris = None
     wikipedia = None
-    kr = artist.references.filter(artist_source_set=k)
+    kr = artist.references.filter(carnatic_artist_source_set=k)
     if kr.count():
         kutcheris = kr[0].uri
-    wr = artist.references.filter(artist_source_set=w)
+    wr = artist.references.filter(carnatic_artist_source_set=w)
     if wr.count():
         wikipedia = wr[0].uri
     desc = artist.description
@@ -475,6 +475,7 @@ def recording(request, recordingid):
     except pysolr.SolrError:
         # TODO: Show error in similar recordings page instead of empty
         pass
+    similar = similar[:10]
 
     concert = recording.concert_set.get()
     tracks = list(concert.tracks.all())
