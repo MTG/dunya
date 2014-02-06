@@ -16,9 +16,13 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 {% block extra_css %}
+    {% if debug %}
     {% load less %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
 {% endblock %}
 
 {% block title %}{{raaga.name|title}} raaga - {% endblock %}

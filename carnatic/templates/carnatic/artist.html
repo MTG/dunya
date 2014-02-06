@@ -10,34 +10,22 @@
 $(document).ready(function() {
     widthOfChildren('.inforight');
     widthOfChildren('.metaContainer');
-/*
-      $(".inforight").packery({
-        itemSelector: '.item',
-        gutter: 0
-      });
-*/
 
-	$(".inforight .desc .plus").click(function() {
-		$(this).parent().parent().toggleClass("open");
+    $(".inforight .desc .plus").click(function() {
+        $(this).parent().parent().toggleClass("open");
         widthOfChildren('.inforight');
-       });
-/*
-	$(".inforight .desc .plus").click(function() {
-		$(this).parent().parent().toggleClass("open");
-        widthOfChildren('.inforight');
-      $(".inforight").packery({
-        itemSelector: '.item',
-        gutter: 0
-      });
-	});
-*/
+    });
 });
 </script>
 {% endblock %}
 {% block extra_css %}
+    {% if debug %}
     {% load less %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
 {% endblock %}
 
 {% block title %}{{artist.name}} - {% endblock %}

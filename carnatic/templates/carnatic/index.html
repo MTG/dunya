@@ -113,9 +113,13 @@ $(document).ready(function() {
 <script src="{% static 'carnatic/js/browse.js' %}"></script>
 {% endblock %}
 {% block extra_css %}
+    {% if debug %}
     {% load less %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/browse.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/browse.css' %}" />
+    {% endif %}
 {% endblock %}
 
 {% block title %}{% if querytext %}{{querytext}} - {% elif querybrowse %}Browsing - {% endif %}{% endblock %}
