@@ -17,11 +17,12 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 
-import social.tagging as tagging
+from social import tagging
 from carnatic.models import *
 from carnatic import search
 from social.forms import TagSaveForm
@@ -274,8 +275,12 @@ def artistsearch(request):
         ret.append({"id": a.id, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def artist(request, artistid):
+def artistbyid(request, artistid):
     artist = get_object_or_404(Artist, pk=artistid)
+    return redirect(reverse('carnatic-artist', args=[artist.mbid]), permanent=True)
+
+def artist(request, uuid):
+    artist = get_object_or_404(Artist, mbid=uuid)
 
     inst = artist.instruments()
     ips = InstrumentPerformance.objects.filter(instrument=inst)
@@ -312,7 +317,7 @@ def artist(request, artistid):
     else:
         raagas = []
 
-    tags = tagging.tag_cloud(artistid, "artist")
+    tags = tagging.tag_cloud(artist.id, "artist")
     musicbrainz = artist.get_musicbrainz_url()
     k = data.models.SourceName.objects.get(name="kutcheris.com")
     w = data.models.SourceName.objects.get(name="Wikipedia")
@@ -361,8 +366,12 @@ def artist(request, artistid):
 
     return render(request, "carnatic/artist.html", ret)
 
-def composer(request, composerid):
+def composerbyid(request, composerid):
     composer = get_object_or_404(Composer, pk=composerid)
+    return redirect(reverse('carnatic-composer', args=[composer.mbid]), permanent=True)
+
+def composer(request, uuid):
+    composer = get_object_or_404(Composer, mbid=uuid)
     recordings = []
     for w in composer.work_set.all():
         recordings.extend(w.recording_set.all())
@@ -380,8 +389,12 @@ def concertsearch(request):
         ret.append({"id": c.id, "title": c.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def concert(request, concertid):
+def concertbyid(request, concertid):
     concert = get_object_or_404(Concert, pk=concertid)
+    return redirect(reverse('carnatic-concert', args=[concert.mbid]), permanent=True)
+
+def concert(request, uuid):
+    concert = get_object_or_404(Concert, mbid=uuid)
     images = concert.images.all()
     if images:
         image = images[0].image.url
@@ -392,7 +405,7 @@ def concert(request, concertid):
     if tracks:
         sample = tracks[:1]
 
-    tags = tagging.tag_cloud(concertid, "concert")
+    tags = tagging.tag_cloud(concert.id, "concert")
 
     # Other similar concerts
     similar = concert.get_similar()
@@ -412,10 +425,14 @@ def concert(request, concertid):
 
     return render(request, "carnatic/concert.html", ret)
 
-def recording(request, recordingid):
+def recordingbyid(request, recordingid):
     recording = get_object_or_404(Recording, pk=recordingid)
+    return redirect(reverse('carnatic-recording', args=[recording.mbid]), permanent=True)
 
-    tags = tagging.tag_cloud(recordingid, "recording")
+def recording(request, uuid):
+    recording = get_object_or_404(Recording, mbid=uuid)
+
+    tags = tagging.tag_cloud(recording.id, "recording")
 
     try:
         wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
@@ -526,10 +543,14 @@ def worksearch(request):
         ret.append({"id": w.id, "title": w.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def work(request, workid):
+def workbyid(request, workid):
     work = get_object_or_404(Work, pk=workid)
+    return redirect(reverse('carnatic-work', args=[work.mbid]), permanent=True)
 
-    tags = tagging.tag_cloud(workid, "work")
+def work(request, uuid):
+    work = get_object_or_404(Work, mbid=uuid)
+
+    tags = tagging.tag_cloud(work.id, "work")
     tracks = work.recording_set.all()
     if len(tracks):
         sample = random.sample(tracks, 1)

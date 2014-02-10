@@ -137,7 +137,7 @@ class Artist(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[self.mbid])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -210,7 +210,7 @@ class Release(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[self.mbid])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -271,7 +271,7 @@ class Work(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-work" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[self.mbid])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/work/%s" % self.mbid
@@ -300,7 +300,7 @@ class Recording(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-recording" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[self.mbid])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/recording/%s" % self.mbid
@@ -384,7 +384,7 @@ class Composer(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[self.mbid])
 
 class VisitLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)

@@ -18,16 +18,23 @@ from django.conf.urls import patterns, url
 
 from carnatic import views
 
+uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+
 urlpatterns = patterns('',
     url(r'^$', views.main, name='carnatic-main'),
     url(r'^searchcomplete$', views.searchcomplete, name='carnatic-searchcomplete'),
-    url(r'^composer/(?P<composerid>\d+)$', views.composer, name='carnatic-composer'),
+    url(r'^composer/(?P<composerid>\d+)$', views.composerbyid, name='carnatic-composerbyid'),
+    url(r'^composer/%s$' % uuid_match, views.composer, name='carnatic-composer'),
     url(r'^artist/search$', views.artistsearch, name='carnatic-artist-search'),
-    url(r'^artist/(?P<artistid>\d+)$', views.artist, name='carnatic-artist'),
-    url(r'^concert/(?P<concertid>\d+)$', views.concert, name='carnatic-concert'),
+    url(r'^artist/(?P<artistid>\d+)$', views.artistbyid, name='carnatic-artistbyid'),
+    url(r'^artist/%s$' % uuid_match, views.artist, name='carnatic-artist'),
     url(r'^concert/search$', views.concertsearch, name='carnatic-concert-search'),
-    url(r'^recording/(?P<recordingid>\d+)$', views.recording, name='carnatic-recording'),
-    url(r'^work/(?P<workid>\d+)$', views.work, name='carnatic-work'),
+    url(r'^concert/(?P<concertid>\d+)$', views.concertbyid, name='carnatic-concertbyid'),
+    url(r'^concert/%s$' % uuid_match, views.concert, name='carnatic-concert'),
+    url(r'^recording/(?P<recordingid>\d+)$', views.recordingbyid, name='carnatic-recordingbyid'),
+    url(r'^recording/%s$' % uuid_match, views.recording, name='carnatic-recording'),
+    url(r'^work/(?P<workid>\d+)$', views.workbyid, name='carnatic-workbyid'),
+    url(r'^work/%s$' % uuid_match, views.work, name='carnatic-work'),
     url(r'^work/search$', views.worksearch, name='carnatic-work-search'),
     url(r'^raaga/(?P<raagaid>\d+)$', views.raaga, name='carnatic-raaga'),
     url(r'^raaga/search$', views.raagasearch, name='carnatic-raaga-search'),
