@@ -109,7 +109,7 @@ class BaseModel(models.Model):
         raise Exception("need map")
 
 class Artist(BaseModel):
-    missing_image = "artist.png"
+    missing_image = "artist.jpg"
 
     class Meta:
         abstract = True
@@ -180,7 +180,7 @@ class Artist(BaseModel):
         return ret
 
 class Release(BaseModel):
-    missing_image = "concert.png"
+    missing_image = "concert.jpg"
 
     class Meta:
         abstract = True
@@ -337,7 +337,7 @@ class InstrumentAlias(models.Model):
 class Instrument(BaseModel):
     class Meta:
         abstract = True
-    missing_image = "instrument.png"
+    missing_image = "instrument.jpg"
 
     percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
@@ -365,7 +365,7 @@ class InstrumentPerformance(models.Model):
         return "%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 class Composer(BaseModel):
-    missing_image = "artist.png"
+    missing_image = "artist.jpg"
 
     class Meta:
         abstract = True
