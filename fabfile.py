@@ -71,9 +71,9 @@ def dumpfixture(modname):
     if modname == "data":
         local("python manage.py dumpdata data.SourceName --indent=4 > %s" % redir)
     elif modname == "carnatic":
-        tables = ["Instrument", "InstrumentAlias", "Taala", "TaalaAlias", "Raaga", "RaagaAlias", "GeographicRegion", "Form", "Language", "MusicalSchool"]
-        modellist = " ".join(["carnatic.%s" % t for t in tables])
-        local("python manage.py dumpdata %s --indent=4 > %s" % (modellist, redir))
+        tables = ["Instrument", "InstrumentAlias", "Taala", "TaalaAlias", "Raaga", "RaagaAlias", "GeographicRegion", "Form", "FormAlias", "Language", "MusicalSchool"]
+        modellist = " ".join(["carnatic.%s[:]" % t for t in tables])
+        local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
 
 def dumpdata(fname="dunya_data.json"):
     with hide('running', 'status'):
