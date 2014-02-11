@@ -264,6 +264,7 @@ class Raaga(data.models.BaseModel):
     missing_image = "raaga.jpg"
 
     name = models.CharField(max_length=50)
+    transliteration = models.CharField(max_length=50)
 
     objects = managers.FuzzySearchManager()
 
@@ -331,6 +332,7 @@ class Taala(data.models.BaseModel):
     missing_image = "taala.jpg"
 
     name = models.CharField(max_length=50)
+    transliteration = models.CharField(max_length=50)
 
     objects = managers.FuzzySearchManager()
 
