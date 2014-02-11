@@ -23,19 +23,37 @@ class Command(BaseCommand):
     help = "load data and aliases from a csv file"
     choices = ["instrument", "raaga", "taala", "region", "form", "language", "school"]
 
-    def load(self, fname, obclass):
+    def load(self, fname, obclass, has_tl, has_header):
         """ Load a csv file into a class. If any items are in
         additional columns then import them as aliases """
         fp = open(fname, "rb")
         reader = csv.reader(fp)
+        if has_header:
+            reader.next()
         for line in reader:
             name = line[0]
-            rest = line[1:]
+            print name
+            tl = None
+            if has_tl:
+                tl = line[1]
+                rest = line[3:]
+            else:
+                rest = line[1:]
             item, _ = obclass.objects.get_or_create(name=name)
+            if has_tl and hasattr(item, "transliteration"):
+                print "  transliteration", tl
+                item.transliteration = tl
+                item.save()
             if hasattr(obclass, "aliases"):
                 for a in rest:
                     if a:
-                        item.aliases.create(name=a)
+                        print "  alias", a
+                        aob = item.aliases.filter(name=a)
+                        if aob.count() == 0:
+                            print "  - adding"
+                            item.aliases.create(name=a)
+                        else:
+                            print "  - exists"
 
     def handle(self, *args, **options):
         if len(args) < 2:
@@ -44,12 +62,21 @@ class Command(BaseCommand):
         fname = args[1]
 
         obclass = None
+        # has transliteration. if this is the case then the columns
+        # are name, transliteration, alt-name, aliases....
+        has_tl = False
+        # has header in the csv
+        has_header = False
         if t == "instrument":
             obclass = Instrument
         elif t == "raaga":
             obclass = Raaga
+            has_tl = True
+            has_header = True
         elif t == "taala":
             obclass = Taala
+            has_tl = True
+            has_header = True
         elif t == "region":
             obclass = GeographicRegion
         elif t == "form":
@@ -59,5 +86,5 @@ class Command(BaseCommand):
         elif t == "school":
             obclass = MusicalSchool
         if obclass:
-            self.load(fname, obclass)
+            self.load(fname, obclass, has_tl, has_header)
 
