@@ -11,102 +11,102 @@
         border: none;
         position: relative;
         #scrollrec {
-          position: relative;
-          width: 100%;
-          height: 234px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          #summary {
-              height: auto;
-              float: none;
-              padding: 0px;
-              width: auto;
-        #innerSummary {
-                position: relative;
-          span {
-                  padding:10px;
-            h1 { font-size: 16px; }
-            h2 { margin-top:0px; font-size: 12px; }
-          }    
-        }
-      }
-          #meta { 
-            float:none; 
-            width: 100%;
-            height: auto;
-            .metaBlock {
-                width: 100%;
-                .metaMask {
-                  overflow: hidden;
-                  .metaContainer {
-                      width: 100%;
-                      .metaDetails {
-                        height: auto;
-                          width: 100%;
-                          span { 
-                            width: 100%;                
-                label { width: 34% !important; }
-                            b { width: 64% !important; }
-              }
-                      }
-                  }
-                }
-            }
-        }
-        }
-        #totalcontrol {
-          position: relative;
-          width: 100%;
-          height: 64px;
-          background: url("../img/controlBackground.jpg") 0 0 repeat;
-          #control {
             position: relative;
-            padding-left: 30px;
-            .revButton { 
-                position: relative;
-                float: left;
-                width:48px;
-                height: 50px;
-                background: url("../img/revButton.png") 0 0 repeat-y;
-                margin-top: 7px;
-                &:hover {
-                    background: url("../img/revButton_hover.png") 0 0 repeat-y;    
+            width: 100%;
+            height: 256px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            #summary {
+                height: auto;
+                float: none;
+                padding: 0px;
+                width: auto;
+                #innerSummary {
+                    position: relative;
+                    span {
+                        padding:10px;
+                        h1 { font-size: 16px; }
+                        h2 { margin-top:0px; font-size: 12px; }
+                    }    
                 }
             }
-            .plButton { 
-                position: relative;
-                float: left;
-                width:64px;
-                height: 66px;
-                background: url("../img/plButton.png") 0 0 no-repeat;
-                &:hover {
-                    background: url("../img/plButton_hover.png") 0 0 no-repeat;    
-                }
-                &.stop {
-                    background: url("../img/stopButton.png") 0 0 no-repeat;    
-                    &:hover {
-                        background: url("../img/stopButton_hover.png") 0 0 no-repeat;    
+            #meta { 
+                float:none; 
+                width: 100%;
+                height: auto;
+                .metaBlock {
+                    width: 100%;
+                    .metaMask {
+                        overflow: hidden;
+                        .metaContainer {
+                            width: 100%;
+                            .metaDetails {
+                                height: auto;
+                                width: 100%;
+                                span { 
+                                    width: 100%;                
+                                    label { width: 34% !important; }
+                                    b { width: 64% !important; }
+                                }
+                            }
+                        }
                     }
                 }
             }
-            .folButton { 
+        }
+        #totalcontrol {
+            position: relative;
+            width: 100%;
+            height: 64px;
+            background: url("../img/controlBackground.jpg") 0 0 repeat;
+            #control {
                 position: relative;
-                float: left;
-                width:48px;
-                height: 50px;
-                background: url("../img/folButton.png") 0 0 repeat-y;
-                margin-top: 7px;
-                &:hover {
-                    background: url("../img/folButton_hover.png") 0 0 repeat-y;    
+                padding-left: 30px;
+                .revButton { 
+                    position: relative;
+                    float: left;
+                    width:48px;
+                    height: 50px;
+                    background: url("../img/revButton.png") 0 0 repeat-y;
+                    margin-top: 7px;
+                    &:hover {
+                        background: url("../img/revButton_hover.png") 0 0 repeat-y;    
+                    }
+                }
+                .plButton { 
+                    position: relative;
+                    float: left;
+                    width:64px;
+                    height: 66px;
+                    background: url("../img/plButton.png") 0 0 no-repeat;
+                    &:hover {
+                        background: url("../img/plButton_hover.png") 0 0 no-repeat;    
+                    }
+                    &.stop {
+                        background: url("../img/stopButton.png") 0 0 no-repeat;    
+                        &:hover {
+                            background: url("../img/stopButton_hover.png") 0 0 no-repeat;    
+                        }
+                    }
+                }
+                .folButton { 
+                    position: relative;
+                    float: left;
+                    width:48px;
+                    height: 50px;
+                    background: url("../img/folButton.png") 0 0 repeat-y;
+                    margin-top: 7px;
+                    &:hover {
+                        background: url("../img/folButton_hover.png") 0 0 repeat-y;    
+                    }
                 }
             }
         }
-        }
         .graph {
-          position: relative;
-          width: 100%;
-          height: 234px;
-          text-align: right;
+            position: relative;
+            width: 100%;
+            height: 256px;
+            text-align: right;
         }
     }
 
@@ -115,61 +115,98 @@
         width:100%;
         margin-left: -220px;
         .container {
-          margin-left: 220px;
-      .thedata {
-            #rendersMask {
-                  float: left;
+            margin-left: 220px;
+            .thedata {
+                #rendersMask {
+                    float: left;
                     position: relative;
                     width:901px;
                     overflow-y: hidden;
-                    overflow-x: scroll;
+                    overflow-x: hidden;
                     #renders {
                         position: relative;
                         width: 901px;
                         #capcal {
                             position: absolute;
-                            left:0px;
+                            left:-5px;
                             top:0px;
-                            width:13px;
+                            width:8px;
                             height: 100%;
-                            background: url("../img/capcal.png") -5px 0 repeat-y;
+                            background: url("../img/capcal.png") 0 0 repeat-y;
+                            z-index: 1
                         }
                         #bigWave, #bigPitch { 
-                          position: relative;
+                            position: relative;
+                            height: 256px;
                             width:100%; 
-                            img {
-                                width:100%; 
-                                height: 234px;
+                            canvas {
+                                height: 256px;
+                                border: 0;
+                                margin: 0;
                             }
                             #zooms {
-                      position: absolute;
-                      bottom: 4px;
-                      padding-right: 4px;
-                      width: 100%;
-                      text-align: right;
-                      span {
-                          display: block;
-                      }
-                      a {
-                          position: relative;
-                          display: inline-block;
-                          color: #fff !important;
-                          background: rgba(255, 255, 255, 0.2);
-                          .rounded(3px);
-                          box-shadow: 0px 1px 2px #ddd;
-                          padding:2px;
-                          text-decoration: none;
-                          width: 22px;
-                          &.selected {
-                              background: #333;
-                              color:#fff !important;
-                          }
-                      }
-                  }
+                                position: absolute;
+                                bottom: 4px;
+                                padding-right: 4px;
+                                width: 100%;
+                                text-align: right;
+                                span {
+                                    display: block;
+                                }
+                                a {
+                                    position: relative;
+                                    display: inline-block;
+                                    color: #fff !important;
+                                    background: rgba(255, 255, 255, 0.2);
+                                    .rounded(3px);
+                                    box-shadow: 0px 1px 2px #ddd;
+                                    padding:2px;
+                                    text-decoration: none;
+                                    width: 22px;
+                                    &.selected {
+                                        background: #333;
+                                        color:#fff !important;
+                                    }
+                                }
+                            }
+                            div#timecodes {
+                                position: relative;
+                                height:20px;
+                                span.timecode1 {
+                                    position: absolute;
+                                    left: 0px;
+                                    height: 25px;
+                                    margin: 2px;
+                                }
+                                span.timecode2 {
+                                    position: absolute;
+                                    left: 220px;
+                                    height: 25px;
+                                    margin: 2px;
+                                }
+                                span.timecode3 {
+                                    position: absolute;
+                                    left: 445px;
+                                    height: 25px;
+                                    margin: 2px;
+                                }
+                                span.timecode4 {
+                                    position: absolute;
+                                    left: 670px;
+                                    height: 25px;
+                                    margin: 2px;
+                                }
+                                span.timecode5 {
+                                    position: absolute;
+                                    right: 0px;
+                                    height: 25px;
+                                    margin: 2px;
+                                }
+                            }
                         }
                     }
                 }
-        #renderTotal {
+                #renderTotal {
                     position: relative;
                     width:901px;
                     img {
@@ -178,74 +215,107 @@
                         opacity: 0.5;
                         border-top:1px solid #fff;
                         border-bottom:1px solid #fff;
+                        z-index: 2;
                     }
                     #capcalTotal {
                         position: absolute;
-                        left:0px;
+                        left:-6px;
                         top:0px;
-                        width:13px;
+                        width:7px;
                         height: 100%;
                         z-index:2;
-                        background: url("../img/capcal.png") -5px 0 repeat-y;
+                        background: url("../img/capcal.png") 0 0 repeat-y;
                     }
                 }
-        .container2 {
-          width: 100%;
-          margin-left: -901px;
-          float:right;
-          #totalcontrol2 {
-            position: relative;
-            margin-left: 901px;
-            height: 64px;
-            width: 100%;
-            background: url("../img/controlBackground.jpg") 0 0 repeat;
-             #timecode {
-                    position: relative;
-                    margin: 0;            
-                    padding: 8px;
-                    display: block;
-                    text-align: center;
-                    text-decoration: none;
-                    font-size: 18px;
-                    color: #dcdcdc;
-                    background: #3d3d3d;
-                    .rounded(8px);
-                    box-shadow: 2px 2px 2px #888;
-                    top: 3px;
-                    left: 2px;
-                    width: 104px;
-                    span {
-                      font-size: 11px;
-                      color: #aaa;
-                      display: block;
-                      position: relative;
-                    }
-            }
+                .container2 {
+                    width: 100%;
+                    margin-left: -901px;
+                    float:right;
+                    #totalcontrol2 {
+                        position: relative;
+                        margin-left: 901px;
+                        height: 64px;
+                        width: 100%;
+                        background: url("../img/controlBackground.jpg") 0 0 repeat;
+                        #timecode {
+                            position: relative;
+                            margin: 0;            
+                            padding: 8px;
+                            display: block;
+                            text-align: center;
+                            text-decoration: none;
+                            font-size: 18px;
+                            color: #dcdcdc;
+                            background: #3d3d3d;
+                            .rounded(8px);
+                            box-shadow: 2px 2px 2px #888;
+                            top: 3px;
+                            left: 2px;
+                            width: 104px;
+                            bottom: 3px;
+                            span {
+                                font-size: 11px;
+                                color: #aaa;
+                                display: block;
+                                position: relative;
+                            }
+                        }
 
-          }
-          .waveLabel {
-            position: relative;
-            margin-left: 901px;
-            height: 234px;
-            width: 100%;
-            h1 { 
-              margin: 0px; 
-              font-weight: normal;
-              padding: 10px;
-            }
-          }
-          .pitchLabel {
-            position: relative;
-            margin-left: 901px;
-            height: 234px;
-            width: 100%;
-            h1 { 
-              margin: 0px; 
-              font-weight: normal;
-              padding: 10px;
-            }
-          }
-        }
+                    }
+                    .waveLabel {
+                        position: relative;
+                        margin-left: 901px;
+                        height: 256px;
+                        width: 100%;
+                        h1 { 
+                            margin: 0px; 
+                            font-weight: normal;
+                            padding: 10px;
+                        }
+                        span.tempoup {
+                            position: absolute;
+                            // 20% lower than midpoint
+                            top:150px;
+                            padding-left: 10px;
+                        }
+                        span.tempodown {
+                            position: absolute;
+                            bottom: 20px;
+                            padding-left: 10px;
+                        }
+                        div {
+                            padding: 10px;
+                        }
+
+                    }
+                    .pitchLabel {
+                        position: relative;
+                        margin-left: 901px;
+                        height: 256px;
+                        width: 100%;
+                        h1 { 
+                            margin: 0px; 
+                            font-weight: normal;
+                            padding: 10px;
+                        }
+                        span.sao {
+                            position: absolute;
+                            // This sits at 128px, but we want the text centered
+                            // so move it up just a bit.
+                            top:122px;
+                            padding-left: 10px;
+                        }
+                        span.sa {
+                            font-weight:bold;
+                            position: absolute;
+                            top:186px;
+                            padding-left: 10px;
+                        }
+                        div {
+                            padding: 10px;
+                        }
+                    }
+                }
             }
         }
     }
