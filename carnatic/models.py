@@ -303,7 +303,13 @@ class Raaga(data.models.BaseModel):
 
     def get_similar(self):
         if self.pk in raaga_similar:
-            return [Raaga.objects.get(pk=id) for id in raaga_similar[self.pk]]
+            for id in raaga_similar[self.pk]:
+                sim = []
+                try:
+                    sim.append(Raaga.objects.get(pk=id))
+                except Raaga.DoesNotExist:
+                    pass
+            return sim
         else:
             return []
 
