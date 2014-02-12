@@ -7,8 +7,10 @@
     {% if debug %}
     {% load less %}
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
     <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/recording.less' %}" />
     {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/recording.css' %}" />
     {% endif %}
 {% endblock %}
@@ -49,7 +51,6 @@
     {% endif %}
 
     widthOfChildren('.metaContainer');
-    widthOfChildren('.tracklist', 1000);
 
 </script>
 <script src="{% static 'carnatic/js/recording.js' %}"></script>
