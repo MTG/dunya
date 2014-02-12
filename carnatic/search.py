@@ -81,6 +81,10 @@ def get_similar_concerts(works, raagas, taalas, artists):
     if artists:
         searchitems.append("artist_is:(%s)" % artists)
 
+    if not searchitems:
+        # If we have nothing to search for, return no matches
+        return []
+
     query = "doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
     results = solr.search(query, rows=100)
 
