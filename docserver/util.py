@@ -95,7 +95,10 @@ def docserver_get_filename(documentid, slug, subtype=None, part=None, version=No
     return full_path
 
 def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None):
-    doc = models.Document.objects.get(external_identifier=documentid)
+    try:
+        doc = models.Document.objects.get(external_identifier=documentid)
+    except models.Document.DoesNotExist:
+        raise NoFileException
     try:
         sourcetype = models.SourceFileType.objects.get_by_extension(slug)
     except models.SourceFileType.DoesNotExist:
