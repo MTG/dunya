@@ -36,6 +36,9 @@ class ReleaseImporter(object):
         self.overwrite = overwrite
         self.date_import_started = django.utils.timezone.now()
 
+        self.imported_artists = []
+        self.imported_releases = []
+
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
         source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=url)
@@ -62,9 +65,8 @@ class ReleaseImporter(object):
         concert, created = carnatic.models.Concert.objects.get_or_create(
                 mbid=mbid, defaults={"title": rel["title"]})
         if not created:
-            delta = self.date_import_started - concert.source.last_updated
-            if delta.seconds < 3600 / 2:
-                print "Concert updated less than 30 minutes ago, not redoing"
+            if releaseid in self.imported_releases:
+                print "Release already updated in this import. Not doing it again"
                 return concert
         if created or self.overwrite:
             year = rel.get("date", "")[:4]
@@ -113,7 +115,6 @@ class ReleaseImporter(object):
             artistid, instrument, is_lead = perf
             self.add_release_performance(releaseid, artistid, instrument, is_lead)
 
-        # TODO: Release hooks
         external_data.import_concert_image(concert, directories, self.overwrite)
 
     def _add_and_get_artist_composer(self, ArtistClass, artistid, addgroups=True):
@@ -125,10 +126,9 @@ class ReleaseImporter(object):
                 defaults={"name": a["name"]})
 
         if not created:
-            delta = self.date_import_started - artist.source.last_updated
-            if delta.seconds < 3600 / 2:
-                print "Artist updated less than 30 minutes ago, not redoing"
-                #return artist
+            if artistid in self.imported_artists:
+                print "Artist already updated in this import. Not doing it again"
+                return artist
         if created or self.overwrite:
             logger.info("  adding artist/composer %s" % (artistid, ))
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
@@ -257,14 +257,14 @@ class ReleaseImporter(object):
                 work.composer = None
 
             for seq, rname in raagas:
-                r = self.add_and_get_raaga(rname)
+                r = self.get_raaga(rname)
                 if r:
                     carnatic.models.WorkRaaga.objects.create(work=work, raaga=r, sequence=seq)
                 else:
                     logger.warn("Cannot find raaga: %s" % rname)
 
             for seq, tname in taalas:
-                t = self.add_and_get_taala(tname)
+                t = self.get_taala(tname)
                 if t:
                     carnatic.models.WorkTaala.objects.create(work=work, taala=t, sequence=seq)
                 else:
@@ -281,7 +281,7 @@ class ReleaseImporter(object):
 
         return work
 
-    def add_and_get_raaga(self, raaganame):
+    def get_raaga(self, raaganame):
         try:
             return carnatic.models.Raaga.objects.fuzzy(name=raaganame)
         except carnatic.models.Raaga.DoesNotExist, e:
@@ -291,7 +291,7 @@ class ReleaseImporter(object):
             except carnatic.models.RaagaAlias.DoesNotExist, e:
                 return None
 
-    def add_and_get_taala(self, taalaname):
+    def get_taala(self, taalaname):
         try:
             return carnatic.models.Taala.objects.fuzzy(name=taalaname)
         except carnatic.models.Taala.DoesNotExist, e:
@@ -304,7 +304,7 @@ class ReleaseImporter(object):
     def add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self.add_and_get_instrument(instrument)
+        instrument = self.get_instrument(instrument)
         if instrument:
             recording = carnatic.models.Recording.objects.get(mbid=recordingid)
             perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
@@ -314,13 +314,13 @@ class ReleaseImporter(object):
         # TODO: Can we de-duplicate this with the recording stuff above
         logger.info("  Adding concert performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self.add_and_get_instrument(instrument)
+        instrument = self.get_instrument(instrument)
         if instrument:
             concert = carnatic.models.Concert.objects.get(mbid=releaseid)
             perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
-    def add_and_get_instrument(self, instname):
+    def get_instrument(self, instname):
         try:
             return carnatic.models.Instrument.objects.fuzzy(name=instname)
         except carnatic.models.Instrument.DoesNotExist:
