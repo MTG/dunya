@@ -49,7 +49,7 @@ def import_instrument_description(instrument, overwrite=False):
             pass
 
         im = data.models.Image()
-        im.image.save("%s.jpg" % imagefilename, ContentFile(img))
+        im.image.save("instrument-%s.jpg" % imagefilename, ContentFile(img))
         instrument.images.add(im)
     instrument.save()
 
@@ -97,7 +97,7 @@ def import_artist_bio(a, overwrite):
                 pass
 
             im = data.models.Image()
-            im.image.save("%s.jpg" % a.mbid, ContentFile(i))
+            im.image.save("artist-%s.jpg" % a.mbid, ContentFile(i))
             a.images.add(im)
         if additional_urls:
             for u in additional_urls:
@@ -128,7 +128,7 @@ def import_concert_image(concert, directories=[], overwrite=False):
             sn = data.models.SourceName.objects.get(name="Cover Art Archive")
             source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=uri, defaults={"title": concert.title})
             im.source = source
-        im.image.save("%s.jpg" % concert.mbid, ContentFile(i))
+        im.image.save("concert-%s.jpg" % concert.mbid, ContentFile(i))
 
         # If the image is a different size from one that already exists, then
         # replace it
