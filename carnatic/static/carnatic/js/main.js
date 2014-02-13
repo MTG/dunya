@@ -1,17 +1,6 @@
 var globalSpeed  = 500;
 
 $(document).ready(function() {
-
-	$('.item .similarity div').click(function(){
-    $('.item .similarity div').removeClass('active');
-      theparent = $(this).parent();
-      buscar = ".right ."+$(this).attr('class');
-      theparent.parent().parent().find(".right .similarList").removeClass('active');
-      theparent.parent().parent().find(buscar).addClass('active');
-      theparent.parent().parent().find(".right").fadeIn('slow');
-      $(this).addClass("active");
-    });
-
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
