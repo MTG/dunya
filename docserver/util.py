@@ -27,13 +27,12 @@ class NoFileException(Exception):
 
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
-    # TODO: We assume it's MP3 for now.
     mp3type = models.SourceFileType.objects.get_by_extension("mp3")
     title = meta["meta"].get("title")
 
     try:
         doc = models.Document.objects.get_by_external_id(recordingid)
-        docserver_add_file(doc.pk, mp3type, fpath)
+        docserver_add_sourcefile(doc.pk, mp3type, fpath)
     except models.Document.DoesNotExist:
         docserver_add_document(collectionid, mp3type, title, fpath, recordingid)
 
@@ -43,14 +42,20 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
     if alt_id:
         document.external_identifier = alt_id
         document.save()
-    docserver_add_file(document.pk, filetype, path)
+    docserver_add_sourcefile(document.pk, filetype, path)
 
-def docserver_add_file(document_id, ftype, path):
+def docserver_add_sourcefile(document_id, ftype, path):
     """ Add a file to the given document. If a file with the given filetype
         already exists for the document just update the path. """
     document = models.Document.objects.get(pk=document_id)
     try:
         sfile = models.SourceFile.objects.get(document=document, file_type=ftype)
+        collection_root = document.collection.collection_root
+        if path.startswith(collection_root):
+            # If the path is absolute, remove it
+            path = path[len(collection_root):]
+        if path.startswith("/"):
+            path = path[1:]
         sfile.path = path
         sfile.save()
     except models.SourceFile.DoesNotExist:

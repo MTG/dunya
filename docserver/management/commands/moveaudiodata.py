@@ -70,15 +70,6 @@ class Command(BaseCommand):
                 audiodir += "/"
             c.root_directory = audiodir
             c.save()
-
-            sourcefiles = docserver.models.SourceFile.objects.all()
-            print "Updating source files"
-            with transaction.atomic():
-                for s in sourcefiles:
-                    oldpath = s.path
-                    newpath = oldpath.replace(oldroot, audiodir)
-                    s.path = newpath
-                    s.save()
         else:
             print "Argument %s is not a directory" % audiodir
             return

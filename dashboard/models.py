@@ -195,6 +195,9 @@ class CollectionLogMessage(models.Model):
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
+    def __unicode__(self):
+        return "%s - %s" % (self.collection.name, self.datetime)
+
 class MusicbrainzReleaseState(models.Model):
     """ Indicates the procesing state of a release. A release has finished
     processing when all files it is part of have finished.
@@ -384,8 +387,14 @@ class CollectionFile(models.Model):
 
     @property
     def path(self):
+        """ Absolute path """
         return os.path.join(self.directory.collection.root_directory,
                 self.directory.path, self.name)
+
+    @property
+    def relativepath(self):
+        """ Path relative to the collection root """
+        return os.path.join(self.directory.path, self.name)
 
     def __unicode__(self):
         return "%s (from %s)" % (self.name, self.directory.musicbrainzrelease)

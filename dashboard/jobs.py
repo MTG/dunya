@@ -144,7 +144,7 @@ def import_release(releasepk):
         # and to dunya
         for cfile in cfiles:
             # 3a. Import file to docserver
-            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
+            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.relativepath, cfile.recordingid)
             cfile.set_state_finished()
 
         # 3b. Import release to dunya database

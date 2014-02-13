@@ -140,7 +140,7 @@ def process_document(documentid, moduleversionid):
     if len(sfiles):
         # TODO: If there is more than 1 source file
         s = sfiles[0]
-        fname = s.path.encode("utf-8")
+        fname = s.fullpath.encode("utf-8")
         starttime = time.time()
         results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
         endtime = time.time()
