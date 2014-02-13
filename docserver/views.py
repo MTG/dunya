@@ -18,7 +18,7 @@ import json, os
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.urlresolvers import reverse
 
 from django.core.servers.basehttp import FileWrapper
@@ -57,6 +57,7 @@ class DocumentDetail(generics.RetrieveAPIView):
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
 
+@login_required
 def download_external(request, uuid, ftype):
     # TODO we could replace this with
     # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py

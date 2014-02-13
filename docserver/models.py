@@ -98,7 +98,7 @@ class SourceFile(models.Model):
     document = models.ForeignKey(Document, related_name='sourcefiles')
     """The filetype"""
     file_type = models.ForeignKey(SourceFileType)
-    """The path on disk to the file"""
+    """The relative path on disk to the file (to the collection root)"""
     path = models.CharField(max_length=500)
     size = models.IntegerField()
 
@@ -109,6 +109,10 @@ class SourceFile(models.Model):
     def get_absolute_url(self, url_slug='ds-download-external'):
         return reverse(url_slug,
                 args=[self.document.external_identifier, self.file_type.extension])
+
+    @property
+    def fullpath(self):
+        return os.path.join(self.document.collection.root_directory, self.path)
 
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)

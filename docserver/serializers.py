@@ -20,7 +20,7 @@ from rest_framework import serializers
 class CollectionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Collection
-        fields = ['name', 'description', 'slug', 'root_directory']
+        fields = ['name', 'description', 'slug', 'root_directory', 'id']
 
 class DerivedFileSerializer(serializers.ModelSerializer):
     extension = serializers.Field(source='extension')
@@ -43,15 +43,14 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = models.Document
         fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
 
+class DocumentIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Document
+        fields = ['external_identifier', 'title']
+
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
-    documents = DocumentSerializer(many=True)
+    documents = DocumentIdSerializer(many=True)
     class Meta:
         model = models.Collection
         fields = ['name', 'documents']
-
-class SourceFileSerializer(serializers.ModelSerializer):
-    # TODO: Get file contents based on... document id & type, or alt id & type, or fileid
-    class Meta:
-        model = models.SourceFile
-        fields = ('document', 'file_type', 'path')
 
