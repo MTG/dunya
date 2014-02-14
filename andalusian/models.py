@@ -146,10 +146,7 @@ class Orchestra(AndalusianStyle, BaseModel):
         return perfs
 
     def recordings(self):
-        IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(recording_orchestra=self.recordingorchestra)
-        recs = [p.recording_orchestra.recording for p in performances]
-        return recs
+        return self.recording_set.all()
 
 
 class OrchestraAlias(models.Model):
@@ -189,7 +186,7 @@ class Artist(AndalusianStyle, BaseModel):
     def recordings(self):
         IPClass = self.get_object_map("performance")
         performances = IPClass.objects.filter(performer=self)
-        recs = [p.recording_orchestra.recording for p in performances]
+        recs = [p.recording for p in performances]
         return recs
     
     def performances(self, tab=[], nawba=[], mizan=[]):
@@ -284,16 +281,16 @@ class Recording(AndalusianStyle, BaseModel):
     length = models.IntegerField(blank=True, null=True)
     year = models.IntegerField(blank=True, null=True)
     genre = models.CharField(max_length=100)
+    orchestra = models.ForeignKey('Orchestra')
+    director = models.ForeignKey('Artist')
 
     def __unicode__(self):
         ret = ", ".join([unicode(a) for a in self.performers()])
         return "%s (%s)" % (self.title, ret)
 
     def performers(self):
-        performers = {}
-        for performance in self.recordingorchestra.instrumentperformance_set.all():
-            performers[performance.performer] = 1
-        return performers.keys()
+        performers = list(set([p.performer for p in self.instrumentperformance_set.all()]))
+        return performers
 
 
 class RecordingAlias(models.Model):
@@ -302,16 +299,6 @@ class RecordingAlias(models.Model):
     
     def __unicode__(self):
         return self.title
-
-
-class RecordingOrchestra(models.Model):
-    recording = models.OneToOneField('Recording')
-    orchestra = models.OneToOneField('Orchestra')
-    director = models.OneToOneField('Artist')
-    #performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
-
-    class Meta:
-        unique_together = (("recording", "orchestra", "director"),)
 
 
 class Instrument(AndalusianStyle, BaseModel):
@@ -333,13 +320,13 @@ class InstrumentAlias(models.Model):
 class InstrumentPerformance(models.Model):
     class Meta:        
         abstract = True
-    recording_orchestra = models.ForeignKey('RecordingOrchestra')
+    recording = models.ForeignKey('Recording')
     performer = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return "%s playing %s on %s" % (self.performer, self.instrument, self.recording_orchestra.recording)
+        return "%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 
 class OrchestraPerformer(models.Model):
