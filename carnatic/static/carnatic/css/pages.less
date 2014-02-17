@@ -276,21 +276,8 @@
     top: 0px;
     left: 0px;
     display: none;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    &:before {
-        background-image: url("../img/simdegra.png");
-        background-position: -13px 0;
-        background-repeat: repeat-y;
-        background-size: 100% auto;
-        content: "";
-        height: 100%;
-        opacity: 1;
-        position: absolute;
-        width: 19px;
-        z-index: 0;
-    }
-    &.active { display: block; box-shadow: inset 0px 0px 10px; }
+    padding: 15px;
+    &.active { display: block; box-shadow: inset 0px 0px 10px rgba(0,0,0, 0.3); }
     .miniitem:first-child {
         margin-top:15px !important;
     }
@@ -370,7 +357,9 @@
         float:left;
         width: 100%;
         margin-left: -220px;
-        .scrolldata { overflow-x: auto; 
+        .scrolldata {
+            overflow-x: auto; 
+            overflow-y: hidden; 
             .scrollblock { width: 100%; }
         }
         .innerrightdata {
@@ -422,14 +411,14 @@
         }
         .lists {
             &.similar .left {
-                overflow: hidden;
+                overflow: visible;
                 border-right: none;
             }
             display: block !important;
-            height: auto;
+            height: 207px;
             left: 0;
             position: relative;
-            top: 0px;
+            top: 6px;
             width: auto;
             padding-left: 6px;
             padding-right: 6px;
@@ -467,8 +456,7 @@
                 top:0px;
                 left:0px;
                 width: 231px;
-                /* XXX: Was height: 100%; */
-                height: 210px;
+                height: 100%;
                 float:left;
                 padding-left: 5px;
                 overflow-y: auto;
