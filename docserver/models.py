@@ -15,12 +15,15 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django.conf import settings
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 import django.utils.timezone
 import urlparse
 import urllib
+import collections
+import os
 
 import uuid
 
@@ -66,7 +69,7 @@ class Document(models.Model):
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
 
     def get_absolute_url(self):
-        return reverse("docserver-onefile", args=[self.collection.slug, self.external_identifier])
+        return reverse("ds-document-external", args=[self.external_identifier])
 
     def __unicode__(self):
         ret = ""
@@ -75,6 +78,37 @@ class Document(models.Model):
         if self.external_identifier:
             ret += " (%s)" % self.external_identifier
         return ret
+
+    def derivedmap(self):
+        """ Derived files for the API.
+        returns {"slug": {"part": {"versions", [versions], "extension"...} ]}
+
+        This makes an assumption that the number of parts and extension
+        are the same for all versions. At the moment they are, but
+        I'm not sure what to do if 
+        """
+        ret = collections.defaultdict(list)
+        derived = self.derivedfiles.all()
+        for d in derived:
+            item = {"extension": d.extension, "version": d.module_version.version, 
+                    "outputname": d.outputname, "numparts": d.numparts,
+                    "mimetype": d.mimetype}
+            ret[d.module_version.module.slug].append(item)
+        newret = {}
+        for k, v in ret.items():
+            items = collections.defaultdict(list)
+            for i in v:
+                name = i['outputname']
+                if name in items:
+                    items[name]["versions"].append(i["version"])
+                else:
+                    items[name] = {"extension": i["extension"], 
+                            "numparts": i["numparts"],
+                            "mimetype": i["mimetype"],
+                            "versions": [i["version"]]}
+
+            newret[k] = items
+        return newret
 
 
 class FileTypeManager(models.Manager):
@@ -122,6 +156,10 @@ class DerivedFilePart(models.Model):
     part_order = models.IntegerField()
     path = models.CharField(max_length=500)
     size = models.IntegerField()
+
+    @property
+    def fullpath(self):
+        return os.path.join(settings.AUDIO_ROOT, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
         url = reverse(url_slug,

@@ -16,28 +16,17 @@
 
 from docserver import models
 from rest_framework import serializers
+from rest_framework import fields
 
 class CollectionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Collection
         fields = ['name', 'description', 'slug', 'root_directory', 'id']
 
-class DerivedFileSerializer(serializers.ModelSerializer):
-    extension = serializers.Field(source='extension')
-    versions = serializers.Field(source='versions')
-    outputname = serializers.Field(source='outputname')
-    numparts = serializers.Field(source='numparts')
-    slug = serializers.Field(source='module_version.module.slug')
-
-    class Meta:
-        model = models.DerivedFile
-        fields = ('extension', 'versions', 'outputname', 'numparts', 'slug')
-
 class DocumentSerializer(serializers.ModelSerializer):
     # The extension field isn't part of a SourceFile, but we get it from the filetype
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
-    #derivedfiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
-    derivedfiles = DerivedFileSerializer(many=True)
+    derivedfiles = fields.Field(source='derivedmap')
     collection = serializers.CharField(max_length=100, source='collection.slug', read_only=True)
     class Meta:
         model = models.Document

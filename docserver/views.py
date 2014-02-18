@@ -28,12 +28,17 @@ from docserver import models
 from docserver import forms
 from docserver import jobs
 from docserver import serializers
+from docserver import util
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework import authentication
+from rest_framework import exceptions
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
+
+auther = authentication.TokenAuthentication()
 
 def index(request):
     return HttpResponse("Hello docserver")
@@ -57,88 +62,36 @@ class DocumentDetail(generics.RetrieveAPIView):
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
 
-@login_required
 def download_external(request, uuid, ftype):
-    # TODO we could replace this with
+    # Test authentication. We support a rest-framework token
+    # or a logged-in user
+    loggedin = request.user.is_authenticated()
+    try:
+        t = auther.authenticate(request)
+        if t:
+            token = True
+        else:
+            token = False
+    except exceptions.AuthenticationFailed:
+        token = False
+    if not loggedin and not token:
+        return HttpResponse("Not logged in", status=401)
+
+    # TODO we could replace or enhance this with
     # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py
     try:
-        thetype = models.SourceFileType.objects.get_by_extension(ftype)
-    except models.SourceFileType.DoesNotExist:
-        thetype = None
+        version = request.GET.get("v")
+        subtype = request.GET.get("subtype")
+        part = request.GET.get("part")
+        filepart = util._docserver_get_part(uuid, ftype, subtype, part, version)
 
-    try:
-        thedoc = models.Document.objects.get_by_external_id(uuid)
-    except models.Document.DoesNotExist:
-        thedoc = None
-
-    if thedoc and thetype:
-        # See if it's an extension
-        files = thedoc.sourcefiles.filter(file_type=thetype)
-        if len(files) == 0:
-            raise Http404
-        else:
-            fname = files[0].path
-            contents = open(fname, 'rb').read()
-            response = HttpResponse(contents)
-            response['Content-Length'] = len(contents)
-            return response
-    elif thedoc and not thetype:
-        # otherwise try derived type
-        try:
-            module = models.Module.objects.get(slug=ftype)
-            moduleversions = module.moduleversion_set
-            # If there's a ?v= tag, use that version, otherwise get the latest
-            version = request.GET.get("v")
-            if version:
-                moduleversions = moduleversions.filter(version=version)
-            else:
-                moduleversions = moduleversions.order_by("-date_added")
-
-            if len(moduleversions):
-                # filter by ?subtype
-                # if a file has many subtypes and it's not set, then this is an error
-                subtype = request.GET.get("subtype")
-                dfs = None
-                for mv in moduleversions:
-                    # go through all the versions until we find a file of that version
-                    dfs = thedoc.derivedfiles.filter(module_version=mv).all()
-                    if subtype:
-                        dfs = dfs.filter(outputname=subtype)
-                    if dfs.count() > 0:
-                        # We found some files, break
-                        break
-                if dfs.count() > 1:
-                    return HttpResponse(status=400)
-                elif dfs.count() == 1:
-                    # Select the part.
-                    # If the file has many parts and ?part is not set then it's an error
-                    parts = dfs[0].parts
-                    part = request.GET.get("part")
-                    if part:
-                        parts = parts.filter(part_order=int(part))
-                    else:
-                        parts = parts.all()
-                    mimetype = dfs[0].mimetype
-                    if parts.count() > 1:
-                        return HttpResponse(status=400)
-                    elif parts.count() == 1:
-                        derived_root = settings.AUDIO_ROOT
-                        file_path = parts[0].path
-                        full_path = os.path.join(derived_root, file_path)
-                        contents = open(full_path, 'rb').read()
-                        return HttpResponse(contents, mimetype)
-                    else:
-                        raise Http404
-                else:
-                    # If no files, or none with this version
-                    raise Http404
-            else:
-                # If no files, or none with this version
-                raise Http404
-        except models.Module.DoesNotExist:
-            raise Http404
-    else:
-        # no extension or derived type
+        fname = filepart.fullpath
+        contents = open(fname, 'rb').read()
+        response = HttpResponse(contents)
+        response['Content-Length'] = len(contents)
+        return response
+    except util.NoFileException:
+        # TODO: Send a message with the 404 too, giving the reason
         raise Http404
 
 #### Essentia manager
