@@ -19,6 +19,7 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from social.forms import *
 from social.models import *
@@ -64,6 +65,7 @@ def register_page(request):
     }
     return render(request, 'registration/register.html', ret)
 
+@login_required
 def user_profile(request):
     user_profile = request.user.get_profile()
     
