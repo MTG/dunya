@@ -33,7 +33,7 @@ like this:
 To get all items in the database you must repeatedly call the `next` url until
 it is `null`.
 
-**Artists: ** ``http://dunya.compmusic.upf.edu/api/carnatic/artist``  
+**Artists:** ``http://dunya.compmusic.upf.edu/api/carnatic/artist``  
 Lists all carnatic artists.
 
     "results": [
@@ -47,7 +47,7 @@ Lists all carnatic artists.
         },
     ]
 
-**Artist: ** ``http://dunya.compmusic.upf.edu/api/carnatic/artist/[artistid]``  
+**Artist:** ``http://dunya.compmusic.upf.edu/api/carnatic/artist/[artistid]``  
 Show details for a single artist.
 
     {
@@ -67,7 +67,7 @@ Show details for a single artist.
     }, ]
     }
 
-**Concerts: ** ``http://dunya.compmusic.upf.edu/api/carnatic/concert``  
+**Concerts:** ``http://dunya.compmusic.upf.edu/api/carnatic/concert``  
 List all carnatic concerts
 
     "results": [
@@ -77,39 +77,39 @@ List all carnatic concerts
         }, 
     ]
 
-**Concert: ** ``http://dunya.compmusic.upf.edu/api/carnatic/concert/[concertid]``  
+**Concert:** ``http://dunya.compmusic.upf.edu/api/carnatic/concert/[concertid]``  
 Show details for a single concert
 
-{
-    "mbid": "54ab1640-8479-4b7e-bb35-b40c30176501", 
-    "title": "Carnatic Vocal (1910 - 1965)", 
-    "tracks": [
-        {
-            "mbid": "b9c77de4-0618-4106-8930-b01b9c602294", 
-            "title": "Kalala Nerchina", 
-        } 
-    ], 
-    "artists": [  # Artists who perform on the release
-        {
-            "mbid": "6110a180-48ae-42f3-9220-85a1eda5d85d", 
-            "name": "T. S. Balasubramaniam", 
-            "instrument": "Vocal"
-        }, 
-        {
-            "mbid": "1038a7f3-eda5-43a6-8366-e07085fbd14b", 
-            "name": "Umayalpuram N. Kodandarama Iyer", 
-            "instrument": "Ghatam"
-        }, 
-    ], 
-    "concert_artists": [ # The 'main' artist who the release is by
-        {
-            "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85", 
-            "name": "G. N. Balasubramaniam"
-        }
-    ]
-}
+    {
+        "mbid": "54ab1640-8479-4b7e-bb35-b40c30176501", 
+        "title": "Carnatic Vocal (1910 - 1965)", 
+        "tracks": [
+            {
+                "mbid": "b9c77de4-0618-4106-8930-b01b9c602294", 
+                "title": "Kalala Nerchina", 
+            } 
+        ], 
+        "artists": [  # Artists who perform on the release
+            {
+                "mbid": "6110a180-48ae-42f3-9220-85a1eda5d85d", 
+                "name": "T. S. Balasubramaniam", 
+                "instrument": "Vocal"
+            }, 
+            {
+                "mbid": "1038a7f3-eda5-43a6-8366-e07085fbd14b", 
+                "name": "Umayalpuram N. Kodandarama Iyer", 
+                "instrument": "Ghatam"
+            }, 
+        ], 
+        "concert_artists": [ # The 'main' artist who the release is by
+            {
+                "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85", 
+                "name": "G. N. Balasubramaniam"
+            }
+        ]
+    }
 
-**Recordings: ** ``http://dunya.compmusic.upf.edu/api/carnatic/recording``  
+**Recordings:** ``http://dunya.compmusic.upf.edu/api/carnatic/recording``  
 List all carnatic recordings
 
     "results": [
@@ -119,7 +119,7 @@ List all carnatic recordings
         }, 
     ]
 
-**Recording: ** ``http://dunya.compmusic.upf.edu/api/carnatic/recording/[recid]``  
+**Recording:** ``http://dunya.compmusic.upf.edu/api/carnatic/recording/[recid]``  
 Show details for a single recording
 
     {
@@ -147,10 +147,10 @@ Show details for a single recording
             "mbid": "d6f4d5ca-df12-4d4f-a16b-ca4a1bf80ab0", 
             "title": "December Season 2011"
         }
-}
+    }
 
 
-**Works: ** ``http://dunya.compmusic.upf.edu/api/carnatic/work``  
+**Works:** ``http://dunya.compmusic.upf.edu/api/carnatic/work``  
 List all carnatic works
 
     "results": [
@@ -160,7 +160,7 @@ List all carnatic works
         },
     ]
 
-**Work: ** ``http://dunya.compmusic.upf.edu/api/carnatic/work/[workid]``  
+**Work:** ``http://dunya.compmusic.upf.edu/api/carnatic/work/[workid]``  
 Show details for a single work
 
     {
@@ -191,7 +191,7 @@ Show details for a single work
 }
 
 
-**Taalas: ** ``http://dunya.compmusic.upf.edu/api/carnatic/taala``  
+**Taalas:** ``http://dunya.compmusic.upf.edu/api/carnatic/taala``  
 List all carnatic taalas
 
     "results": [
@@ -202,7 +202,7 @@ List all carnatic taalas
     ]
 
 
-**Taala: ** ``http://dunya.compmusic.upf.edu/api/carnatic/taala/[taalaid]``  
+**Taala:** ``http://dunya.compmusic.upf.edu/api/carnatic/taala/[taalaid]``  
 Show details for a single taala. The argument is a numeric id (from the list)
 
     {
@@ -224,7 +224,7 @@ Show details for a single taala. The argument is a numeric id (from the list)
     }
 
 
-**Raagas: ** ``http://dunya.compmusic.upf.edu/api/carnatic/raaga``  
+**Raagas:** ``http://dunya.compmusic.upf.edu/api/carnatic/raaga``  
 List all carnatic raagas
 
     "results": [
@@ -234,7 +234,7 @@ List all carnatic raagas
         }, 
     ]
 
-**Raaga: ** ``http://dunya.compmusic.upf.edu/api/carnatic/raaga/[raagaid]``  
+**Raaga:** ``http://dunya.compmusic.upf.edu/api/carnatic/raaga/[raagaid]``  
 Show details for a single raaga. The argument is a numeric id (from the list)
 
     {
@@ -255,7 +255,7 @@ Show details for a single raaga. The argument is a numeric id (from the list)
         ]
     }
 
-**Instruments: ** ``http://dunya.compmusic.upf.edu/api/carnatic/instrument``  
+**Instruments:** ``http://dunya.compmusic.upf.edu/api/carnatic/instrument``  
 List all carnatic instruments
 
     "results": [
@@ -265,7 +265,7 @@ List all carnatic instruments
         }, 
     }
 
-**Instrument: ** ``http://dunya.compmusic.upf.edu/api/carnatic/instrument/[instid]``  
+**Instrument:** ``http://dunya.compmusic.upf.edu/api/carnatic/instrument/[instid]``  
 Show details for a single instrument. The argument is a numeric id (from the list)
 
     {
