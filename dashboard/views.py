@@ -267,27 +267,29 @@ def _edit_attributedata(request, data):
            "style": stylename,
            "entityurl": entityurl,
            "title": "%s editor" % entityname,
-           "transliteration": transliteration
+           "transliteration": transliteration,
+           "alias": aliasklass
            }
 
     if request.method == 'POST':
         # Add aliases
-        for i in items:
-            isadd = request.POST.get("item-%s-alias" % i.id)
-            if isadd is not None:
-                # Because in the alias we refer to the real item
-                # by its type, we need to work out what that is
-                # e.g. .create(raaga=i, name="foo") or .create(taala=i, name..)
-                enamelower = entityname.lower()
-                args = {enamelower: i,
-                        "name": isadd
-                       }
-                aliasklass.objects.create(**args)
-        # Delete alias
-        for a in aliasklass.objects.all():
-            isdel = request.POST.get("alias-rm-%s" % a.id)
-            if isdel is not None:
-                a.delete()
+        if aliasklass:
+            for i in items:
+                isadd = request.POST.get("item-%s-alias" % i.id)
+                if isadd is not None:
+                    # Because in the alias we refer to the real item
+                    # by its type, we need to work out what that is
+                    # e.g. .create(raaga=i, name="foo") or .create(taala=i, name..)
+                    enamelower = entityname.lower()
+                    args = {enamelower: i,
+                            "name": isadd
+                           }
+                    aliasklass.objects.create(**args)
+            # Delete alias
+            for a in aliasklass.objects.all():
+                isdel = request.POST.get("alias-rm-%s" % a.id)
+                if isdel is not None:
+                    a.delete()
 
         # Add new item
         refresh = False
@@ -358,7 +360,7 @@ def carnatic_instruments(request):
 def hindustani_raags(request):
     data = {"stylename": "Hindustani",
             "entityname": "Raag",
-            "entityurl": "dashboard-raagas",
+            "entityurl": "dashboard-hindustani-raags",
             "klass": hindustani.models.Raag,
             "aliasklass": hindustani.models.RaagAlias,
             "template": "dashboard/styletag.html",
@@ -381,12 +383,38 @@ def hindustani_taals(request):
     return _edit_attributedata(request, data)
 
 @user_passes_test(is_staff)
+def hindustani_laays(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Laay",
+            "entityurl": "dashboard-hindustani-laays",
+            "klass": hindustani.models.Laay,
+            "aliasklass": hindustani.models.LaayAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_forms(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Form",
+            "entityurl": "dashboard-hindustani-forms",
+            "klass": hindustani.models.Form,
+            "aliasklass": hindustani.models.FormAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
 def hindustani_instruments(request):
     data = {"stylename": "Hindustani",
             "entityname": "Instrument",
             "entityurl": "dashboard-hindustani-instruments",
             "klass": hindustani.models.Instrument,
-            "aliasklass": hindustani.models.InstrumentAlias,
+            "aliasklass": None,
             "template": "dashboard/styletag.html",
             }
 
@@ -396,7 +424,7 @@ def hindustani_instruments(request):
 def makam_makams(request):
     data = {"stylename": "Makam",
             "entityname": "Makam",
-            "entityurl": "dashboard-makam-makam",
+            "entityurl": "dashboard-makam-makams",
             "klass": makam.models.Makam,
             "aliasklass": makam.models.MakamAlias,
             "template": "dashboard/styletag.html",
@@ -434,7 +462,7 @@ def makam_instruments(request):
             "entityname": "Instrument",
             "entityurl": "dashboard-makam-instruments",
             "klass": makam.models.Instrument,
-            "aliasklass": makam.models.InstrumentAlias,
+            "aliasklass": None,
             "template": "dashboard/styletag.html",
             }
 

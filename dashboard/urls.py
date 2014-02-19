@@ -44,6 +44,8 @@ urlpatterns = patterns('',
 
     url(r'hindustani/data/raags', views.hindustani_raags, name='dashboard-hindustani-raags'),
     url(r'hindustani/data/taals', views.hindustani_taals, name='dashboard-hindustani-taals'),
+    url(r'hindustani/data/laays', views.hindustani_laays, name='dashboard-hindustani-laays'),
+    url(r'hindustani/data/forms', views.hindustani_forms, name='dashboard-hindustani-forms'),
     url(r'hindustani/data/instruments', views.hindustani_instruments, name='dashboard-hindustani-instruments'),
 
     url(r'hindustani/', statistic_views.hindustani_stats, name='dashboard-hindustani-stats'),

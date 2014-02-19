@@ -110,13 +110,15 @@ This template is generic to allow editing of raagas, taalas, and instruments
 {% csrf_token %}
 <table style="width:auto">
     <tr><th>{{entityn}}</th>
-        {%if transliteration %}<th>Transliteration</th>{% endif %}
-    <th>Aliases</th><th><img src="{% static 'dashboard/img/delete.png' %}" /></th></tr>
+        {% if transliteration %}<th>Transliteration</th>{% endif %}
+        {% if alias %}<th>Aliases</th>{% endif %}
+        <th><img src="{% static 'dashboard/img/delete.png' %}" /></th></tr>
     {% for r in items %}
     <tr><td>
             <div data-itemid="{{r.id}}">{{r.name}}</div>
         </td>
         {% if transliteration %}<td>{{r.transliteration}}</td>{% endif %}
+        {% if alias %}
         <td>
             <ul>
                 {% for a in r.aliases.all %}
@@ -127,6 +129,7 @@ This template is generic to allow editing of raagas, taalas, and instruments
             </ul>
             <span class="add" data-itemid="{{r.id}}">Add alias <img src="/static/dashboard/img/add.png"/></span>
         </td>
+        {% endif %}
         <td>
             <span class="delete"><input type="checkbox" name="delete-item-{{r.id}}" class="delete-item"></span>
         </td>
