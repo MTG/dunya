@@ -104,6 +104,13 @@ class Raag(models.Model):
     def get_absolute_url(self):
         return reverse('hindustani-raag', args=[str(self.id)])
 
+class RaagAlias(models.Model):
+    name = models.CharField(max_length=50)
+    raag = models.ForeignKey("Raag", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
+
 class Taal(models.Model):
     missing_image = "taal.jpg"
 
@@ -115,6 +122,13 @@ class Taal(models.Model):
 
     def get_absolute_url(self):
         return reverse('hindustani-taal', args=[str(self.id)])
+
+class TaalAlias(models.Model):
+    name = models.CharField(max_length=50)
+    taal = models.ForeignKey("Taal", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
 
 class Laay(models.Model):
     """ A laay is always referred to with a taal as well """
@@ -129,6 +143,13 @@ class Laay(models.Model):
     def get_absolute_url(self):
         return reverse('hindustani-laay', args=[str(self.id)])
 
+class LaayAlias(models.Model):
+    name = models.CharField(max_length=50)
+    laay = models.ForeignKey("Laay", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
+
 class Form(models.Model):
     missing_image = "form.jpg"
 
@@ -140,3 +161,10 @@ class Form(models.Model):
 
     def get_absolute_url(self):
         return reverse('hindustani-form', args=[str(self.id)])
+
+class FormAlias(models.Model):
+    name = models.CharField(max_length=50)
+    form = models.ForeignKey("Form", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
