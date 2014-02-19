@@ -122,8 +122,7 @@ class Migration(SchemaMigration):
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('artistcredit', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('year', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
-            ('label', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['data.Label'], null=True, blank=True)),
-            ('isConcert', self.gf('django.db.models.fields.BooleanField')()),
+            ('is_concert', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'makam', ['Release'])
 
@@ -304,7 +303,7 @@ class Migration(SchemaMigration):
             ('composer', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['makam.Composer'], null=True, blank=True)),
             ('composition_date', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
             ('form', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['makam.Form'])),
-            ('isTaksim', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_taksim', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'makam', ['Work'])
 
@@ -478,15 +477,6 @@ class Migration(SchemaMigration):
             'small_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Source']", 'null': 'True', 'blank': 'True'})
         },
-        u'data.label': {
-            'Meta': {'object_name': 'Label'},
-            'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'data_label_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'data_label_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
-            'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'data_label_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
-        },
         u'data.source': {
             'Meta': {'object_name': 'Source'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -618,10 +608,9 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'makam_release_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
-            'isConcert': ('django.db.models.fields.BooleanField', [], {}),
-            'label': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['data.Label']", 'null': 'True', 'blank': 'True'}),
+            'is_concert': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
-            'performance': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'accompanying_concerts'", 'symmetrical': 'False', 'through': u"orm['makam.InstrumentReleasePerformance']", 'to': u"orm['makam.Artist']"}),
+            'performance': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'accompanying_releases'", 'symmetrical': 'False', 'through': u"orm['makam.InstrumentReleasePerformance']", 'to': u"orm['makam.Artist']"}),
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'makam_release_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'makam_release_source_set'", 'null': 'True', 'to': u"orm['data.Source']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -654,7 +643,7 @@ class Migration(SchemaMigration):
             'form': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['makam.Form']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'makam_work_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
-            'isTaksim': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_taksim': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'lyricist': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['makam.Lyricist']", 'null': 'True', 'blank': 'True'}),
             'makam': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['makam.Makam']", 'symmetrical': 'False'}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
