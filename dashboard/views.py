@@ -277,14 +277,7 @@ def _edit_attributedata(request, data):
             for i in items:
                 isadd = request.POST.get("item-%s-alias" % i.id)
                 if isadd is not None:
-                    # Because in the alias we refer to the real item
-                    # by its type, we need to work out what that is
-                    # e.g. .create(raaga=i, name="foo") or .create(taala=i, name..)
-                    enamelower = entityname.lower()
-                    args = {enamelower: i,
-                            "name": isadd
-                           }
-                    aliasklass.objects.create(**args)
+                    i.aliases.create(name=isadd)
             # Delete alias
             for a in aliasklass.objects.all():
                 isdel = request.POST.get("alias-rm-%s" % a.id)
