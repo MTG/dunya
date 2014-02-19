@@ -30,6 +30,7 @@ import collections
 import compmusic
 
 def _common_stats(collectionid):
+    """ Get some common statistics for all styles """
     releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid)
     ret = {}
     if releases.count():
@@ -187,24 +188,6 @@ def carnatic_recordings(request):
 @user_passes_test(views.is_staff)
 def carnatic_raagataala(request):
     recordings = carnatic.models.Recording.objects
-    #raaga_count = recordings.annotate(Count('work__raaga'))
-    #taala_count = recordings.annotate(Count('work__taala'))
-    #missingr = []
-    #missingt = []
-    #no_raagas = [r for r in raaga_count if r.work__raaga__count == 0]
-    #no_taalas = [r for r in taala_count if r.work__taala__count == 0]
-    #for r in no_raagas:
-    #    if r.work:
-    #        otherrecs = r.work.recording_set.exclude(id=r.id)
-    #    else:
-    #        otherrecs = []
-    #    missingr.append({"recording": r, "otherrecs": otherrecs})
-    #for r in no_taalas:
-    #    if r.work:
-    #        otherrecs = r.work.recording_set.exclude(id=r.id)
-    #    else:
-    #        otherrecs = []
-    #    missingt.append({"recording": r, "otherrecs": otherrecs})
 
     dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
     dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
