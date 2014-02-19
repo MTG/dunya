@@ -27,7 +27,6 @@ class MakamStyle(object):
         return "makam"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "releaseperformance": InstrumentReleasePerformance,
                 "release": Release,
                 "composer": Composer,
                 "artist": Artist,
@@ -48,7 +47,6 @@ class Lyricist(MakamStyle, data.models.Composer):
 class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
-    performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_releases')
 
 class ReleaseRecording(models.Model):
     release = models.ForeignKey('Release')
@@ -70,15 +68,6 @@ class Recording(MakamStyle, data.models.Recording):
 class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
 
-class InstrumentReleasePerformance(models.Model):
-    release = models.ForeignKey('Release')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
-    lead = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return "%s playing %s in %s" % (self.performer, self.instrument, self.release)
-
 class Instrument(MakamStyle, data.models.Instrument):
     pass
 
@@ -95,6 +84,9 @@ class Makam(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('makam-makam', args=[str(self.id)]) 
+
 class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
@@ -108,6 +100,9 @@ class Usul(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('makam-usul', args=[str(self.id)]) 
+
 class FormAlias(models.Model):
     name = models.CharField(max_length=100)
     form = models.ForeignKey("Form", related_name="aliases")
@@ -120,6 +115,9 @@ class Form(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('makam-form', args=[str(self.id)]) 
 
 class Work(MakamStyle, data.models.Work):
 
