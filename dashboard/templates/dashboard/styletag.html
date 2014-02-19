@@ -100,20 +100,23 @@ This template is generic to allow editing of raagas, taalas, and instruments
 
 {% block wrap %}
 
-<h2>Carnatic {{entitynpl}}</h2>
+<h2>{{style}} {{entitynpl}}</h2>
 
 {% if newname %}
-<p>Adding new {{entityn}} {{newname}}
+<p>Adding new {{entityn}}: {{newname}}
 {% endif %}
 
 <form method="post" action="{% url entityurl %}">
 {% csrf_token %}
 <table style="width:auto">
-    <tr><th>{{entityn}}</th><th>Aliases</th><th><img src="{% static 'dashboard/img/delete.png' %}" /></th></tr>
+    <tr><th>{{entityn}}</th>
+        {%if transliteration %}<th>Transliteration</th>{% endif %}
+    <th>Aliases</th><th><img src="{% static 'dashboard/img/delete.png' %}" /></th></tr>
     {% for r in items %}
     <tr><td>
             <div data-itemid="{{r.id}}">{{r.name}}</div>
         </td>
+        {% if transliteration %}<td>{{r.transliteration}}</td>{% endif %}
         <td>
             <ul>
                 {% for a in r.aliases.all %}
@@ -132,7 +135,10 @@ This template is generic to allow editing of raagas, taalas, and instruments
     <tr>
         <td>Add {{entityn}}<br>
             <input type="text" id="newname" name="newname" {% if newname %} value="{{newname}}"{% endif %}>
-        </td><td></td><td></td>
+        </td>
+        {% if transliteration %}
+        <td>Transliteration<br><input type="text" id="newtrans" name="newtrans" {% if newtrans %}value="{{newtrans}}"{% endif %}></td>
+        {% endif %}<td></td><td></td>
     </tr>
 </table>
 <input type="submit" name="submit" value="Send edits"/>

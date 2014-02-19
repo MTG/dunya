@@ -26,19 +26,44 @@
 </table>
 {% endif %}
 
-<h2>Carnatic fixed data management</h2>
-<li><a href="{% url 'dashboard-raagas' %}">Raagas</a>
-<li><a href="{% url 'dashboard-taalas' %}">Taalas</a>
-<li><a href="{% url 'dashboard-instruments' %}">Instruments</a>
-
 <h2>Essentia module management</h2>
 <li><a href="{% url 'docserver-manager' %}">Manager</a>
 
-<h2>Statistics</h2>
-<li><a href="{% url 'dashboard-stats-carnatic' %}">Carnatic</a>
-<li><a href="{% url 'dashboard-stats-hindustani' %}">Hindustani</a>
-<li><a href="{% url 'dashboard-stats-makam' %}">Makam</a>
-<li><a href="{% url 'dashboard-stats-beijing' %}">Beijing</a>
-<li><a href="{% url 'dashboard-stats-andalusian' %}">Andalusian</a>
+<h2>Carnatic</h2>
+<li><a href="{% url 'dashboard-carnatic-stats' %}">Statistics</a>
+
+<h3>Data management</h3>
+<li><a href="{% url 'dashboard-carnatic-raagas' %}">Raagas</a>
+<li><a href="{% url 'dashboard-carnatic-taalas' %}">Taalas</a>
+<li><a href="{% url 'dashboard-carnatic-instruments' %}">Instruments</a>
+
+<h3>Reports</h3>
+<li><a href="{% url 'dashboard-carnatic-releases' %}">Release cleanup</a>
+<li><a href="{% url 'dashboard-carnatic-coverart' %}">Release coverart cleanup</a>
+<li><a href="{% url 'dashboard-carnatic-artists' %}">Artist cleanup</a>
+<li><a href="{% url 'dashboard-carnatic-recordings' %}">Recording cleanup</a>
+<li><a href="{% url 'dashboard-carnatic-raagataala' %}">Raaga/Taala cleanup</a>
+<li><a href="{% url 'dashboard-carnatic-works' %}">Work cleanup</a>
+
+<h2>Makam</h2>
+<li><a href="{% url 'dashboard-makam-stats' %}">Statistics</a>
+
+<h3>Data management</h3>
+<li><a href="{% url 'dashboard-makam-makams' %}">Makams</a>
+<li><a href="{% url 'dashboard-makam-forms' %}">Forms</a>
+<li><a href="{% url 'dashboard-makam-usuls' %}">Usuls</a>
+<li><a href="{% url 'dashboard-makam-instruments' %}">Instruments</a>
+
+<h2>Hindustani</h2>
+<li><a href="{% url 'dashboard-hindustani-stats' %}">Statistics</a>
+
+<h3>Data management</h3>
+<li><a href="{% url 'dashboard-hindustani-raags' %}">Raags</a>
+<li><a href="{% url 'dashboard-hindustani-taals' %}">Taals</a>
+<li><a href="{% url 'dashboard-hindustani-instruments' %}">Instruments</a>
+
+<h2>Other statistics</h2>
+<li><a href="{% url 'dashboard-beijing-stats' %}">Beijing</a>
+<li><a href="{% url 'dashboard-andalusian-stats' %}">Andalusian</a>
 
 {% endblock %}

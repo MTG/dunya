@@ -31,6 +31,8 @@ import importlib
 import json
 
 import carnatic
+import hindustani
+import makam
 
 def is_staff(user):
     return user.is_staff
@@ -247,134 +249,193 @@ def directory(request, dirid):
         ret["artistid"] = list(artistids)[0]
     return render(request, 'dashboard/directory.html', ret)
 
-@user_passes_test(is_staff)
-def raagas(request):
-    # TODO: Raaga/taala/instrument is all duplicated code!
-    raagas = carnatic.models.Raaga.objects.all()
-    ret = {"items": raagas,
-           "entityn": "Raaga",
-           "entitynpl": "Raagas",
-           "entityurl": "dashboard-raagas",
-           "title": "Raaga editor"
+def _edit_attributedata(request, data):
+
+    stylename = data["stylename"]
+    entityname = data["entityname"]
+    entityurl = data["entityurl"]
+    klass = data["klass"]
+    aliasklass = data["aliasklass"]
+    template = data["template"]
+    transliteration = data.get("transliteration", False)
+
+    items = klass.objects.all()
+
+    ret = {"items": items,
+           "entityn": entityname,
+           "entitynpl": "%ss" % entityname,
+           "style": stylename,
+           "entityurl": entityurl,
+           "title": "%s editor" % entityname,
+           "transliteration": transliteration
            }
+
     if request.method == 'POST':
         # Add aliases
-        for r in raagas:
-            isadd = request.POST.get("item-%s-alias" % r.id)
-            if isadd is not None:
-                carnatic.models.RaagaAlias.objects.create(raaga=r, name=isadd)
-        # Delete alias
-        for a in carnatic.models.RaagaAlias.objects.all():
-            isdel = request.POST.get("alias-rm-%s" % a.id)
-            if isdel is not None:
-                a.delete()
-
-        # Add new raaga
-        refresh = False
-        newraaga = request.POST.get("newname")
-        if newraaga is not None and newraaga != "":
-            refresh = True
-            carnatic.models.Raaga.objects.create(name=newraaga)
-        # Delete raaga
-        for r in raagas:
-            isdel = request.POST.get("delete-item-%s" % r.id)
-            if isdel is not None:
-                refresh = True
-                r.delete()
-        if refresh:
-            raagas = carnatic.models.Raaga.objects.all()
-            ret["items"] = raagas
-    else:
-        newraaga = request.GET.get("newname")
-        if newraaga:
-            ret["newname"] = newraaga
-
-    return render(request, 'dashboard/raagataala.html', ret)
-
-@user_passes_test(is_staff)
-def taalas(request):
-    taalas = carnatic.models.Taala.objects.all()
-    ret = {"items": taalas,
-           "entityn": "Taala",
-           "entitynpl": "Taalas",
-           "entityurl": "dashboard-taalas",
-           "title": "Taala editor"
-           }
-    if request.method == 'POST':
-        # Add aliases
-        for t in taalas:
-            isadd = request.POST.get("item-%s-alias" % t.id)
-            if isadd is not None:
-                carnatic.models.TaalaAlias.objects.create(taala=t, name=isadd)
-        # Delete alias
-        for a in carnatic.models.TaalaAlias.objects.all():
-            isdel = request.POST.get("alias-rm-%s" % a.id)
-            if isdel is not None:
-                a.delete()
-
-        # Add new taala
-        refresh = False
-        newtaala = request.POST.get("newname")
-        if newtaala is not None and newtaala != "":
-            refresh = True
-            carnatic.models.Taala.objects.create(name=newtaala)
-        # Delete taala
-        for t in taalas:
-            isdel = request.POST.get("delete-item-%s" % t.id)
-            if isdel is not None:
-                refresh = True
-                t.delete()
-        if refresh:
-            taalas = carnatic.models.Taala.objects.all()
-            ret["items"] = taalas
-    else:
-        newtaala = request.GET.get("newname")
-        if newtaala:
-            ret["newname"] = newtaala
-
-    return render(request, 'dashboard/raagataala.html', ret)
-
-@user_passes_test(is_staff)
-def instruments(request):
-
-    instruments = carnatic.models.Instrument.objects.all()
-
-    ret = {"items": instruments,
-           "entityn": "Instrument",
-           "entitynpl": "Instruments",
-           "entityurl": "dashboard-instruments",
-           "title": "Instrument editor"
-           }
-    if request.method == 'POST':
-        # Add aliases
-        for i in instruments:
+        for i in items:
             isadd = request.POST.get("item-%s-alias" % i.id)
             if isadd is not None:
-                carnatic.models.InstrumentAlias.objects.create(instrument=i, name=isadd)
+                # Because in the alias we refer to the real item
+                # by its type, we need to work out what that is
+                # e.g. .create(raaga=i, name="foo") or .create(taala=i, name..)
+                enamelower = entityname.lower()
+                args = {enamelower: i,
+                        "name": isadd
+                       }
+                aliasklass.objects.create(**args)
         # Delete alias
-        for a in carnatic.models.InstrumentAlias.objects.all():
+        for a in aliasklass.objects.all():
             isdel = request.POST.get("alias-rm-%s" % a.id)
             if isdel is not None:
                 a.delete()
 
-        # Add new instrument
+        # Add new item
         refresh = False
-        newinstrument = request.POST.get("newname")
-        if newinstrument is not None and newinstrument != "":
+        newname = request.POST.get("newname")
+        newtrans = request.POST.get("newtrans")
+        if newname is not None and newname != "":
             refresh = True
-            carnatic.models.Instrument.objects.create(name=newinstrument)
-        # Delete instrument
-        for i in instruments:
+            args = {"name": newname}
+            if transliteration and newtrans is not None and newtrans != "":
+                args["transliteration"] = newtrans
+            klass.objects.create(**args)
+        # Delete item
+        for i in items:
             isdel = request.POST.get("delete-item-%s" % i.id)
             if isdel is not None:
                 refresh = True
                 i.delete()
         if refresh:
-            instruments = carnatic.models.Instrument.objects.all()
-            ret["items"] = instruments
+            items = klass.objects.all()
+            ret["items"] = items
     else:
-        newinstrument = request.GET.get("newname")
-        if newinstrument:
-            ret["newname"] = newinstrument
+        newname = request.GET.get("newname")
+        if newname:
+            ret["newname"] = newname
 
-    return render(request, 'dashboard/raagataala.html', ret)
+    return render(request, template, ret)
+
+@user_passes_test(is_staff)
+def carnatic_raagas(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Raaga",
+            "entityurl": "dashboard-carnatic-raagas",
+            "klass": carnatic.models.Raaga,
+            "aliasklass": carnatic.models.RaagaAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def carnatic_taalas(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Taala",
+            "entityurl": "dashboard-carnatic-taalas",
+            "klass": carnatic.models.Taala,
+            "aliasklass": carnatic.models.TaalaAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def carnatic_instruments(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Instrument",
+            "entityurl": "dashboard-carnatic-instruments",
+            "klass": carnatic.models.Instrument,
+            "aliasklass": carnatic.models.InstrumentAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+
+@user_passes_test(is_staff)
+def hindustani_raags(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Raag",
+            "entityurl": "dashboard-raagas",
+            "klass": hindustani.models.Raag,
+            "aliasklass": hindustani.models.RaagAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_taals(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Taal",
+            "entityurl": "dashboard-hindustani-taals",
+            "klass": hindustani.models.Taal,
+            "aliasklass": hindustani.models.TaalAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_instruments(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Instrument",
+            "entityurl": "dashboard-hindustani-instruments",
+            "klass": hindustani.models.Instrument,
+            "aliasklass": hindustani.models.InstrumentAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_makams(request):
+    data = {"stylename": "Makam",
+            "entityname": "Makam",
+            "entityurl": "dashboard-makam-makam",
+            "klass": makam.models.Makam,
+            "aliasklass": makam.models.MakamAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_forms(request):
+    data = {"stylename": "Makam",
+            "entityname": "Form",
+            "entityurl": "dashboard-makam-forms",
+            "klass": makam.models.Form,
+            "aliasklass": makam.models.FormAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_usuls(request):
+    data = {"stylename": "Makam",
+            "entityname": "Usul",
+            "entityurl": "dashboard-makam-usuls",
+            "klass": makam.models.Usul,
+            "aliasklass": makam.models.UsulAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_instruments(request):
+    data = {"stylename": "Makam",
+            "entityname": "Instrument",
+            "entityurl": "dashboard-makam-instruments",
+            "klass": makam.models.Instrument,
+            "aliasklass": makam.models.InstrumentAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
