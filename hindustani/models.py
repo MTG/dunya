@@ -27,7 +27,6 @@ class HindustaniStyle(object):
         return "hindustani"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "releaseperformance": InstrumentReleasePerformance,
                 "release": Release,
                 "composer": Composer,
                 "artist": Artist,

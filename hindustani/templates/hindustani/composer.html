@@ -1,0 +1,24 @@
+{% extends "carnatic/base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{composer.name}} - {% endblock %}
+
+{% block wrap %}
+<div id="detail">
+
+    <h1>Composer {{composer.name}}</h1>
+
+    <div class="clearfix"></div>
+</div>
+{% endblock %}
+
