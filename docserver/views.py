@@ -65,6 +65,7 @@ class DocumentDetail(generics.RetrieveAPIView):
 def download_external(request, uuid, ftype):
     # Test authentication. We support a rest-framework token
     # or a logged-in user
+
     loggedin = request.user.is_authenticated()
     try:
         t = auther.authenticate(request)
@@ -74,7 +75,9 @@ def download_external(request, uuid, ftype):
             token = False
     except exceptions.AuthenticationFailed:
         token = False
-    if not loggedin and not token:
+
+    # The only thing that's limited at the moment is mp3 files
+    if ftype == "mp3" and not (loggedin or token):
         return HttpResponse("Not logged in", status=401)
 
     # TODO we could replace or enhance this with
