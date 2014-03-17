@@ -486,8 +486,11 @@ def recording(request, uuid):
     try:
         similar_mbids = search.similar_recordings(recording.mbid)
         for m in similar_mbids:
-            rec = Recording.objects.get(mbid=m[0])
-            similar.append(rec)
+            try:
+                rec = Recording.objects.get(mbid=m[0])
+                similar.append(rec)
+            except Recording.DoesNotExist:
+                pass
     except pysolr.SolrError:
         # TODO: Show error in similar recordings page instead of empty
         pass
