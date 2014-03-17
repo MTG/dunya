@@ -89,8 +89,10 @@ def download_external(request, uuid, ftype):
         filepart = util._docserver_get_part(uuid, ftype, subtype, part, version)
 
         fname = filepart.fullpath
+
         contents = open(fname, 'rb').read()
-        response = HttpResponse(contents)
+        ctype = filepart.derivedfile.mimetype
+        response = HttpResponse(contents, content_type=ctype)
         response['Content-Length'] = len(contents)
         return response
     except util.NoFileException:
