@@ -148,6 +148,11 @@ class SourceFile(models.Model):
     def fullpath(self):
         return os.path.join(self.document.collection.root_directory, self.path)
 
+    @property
+    def mimetype(self):
+        # TODO: For now all source files are mp3, but this won't be for long
+        return "audio/mpeg"
+
     def __unicode__(self):
         return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
@@ -156,6 +161,10 @@ class DerivedFilePart(models.Model):
     part_order = models.IntegerField()
     path = models.CharField(max_length=500)
     size = models.IntegerField()
+
+    @property
+    def mimetype(self):
+        return self.derivedfile.mimetype
 
     @property
     def fullpath(self):

@@ -91,7 +91,7 @@ def download_external(request, uuid, ftype):
         fname = filepart.fullpath
 
         contents = open(fname, 'rb').read()
-        ctype = filepart.derivedfile.mimetype
+        ctype = filepart.mimetype
         response = HttpResponse(contents, content_type=ctype)
         response['Content-Length'] = len(contents)
         return response
