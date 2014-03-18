@@ -148,11 +148,23 @@ class Artist(BaseModel):
         return concerts.all()
 
     def recordings(self):
-        perfs = self.performances()
         IPClass = self.get_object_map("performance")
         performances = IPClass.objects.filter(performer=self)
-        recs = [p.recording for p in performances]
-        return recs
+        performance_recs = [p.recording for p in performances]
+
+        # Releases where we were primary artist
+        RelClass = self.get_object_map("release")
+        pa_rels = RelClass.objects.filter(artists=self)
+        # Releases where we were a relationship
+        IRPClass = self.get_object_map("releaseperformance")
+        rel_perfs = IRPClass.objects.filter(performer=self)
+        rel_rels = [r.concert for r in rel_perfs]
+        concerts = set(pa_rels) | set(rel_rels)
+        concert_recordings = []
+        for c in concerts:
+            concert_recordings.extend(c.tracks.all())
+
+        return list(set(performance_recs)|set(concert_recordings))
 
     def performances(self, raagas=[], taalas=[]):
         ReleaseClass = self.get_object_map("release")
@@ -323,7 +335,17 @@ class Recording(BaseModel):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        return ArtistClass.objects.filter(primary_concerts__tracks=self)
+        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+
+        IPClass = self.get_object_map("performance")
+        IRPClass = self.get_object_map("releaseperformance")
+        recperfs = IPClass.objects.filter(recording=self)
+        rec_artists = [r.performer for r in recperfs]
+        releaseperfs = IRPClass.objects.filter(concert__tracks=self)
+        release_artists = [r.performer for r in releaseperfs]
+
+        all_as = set(primary_artists) | set(rec_artists) | set(release_artists)
+        return list(all_as)
 
 class InstrumentAlias(models.Model):
     class Meta:

@@ -449,13 +449,6 @@ class Recording(CarnaticStyle, data.models.Recording):
                 return ts[0]
         return None
 
-    def artist(self):
-        aa = self.all_artists()
-        if aa:
-            return aa[0]
-        else:
-            return None
-
     def waveform_image(self):
         try:
             # we return "4", because it might be more interesting than 1, but if it fails
@@ -528,6 +521,7 @@ class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
 
 class InstrumentConcertPerformance(models.Model):
+    # TODO: This should be 'release' over all music types
     concert = models.ForeignKey('Concert')
     performer = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
