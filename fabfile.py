@@ -12,6 +12,12 @@ def up(port="8001"):
 def celery():
     local("celery worker --app=dunya -l info")
 
+def test(module=None):
+    command = "python manage.py test --settings=dunya.test_settings"
+    if module:
+        command += " %s" % module
+    local(command)
+
 @roles("web")
 def updateweb():
     """Update the webserver"""
@@ -20,6 +26,7 @@ def updateweb():
         # compile and compress less
         # compress javascript
         run("env/bin/python manage.py collectstatic --noinput")
+        less()
     with cd("/srv/dunya/env/src/pycompmusic"):
         run("git pull")
     run("sudo supervisorctl restart dunya")
@@ -43,9 +50,7 @@ def updatecelery():
     run("sudo supervisorctl restart dunyacelery")
 
 def less():
-    local("lessc carnatic/static/carnatic/css/main.less --source-map-map-inline carnatic/static/carnatic/css/main.css")
-
-def lesscompress():
+    """Compile less into static css"""
     local("lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
     local("lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
     local("lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
