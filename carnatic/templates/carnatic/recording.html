@@ -65,7 +65,7 @@
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{recording.title}}</h1>
-		     			<h2> by {% inline_artist_list recording.all_artists.all %}</h2>
+		     			<h2> by {% inline_artist_list recording.concert_set.get.artistnames %}</h2>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
