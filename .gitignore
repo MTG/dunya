@@ -7,5 +7,5 @@ dunya/local_settings.py
 .DS_Store
 dunya_data.json
 media
-static
+/static
 LESS_CACHE
