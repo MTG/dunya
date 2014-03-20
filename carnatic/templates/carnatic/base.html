@@ -15,7 +15,7 @@
 
         {% if debug %}
         <link href="{% static 'carnatic/css/font.css' %}" rel="stylesheet" type="text/css">
-        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.3.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
         {% load less %}
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/main.less' %}" />
@@ -133,7 +133,7 @@
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">
             {% if user.is_authenticated %}
-                    <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+                    <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/avatar.png' %}" /></a>
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
