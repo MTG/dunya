@@ -57,6 +57,9 @@ class TagSaveForm(forms.Form):
     objectid = forms.IntegerField(widget=forms.HiddenInput())
     objecttype = forms.CharField(widget=forms.HiddenInput(), max_length=30)
 
+class DeleteAccountForm(forms.Form):
+    delete = forms.BooleanField(required=False, label="Yes, delete my account")
+
 class UserProfileForm(forms.Form):
     first_name = forms.CharField(label=u'First Name', max_length=50)
     last_name = forms.CharField(label=u'Last Name', max_length=100)

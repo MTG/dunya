@@ -66,6 +66,24 @@ def register_page(request):
     return render(request, 'registration/register.html', ret)
 
 @login_required
+def delete_account(request):
+    if request.method == 'POST':
+        form = DeleteAccountForm(request.POST)
+        if form.is_valid():
+            delete = form.cleaned_data['delete']
+            if delete:
+                u = request.user
+                logout(request)
+                u.delete()
+                return render(request, 'registration/deleted.html')
+    else:
+        form = DeleteAccountForm()
+
+    ret = {"form": form}
+    return render(request, 'registration/delete.html', ret)
+
+
+@login_required
 def user_profile(request):
     user_profile = request.user.get_profile()
     
