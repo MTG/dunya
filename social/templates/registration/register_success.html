@@ -4,7 +4,8 @@
 {% block wrap %}
 <div id="login">
 	<h1>Thank you for registering</h1>
-	<p>Your information has been saved in the database. Now you can either <a href="{% url 'social-auth-login' %}">login</a> or go back to the <a href="{{ carnatic_overview }}">main page</a>.</p>
+    <p>You have successfully registered for Dunya. In order to log in and access the audio collection your account must be manually verified by our team.
+    We will contact you by email when your account has been enabled. You may continue to use Dunya without logging in. Go to the <a href="{% url 'main' %}">main page</a>.</p>
 </div>
 {% endblock %}
 

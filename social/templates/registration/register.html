@@ -4,10 +4,12 @@
 {% block wrap %}
 <div id="login">
     <h1>Register</h1>
+    For researchers wishing to participate in the CompMusic project we 
     <form method="post" action=".">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="send" />
+        By registering for Dunya you indicate that you agree to our <a href="{% url 'terms' %}">terms and conditions</a>.<br>
+        <input type="submit" value="Register" />
     </form>
 </div>
 {% endblock %}

@@ -12,7 +12,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', RedirectView.as_view(pattern_name="carnatic-main")),
+    url(r'^$', RedirectView.as_view(pattern_name="carnatic-main"), name="main"),
     url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
     url(r'^about/terms', 'dunya.views.terms', name="terms"),
     url(r'^about/cookies', 'dunya.views.cookies', name="cookies"),

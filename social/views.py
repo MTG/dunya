@@ -50,8 +50,9 @@ def register_page(request):
                 password=form.cleaned_data['password1'],
                 email=form.cleaned_data['email'],
                 first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name']
+                last_name=form.cleaned_data['last_name'],
             )
+            user.is_active = False
             user.save()
             user.userprofile.affiliation=form.cleaned_data['affiliation']
             user.userprofile.save()
