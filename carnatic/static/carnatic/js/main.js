@@ -1,6 +1,14 @@
 var globalSpeed  = 500;
 
 $(document).ready(function() {
+    var cookieValue = $.cookie("cookieConsent");
+    if (!cookieValue) {
+        $("#cookie-bar").fadeIn(500);
+    }
+    $("#cookie-accept").click(function() {
+        $.cookie("cookieConsent", "yes", { expires: 500, path: '/' });
+        $("#cookie-bar").fadeOut(500);
+    });
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));

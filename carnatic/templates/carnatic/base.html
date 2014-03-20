@@ -45,6 +45,7 @@
         {% if debug %}
         <script src="{% static 'carnatic/js/vendor/jquery-1.10.2.min.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/jquery-ui-1.10.3.min.js' %}"></script>
+        <script src="{% static 'carnatic/js/vendor/jquery.cookie.js' %}"></script>
         {% else %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
@@ -160,6 +161,19 @@
         <div class="main-container">
         {% block wrap %}
         {% endblock %}
+        </div>
+
+
+        <div id="cookie-bar">
+           <div style="float:left">
+               <p>
+                   We use cookies to ensure you get the best experience on our website. By browsing our site you agree to our use of cookies.<br>
+                    For more information see our <a href="{% url 'cookies' %}">cookies policy</a>.
+               </p>
+           </div>
+           <div style="float:right; margin-top:10px;margin-right:10px;">
+               <button id="cookie-accept">Ok</button>
+           </div>
         </div>
         <div id="footage">
 
