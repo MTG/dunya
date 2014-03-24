@@ -13,8 +13,6 @@ var qconcert = {{qconcert}};
 $(document).ready(function() {
     parseAllFilters({{ filter_items|safe }});
 
-    
-
     // If we made a query, re-fill out the search
     if (qartist.length) {
         toggleCategory($("div#entitiesList .artist"), function() {
@@ -117,8 +115,14 @@ $(document).ready(function() {
     {% load less %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/browse.less' %}" />
+    {% if request.COOKIES.presentationMode == "on" %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/presentation.less' %}" />
+    {% endif %}
     {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/browse.css' %}" />
+    {% if request.COOKIES.presentationMode == "on" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/presentation.css' %}" />
+    {% endif %}
     {% endif %}
 {% endblock %}
 

@@ -84,6 +84,7 @@
 
                 $("#aboutdialog").dialog({
                   autoOpen: false,
+                  minWidth: 500
                 });
 
                 $("#aboutbutton").click(function() {
@@ -92,6 +93,19 @@
 
                 $("#previewicon.disabled").click(function() {
                     $( "#playback_dialog" ).dialog( "open" );
+                });
+                var presentationMode = $.cookie("presentationMode");
+                if (!presentationMode || presentationMode === "off") {
+                    $("#presmode").html("enable presentation mode");
+                } else {
+                    $("#presmode").html("disable presentation mode");
+                }
+                $("#presmode").click(function(event) {
+                    if (!presentationMode || presentationMode === "off") {
+                        $.cookie("presentationMode", "on", { expires: 500, path: '/' });
+                    } else {
+                        $.cookie("presentationMode", "off", { expires: 500, path: '/' });
+                    }
                 });
 
             });
@@ -108,7 +122,13 @@
         </div>
 
         <div id="aboutdialog" title="Dunya">
-            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories. For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a></p>
+            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the
+            point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories.<br>
+            Dunya has been developed to present the results of our research to the music and technology communities, with a focus on computational output.
+            For this reason we endeavour to present accurate metadata but make no guarantees as to its correctness.<br>
+            For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a><br>
+            Use of Dunya is governed by our <a href="{% url 'terms' %}">Terms and Conditions</a></p>
+            <p>For presentations, <a href id="presmode">enable presentation mode</a></p>
         </div>
 
         <!-- //////  HEADER BLOCK  ////// -->
