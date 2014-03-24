@@ -385,7 +385,7 @@ def concertsearch(request):
     concerts = Concert.objects.all().order_by('title')
     ret = []
     for c in concerts:
-        ret.append({"id": c.id, "title": c.title})
+        ret.append({"id": c.id, "title": "%s<br>%s" % (c.title, c.artistcredit)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def concertbyid(request, concertid):
