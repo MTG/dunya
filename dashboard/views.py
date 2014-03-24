@@ -18,7 +18,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
 import django.utils.timezone
+from django.forms.models import modelformset_factory
 
 from dashboard import models
 from dashboard import forms
@@ -63,6 +65,23 @@ def index(request):
     collections = models.Collection.objects.all()
     ret = {'form': form, 'collections': collections}
     return render(request, 'dashboard/index.html', ret)
+
+@user_passes_test(is_staff)
+def accounts(request):
+    UserFormSet = modelformset_factory(User, forms.InactiveUserForm, extra=0)
+    print User.objects.filter(is_active=False).all()
+    if request.method == 'POST':
+        formset = UserFormSet(request.POST, queryset=User.objects.filter(is_active=False))
+        if formset.is_valid():
+            for f in formset.forms:
+                user = f.cleaned_data["id"]
+                is_active = f.cleaned_data["is_active"]
+                if is_active:
+                    user.is_active = True
+                    user.save()
+    formset = UserFormSet(queryset=User.objects.filter(is_active=False))
+    ret = {"formset": formset}
+    return render(request, 'dashboard/accounts.html', ret)
 
 @user_passes_test(is_staff)
 def collection(request, uuid):

@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'release/(?P<releaseid>\d+)$', views.release, name='dashboard-release'),
     url(r'directory/(?P<dirid>\d+)$', views.directory, name='dashboard-directory'),
     url(r'file/(?P<fileid>\d+)$', views.file, name='dashboard-file'),
+    url(r'accounts$', views.accounts, name='dashboard-accounts'),
 
     url(r'carnatic/coverart/', statistic_views.carnatic_coverart, name='dashboard-carnatic-coverart'),
     url(r'carnatic/releases/', statistic_views.carnatic_releases, name='dashboard-carnatic-releases'),
