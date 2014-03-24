@@ -63,6 +63,10 @@ textarea {
 .header-container, .main-container { min-width: 1024px; }
 #entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
 
+#aboutdialog {
+    padding: 1em;
+}
+
 /* ==========================================================================
    HEADER 
    ========================================================================== */
@@ -137,6 +141,29 @@ textarea {
                 white-space: nowrap;
                 cursor: pointer;
             }
+        }
+    }
+    #erclogo {
+        float: right;
+        position: relative;
+        width: 300px;
+        text-align: right;
+        padding-right: 10px;
+        margin-top: 5px;
+        >div {
+            font-size: 10px;
+            margin-top: 15px;
+            display: inline-block;
+            padding-right: 10px;
+        }
+        span {
+            display: block;
+            text-align: right;
+        }
+        >img {
+            height: 60px;
+            vertical-align: middle;
+            float: right;
         }
     }
     nav#mainmenu {

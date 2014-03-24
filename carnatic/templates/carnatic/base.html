@@ -144,11 +144,11 @@
                         <input id="searchbox" type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
                     <button type="submit" class="button"/>
                 </form>
-                </div><!-- globalserach -->
-                <div id="globalMusic">
+            </div>
+                <div id="globalMusic" class="upperMenu">
                     <label>Exploring music style</label>
                     <span id="gmSelected">Carnatic</span>
-                </div><!-- globalmusic -->
+                </div>
                 <nav id="mainmenu">
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">
@@ -173,6 +173,10 @@
             {% endif %}
                 </div>
                 </nav>
+               <div id="erclogo">
+                   <div><span>Funded by the</span><span>European Research Council</span></div>
+                <img src="{% static 'carnatic/img/erclogo.jpg' %}" />
+            </div> 
                 <div class="clearfix"></div>
             </header>
         </div>
