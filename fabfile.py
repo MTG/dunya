@@ -55,6 +55,7 @@ def less():
     local("lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
     local("lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
     local("lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
+    local("lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
 
 def setupdb():
     """ Run this when you are setting up a new installation
