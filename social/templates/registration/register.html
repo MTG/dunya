@@ -4,7 +4,9 @@
 {% block wrap %}
 <div id="login">
     <h1>Register</h1>
-    For researchers wishing to participate in the CompMusic project we 
+    For researchers wishing to participate in the evaluation of the CompMusic project we allow you to create an account to
+    access audio used in our research. Fill out this form completely, including your academic affiliation so that we can
+    review your account before granting access.
     <form method="post" action=".">
         {% csrf_token %}
         {{ form.as_p }}
