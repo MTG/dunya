@@ -39,7 +39,7 @@ class Source(models.Model):
     last_updated = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
+        return u"From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
 
 class Description(models.Model):
     """ A short description of a thing in the database.
@@ -48,7 +48,7 @@ class Description(models.Model):
     description = models.TextField()
 
     def __unicode__(self):
-        return "%s - %s" % (self.source, self.description[:100])
+        return u"%s - %s" % (self.source, self.description[:100])
 
 class Image(models.Model):
     """ An image of a thing in the database """
@@ -57,9 +57,9 @@ class Image(models.Model):
     small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
     def __unicode__(self):
-        ret = "%s" % (self.image.name, )
+        ret = u"%s" % (self.image.name, )
         if self.source:
-            ret = "%s from %s" % (ret, self.source.uri)
+            ret = u"%s from %s" % (ret, self.source.uri)
         return ret
 
 class BaseModel(models.Model):
@@ -217,8 +217,8 @@ class Release(BaseModel):
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
     def __unicode__(self):
-        ret = ", ".join([unicode(a) for a in self.artists.all()])
-        return "%s (%s)" % (self.title, ret)
+        ret = u", ".join([unicode(a) for a in self.artists.all()])
+        return u"%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
@@ -384,7 +384,7 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s playing %s on %s" % (self.performer, self.instrument, self.recording)
+        return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 class Composer(BaseModel):
     missing_image = "artist.jpg"
@@ -416,5 +416,5 @@ class VisitLog(models.Model):
     path = models.CharField(max_length=256)
 
     def __unicode__(self):
-        return "%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
+        return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
 

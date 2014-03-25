@@ -179,7 +179,7 @@ class ConcertRecording(models.Model):
     track = models.IntegerField()
 
     def __unicode__(self):
-        return "%s: %s from %s" % (self.track, self.recording, self.concert)
+        return u"%s: %s from %s" % (self.track, self.recording, self.concert)
 
 class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
@@ -415,7 +415,7 @@ class WorkRaaga(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s, seq %d %s" % (self.work, self.sequence, self.raaga)
+        return u"%s, seq %d %s" % (self.work, self.sequence, self.raaga)
 
 class WorkTaala(models.Model):
     work = models.ForeignKey('Work')
@@ -423,7 +423,7 @@ class WorkTaala(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s, seq %d %s" % (self.work, self.sequence, self.taala)
+        return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 class Recording(CarnaticStyle, data.models.Recording):
     work = models.ForeignKey('Work', blank=True, null=True)
@@ -528,7 +528,7 @@ class InstrumentConcertPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s playing %s in %s" % (self.performer, self.instrument, self.concert)
+        return u"%s playing %s in %s" % (self.performer, self.instrument, self.concert)
 
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)

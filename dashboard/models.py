@@ -85,7 +85,7 @@ class CompletenessChecker(models.Model):
     type = models.CharField(max_length=5, choices=TYPE_CHOICE)
 
     def __unicode__(self):
-        return "%s (%s / %s)" % (self.name, self.module, self.type)
+        return u"%s (%s / %s)" % (self.name, self.module, self.type)
 
     def get_instance(self):
         """ Import the class referred to by 'module' and return
@@ -111,7 +111,7 @@ class CollectionState(models.Model):
         return dict(self.STATE_CHOICE)[self.state]
 
     def __unicode__(self):
-        return "%s (%s)" % (self.state_name, self.state_date)
+        return u"%s (%s)" % (self.state_name, self.state_date)
 
 class Collection(models.Model):
 
@@ -128,7 +128,7 @@ class Collection(models.Model):
     do_import = models.BooleanField(default=True)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.name, self.id)
+        return u"%s (%s)" % (self.name, self.id)
 
     def state_colour(self):
         curr = self.get_current_state()
@@ -196,7 +196,7 @@ class CollectionLogMessage(models.Model):
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
     def __unicode__(self):
-        return "%s - %s" % (self.collection.name, self.datetime)
+        return u"%s - %s" % (self.collection.name, self.datetime)
 
 class MusicbrainzReleaseState(models.Model):
     """ Indicates the procesing state of a release. A release has finished
@@ -216,7 +216,7 @@ class MusicbrainzReleaseState(models.Model):
         return dict(self.STATE_CHOICE)[self.state]
 
     def __unicode__(self):
-        return "%s (%s)" % (self.state_name, self.state_date)
+        return u"%s (%s)" % (self.state_name, self.state_date)
 
 class MusicbrainzRelease(models.Model):
     class Meta:
@@ -232,7 +232,7 @@ class MusicbrainzRelease(models.Model):
     ignore = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.title, self.id)
+        return u"%s (%s)" % (self.title, self.id)
 
     def all_files(self):
         ret = []
@@ -304,7 +304,7 @@ class MusicbrainzReleaseLogMessage(models.Model):
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
     def __unicode__(self):
-        return "%s: %s" % (self.datetime, self.message)
+        return u"%s: %s" % (self.datetime, self.message)
 
 class CollectionDirectory(models.Model):
     """ A directory inside the file tree for a collection that has releases
@@ -320,7 +320,7 @@ class CollectionDirectory(models.Model):
         return os.path.join(self.collection.root_directory, self.path)
     
     def __unicode__(self):
-        return "From collection %s, release %s, path on disk %s" % (self.collection,
+        return u"From collection %s, release %s, path on disk %s" % (self.collection,
                 self.musicbrainzrelease, self.path)
 
     def short_path(self):
@@ -350,7 +350,7 @@ class CollectionDirectoryLogMessage(models.Model):
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
     def __unicode__(self):
-        return "%s: %s" % (self.datetime, self.message)
+        return u"%s: %s" % (self.datetime, self.message)
 
 class CollectionFileState(models.Model):
     """ Indicates the processing state of a single file.
@@ -370,7 +370,7 @@ class CollectionFileState(models.Model):
         return dict(self.STATE_CHOICE)[self.state]
 
     def __unicode__(self):
-        return "%s (%s)" % (self.state_name, self.state_date)
+        return u"%s (%s)" % (self.state_name, self.state_date)
 
 class CollectionFile(models.Model):
     """ A single audio file in the collection. A file is part of a
@@ -397,7 +397,7 @@ class CollectionFile(models.Model):
         return os.path.join(self.directory.path, self.name)
 
     def __unicode__(self):
-        return "%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
+        return u"%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
 
     def update_state(self, state):
         fs = CollectionFileState.objects.create(collectionfile=self, state=state)
@@ -467,7 +467,7 @@ class CollectionFileResult(models.Model):
     data = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s testing %s: %s" % (self.checker.name, self.collectionfile.name, self.result)
+        return u"%s testing %s: %s" % (self.checker.name, self.collectionfile.name, self.result)
 
     def get_result_icon(self):
         icons = {"g": "tick.png",
@@ -499,7 +499,7 @@ class MusicbrainzReleaseResult(models.Model):
     data = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s testing %s: %s" % (self.checker.name, self.musicbrainzrelease.title, self.result)
+        return u"%s testing %s: %s" % (self.checker.name, self.musicbrainzrelease.title, self.result)
 
     def get_result_icon(self):
         icons = {"g": "tick.png",

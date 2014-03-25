@@ -36,9 +36,9 @@ class Collection(models.Model):
     root_directory = models.CharField(max_length=200)
 
     def __unicode__(self):
-        desc = "%s (%s)" % (self.name, self.slug)
+        desc = u"%s (%s)" % (self.name, self.slug)
         if self.description:
-            desc += " - %s" % (self.description, )
+            desc += u" - %s" % (self.description, )
         return desc
 
     def save(self, *args, **kwargs):
@@ -72,11 +72,11 @@ class Document(models.Model):
         return reverse("ds-document-external", args=[self.external_identifier])
 
     def __unicode__(self):
-        ret = ""
+        ret = u""
         if self.title:
-            ret += "%s" % self.title
+            ret += u"%s" % self.title
         if self.external_identifier:
-            ret += " (%s)" % self.external_identifier
+            ret += u" (%s)" % self.external_identifier
         return ret
 
     def derivedmap(self):
@@ -154,7 +154,7 @@ class SourceFile(models.Model):
         return "audio/mpeg"
 
     def __unicode__(self):
-        return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
+        return u"%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
 class DerivedFilePart(models.Model):
     derivedfile = models.ForeignKey("DerivedFile", related_name='parts')
@@ -180,9 +180,9 @@ class DerivedFilePart(models.Model):
         return url
 
     def __unicode__(self):
-        ret = "%s: path %s" % (self.derivedfile, self.path)
+        ret = u"%s: path %s" % (self.derivedfile, self.path)
         if self.part_order:
-            ret = "%s - part %s" % (ret, self.part_order)
+            ret = u"%s - part %s" % (ret, self.part_order)
         return ret
 
 class DerivedFile(models.Model):
@@ -227,7 +227,7 @@ class DerivedFile(models.Model):
         return url
 
     def __unicode__(self):
-        return "%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
+        return u"%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
 
 
 # Essentia management stuff
@@ -238,7 +238,7 @@ class EssentiaVersion(models.Model):
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
     def __unicode__(self):
-        return "Essentia %s (%s)" % (self.version, self.sha1)
+        return u"Essentia %s (%s)" % (self.version, self.sha1)
 
 class Module(models.Model):
     name = models.CharField(max_length=200)
@@ -250,7 +250,7 @@ class Module(models.Model):
     collections = models.ManyToManyField(Collection)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.name, self.module)
+        return u"%s (%s)" % (self.name, self.module)
 
     def processed_files(self):
         latest = self.get_latest_version()
@@ -295,7 +295,7 @@ class ModuleVersion(models.Model):
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
     def __unicode__(self):
-        return "v%s for %s" % (self.version, self.module)
+        return u"v%s for %s" % (self.version, self.module)
 
 class DocumentLogMessage(models.Model):
     """ A log message about a document. Normally the log message refers to ModuleVersion

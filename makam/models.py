@@ -55,7 +55,7 @@ class ReleaseRecording(models.Model):
     track = models.IntegerField()
 
     def __unicode__(self):
-        return "%s: %s from %s" % (self.track, self.recording, self.release)
+        return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 class RecordingWork(models.Model):
     work = models.ForeignKey("Work")

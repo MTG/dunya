@@ -30,8 +30,9 @@ class UserProfile(models.Model):
     birthday = models.DateField(null=True, blank=True)
     avatar = models.ImageField(upload_to='gallery', blank=True)
     affiliation = models.CharField(max_length=200, blank=True)
+
     def __unicode__(self):
-        return unicode(self.user)
+        return self.user
 
 def user_post_save(sender, instance, created, **kwargs):
     """Create a user profile when a new user account is created"""
@@ -65,6 +66,7 @@ class Annotation(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)
     class Meta:
         unique_together = (("user", "tag", "entity_id", "entity_type"),)
+
     def __unicode__(self):
         return u"('%s','%s','%s')" % (self.entity_type, self.tag , self.user)
     
@@ -74,6 +76,7 @@ class UserFollowsUser(models.Model):
     timestamp = models.DateTimeField('date follow')
     class Meta:
         unique_together = (("user_follower", "user_followed"),)
+
     def __unicode__(self):
         return u"('%s','%s','%s')" % (self.user_follower.username, self.user_followed.username, self.timestamp)   
 
