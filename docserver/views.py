@@ -16,7 +16,8 @@
 
 import json, os
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.urlresolvers import reverse
@@ -95,9 +96,16 @@ def download_external(request, uuid, ftype):
         response = HttpResponse(contents, content_type=ctype)
         response['Content-Length'] = len(contents)
         return response
-    except util.NoFileException:
-        # TODO: Send a message with the 404 too, giving the reason
-        raise Http404
+    except util.TooManyFilesException as e:
+        r = ""
+        if e.args:
+            r = e.args[0]
+        return HttpResponseBadRequest(e)
+    except util.NoFileException as e:
+        r = ""
+        if e.args:
+            r = e.args[0]
+        return HttpResponseNotFound(e)
 
 #### Essentia manager
 

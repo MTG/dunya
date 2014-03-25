@@ -25,6 +25,9 @@ from django.conf import settings
 class NoFileException(Exception):
     pass
 
+class TooManyFilesException(Exception):
+    pass
+
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
     mp3type = models.SourceFileType.objects.get_by_extension("mp3")
@@ -132,7 +135,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
                 # We found some files, break
                 break
         if dfs.count() > 1:
-            raise NoFileException("Found more than 1 outputname per this modver without a subtype set")
+            raise TooManyFilesException("Found more than 1 outputname per this modver without a subtype set")
         elif dfs.count() == 1:
             # Select the part.
             # If the file has many parts and ?part is not set then it's an error
@@ -142,7 +145,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
             else:
                 parts = parts.all()
             if parts.count() > 1:
-                raise NoFileException("Found more than 1 part without part set")
+                raise TooManyFilesException("Found more than 1 part without part set")
             elif parts.count() == 1:
                 return parts[0]
             else:
