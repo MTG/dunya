@@ -140,9 +140,17 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         if dfs.count() > 1:
             raise TooManyFilesException("Found more than 1 outputname per this modver without a subtype set")
         elif dfs.count() == 1:
+            # Double-check if subtypes match. This is to catch the case where we
+            # have only one subtype for a type but we don't specify it in the
+            # query. By 'luck' we will get the right subtype, but this doesn't
+            # preclude the default subtype changing in a future version.
+            # Explicit is better than implicit
+            derived = dfs.get()
+            if derived.outputname != subtype:
+                raise NoFileException("Matched subtype (%s) doesn't match given (%s)" % (derived.outputname, subtype))
             # Select the part.
             # If the file has many parts and ?part is not set then it's an error
-            parts = dfs[0].parts
+            parts = derived.parts
             if part:
                 parts = parts.filter(part_order=int(part))
             else:
