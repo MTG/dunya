@@ -155,7 +155,10 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
                 raise NoFileException("No parts on this file")
         else:
             # If no files, or none with this version
-            raise NoFileException("No derived files with this type/subtype")
+            msg = "No derived files with this type/subtype"
+            if version:
+                msg =+ " or version"
+            raise NoFileException(msg)
     else:
         raise NoFileException("No known versions for this module")
 
