@@ -106,7 +106,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
     try:
         doc = models.Document.objects.get(external_identifier=documentid)
     except models.Document.DoesNotExist:
-        raise NoFileException
+        raise NoFileException("Cannot find a document with id %s" % documentid)
     try:
         sourcetype = models.SourceFileType.objects.get_by_extension(slug)
     except models.SourceFileType.DoesNotExist:
@@ -118,7 +118,10 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         else:
             return files[0]
 
-    module = models.Module.objects.get(slug=slug)
+    try:
+        module = models.Module.objects.get(slug=slug)
+    except models.Module.DoesNotExist:
+        raise NoFileException("Cannot find a module with type %s" % slug)
     moduleversions = module.moduleversion_set
     if version:
         moduleversions = moduleversions.filter(version=version)
