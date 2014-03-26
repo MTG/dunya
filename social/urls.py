@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^user/(\w+)/$', views.user_page, name='social-auth-user'),
     
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
-    url(r'^delete/$', views.delete_account, name='social-delete'),
+    url(r'^delete/$', views.delete_account, name='social-delete-account'),
     url(r'^login/$', 'django.contrib.auth.views.login', name='social-auth-login'),
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
     url(r'^register/$', views.register_page, name='social-auth-register'),
