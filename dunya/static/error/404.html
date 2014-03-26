@@ -11,7 +11,7 @@
         <link href='/static/carnatic/css/font.css' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="/static/carnatic/css/main.css" />
         <link rel="stylesheet" type="text/css" href="/static/carnatic/css/pages.css" />
-        <link rel="stylesheet" type="text/css" href="/static/carnatic/css/ui-lightness/jquery-ui.min.css" />
+        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css">
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -23,8 +23,8 @@
       ga('send', 'pageview');
 
     </script>
-        <script src="/static/carnatic/js/vendor/jquery-1.10.2.min.js"></script>
-        <script src="/static/carnatic/js/vendor/jquery-ui-1.10.3.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
         <script src="/static/carnatic/js/main.js"></script>
         <script src="/static/carnatic/js/plugins.js"></script>
@@ -45,7 +45,12 @@
     <body>
 
 		<div id="aboutdialog" title="Dunya">
-            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories. For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a></p>
+            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the
+            point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories.<br>
+            Dunya has been developed to present the results of our research to the music and technology communities, with a focus on computational output.
+            For this reason we endeavour to present accurate metadata but make no guarantees as to its correctness.<br>
+            For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a> or email us at mtg@upf.edu<br>
+            Use of Dunya is governed by our <a href="{% url 'terms' %}">Terms and Conditions</a></p>
 	    </div>
 
     	<!-- //////  HEADER BLOCK  ////// -->
