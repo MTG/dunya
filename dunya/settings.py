@@ -132,6 +132,14 @@ INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 # Celery
 CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 
+class DunyaRouter(object):
+    def route_for_task(self, task, *args, **kwargs):
+        if task.startswith("dashboard."):
+            return {"queue": "import"}
+        return {"queue": "celery"}
+
+CELERY_ROUTES = (DunyaRouter(), )
+
 # Django rest framework
 REST_FRAMEWORK = {
     'PAGINATE_BY': 100, # Default
