@@ -339,6 +339,7 @@ class Taala(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     transliteration = models.CharField(max_length=50)
+    num_aksharas = models.IntegerField(null=True)
 
     objects = managers.FuzzySearchManager()
 
