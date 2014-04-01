@@ -35,3 +35,9 @@ class FuzzySearchManager(models.Manager):
                     return i
             raise Exception("Whoops")
 
+    def fuzzy_with_alias(self, name):
+        try:
+            return self.fuzzy(alias)
+        except self.model.DoesNotExist:
+            raise
+

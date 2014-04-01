@@ -24,9 +24,14 @@ import data
 
 from dashboard import external_data
 
+RELEASE_TYPE_WIKIPEDIA = "29651736-fa6d-48e4-aadc-a557c6add1cb"
+MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"
+RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
+RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
+
 class ReleaseImporter(object):
     def __init__(self, overwrite=False):
-        """Create a carnatic importer.
+        """Create a release importer.
         Arguments:
           overwrite: If we replace everything in the database with new
                      data even if it exists.
@@ -36,6 +41,14 @@ class ReleaseImporter(object):
 
         self.imported_artists = []
         self.imported_releases = []
+
+    def _get_year_from_date(self, date):
+        if date:
+            date = date[:4]
+            date = int(date)
+        else:
+            date = None
+        return date
 
     def make_mb_source(self, url):
         sn = data.models.SourceName.objects.get(name="MusicBrainz")
@@ -51,49 +64,9 @@ class ReleaseImporter(object):
         if not created:
             source.last_updated = django.utils.timezone.now()
             source.save()
+        print "wookie source", source
         return source
 
-
-    def _create_release_object(self, mbrelease):
-        concert, created = carnatic.models.Concert.objects.get_or_create(
-                mbid=mbid, defaults={"title": rel["title"]})
-        if not created:
-            if releaseid in self.imported_releases:
-                print "Release already updated in this import. Not doing it again"
-                return concert
-        if created or self.overwrite:
-            year = rel.get("date", "")[:4]
-            if year:
-                year = int(year)
-            else:
-                year = None
-            concert.title = rel["title"]
-            concert.year = year
-            credit_phrase = rel.get("artist-credit-phrase")
-            concert.artistcredit = credit_phrase
-            source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbid)
-            concert.source = source
-            concert.save()
-
-        if not created and self.overwrite:
-            # If it already exists and we're doing an overwrite
-            concert.artists.clear()
-        for a in rel["artist-credit"]:
-            if isinstance(a, dict):
-                artistid = a["artist"]["id"]
-                artist = self.add_and_get_artist(artistid)
-                logger.info("  artist: %s" % artist)
-                if not concert.artists.filter(pk=artist.pk).exists():
-                    logger.info("  - adding to artist list")
-                    concert.artists.add(artist)
-
-        return concert
-
-    def _create_release_credits(self, release, credits):
-        pass
-
-    def _create_recording(self, release, recording):
-        pass
 
     def import_release(self, releaseid, directories):
         rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels"])
@@ -107,85 +80,133 @@ class ReleaseImporter(object):
             return
         release = self._create_release_object(rel)
 
+        # Create release primary artists
+        if self.overwrite:
+            # If it already exists and we're doing an overwrite
+            release.artists.clear()
+        for a in rel["artist-credit"]:
+            if isinstance(a, dict):
+                artistid = a["artist"]["id"]
+                artist = self.add_and_get_artist(artistid)
+                logger.info("  artist: %s" % artist)
+                if not release.artists.filter(pk=artist.pk).exists():
+                    logger.info("  - adding to artist list")
+                    release.artists.add(artist)
+
         recordings = []
         for medium in rel["medium-list"]:
             for track in medium["track-list"]:
                 recordings.append(track["recording"]["id"])
-
-        if not created and self.overwrite:
-            concert.tracks.clear()
+        print recordings
+        if self.overwrite:
+            release.tracks.clear()
         trackorder = 1
-        for recid in recordings:
-            recording = self.add_and_get_recording(recid)
-            if not concert.tracks.filter(pk=recording.pk).exists():
-                carnatic.models.ConcertRecording.objects.create(
-                        concert=concert, recording=recording, track=trackorder)
-            trackorder += 1
+        #for recid in recordings:
+        #    self._create_recording(recid, trackorder)
+        #    trackorder += 1
 
-        if not created and self.overwrite:
-            concert.performance.clear()
-        for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
-            artistid, instrument, is_lead = perf
-            self.add_release_performance(releaseid, artistid, instrument, is_lead)
+        # if not created and self.overwrite:
+        #     release.performance.clear()
 
-        external_data.import_concert_image(concert, directories, self.overwrite)
+        # for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
+        #     artistid, instrument, is_lead = perf
+        #     self.add_release_performance(releaseid, artistid, instrument, is_lead)
 
-    def _add_and_get_artist_composer(self, ArtistClass, artistid, addgroups=True):
-        """
-        arguments: ArtistClass: models.Artist or models.Composer
-        """
-        a = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels"])["artist"]
-        artist, created = ArtistClass.objects.get_or_create(mbid=artistid,
-                defaults={"name": a["name"]})
+        # external_data.import_concert_image(concert, directories, self.overwrite)
+        return release
 
-        if not created:
-            if artistid in self.imported_artists:
-                print "Artist already updated in this import. Not doing it again"
-                return artist
+
+    def _create_release_object(self, mbrelease):
+        release, created = self._ReleaseClass.objects.get_or_create(
+                mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
+        if created or self.overwrite:
+            release.title = mbrelease["title"]
+            year = self._get_year_from_date(mbrelease.get("date"))
+            release.year = year
+            credit_phrase = mbrelease.get("artist-credit-phrase")
+            release.artistcredit = credit_phrase
+            source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbrelease["id"])
+            release.source = source
+            release.save()
+
+        return release
+
+    def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, composer=False):
+        artistid = mbartist["id"]
+        if artistid in self.imported_artists:
+            print "Artist already updated in this import. Not doing it again"
+            return artist
+
+        artist, created = ArtistKlass.objects.get_or_create(mbid=artistid,
+            defaults={"name": mbartist["name"]})
+
         if created or self.overwrite:
             logger.info("  adding artist/composer %s" % (artistid, ))
             source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
             artist.source = source
-            artist.name = a["name"]
-            if a.get("type") == "Person":
+            artist.name = mbartist["name"]
+            if mbartist.get("type") == "Person":
                 artist.artist_type = "P"
-            elif a.get("type") == "Group":
+            elif mbartist.get("type") == "Group":
                 artist.artist_type = "G"
-            if a.get("gender") == "Male":
+            if mbartist.get("gender") == "Male":
                 artist.gender = "M"
-            elif a.get("gender") == "Female":
+            elif mbartist.get("gender") == "Female":
                 artist.gender = "F"
-            dates = a.get("life-span")
+            dates = mbartist.get("life-span")
             if dates:
                 artist.begin = dates.get("begin")
                 artist.end = dates.get("end")
             artist.save()
 
-            # TODO: Annoying hack to only work on artists
-            if ArtistClass == carnatic.models.Artist and addgroups:
-                if self.overwrite:
-                    artist.group_members.clear()
-                for member in a.get("artist-relation-list", []):
-                    if "member" in member["type"] and member.get("direction") == "backward":
-                        memberartist = self._add_and_get_artist_composer(ArtistClass, member["target"])
-                        artist.group_members.add(memberartist)
-
             # add wikipedia references if they exist
-            for rel in a.get("url-relation-list", []):
-                if rel["type"] == ["wikipedia"]:
-                    source = self.make_wikipedia_source(rel["url"])
+            # TODO: clear references
+            for rel in mbartist.get("url-relation-list", []):
+                if rel["type-id"] == RELEASE_TYPE_WIKIPEDIA:
+                    source = self.make_wikipedia_source(rel["target"])
                     if not artist.references.filter(pk=source.pk).exists():
+                        print "source not exist"
                         artist.references.add(source)
+                    else:
+                        print "source exists"
 
-            external_data.import_artist_bio(artist, self.overwrite)
+            # TODO: Clear aliases
+            for alias in mbartist.get("alias-list", []):
+                a = alias["alias"]
+                primary = alias.get("primary")
+                locale = alias.get("locale")
+                args = {"alias": a}
+                if composer:
+                    args["composer"] = artist
+                else:
+                    args["artist"] = artist
+                aob, created = AliasKlass.objects.get_or_create(**args)
+                if primary:
+                    aob.primary = True
+                if locale:
+                    aob.locale = locale
+                aob.save()
+
+            # external_data.import_artist_bio(artist, self.overwrite)
         return artist
 
     def add_and_get_artist(self, artistid):
-        return self._add_and_get_artist_composer(carnatic.models.Artist, artistid)
+        mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
+        artist = self._create_artist_object(self._ArtistClass, mbartist)
+
+        if self.overwrite:
+            artist.group_members.clear()
+        if mbartist.get("type") == "Group":
+            for member in mbartist.get("artist-relation-list", []):
+                if member["type-id"] == MEMBER_OF_GROUP and member.get("direction") == "backward":
+                    memberartist = self.add_and_get_artist(member["target"])
+                    if not artist.group_members.filter(mbid=memberartist.mbid).exists():
+                        artist.group_members.add(memberartist)
+        return artist
 
     def add_and_get_composer(self, artistid):
-        return self._add_and_get_artist_composer(carnatic.models.Composer, artistid)
-
+        mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
+        return self._create_artist_object(self._ComposerClass, self._ComposerAliasClass, mbartist, composer=True)
 
     def _get_artist_performances(self, artistrelationlist):
         performances = []
@@ -208,38 +229,38 @@ class ReleaseImporter(object):
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
         mbrec = mbrec["recording"]
 
-        mbwork = None
-        for work in mbrec.get("work-relation-list", []):
-            if work["type"] == "performance":
-                mbwork = self.add_and_get_work(work["target"], raagas, taalas)
-        rec.work = mbwork
-
-        tags = mbrec.get("tag-list", [])
-
-        _create_recording_and_work(mbrec, work, tags)
-
-    def _create_recording_and_works(self, recording, works, tags):
         rec, created = carnatic.models.Recording.objects.get_or_create(mbid=recordingid)
-
         if created or self.overwrite:
             logger.info("  adding recording %s" % (recordingid,))
-            raagas = self._get_raaga(mbrec.get("tag-list", []))
-            taalas = self._get_taala(mbrec.get("tag-list", []))
             source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
             rec.source = source
             rec.length = mbrec.get("length")
             rec.title = mbrec["title"]
             rec.save()
 
-        if not created and self.overwrite:
-            rec.performance.clear()
-        for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
-            artistid, instrument, is_lead = perf
-            self.add_recording_performance(recordingid, artistid, instrument, is_lead)
+            works = []
+            for work in mbrec.get("work-relation-list", []):
+                if work["type"] == "performance":
+                    w = self.add_and_get_work(work["target"])
+                    works.append(w)
+
+            tags = mbrec.get("tag-list", [])
+            # Join recording and works in a subclass because some models
+            # have 1 work per recording and others have many
+            self._join_recording_and_works(recording, works)
+
+            # Sometime we attach tags to works, sometimes to recordings
+            self._apply_tags(recording, works, tags)
+
+        #  if not created and self.overwrite:
+        #      rec.performance.clear()
+        #  for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
+        #      artistid, instrument, is_lead = perf
+        #      self.add_recording_performance(recordingid, artistid, instrument, is_lead)
 
         return rec
 
-    def add_and_get_work(self, workid, raagas, taalas):
+    def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
         work, created = carnatic.models.Work.objects.get_or_create(mbid=workid,
                 defaults={"title": mbwork["title"]})
@@ -250,33 +271,20 @@ class ReleaseImporter(object):
             work.title = mbwork["title"]
             work.save()
 
-            if self.overwrite:
-                work.raaga.clear()
-                work.taala.clear()
-                work.composer = None
+        # TODO: Work attributes
 
-            for seq, rname in raagas:
-                r = self.get_raaga(rname)
-                if r:
-                    carnatic.models.WorkRaaga.objects.create(work=work, raaga=r, sequence=seq)
-                else:
-                    logger.warn("Cannot find raaga: %s" % rname)
-
-            for seq, tname in taalas:
-                t = self.get_taala(tname)
-                if t:
-                    carnatic.models.WorkTaala.objects.create(work=work, taala=t, sequence=seq)
-                else:
-                    logger.warn("Cannot find taala: %s" % tname)
-
-            for artist in mbwork.get("artist-relation-list", []):
-                if artist["type"] == "composer":
-                    composer = self.add_and_get_composer(artist["target"])
-                    work.composer = composer
-                    work.save()
-                elif artist["type"] == "lyricist":
-                    # TODO: Lyricist
-                    pass
+        if self.overwrite:
+            work.composers.clear()
+            work.lyricists.clear()
+        for artist in mbwork.get("artist-relation-list", []):
+            if artist["type-id"] == RELATION_COMPOSER:
+                composer = self.add_and_get_composer(artist["target"])
+                if not work.composers.filter(pk=composer.pk).exists():
+                    work.composers.add(composer)
+            elif artist["type-id"] == RELATION_LYRICIST:
+                lyricist = self.add_and_get_composer(artist["target"])
+                if not work.lyricists.filter(pk=lyricist.pk).exists():
+                    work.lyricists.add(lyricist)
 
         return work
 
@@ -300,13 +308,4 @@ class ReleaseImporter(object):
             perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
-    def get_instrument(self, instname):
-        try:
-            return carnatic.models.Instrument.objects.fuzzy(name=instname)
-        except carnatic.models.Instrument.DoesNotExist:
-            try:
-                alias = carnatic.models.InstrumentAlias.objects.fuzzy(name=instname)
-                return alias.instrument
-            except carnatic.models.InstrumentAlias.DoesNotExist:
-                return None
 

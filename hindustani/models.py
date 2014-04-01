@@ -41,6 +41,9 @@ class Instrument(HindustaniStyle, data.models.Instrument):
 class Artist(HindustaniStyle, data.models.Artist):
     pass
 
+class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
+    pass
+
 class Release(HindustaniStyle, data.models.Release):
     pass
 
@@ -71,6 +74,7 @@ class Recording(HindustaniStyle, data.models.Recording):
     taals = models.ManyToManyField("Taal", through="RecordingTaal")
     sections = models.ManyToManyField("Section", through="RecordingSection")
     forms = models.ManyToManyField("Form", through="RecordingForm")
+    works = models.ManyToManyField("Work", through="WorkTime")
 
 class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
     pass
@@ -78,11 +82,24 @@ class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
 class Composer(HindustaniStyle, data.models.Composer):
     pass
 
+class ComposerAlias(HindustaniStyle, data.models.ComposerAlias):
+    pass
+
 class Lyrics(models.Model):
     lyrics = models.CharField(max_length=50)
 
-class Work(models.Model):
+class Work(HindustaniStyle, data.models.Work):
     lyrics = models.ForeignKey("Lyrics")
+
+class WorkTime(models.Model):
+    # The time in a recording that a work occurs (recordings can consist of
+    # many works)
+    recording = models.ForeignKey(Recording)
+    work = models.ForeignKey(Work)
+    # a worktime is always ordered ...
+    sequence = models.IntegerField()
+    # but its time is optional (we may not have it yet)
+    time = models.IntegerField(blank=True, null=True)
 
 class Section(models.Model):
     name = models.CharField(max_length=50)

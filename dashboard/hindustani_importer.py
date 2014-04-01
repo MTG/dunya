@@ -24,9 +24,49 @@ import data
 
 class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = hindustani.models.Artist
+    _ArtistAliasClass = hindustani.models.ArtistAlias
     _ComposerClass = hindustani.models.Composer
+    _ComposerAliasClass = hindustani.models.ComposerAlias
     _ReleaseClass = hindustani.models.Release
     _RecordingClass = hindustani.models.Recording
     _InstrumentClass = hindustani.models.Instrument
-    pass
+
+    def join_recording_and_works(self, recording, works):
+        # A hindustani recording can have many works
+        sequence = 1
+        for w in works:
+            hindustani.models.WorkTime.objects.create(work=w, recording=recording, sequence=sequence)
+            sequence += 1
+
+    def apply_tags(self, recording, work, tags):
+        raags = self._get_raag_tags(tags)
+        taals = self._get_taal_tags(tags)
+
+    def _get_raag_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compmusic.tags.has_raag(name):
+                ret.append( compmusic.tags.parse_raag(name) )
+        return ret
+
+    def _get_taal_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compmusic.tags.has_taal(name):
+                ret.append( compmusic.tags.parse_raaga(name) )
+        return ret
+
+    def _get_raag(self, rname):
+        try:
+            return hindustani.models.Taal.objects.get(transliteration=tname)
+        except hindustani.models.Taal.DoesNotExist:
+            return None
+
+    def _get_taal(self, tname):
+        try:
+            return hindustani.models.Raag.objects.get(transliteration=tname)
+        except hindustani.models.Raag.DoesNotExist:
+            return None
 

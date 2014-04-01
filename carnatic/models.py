@@ -57,7 +57,6 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     gurus = models.ManyToManyField("Artist", related_name="students")
-    hidden = models.BooleanField(default=False)
 
     def instruments(self):
         insts = []
@@ -150,6 +149,9 @@ class Artist(CarnaticStyle, data.models.Artist):
                "data": [filters.School().object, filters.Region().object, filters.Generation().object]
               }
         return ret
+
+class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
+    pass
 
 class Language(CarnaticStyle, models.Model):
     name = models.CharField(max_length=50)
@@ -539,3 +541,5 @@ class Composer(CarnaticStyle, data.models.Composer):
     def taalas(self):
         return Taala.objects.filter(work__composer=self).all()
 
+class ComposerAlias(CarnaticStyle, data.models.ComposerAlias):
+    pass
