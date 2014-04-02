@@ -175,6 +175,7 @@ class Sabbah(CarnaticStyle, models.Model):
     city = models.CharField(max_length=100)
 
 class ConcertRecording(models.Model):
+    """ Links a concert to a recording with an implicit ordering """
     concert = models.ForeignKey('Concert')
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n

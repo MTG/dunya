@@ -31,6 +31,12 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _RecordingClass = hindustani.models.Recording
     _InstrumentClass = hindustani.models.Instrument
 
+
+    def _link_release_recording(self, release, recording, trackorder):
+        if not release.tracks.filter(pk=recording.pk).exists():
+            hindustani.models.ReleaseRecording.objects.create(
+                    release=release, recording=recording, track=trackorder)
+
     def join_recording_and_works(self, recording, works):
         # A hindustani recording can have many works
         sequence = 1
@@ -69,4 +75,29 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             return hindustani.models.Raag.objects.get(transliteration=tname)
         except hindustani.models.Raag.DoesNotExist:
             return None
+
+    def get_instrument(self, instname):
+        try:
+            return hindustani.models.Instrument.objects.get(name=instname)
+        except hindustani.models.Instrument.DoesNotExist:
+            try:
+                alias = hindustani.models.InstrumentAlias.objects.get(name=instname)
+                return alias.instrument
+            except hindustani.models.InstrumentAlias.DoesNotExist:
+                return None
+
+    def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+        logger.info("  Adding recording performance...")
+        artist = self.add_and_get_artist(artistid)
+        instrument = self.get_instrument(instrument)
+        if instrument:
+            recording = hindustani.models.Recording.objects.get(mbid=recordingid)
+            perf = hindustani.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf.save()
+
+    def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
+        logger.info("  Adding concert performance to all tracks...")
+        release = hindustani.models.Release.objects.get(mbid=releaseid)
+        for t in release.tracks:
+            self._add_recording_performance(t.mbid, artistid, instrument, is_lead)
 

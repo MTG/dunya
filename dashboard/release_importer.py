@@ -64,7 +64,6 @@ class ReleaseImporter(object):
         if not created:
             source.last_updated = django.utils.timezone.now()
             source.save()
-        print "wookie source", source
         return source
 
 
@@ -101,19 +100,22 @@ class ReleaseImporter(object):
         if self.overwrite:
             release.tracks.clear()
         trackorder = 1
-        #for recid in recordings:
-        #    self._create_recording(recid, trackorder)
-        #    trackorder += 1
+        for recid in recordings:
+            recob = self.add_and_get_recording(recid)
+            self._link_release_recording(release, recob, trackorder)
+            trackorder += 1
 
-        # if not created and self.overwrite:
-        #     release.performance.clear()
-
-        # for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
-        #     artistid, instrument, is_lead = perf
-        #     self.add_release_performance(releaseid, artistid, instrument, is_lead)
+        if self.overwrite:
+            self._clear_release_performances(release)
+        for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
+            artistid, instrument, is_lead = perf
+            self._add_release_performance(release.mbid, artistid, instrument, is_lead)
 
         # external_data.import_concert_image(concert, directories, self.overwrite)
         return release
+
+    def _clear_release_performances(self, release):
+        pass
 
 
     def _create_release_object(self, mbrelease):
@@ -160,17 +162,25 @@ class ReleaseImporter(object):
             artist.save()
 
             # add wikipedia references if they exist
-            # TODO: clear references
+            if self.overwrite:
+                artist.references.clear()
             for rel in mbartist.get("url-relation-list", []):
                 if rel["type-id"] == RELEASE_TYPE_WIKIPEDIA:
                     source = self.make_wikipedia_source(rel["target"])
                     if not artist.references.filter(pk=source.pk).exists():
-                        print "source not exist"
                         artist.references.add(source)
-                    else:
-                        print "source exists"
 
-            # TODO: Clear aliases
+            if self.overwrite:
+                # We can't 'clear' an alias list from artist because an alias
+                # object requires an artist.
+                # TODO Deleting these each time we overwrite means we churn the
+                # alias ids. This may or may not be a good idea
+                args = {}
+                if composer:
+                    args["composer"] = artist
+                else:
+                    args["artist"] = artist
+                AliasKlass.objects.filter(**args).delete()
             for alias in mbartist.get("alias-list", []):
                 a = alias["alias"]
                 primary = alias.get("primary")
@@ -192,7 +202,7 @@ class ReleaseImporter(object):
 
     def add_and_get_artist(self, artistid):
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
-        artist = self._create_artist_object(self._ArtistClass, mbartist)
+        artist = self._create_artist_object(self._ArtistClass, self._ArtistAliasClass, mbartist)
 
         if self.overwrite:
             artist.group_members.clear()
@@ -247,16 +257,16 @@ class ReleaseImporter(object):
             tags = mbrec.get("tag-list", [])
             # Join recording and works in a subclass because some models
             # have 1 work per recording and others have many
-            self._join_recording_and_works(recording, works)
+            self._join_recording_and_works(rec, works)
 
             # Sometime we attach tags to works, sometimes to recordings
-            self._apply_tags(recording, works, tags)
+            self._apply_tags(rec, works, tags)
 
-        #  if not created and self.overwrite:
-        #      rec.performance.clear()
-        #  for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
-        #      artistid, instrument, is_lead = perf
-        #      self.add_recording_performance(recordingid, artistid, instrument, is_lead)
+            if self.overwrite:
+                rec.performance.clear()
+            for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
+                artistid, instrument, is_lead = perf
+                self._add_recording_performance(recordingid, artistid, instrument, is_lead)
 
         return rec
 
@@ -288,24 +298,5 @@ class ReleaseImporter(object):
 
         return work
 
-
-    def add_recording_performance(self, recordingid, artistid, instrument, is_lead):
-        logger.info("  Adding recording performance...")
-        artist = self.add_and_get_artist(artistid)
-        instrument = self.get_instrument(instrument)
-        if instrument:
-            recording = carnatic.models.Recording.objects.get(mbid=recordingid)
-            perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
-            perf.save()
-
-    def add_release_performance(self, releaseid, artistid, instrument, is_lead):
-        # TODO: Can we de-duplicate this with the recording stuff above
-        logger.info("  Adding concert performance...")
-        artist = self.add_and_get_artist(artistid)
-        instrument = self.get_instrument(instrument)
-        if instrument:
-            concert = carnatic.models.Concert.objects.get(mbid=releaseid)
-            perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
-            perf.save()
 
 

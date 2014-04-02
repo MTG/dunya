@@ -18,9 +18,10 @@ import django.utils.timezone
 
 from dashboard.log import logger
 from dashboard import release_importer
-
 import carnatic
 import data
+
+import compmusic
 
 class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = carnatic.models.Artist
@@ -31,12 +32,10 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _RecordingClass = carnatic.models.Recording
     _InstrumentClass = carnatic.models.Instrument
 
-    def _create_recording(self, releaseid, recordingid):
-        recording = self.add_and_get_recording(recid)
+    def _link_release_recording(self, concert, recording, trackorder):
         if not concert.tracks.filter(pk=recording.pk).exists():
             carnatic.models.ConcertRecording.objects.create(
                     concert=concert, recording=recording, track=trackorder)
-        trackorder += 1
 
 
     def _join_recording_and_works(self, recording, works):
@@ -50,8 +49,8 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         if len(works):
             w = works[0]
             if self.overwrite:
-                work.raaga.clear()
-                work.taala.clear()
+                w.raaga.clear()
+                w.taala.clear()
 
             raagas = self._get_raaga_tags(tags)
             taalas = self._get_taala_tags(tags)
@@ -59,14 +58,14 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             for seq, rname in raagas:
                 r = self._get_raaga(rname)
                 if r:
-                    carnatic.models.WorkRaaga.objects.create(work=work, raaga=r, sequence=seq)
+                    carnatic.models.WorkRaaga.objects.create(work=w, raaga=r, sequence=seq)
                 else:
                     logger.warn("Cannot find raaga: %s" % rname)
 
             for seq, tname in taalas:
                 t = self._get_taala(tname)
                 if t:
-                    carnatic.models.WorkTaala.objects.create(work=work, taala=t, sequence=seq)
+                    carnatic.models.WorkTaala.objects.create(work=w, taala=t, sequence=seq)
                 else:
                     logger.warn("Cannot find taala: %s" % tname)
         else:
@@ -123,3 +122,25 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 return alias.instrument
             except carnatic.models.InstrumentAlias.DoesNotExist:
                 return None
+
+
+    def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+        logger.info("  Adding recording performance...")
+        artist = self.add_and_get_artist(artistid)
+        instrument = self.get_instrument(instrument)
+        if instrument:
+            recording = carnatic.models.Recording.objects.get(mbid=recordingid)
+            perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf.save()
+
+    def _clear_release_performances(self, release):
+        release.performance.clear()
+
+    def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
+        logger.info("  Adding concert performance...")
+        artist = self.add_and_get_artist(artistid)
+        instrument = self.get_instrument(instrument)
+        if instrument:
+            concert = carnatic.models.Concert.objects.get(mbid=releaseid)
+            perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
+            perf.save()

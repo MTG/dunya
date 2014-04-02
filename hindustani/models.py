@@ -44,8 +44,19 @@ class Artist(HindustaniStyle, data.models.Artist):
 class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
     pass
 
+class ReleaseRecording(models.Model):
+    """ Links a release to a recording with an implicit ordering """
+    release = models.ForeignKey('Release')
+    recording = models.ForeignKey('Recording')
+    # The number that the track comes in the concert. Numerical 1-n
+    track = models.IntegerField()
+
+    def __unicode__(self):
+        return u"%s: %s from %s" % (self.track, self.recording, self.release)
+
 class Release(HindustaniStyle, data.models.Release):
-    pass
+    tracks = models.ManyToManyField("Recording", through="ReleaseRecording")
+
 
 class RecordingRaag(models.Model):
     recording = models.ForeignKey("Recording")
