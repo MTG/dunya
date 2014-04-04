@@ -17,36 +17,59 @@
 from hindustani import models
 from django.contrib import admin
 
-class WorkRaagaInline(admin.TabularInline):
-    model = models.WorkRaaga
+class ArtistAliasInline(admin.TabularInline):
+    model = models.ArtistAlias
     extra = 1
 
-class WorkTaalaInline(admin.TabularInline):
-    model = models.WorkTaala
+class ComposerAliasInline(admin.TabularInline):
+    model = models.ComposerAlias
     extra = 1
 
 class ReleaseRecordingInline(admin.TabularInline):
     model = models.ReleaseRecording
     extra = 1
 
-class WorkAdmin(admin.ModelAdmin):
-    inlines = (WorkRaagaInline, WorkTaalaInline)
+class WorkTimeInline(admin.TabularInline):
+    model = models.WorkTime
+    extra = 1
+
+class RecordingRaagInline(admin.TabularInline):
+    model = models.RecordingRaag
+    extra = 1
+
+class RecordingTaalInline(admin.TabularInline):
+    model = models.RecordingTaal
+    extra = 1
+
+class RecordingSectionInline(admin.TabularInline):
+    model = models.RecordingSection
+    extra = 1
+
+class RecordingFormInline(admin.TabularInline):
+    model = models.RecordingForm
+    extra = 1
+
+class ArtistAdmin(admin.ModelAdmin):
+    inlines = (ArtistAliasInline, )
+
+class ComposerAdmin(admin.ModelAdmin):
+    inlines = (ComposerAliasInline, )
 
 class ReleaseAdmin(admin.ModelAdmin):
-    inlines = (ReleaseRecordingInline, )
+    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingFormInline, RecordingSectionInline, ReleaseRecordingInline, WorkTimeInline)
 
-admin.site.register(models.GeographicRegion)
-admin.site.register(models.Artist)
-admin.site.register(models.ArtistAlias)
-admin.site.register(models.Release, ReleaseAdmin)
-admin.site.register(models.Raaga)
-admin.site.register(models.Taala)
-admin.site.register(models.Work, WorkAdmin)
-admin.site.register(models.Recording)
 admin.site.register(models.Instrument)
 admin.site.register(models.InstrumentPerformance)
-admin.site.register(models.Composer)
-admin.site.register(models.ComposerAlias)
+admin.site.register(models.Artist, ArtistAdmin)
 
+admin.site.register(models.Release, ReleaseAdmin)
+admin.site.register(models.Section)
+admin.site.register(models.Raag)
+admin.site.register(models.Taal)
+admin.site.register(models.Laay)
+admin.site.register(models.Form)
+admin.site.register(models.Work)
+admin.site.register(models.Recording)
 
+admin.site.register(models.Composer, ComposerAdmin)
 

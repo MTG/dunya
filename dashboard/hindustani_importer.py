@@ -44,9 +44,37 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             hindustani.models.WorkTime.objects.create(work=w, recording=recording, sequence=sequence)
             sequence += 1
 
-    def apply_tags(self, recording, work, tags):
+    def _apply_tags(self, recording, work, tags):
         raags = self._get_raag_tags(tags)
         taals = self._get_taal_tags(tags)
+        laays = self._get_laay_tags(tags)
+        forms = self._get_form_tags(tags)
+
+        if len(raags) != len(taals):
+            print "Number of raagas and taalas doesn't match"
+        if len(taals) != len(laays):
+            print "number of taals and laays doesn't match"
+
+        for t, l in zip(taals, laays):
+            tpos = t[0]
+            tob = _get_taal(t[1])
+            lpos = l[0]
+            lob = _get_laay(l[1])
+            if tpos != lpos:
+                print "positions differ"
+            hindustani.models.RecordingTaal.objects.create(recording=recording, taal=tob, laay=lob, sequence=tpos)
+
+
+        for r in raags:
+            rpos = r[0]
+            rob = _get_raag(r[1])
+            hindustani.models.RecordingRaag.objects.create(recording=recording, raag=rob, sequence=rpos)
+
+        for f in forms:
+            fpos = f[0]
+            fob = _get_form(f[1])
+            hindustani.models.RecordingForm.objects.create(recording=recording, form=fob, sequence=fpos)
+            pass
 
     def _get_raag_tags(self, taglist):
         ret = []
@@ -61,7 +89,23 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_taal(name):
-                ret.append( compmusic.tags.parse_raaga(name) )
+                ret.append( compmusic.tags.parse_taal(name) )
+        return ret
+
+    def _get_laay_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compumusic.tags.has_laay(name):
+                ret.append( compmusic.tags.parse_laay(name) )
+        return ret
+
+    def _get_form_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compumusic.tags.has_form(name):
+                ret.append( compmusic.tags.parse_form(name) )
         return ret
 
     def _get_raag(self, rname):
@@ -74,6 +118,18 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         try:
             return hindustani.models.Raag.objects.get(transliteration=tname)
         except hindustani.models.Raag.DoesNotExist:
+            return None
+
+    def _get_form(self, tname):
+        try:
+            return hindustani.models.Form.objects.get(transliteration=tname)
+        except hindustani.models.Form.DoesNotExist:
+            return None
+
+    def _get_laay(self, tname):
+        try:
+            return hindustani.models.Laay.objects.get(transliteration=tname)
+        except hindustani.models.Laay.DoesNotExist:
             return None
 
     def get_instrument(self, instname):
