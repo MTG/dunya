@@ -143,6 +143,8 @@ CELERY_ROUTES = (DunyaRouter(), )
 # Sendfile
 import sendfile.backends.nginx
 SENDFILE_BACKEND = sendfile.backends.nginx
+SENDFILE_ROOT = '/'
+SENDFILE_URL = '/serve'
 
 # Django rest framework
 REST_FRAMEWORK = {

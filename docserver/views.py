@@ -91,7 +91,16 @@ def download_external(request, uuid, ftype):
         fname = filepart.fullpath
         mimetype = filepart.mimetype
 
-        return sendfile(request, fname, mimetype=mimetype)
+        ratelimit = 0
+        if ftype == "mp3":
+            ratelimit = 200
+
+        # TODO: We should ratelimit mp3 requests, but not any others,
+        # so we need a different path for nginx for these ones
+        response = sendfile(request, fname, mimetype=mimetype)
+        response['X-Accel-Limit-Rate'] = ratelimit
+
+        return response
     except util.TooManyFilesException as e:
         r = ""
         if e.args:
