@@ -93,7 +93,8 @@ def download_external(request, uuid, ftype):
 
         ratelimit = 0
         if ftype == "mp3":
-            ratelimit = 200
+            # 200k
+            ratelimit = 200*1024
 
         # TODO: We should ratelimit mp3 requests, but not any others,
         # so we need a different path for nginx for these ones
