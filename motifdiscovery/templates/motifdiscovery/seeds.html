@@ -1,0 +1,66 @@
+{% extends "motifdiscovery/base.html" %}
+{% load staticfiles %}
+{% block body %}
+<h1>Seeds for {{recording.title}}</h1>
+
+        <p>Music:</p>
+        <table style="width:500px">
+        <ul>
+         {% for seed in patterns %}
+            <tr>
+                <td>({{seed.id}}){{seed.start_time}} - {{seed.end_time}}({{seed.pair_id}})<a href="" class="seed" data-start="{{seed.start_time}}" data-end="{{seed.end_time}}" data-mbid="{{seed.file.mbid}}" data-pattern="{{seed.id}}">Play</a><br></td>
+{% comment %}
+            <td><a href="javascript:genURLTrack('{{filename}}',{{seed[1]}},{{seed[2]}});">{{seed[0]}}</a></td>
+            <td><a href="/searchPage?patternID={{seed[0]}}&mbid={{mbid}}">search<br></a></td>
+            <td><a href="javascript:genURLTrack('{{filename}}','{{seed[4]}}','{{seed[5]}}');">{{seed[3]}}</a></td>
+            <td><a href="/searchPage?patternID={{seed[3]}}&mbid={{mbid}}">search<br></a></td>
+            </tr>
+{% endcomment %}
+        {% endfor %}
+        </ul>
+        
+        <script type="text/javascript">
+$(function() {
+    soundManager.setup({
+      url: '{% static 'motifdiscovery/swf' %}',
+    preferFlash: false
+    });
+
+            $(".seed").click(function(e) {
+                    e.preventDefault();
+                    var seed = $(this).data('pattern');
+                    var mbid = $(this).data('mbid');
+                    var start = parseInt($(this).data('start')) * 1000;
+                    var end = parseInt($(this).data('end')) * 1000;
+console.debug("mbid");
+console.debug(mbid);
+console.debug("start");
+console.debug(start);
+console.debug(end);
+
+        var sound = soundManager.createSound({
+          id: 'sound'+mbid,
+          url: 'http://dunya.compmusic.upf.edu/document/by-id/'+mbid+'.mp3'
+        });
+        sound.play({
+            from: start,
+            to: end,
+            onstop: function() {
+                soundManager._writeDebug('sound stopped at position ' + this.position);
+            }
+        });
+                    }); 
+    $("#stop").click(function(e) {
+        e.preventDefault();
+        soundManager.stopAll();
+    });
+
+});
+        
+        </script>
+
+{% endblock %}
+{% block nav %}
+<a href="" id="stop">Stop all</a><p>
+<li><a href="{% url 'motif-release' recording.concert_set.get.mbid %}">Recordings</a></li>
+{% endblock %}        

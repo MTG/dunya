@@ -1,0 +1,5 @@
+<h1>All artists</h1>
+
+{% for a in artists %}
+<li><a href="{% url 'motif-artist' a.mbid %}">{{a.name}}</a>
+{% endfor %}

@@ -1,0 +1,5 @@
+<h1>Releases by {{artist.name}}</h1>
+
+{% for r in artist.primary_concerts.all %}
+<li><a href="{% url 'motif-release' r.mbid %}">{{r.title}}</a>
+{% endfor %}
