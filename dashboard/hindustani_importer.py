@@ -30,6 +30,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _ReleaseClass = hindustani.models.Release
     _RecordingClass = hindustani.models.Recording
     _InstrumentClass = hindustani.models.Instrument
+    _WorkClass = hindustani.models.Work
 
 
     def _link_release_recording(self, release, recording, trackorder):

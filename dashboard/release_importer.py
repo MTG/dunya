@@ -18,7 +18,6 @@ import django.utils.timezone
 
 from dashboard.log import logger
 
-import carnatic
 import compmusic
 import data
 
@@ -239,7 +238,7 @@ class ReleaseImporter(object):
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
         mbrec = mbrec["recording"]
 
-        rec, created = carnatic.models.Recording.objects.get_or_create(mbid=recordingid)
+        rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
         if created or self.overwrite:
             logger.info("  adding recording %s" % (recordingid,))
             source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
@@ -272,7 +271,7 @@ class ReleaseImporter(object):
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
-        work, created = carnatic.models.Work.objects.get_or_create(mbid=workid,
+        work, created = self._WorkClass.objects.get_or_create(mbid=workid,
                 defaults={"title": mbwork["title"]})
 
         if created or self.overwrite:
@@ -297,6 +296,4 @@ class ReleaseImporter(object):
                     work.lyricists.add(lyricist)
 
         return work
-
-
 

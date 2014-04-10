@@ -30,6 +30,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     _ReleaseClass = makam.models.Release
     _RecordingClass = makam.models.Recording
     _InstrumentClass = makam.models.Instrument
+    _WorkClass = makam.models.Work
 
     def _link_release_recording(self, concert, recording, trackorder):
         if not concert.tracks.filter(pk=recording.pk).exists():
@@ -39,6 +40,8 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
 
     def _join_recording_and_works(self, recording, works):
         # A makam recording can have many works
+        if self.overwrite:
+            makam.models.RecordingWork.objects.filter(recording=recording).delete()
         sequence = 1
         for w in works:
             makam.models.RecordingWork.objects.create(work=w, recording=recording, sequence=sequence)
@@ -53,11 +56,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         try:
             return makam.models.Instrument.objects.get(name=instname)
         except makam.models.Instrument.DoesNotExist:
-            try:
-                alias = makam.models.InstrumentAlias.objects.get(name=instname)
-                return alias.instrument
-            except makam.models.InstrumentAlias.DoesNotExist:
-                return None
+            return None
 
 
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):

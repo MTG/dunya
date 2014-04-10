@@ -31,6 +31,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _ReleaseClass = carnatic.models.Concert
     _RecordingClass = carnatic.models.Recording
     _InstrumentClass = carnatic.models.Instrument
+    _WorkClass = carnatic.models.Work
 
     def _link_release_recording(self, concert, recording, trackorder):
         if not concert.tracks.filter(pk=recording.pk).exists():

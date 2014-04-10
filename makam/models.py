@@ -123,12 +123,10 @@ class Form(models.Model):
         return reverse('makam-form', args=[str(self.id)]) 
 
 class Work(MakamStyle, data.models.Work):
-
-    lyricist = models.ManyToManyField('Composer', blank=True, null=True)
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
-    makam = models.ManyToManyField(Makam)
-    usul = models.ManyToManyField(Usul)
-    form = models.ForeignKey(Form)
+    makam = models.ManyToManyField(Makam, blank=True, null=True)
+    usul = models.ManyToManyField(Usul, blank=True, null=True)
+    form = models.ManyToManyField(Form, blank=True, null=True)
     is_taksim = models.BooleanField(default=False)
 

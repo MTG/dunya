@@ -61,7 +61,6 @@ class ReleaseAdmin(admin.ModelAdmin):
 admin.site.register(models.Instrument)
 admin.site.register(models.InstrumentPerformance)
 admin.site.register(models.Artist, ArtistAdmin)
-
 admin.site.register(models.Release, ReleaseAdmin)
 admin.site.register(models.Section)
 admin.site.register(models.Raag)
@@ -70,6 +69,5 @@ admin.site.register(models.Laay)
 admin.site.register(models.Form)
 admin.site.register(models.Work)
 admin.site.register(models.Recording)
-
 admin.site.register(models.Composer, ComposerAdmin)
 
