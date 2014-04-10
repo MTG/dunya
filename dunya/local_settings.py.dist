@@ -54,3 +54,6 @@ MEDIA_URL = '/media/'
 
 SOLR_URL = 'http://dunya.compmusic.upf.edu:8080/solr'
 
+# Sendfile
+import sendfile.backends.development
+SENDFILE_BACKEND = sendfile.backends.development

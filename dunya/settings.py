@@ -140,6 +140,10 @@ class DunyaRouter(object):
 
 CELERY_ROUTES = (DunyaRouter(), )
 
+# Sendfile
+import sendfile.backends.nginx
+SENDFILE_BACKEND = sendfile.backends.nginx
+
 # Django rest framework
 REST_FRAMEWORK = {
     'PAGINATE_BY': 100, # Default

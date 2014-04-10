@@ -21,7 +21,6 @@ from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.urlresolvers import reverse
-
 from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
 
@@ -38,6 +37,8 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
+
+from sendfile import sendfile
 
 auther = authentication.TokenAuthentication()
 
@@ -81,8 +82,6 @@ def download_external(request, uuid, ftype):
     if ftype == "mp3" and not (loggedin or token):
         return HttpResponse("Not logged in", status=401)
 
-    # TODO we could replace or enhance this with
-    # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py
     try:
         version = request.GET.get("v")
         subtype = request.GET.get("subtype")
@@ -90,12 +89,9 @@ def download_external(request, uuid, ftype):
         filepart = util._docserver_get_part(uuid, ftype, subtype, part, version)
 
         fname = filepart.fullpath
+        mimetype = filepart.mimetype
 
-        contents = open(fname, 'rb').read()
-        ctype = filepart.mimetype
-        response = HttpResponse(contents, content_type=ctype)
-        response['Content-Length'] = len(contents)
-        return response
+        return sendfile(request, fname, mimetype=mimetype)
     except util.TooManyFilesException as e:
         r = ""
         if e.args:
