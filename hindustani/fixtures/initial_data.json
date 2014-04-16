@@ -3125,7 +3125,7 @@
 },
 {
     "pk": 1, 
-    "model": "hindustani.laay", 
+    "model": "hindustani.laya", 
     "fields": {
         "common_name": "Dhrut", 
         "name": "Dhr\u0325t"
@@ -3133,7 +3133,7 @@
 },
 {
     "pk": 2, 
-    "model": "hindustani.laay", 
+    "model": "hindustani.laya", 
     "fields": {
         "common_name": "Madhya", 
         "name": "Madhy"
@@ -3141,7 +3141,7 @@
 },
 {
     "pk": 3, 
-    "model": "hindustani.laay", 
+    "model": "hindustani.laya", 
     "fields": {
         "common_name": "Vilambit", 
         "name": "Vila\u1e41bit"
@@ -3149,26 +3149,26 @@
 },
 {
     "pk": 8, 
-    "model": "hindustani.laayalias", 
+    "model": "hindustani.layaalias", 
     "fields": {
         "name": "drut", 
-        "laay": 1
+        "laya": 1
     }
 },
 {
     "pk": 9, 
-    "model": "hindustani.laayalias", 
+    "model": "hindustani.layaalias", 
     "fields": {
         "name": "madhyalaya", 
-        "laay": 2
+        "laya": 2
     }
 },
 {
     "pk": 10, 
-    "model": "hindustani.laayalias", 
+    "model": "hindustani.layaalias", 
     "fields": {
         "name": "madya", 
-        "laay": 2
+        "laya": 2
     }
 },
 {
