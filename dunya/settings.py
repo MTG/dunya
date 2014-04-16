@@ -131,7 +131,7 @@ INSTALLED_APPS = (
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
 # Celery
-CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+CELERY_ACCEPT_CONTENT = ['json']
 
 class DunyaRouter(object):
     def route_for_task(self, task, *args, **kwargs):
