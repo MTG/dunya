@@ -10,6 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dunya.settings')
 app = Celery('dunya')
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(settings.INSTALLED_APPS, related_name='jobs')
+app.autodiscover_tasks(settings.INSTALLED_APPS, related_name='tasks')
 
 @app.task(bind=True)
 def debug_task(self):
