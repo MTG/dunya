@@ -66,7 +66,11 @@ class RecordingRaag(models.Model):
 class RecordingTaal(models.Model):
     recording = models.ForeignKey("Recording")
     taal = models.ForeignKey("Taal")
-    laay = models.ForeignKey("Laay")
+    sequence = models.IntegerField()
+
+class RecordingLaya(models.Model):
+    recording = models.ForeignKey("Recording")
+    laya = models.ForeignKey("Laya")
     sequence = models.IntegerField()
 
 class RecordingSection(models.Model):
@@ -83,6 +87,7 @@ class Recording(HindustaniStyle, data.models.Recording):
 
     raags = models.ManyToManyField("Raag", through="RecordingRaag")
     taals = models.ManyToManyField("Taal", through="RecordingTaal")
+    layas = models.ManyToManyField("Laya", through="RecordingLaya")
     sections = models.ManyToManyField("Section", through="RecordingSection")
     forms = models.ManyToManyField("Form", through="RecordingForm")
     works = models.ManyToManyField("Work", through="WorkTime")
@@ -100,7 +105,7 @@ class Lyrics(models.Model):
     lyrics = models.CharField(max_length=50)
 
 class Work(HindustaniStyle, data.models.Work):
-    lyrics = models.ForeignKey("Lyrics")
+    lyrics = models.ForeignKey("Lyrics", blank=True, null=True)
 
 class WorkTime(models.Model):
     # The time in a recording that a work occurs (recordings can consist of
@@ -164,9 +169,9 @@ class TaalAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Laay(models.Model):
-    """ A laay is always referred to with a taal as well """
-    missing_image = "laay.jpg"
+class Laya(models.Model):
+    """ A laya is always referred to with a taal as well """
+    missing_image = "laya.jpg"
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
@@ -175,11 +180,11 @@ class Laay(models.Model):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-laay', args=[str(self.id)])
+        return reverse('hindustani-laya', args=[str(self.id)])
 
-class LaayAlias(models.Model):
+class LayaAlias(models.Model):
     name = models.CharField(max_length=50)
-    laay = models.ForeignKey("Laay", related_name="aliases")
+    laya = models.ForeignKey("Laya", related_name="aliases")
 
     def __unicode__(self):
         return self.name

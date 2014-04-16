@@ -33,8 +33,16 @@ class WorkTimeInline(admin.TabularInline):
     model = models.WorkTime
     extra = 1
 
+class RecordingPerformanceInline(admin.TabularInline):
+    model = models.InstrumentPerformance
+    extra = 1
+
 class RecordingRaagInline(admin.TabularInline):
     model = models.RecordingRaag
+    extra = 1
+
+class RecordingLayaInline(admin.TabularInline):
+    model = models.RecordingLaya
     extra = 1
 
 class RecordingTaalInline(admin.TabularInline):
@@ -55,19 +63,57 @@ class ArtistAdmin(admin.ModelAdmin):
 class ComposerAdmin(admin.ModelAdmin):
     inlines = (ComposerAliasInline, )
 
+class RecordingAdmin(admin.ModelAdmin):
+    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, RecordingSectionInline, WorkTimeInline, RecordingPerformanceInline)
+
 class ReleaseAdmin(admin.ModelAdmin):
-    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingFormInline, RecordingSectionInline, ReleaseRecordingInline, WorkTimeInline)
+    inlines = (ReleaseRecordingInline, )
+
+class RaagAliasInline(admin.TabularInline):
+    model = models.RaagAlias
+    extra = 1
+
+class RaagAdmin(admin.ModelAdmin):
+    inlines = (RaagAliasInline, )
+
+class TaalAliasInline(admin.TabularInline):
+    model = models.TaalAlias
+    extra = 1
+
+class TaalAdmin(admin.ModelAdmin):
+    inlines = (TaalAliasInline, )
+
+class SectionAliasInline(admin.TabularInline):
+    model = models.SectionAlias
+    extra = 1
+
+class SectionAdmin(admin.ModelAdmin):
+    inlines = (SectionAliasInline, )
+
+class LayaAliasInline(admin.TabularInline):
+    model = models.LayaAlias
+    extra = 1
+
+class LayaAdmin(admin.ModelAdmin):
+    inlines = (LayaAliasInline, )
+
+class FormAliasInline(admin.TabularInline):
+    model = models.FormAlias
+    extra = 1
+
+class FormAdmin(admin.ModelAdmin):
+    inlines = (FormAliasInline, )
 
 admin.site.register(models.Instrument)
 admin.site.register(models.InstrumentPerformance)
 admin.site.register(models.Artist, ArtistAdmin)
 admin.site.register(models.Release, ReleaseAdmin)
-admin.site.register(models.Section)
-admin.site.register(models.Raag)
-admin.site.register(models.Taal)
-admin.site.register(models.Laay)
-admin.site.register(models.Form)
+admin.site.register(models.Section, SectionAdmin)
+admin.site.register(models.Raag, RaagAdmin)
+admin.site.register(models.Taal, TaalAdmin)
+admin.site.register(models.Laya, LayaAdmin)
+admin.site.register(models.Form, FormAdmin)
 admin.site.register(models.Work)
-admin.site.register(models.Recording)
+admin.site.register(models.Recording, RecordingAdmin)
 admin.site.register(models.Composer, ComposerAdmin)
 

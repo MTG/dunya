@@ -18,6 +18,7 @@ import django.utils.timezone
 
 from dashboard.log import logger
 from dashboard import release_importer
+import compmusic
 
 import hindustani
 import data
@@ -38,8 +39,11 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             hindustani.models.ReleaseRecording.objects.create(
                     release=release, recording=recording, track=trackorder)
 
-    def join_recording_and_works(self, recording, works):
+    def _join_recording_and_works(self, recording, works):
         # A hindustani recording can have many works
+        if self.overwrite:
+            hindustani.models.WorkTime.objects.filter(recording=recording).delete()
+
         sequence = 1
         for w in works:
             hindustani.models.WorkTime.objects.create(work=w, recording=recording, sequence=sequence)
@@ -48,41 +52,56 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     def _apply_tags(self, recording, work, tags):
         raags = self._get_raag_tags(tags)
         taals = self._get_taal_tags(tags)
-        laays = self._get_laay_tags(tags)
+        layas = self._get_laya_tags(tags)
         forms = self._get_form_tags(tags)
 
-        if len(raags) != len(taals):
-            print "Number of raagas and taalas doesn't match"
-        if len(taals) != len(laays):
-            print "number of taals and laays doesn't match"
+        if self.overwrite:
+            hindustani.models.RecordingTaal.objects.filter(recording=recording).delete()
+            hindustani.models.RecordingLaya.objects.filter(recording=recording).delete()
+            hindustani.models.RecordingRaag.objects.filter(recording=recording).delete()
+            hindustani.models.RecordingForm.objects.filter(recording=recording).delete()
 
-        for t, l in zip(taals, laays):
-            tpos = t[0]
-            tob = _get_taal(t[1])
+        for l in layas:
             lpos = l[0]
-            lob = _get_laay(l[1])
-            if tpos != lpos:
-                print "positions differ"
-            hindustani.models.RecordingTaal.objects.create(recording=recording, taal=tob, laay=lob, sequence=tpos)
+            lob = self._get_laya(l[1])
+            if lob:
+                hindustani.models.RecordingLaya.objects.create(recording=recording, laya=lob, sequence=lpos)
+            else:
+                print "couldn't find a laya", l
+
+        for t in taals:
+            tpos = t[0]
+            tob = self._get_taal(t[1])
+            if tob:
+                hindustani.models.RecordingTaal.objects.create(recording=recording, taal=tob, sequence=tpos)
+            else:
+                print "couldn't find a taal", t
 
 
         for r in raags:
             rpos = r[0]
-            rob = _get_raag(r[1])
-            hindustani.models.RecordingRaag.objects.create(recording=recording, raag=rob, sequence=rpos)
+            rob = self._get_raag(r[1])
+            if rob:
+                hindustani.models.RecordingRaag.objects.create(recording=recording, raag=rob, sequence=rpos)
+            else:
+                print "could't find a raag", r
 
         for f in forms:
             fpos = f[0]
-            fob = _get_form(f[1])
-            hindustani.models.RecordingForm.objects.create(recording=recording, form=fob, sequence=fpos)
-            pass
+            fob = self._get_form(f[1])
+            if fob:
+                hindustani.models.RecordingForm.objects.create(recording=recording, form=fob, sequence=fpos)
+            else:
+                print "couldn't find a form", f
 
     def _get_raag_tags(self, taglist):
         ret = []
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_raag(name):
-                ret.append( compmusic.tags.parse_raag(name) )
+                parsed = compmusic.tags.parse_raag(name)
+                if parsed and parsed[0]:
+                    ret.append(parsed)
         return ret
 
     def _get_taal_tags(self, taglist):
@@ -90,58 +109,76 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_taal(name):
-                ret.append( compmusic.tags.parse_taal(name) )
+                parsed = compmusic.tags.parse_taal(name)
+                if parsed and parsed[0]:
+                    ret.append(parsed)
         return ret
 
-    def _get_laay_tags(self, taglist):
+    def _get_laya_tags(self, taglist):
         ret = []
         for t in taglist:
             name = t["name"].lower()
-            if compumusic.tags.has_laay(name):
-                ret.append( compmusic.tags.parse_laay(name) )
+            if compmusic.tags.has_laya(name):
+                parsed = compmusic.tags.parse_laya(name)
+                if parsed and parsed[0]:
+                    ret.append(parsed)
         return ret
 
     def _get_form_tags(self, taglist):
         ret = []
         for t in taglist:
             name = t["name"].lower()
-            if compumusic.tags.has_form(name):
-                ret.append( compmusic.tags.parse_form(name) )
+            if compmusic.tags.has_hindustani_form(name):
+                parsed = compmusic.tags.parse_hindustani_form(name)
+                if parsed and parsed[0]:
+                    ret.append(parsed)
         return ret
 
     def _get_raag(self, rname):
         try:
-            return hindustani.models.Taal.objects.get(transliteration=tname)
-        except hindustani.models.Taal.DoesNotExist:
-            return None
+            return hindustani.models.Raag.objects.get(common_name__iexact=rname)
+        except hindustani.models.Raag.DoesNotExist:
+            try:
+                al = hindustani.models.RaagAlias.objects.get(name__iexact=rname)
+                return al.raag
+            except hindustani.models.RaagAlias.DoesNotExist:
+                return None
 
     def _get_taal(self, tname):
         try:
-            return hindustani.models.Raag.objects.get(transliteration=tname)
-        except hindustani.models.Raag.DoesNotExist:
-            return None
+            return hindustani.models.Taal.objects.get(common_name__iexact=tname)
+        except hindustani.models.Taal.DoesNotExist:
+            try:
+                al = hindustani.models.TaalAlias.objects.get(name__iexact=tname)
+                return al.taal
+            except hindustani.models.TaalAlias.DoesNotExist:
+                return None
 
-    def _get_form(self, tname):
+    def _get_form(self, fname):
         try:
-            return hindustani.models.Form.objects.get(transliteration=tname)
+            return hindustani.models.Form.objects.get(common_name__iexact=fname)
         except hindustani.models.Form.DoesNotExist:
-            return None
+            try:
+                al = hindustani.models.FormAlias.objects.get(name__iexact=fname)
+                return al.form
+            except hindustani.models.FormAlias.DoesNotExist:
+                return None
 
-    def _get_laay(self, tname):
+    def _get_laya(self, lname):
         try:
-            return hindustani.models.Laay.objects.get(transliteration=tname)
-        except hindustani.models.Laay.DoesNotExist:
-            return None
+            return hindustani.models.Laya.objects.get(common_name__iexact=lname)
+        except hindustani.models.Laya.DoesNotExist:
+            try:
+                al = hindustani.models.LayaAlias.objects.get(name__iexact=lname)
+                return al.laya
+            except hindustani.models.LayaAlias.DoesNotExist:
+                return None
 
     def get_instrument(self, instname):
         try:
-            return hindustani.models.Instrument.objects.get(name=instname)
+            return hindustani.models.Instrument.objects.get(name__iexact=instname)
         except hindustani.models.Instrument.DoesNotExist:
-            try:
-                alias = hindustani.models.InstrumentAlias.objects.get(name=instname)
-                return alias.instrument
-            except hindustani.models.InstrumentAlias.DoesNotExist:
-                return None
+            return None
 
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
