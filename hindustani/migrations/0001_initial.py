@@ -79,6 +79,25 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['from_artist_id', 'to_artist_id'])
 
+        # Adding model 'ArtistAlias'
+        db.create_table(u'hindustani_artistalias', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('artist', self.gf('django.db.models.fields.related.ForeignKey')(related_name='aliases', to=orm['hindustani.Artist'])),
+            ('alias', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('primary', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('locale', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'hindustani', ['ArtistAlias'])
+
+        # Adding model 'ReleaseRecording'
+        db.create_table(u'hindustani_releaserecording', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('release', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hindustani.Release'])),
+            ('recording', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hindustani.Recording'])),
+            ('track', self.gf('django.db.models.fields.IntegerField')()),
+        ))
+        db.send_create_signal(u'hindustani', ['ReleaseRecording'])
+
         # Adding model 'Release'
         db.create_table(u'hindustani_release', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -225,6 +244,16 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['composer_id', 'image_id'])
 
+        # Adding model 'ComposerAlias'
+        db.create_table(u'hindustani_composeralias', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('composer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='aliases', to=orm['hindustani.Composer'])),
+            ('alias', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('primary', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('locale', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'hindustani', ['ComposerAlias'])
+
         # Adding model 'Lyrics'
         db.create_table(u'hindustani_lyrics', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -235,23 +264,81 @@ class Migration(SchemaMigration):
         # Adding model 'Work'
         db.create_table(u'hindustani_work', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('source', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'hindustani_work_source_set', null=True, to=orm['data.Source'])),
+            ('description', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['data.Description'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('mbid', self.gf('django.db.models.fields.CharField')(max_length=36, null=True, blank=True)),
             ('lyrics', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hindustani.Lyrics'])),
         ))
         db.send_create_signal(u'hindustani', ['Work'])
+
+        # Adding M2M table for field references on 'Work'
+        m2m_table_name = db.shorten_name(u'hindustani_work_references')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('work', models.ForeignKey(orm[u'hindustani.work'], null=False)),
+            ('source', models.ForeignKey(orm[u'data.source'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['work_id', 'source_id'])
+
+        # Adding M2M table for field images on 'Work'
+        m2m_table_name = db.shorten_name(u'hindustani_work_images')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('work', models.ForeignKey(orm[u'hindustani.work'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['work_id', 'image_id'])
+
+        # Adding M2M table for field composers on 'Work'
+        m2m_table_name = db.shorten_name(u'hindustani_work_composers')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('work', models.ForeignKey(orm[u'hindustani.work'], null=False)),
+            ('composer', models.ForeignKey(orm[u'hindustani.composer'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['work_id', 'composer_id'])
+
+        # Adding M2M table for field lyricists on 'Work'
+        m2m_table_name = db.shorten_name(u'hindustani_work_lyricists')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('work', models.ForeignKey(orm[u'hindustani.work'], null=False)),
+            ('composer', models.ForeignKey(orm[u'hindustani.composer'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['work_id', 'composer_id'])
+
+        # Adding model 'WorkTime'
+        db.create_table(u'hindustani_worktime', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('recording', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hindustani.Recording'])),
+            ('work', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['hindustani.Work'])),
+            ('sequence', self.gf('django.db.models.fields.IntegerField')()),
+            ('time', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+        ))
+        db.send_create_signal(u'hindustani', ['WorkTime'])
 
         # Adding model 'Section'
         db.create_table(u'hindustani_section', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('transliteration', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('common_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
         ))
         db.send_create_signal(u'hindustani', ['Section'])
+
+        # Adding model 'SectionAlias'
+        db.create_table(u'hindustani_sectionalias', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('section', self.gf('django.db.models.fields.related.ForeignKey')(related_name='aliases', to=orm['hindustani.Section'])),
+        ))
+        db.send_create_signal(u'hindustani', ['SectionAlias'])
 
         # Adding model 'Raag'
         db.create_table(u'hindustani_raag', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('transliteration', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('common_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
         ))
         db.send_create_signal(u'hindustani', ['Raag'])
 
@@ -267,7 +354,7 @@ class Migration(SchemaMigration):
         db.create_table(u'hindustani_taal', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('transliteration', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('common_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
         ))
         db.send_create_signal(u'hindustani', ['Taal'])
 
@@ -283,7 +370,7 @@ class Migration(SchemaMigration):
         db.create_table(u'hindustani_laay', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('transliteration', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('common_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
         ))
         db.send_create_signal(u'hindustani', ['Laay'])
 
@@ -299,7 +386,7 @@ class Migration(SchemaMigration):
         db.create_table(u'hindustani_form', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('transliteration', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('common_name', self.gf('django.db.models.fields.CharField')(max_length=50)),
         ))
         db.send_create_signal(u'hindustani', ['Form'])
 
@@ -333,6 +420,12 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field group_members on 'Artist'
         db.delete_table(db.shorten_name(u'hindustani_artist_group_members'))
+
+        # Deleting model 'ArtistAlias'
+        db.delete_table(u'hindustani_artistalias')
+
+        # Deleting model 'ReleaseRecording'
+        db.delete_table(u'hindustani_releaserecording')
 
         # Deleting model 'Release'
         db.delete_table(u'hindustani_release')
@@ -379,14 +472,35 @@ class Migration(SchemaMigration):
         # Removing M2M table for field images on 'Composer'
         db.delete_table(db.shorten_name(u'hindustani_composer_images'))
 
+        # Deleting model 'ComposerAlias'
+        db.delete_table(u'hindustani_composeralias')
+
         # Deleting model 'Lyrics'
         db.delete_table(u'hindustani_lyrics')
 
         # Deleting model 'Work'
         db.delete_table(u'hindustani_work')
 
+        # Removing M2M table for field references on 'Work'
+        db.delete_table(db.shorten_name(u'hindustani_work_references'))
+
+        # Removing M2M table for field images on 'Work'
+        db.delete_table(db.shorten_name(u'hindustani_work_images'))
+
+        # Removing M2M table for field composers on 'Work'
+        db.delete_table(db.shorten_name(u'hindustani_work_composers'))
+
+        # Removing M2M table for field lyricists on 'Work'
+        db.delete_table(db.shorten_name(u'hindustani_work_lyricists'))
+
+        # Deleting model 'WorkTime'
+        db.delete_table(u'hindustani_worktime')
+
         # Deleting model 'Section'
         db.delete_table(u'hindustani_section')
+
+        # Deleting model 'SectionAlias'
+        db.delete_table(u'hindustani_sectionalias')
 
         # Deleting model 'Raag'
         db.delete_table(u'hindustani_raag')
@@ -457,6 +571,14 @@ class Migration(SchemaMigration):
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_artist_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_artist_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
         },
+        u'hindustani.artistalias': {
+            'Meta': {'object_name': 'ArtistAlias'},
+            'alias': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'artist': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'aliases'", 'to': u"orm['hindustani.Artist']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'locale': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'primary': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
         u'hindustani.composer': {
             'Meta': {'object_name': 'Composer'},
             'begin': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
@@ -470,11 +592,19 @@ class Migration(SchemaMigration):
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_composer_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_composer_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
         },
+        u'hindustani.composeralias': {
+            'Meta': {'object_name': 'ComposerAlias'},
+            'alias': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'composer': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'aliases'", 'to': u"orm['hindustani.Composer']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'locale': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
+            'primary': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
         u'hindustani.form': {
             'Meta': {'object_name': 'Form'},
+            'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'transliteration': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         u'hindustani.formalias': {
             'Meta': {'object_name': 'FormAlias'},
@@ -502,9 +632,9 @@ class Migration(SchemaMigration):
         },
         u'hindustani.laay': {
             'Meta': {'object_name': 'Laay'},
+            'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'transliteration': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         u'hindustani.laayalias': {
             'Meta': {'object_name': 'LaayAlias'},
@@ -519,9 +649,9 @@ class Migration(SchemaMigration):
         },
         u'hindustani.raag': {
             'Meta': {'object_name': 'Raag'},
+            'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'transliteration': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         u'hindustani.raagalias': {
             'Meta': {'object_name': 'RaagAlias'},
@@ -543,7 +673,8 @@ class Migration(SchemaMigration):
             'sections': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['hindustani.Section']", 'through': u"orm['hindustani.RecordingSection']", 'symmetrical': 'False'}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_recording_source_set'", 'null': 'True', 'to': u"orm['data.Source']"}),
             'taals': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['hindustani.Taal']", 'through': u"orm['hindustani.RecordingTaal']", 'symmetrical': 'False'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'works': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['hindustani.Work']", 'through': u"orm['hindustani.WorkTime']", 'symmetrical': 'False'})
         },
         u'hindustani.recordingform': {
             'Meta': {'object_name': 'RecordingForm'},
@@ -585,19 +716,33 @@ class Migration(SchemaMigration):
             'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_release_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
             'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_release_source_set'", 'null': 'True', 'to': u"orm['data.Source']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'tracks': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['hindustani.Recording']", 'through': u"orm['hindustani.ReleaseRecording']", 'symmetrical': 'False'}),
             'year': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
+        },
+        u'hindustani.releaserecording': {
+            'Meta': {'object_name': 'ReleaseRecording'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'recording': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hindustani.Recording']"}),
+            'release': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hindustani.Release']"}),
+            'track': ('django.db.models.fields.IntegerField', [], {})
         },
         u'hindustani.section': {
             'Meta': {'object_name': 'Section'},
+            'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'hindustani.sectionalias': {
+            'Meta': {'object_name': 'SectionAlias'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'transliteration': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'section': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'aliases'", 'to': u"orm['hindustani.Section']"})
         },
         u'hindustani.taal': {
             'Meta': {'object_name': 'Taal'},
+            'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'transliteration': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
         },
         u'hindustani.taalalias': {
             'Meta': {'object_name': 'TaalAlias'},
@@ -607,8 +752,24 @@ class Migration(SchemaMigration):
         },
         u'hindustani.work': {
             'Meta': {'object_name': 'Work'},
+            'composers': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'works'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['hindustani.Composer']"}),
+            'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lyrics': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hindustani.Lyrics']"})
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'hindustani_work_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
+            'lyricists': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'lyric_works'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['hindustani.Composer']"}),
+            'lyrics': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hindustani.Lyrics']"}),
+            'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
+            'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_work_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
+            'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_work_source_set'", 'null': 'True', 'to': u"orm['data.Source']"}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        u'hindustani.worktime': {
+            'Meta': {'object_name': 'WorkTime'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'recording': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hindustani.Recording']"}),
+            'sequence': ('django.db.models.fields.IntegerField', [], {}),
+            'time': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'work': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['hindustani.Work']"})
         }
     }
 

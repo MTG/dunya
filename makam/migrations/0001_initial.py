@@ -280,7 +280,6 @@ class Migration(SchemaMigration):
             ('title', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('mbid', self.gf('django.db.models.fields.CharField')(max_length=36, null=True, blank=True)),
             ('composition_date', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
-            ('form', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['makam.Form'], null=True, blank=True)),
             ('is_taksim', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal(u'makam', ['Work'])
@@ -321,15 +320,6 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['work_id', 'composer_id'])
 
-        # Adding M2M table for field lyricist on 'Work'
-        m2m_table_name = db.shorten_name(u'makam_work_lyricist')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('work', models.ForeignKey(orm[u'makam.work'], null=False)),
-            ('composer', models.ForeignKey(orm[u'makam.composer'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['work_id', 'composer_id'])
-
         # Adding M2M table for field makam on 'Work'
         m2m_table_name = db.shorten_name(u'makam_work_makam')
         db.create_table(m2m_table_name, (
@@ -347,6 +337,15 @@ class Migration(SchemaMigration):
             ('usul', models.ForeignKey(orm[u'makam.usul'], null=False))
         ))
         db.create_unique(m2m_table_name, ['work_id', 'usul_id'])
+
+        # Adding M2M table for field form on 'Work'
+        m2m_table_name = db.shorten_name(u'makam_work_form')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('work', models.ForeignKey(orm[u'makam.work'], null=False)),
+            ('form', models.ForeignKey(orm[u'makam.form'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['work_id', 'form_id'])
 
 
     def backwards(self, orm):
@@ -449,14 +448,14 @@ class Migration(SchemaMigration):
         # Removing M2M table for field lyricists on 'Work'
         db.delete_table(db.shorten_name(u'makam_work_lyricists'))
 
-        # Removing M2M table for field lyricist on 'Work'
-        db.delete_table(db.shorten_name(u'makam_work_lyricist'))
-
         # Removing M2M table for field makam on 'Work'
         db.delete_table(db.shorten_name(u'makam_work_makam'))
 
         # Removing M2M table for field usul on 'Work'
         db.delete_table(db.shorten_name(u'makam_work_usul'))
+
+        # Removing M2M table for field form on 'Work'
+        db.delete_table(db.shorten_name(u'makam_work_form'))
 
 
     models = {
@@ -630,11 +629,10 @@ class Migration(SchemaMigration):
             'composers': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'works'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['makam.Composer']"}),
             'composition_date': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
-            'form': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['makam.Form']", 'null': 'True', 'blank': 'True'}),
+            'form': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['makam.Form']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'makam_work_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
             'is_taksim': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'lyricist': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['makam.Composer']", 'null': 'True', 'blank': 'True'}),
             'lyricists': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'lyric_works'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['makam.Composer']"}),
             'makam': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['makam.Makam']", 'null': 'True', 'blank': 'True'}),
             'mbid': ('django.db.models.fields.CharField', [], {'max_length': '36', 'null': 'True', 'blank': 'True'}),
