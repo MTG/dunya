@@ -114,16 +114,23 @@ class WorkTime(models.Model):
 
 class Section(models.Model):
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name.capitalize()
+
+class SectionAlias(models.Model):
+    name = models.CharField(max_length=50)
+    section = models.ForeignKey("Section", related_name="aliases")
+
+    def __unicode__(self):
+        return self.name
 
 class Raag(models.Model):
     missing_image = "raag.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -142,7 +149,7 @@ class Taal(models.Model):
     missing_image = "taal.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -162,7 +169,7 @@ class Laay(models.Model):
     missing_image = "laay.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -181,7 +188,7 @@ class Form(models.Model):
     missing_image = "form.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name.capitalize()
