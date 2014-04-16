@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from django_extensions.db.fields import UUIDField
 
 class MotifManager(models.Manager):
@@ -49,3 +50,6 @@ class Segment(models.Model):
 
     def __unicode__(self):
         return u"segment of %s (%s-%s)" % (self.file, self.rounded_start, self.rounded_end)
+
+    def get_absolute_url(self):
+        return reverse('motif-segment', args=[self.pk])

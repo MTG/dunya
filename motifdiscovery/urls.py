@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'^release/%s$' % uuid_match, views.release, name='motif-release'),
     url(r'^seeds/%s$' % uuid_match, views.seeds, name='motif-seeds'),
     url(r'^results/(?P<seedpair>[0-9]+)$', views.results, name='motif-results'),
+    url(r'^segment/(?P<segmentid>[0-9]+).mp3$', views.servesegment, name='motif-segment'),
 )
 
