@@ -11,6 +11,27 @@ import math
 ROOT_DIR = "/incoming/motifdiscovery"
 
 @app.task
+def convert_mp3(file_id):
+    thefile = models.File.objects.get(pk=file_id)
+    segments = thefile.segment_set.all()
+    numsegs = segments.count()
+    with transaction.atomic():
+        for i, s in enumerate(segments, 1):
+            if i % 100 == 0:
+                print "  - [%s]: Done %s/%s" % (file_id, i, numsegs)
+            inname = s.segment_path
+            inname = inname[:-3] + "wav"
+            outname = inname[:-3] + "mp3"
+            if os.path.exists(outname):
+                continue
+            args = ["ffmpeg", "-i", inname, outname]
+            proc = subprocess.Popen(args, stdout=open(os.devnull, "w"), stderr=subprocess.STDOUT)
+            proc.communicate()
+            s.segment_path = outname
+            s.save()
+            os.unlink(inname)
+
+@app.task
 def make_segments(file_id):
     thefile = models.File.objects.get(pk=file_id)
     patterns = thefile.pattern_set.all()
