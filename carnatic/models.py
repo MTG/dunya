@@ -189,6 +189,10 @@ class Concert(CarnaticStyle, data.models.Release):
     tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
 
+    def get_absolute_url(self):
+        viewname = "%s-concert" % (self.get_style(), )
+        return reverse(viewname, args=[self.mbid])
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-concert-search'),

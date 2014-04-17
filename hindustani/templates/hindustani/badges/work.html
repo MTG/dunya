@@ -1,0 +1,48 @@
+{% load staticfiles %}
+{% load inline %}
+{% load badges %}
+
+<div class="work item">
+  <div class="disc pict">
+    <a href="{{work.get_absolute_url}}"><img src="{{work.get_image_url}}"></a>
+</div>
+  <div class="desc">
+    <div class="plus"></div>
+    <a href="{{work.get_absolute_url}}" class="title"><b>{{work.title}}</b></a>
+    <a href="{{work.composer.get_absolute_url}}" class="belongs">{{work.composer}}</a>
+</div>
+  <div class="descOpen">
+      <h3><a href="{{work.get_absolute_url}}" class="title"><b>{{work.title}}</b></a></h3>
+      {% if work.composer %}
+      Composer<br>
+      {% badge_mini_composer work.composer %}
+      {% endif %}
+      {% if work.raaga.count %}
+      Raaga<br>
+      {% for r in work.raaga.all %}
+          {% badge_mini_raaga r %}
+      {% endfor %}
+      {% endif %}
+      {% if work.taala.count %}
+      Taala<br>
+      {% for t in work.taala.all %}
+          {% badge_mini_taala t %}
+      {% endfor %}
+      {% endif %}
+    <p class="value"></p>
+</div>
+  <div class="lists">
+    <div class="left">
+      <h3>Recording artists</h3>
+        {% for a in work.artists %}
+            {% badge_mini_artist a %}
+        {% endfor %}
+    </div>
+    <div class="right">
+      <h3>Concerts</h3>
+      {% for c in work.concerts %}
+        {% badge_mini_concert c %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

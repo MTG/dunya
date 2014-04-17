@@ -1,0 +1,68 @@
+{% load hindustaniinline %}
+{% load hindustanibadges %}
+
+{% comment %} arguments: concert, works, raaga, {% endcomment %}
+
+<div class="concert item similar">
+        <div class="disc pict">
+            <a href="{{concert.get_absolute_url}}"><img src="{{concert.get_image_url}}"></a>
+    </div>
+        <div class="desc"><div class="plus"></div>
+            <a href="{{concert.get_absolute_url}}"><b>{{concert.title}}</b></a>
+            <p>{%inline_artist_list concert.artistnames %}</p>
+            {% if concert.year %}<p>{{concert.year}}</p>{% endif %}
+    </div>
+        <div class="lists similar">
+        	<div class="left">
+        		<div class="similarity">
+        		  <h2>Index of similarity</h2>
+                  {% if artists|length %}
+        		  <div class="artist" style="width:90px"><span>artist</span></div>
+                  {% endif %}
+                  {% if works|length %}
+        		  <div class="work" style="width:90px"><span>work</span></div>
+                  {% endif %}
+                  {% if raagas|length %}
+        		  <div class="raaga active" style="width:90px"><span>raaga</span></div>
+                  {% endif %}
+                  {% if taalas|length %}
+        		  <div class="taala" style="width:90px"><span>taala</span></div>
+                  {% endif %}
+        		</div>
+        	</div>
+        	<div class="right">
+            {% if artists|length %}
+        	  <div class="similarList artist">
+                Albums share these same artists:<br>
+                  {% for a in artists %}
+                      {% badge_mini_artist a %}
+                  {% endfor %}
+        	  </div>
+            {% endif %}
+            {% if works %}
+        	  <div class="similarList work">
+                Albums share these same works:<br>
+                  {% for w in works %}
+                      {% badge_mini_work w %}
+                  {% endfor %}
+        	  </div>
+            {% endif %}
+            {% if taalas %}
+        	  <div class="similarList raaga">
+                Albums share these same raagas:<br>
+                  {% for w in raagas %}
+                      {% badge_mini_raaga w %}
+                  {% endfor %}
+        	  </div>
+            {% endif %}
+            {% if taalas %}
+        	  <div class="similarList taala">
+                Albums share these same taalas:<br>
+                  {% for t in taalas %}
+                      {% badge_mini_taala t %}
+                  {% endfor %}
+        	  </div>
+            {% endif %}
+        	</div>
+        </div>
+      </div>

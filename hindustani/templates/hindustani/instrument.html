@@ -1,6 +1,29 @@
-{% extends "carnatic/base.html" %}
+{% extends "hindustani/base.html" %}
+{% load hindustaniinline %}
+{% load hindustanibadges %}
 {% load staticfiles %}
 
+{% block script %}
+<script>
+$(document).ready(function() {
+    widthOfChildren('.inforight');
+    widthOfChildren('.metaContainer');
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
+
+	$(".inforight .desc .plus").click(function() {
+		$(this).parent().parent().toggleClass("open");
+        widthOfChildren('.inforight');
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
+	});
+});
+</script>
+{% endblock %}
 {% block extra_css %}
     {% if debug %}
     {% load less %}
@@ -14,10 +37,90 @@
 {% block title %}{{instrument.name}} - {% endblock %}
 
 {% block wrap %}
-<div id="detail">
-    <h1>Instrument {{instrument.name}}</h1>
+<!--
+<div id="filterMask">
+	<div id="filterArea">
+		<div id="entitiesList" class="filterList">
+	    	<h3>Chose your query</h3>
+        	<ul>
+        	</ul>
+    	</div>
+    	<div id="breadcrumb">
+    		<div class="bread entity_1 artist">
+    			<div class="breadarrow"></div>
+    			<span><a href="#">No selection</a></span>
+    		</div>
+    		<div class="bread entity_3 work">
+    			<div class="breadarrow"></div>
+    			<span><a href="#">No selection</a></span>
+    		</div>
+    		<div class="bread entity_4 instrument">
+    			<div class="breadarrow"></div>
+    			<span><a href="#">No selection</a></span>
+    		</div>
+    	</div>
+    </div>
+ </div>
+ -->
 
-    <div class="clearfix"></div>
+ <div id="detail" class="instrument">
+     	<div id="header">
+     		<div id="summary">
+     			<div id="innerSummary">
+	     			<span>
+		     			<h1>{{instrument.name}}</h1>
+                        <!-- <h3>Translated name</h3> -->
+	     			</span>
+     			</div>
+     			<div id="summaryBack"></div>
+     			{% if user.is_authenticated %}
+     			<div id="previewicon" class="enabled">
+						<div class="ui360"><a href="{{sample.absolute_mp3_url}}">{{sample.title}}</a></div>
+				</div>
+				{% else %}
+				<div id="previewicon" class="disabled"></div>
+				{% endif %}
+     		</div>
+            <div class="bigImage"><img src="{{instrument.get_image_url}}" /></div>
+     		<div id="meta">
+     			<div class="metaBlock">
+					<div class="metaMask">
+			 			<div class="metaContainer">
+							<div id="excerpt" class="metaDetails">
+								<div class="inner">
+									<h3>Description</h3>
+			                        <span>{{instrument.description.description}}
+                                    <p><label>Description from </label>
+                                        <a href="{{instrument.description.source.uri}}">Wikipedia</a>
+                                    </span>
+								</div>
+							</div>
+
+			 			</div>
+			 		</div>
+				</div>
+     		</div>
+
+	     	<div class="clearfix"></div>
+
+     	</div><!-- HEADER END -->
+
+	 	<div class="alldata">
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Performers</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata nopad">
+                        <div class="scrollblock inforight" style="height: 290px;">
+	                        {% for a in instrument.performers|slice:":10" %}
+	                            {% badge_detail_artist a %}
+	                        {% endfor %}
+	                    </div>
+	     			</div>
+	     		</div>
+	     	</div>
+	     	<div class="clearfix"></div>
+	 	</div>
 </div>
 {% endblock %}
-

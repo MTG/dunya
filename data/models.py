@@ -233,7 +233,7 @@ class Release(BaseModel):
         return u"%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
-        viewname = "%s-concert" % (self.get_style(), )
+        viewname = "%s-release" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid])
 
     def get_musicbrainz_url(self):
@@ -312,7 +312,7 @@ class Work(BaseModel):
 class Recording(BaseModel):
     class Meta:
         abstract = True
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")

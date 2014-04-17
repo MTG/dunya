@@ -36,10 +36,36 @@ class HindustaniStyle(object):
                 }[key]
 
 class Instrument(HindustaniStyle, data.models.Instrument):
-    pass
+    def performers(self):
+        artistcount = collections.Counter()
+        for p in InstrumentPerformance.objects.filter(instrument=self):
+            artistcount[p.performer] += 1
+
+        return [i[0] for i in artistcount.most_common()]
 
 class Artist(HindustaniStyle, data.models.Artist):
-    pass
+    def releases(self):
+        # Releases in which we were the primary artist
+        ret = []
+        ret.extend([r for r in self.primary_concerts.all()])
+        # Releases in which we performed
+        ret.extend([r for r in Release.objects.filter(tracks__instrumentperformance__performer=self).distinct()])
+        return ret
+
+    def collaborating_artists(self):
+        # Get all concerts
+        # For each artist on the concerts (both types), add a counter
+        # top 10 artist ids + the concerts they collaborate on
+        c = collections.Counter()
+        releases = collections.defaultdict(set)
+        for release in self.releases():
+            for p in release.performers():
+                thea = p.performer
+                if thea.id != self.id:
+                    releases[thea.id].add(release)
+                    c[thea.id] += 1
+
+        return [(Artist.objects.get(pk=pk), list(releases[pk])) for pk,count in c.most_common()]
 
 class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
     pass
@@ -56,6 +82,10 @@ class ReleaseRecording(models.Model):
 
 class Release(HindustaniStyle, data.models.Release):
     tracks = models.ManyToManyField("Recording", through="ReleaseRecording")
+
+    def performers(self):
+        # TODO: Lead artist if they are not in this list
+        return InstrumentPerformance.objects.filter(recording__release=self)
 
 
 class RecordingRaag(models.Model):

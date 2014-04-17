@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% load hindustaniinline %}
+
+<div class="track">
+    <a href="{{recording.get_absolute_url}}"><h4>{{recording.title}}</h4></a>
+       <div class="trackWave">
+            <a href="{{recording.get_absolute_url}}">
+           <img src="{{recording.waveform_image}}" height="70" width="246">
+            </a>
+       </div>
+       <div class="trackMeta">
+           <label>Raag:</label>
+           {% if recording.raags.exists %}
+             {% for raag in recording.raags.all %}
+             <b>{% inline_raag raag %}</b>{% if not forloop.last %}, {% endif %}
+             {% endfor %}
+           {% else %}
+           unknown
+           {% endif %}
+
+           <label>Form:</label>
+           {% if recording.forms.exists %}
+             {% for form in recording.forms.all %}
+             <b>{% inline_form form %}</b>{% if not forloop.last %}, {% endif %}
+             {% endfor %}
+           {% else %}
+           unknown
+           {% endif %}
+       </div>
+</div>

@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% load inline %}
+{% load badges %}
+
+<div class="taala item">
+  <div class="disc pict">
+      <a href="{{taala.get_absolute_url}}"><img src="{{taala.get_image_url}}" width="297" style="vertical-align: middle"></a>
+</div>
+  <div class="desc">
+      <a href="{{taala.get_absolute_url}}" class="title" title="{{taala.transliteration.title}}"><b>{{taala.name|title}} taala</b></a>
+</div>
+  <div class="descOpen">
+</div>
+{% comment %}
+  <div class="lists">
+    <div class="left">
+          <h3>Compositions</h3>
+          {% for w in taala.works %}
+          {% badge_mini_work w %}
+          {% endfor %}
+    </div>
+    <div class="right">
+          <h3>Artists</h3>
+    {% for a in taala.percussion_artists %}
+        {% badge_mini_artist a %}
+    {% endfor %}
+    </div>
+  </div>
+  {% endcomment %}
+</div>
