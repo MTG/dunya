@@ -67,15 +67,16 @@ class ReleaseImporter(object):
 
 
     def import_release(self, releaseid, directories):
+        if releaseid in self.imported_releases:
+            print "Release already updated in this import. Not doing it again"
+            return self._ReleaseClass.objects.get(mbid=releaseid)
+
         rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels"])
         rel = rel["release"]
 
         mbid = rel["id"]
         logger.info("Adding release %s" % mbid)
 
-        if mbid in self.imported_releases:
-            print "Release already updated in this import. Not doing it again"
-            return
         release = self._create_release_object(rel)
 
         # Create release primary artists
@@ -111,6 +112,7 @@ class ReleaseImporter(object):
             self._add_release_performance(release.mbid, artistid, instrument, is_lead)
 
         # external_data.import_concert_image(concert, directories, self.overwrite)
+        self.imported_releases.append(releaseid)
         return release
 
     def _clear_release_performances(self, release):
@@ -134,9 +136,6 @@ class ReleaseImporter(object):
 
     def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, composer=False):
         artistid = mbartist["id"]
-        if artistid in self.imported_artists:
-            print "Artist already updated in this import. Not doing it again"
-            return artist
 
         artist, created = ArtistKlass.objects.get_or_create(mbid=artistid,
             defaults={"name": mbartist["name"]})
@@ -200,6 +199,10 @@ class ReleaseImporter(object):
         return artist
 
     def add_and_get_artist(self, artistid):
+        if artistid in self.imported_artists:
+            print "Artist already updated in this import. Not doing it again"
+            return self._ArtistClass.objects.get(mbid=artistid)
+
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
         artist = self._create_artist_object(self._ArtistClass, self._ArtistAliasClass, mbartist)
 
@@ -211,6 +214,7 @@ class ReleaseImporter(object):
                     memberartist = self.add_and_get_artist(member["target"])
                     if not artist.group_members.filter(mbid=memberartist.mbid).exists():
                         artist.group_members.add(memberartist)
+        self.imported_artists.append(artistid)
         return artist
 
     def add_and_get_composer(self, artistid):
