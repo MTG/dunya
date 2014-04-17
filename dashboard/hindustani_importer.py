@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import django.utils.timezone
+from django.db.models import Q
 
 from dashboard.log import logger
 from dashboard import release_importer
@@ -136,7 +136,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_raag(self, rname):
         try:
-            return hindustani.models.Raag.objects.get(common_name__iexact=rname)
+            return hindustani.models.Raag.objects.get(Q(name__iexact=rname) | Q(common_name__iexact=rname))
         except hindustani.models.Raag.DoesNotExist:
             try:
                 al = hindustani.models.RaagAlias.objects.get(name__iexact=rname)
@@ -146,7 +146,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_taal(self, tname):
         try:
-            return hindustani.models.Taal.objects.get(common_name__iexact=tname)
+            return hindustani.models.Taal.objects.get(Q(name__iexact=tname) | Q(common_name__iexact=tname))
         except hindustani.models.Taal.DoesNotExist:
             try:
                 al = hindustani.models.TaalAlias.objects.get(name__iexact=tname)
@@ -156,7 +156,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_form(self, fname):
         try:
-            return hindustani.models.Form.objects.get(common_name__iexact=fname)
+            return hindustani.models.Form.objects.get(Q(name__iexact=fname) | Q(common_name__iexact=fname))
         except hindustani.models.Form.DoesNotExist:
             try:
                 al = hindustani.models.FormAlias.objects.get(name__iexact=fname)
@@ -166,7 +166,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_laya(self, lname):
         try:
-            return hindustani.models.Laya.objects.get(common_name__iexact=lname)
+            return hindustani.models.Laya.objects.get(Q(name__iexact=lname) | Q(common_name__iexact=lname))
         except hindustani.models.Laya.DoesNotExist:
             try:
                 al = hindustani.models.LayaAlias.objects.get(name__iexact=lname)
@@ -183,6 +183,9 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
+        # Musicbrainz calls it 'vocals', but we want it to be 'voice'
+        if instrument == "vocals":
+            instrument = "voice"
         instrument = self.get_instrument(instrument)
         if instrument:
             recording = hindustani.models.Recording.objects.get(mbid=recordingid)
@@ -192,6 +195,6 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
         logger.info("  Adding concert performance to all tracks...")
         release = hindustani.models.Release.objects.get(mbid=releaseid)
-        for t in release.tracks:
+        for t in release.tracks.all():
             self._add_recording_performance(t.mbid, artistid, instrument, is_lead)
 
