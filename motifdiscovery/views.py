@@ -27,5 +27,8 @@ def seeds(request, uuid):
     ret = {"recording": rec, "patterns": patterns}
     return render(request, "motifdiscovery/seeds.html", ret)
 
-def results(request, seedpair):
-    pass
+def results(request, uuid, seedid):
+    rec = get_object_or_404(carnatic.models.Recording, mbid=uuid)
+    patterns = models.Match.objects.using('motif').filter(source=seedid, version=0)
+    ret = {"recording": rec, "patterns": patterns}
+    return render(request, "motifdiscovery/results.html", ret)

@@ -2,8 +2,8 @@
 {% load staticfiles %}
 {% block body %}
 {% load app_filters %}
-    <h2>Seed patterns for recording: {{recording.title}}, release: XX, by XX</h2>
-       
+<h1>Seeds for {{recording.title}}</h1>
+        
         <ul>
          <table>
          <tr>
@@ -14,37 +14,32 @@
                 <td><h5>Pair_Id</h5></td>
                 <td><h5>Start(s)</h5></td>
                 <td><h5>End(s)</h5></td>
+                <td><h5>Musicbrainz ID</h5></td>
                 
 
          </tr>
          {% for seed in patterns %}
-            {% if forloop.counter0|isEven == True %}
-                <tr>                
-                    {% if forloop.counter0 < 5  %}
-                        <td><img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"></td>
-                    {% else %}
-                        <td><img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"></td>
-                    {% endif %}
-                    
-                    <td><a href="" class="seed" data-pattern="{{seed.id}}">{{seed.id}}</a>
-                    <a href="{% url 'motif-results' seed.file.mbid seed.id %}"><img src="{% static "motifdiscovery/search.png" %}" width="20" height="12"></a>
-                    </td>
-                    <td>{{seed.start_time|roundOff}}</td>
-                    <td>{{seed.end_time|roundOff}}</td>
-                     <td><a href="" class="seed" data-pattern="{{patterns|lookup:forloop.counter|getId}}">{{patterns|lookup:forloop.counter|getId}}</a>
-                    <a href="{% url 'motif-results' seed.file.mbid patterns|lookup:forloop.counter|getId %}"><img src="{% static "motifdiscovery/search.png" %}" width="20" height="12"></a>
-                    </td>
-                    <td>{{patterns|lookup:forloop.counter|getStr|roundOff}}</td>
-                    <td>{{patterns|lookup:forloop.counter|getEnd|roundOff}}</td>
+        
+            <tr>                
+                {% if forloop.counter0 < 5  %}
+                    <td><img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"></td>
+                {% else %}
+                    <td><img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"></td>
+                {% endif %}
+                
+                <td><a href="" class="seed" data-pattern="{{seed.id}}">{{seed.source.id}}</a></td>
+                <td>{{seed.source.start_time|roundOff}}</td>
+                <td>{{seed.source.end_time|roundOff}}</td>
+                
+                <td><a href="" class="seed" data-pattern="{{seed.target.id}}">{{seed.target.id}}</a></td>
+                <td>{{seed.target.start_time|roundOff}}</td>
+                <td>{{seed.target.end_time|roundOff}}</td>
+                <td><a href = "http://musicbrainz.org/recording/{{seed.target.file.mbid}}">{{seed.target.file.mbid}}</a></td>
 
             </tr>
-           {% else %}
-           {% endif %}
         {% endfor %}
          </table>
         </ul>
-        
-        
         
         
         <script type="text/javascript">
@@ -103,12 +98,12 @@
 We obtain melodic similarity thresholds using expert feedback (explanation in the submitted article) and indicate similar by <img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"> and not similar by <img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"><br/>
 *Time stamps are rounded off to 1 decimal point just for the sake of displaying
 {% endblock %}
-
 {% block nav %}
 <li><a href="{% url 'motif-main'%}">Browsing options</a></li>
 <li><a href="{% url 'motif-artists'%}">Artist list </a></li>
 <li><a>Releases </a></li>
 <li><a href="{% url 'motif-release' recording.concert_set.get.mbid %}">Recordings</a></li>
+<li><a href="{% url 'motif-seeds' recording.mbid %}">Seeds</a></li>
 <br>
 <br>
 <a href="" id="stop">Stop Audio</a><p>
