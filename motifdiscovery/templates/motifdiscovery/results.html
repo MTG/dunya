@@ -15,6 +15,7 @@
                 <td><h5>Start(s)</h5></td>
                 <td><h5>End(s)</h5></td>
                 <td><h5>Musicbrainz ID</h5></td>
+                <td><h5>Distance</h5></td>
                 
 
          </tr>
@@ -35,6 +36,7 @@
                 <td>{{seed.target.start_time|roundOff}}</td>
                 <td>{{seed.target.end_time|roundOff}}</td>
                 <td><a href = "http://musicbrainz.org/recording/{{seed.target.file.mbid}}">{{seed.target.file.mbid}}</a></td>
+                <td>{{seed.distance|roundOff}}</td>
 
             </tr>
         {% endfor %}

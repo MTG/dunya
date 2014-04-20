@@ -1,5 +1,12 @@
 {% extends "motifdiscovery/base.html" %}
 {% block body %}
     <h2>Browse discovered melodic patterns navigating through {artist->releases->recordings->seed patterns->search patterns}</h2>
-       <a href="{% url 'motif-artists' %}">List all artist</a>        
+       <a href="{% url 'motif-artists' %}">List all artist</a>
+       
+       <br/>
+       <br/>
+       <br/>
+       <br/>
+    <h2>Browse most similar melodic pattern pairs</h2>
+       <a href="{% url 'motif-similar' %}">List most similar patterns</a>
 {% endblock %}
