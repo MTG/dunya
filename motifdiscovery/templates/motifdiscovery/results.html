@@ -18,24 +18,24 @@
                 <th>Distance</th>
 
          </tr>
-         {% for seed in patterns %}
+         {% for match in matches %}
         
             <tr>                
-                {% if seed.distance < 10000  %}
+                {% if match.distance < 10000  %}
                     <td><img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"></td>
                 {% else %}
                     <td><img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"></td>
                 {% endif %}
                 
-                <td><a href="" class="seed" data-pattern="{{seed.id}}">{{seed.source.id}}</a></td>
-                <td>{{seed.source.start_time|roundOff}}</td>
-                <td>{{seed.source.end_time|roundOff}}</td>
+                <td><a href="" class="seed" data-playback="{{match.source.segment.get_absolute_url}}">{{match.source.id}}</a></td>
+                <td>{{match.source.start_time|floatformat:1}}</td>
+                <td>{{match.source.end_time|floatformat:1}}</td>
                 
-                <td><a href="" class="seed" data-pattern="{{seed.target.id}}">{{seed.target.id}}</a></td>
-                <td>{{seed.target.start_time|roundOff}}</td>
-                <td>{{seed.target.end_time|roundOff}}</td>
-                <td><a href = "http://musicbrainz.org/recording/{{seed.target.file.mbid}}">{{seed.target.file.mbid}}</a></td>
-                <td>{{seed.distance|roundOff}}</td>
+                <td><a href="" class="seed" data-playback="{{match.target.segment.get_absolute_url}}">{{match.target.id}}</a></td>
+                <td>{{match.target.start_time|floatformat:1}}</td>
+                <td>{{match.target.end_time|floatformat:1}}</td>
+                <td><a href = "http://musicbrainz.org/recording/{{match.target.file.mbid}}">{{match.target.file.mbid}}</a></td>
+                <td>{{match.distance|floatformat:2}}</td>
 
             </tr>
         {% endfor %}
@@ -44,54 +44,30 @@
         
         
         <script type="text/javascript">
-            $(function() {
-                var mbid = '{{patterns.0.file.mbid}}';
+        $(function() {
                 soundManager.setup({
                     url: '{% static 'motifdiscovery/swf' %}',
                     preferFlash: false,
-                    onready:  function() {
-                    },
                 });
 
             $(".seed").click(function(e) {
-                    e.preventDefault();
-                    var seed = $(this).data('pattern');
-                    var mbid = $(this).data('mbid');
-                    var start = parseInt($(this).data('start')) * 1000;
-                    var end = parseInt($(this).data('end')) * 1000;
+                e.preventDefault();
+                var playbackurl = $(this).data('playback');
 
-                         var sound = soundManager.createSound({
-                             id: 'sound'+mbid,
-                             url: 'http://dunya.compmusic.upf.edu/document/by-id/'+mbid+'.mp3',
+                var sound = soundManager.createSound({
+                    url: playbackurl,
+                    autoLoad: true
+                });
 
-            position: start,
-            from: start,
-            to: end,
-							 autoLoad: true
-                         });
-						console.debug("mbid");
-						console.debug(mbid);
-						console.debug("start");
-						console.debug(start);
-						console.debug(end);
-					sound.unload();
+                sound.play();
+            }); 
 
-        sound.play({
-            from: start,
-            position: start,
-            to: end,
-            onstop: function() {
-                soundManager._writeDebug('sound stopped at position ' + this.position);
-            }
+            $("#stop").click(function(e) {
+                e.preventDefault();
+                soundManager.stopAll();
+            });
+
         });
-                    }); 
-    $("#stop").click(function(e) {
-        e.preventDefault();
-        soundManager.stopAll();
-    });
-
-});
-        
         </script>
 
 {% endblock %}
@@ -102,7 +78,7 @@ We obtain melodic similarity thresholds using expert feedback (explanation in th
 {% block nav %}
 <li><a href="{% url 'motif-main'%}">Browsing options</a></li>
 <li><a href="{% url 'motif-artists'%}">Artist list </a></li>
-<li><a>Releases </a></li>
+<li><a href="{% url 'motif-artist' recording.concert_set.all.0.artists.all.0.mbid %}">Releases</a></li>
 <li><a href="{% url 'motif-release' recording.concert_set.get.mbid %}">Recordings</a></li>
 <li><a href="{% url 'motif-seeds' recording.mbid %}">Seeds</a></li>
 <br>

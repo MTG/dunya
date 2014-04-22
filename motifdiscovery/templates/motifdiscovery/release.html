@@ -9,5 +9,5 @@
 {% block nav %}
 <li><a href="{% url 'motif-main'%}">Browsing options</a></li>
 <li><a href="{% url 'motif-artists'%}">Artist list </a></li>
-<li><a>Releases </a></li>
+<li><a href="{% url 'motif-artist' release.artists.all.0.mbid %}">Releases</a></li>
 {% endblock %}  
