@@ -58,12 +58,12 @@ def work(request, uuid):
           }
     return render(request, "hindustani/work.html", ret)
 
-def laay(request, laayid):
-    laay = get_object_or_404(models.Laay, pk=laayid)
+def laya(request, layaid):
+    laya = get_object_or_404(models.Laya, pk=layaid)
 
-    ret = {"laay": laay
+    ret = {"laya": laya
           }
-    return render(request, "hindustani/laay.html", ret)
+    return render(request, "hindustani/laya.html", ret)
 
 def raag(request, raagid):
     raag = get_object_or_404(models.Raag, pk=raagid)

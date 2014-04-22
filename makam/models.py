@@ -35,13 +35,16 @@ class MakamStyle(object):
                 "instrument": Instrument
                 }[key]
 
+class ArtistAlias(MakamStyle, data.models.ArtistAlias):
+    pass
+
 class Artist(MakamStyle, data.models.Artist):
     pass
 
-class Composer(MakamStyle, data.models.Composer):
+class ComposerAlias(MakamStyle, data.models.ComposerAlias):
     pass
 
-class Lyricist(MakamStyle, data.models.Composer):
+class Composer(MakamStyle, data.models.Composer):
     pass
 
 class Release(MakamStyle, data.models.Release):
@@ -120,12 +123,10 @@ class Form(models.Model):
         return reverse('makam-form', args=[str(self.id)]) 
 
 class Work(MakamStyle, data.models.Work):
-
-    lyricist = models.ManyToManyField('Lyricist', blank=True, null=True)
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
-    makam = models.ManyToManyField(Makam)
-    usul = models.ManyToManyField(Usul)
-    form = models.ForeignKey(Form)
+    makam = models.ManyToManyField(Makam, blank=True, null=True)
+    usul = models.ManyToManyField(Usul, blank=True, null=True)
+    form = models.ManyToManyField(Form, blank=True, null=True)
     is_taksim = models.BooleanField(default=False)
 

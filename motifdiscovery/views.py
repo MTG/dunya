@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 import carnatic
 from motifdiscovery import models
+from sendfile import sendfile
+import os
 
 def main(request):
     return render(request, "motifdiscovery/index.html")
@@ -47,3 +49,9 @@ def results(request, uuid, seedid):
 
 def similar(request):
     return render(request, "motifdiscovery/similar.html")
+
+def servesegment(request, segmentid):
+    seg = get_object_or_404(models.Segment, pk=segmentid)
+    fname = os.path.join("/serve", seg.segment_path)
+    response = sendfile(request, fname, mimetype="audio/mpeg")
+    return response

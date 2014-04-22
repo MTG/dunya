@@ -120,6 +120,7 @@ class Artist(BaseModel):
     )
     TYPE_CHOICES = (
         ('P', 'Person'),
+        #('C', 'Composer'),
         ('G', 'Group')
     )
     name = models.CharField(max_length=200)
@@ -191,6 +192,17 @@ class Artist(BaseModel):
             ret.append((c, theperf))
         return ret
 
+class ArtistAlias(models.Model):
+    class Meta:
+        abstract = True
+    artist = models.ForeignKey("Artist", related_name="aliases")
+    alias = models.CharField(max_length=100)
+    primary = models.BooleanField(default=False)
+    locale = models.CharField(max_length=10, blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s (alias for %s)" % (self.alias, self.artist)
+
 class Release(BaseModel):
     missing_image = "concert.jpg"
 
@@ -221,7 +233,7 @@ class Release(BaseModel):
         return u"%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
-        viewname = "%s-concert" % (self.get_style(), )
+        viewname = "%s-release" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid])
 
     def get_musicbrainz_url(self):
@@ -276,7 +288,8 @@ class Work(BaseModel):
         abstract = True
     title = models.CharField(max_length=100)
     mbid = UUIDField(blank=True, null=True)
-    composer = models.ForeignKey('Composer', blank=True, null=True)
+    composers = models.ManyToManyField('Composer', blank=True, null=True, related_name="works")
+    lyricists = models.ManyToManyField('Composer', blank=True, null=True, related_name="lyric_works")
 
     def __unicode__(self):
         return self.title
@@ -299,7 +312,7 @@ class Work(BaseModel):
 class Recording(BaseModel):
     class Meta:
         abstract = True
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
@@ -407,6 +420,17 @@ class Composer(BaseModel):
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid])
+
+class ComposerAlias(models.Model):
+    class Meta:
+        abstract = True
+    composer = models.ForeignKey("Composer", related_name="aliases")
+    alias = models.CharField(max_length=100)
+    primary = models.BooleanField(default=False)
+    locale = models.CharField(max_length=10, blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s (alias for %s)" % (self.alias, self.composer)
 
 class VisitLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)

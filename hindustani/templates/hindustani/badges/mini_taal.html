@@ -1,0 +1,8 @@
+{% load staticfiles %}
+{% load hindustaniinline %}
+
+<div class="miniitem taala">
+    <div class="colorCode shadow1"></div>
+    <div class="disco"><a href="{{taal.get_absolute_url}}"><img src="{{taal.get_small_image_url}}"></a></div>
+    <label><b>{% inline_taal taal %}</b></label>
+</div>

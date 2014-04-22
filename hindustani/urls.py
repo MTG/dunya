@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     url(r'^work/%s$' % uuid_match, views.work, name='hindustani-work'),
     url(r'^raag/(?P<raagid>\d+)$', views.raag, name='hindustani-raag'),
     url(r'^taal/(?P<taalid>\d+)$', views.taal, name='hindustani-taal'),
-    url(r'^laay/(?P<laayid>\d+)$', views.laay, name='hindustani-laay'),
+    url(r'^laya/(?P<layaid>\d+)$', views.laya, name='hindustani-laya'),
     url(r'^form/(?P<formid>\d+)$', views.form, name='hindustani-form'),
     url(r'^instrument/(?P<instrumentid>\d+)$', views.instrument, name='hindustani-instrument'),
 )

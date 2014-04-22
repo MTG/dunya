@@ -57,7 +57,6 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     gurus = models.ManyToManyField("Artist", related_name="students")
-    hidden = models.BooleanField(default=False)
 
     def instruments(self):
         insts = []
@@ -151,6 +150,9 @@ class Artist(CarnaticStyle, data.models.Artist):
               }
         return ret
 
+class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
+    pass
+
 class Language(CarnaticStyle, models.Model):
     name = models.CharField(max_length=50)
 
@@ -173,6 +175,7 @@ class Sabbah(CarnaticStyle, models.Model):
     city = models.CharField(max_length=100)
 
 class ConcertRecording(models.Model):
+    """ Links a concert to a recording with an implicit ordering """
     concert = models.ForeignKey('Concert')
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n
@@ -185,6 +188,10 @@ class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
+
+    def get_absolute_url(self):
+        viewname = "%s-concert" % (self.get_style(), )
+        return reverse(viewname, args=[self.mbid])
 
     @classmethod
     def get_filter_criteria(cls):
@@ -539,3 +546,5 @@ class Composer(CarnaticStyle, data.models.Composer):
     def taalas(self):
         return Taala.objects.filter(work__composer=self).all()
 
+class ComposerAlias(CarnaticStyle, data.models.ComposerAlias):
+    pass

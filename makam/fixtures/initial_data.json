@@ -1,0 +1,4376 @@
+[
+{
+    "pk": 1, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Accordion"
+    }
+},
+{
+    "pk": 2, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Additional"
+    }
+},
+{
+    "pk": 3, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Baglama"
+    }
+},
+{
+    "pk": 4, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Bass guitar"
+    }
+},
+{
+    "pk": 5, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Bells"
+    }
+},
+{
+    "pk": 6, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Bendir"
+    }
+},
+{
+    "pk": 7, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Bugle"
+    }
+},
+{
+    "pk": 8, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Cello"
+    }
+},
+{
+    "pk": 9, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Clarinet"
+    }
+},
+{
+    "pk": 10, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Classical kemen\u00e7e"
+    }
+},
+{
+    "pk": 11, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Cornamuse"
+    }
+},
+{
+    "pk": 12, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Daf"
+    }
+},
+{
+    "pk": 13, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Daire"
+    }
+},
+{
+    "pk": 14, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Darbuka"
+    }
+},
+{
+    "pk": 15, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Double bass / contrabass / acoustic upright bass"
+    }
+},
+{
+    "pk": 16, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Drums"
+    }
+},
+{
+    "pk": 17, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Duduk"
+    }
+},
+{
+    "pk": 18, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Guest"
+    }
+},
+{
+    "pk": 19, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Guitar"
+    }
+},
+{
+    "pk": 20, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Guitars"
+    }
+},
+{
+    "pk": 21, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Harpsichord"
+    }
+},
+{
+    "pk": 22, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Kanun"
+    }
+},
+{
+    "pk": 23, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Kemenche"
+    }
+},
+{
+    "pk": 24, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Keyboard"
+    }
+},
+{
+    "pk": 25, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Kud\u00fcm"
+    }
+},
+{
+    "pk": 26, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Lute"
+    }
+},
+{
+    "pk": 27, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Nai"
+    }
+},
+{
+    "pk": 28, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Ney"
+    }
+},
+{
+    "pk": 29, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Other drums"
+    }
+},
+{
+    "pk": 30, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Other instruments"
+    }
+},
+{
+    "pk": 31, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Other percussion"
+    }
+},
+{
+    "pk": 32, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Oud"
+    }
+},
+{
+    "pk": 33, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Pan flute"
+    }
+},
+{
+    "pk": 34, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Percussion"
+    }
+},
+{
+    "pk": 35, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Piano"
+    }
+},
+{
+    "pk": 36, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Rebab"
+    }
+},
+{
+    "pk": 37, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Saz"
+    }
+},
+{
+    "pk": 38, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Solo"
+    }
+},
+{
+    "pk": 39, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Strings"
+    }
+},
+{
+    "pk": 40, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Viola"
+    }
+},
+{
+    "pk": 41, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Viola d'amore"
+    }
+},
+{
+    "pk": 42, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Viola da gamba"
+    }
+},
+{
+    "pk": 43, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Virginal"
+    }
+},
+{
+    "pk": 44, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Woodwind"
+    }
+},
+{
+    "pk": 45, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Yayl\u0131 tanbur"
+    }
+},
+{
+    "pk": 46, 
+    "model": "makam.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "Zurna"
+    }
+},
+{
+    "pk": 1, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "MakamAdi"
+    }
+},
+{
+    "pk": 2, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "(Belirsiz)"
+    }
+},
+{
+    "pk": 3, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acem"
+    }
+},
+{
+    "pk": 4, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acem Zemzeme"
+    }
+},
+{
+    "pk": 5, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acema\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 6, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acemb\u00fbselik"
+    }
+},
+{
+    "pk": 7, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acemk\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 8, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acemli Yeg\u00e2h"
+    }
+},
+{
+    "pk": 9, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acem-Nevr\u00fbz"
+    }
+},
+{
+    "pk": 10, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acem-Rast"
+    }
+},
+{
+    "pk": 11, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Acemtarab"
+    }
+},
+{
+    "pk": 12, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u00c2heng-i Tar\u00e2b"
+    }
+},
+{
+    "pk": 13, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ak-D\u00fcg\u00e2h"
+    }
+},
+{
+    "pk": 14, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Anberef\u015f\u00e2n"
+    }
+},
+{
+    "pk": 15, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arab\u00e2n"
+    }
+},
+{
+    "pk": 16, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arab\u00e2nb\u00fbselik"
+    }
+},
+{
+    "pk": 17, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arab\u00e2nk\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 18, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ar\u00e2m-\u0131 Can"
+    }
+},
+{
+    "pk": 19, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ar\u00e2m-\u0131 Dil"
+    }
+},
+{
+    "pk": 20, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arazb\u00e2r"
+    }
+},
+{
+    "pk": 21, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arazb\u00e2r Zemzeme"
+    }
+},
+{
+    "pk": 22, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arazb\u00e2rb\u00fbselik"
+    }
+},
+{
+    "pk": 23, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Arazb\u00e2rek"
+    }
+},
+{
+    "pk": 24, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "A\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 25, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "A\u015f\u00eer\u00e2n Zemzeme"
+    }
+},
+{
+    "pk": 26, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "A\u015f\u00eer\u00e2n-M\u00e2ye"
+    }
+},
+{
+    "pk": 27, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "A\u015fkefz\u00e2"
+    }
+},
+{
+    "pk": 28, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bahr-i N\u00e2zik"
+    }
+},
+{
+    "pk": 29, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bend-i Hisar"
+    }
+},
+{
+    "pk": 30, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Beste-Hicaz"
+    }
+},
+{
+    "pk": 31, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Beste-Hisar"
+    }
+},
+{
+    "pk": 32, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Beste-Isfah\u00e2n"
+    }
+},
+{
+    "pk": 33, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bestenig\u00e2r"
+    }
+},
+{
+    "pk": 34, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bey\u00e2t\u00ee"
+    }
+},
+{
+    "pk": 35, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bey\u00e2t\u00ee R\u00fby-i Acem"
+    }
+},
+{
+    "pk": 36, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bey\u00e2t\u00ee-Arab\u00e2n"
+    }
+},
+{
+    "pk": 37, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bey\u00e2ti-Arab\u00e2nb\u00fbselik"
+    }
+},
+{
+    "pk": 38, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bey\u00e2t\u00ee-Arab\u00e2nk\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 39, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bey\u00e2t\u00eeb\u00fbselik"
+    }
+},
+{
+    "pk": 40, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Bezm-i Tar\u00e2b"
+    }
+},
+{
+    "pk": 41, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fbselik"
+    }
+},
+{
+    "pk": 42, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fbselik (B\u00fbselik'te)"
+    }
+},
+{
+    "pk": 43, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fbselik (\u00c7arg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 44, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fbselik (H\u00fcseyn\u00eea\u015f\u00eer\u00e2n'da)"
+    }
+},
+{
+    "pk": 45, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fbselik (Yeg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 46, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fbselika\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 47, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "B\u00fcz\u00fcrk"
+    }
+},
+{
+    "pk": 48, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Canfez\u00e2"
+    }
+},
+{
+    "pk": 49, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u00c7arg\u00e2h"
+    }
+},
+{
+    "pk": 50, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u00c7arg\u00e2h (H\u00fcseyn\u00eea\u015f\u00eer\u00e2n'da)"
+    }
+},
+{
+    "pk": 51, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u00c7arg\u00e2h (Rast'ta)"
+    }
+},
+{
+    "pk": 52, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u00c7arg\u00e2h (Yeni)"
+    }
+},
+{
+    "pk": 53, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u00c7ehar-Ag\u00e2zin"
+    }
+},
+{
+    "pk": 54, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dani\u015fver\u00e2n"
+    }
+},
+{
+    "pk": 55, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dild\u00e2r"
+    }
+},
+{
+    "pk": 56, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dil-Efr\u00fbz"
+    }
+},
+{
+    "pk": 57, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dilke\u015f"
+    }
+},
+{
+    "pk": 58, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dilke\u015fh\u00e2ver\u00e2n"
+    }
+},
+{
+    "pk": 59, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dilke\u015f\u00eede"
+    }
+},
+{
+    "pk": 60, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dilk\u00fc\u015f\u00e2"
+    }
+},
+{
+    "pk": 61, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dilnev\u00e2z"
+    }
+},
+{
+    "pk": 62, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Dilni\u015f\u00een"
+    }
+},
+{
+    "pk": 63, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "D\u00fcg\u00e2h"
+    }
+},
+{
+    "pk": 64, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "D\u00fcg\u00e2hb\u00fbselik"
+    }
+},
+{
+    "pk": 65, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "D\u00fcg\u00e2h-M\u00e2ye"
+    }
+},
+{
+    "pk": 66, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "D\u00fc\u015fems"
+    }
+},
+{
+    "pk": 67, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Eski Sipihr"
+    }
+},
+{
+    "pk": 68, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evc\u00e2r\u00e2"
+    }
+},
+{
+    "pk": 69, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7"
+    }
+},
+{
+    "pk": 70, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7 Bahr-i N\u00e2zik"
+    }
+},
+{
+    "pk": 71, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7 H\u00fbz\u00ee"
+    }
+},
+{
+    "pk": 72, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7 R\u00fby-i Nev\u00e2"
+    }
+},
+{
+    "pk": 73, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7b\u00fbselik"
+    }
+},
+{
+    "pk": 74, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7k\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 75, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7-M\u00e2ye"
+    }
+},
+{
+    "pk": 76, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7-Sab\u00e2"
+    }
+},
+{
+    "pk": 77, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Evi\u00e7-\u015eevk"
+    }
+},
+{
+    "pk": 78, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ferahfez\u00e2"
+    }
+},
+{
+    "pk": 79, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ferahn\u00e2k"
+    }
+},
+{
+    "pk": 80, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ferahn\u00e2ka\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 81, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ferahn\u00fcm\u00e2"
+    }
+},
+{
+    "pk": 82, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ferahz\u00e2d"
+    }
+},
+{
+    "pk": 83, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Feth-i Ba\u011fdad"
+    }
+},
+{
+    "pk": 84, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Feth-i Belgrad"
+    }
+},
+{
+    "pk": 85, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Feth-i Dil"
+    }
+},
+{
+    "pk": 86, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Feth-i Hicaz"
+    }
+},
+{
+    "pk": 87, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Gerd\u00e2niye"
+    }
+},
+{
+    "pk": 88, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Gerd\u00e2niyeb\u00fbselik"
+    }
+},
+{
+    "pk": 89, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Gerd\u00e2niyek\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 90, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ge\u015ft\u00fc G\u00fcz\u00e2r-\u0131 Bahar"
+    }
+},
+{
+    "pk": 91, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Geve\u015ft"
+    }
+},
+{
+    "pk": 92, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Gonca-i R\u00e2n\u00e2"
+    }
+},
+{
+    "pk": 93, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fcldeste"
+    }
+},
+{
+    "pk": 94, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fcliz\u00e2r"
+    }
+},
+{
+    "pk": 95, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fcliz\u00e2rb\u00fbselik"
+    }
+},
+{
+    "pk": 96, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fcln\u00e2ri"
+    }
+},
+{
+    "pk": 97, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fclr\u00fbh"
+    }
+},
+{
+    "pk": 98, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fcl\u015fen-i Vef\u00e2"
+    }
+},
+{
+    "pk": 99, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "G\u00fclz\u00e2r"
+    }
+},
+{
+    "pk": 100, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00e2ver"
+    }
+},
+{
+    "pk": 101, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Heftg\u00e2h"
+    }
+},
+{
+    "pk": 102, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz"
+    }
+},
+{
+    "pk": 103, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz Zemzeme"
+    }
+},
+{
+    "pk": 104, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaza\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 105, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazb\u00fbselik"
+    }
+},
+{
+    "pk": 106, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazb\u00fbselik (Nev\u00e2'da)"
+    }
+},
+{
+    "pk": 107, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz-B\u00fcz\u00fcrk"
+    }
+},
+{
+    "pk": 108, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz-Dilke\u015f"
+    }
+},
+{
+    "pk": 109, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazeyn"
+    }
+},
+{
+    "pk": 110, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz-H\u00fcm\u00e2y\u00fbn"
+    }
+},
+{
+    "pk": 111, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hic\u00e2z\u00ee Acem"
+    }
+},
+{
+    "pk": 112, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hic\u00e2z\u00ee Irak"
+    }
+},
+{
+    "pk": 113, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hic\u00e2z\u00ee Muh\u00e2lif"
+    }
+},
+{
+    "pk": 114, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hic\u00e2z\u00ee R\u00fbmi"
+    }
+},
+{
+    "pk": 115, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hic\u00e2z\u00ee T\u00fcrk\u00ee"
+    }
+},
+{
+    "pk": 116, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hic\u00e2z\u00ee U\u015f\u015fak"
+    }
+},
+{
+    "pk": 117, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazk\u00e2r"
+    }
+},
+{
+    "pk": 118, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazk\u00e2rb\u00fbselik"
+    }
+},
+{
+    "pk": 119, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazk\u00e2r-\u0131 Kad\u00eem"
+    }
+},
+{
+    "pk": 120, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicazk\u00e2rl\u0131 K\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 121, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz-Uzz\u00e2l"
+    }
+},
+{
+    "pk": 122, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hicaz-Zirg\u00fcle"
+    }
+},
+{
+    "pk": 123, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hisar"
+    }
+},
+{
+    "pk": 124, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hisar Vech-i \u015eehn\u00e2z"
+    }
+},
+{
+    "pk": 125, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Hisarb\u00fbselik"
+    }
+},
+{
+    "pk": 126, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Horasan"
+    }
+},
+{
+    "pk": 127, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Horos\u00e2n\u00ee Bey\u00e2t\u00ee"
+    }
+},
+{
+    "pk": 128, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ho\u015f-\u00c2ver"
+    }
+},
+{
+    "pk": 129, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fbz\u00ee"
+    }
+},
+{
+    "pk": 130, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcd\u00e2vendig\u00e2r"
+    }
+},
+{
+    "pk": 131, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcseyn\u00ee"
+    }
+},
+{
+    "pk": 132, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcseyn\u00ee G\u00fcliz\u00e2r"
+    }
+},
+{
+    "pk": 133, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcseyn\u00ee Zemzeme"
+    }
+},
+{
+    "pk": 134, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcseyn\u00ee-Arab\u00e2n"
+    }
+},
+{
+    "pk": 135, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcseyn\u00eea\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 136, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fcseyn\u00eeb\u00fbselik"
+    }
+},
+{
+    "pk": 137, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fczzam"
+    }
+},
+{
+    "pk": 138, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fczzam (N\u00eemhicaz'da)"
+    }
+},
+{
+    "pk": 139, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fczzam (N\u00eemzeng\u00fble'de)"
+    }
+},
+{
+    "pk": 140, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "H\u00fczzam-\u0131 Ced\u00eed"
+    }
+},
+{
+    "pk": 141, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Irak"
+    }
+},
+{
+    "pk": 142, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Iraka\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 143, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2n"
+    }
+},
+{
+    "pk": 144, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2n R\u00fby-i Nev\u00e2"
+    }
+},
+{
+    "pk": 145, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2n Zemzeme"
+    }
+},
+{
+    "pk": 146, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2nb\u00fbselik"
+    }
+},
+{
+    "pk": 147, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2nek"
+    }
+},
+{
+    "pk": 148, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2n-\u0131 Cedid"
+    }
+},
+{
+    "pk": 149, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Isfah\u00e2n\u00ee "
+    }
+},
+{
+    "pk": 150, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u0130br\u00e2him\u00ee"
+    }
+},
+{
+    "pk": 151, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Karaba\u011f\u0131"
+    }
+},
+{
+    "pk": 152, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Karc\u0131\u011far"
+    }
+},
+{
+    "pk": 153, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Keb\u00fcter"
+    }
+},
+{
+    "pk": 154, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fb\u00e7ek"
+    }
+},
+{
+    "pk": 155, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fb\u00e7eknev\u00e2"
+    }
+},
+{
+    "pk": 156, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 157, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fcrd\u00ee (Acema\u015f\u00eer\u00e2n'da)"
+    }
+},
+{
+    "pk": 158, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fcrd\u00ee (N\u00eemhisar'da)"
+    }
+},
+{
+    "pk": 159, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fcrd\u00ee (Zeng\u00fbleli)"
+    }
+},
+{
+    "pk": 160, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fcrd\u00ee-Gerd\u00e2niye"
+    }
+},
+{
+    "pk": 161, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "K\u00fcrd\u00eelihicazk\u00e2r"
+    }
+},
+{
+    "pk": 162, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "L\u00e2leg\u00fcl"
+    }
+},
+{
+    "pk": 163, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2hur"
+    }
+},
+{
+    "pk": 164, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2hurb\u00fbselik"
+    }
+},
+{
+    "pk": 165, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2hurh\u00e2n"
+    }
+},
+{
+    "pk": 166, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2ver"
+    }
+},
+{
+    "pk": 167, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2ver\u00e2"
+    }
+},
+{
+    "pk": 168, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2ver\u00e2\u00fcnnehr"
+    }
+},
+{
+    "pk": 169, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00e2ye"
+    }
+},
+{
+    "pk": 170, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Meclis Efr\u00fbz"
+    }
+},
+{
+    "pk": 171, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muh\u00e2lif"
+    }
+},
+{
+    "pk": 172, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muh\u00e2lif-i Irak"
+    }
+},
+{
+    "pk": 173, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muh\u00e2lif-i Rast"
+    }
+},
+{
+    "pk": 174, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muh\u00e2lif-i U\u015f\u015fak"
+    }
+},
+{
+    "pk": 175, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muhayyer"
+    }
+},
+{
+    "pk": 176, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muhayyer S\u00fcnb\u00fcle"
+    }
+},
+{
+    "pk": 177, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muhayyerb\u00fbselik"
+    }
+},
+{
+    "pk": 178, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muhayyerk\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 179, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Muhayyer-Zeng\u00fble"
+    }
+},
+{
+    "pk": 180, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00fcberka"
+    }
+},
+{
+    "pk": 181, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00fcrekkep Isfahan"
+    }
+},
+{
+    "pk": 182, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00fcselles"
+    }
+},
+{
+    "pk": 183, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00fcstear"
+    }
+},
+{
+    "pk": 184, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "M\u00fc\u015fkuye"
+    }
+},
+{
+    "pk": 185, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "N\u00e2refte"
+    }
+},
+{
+    "pk": 186, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Necd-i H\u00fcseyn\u00ee"
+    }
+},
+{
+    "pk": 187, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Neresin"
+    }
+},
+{
+    "pk": 188, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ne\u015fat\u00e2ver"
+    }
+},
+{
+    "pk": 189, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev\u00e2"
+    }
+},
+{
+    "pk": 190, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev\u00e2 Ba\u011fdat"
+    }
+},
+{
+    "pk": 191, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev\u00e2 Dilke\u015f"
+    }
+},
+{
+    "pk": 192, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev\u00e2b\u00fbselik"
+    }
+},
+{
+    "pk": 193, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev\u00e2k\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 194, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev\u00e2zi\u015f"
+    }
+},
+{
+    "pk": 195, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Neved\u00e2"
+    }
+},
+{
+    "pk": 196, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nev'eser"
+    }
+},
+{
+    "pk": 197, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nevke\u015f"
+    }
+},
+{
+    "pk": 198, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nevr\u00fbz"
+    }
+},
+{
+    "pk": 199, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nevr\u00fbz\u00ee R\u00fbm\u00ee"
+    }
+},
+{
+    "pk": 200, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nig\u00e2r"
+    }
+},
+{
+    "pk": 201, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nih\u00e2vend-i Keb\u00eer"
+    }
+},
+{
+    "pk": 202, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nih\u00e2vend-i R\u00fbm\u00ee"
+    }
+},
+{
+    "pk": 203, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nih\u00e2vent"
+    }
+},
+{
+    "pk": 204, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nih\u00e2vent (Yeg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 205, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nikr\u00eez"
+    }
+},
+{
+    "pk": 206, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nikr\u00eez (\u00c7arg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 207, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Nikr\u00eez (Yeg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 208, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ni\u015f\u00e2bur"
+    }
+},
+{
+    "pk": 209, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ni\u015f\u00e2burek"
+    }
+},
+{
+    "pk": 210, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ni\u015f\u00e2bureyn"
+    }
+},
+{
+    "pk": 211, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "N\u00fb\u015fing\u00fcl"
+    }
+},
+{
+    "pk": 212, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "N\u00fch\u00fcft"
+    }
+},
+{
+    "pk": 213, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Pen\u00e7g\u00e2h"
+    }
+},
+{
+    "pk": 214, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Pen\u00e7g\u00e2h-\u0131 Asl"
+    }
+},
+{
+    "pk": 215, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Pen\u00e7g\u00e2h-\u0131 Z\u00e2id"
+    }
+},
+{
+    "pk": 216, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Perr-i Zerrin"
+    }
+},
+{
+    "pk": 217, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Pesend\u00eede"
+    }
+},
+{
+    "pk": 218, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Peyk-i Ne\u015fat"
+    }
+},
+{
+    "pk": 219, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Peyk-i Saf\u00e2"
+    }
+},
+{
+    "pk": 220, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "R\u00e2hatfez\u00e2"
+    }
+},
+{
+    "pk": 221, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rahat\u00fclervah"
+    }
+},
+{
+    "pk": 222, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "R\u00e2mi\u015f-i Can"
+    }
+},
+{
+    "pk": 223, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast"
+    }
+},
+{
+    "pk": 224, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast (\u00c7arg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 225, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast (Nev\u00e2'da)"
+    }
+},
+{
+    "pk": 226, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rasta\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 227, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rastdil\u00e2r\u00e2"
+    }
+},
+{
+    "pk": 228, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-H\u00e2ver\u00e2n"
+    }
+},
+{
+    "pk": 229, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-\u0131 \u00c2tik"
+    }
+},
+{
+    "pk": 230, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-\u0131 Ced\u00eed"
+    }
+},
+{
+    "pk": 231, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-\u0131 R\u00fbm\u00ee"
+    }
+},
+{
+    "pk": 232, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-\u0131 Sag\u00eer"
+    }
+},
+{
+    "pk": 233, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-\u0131 Sult\u00e2n\u00ee"
+    }
+},
+{
+    "pk": 234, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rastk\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 235, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rast-M\u00e2ye"
+    }
+},
+{
+    "pk": 236, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Reh\u00e2v\u00ee"
+    }
+},
+{
+    "pk": 237, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Rekb-i Z\u00e2vil"
+    }
+},
+{
+    "pk": 238, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Reng-i Dil"
+    }
+},
+{
+    "pk": 239, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Revn\u00e2kn\u00fcm\u00e2"
+    }
+},
+{
+    "pk": 240, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Reyy\u00e2"
+    }
+},
+{
+    "pk": 241, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Ruhn\u00fcvaz"
+    }
+},
+{
+    "pk": 242, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "R\u00fby-i Ir\u00e2k"
+    }
+},
+{
+    "pk": 243, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "R\u00fby-idil\u00e2r\u00e2"
+    }
+},
+{
+    "pk": 244, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sab\u00e2"
+    }
+},
+{
+    "pk": 245, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sab\u00e2 (B\u00fbselik'te)"
+    }
+},
+{
+    "pk": 246, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sab\u00e2 Zemzeme"
+    }
+},
+{
+    "pk": 247, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sab\u00e2a\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 248, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sab\u00e2b\u00fbselik"
+    }
+},
+{
+    "pk": 249, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sab\u00e2k\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 250, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sazk\u00e2r"
+    }
+},
+{
+    "pk": 251, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Seg\u00e2h"
+    }
+},
+{
+    "pk": 252, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Seg\u00e2h (\u00c7arg\u00e2h'ta)"
+    }
+},
+{
+    "pk": 253, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Seg\u00e2h-Arab\u00e2n"
+    }
+},
+{
+    "pk": 254, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Seg\u00e2h-M\u00e2ye"
+    }
+},
+{
+    "pk": 255, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Selmek"
+    }
+},
+{
+    "pk": 256, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sengendaz"
+    }
+},
+{
+    "pk": 257, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sipihr"
+    }
+},
+{
+    "pk": 258, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00ee"
+    }
+},
+{
+    "pk": 259, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00ee Irak"
+    }
+},
+{
+    "pk": 260, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00eeb\u00fbselik"
+    }
+},
+{
+    "pk": 261, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00eeced\u00eed"
+    }
+},
+{
+    "pk": 262, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00eeevi\u00e7"
+    }
+},
+{
+    "pk": 263, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00eeh\u00fczzam"
+    }
+},
+{
+    "pk": 264, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00eeseg\u00e2h"
+    }
+},
+{
+    "pk": 265, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Sult\u00e2n\u00eeyeg\u00e2h"
+    }
+},
+{
+    "pk": 266, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fbzidil"
+    }
+},
+{
+    "pk": 267, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fbzidil\u00e2r\u00e2"
+    }
+},
+{
+    "pk": 268, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fbzin\u00e2k"
+    }
+},
+{
+    "pk": 269, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fbzin\u00e2k-\u0131 Nev"
+    }
+},
+{
+    "pk": 270, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fbzin\u00e2k-Zirg\u00fcle"
+    }
+},
+{
+    "pk": 271, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fcnb\u00fcle"
+    }
+},
+{
+    "pk": 272, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "S\u00fcr\u00fbrefz\u00e2"
+    }
+},
+{
+    "pk": 273, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eedarab\u00e2n"
+    }
+},
+{
+    "pk": 274, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eedd-i Sab\u00e2"
+    }
+},
+{
+    "pk": 275, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eehn\u00e2z"
+    }
+},
+{
+    "pk": 276, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eehn\u00e2zb\u00fbselik"
+    }
+},
+{
+    "pk": 277, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eehn\u00e2zh\u00e2ver\u00e2n"
+    }
+},
+{
+    "pk": 278, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eehn\u00e2z-Ni\u015f\u00e2burek"
+    }
+},
+{
+    "pk": 279, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eemsefr\u00fbz"
+    }
+},
+{
+    "pk": 280, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eeref-i Ham\u00eed\u00ee"
+    }
+},
+{
+    "pk": 281, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eerefn\u00fcm\u00e2"
+    }
+},
+{
+    "pk": 282, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevk"
+    }
+},
+{
+    "pk": 283, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevk\u00e2ver"
+    }
+},
+{
+    "pk": 284, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevkefz\u00e2"
+    }
+},
+{
+    "pk": 285, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevk-\u0131 Ced\u00eed"
+    }
+},
+{
+    "pk": 286, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevk-\u0131 Dil"
+    }
+},
+{
+    "pk": 287, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevk-i Cihan"
+    }
+},
+{
+    "pk": 288, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevk-i Ser\u00e2b"
+    }
+},
+{
+    "pk": 289, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevkn\u00fcm\u00e2"
+    }
+},
+{
+    "pk": 290, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eevkutarab"
+    }
+},
+{
+    "pk": 291, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015ein\u00e2ver"
+    }
+},
+{
+    "pk": 292, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eiraz"
+    }
+},
+{
+    "pk": 293, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015e\u00eevek\u00e2r"
+    }
+},
+{
+    "pk": 294, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015eiveke\u015f"
+    }
+},
+{
+    "pk": 295, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015e\u00eeven\u00fcm\u00e2"
+    }
+},
+{
+    "pk": 296, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "\u015e\u00fbr\u00ee"
+    }
+},
+{
+    "pk": 297, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "T\u00e2hir"
+    }
+},
+{
+    "pk": 298, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "T\u00e2hirb\u00fbselik"
+    }
+},
+{
+    "pk": 299, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Tarz-\u0131 Ced\u00eed"
+    }
+},
+{
+    "pk": 300, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Tarz-\u0131 Cih\u00e2n"
+    }
+},
+{
+    "pk": 301, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Tarz-\u0131 Nev\u00een"
+    }
+},
+{
+    "pk": 302, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Tebr\u00eez"
+    }
+},
+{
+    "pk": 303, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Tere\u015f\u015f\u00fcd"
+    }
+},
+{
+    "pk": 304, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "T\u00fcrk\u00ee Hicaz"
+    }
+},
+{
+    "pk": 305, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "T\u00fcvanger"
+    }
+},
+{
+    "pk": 306, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "U\u015f\u015fak"
+    }
+},
+{
+    "pk": 307, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "U\u015f\u015fak (B\u00fbselik'te)"
+    }
+},
+{
+    "pk": 308, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "U\u015f\u015fak (Nev\u00e2'da)"
+    }
+},
+{
+    "pk": 309, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "U\u015f\u015fak R\u00fby-i Nikr\u00eez"
+    }
+},
+{
+    "pk": 310, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "U\u015f\u015faka\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 311, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Vecd-i Dil"
+    }
+},
+{
+    "pk": 312, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Vech-i Arazb\u00e2r"
+    }
+},
+{
+    "pk": 313, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Vech-i Dil"
+    }
+},
+{
+    "pk": 314, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Vech-i \u015eehn\u00e2z"
+    }
+},
+{
+    "pk": 315, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Yeg\u00e2h"
+    }
+},
+{
+    "pk": 316, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Yeg\u00e2h-\u0131 Acem\u00ee"
+    }
+},
+{
+    "pk": 317, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Z\u00e2vil"
+    }
+},
+{
+    "pk": 318, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Z\u00e2vila\u015f\u00eer\u00e2n"
+    }
+},
+{
+    "pk": 319, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Zeng\u00fble"
+    }
+},
+{
+    "pk": 320, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Zeng\u00fbleb\u00fbselik"
+    }
+},
+{
+    "pk": 321, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Zeng\u00fbleli K\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 322, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Zevk-\u0131 Dil"
+    }
+},
+{
+    "pk": 323, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Zevkutar\u00e2b"
+    }
+},
+{
+    "pk": 324, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Zilke\u015f"
+    }
+},
+{
+    "pk": 325, 
+    "model": "makam.makam", 
+    "fields": {
+        "name": "Z\u00eerefkend"
+    }
+},
+{
+    "pk": 1, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "(Formsuz)"
+    }
+},
+{
+    "pk": 2, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "A\u011f\u0131rsem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 3, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Arana\u011fme"
+    }
+},
+{
+    "pk": 4, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ay\u00een-i\u015fer\u00eef"
+    }
+},
+{
+    "pk": 5, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Beste"
+    }
+},
+{
+    "pk": 6, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Bozlak"
+    }
+},
+{
+    "pk": 7, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Cumhuril\u00e2hi"
+    }
+},
+{
+    "pk": 8, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u00c7ocuk \u015eark\u0131s\u0131"
+    }
+},
+{
+    "pk": 9, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Destan"
+    }
+},
+{
+    "pk": 10, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "D\u00eev\u00e2n"
+    }
+},
+{
+    "pk": 11, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Durak"
+    }
+},
+{
+    "pk": 12, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Et\u00fcd"
+    }
+},
+{
+    "pk": 13, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ezan"
+    }
+},
+{
+    "pk": 14, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Fantezi"
+    }
+},
+{
+    "pk": 15, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Gazel"
+    }
+},
+{
+    "pk": 16, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "G\u00fcvende"
+    }
+},
+{
+    "pk": 17, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Halk T\u00fcrk\u00fcs\u00fc"
+    }
+},
+{
+    "pk": 18, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Hutbe"
+    }
+},
+{
+    "pk": 19, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u0130l\u00e2h\u00ee"
+    }
+},
+{
+    "pk": 20, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kalender\u00ee"
+    }
+},
+{
+    "pk": 21, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kamet"
+    }
+},
+{
+    "pk": 22, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kanto"
+    }
+},
+{
+    "pk": 23, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r"
+    }
+},
+{
+    "pk": 24, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r\u00e7e"
+    }
+},
+{
+    "pk": 25, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r-\u0131 N\u00e2t\u0131k"
+    }
+},
+{
+    "pk": 26, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r-\u0131 Nev"
+    }
+},
+{
+    "pk": 27, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kar\u015f\u0131lama"
+    }
+},
+{
+    "pk": 28, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kasaphavas\u0131"
+    }
+},
+{
+    "pk": 29, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Koda"
+    }
+},
+{
+    "pk": 30, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ko\u015fma"
+    }
+},
+{
+    "pk": 31, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00f6\u00e7ek\u00e7e"
+    }
+},
+{
+    "pk": 32, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kur`\u00e2n-\u0131ker\u00eem"
+    }
+},
+{
+    "pk": 33, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00fcpe"
+    }
+},
+{
+    "pk": 34, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00fcrthavas\u0131"
+    }
+},
+{
+    "pk": 35, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Longa"
+    }
+},
+{
+    "pk": 36, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mahfels\u00fcrmesi"
+    }
+},
+{
+    "pk": 37, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mandra"
+    }
+},
+{
+    "pk": 38, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mar\u015f"
+    }
+},
+{
+    "pk": 39, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Medhal"
+    }
+},
+{
+    "pk": 40, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mehter"
+    }
+},
+{
+    "pk": 41, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mersiye"
+    }
+},
+{
+    "pk": 42, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mevl\u00eedi\u015ferif"
+    }
+},
+{
+    "pk": 43, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "M\u00ee`r\u00e2ciye"
+    }
+},
+{
+    "pk": 44, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "M\u00fcnacaat"
+    }
+},
+{
+    "pk": 45, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Na`t"
+    }
+},
+{
+    "pk": 46, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Nak\u0131\u015f"
+    }
+},
+{
+    "pk": 47, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Natipeygamber\u00ee"
+    }
+},
+{
+    "pk": 48, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Nefes"
+    }
+},
+{
+    "pk": 49, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ninni"
+    }
+},
+{
+    "pk": 50, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Oyunhavas\u0131"
+    }
+},
+{
+    "pk": 51, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u00d6rnek-\u00f6z"
+    }
+},
+{
+    "pk": 52, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Pe\u015frev"
+    }
+},
+{
+    "pk": 53, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Pop \u015eark\u0131s\u0131"
+    }
+},
+{
+    "pk": 54, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Rumelit\u00fcrk\u00fcs\u00fc"
+    }
+},
+{
+    "pk": 55, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sal\u00e2t\u0131\u00fcmmiye"
+    }
+},
+{
+    "pk": 56, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sal\u00e2t\u00fcsel\u00e2m"
+    }
+},
+{
+    "pk": 57, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Savt"
+    }
+},
+{
+    "pk": 58, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sazeseri"
+    }
+},
+{
+    "pk": 59, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sazsem\u00e2\u00eesi"
+    }
+},
+{
+    "pk": 60, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Selam"
+    }
+},
+{
+    "pk": 61, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Seyir"
+    }
+},
+{
+    "pk": 62, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sirto"
+    }
+},
+{
+    "pk": 63, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u015eark\u0131"
+    }
+},
+{
+    "pk": 64, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u015eu\u011ful"
+    }
+},
+{
+    "pk": 65, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Taksim"
+    }
+},
+{
+    "pk": 66, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tango"
+    }
+},
+{
+    "pk": 67, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tav\u015fanca"
+    }
+},
+{
+    "pk": 68, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tekb\u00eer"
+    }
+},
+{
+    "pk": 69, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Temcidm\u00fcn\u00e2c\u00e2t\u0131"
+    }
+},
+{
+    "pk": 70, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tesbih"
+    }
+},
+{
+    "pk": 71, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tesb\u00eehil\u00e2hi"
+    }
+},
+{
+    "pk": 72, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tev\u015fihil\u00e2hi"
+    }
+},
+{
+    "pk": 73, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "T\u00fcrk\u00fc"
+    }
+},
+{
+    "pk": 74, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Uzunhava"
+    }
+},
+{
+    "pk": 75, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 76, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Zeybek"
+    }
+},
+{
+    "pk": 1, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "1+2+2+1+2+2+1+2"
+    }
+},
+{
+    "pk": 2, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "2+2+2+2+2+2+2+1"
+    }
+},
+{
+    "pk": 3, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "2+2+3"
+    }
+},
+{
+    "pk": 4, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "2+3+2+2+2+3"
+    }
+},
+{
+    "pk": 5, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "26/2"
+    }
+},
+{
+    "pk": 6, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "3+2+2+3+3+2+3"
+    }
+},
+{
+    "pk": 7, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "3+3+3+4"
+    }
+},
+{
+    "pk": 8, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131r Aksaksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 9, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131raksak"
+    }
+},
+{
+    "pk": 10, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131raksak (9/8)"
+    }
+},
+{
+    "pk": 11, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131rayd\u0131n"
+    }
+},
+{
+    "pk": 12, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131r\u00e7enber"
+    }
+},
+{
+    "pk": 13, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131rdarb\u0131fetih"
+    }
+},
+{
+    "pk": 14, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131rd\u00fcyek"
+    }
+},
+{
+    "pk": 15, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131revfer"
+    }
+},
+{
+    "pk": 16, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "A\u011f\u0131rsenginsem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 17, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksak"
+    }
+},
+{
+    "pk": 18, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksak (9/4)"
+    }
+},
+{
+    "pk": 19, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksak II"
+    }
+},
+{
+    "pk": 20, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksaksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 21, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksaksem\u00e2\u00ee (5/8)"
+    }
+},
+{
+    "pk": 22, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksaksem\u00e2\u00ee Evferi"
+    }
+},
+{
+    "pk": 23, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Aksaksem\u00e2\u00ee II"
+    }
+},
+{
+    "pk": 24, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Art\u0131k Aksaksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 25, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Ayd\u0131n"
+    }
+},
+{
+    "pk": 26, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Ay\u00een Devr-i Rev\u00e2n\u0131"
+    }
+},
+{
+    "pk": 27, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c2zer\u00ee Y\u00fcr\u00fcksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 28, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Bekt\u00e2\u015f\u00ee Devr-i Rev\u00e2n\u0131"
+    }
+},
+{
+    "pk": 29, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Bekt\u00e2\u015f\u00ee Raks\u00e2n\u0131"
+    }
+},
+{
+    "pk": 30, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Bekt\u00e2\u015f\u00ee Raks\u0131"
+    }
+},
+{
+    "pk": 31, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Beref\u015fan"
+    }
+},
+{
+    "pk": 32, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Beref\u015fan (16/4)"
+    }
+},
+{
+    "pk": 33, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Beste Devr-i Rev\u00e2n\u0131"
+    }
+},
+{
+    "pk": 34, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Beste Devr-i Rev\u00e2n\u0131 II"
+    }
+},
+{
+    "pk": 35, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Bulgar Darb\u0131"
+    }
+},
+{
+    "pk": 36, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Cevher"
+    }
+},
+{
+    "pk": 37, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Curcuna"
+    }
+},
+{
+    "pk": 38, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7enber"
+    }
+},
+{
+    "pk": 39, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7enber (12/4)"
+    }
+},
+{
+    "pk": 40, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7eng-i Harb\u00ee"
+    }
+},
+{
+    "pk": 41, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7eng-i Harb\u00ee II"
+    }
+},
+{
+    "pk": 42, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7ifteaksak"
+    }
+},
+{
+    "pk": 43, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7ifted\u00fcyek"
+    }
+},
+{
+    "pk": 44, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u00c7iftesofyan"
+    }
+},
+{
+    "pk": 45, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Darb"
+    }
+},
+{
+    "pk": 46, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Darb"
+    }
+},
+{
+    "pk": 47, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Darb-\u0131 Fetih"
+    }
+},
+{
+    "pk": 48, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Darb-\u0131 H\u00fcner"
+    }
+},
+{
+    "pk": 49, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Darb-\u0131 K\u00fcrd\u00ee"
+    }
+},
+{
+    "pk": 50, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Darb-\u0131 T\u00fcrk\u00ee"
+    }
+},
+{
+    "pk": 51, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Ary\u00e2n"
+    }
+},
+{
+    "pk": 52, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Hind\u00ee"
+    }
+},
+{
+    "pk": 53, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Hind\u00ee (7/8)"
+    }
+},
+{
+    "pk": 54, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Hind\u00ee II"
+    }
+},
+{
+    "pk": 55, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Keb\u00eer"
+    }
+},
+{
+    "pk": 56, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Keb\u00eer (28/8)"
+    }
+},
+{
+    "pk": 57, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Rev\u00e2n"
+    }
+},
+{
+    "pk": 58, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Rev\u00e2n-\u0131 Hind\u00ee"
+    }
+},
+{
+    "pk": 59, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i S\u00fcreyy\u00e2"
+    }
+},
+{
+    "pk": 60, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i S\u00fcreyy\u00e2 Sofyan\u0131"
+    }
+},
+{
+    "pk": 61, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Turan"
+    }
+},
+{
+    "pk": 62, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Devr-i Turan II"
+    }
+},
+{
+    "pk": 63, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Dolap"
+    }
+},
+{
+    "pk": 64, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Durak Evferi"
+    }
+},
+{
+    "pk": 65, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "D\u00fcmen"
+    }
+},
+{
+    "pk": 66, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "D\u00fcyek"
+    }
+},
+{
+    "pk": 67, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "D\u00fcyek (4/4)"
+    }
+},
+{
+    "pk": 68, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "D\u00fcyek (8/16)"
+    }
+},
+{
+    "pk": 69, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "D\u00fcyek (8/4)"
+    }
+},
+{
+    "pk": 70, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Evfer"
+    }
+},
+{
+    "pk": 71, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Evs\u00e2t"
+    }
+},
+{
+    "pk": 72, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Fahte"
+    }
+},
+{
+    "pk": 73, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Fer"
+    }
+},
+{
+    "pk": 74, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Fireng-i Fer"
+    }
+},
+{
+    "pk": 75, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Frenk\u00e7\u00een"
+    }
+},
+{
+    "pk": 76, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Frenk\u00e7\u00een (12/4)"
+    }
+},
+{
+    "pk": 77, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Haf\u00eef"
+    }
+},
+{
+    "pk": 78, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Haf\u00eef (32/2)"
+    }
+},
+{
+    "pk": 79, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Haf\u00eef (32/8)"
+    }
+},
+{
+    "pk": 80, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "H\u00e2v\u00ee"
+    }
+},
+{
+    "pk": 81, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Heze\u00e7"
+    }
+},
+{
+    "pk": 82, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Heze\u00e7"
+    }
+},
+{
+    "pk": 83, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Iraksak"
+    }
+},
+{
+    "pk": 84, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u0130ki-Bir"
+    }
+},
+{
+    "pk": 85, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u0130kiz Aksak"
+    }
+},
+{
+    "pk": 86, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "K. Curcuna"
+    }
+},
+{
+    "pk": 87, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "K. Curcuna (10/16)"
+    }
+},
+{
+    "pk": 88, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Katikofti"
+    }
+},
+{
+    "pk": 89, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Lenk Fahte"
+    }
+},
+{
+    "pk": 90, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Mevlev\u00ee Evferi"
+    }
+},
+{
+    "pk": 91, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Mua\u015f\u015fer"
+    }
+},
+{
+    "pk": 92, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Muhammes"
+    }
+},
+{
+    "pk": 93, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Muhammes (16/2)"
+    }
+},
+{
+    "pk": 94, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Muhammes (16/4)"
+    }
+},
+{
+    "pk": 95, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Muhammes (32/8)"
+    }
+},
+{
+    "pk": 96, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Muzaaf Devr-i Keb\u00eer"
+    }
+},
+{
+    "pk": 97, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcrekkep N\u00eemsofyan"
+    }
+},
+{
+    "pk": 98, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcrekkep Sem\u00e2\u00ee/\u00dc\u00e7leme"
+    }
+},
+{
+    "pk": 99, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcrekkep Sofyan"
+    }
+},
+{
+    "pk": 100, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcsemmen"
+    }
+},
+{
+    "pk": 101, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcsemmen II"
+    }
+},
+{
+    "pk": 102, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcsemmen II (8/16)"
+    }
+},
+{
+    "pk": 103, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "M\u00fcsemmen III (4/16)"
+    }
+},
+{
+    "pk": 104, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Nazl\u0131 D\u00fcyek"
+    }
+},
+{
+    "pk": 105, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemberef\u015fan"
+    }
+},
+{
+    "pk": 106, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemberef\u015fan (16/8)"
+    }
+},
+{
+    "pk": 107, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eem\u00e7ember"
+    }
+},
+{
+    "pk": 108, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemdevir"
+    }
+},
+{
+    "pk": 109, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemevsat"
+    }
+},
+{
+    "pk": 110, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemhaf\u00eef"
+    }
+},
+{
+    "pk": 111, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemsak\u00eel"
+    }
+},
+{
+    "pk": 112, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemsofyan"
+    }
+},
+{
+    "pk": 113, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "N\u00eemsofyan II"
+    }
+},
+{
+    "pk": 114, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Oynak"
+    }
+},
+{
+    "pk": 115, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Oynak (9/4)"
+    }
+},
+{
+    "pk": 116, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Raksaksa\u011f\u0131"
+    }
+},
+{
+    "pk": 117, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Raksaksa\u011f\u0131 II"
+    }
+},
+{
+    "pk": 118, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Raks\u00e2n"
+    }
+},
+{
+    "pk": 119, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Raks\u00e2n"
+    }
+},
+{
+    "pk": 120, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Remel"
+    }
+},
+{
+    "pk": 121, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Remel (28/4)"
+    }
+},
+{
+    "pk": 122, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "S. T\u00fcrkaksa\u011f\u0131"
+    }
+},
+{
+    "pk": 123, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sak\u00eel"
+    }
+},
+{
+    "pk": 124, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sak\u00eel (48/2)"
+    }
+},
+{
+    "pk": 125, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 126, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sem\u00e2\u00ee (3/8)"
+    }
+},
+{
+    "pk": 127, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Senginsem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 128, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sofyan"
+    }
+},
+{
+    "pk": 129, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sofyan (4/2)"
+    }
+},
+{
+    "pk": 130, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sofyan (4/8)"
+    }
+},
+{
+    "pk": 131, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Sofyan II"
+    }
+},
+{
+    "pk": 132, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "S\u00fcreyya"
+    }
+},
+{
+    "pk": 133, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "\u015eark\u0131 Devr-i Rev\u00e2n\u0131"
+    }
+},
+{
+    "pk": 134, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Tek Vuru\u015f"
+    }
+},
+{
+    "pk": 135, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Tek Vuru\u015f (11/4)"
+    }
+},
+{
+    "pk": 136, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "T\u00fcrk Darb\u0131"
+    }
+},
+{
+    "pk": 137, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "T\u00fcrkaksa\u011f\u0131"
+    }
+},
+{
+    "pk": 138, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "T\u00fcrkaksa\u011f\u0131 II"
+    }
+},
+{
+    "pk": 139, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 140, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee (6/4)"
+    }
+},
+{
+    "pk": 141, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee II"
+    }
+},
+{
+    "pk": 142, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee II (6/4)"
+    }
+},
+{
+    "pk": 143, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksofyan"
+    }
+},
+{
+    "pk": 144, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Zafer"
+    }
+},
+{
+    "pk": 145, 
+    "model": "makam.usul", 
+    "fields": {
+        "name": "Zenc\u00eer"
+    }
+}
+]
