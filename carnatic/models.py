@@ -374,7 +374,7 @@ class Taala(data.models.BaseModel):
         return self.work_set.distinct().all()
 
     def composers(self):
-        return Composer.objects.filter(work__taala=self).distinct()
+        return Composer.objects.filter(works__taala=self).distinct()
 
     def artists(self):
         return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
