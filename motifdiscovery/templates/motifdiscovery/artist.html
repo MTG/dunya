@@ -1,7 +1,7 @@
 {% extends "motifdiscovery/base.html" %}
 {% block body %}
     <h2>Releases by {{artist.name}}</h2>
-    {% for r in artist.primary_concerts.all %}
+    {% for r in concerts %}
     <li class="b"><a href="{% url 'motif-release' r.mbid %}">{{r.title}}</a></li>
     {% endfor %}      
 {% endblock %}

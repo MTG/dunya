@@ -7,22 +7,21 @@
         <ul>
          <table>
          <tr>
-                <td><h5>Similarity</h5></td>
-                <td><h5>Seed_Id</h5></td>
-                <td><h5>Start(s)</h5></td>
-                <td><h5>End(s)</h5></td>
-                <td><h5>Pair_Id</h5></td>
-                <td><h5>Start(s)</h5></td>
-                <td><h5>End(s)</h5></td>
-                <td><h5>Musicbrainz ID</h5></td>
-                <td><h5>Distance</h5></td>
-                
+                <th>Similarity</th>
+                <th>Seed_Id</th>
+                <th>Start(s)</th>
+                <th>End(s)</th>
+                <th>Pair_Id</th>
+                <th>Start(s)</th>
+                <th>End(s)</th>
+                <th>Musicbrainz ID (searched file)</th>
+                <th>Distance</th>
 
          </tr>
          {% for seed in patterns %}
         
             <tr>                
-                {% if forloop.counter0 < 5  %}
+                {% if seed.distance < 10000  %}
                     <td><img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"></td>
                 {% else %}
                     <td><img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"></td>

@@ -1,7 +1,7 @@
 {% extends "motifdiscovery/base.html" %}
 {% block body %}
-    <h2>Tracks in {{release.title}} by XX</h2>
-    {% for t in release.tracks.all %}
+    <h2>Tracks in {{release.title}} by {{release.artists.all.0.name}}</h2>
+    {% for t in tracks %}
     <li><a href="{% url 'motif-seeds' t.mbid %}">{{t.title}}</a>
     {% endfor %}
 {% endblock %}
