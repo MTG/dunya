@@ -8,6 +8,8 @@ TEMPLATE_DEBUG = DEBUG
 # For development this is needed to automatically compile less files
 # on page access
 # pip install django-less
+#
+# import settings
 # INSTALLED_APPS = settings.INSTALLED_APPS + ('less', )
 # STATICFILES_FILTERS = settings.STATICFILES_FINDERS + ('less.finders.LessFinder', )
 # LESS_OPTIONS  = ["--source-map-map-inline", "--source-map-rootpath=/static/carnatic/css"]
