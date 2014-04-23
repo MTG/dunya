@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block body %}
 {% load app_filters %}
-<h1>Seeds for {{recording.title}}</h1>
+<h1>Search results using chosen seed from {{recording.title}}</h1>
         
         <ul>
          <table>
@@ -21,7 +21,7 @@
          {% for match in matches %}
         
             <tr>                
-                {% if match.distance < 10000  %}
+                {% if match.distance < 4000  %}
                     <td><img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"></td>
                 {% else %}
                     <td><img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"></td>
