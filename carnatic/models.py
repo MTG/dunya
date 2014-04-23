@@ -293,7 +293,7 @@ class Raaga(data.models.BaseModel):
         return self.work_set.distinct().all()
 
     def composers(self):
-        return Composer.objects.filter(work__raaga=self).distinct()
+        return Composer.objects.filter(works__raaga=self).distinct()
 
     def artists(self):
         artistmap = {}

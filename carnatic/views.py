@@ -371,13 +371,7 @@ def composerbyid(request, composerid):
 
 def composer(request, uuid):
     composer = get_object_or_404(Composer, mbid=uuid)
-    recordings = []
-    for w in composer.work_set.all():
-        recordings.extend(w.recording_set.all())
-        break
-    ret = {"composer": composer,
-		   "tracks": recordings,
-		   "filter_items": json.dumps(get_filter_items())}
+    ret = {"composer": composer}
 
     return render(request, "carnatic/composer.html", ret)
 
