@@ -176,13 +176,69 @@ class MakamTags(CompletenessBase):
         else:
             return (False, res)
 
+class HindustaniRaagTaal(CompletenessBase):
+    type = 'f'
+    templatefile = 'raagataala.html'
+    name = 'Hindustani Recording raag, taal, form, laya'
+
+    def task(self, collectionfile_id):
+        import hindustani_importer
+        hi = hindustani_importer.HindustaniReleaseImporter()
+
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
+        meta = compmusic.file_metadata(fpath)
+        m = meta["meta"]
+        recordingid = m["recordingid"]
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
+        mbrec = mbrec["recording"]
+        tags = mbrec.get("tag-list", [])
+        res = {}
+
+        raags = hi._get_raag_tags(tags)
+        taals = hi._get_taal_tags(tags)
+        layas = hi._get_laya_tags(tags)
+        forms = hi._get_form_tags(tags)
+        res["recordingid"] = recordingid
+
+        missingr = [r for r in raags if hi._get_raag(r) is None]
+        missingt = [t for t in taals if hi._get_taal(l) is None]
+        missingf = [f for f in forms if hi._get_form(f) is None]
+        missingl = [l for l in layas if hi._get_laya(l) is None]
+
+        if missingr:
+            res["missingr"] = missingr
+        if missingt:
+            res["missingt"] = missingt
+        if missingf:
+            res["missingf"] = missingf
+        if missingl:
+            res["missingl"] = missingl
+                
+        res["gotraag"] = len(raags) > 0
+        res["gottaal"] = len(taals) > 0
+        res["gotform"] = len(forms) > 0
+        res["gotlaya"] = len(layas) > 0
+        res["raag"] = raags
+        res["taal"] = taals
+        res["form"] = forms
+        res["laya"] = layas
+        r = raags and not missingr
+        t = taals and not missingt
+        f = forms and not missingf
+        l = layas and not missingl
+        if r and t and f and l:
+            return (True, res)
+        else:
+            return (False, res)
+
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
     recording page in musicbrainz have matching entries
     in the local database """
     type = 'f'
     templatefile = 'raagataala.html'
-    name = 'Recording raaga and taala'
+    name = 'Carnatic Recording raaga and taala'
 
     def task(self, collectionfile_id):
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
@@ -209,20 +265,14 @@ class RaagaTaalaFile(CompletenessBase):
             try:
                 carnatic.models.Raaga.objects.fuzzy(r)
             except carnatic.models.Raaga.DoesNotExist:
-                try:
-                    carnatic.models.RaagaAlias.objects.fuzzy(r)
-                except carnatic.models.RaagaAlias.DoesNotExist:
-                    missingr.append(r)
+                missingr.append(r)
         if missingr:
             res["missingr"] = missingr
         for t in taalas:
             try:
                 carnatic.models.Taala.objects.fuzzy(t)
             except carnatic.models.Taala.DoesNotExist:
-                try:
-                    carnatic.models.TaalaAlias.objects.fuzzy(t)
-                except carnatic.models.TaalaAlias.DoesNotExist:
-                    missingt.append(t)
+                missingt.append(t)
         if missingt:
             res["missingt"] = missingt
                 
@@ -438,6 +488,17 @@ class ReleaseRelationships(object):
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
 
+class HindustaniReleaseRelationships(ReleaseRelationships, CompletenessBase):
+    name = 'Hindustani release relationships'
+    def check_instrument(self, instrname):
+        from hindustani import models
+        try:
+            hindustani.Instrument.objects.filter(name=instrname)
+            return True
+        except models.Instrument.DoesNotExist:
+            pass
+        return False
+
 class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
     name = 'Carnatic release relationships'
     def check_instrument(self, instrname):
@@ -446,11 +507,7 @@ class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
             models.Instrument.objects.fuzzy(instrname)
             return True
         except models.Instrument.DoesNotExist:
-            try:
-                models.InstrumentAlias.objects.fuzzy(instrname)
-                return True
-            except models.InstrumentAlias.DoesNotExist:
-                pass
+            pass
         return False
 
 class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):
