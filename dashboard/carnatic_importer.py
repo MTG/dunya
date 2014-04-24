@@ -18,8 +18,7 @@ import django.utils.timezone
 
 from dashboard.log import logger
 from dashboard import release_importer
-import carnatic
-import data
+import carnatic.models
 
 import compmusic
 
@@ -96,26 +95,26 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_raaga(self, raaganame):
         try:
-            return carnatic.models.Raaga.objects.fuzzy(name=raaganame)
+            return carnatic.models.Raaga.objects.fuzzy(raaganame)
         except carnatic.models.Raaga.DoesNotExist, e:
             return None
 
     def _get_taala(self, taalaname):
         try:
-            return carnatic.models.Taala.objects.fuzzy(name=taalaname)
+            return carnatic.models.Taala.objects.fuzzy(taalaname)
         except carnatic.models.Taala.DoesNotExist, e:
             return None
 
-    def get_instrument(self, instname):
+    def _get_instrument(self, instname):
         try:
-            return carnatic.models.Instrument.objects.fuzzy(name=instname)
+            return carnatic.models.Instrument.objects.fuzzy(instname)
         except carnatic.models.Instrument.DoesNotExist:
             return None
 
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self.get_instrument(instrument)
+        instrument = self._get_instrument(instrument)
         if instrument:
             recording = carnatic.models.Recording.objects.get(mbid=recordingid)
             perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
@@ -127,7 +126,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
         logger.info("  Adding concert performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self.get_instrument(instrument)
+        instrument = self._get_instrument(instrument)
         if instrument:
             concert = carnatic.models.Concert.objects.get(mbid=releaseid)
             perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
