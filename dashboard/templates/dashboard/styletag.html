@@ -117,7 +117,7 @@ This template is generic to allow editing of raagas, taalas, and instruments
     <tr><td>
             <div data-itemid="{{r.id}}">{{r.name}}</div>
         </td>
-        {% if transliteration %}<td>{{r.transliteration}}</td>{% endif %}
+        {% if transliteration %}<td>{{r.transliteration}}{{r.common_name}}</td>{% endif %}
         {% if alias %}
         <td>
             <ul>

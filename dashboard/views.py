@@ -395,12 +395,12 @@ def hindustani_taals(request):
     return _edit_attributedata(request, data)
 
 @user_passes_test(is_staff)
-def hindustani_laays(request):
+def hindustani_layas(request):
     data = {"stylename": "Hindustani",
-            "entityname": "Laay",
-            "entityurl": "dashboard-hindustani-laays",
-            "klass": hindustani.models.Laay,
-            "aliasklass": hindustani.models.LaayAlias,
+            "entityname": "Laya",
+            "entityurl": "dashboard-hindustani-layas",
+            "klass": hindustani.models.Laya,
+            "aliasklass": hindustani.models.LayaAlias,
             "template": "dashboard/styletag.html",
             "transliteration": True # If this attribute has a transliteration
             }
