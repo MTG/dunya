@@ -20,8 +20,7 @@ from dashboard.log import logger
 from dashboard import release_importer
 import compmusic
 
-import hindustani
-import data
+import hindustani.models
 
 class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = hindustani.models.Artist

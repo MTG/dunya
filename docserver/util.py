@@ -53,10 +53,10 @@ def docserver_add_sourcefile(document_id, ftype, path):
     document = models.Document.objects.get(pk=document_id)
     try:
         sfile = models.SourceFile.objects.get(document=document, file_type=ftype)
-        collection_root = document.collection.collection_root
-        if path.startswith(collection_root):
+        root_directory = document.collection.root_directory
+        if path.startswith(root_directory):
             # If the path is absolute, remove it
-            path = path[len(collection_root):]
+            path = path[len(root_directory):]
         if path.startswith("/"):
             path = path[1:]
         sfile.path = path

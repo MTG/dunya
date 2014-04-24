@@ -22,7 +22,8 @@ import celery
 
 from dashboard import models
 from dashboard.log import logger
-from dashboard import release_importer
+from dashboard import carnatic_importer
+from dashboard import hindustani_importer
 
 import carnatic
 import compmusic
@@ -94,11 +95,11 @@ def load_musicbrainz_collection(collectionid):
     coll.add_log_message("Collection scan finished")
     return collectionid
 
-@app.task(base=ReleaseDunyaTask)
-def import_release(releasepk):
+def import_release(releasepk, ri):
     """ Import a single release into the database.
     Arguments:
-    pk: a models.MusicbrainzRelease object PK
+    releasepk: a models.MusicbrainzRelease object PK
+    ri: a release_importer object specific to this collection
     """
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
     original_ignore = release.ignore
@@ -144,16 +145,14 @@ def import_release(releasepk):
         # and to dunya
         for cfile in cfiles:
             # 3a. Import file to docserver
-            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.relativepath, cfile.recordingid)
+            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
             cfile.set_state_finished()
 
         # 3b. Import release to dunya database
         if collection.do_import:
-            # TODO: Choose a different release importer based on each collection
             # All the directories that make up the files in the collection
             dirs = [c.full_path for c in collection.collectiondirectory_set.all()]
             try:
-                ri = release_importer.ReleaseImporter(overwrite=True)
                 directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
                 ri.import_release(release.mbid, directories)
             except Exception as e:
@@ -176,6 +175,16 @@ def import_release(releasepk):
         release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
+def get_release_importer(name, force=False):
+    name = name.lower()
+    if "hindustani" in name:
+        print "returning hindustani importer"
+        ri = hindustani_importer.HindustaniReleaseImporter(force)
+    elif "carnatic" in name:
+        print "returning carnatic importer"
+        ri = carnatic_importer.CarnaticReleaseImporter(force)
+    return ri
+
 @app.task(base=CollectionDunyaTask)
 def force_import_all_releases(collectionid):
     """ Reimport releases in a collection.
@@ -183,6 +192,7 @@ def force_import_all_releases(collectionid):
     are missing a directory
     """
     collection = models.Collection.objects.get(pk=collectionid)
+    ri = get_release_importer(collection.name, force=True)
     collection.set_state_importing()
     # unlike the non-force version, we select all releases, not 
     # only ones that haven't been ignored
@@ -196,7 +206,7 @@ def force_import_all_releases(collectionid):
                 r.save()
             unstarted.append(r)
     for r in unstarted:
-        import_release(r.id)
+        import_release(r.id, ri)
     collection.set_state_finished()
 
 @app.task(base=CollectionDunyaTask)
@@ -207,6 +217,7 @@ def import_all_releases(collectionid):
     """
     collection = models.Collection.objects.get(pk=collectionid)
     collection.set_state_importing()
+    ri = get_release_importer(collection.name)
     releases = collection.musicbrainzrelease_set.filter(ignore=False)
     unstarted = []
     for r in releases:
@@ -215,7 +226,7 @@ def import_all_releases(collectionid):
         if r.get_current_state().state != 'f' and len(matched_paths):
             unstarted.append(r)
     for r in unstarted:
-        import_release(r.id)
+        import_release(r.id, ri)
     collection.set_state_finished()
 
 def _get_musicbrainz_release_for_dir(dirname):

@@ -12,6 +12,12 @@
 </h2>
 
 <div class="topbox">
+    <div class="topheader">Info</div>
+    <li>{{file.path}}
+    <li><a href="http://musicbrainz.org/recording/{{file.recordingid}}">http://musicbrainz.org/recording/{{file.recordingid}}</a>
+</div>
+
+<div class="topbox">
     <div class="topheader">Current state</div>
     {{file.get_current_state.state_name}} ({{file.get_current_state.state_date|timesince}} ago)
 </div>
