@@ -222,8 +222,8 @@ def carnatic_raagataala(request):
 @user_passes_test(views.is_staff)
 def carnatic_works(request):
     works = carnatic.models.Work.objects
-    composer_counted = works.annotate(Count('composer'))
-    nocomposer = [w for w in composer_counted if w.composer__count == 0]
+    composer_counted = works.annotate(Count('composers'))
+    nocomposer = [w for w in composer_counted if w.composers__count == 0]
     ret = {"nocomposer": nocomposer, "all": works.order_by('title').all()}
     return render(request, 'stats/carnatic_works.html', ret)
 
