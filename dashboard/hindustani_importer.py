@@ -136,43 +136,27 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_raag(self, rname):
         try:
-            return hindustani.models.Raag.objects.get(Q(name__iexact=rname) | Q(common_name__iexact=rname))
+            return hindustani.models.Raag.objects.fuzzy(rname)
         except hindustani.models.Raag.DoesNotExist:
-            try:
-                al = hindustani.models.RaagAlias.objects.get(name__iexact=rname)
-                return al.raag
-            except hindustani.models.RaagAlias.DoesNotExist:
-                return None
+            return None
 
     def _get_taal(self, tname):
         try:
-            return hindustani.models.Taal.objects.get(Q(name__iexact=tname) | Q(common_name__iexact=tname))
+            return hindustani.models.Taal.objects.fuzzy(tname)
         except hindustani.models.Taal.DoesNotExist:
-            try:
-                al = hindustani.models.TaalAlias.objects.get(name__iexact=tname)
-                return al.taal
-            except hindustani.models.TaalAlias.DoesNotExist:
-                return None
+            return None
 
     def _get_form(self, fname):
         try:
-            return hindustani.models.Form.objects.get(Q(name__iexact=fname) | Q(common_name__iexact=fname))
+            return hindustani.models.Form.objects.fuzzy(fname)
         except hindustani.models.Form.DoesNotExist:
-            try:
-                al = hindustani.models.FormAlias.objects.get(name__iexact=fname)
-                return al.form
-            except hindustani.models.FormAlias.DoesNotExist:
-                return None
+            return None
 
     def _get_laya(self, lname):
         try:
-            return hindustani.models.Laya.objects.get(Q(name__iexact=lname) | Q(common_name__iexact=lname))
+            return hindustani.models.Laya.objects.fuzzy(lname)
         except hindustani.models.Laya.DoesNotExist:
-            try:
-                al = hindustani.models.LayaAlias.objects.get(name__iexact=lname)
-                return al.laya
-            except hindustani.models.LayaAlias.DoesNotExist:
-                return None
+            return None
 
     def get_instrument(self, instname):
         try:

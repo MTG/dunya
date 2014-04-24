@@ -20,6 +20,7 @@ from django.db.models import Q
 
 import collections
 
+from hindustani import managers
 import data.models
 
 class HindustaniStyle(object):
@@ -164,6 +165,8 @@ class SectionAlias(models.Model):
 class Raag(models.Model):
     missing_image = "raag.jpg"
 
+    objects = managers.HindustaniRaagManager()
+
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
 
@@ -183,6 +186,8 @@ class RaagAlias(models.Model):
 class Taal(models.Model):
     missing_image = "taal.jpg"
 
+    objects = managers.HindustaniTaalManager()
+
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
 
@@ -200,8 +205,9 @@ class TaalAlias(models.Model):
         return self.name
 
 class Laya(models.Model):
-    """ A laya is always referred to with a taal as well """
     missing_image = "laya.jpg"
+
+    objects = managers.HindustaniLayaManager()
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
@@ -221,6 +227,8 @@ class LayaAlias(models.Model):
 
 class Form(models.Model):
     missing_image = "form.jpg"
+
+    objects = managers.HindustaniFormManager()
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)

@@ -243,7 +243,8 @@ class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
     raaga = models.ForeignKey("Raaga", related_name="aliases")
 
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = models.Manager()
 
     def __unicode__(self):
         return self.name
@@ -251,7 +252,8 @@ class RaagaAlias(models.Model):
 class Form(models.Model):
     name = models.CharField(max_length=50)
 
-    objects = managers.FuzzySearchManager()
+    objects = managers.CarnaticFormManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -260,7 +262,7 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=50)
     form = models.ForeignKey(Form, related_name="aliases")
 
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -273,7 +275,8 @@ class Raaga(data.models.BaseModel):
     name = models.CharField(max_length=50)
     transliteration = models.CharField(max_length=50)
 
-    objects = managers.FuzzySearchManager()
+    objects = managers.CarnaticRaagaManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -330,7 +333,8 @@ class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
     taala = models.ForeignKey("Taala", related_name="aliases")
 
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = models.Manager()
 
     def __unicode__(self):
         return self.name
@@ -348,7 +352,8 @@ class Taala(data.models.BaseModel):
     transliteration = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
 
-    objects = managers.FuzzySearchManager()
+    objects = managers.CarnaticTaalaManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -470,10 +475,12 @@ class Recording(CarnaticStyle, data.models.Recording):
 
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = models.Manager()
 
 class Instrument(CarnaticStyle, data.models.Instrument):
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = managers.CarnaticInstrumentManager()
 
     def description(self):
         return "The description of an instrument"

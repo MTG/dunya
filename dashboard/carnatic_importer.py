@@ -98,32 +98,19 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         try:
             return carnatic.models.Raaga.objects.fuzzy(name=raaganame)
         except carnatic.models.Raaga.DoesNotExist, e:
-            try:
-                alias = carnatic.models.RaagaAlias.objects.fuzzy(name=raaganame)
-                return alias.raaga
-            except carnatic.models.RaagaAlias.DoesNotExist, e:
-                return None
+            return None
 
     def _get_taala(self, taalaname):
         try:
             return carnatic.models.Taala.objects.fuzzy(name=taalaname)
         except carnatic.models.Taala.DoesNotExist, e:
-            try:
-                alias = carnatic.models.TaalaAlias.objects.fuzzy(name=taalaname)
-                return alias.taala
-            except carnatic.models.TaalaAlias.DoesNotExist, e:
-                return None
+            return None
 
     def get_instrument(self, instname):
         try:
             return carnatic.models.Instrument.objects.fuzzy(name=instname)
         except carnatic.models.Instrument.DoesNotExist:
-            try:
-                alias = carnatic.models.InstrumentAlias.objects.fuzzy(name=instname)
-                return alias.instrument
-            except carnatic.models.InstrumentAlias.DoesNotExist:
-                return None
-
+            return None
 
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
