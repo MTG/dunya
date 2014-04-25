@@ -29,6 +29,7 @@ import hindustani
 import makam
 import compmusic
 from musicbrainzngs import caa
+import musicbrainzngs
 
 class CompletenessBase(object):
     """ Base class for a task that checks something is correct """
@@ -306,9 +307,13 @@ class ReleaseCoverart(CompletenessBase):
 
     def task(self, musicbrainzrelease_id):
         release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
-        coverart = caa.get_coverart_list(release.mbid)
+        try:
+            coverart = caa.get_image_list(release.mbid)
+            has_coverart = True
+        except musicbrainzngs.ResponseError:
+            has_coverart = False
         ret = {}
-        return (coverart is not None, ret)
+        return (has_coverart, ret)
 
 class FileTags(CompletenessBase):
     """ Check that a file has musicbrainz tags set.
