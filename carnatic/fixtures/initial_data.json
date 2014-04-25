@@ -290,6 +290,7 @@
         "transliteration": "adi", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 32, 
         "references": [], 
         "images": [
             4298
@@ -304,6 +305,7 @@
         "transliteration": "rupaka", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 12, 
         "references": [], 
         "images": [
             4299
@@ -318,6 +320,7 @@
         "transliteration": "mishra chapu", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 14, 
         "references": [], 
         "images": [
             4300
@@ -332,6 +335,7 @@
         "transliteration": "khanda chapu", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 10, 
         "references": [], 
         "images": [
             4301
@@ -346,6 +350,7 @@
         "transliteration": "eka", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 16, 
         "references": [], 
         "images": [
             4302
@@ -360,6 +365,7 @@
         "transliteration": "tishra eka", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 12, 
         "references": [], 
         "images": [], 
         "name": "Ti\u015bra-j\u0101ti \u0113ka"
@@ -372,6 +378,7 @@
         "transliteration": "dhruva", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 56, 
         "references": [], 
         "images": [
             4303
@@ -386,6 +393,7 @@
         "transliteration": "matya", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 40, 
         "references": [], 
         "images": [
             4304
@@ -400,6 +408,7 @@
         "transliteration": "mishra jhampe", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 40, 
         "references": [], 
         "images": [
             4305
@@ -414,6 +423,7 @@
         "transliteration": "tishra triputa", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 28, 
         "references": [], 
         "images": [
             4306
@@ -428,6 +438,7 @@
         "transliteration": "atta", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 56, 
         "references": [], 
         "images": [
             4307
@@ -442,6 +453,7 @@
         "transliteration": "chaturashra-jaati jhampe", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 28, 
         "references": [], 
         "images": [
             4308
@@ -456,6 +468,7 @@
         "transliteration": "deshaadi", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 16, 
         "references": [], 
         "images": [
             4309
@@ -470,6 +483,7 @@
         "transliteration": "khanda-jaati triputa", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 36, 
         "references": [], 
         "images": [
             4310
@@ -484,6 +498,7 @@
         "transliteration": "khanda-jaati eka", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 20, 
         "references": [], 
         "images": [
             4311
@@ -498,6 +513,7 @@
         "transliteration": "madhyaadi", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 16, 
         "references": [], 
         "images": [
             4312
@@ -512,6 +528,7 @@
         "transliteration": "mahaalakshmi", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 76, 
         "references": [], 
         "images": [
             4313
@@ -526,6 +543,7 @@
         "transliteration": "mishra-jaati rupaka", 
         "description": null, 
         "source": null, 
+        "num_aksharas": 36, 
         "references": [], 
         "images": [
             4314
@@ -2468,20 +2486,6 @@
     }
 },
 {
-    "pk": 150, 
-    "model": "carnatic.raaga", 
-    "fields": {
-        "transliteration": "gamakakriya", 
-        "description": null, 
-        "source": null, 
-        "references": [], 
-        "images": [
-            3465
-        ], 
-        "name": "Gamakakriya"
-    }
-},
-{
     "pk": 151, 
     "model": "carnatic.raaga", 
     "fields": {
@@ -3388,7 +3392,7 @@
     "pk": 227, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "lalitha panjamam", 
+        "transliteration": "lalitha panchamam", 
         "description": null, 
         "source": null, 
         "references": [], 
@@ -4017,6 +4021,18 @@
         "references": [], 
         "images": [], 
         "name": "C\u0101l\u0101n\u0101\u1e6da"
+    }
+},
+{
+    "pk": 285, 
+    "model": "carnatic.raaga", 
+    "fields": {
+        "transliteration": "chayanata", 
+        "description": null, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "name": "C\u0101y\u0101n\u0101\u1e6da"
     }
 },
 {
@@ -5324,14 +5340,6 @@
     }
 },
 {
-    "pk": 208, 
-    "model": "carnatic.raagaalias", 
-    "fields": {
-        "name": "malahari", 
-        "raaga": 11
-    }
-},
-{
     "pk": 209, 
     "model": "carnatic.raagaalias", 
     "fields": {
@@ -5529,14 +5537,6 @@
     "fields": {
         "name": "lathangi", 
         "raaga": 225
-    }
-},
-{
-    "pk": 246, 
-    "model": "carnatic.raagaalias", 
-    "fields": {
-        "name": "(lalitha panchamam", 
-        "raaga": 227
     }
 },
 {
@@ -6020,14 +6020,6 @@
     }
 },
 {
-    "pk": 313, 
-    "model": "carnatic.raagaalias", 
-    "fields": {
-        "name": "madyamavati", 
-        "raaga": 262
-    }
-},
-{
     "pk": 314, 
     "model": "carnatic.raagaalias", 
     "fields": {
@@ -6057,6 +6049,22 @@
     "fields": {
         "name": "chala nattai", 
         "raaga": 284
+    }
+},
+{
+    "pk": 319, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "chaayanata", 
+        "raaga": 285
+    }
+},
+{
+    "pk": 320, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "ragashree", 
+        "raaga": 154
     }
 },
 {
@@ -7381,15 +7389,6 @@
     }
 },
 {
-    "pk": 3465, 
-    "model": "data.image", 
-    "fields": {
-        "source": null, 
-        "image": "images/gamakakriya.png", 
-        "small_image": ""
-    }
-},
-{
     "pk": 3467, 
     "model": "data.image", 
     "fields": {
@@ -7665,6 +7664,15 @@
     "fields": {
         "source": null, 
         "image": "images/sama.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 3465, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/gamakakriya.png", 
         "small_image": ""
     }
 },
