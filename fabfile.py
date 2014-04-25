@@ -81,7 +81,7 @@ def dumpfixture(modname):
         modellist = " ".join(["carnatic.%s[:]" % t for t in tables])
         local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
     elif modname == "hindustani":
-        tables = ["Instrument", "Taal", "TaalAlias", "Raag", "RaagAlias", "Laay", "LaayAlias", "Form", "FormAlias", "Section", "SectionAlias"]
+        tables = ["Instrument", "Taal", "TaalAlias", "Raag", "RaagAlias", "Laya", "LayaAlias", "Form", "FormAlias", "Section", "SectionAlias"]
         modellist = " ".join(["hindustani.%s[:]" % t for t in tables])
         local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
     elif modname == "makam":
