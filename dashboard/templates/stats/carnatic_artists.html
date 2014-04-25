@@ -46,8 +46,10 @@
 
 <a name="all"></a>
 <h2>All Artists</h2>
+Items listed with [dummy guru] are created from Vignesh's worksheet, and need
+to be changed there if a real artist exists on musicbrainz.
 {% for a in all %}
-<li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
+<li><a href="{{a.get_musicbrainz_url}}">{{a}}</a> {% if a.dummy %} [dummy guru]{% endif %}
 {% endfor %}
 
 {% endblock %}
