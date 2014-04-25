@@ -49,20 +49,25 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
 
 def docserver_add_sourcefile(document_id, ftype, path):
     """ Add a file to the given document. If a file with the given filetype
-        already exists for the document just update the path. """
+        already exists for the document just update the path and size. """
     document = models.Document.objects.get(pk=document_id)
+
+    size = os.stat(path).st_size
+    root_directory = document.collection.root_directory
+    if path.startswith(root_directory):
+        # If the path is absolute, remove it
+        path = path[len(root_directory):]
+    if path.startswith("/"):
+        path = path[1:]
+
     try:
         sfile = models.SourceFile.objects.get(document=document, file_type=ftype)
-        root_directory = document.collection.root_directory
-        if path.startswith(root_directory):
-            # If the path is absolute, remove it
-            path = path[len(root_directory):]
-        if path.startswith("/"):
-            path = path[1:]
         sfile.path = path
+        sfile.size = size
         sfile.save()
     except models.SourceFile.DoesNotExist:
-        sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
+
+        sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path, size=size)
 
 def docserver_get_wav_filename(documentid):
     """ Return a tuple (filename, created) containing the filename
