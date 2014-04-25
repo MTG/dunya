@@ -89,37 +89,33 @@ is over 500mb. Set up postgres and run
 Where `dunya` is the name of the database
 
 * If you want to manually add data to an empty database, follow these steps:
-    1.  If you  haven't run syncdb and migrate yet, run them in the terminal:
-            python manage.py syncdb
-            python manage.py migrate
+    1.  To setup and configure your database, run:
+            fab setupdb
 
     2.  Inside your database, add a row to django_site table:
         Example: 
             id |         domain          |            name
             1  | dunya.compmusic.upf.edu | dunya.compmusic.upf.edu
 
-    3.  In order to have data associated with each music style
-        python manage.py mkdunyadata
-
-    4.  You need to have a collection of albums and audio files somewhere on your drive.
+    3.  You need to have a collection of albums and audio files somewhere on your drive.
         You will need to enter the path to this folder. You can download sample collections
         from one of 'kora' if you have access to it. 
 
-    5.  Assuming you have a MusicBrainz account, create a public collection and make
+    4.  Assuming you have a MusicBrainz account, create a public collection and make
         sure the name contains the name of the music style that the collection is 
         related to. For example, for Carnatic style the word 'carnatic' should be included
         somewhere in the collection name (ie 'carnatic_coll_23423')
 
-    6. Run the development server and direct your browser to localhost:XXXX/dashboard
+    5. Run the development server and direct your browser to localhost:XXXX/dashboard
 
-    7. Enter the corresponding data for the 'add collection' form.
+    6. Enter the corresponding data for the 'add collection' form.
         - You can retrieve the collection id from the link of the page
             (http://musicbrainz.org/collection/{collction_id})
        Note:
         At the moment, if you are adding a colleciton for Carnatic style, you can choose
         all the checkers except the ones containing Makam.
 
-    8. Click on Submit.
+    7. Click on Submit.
 
 Updating file locations
 -----------------------
