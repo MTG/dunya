@@ -9,7 +9,7 @@ Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordin
 <h4>Raagas missing in database</h4>
 
 {% for r in data.missingr %}
-    <li><a href="{% url 'dashboard-raagas' %}?newname={{r}}">{{r}}</a>
+    <li><a href="{% url 'dashboard-carnatic-raagas' %}?newname={{r}}">{{r}}</a>
 {% endfor %}
 {% endif %}
 
@@ -20,6 +20,6 @@ Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordin
 {% if data.missingt %}
 <h4>Taalas missing in database</h4>
 {% for t in data.missingt %}
-<li><a href="{% url 'dashboard-taalas' %}?newname={{t}}">{{t}}</a>
+<li><a href="{% url 'dashboard-carnatic-taalas' %}?newname={{t}}">{{t}}</a>
 {% endfor %}
 {% endif %}
