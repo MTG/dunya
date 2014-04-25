@@ -156,16 +156,20 @@ def carnatic_artists(request):
     noimages = [a for a in image_counted.order_by("name").all() if a.images__count == 0]
     nobiographies = [a for a in bio_counted.order_by("name").all() if a.description__count == 0]
     noinstrument = [a for a in bio_counted.order_by("name").all() if not a.main_instrument]
-    ret = {"noimages": noimages, "nobios": nobiographies, "noinstrument": noinstrument, "all": artists.order_by('name').all()}
+
+    ret = {"noimages": noimages,
+           "nobios": nobiographies,
+           "noinstrument": noinstrument,
+           "all": artists.order_by('name').all()}
     return render(request, 'stats/carnatic_artists.html', ret)
 
 @user_passes_test(views.is_staff)
 def carnatic_recordings(request):
-    # TODO: Also check if album artist has a relationship
     # TODO: Also make sure rels are on tracks not album (preferred)
     # TODO: Also check there is at least one 'lead' performer
 
     concerts = carnatic.models.Concert.objects.all()
+    badconcerts = []
     for c in concerts:
         got_works = True
         got_track_perf = True
@@ -181,7 +185,20 @@ def carnatic_recordings(request):
         c.got_works = got_works
         c.got_perf = got_perf and got_track_perf
 
-    ret = {"concerts": concerts,
+        # Artists who are the primary artist of a release, but are not listed
+        # as a relationship on the release or any tracks.
+        # Note that this will incorrectly select groups where group members are listed
+        artists = c.artists.all()
+        perf = c.instrumentconcertperformance_set.filter(performer__in=artists)
+        tperf = carnatic.models.InstrumentPerformance.objects.filter(
+                recording__concert=c, performer__in=artists)
+        if not perf.exists() and not tperf.exists():
+            c.missing_rel_artists = True
+
+        if not c.got_works or not c.got_perf or c.missing_rel_artists:
+            badconcerts.append(c)
+
+    ret = {"concerts": badconcerts,
             }
     return render(request, 'stats/carnatic_recordings.html', ret)
 
@@ -224,7 +241,10 @@ def carnatic_works(request):
     works = carnatic.models.Work.objects
     composer_counted = works.annotate(Count('composers'))
     nocomposer = [w for w in composer_counted if w.composers__count == 0]
-    ret = {"nocomposer": nocomposer, "all": works.order_by('title').all()}
+    duplicatecomposer = [w for w in composer_counted if w.composers__count > 1]
+    ret = {"nocomposer": nocomposer, 
+           "duplicatecomposer": duplicatecomposer,
+           "all": works.order_by('title').all()}
     return render(request, 'stats/carnatic_works.html', ret)
 
 
