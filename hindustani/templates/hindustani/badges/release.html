@@ -1,21 +1,21 @@
-{% load inline %}
-{% load badges %}
+{% load hindustaniinline %}
+{% load hindustanibadges %}
 
 <div class="concert item">
       <div class="disc pict">
-          <a href="{{concert.get_absolute_url}}">
-              <img width="200" src="{{concert.get_small_image_url}}"></a>
+          <a href="{{release.get_absolute_url}}">
+              <img width="200" src="{{release.get_small_image_url}}"></a>
       </div>
       <div class="desc">
         <div class="plus"></div>
-        <a href="{{concert.get_absolute_url}}" class="title"><b>{{concert.title}}</b></a>
-        {% if concert.artists.all %}
-        <a href="{{concert.artists.all.0.get_absolute_url}}" class="belongs">{{concert.artists.all.0}}</a>
+        <a href="{{release.get_absolute_url}}" class="title"><b>{{release.title}}</b></a>
+        {% if release.artists.all %}
+        <a href="{{release.artists.all.0.get_absolute_url}}" class="belongs">{{release.artists.all.0}}</a>
         {% endif %}
       </div>
       <div class="descOpen">
         <div class="meta">
-            <label>Release year</label> <span class="value">{{concert.year}}</span><br>
+            <label>Release year</label> <span class="value">{{release.year}}</span><br>
           <label>Length</label> <span class="value">02:26:57</span>
           <div class="clearer"></div>
         </div>
@@ -25,14 +25,14 @@
       <div class="lists">
         <div class="left">
           <h3>Tracks</h3>
-          {% for t in concert.tracks.all %}
+          {% for t in release.tracks.all %}
           {% badge_mini_recording t %}
           {% endfor %}
         </div>
 
         <div class="right">
           <h3>Performers</h3>
-           {% for perf in concert.performers %}
+           {% for perf in release.performers %}
            {% badge_mini_performance perf %}
            {% endfor %}
         </div>

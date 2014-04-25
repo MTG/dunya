@@ -25,7 +25,7 @@ register = template.Library()
 
 @register.inclusion_tag("hindustani/badges/release.html")
 def badge_release(release):
-    if not isinstance(release, release):
+    if not isinstance(release, Release):
         release = release.objects.get(pk=release)
     return {"release": release}
 
@@ -50,17 +50,17 @@ def badge_instrument(instrument):
         instrument = Instrument.objects.get(pk=instrument)
     return {"instrument": instrument}
 
-@register.inclusion_tag("hindustani/badges/raaga.html")
-def badge_raaga(raaga):
-    if not isinstance(raaga, Raaga):
-        raaga = Raaga.objects.get(pk=raaga)
-    return {"raaga": raaga}
+@register.inclusion_tag("hindustani/badges/raag.html")
+def badge_raag(raag):
+    if not isinstance(raag, Raag):
+        raag = Raag.objects.get(pk=raag)
+    return {"raag": raag}
 
-@register.inclusion_tag("hindustani/badges/taala.html")
-def badge_taala(taala):
-    if not isinstance(taala, Taala):
-        taala = Taala.objects.get(pk=taala)
-    return {"taala": taala}
+@register.inclusion_tag("hindustani/badges/taal.html")
+def badge_taal(taal):
+    if not isinstance(taal, Taal):
+        taal = Taal.objects.get(pk=taal)
+    return {"taal": taal}
 
 @register.inclusion_tag("hindustani/badges/composer.html")
 def badge_composer(composer):
@@ -84,20 +84,18 @@ def badge_similar_artist(artist, releases=None, guru=None):
 
 @register.inclusion_tag("hindustani/badges/similar_release.html")
 def badge_similar_release(release, similarity):
-    print "in release similarity. sim object is"
-    print similarity
     if not isinstance(release, release):
         release = release.objects.get(pk=release)
     return {"release": release,
             "works": similarity.get("works", []),
-            "taalas": similarity.get("taalas", []),
-            "raagas": similarity.get("raagas", []),
+            "taals": similarity.get("taals", []),
+            "raags": similarity.get("raags", []),
             "artists": similarity.get("artists", []),
             }
 
-@register.inclusion_tag("hindustani/badges/similar_raaga.html")
-def badge_similar_raaga(raaga):
-    return {"raaga": raaga}
+@register.inclusion_tag("hindustani/badges/similar_raag.html")
+def badge_similar_raag(raag):
+    return {"raag": raag}
 
 @register.inclusion_tag("hindustani/badges/similar_recording.html")
 def badge_similar_recording(recording):
@@ -143,17 +141,17 @@ def badge_mini_instrument(instrument):
         instrument = Instrument.objects.get(pk=instrument)
     return {"instrument": instrument}
 
-@register.inclusion_tag("hindustani/badges/mini_raaga.html")
-def badge_mini_raaga(raaga):
-    if not isinstance(raaga, Raaga):
-        raaga = Raaga.objects.get(pk=raaga)
-    return {"raaga": raaga}
+@register.inclusion_tag("hindustani/badges/mini_raag.html")
+def badge_mini_raag(raag):
+    if not isinstance(raag, Raag):
+        raag = Raag.objects.get(pk=raag)
+    return {"raag": raag}
 
-@register.inclusion_tag("hindustani/badges/mini_taala.html")
-def badge_mini_taala(taala):
-    if not isinstance(taala, Taala):
-        taala = Taala.objects.get(pk=taala)
-    return {"taala": taala}
+@register.inclusion_tag("hindustani/badges/mini_taal.html")
+def badge_mini_taal(taal):
+    if not isinstance(taal, Taal):
+        taal = Taal.objects.get(pk=taal)
+    return {"taal": taal}
 
 @register.inclusion_tag("hindustani/badges/mini_composer.html")
 def badge_mini_composer(composer):

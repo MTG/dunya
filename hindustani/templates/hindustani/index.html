@@ -7,9 +7,9 @@
 <script>
 var qartist = {{qartist}};
 var qinstr = {{qinstr}};
-var qraaga = {{qraaga}};
-var qtaala = {{qtaala}};
-var qconcert = {{qconcert}};
+var qraag = {{qraag}};
+var qtaal = {{qtaal}};
+var qrelease = {{qrelease}};
 $(document).ready(function() {
     parseAllFilters({{ filter_items|safe }});
 
@@ -33,12 +33,12 @@ $(document).ready(function() {
         });
         // Show artist bubble (minimised)
     }
-    if (qconcert.length) {
-        toggleCategory($("div#entitiesList .concert"), function() {
+    if (qrelease.length) {
+        toggleCategory($("div#entitiesList .release"), function() {
             var thelist = $("div.entity_2 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
-                if (qconcert.indexOf(theitem.data("id")) !== -1) {
+                if (qrelease.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
                     getResults2(theitem, "eid2");
                 }
@@ -69,12 +69,12 @@ $(document).ready(function() {
             }
         });
     }
-    if (qraaga.length) {
-        toggleCategory($("div#entitiesList .raaga"), function() {
+    if (qraag.length) {
+        toggleCategory($("div#entitiesList .raag"), function() {
             var thelist = $("div.entity_4 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
-                if (qraaga.indexOf(theitem.data("id")) !== -1) {
+                if (qraag.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
                     getResults2(theitem, "eid4");
                 }
@@ -87,12 +87,12 @@ $(document).ready(function() {
             }
         });
     }
-    if (qtaala.length) {
-        toggleCategory($("div#entitiesList .taala"), function() {
+    if (qtaal.length) {
+        toggleCategory($("div#entitiesList .taal"), function() {
             var thelist = $("div.entity_5 div.filterList ul li");
             for (var i = 0; i < thelist.length; i++) {
                 var theitem = $(thelist[i]);
-                if (qtaala.indexOf(theitem.data("id")) !== -1) {
+                if (qtaal.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
                     getResults2(theitem, "eid5");
                 }
@@ -108,7 +108,7 @@ $(document).ready(function() {
 });
 </script>
 
-<script src="{% static 'carnatic/js/browse.js' %}"></script>
+<script src="{% static 'hindustani/js/browse.js' %}"></script>
 {% endblock %}
 {% block extra_css %}
     {% if debug %}
@@ -162,10 +162,10 @@ $(document).ready(function() {
                      </div>
                  </td>
                  <td class="artist" onClick="filterPackery('.artist');"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
-                 <td class="concert" onClick="filterPackery('.concert');"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
+                 <td class="release" onClick="filterPackery('.release');"><span>{{numreleases}}</span> <b>release{{numreleases|pluralize}}</b></td>
                  <td class="instrument" onClick="filterPackery('.instrument');"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
-                 <td class="raaga" onClick="filterPackery('.raaga');"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
-                 <td class="taala" onClick="filterPackery('.taala');"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
+                 <td class="raag" onClick="filterPackery('.raag');"><span>{{numraags}}</span> <b>Raag{{numraags|pluralize}}</b></td>
+                 <td class="taal" onClick="filterPackery('.taal');"><span>{{numtaals}}</span> <b>Taal{{numtaals|pluralize}}</b></td>
             </tr>
         </tbody></table>
      </div>
@@ -178,16 +178,16 @@ $(document).ready(function() {
      {% endif %}
      <div id="searchresults">
         {% for type, item in results %}
-            {% if type == "concert" %}
-                {% badge_concert item %}
+            {% if type == "release" %}
+                {% badge_release item %}
             {% elif type == "artist" %}
                 {% badge_artist item %}
             {% elif type == "instrument" %}
                 {% badge_instrument item %}
-            {% elif type == "raaga" %}
-                {% badge_raaga item %}
-            {% elif type == "taala" %}
-                {% badge_taala item %}
+            {% elif type == "raag" %}
+                {% badge_raag item %}
+            {% elif type == "taal" %}
+                {% badge_taal item %}
             {% endif %}
         {% endfor %}
      </div>
