@@ -25,6 +25,7 @@ logging.basicConfig(level=logging.INFO)
 from dashboard import models
 
 import carnatic
+import hindustani
 import makam
 import compmusic
 from musicbrainzngs import caa
@@ -178,7 +179,7 @@ class MakamTags(CompletenessBase):
 
 class HindustaniRaagTaal(CompletenessBase):
     type = 'f'
-    templatefile = 'raagataala.html'
+    templatefile = 'hindustaniraagtaal.html'
     name = 'Hindustani Recording raag, taal, form, laya'
 
     def task(self, collectionfile_id):
@@ -201,10 +202,10 @@ class HindustaniRaagTaal(CompletenessBase):
         forms = hi._get_form_tags(tags)
         res["recordingid"] = recordingid
 
-        missingr = [r for r in raags if hi._get_raag(r) is None]
-        missingt = [t for t in taals if hi._get_taal(l) is None]
-        missingf = [f for f in forms if hi._get_form(f) is None]
-        missingl = [l for l in layas if hi._get_laya(l) is None]
+        missingr = [r for _, r in raags if hi._get_raag(r) is None]
+        missingt = [t for _, t in taals if hi._get_taal(t) is None]
+        missingf = [f for _, f in forms if hi._get_form(f) is None]
+        missingl = [l for _, l in layas if hi._get_laya(l) is None]
 
         if missingr:
             res["missingr"] = missingr
@@ -219,10 +220,10 @@ class HindustaniRaagTaal(CompletenessBase):
         res["gottaal"] = len(taals) > 0
         res["gotform"] = len(forms) > 0
         res["gotlaya"] = len(layas) > 0
-        res["raag"] = raags
-        res["taal"] = taals
-        res["form"] = forms
-        res["laya"] = layas
+        res["raag"] = [r for _, r in raags]
+        res["taal"] = [t for _, t in taals]
+        res["form"] = [f for _, f in forms]
+        res["laya"] = [l for _, l in layas]
         r = raags and not missingr
         t = taals and not missingt
         f = forms and not missingf
@@ -493,9 +494,9 @@ class HindustaniReleaseRelationships(ReleaseRelationships, CompletenessBase):
     def check_instrument(self, instrname):
         from hindustani import models
         try:
-            hindustani.Instrument.objects.filter(name=instrname)
+            hindustani.models.Instrument.objects.filter(name=instrname)
             return True
-        except models.Instrument.DoesNotExist:
+        except hindustani.models.Instrument.DoesNotExist:
             pass
         return False
 
