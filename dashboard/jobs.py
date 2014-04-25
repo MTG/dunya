@@ -95,6 +95,22 @@ def load_musicbrainz_collection(collectionid):
     coll.add_log_message("Collection scan finished")
     return collectionid
 
+@app.task(base=CollectionDunyaTask)
+def import_single_release(releasepk):
+    """ A job to find a release's collection, create a release importer,
+    and then call import_release
+    """
+    release = models.MusicbrainzRelease.objects.get(pk=releasepk)
+    collection = release.collection
+
+    ri = get_release_importer(collection.name, force=True)
+    if not ri:
+        release.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
+        release.set_state_error()
+        return
+    import_release(releasepk, ri)
+
+
 def import_release(releasepk, ri):
     """ Import a single release into the database.
     Arguments:
@@ -177,22 +193,25 @@ def import_release(releasepk, ri):
 
 def get_release_importer(name, force=False):
     name = name.lower()
+    ri = None
     if "hindustani" in name:
-        print "returning hindustani importer"
         ri = hindustani_importer.HindustaniReleaseImporter(force)
     elif "carnatic" in name:
-        print "returning carnatic importer"
         ri = carnatic_importer.CarnaticReleaseImporter(force)
     return ri
 
 @app.task(base=CollectionDunyaTask)
 def force_import_all_releases(collectionid):
     """ Reimport releases in a collection.
-    This will (re)import all releases that are in the collection, unless they
-    are missing a directory
+    This will (re)import all releases that are in the collection, even if they
+    are marked as ignored or are finished, unless they are missing a directory
     """
     collection = models.Collection.objects.get(pk=collectionid)
     ri = get_release_importer(collection.name, force=True)
+    if not ri:
+        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
+        collection.set_state_error()
+        return
     collection.set_state_importing()
     # unlike the non-force version, we select all releases, not 
     # only ones that haven't been ignored
@@ -218,6 +237,10 @@ def import_all_releases(collectionid):
     collection = models.Collection.objects.get(pk=collectionid)
     collection.set_state_importing()
     ri = get_release_importer(collection.name)
+    if not ri:
+        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
+        collection.set_state_error()
+        return
     releases = collection.musicbrainzrelease_set.filter(ignore=False)
     unstarted = []
     for r in releases:

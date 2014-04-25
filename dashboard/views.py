@@ -139,7 +139,7 @@ def release(request, releaseid):
 
     reimport = request.GET.get("reimport")
     if reimport is not None:
-        jobs.import_release.delay(release.id)
+        jobs.import_single_release.delay(release.id)
         return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
 
     ignore = request.GET.get("ignore")
