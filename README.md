@@ -105,6 +105,7 @@ Where `dunya` is the name of the database
         sure the name contains the name of the music style that the collection is 
         related to. For example, for Carnatic style the word 'carnatic' should be included
         somewhere in the collection name (ie 'carnatic_coll_23423')
+        Add the releases for which you have a copy (step 3) into this collection.
 
     5. Run the development server and direct your browser to localhost:XXXX/dashboard
 
