@@ -6,11 +6,18 @@
 <h1>Carnatic Works</h1>
 
 <a href="#missing">Works missing composers</a><br>
+<a href="#duplicate">Works with more than one composer</a><br>
 <a href="#all">All works</a><br>
 
 <a name="missing"></a>
 <h2>Works missing composers</h2>
 {% for w in nocomposer %}
+    <li><a href="{{w.get_musicbrainz_url}}">{{w}}</a>
+{% endfor %}
+
+<a name="duplicate"></a>
+<h2>Works with more than one composer</h2>
+{% for w in duplicatecomposer %}
     <li><a href="{{w.get_musicbrainz_url}}">{{w}}</a>
 {% endfor %}
 
