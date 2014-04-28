@@ -21,6 +21,53 @@ from dashboard import release_importer
 import carnatic.models
 
 import compmusic
+from compmusic import mb
+
+def remove_deleted_items():
+    """ Search musicbrainz for all items in the database and if they 
+    have been deleted then remove them """
+
+    logger.info("Scanning works...")
+    for w in carnatic.models.Work.objects.all():
+        try:
+            mbwork = mb.get_work_by_id(w.mbid)
+        except mb.ResponseError:
+            logger.info("work %s (%s) missing; deleting" % (w, w.mbid))
+            w.delete()
+
+    logger.info("Scanning recordings...")
+    for r in carnatic.models.Recording.objects.all():
+        try:
+            mbrec = mb.get_recording_by_id(r.mbid)
+        except mb.ResponseError:
+            logger.info("recording %s (%s) missing; deleting" % (r, r.mbid))
+            r.delete()
+
+    logger.info("Scanning concerts...")
+    for c in carnatic.models.Concert.objects.all():
+        try:
+            mbcon = mb.get_release_by_id(c.mbid)
+        except mb.ResponseError:
+            logger.info("release %s (%s) missing; deleting" % (c, c.mbid))
+            c.delete()
+
+    logger.info("Scanning artists...")
+    for a in carnatic.models.Artist.objects.all():
+        try:
+            mbart = mb.get_artist_by_id(a.mbid)
+        except mb.ResponseError:
+            # We import dummy artists to be gurus, leave them here
+            if not a.dummy:
+                logger.info("artist %s (%s) missing; deleting" % (a, a.mbid))
+                a.delete()
+
+    logger.info("Scanning composers...")
+    for a in carnatic.models.Composer.objects.all():
+        try:
+            mbart = mb.get_artist_by_id(a.mbid)
+        except mb.ResponseError:
+            logger.info("artist %s (%s) missing; deleting" % (a, a.mbid))
+            a.delete()
 
 class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = carnatic.models.Artist

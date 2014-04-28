@@ -43,6 +43,12 @@ urlpatterns = patterns('',
     url(r'carnatic/', statistic_views.carnatic_stats, name='dashboard-carnatic-stats'),
 
 
+    url(r'hindustani/releases/', statistic_views.hindustani_releases, name='dashboard-hindustani-releases'),
+    url(r'hindustani/artists/', statistic_views.hindustani_artists, name='dashboard-hindustani-artists'),
+    url(r'hindustani/recordings/', statistic_views.hindustani_recordings, name='dashboard-hindustani-recordings'),
+    url(r'hindustani/raagataala/', statistic_views.hindustani_raagtaal, name='dashboard-hindustani-raagtaal'),
+    url(r'hindustani/works/', statistic_views.hindustani_works, name='dashboard-hindustani-works'),
+
     url(r'hindustani/data/raags', views.hindustani_raags, name='dashboard-hindustani-raags'),
     url(r'hindustani/data/taals', views.hindustani_taals, name='dashboard-hindustani-taals'),
     url(r'hindustani/data/layas', views.hindustani_layas, name='dashboard-hindustani-layas'),

@@ -44,6 +44,14 @@ class Instrument(HindustaniStyle, data.models.Instrument):
 
         return [i[0] for i in artistcount.most_common()]
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-instrument-search'),
+               "name": "Instrument",
+               "data": []
+              }
+        return ret
+
 class Artist(HindustaniStyle, data.models.Artist):
     def releases(self):
         # Releases in which we were the primary artist
@@ -68,6 +76,14 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), list(releases[pk])) for pk,count in c.most_common()]
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-artist-search'),
+               "name": "Artist",
+               "data": []
+              }
+        return ret
+
 class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
     pass
 
@@ -87,6 +103,14 @@ class Release(HindustaniStyle, data.models.Release):
     def performers(self):
         # TODO: Lead artist if they are not in this list
         return InstrumentPerformance.objects.filter(recording__release=self)
+
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-release-search'),
+               "name": "Release",
+               "data": []
+              }
+        return ret
 
 
 class RecordingRaag(models.Model):
@@ -176,6 +200,14 @@ class Raag(models.Model):
     def get_absolute_url(self):
         return reverse('hindustani-raag', args=[str(self.id)])
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-raag-search'),
+               "name": "Raag",
+               "data": []
+              }
+        return ret
+
 class RaagAlias(models.Model):
     name = models.CharField(max_length=50)
     raag = models.ForeignKey("Raag", related_name="aliases")
@@ -196,6 +228,14 @@ class Taal(models.Model):
 
     def get_absolute_url(self):
         return reverse('hindustani-taal', args=[str(self.id)])
+
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-taal-search'),
+               "name": "Taal",
+               "data": []
+              }
+        return ret
 
 class TaalAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -218,6 +258,14 @@ class Laya(models.Model):
     def get_absolute_url(self):
         return reverse('hindustani-laya', args=[str(self.id)])
 
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-laya-search'),
+               "name": "Laya",
+               "data": []
+              }
+        return ret
+
 class LayaAlias(models.Model):
     name = models.CharField(max_length=50)
     laya = models.ForeignKey("Laya", related_name="aliases")
@@ -238,6 +286,14 @@ class Form(models.Model):
 
     def get_absolute_url(self):
         return reverse('hindustani-form', args=[str(self.id)])
+
+    @classmethod
+    def get_filter_criteria(cls):
+        ret = {"url": reverse('hindustani-form-search'),
+               "name": "form",
+               "data": []
+              }
+        return ret
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=50)

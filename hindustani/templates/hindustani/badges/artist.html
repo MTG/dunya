@@ -1,6 +1,6 @@
 {% load staticfiles %}
-{% load badges %}
-{% load inline %}
+{% load hindustanibadges %}
+{% load hindustaniinline %}
 
 <div class="artist item">
   <div class="disc pict">
@@ -19,9 +19,9 @@
   </div>
   <div class="lists">
     <div class="left">
-      <h3>Concerts</h3>
-      {% for c in artist.concerts %}
-          {% badge_mini_concert c %}
+      <h3>Releases</h3>
+      {% for c in artist.releases %}
+          {% badge_mini_release c %}
       {% endfor %}
     </div>
     <div class="right"></div>

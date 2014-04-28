@@ -1,0 +1,56 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Hindustani Raag, Taal, Form, Laya{% endblock %}
+
+{% block wrap %}
+
+<h1>Hindustani Raag, Taal, Form, Laya</h1>
+
+<a href="#notdb">Items not in the Dunya database</a><br>
+<a href="#notag">Recordings with no or unparsable tags</a><br>
+
+<a name="notdb"></a>
+<h2>Items not in the Dunya database</h2>
+<h3>Raags</h3>
+{% for r in missingr %}
+    <li> <a href="{{r.file.get_absolute_url}}">{{r.file.name}}</a> ({{r.raags|join:", "}})
+    {% empty %}
+    <li>(none)
+{% endfor %}
+<h3>Taals</h3>
+{% for t in missingt %}
+    <li> <a href="{{t.file.get_absolute_url}}">{{t.file.name}}</a> ({{t.taals|join:", "}})
+    {% empty %}
+    <li>(none)
+{% endfor %}
+<h3>Forms</h3>
+{% for f in missingf %}
+    <li> <a href="{{f.file.get_absolute_url}}">{{f.file.name}}</a> ({{f.forms|join:", "}})
+    {% empty %}
+    <li>(none)
+{% endfor %}
+<h3>Layas</h3>
+{% for l in missingl %}
+    <li> <a href="{{l.file.get_absolute_url}}">{{l.file.name}}</a> ({{l.layas|join:", "}})
+    {% empty %}
+    <li>(none)
+{% endfor %}
+
+{{unknown.keys}}
+
+<a name="notag"></a>
+<h2>Recordings with no or unparsable tags</h2>
+{% for r, files in dirs.items %}
+<h4>{{r}}</h4>
+{% for f, data in files.items %}
+<li> <a href="{{f.get_absolute_url}}">{{f.name}}</a> (
+{% if data.raag %}Raag, {%endif%}
+{% if data.taal %}Taal, {%endif%}
+{% if data.laya %}Laya, {%endif%}
+{% if data.form %}Form{%endif%})
+{% endfor %}
+{% endfor %}
+
+{% endblock %}
+
+
+
