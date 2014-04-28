@@ -121,16 +121,19 @@
         <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
         </div>
 
-        <div id="aboutdialog" title="Dunya">
-            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the
-            point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories.<br>
-            Dunya has been developed to present the results of our research to the music and technology communities, with a focus on computational output.
-            For this reason we endeavour to present accurate metadata but make no guarantees as to its correctness.<br>
-            For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a> or email us at mtg@upf.edu<br>
-            Use of Dunya is governed by our <a href="{% url 'terms' %}">Terms and Conditions</a></p>
-            <p>For presentations, <a href id="presmode">enable presentation mode</a></p>
-        </div>
 
+		<div id="aboutdialog" title="Dunya">
+            <p>Dunya is a research prototype being developed in CompMusic, a research project that studies 
+            several world music traditions from an information technologies point of view. It has been 
+            developed to evaluate the results of the research, mainly to be able to get feedback from users 
+            to further improve the technologies being developed.<br><br>
+            The information shown has been gathered from different sources and we have tried our best 
+            to get accurate data and to identify its provenance whenever possible.<br><br>
+            For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a> or email us at mtg@upf.edu<br><br>
+            Use of Dunya is governed by our <a href="{% url 'terms' %}">Terms and Conditions</a><br><br>
+            For presentations of the website using a projector, we recommend to enable presentation mode.<br><br>
+            (<a href id="presmode">enable presentation mode</a>)</p>
+	    </div>
         <!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
