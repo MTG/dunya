@@ -12,6 +12,8 @@
 {% for m in missing %}
 <li>{{m.title}} (<a href="http://musicbrainz.org/recording/{{m.id}}">http://musicbrainz.org/recording/{{m.id}}</a>)
 {% endfor %}
+{% empty %}
+<li> (none)
 {% endfor %}
 </ul>
 
