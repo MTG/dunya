@@ -84,6 +84,17 @@ def inline_recording_artist(recording):
     return "unknown"
 
 @register.simple_tag
+def inline_work_list(works):
+    allworks = []
+    for w in works:
+        text = "%s" % (inline_work(w), )
+        if w.composers.exists():
+            text += " by %s" % inline_composer(w.composers.all()[0])
+        allworks.append(text)
+    print allworks
+    return ", ".join(allworks)
+
+@register.simple_tag
 def inline_work(work):
     # TODO: Disable work links for now
     return work.title

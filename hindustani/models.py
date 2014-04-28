@@ -37,6 +37,8 @@ class HindustaniStyle(object):
                 }[key]
 
 class Instrument(HindustaniStyle, data.models.Instrument):
+    objects = managers.HindustaniInstrumentManager()
+
     def performers(self):
         artistcount = collections.Counter()
         for p in InstrumentPerformance.objects.filter(instrument=self):
@@ -200,6 +202,26 @@ class Raag(models.Model):
     def get_absolute_url(self):
         return reverse('hindustani-raag', args=[str(self.id)])
 
+    def works(self):
+        return Work.objects.filter(recording__raags=self).distinct()
+
+    def composers(self):
+        return Composer.objects.filter(works__recording__raags=self).distinct()
+
+    def artists(self):
+        artistmap = {}
+        artistcounter = collections.Counter()
+        voice = Instrument.objects.fuzzy("voice")
+        artists = Artist.objects.filter(primary_concerts__tracks__raags=self)
+        for a in artists:
+            artistcounter[a.pk] += 1
+            if a.pk not in artistmap:
+                artistmap[a.pk] = a
+        artists = []
+        for aid, count in artistcounter.most_common():
+            artists.append(artistmap[aid])
+        return artists
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('hindustani-raag-search'),
@@ -228,6 +250,25 @@ class Taal(models.Model):
 
     def get_absolute_url(self):
         return reverse('hindustani-taal', args=[str(self.id)])
+
+    def percussion_artists(self):
+        artistmap = {}
+        artistcounter = collections.Counter()
+        artists = Artist.objects.filter(Q(instrumentperformance__recording__taals=self) & Q(instrumentperformance__instrument__percussion=True))
+        for a in artists:
+            artistcounter[a.pk] += 1
+            if a.pk not in artistmap:
+                artistmap[a.pk] = a
+        artists = []
+        for aid, count in artistcounter.most_common():
+            artists.append(artistmap[aid])
+        return artists
+
+    def works(self):
+        return Work.objects.filter(recording__taals=self).distinct()
+
+    def composers(self):
+        return Composer.objects.filter(works__recording__taals=self).distinct()
 
     @classmethod
     def get_filter_criteria(cls):
@@ -286,6 +327,9 @@ class Form(models.Model):
 
     def get_absolute_url(self):
         return reverse('hindustani-form', args=[str(self.id)])
+
+    def recordings(self):
+        return self.recording_set.all()
 
     @classmethod
     def get_filter_criteria(cls):

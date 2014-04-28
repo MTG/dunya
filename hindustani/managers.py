@@ -63,3 +63,10 @@ class HindustaniLayaManager(models.Manager):
             except hindustani.models.LayaAlias.DoesNotExist:
                 raise e
 
+class HindustaniInstrumentManager(models.Manager):
+    def fuzzy(self, name):
+        try:
+            return hindustani.models.Instrument.objects.get(name__iexact=name)
+        except hindustani.models.Instrument.DoesNotExist as e:
+            raise e
+

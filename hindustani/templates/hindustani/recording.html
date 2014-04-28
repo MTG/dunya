@@ -76,47 +76,45 @@
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
 								<span class="list">
-                                    {% if recording.release %}
-									<label>From album</label><b>{% inline_release recording.release %}</b>
+                                    {% if recording.release_set %}
+									<label>From album</label><b>{% inline_release recording.release_set.get %}</b>
                                     {% endif %}
-                                    {% if recording.work %}
-									<label>Performing</label><b>{% inline_work recording.work %}</b>
-                                    {% if recording.work.composer %}
-                                    <label>Composer</label><b>
-                                        {% inline_composer recording.work.composer %}</b>
+                                    {% if recording.works %}
+									<label>Performing</label><b>{% inline_work_list recording.works.all %}</b>
                                     {% endif %}
-           {% if recording.raags.exists %}
-           <label>Raag:</label>
-             {% for raag in recording.raags.all %}
-             <b>{% inline_raag raag %}</b>{% if not forloop.last %}, {% endif %}
-             {% endfor %}
-           {% else %}
-           unknown
-           {% endif %}
 
-           <label>Form:</label>
-           {% if recording.forms.exists %}
-             {% for form in recording.forms.all %}
-             <b>{% inline_form form %}</b>{% if not forloop.last %}, {% endif %}
-             {% endfor %}
-           {% else %}
-									{% if recording.work.taala %}
-									<label>Taala</label><b>
-										{% for t in recording.work.taala.all %}
-										    {% inline_taala t %}
+                               <label>Raag:</label>
+                               {% if recording.raags.exists %}
+                                 {% for raag in recording.raags.all %}
+                                 <b>{% inline_raag raag %}</b>{% if not forloop.last %}, {% endif %}
+                                 {% endfor %}
+                               {% else %}
+                               unknown
+                               {% endif %}
+
+                               {% if recording.forms.exists %}
+                               <label>Form:</label>
+                                 {% for form in recording.forms.all %}
+                                 <b>{% inline_form form %}</b>{% if not forloop.last %}, {% endif %}
+                                 {% endfor %}
+                               {% endif %}
+
+                                {% if recording.taals.exists %}
+									<label>Taal</label><b>
+										{% for t in recording.taals.all %}
+										    {% inline_taal t %}
 		    							{% endfor %}
 		    						</b>
 									{% endif %}
 
-									{% if recording.work.raaga %}
-									<label>Raaga</label><b>
-					     				{% for r in recording.work.raaga.all %}
-											{% inline_raaga r %}
+									{% if recording.layas.exists %}
+									<label>Laya</label><b>
+					     				{% for r in recording.layas.all %}
+											{% inline_raag r %}
 		    							{% endfor %}
 									</b>
 									{% endif %}
 
-                                {% endif %}
 									{% if tonic %}
                                     <label>Tonic</label><b>{{tonicname}} ({{tonic}} Hz)</b>
 									{% endif %}
