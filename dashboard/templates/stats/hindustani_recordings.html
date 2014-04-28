@@ -1,0 +1,49 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Hindustani Recordings{% endblock %}
+
+{% block css %}
+<style type="text/css">
+h3 {
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+</style>
+{% endblock %}
+
+{% block wrap %}
+
+<h1>Hindustani Recordings</h1>
+
+{% for r in releases %}
+{% if not r.got_perf or not r.got_works %}
+    <h3><a href="{{r.get_musicbrainz_url}}">{{r}}</a></h3>
+    {% if not r.got_works %}
+        Tracks missing works:<br>
+        {% for t in r.tracks.all %}
+            {% if not t.work %}
+            <li><a href="{{t.get_musicbrainz_url}}">{{t}}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if not r.got_perf %}
+        Tracks missing performance information<br>
+        {% for t in r.tracks.all %}
+            {% if not t.performance.count %}
+            <li><a href="{{t.get_musicbrainz_url}}">{{t}}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if r.missing_rel_artists %}
+        Lead artists who have no relationships<br>
+        {% for a in r.artists.all %}
+            <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a></li>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+{% endfor %}
+
+{% endblock %}
+
+
