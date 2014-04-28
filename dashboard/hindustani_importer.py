@@ -166,8 +166,8 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        # Musicbrainz calls it 'vocals', but we want it to be 'voice'
-        if instrument == "vocals":
+        # Musicbrainz calls it 'vocal', but we want it to be 'voice'
+        if instrument == "vocal":
             instrument = "voice"
         instrument = self.get_instrument(instrument)
         if instrument:
