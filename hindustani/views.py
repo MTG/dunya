@@ -343,7 +343,20 @@ def taalsearch(request):
 def taal(request, taalid):
     taal = get_object_or_404(models.Taal, pk=taalid)
 
-    ret = {"taal": taal
+    """
+    We display all the recordings of a taal and group them by 
+    layas. Currently, the vilambit laya should be the last group
+    shown. Recordings that are associated with more than one laya
+    are only shown once in their first group
+    """
+    layas = models.Laya.objects.all().order_by('id') # To make sure the vilambit is the last
+    recordings = taal.get_recordings()
+    tracks = []
+    for laya in layas:
+        tracks.append((laya, recordings.filter(layas=laya)))
+        recordings = recordings.exclude(layas=laya)
+    ret = { "taal": taal,
+            "tracks": tracks,
           }
     return render(request, "hindustani/taal.html", ret)
 

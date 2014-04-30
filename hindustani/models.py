@@ -270,6 +270,9 @@ class Taal(models.Model):
     def composers(self):
         return Composer.objects.filter(works__recording__taals=self).distinct()
 
+    def get_recordings(self):
+        return self.recording_set.all()
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('hindustani-taal-search'),

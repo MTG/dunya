@@ -95,25 +95,21 @@ $(document).ready(function() {
 	 	<div class="alldata">
 	     	<div class="thedata">
 	     		<div class="leftdata">
-		     		<h3>Similar taals</h3>
+		     		<h3>List of tracks</h3>
 	     		</div>
 	     		<div class="rightdata">
-	     			<div class="innerrightdata scrolldata">
-                        {% if similar %}
-                        <div class="scrollblock inforight" style="height: 290px;">
-                            {% for t in similar %}
-                                {% badge_taal t %}
+	     			<div class="innerrightdata scrolldata nopad">
+	                    <div class="tracklist">
+                            {% for t in tracks %}
+                                <h4>Laya: {{ t.0.name }} </h4>
+                                {% for r in t.1 %}
+                                    {% badge_recording r %}
+                                {% endfor %}
                             {% endfor %}
 	                    </div>
-                        {% else %}
-                        <div style="height: 290px; border: none;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
-                        </div>
-                        {% endif %}
 	     			</div>
 	     		</div>
 	     	</div>
-	     	<div class="clearfix"></div>
 	 	</div>
 </div>
 
