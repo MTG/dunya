@@ -349,12 +349,18 @@ def taal(request, taalid):
     shown. Recordings that are associated with more than one laya
     are only shown once in their first group
     """
-    layas = models.Laya.objects.all().order_by('id') # To make sure the vilambit is the last
+    layas = models.Laya.objects.all()
     recordings = taal.recording_set.all()
     tracks = []
-    for laya in layas:
-        tracks.append((laya, recordings.filter(layas=laya)))
-        recordings = recordings.exclude(layas=laya)
+    count = layas.count()
+    for i in range(count):
+        if layas[i] is not models.Laya.Vilambit:
+            tracks.append((layas[i], recordings.filter(layas=layas[i])))
+            recordings = recordings.exclude(layas=layas[i])
+
+    # Add the remaining vilambit recordings
+    tracks.append((laya, recordings.filter(layas=models.Laya.Vilambit)))
+    
     ret = { "taal": taal,
             "tracks": tracks,
           }

@@ -311,6 +311,11 @@ class Laya(data.models.BaseModel):
                "data": []
               }
         return ret
+    
+    @data.models.ClassProperty
+    @classmethod
+    def Vilambit(cls):
+        return cls.objects.fuzzy('vilambit')
 
 class LayaAlias(models.Model):
     name = models.CharField(max_length=50)

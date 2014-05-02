@@ -23,6 +23,10 @@ import os
 import time
 import math
 
+class ClassProperty(property):
+    def __get__(self, cls, owner):
+        return self.fget.__get__(None, owner)()
+
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
 
