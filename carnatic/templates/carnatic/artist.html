@@ -115,7 +115,7 @@ $(document).ready(function() {
                                 <h3>Biography</h3>
                                 <div class="inner">
                                 <span>
-                                    {% if artist.description.description %} {{artist.description.description}} {% else %}Sorry, we have no information for this section{% endif %}
+                                    {% if artist.description.description %} {{artist.description.description|safe}} {% else %}Sorry, we have no information for this section{% endif %}
                                     </span>
                                 </div>
                             </div>
