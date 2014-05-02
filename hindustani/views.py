@@ -462,8 +462,7 @@ def taal(request, taalid):
         elif vilambit in layas:
             return 3
         else:
-            raise AssertionError('None of the 3 Layas were found in the Layas of recording (id): %s'%recording.id)
-
+            return 999
     recordings = taal.recording_set.all()
     tracks = sorted(recordings, key=laya_ordering) 
     
