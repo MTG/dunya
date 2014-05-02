@@ -19,6 +19,9 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db.models import Q
+
+import docserver
+
 import os
 import time
 import math
@@ -363,6 +366,20 @@ class Recording(BaseModel):
 
         all_as = set(primary_artists) | set(rec_artists) | set(release_artists)
         return list(all_as)
+
+    def waveform_image(self):
+        # TODO: Select this image in a better way, or show a better
+        # representation
+        try:
+            # we return "4", because it might be more interesting than 1, but if it fails
+            # (e.g. only 3?) then just return 1
+            return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
+        except util.NoFileException:
+            try:
+                return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
+            except util.NoFileException:
+                return ""
+
 
 class InstrumentAlias(models.Model):
     class Meta:

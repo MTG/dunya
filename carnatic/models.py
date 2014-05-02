@@ -462,17 +462,6 @@ class Recording(CarnaticStyle, data.models.Recording):
                 return ts[0]
         return None
 
-    def waveform_image(self):
-        try:
-            # we return "4", because it might be more interesting than 1, but if it fails
-            # (e.g. only 3?) then just return 1
-            return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
-        except:
-            try:
-                return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
-            except:
-                return ""
-
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()

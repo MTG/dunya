@@ -303,12 +303,18 @@ function loaddata() {
             dodraw();
     }});
 
+    if (aksharaurl) {
     $.ajax(aksharaurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             aksharadata = data;
             rhythmDone = true;
             dodraw();
     }});
+    } else {
+        // If we have no data, don't draw the curve
+        aksharadata = [];
+        rhythmDone = true;
+    }
 
     function dodraw() {
         if (ticksDone && rhythmDone && pitchDone && histogramDone) {

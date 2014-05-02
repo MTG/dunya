@@ -15,7 +15,7 @@
     <a href="{{artist.main_instrument.get_absolute_url}}" class="belongs">{{artist.main_instrument.name}}</a>
   </div>
   <div class="descOpen">
-    {{artist.description.description}}
+    {{artist.description.description|safe}}
   </div>
   <div class="lists">
     <div class="left">
