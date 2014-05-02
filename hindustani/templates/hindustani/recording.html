@@ -22,7 +22,7 @@
     var pitchtrackurl = "{{pitchtrackurl|safe}}";
     var histogramurl = "{{histogramurl|safe}}";
     var rhythmurl = "{{rhythmurl|safe}}";
-    var aksharaurl = "{{aksharaurl|safe}}";
+    var aksharaurl = {% if aksharaurl %}"{{aksharaurl|safe}}"{%else%}null{%endif%};
     var waveformurl = "{{waveform|safe}}";
     var specurl = "{{spectrogram|safe}}";
     var secondsPerView = 32;
