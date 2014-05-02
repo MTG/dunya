@@ -1,9 +1,16 @@
 {% extends "dashboard/base.html" %}
-{% block title %}Module {{module.slug}}{% endblock %}
+{% block title %}Module {{module.name}}{% endblock %}
 
 {% block wrap %}
 
-<h2>Module {{module.slug}}</h2>
+<h2>
+    <span class="breadcrumbs">
+        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+        <li>Module {{module.name}}</li>
+    </span>
+</h2>
+
+<h2>Module {{module.name}}</h2>
 
 {% if confirm %}
 Are you sure you want to delete this module?

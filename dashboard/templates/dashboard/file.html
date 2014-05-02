@@ -54,9 +54,19 @@
 
     {% if derivedfiles %}
         <h3>Derived files</h3>
-        {% for f in derivedfiles %}
-        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}-{{f.outputname}}/{{f.module_version.version}})</a>
+        {% for m, vs in derivedfiles.items %}
+        <li>{{m.name}}</li>
+        {% for v, parts in vs.items %}
+        <ul>
+            <li><b>{{v}}</b></li>
+        <ul>
+            {% for p in parts %}
+            <li><a href="{{p.get_absolute_url}}">{{p}}</a></li>
         {% endfor %}
+    </ul>
+    {% endfor %}
+    </ul>
+    {% endfor %}
     {% endif %}
 </div>
 

@@ -79,6 +79,23 @@ class Document(models.Model):
             ret += u" (%s)" % self.external_identifier
         return ret
 
+    def nestedderived(self):
+        """Derived files to show on the dashboard """
+
+        outputs = collections.defaultdict(list)
+        for d in self.derivedfiles.all():
+            outputs[d.module_version.module].append(d)
+        for k, vs in outputs.items():
+            versions = {}
+            for v in vs:
+                if v.module_version.version in versions:
+                    versions[v.module_version.version].append(v)
+                else:
+                    versions[v.module_version.version] = [v]
+            outputs[k] = versions
+        outputs = dict(outputs)
+        return outputs
+
     def derivedmap(self):
         """ Derived files for the API.
         returns {"slug": {"part": {"versions", [versions], "extension"...} ]}

@@ -7,8 +7,9 @@
 {% block wrap %}
 
 <h2>
-    <span class="breadcrumbs">Collection
-        <li>{{collection.name}}</li>
+    <span class="breadcrumbs">
+        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+        <li>Collection {{collection.name}}</li>
     </span>
 </h2>
 

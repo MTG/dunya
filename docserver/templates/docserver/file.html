@@ -19,16 +19,28 @@
         {% endfor %}
     {% endif %}
 
-    {% if thisderived %}
-        <h3>Derived file</h3>
-        <li><a href="{{thisderived.get_absolute_url}}">{{thisderived.document.title}}</a>
+    {% if modulederived %}
+    <h3>Derived files for {{modulever.module.name}} {{modulever.version}}</h3>
+    {% for d in modulederived %}
+    <li><a href="{{d.get_absolute_url}}">{{d.document.title}} ({{d.module_version.module.slug}}/{{d.outputname}})</a>
+    {% endfor %}
     {% endif %}
 
     {% if outputs %}
-        <h3>All derived files</h3>
+        <h3>All other derived files</h3>
         {% for m, vs in outputs.items %}
-        <li>{{m.name}} ({% for v in vs %}<a href="{{v.get_absolute_url}}">{{v.version}}</a>, {% endfor %})
+        <li>{{m.name}}</li>
+        {% for v, parts in vs.items %}
+        <ul>
+            <li><b>{{v}}</b></li>
+        <ul>
+            {% for p in parts %}
+            <li><a href="{{p.get_absolute_url}}">{{p}}</a></li>
         {% endfor %}
+    </ul>
+    {% endfor %}
+    </ul>
+    {% endfor %}
     {% endif %}
 
     <div class="topbox">

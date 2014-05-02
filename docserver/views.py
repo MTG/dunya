@@ -202,19 +202,14 @@ def file(request, slug, uuid, version):
     doc = collection.documents.get_by_external_id(uuid)
 
     derived = doc.derivedfiles.all()
-    outputs = collections.defaultdict(list)
-    for d in derived:
-        outputs[d.module_version.module].append(d.module_version)
-    for k, v in outputs.items():
-        outputs[k] = sorted(v, key=lambda i: i.version)
-    outputs = dict(outputs)
+    modulederived = derived.filter(module_version=version)
 
-    thisderived = derived.filter(module_version=version).get()
+    outputs = doc.nestedderived()
 
     ret = {"document": doc,
            "collection": collection,
            "modulever": version,
            "outputs": outputs,
-           "thisderived": thisderived}
+           "modulederived": modulederived}
     return render(request, 'docserver/file.html', ret)
 

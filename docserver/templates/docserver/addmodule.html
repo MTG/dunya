@@ -3,7 +3,14 @@
 
 {% block wrap %}
 
-Add new module
+<h2>
+    <span class="breadcrumbs">
+        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+        <li>Add new module</li>
+    </span>
+</h2>
+
+<h2>Add new module</h2>
 
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
