@@ -237,7 +237,7 @@ class RaagAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Taal(models.Model):
+class Taal(data.models.BaseModel):
     missing_image = "taal.jpg"
 
     objects = managers.HindustaniTaalManager()
