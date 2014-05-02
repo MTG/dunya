@@ -39,6 +39,7 @@ class ReleaseImporter(object):
         self.date_import_started = django.utils.timezone.now()
 
         self.imported_artists = []
+        self.imported_composers = []
         self.imported_releases = []
 
     def _get_year_from_date(self, date):
@@ -111,7 +112,7 @@ class ReleaseImporter(object):
             artistid, instrument, is_lead = perf
             self._add_release_performance(release.mbid, artistid, instrument, is_lead)
 
-        # external_data.import_concert_image(concert, directories, self.overwrite)
+        external_data.import_release_image(release, directories, self.overwrite)
         self.imported_releases.append(releaseid)
         return release
 
@@ -194,8 +195,8 @@ class ReleaseImporter(object):
                 if locale:
                     aob.locale = locale
                 aob.save()
-
-            # external_data.import_artist_bio(artist, self.overwrite)
+            
+            external_data.import_artist_wikipedia(artist, self.overwrite)
         return artist
 
     def add_and_get_artist(self, artistid):
@@ -218,8 +219,14 @@ class ReleaseImporter(object):
         return artist
 
     def add_and_get_composer(self, artistid):
+        if artistid in self.imported_composers:
+            print "Composer already updated in this import. Not doing it again"
+            return self._ComposerClass.objects.get(mbid=artistid)
+
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
-        return self._create_artist_object(self._ComposerClass, self._ComposerAliasClass, mbartist, composer=True)
+        composer = self._create_artist_object(self._ComposerClass, self._ComposerAliasClass, mbartist, composer=True)
+        self.imported_composers.append(artistid)
+        return composer
 
     def _get_artist_performances(self, artistrelationlist):
         performances = []
