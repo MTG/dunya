@@ -328,22 +328,29 @@ def recording(request, uuid):
     except docserver.util.NoFileException:
         tonic = None
         tonicname = None
-    try:
-        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
-        akshara = str(round(float(akshara), 3) * 1000)
-    except docserver.util.NoFileException:
+
+    vilambit = models.Laya.Vilambit
+    drawtempo = not recording.layas.filter(pk=vilambit.pk).exists()
+    if drawtempo:
+        try:
+            aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve")
+            akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
+            akshara = str(round(float(akshara), 3) * 1000)
+        except docserver.util.NoFileException:
+            akshara = None
+            aksharaurl = None
+    else:
         akshara = None
+        aksharaurl = None
 
     try:
         pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch")
         histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram")
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks")
-        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve")
     except docserver.util.NoFileException:
         pitchtrackurl = None
         histogramurl = None
         rhythmurl = None
-        aksharaurl = None
 
     try:
         release = recording.release_set.get()
@@ -378,6 +385,7 @@ def recording(request, uuid):
             "histogramurl": histogramurl,
             "rhythmurl": rhythmurl,
             "aksharaurl": aksharaurl,
+            "drawtempo": drawtempo,
             "release": release,
         }
     return render(request, "hindustani/recording.html", ret)

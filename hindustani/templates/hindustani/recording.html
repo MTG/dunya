@@ -86,6 +86,9 @@
 									{% if tonic %}
                                     <label>Tonic</label><b>{{tonicname}} ({{tonic}} Hz)</b>
 									{% endif %}
+									{% if akshara %}
+                                    <label>Mātrā period</label><b>{{akshara}} ms </b>
+									{% endif %}
 
                                {% if recording.raags.exists %}
                                <label>Raag:</label>
@@ -95,10 +98,11 @@
                                {% endif %}
 
                                {% if recording.forms.exists %}
-                               <label>Form:</label>
+                               <label>Form:</label><b>
                                  {% for form in recording.forms.all %}
-                                 <b>{% inline_form form %}</b>{% if not forloop.last %}, {% endif %}
+                                     {% inline_form form %}
                                  {% endfor %}
+                             </b>
                                {% endif %}
 
                                 {% if recording.taals.exists %}
@@ -187,8 +191,10 @@
 	     		<div class="container2">
 	     		  <div class="waveLabel">
 	     		    <h1>rhythm</h1>
+                  {% if drawtempo %}
                   <span class="tempoup"></span>
                   <span class="tempodown"></span>
+                  {% endif %}
 	     		  </div>
 	     		  <div id="totalcontrol2">
                       <div id="timecode">00:00<span>{{recording.length_format}}</span></div>
