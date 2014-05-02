@@ -314,6 +314,16 @@ class Laya(data.models.BaseModel):
     
     @data.models.ClassProperty
     @classmethod
+    def Dhrut(cls):
+        return cls.objects.fuzzy('dhrut')
+    
+    @data.models.ClassProperty
+    @classmethod
+    def Madhya(cls):
+        return cls.objects.fuzzy('madhya')
+    
+    @data.models.ClassProperty
+    @classmethod
     def Vilambit(cls):
         return cls.objects.fuzzy('vilambit')
 
