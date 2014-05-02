@@ -197,7 +197,7 @@ def file(request, fileid):
     try:
         docsrvdoc = docsrvcoll.documents.get(external_identifier=docid)
         sourcefiles = docsrvdoc.sourcefiles.all()
-        derivedfiles = docsrvdoc.derivedfiles.all()
+        derivedfiles = docsrvdoc.nestedderived()
     except docserver.models.Document.DoesNotExist:
         pass
     ret = {"file": thefile,

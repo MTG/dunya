@@ -23,6 +23,12 @@ class EssentiaVersionForm(forms.ModelForm):
         model = models.EssentiaVersion
         fields = ["version", "sha1", "date_added"]
 
+class ModuleEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Module
+        fields = ["collections"]
+        widgets = {'collections': forms.CheckboxSelectMultiple()}
+
 class ModuleForm(forms.Form):
     module = forms.CharField()
     

@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import json, os
+import collections
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
@@ -129,24 +130,11 @@ def manager(request):
         jobs.get_latest_module_version(int(update))
         return HttpResponseRedirect(reverse('docserver-manager'))
 
-    essentias = models.EssentiaVersion.objects.all()
     modules = models.Module.objects.all()
     collections = models.Collection.objects.all()
 
-    ret = {"essentias": essentias, "modules": modules, "collections": collections}
+    ret = {"modules": modules, "collections": collections}
     return render(request, 'docserver/manager.html', ret)
-
-@user_passes_test(is_staff)
-def addessentia(request):
-    if request.method == "POST":
-        form = forms.EssentiaVersionForm(request.POST)
-        if form.is_valid():
-            models.EssentiaVersion.objects.create(version=form.cleaned_data["version"], sha1=form.cleaned_data["sha1"])
-            return HttpResponseRedirect(reverse('docserver-manager'))
-    else:
-        form = forms.EssentiaVersionForm()
-    ret = {"form": form}
-    return render(request, 'docserver/addessentia.html', ret)
 
 @user_passes_test(is_staff)
 def addmodule(request):
@@ -165,15 +153,63 @@ def addmodule(request):
     return render(request, 'docserver/addmodule.html', ret)
 
 @user_passes_test(is_staff)
+def module(request, module):
+    module = get_object_or_404(models.Module, pk=module)
+    confirm = False
+    form = forms.ModuleEditForm(instance=module)
+    if request.method == "POST":
+        if request.POST.get("delete"):
+            version = request.POST.get("version")
+            confirm = version
+        elif request.POST.get("confirm"):
+            version = request.POST.get("version")
+            jobs.delete_moduleversion.delay(version)
+        elif request.POST.get("update"):
+            form = forms.ModuleEditForm(request.POST, instance=module)
+            form.save()
+
+    versions = module.versions.all()
+    ret = {"module": module, "versions": versions, "form": form, "confirm": confirm}
+    return render(request, 'docserver/module.html', ret)
+
+@user_passes_test(is_staff)
 def collection(request, slug):
     collection = get_object_or_404(models.Collection, slug=slug)
     ret = {"collection": collection}
     return render(request, 'docserver/collection.html', ret)
 
 @user_passes_test(is_staff)
-def file(request, slug, uuid):
+def collectionversion(request, slug, version, type):
     collection = get_object_or_404(models.Collection, slug=slug)
+    mversion = get_object_or_404(models.ModuleVersion, pk=version)
+    processedfiles = []
+    unprocessedfiles = []
+    if type == "processed":
+        processedfiles = mversion.processed_files(collection)
+    elif type == "unprocessed":
+        unprocessedfiles = mversion.unprocessed_files(collection)
+    ret = {"collection": collection,
+            "modulever": mversion,
+            "type": type,
+            "unprocessedfiles": unprocessedfiles,
+            "processedfiles": processedfiles}
+    return render(request, 'docserver/collectionversion.html', ret)
+
+@user_passes_test(is_staff)
+def file(request, slug, uuid, version):
+    collection = get_object_or_404(models.Collection, slug=slug)
+    version = get_object_or_404(models.ModuleVersion, pk=version)
     doc = collection.documents.get_by_external_id(uuid)
-    ret = {"document": doc}
+
+    derived = doc.derivedfiles.all()
+    modulederived = derived.filter(module_version=version)
+
+    outputs = doc.nestedderived()
+
+    ret = {"document": doc,
+           "collection": collection,
+           "modulever": version,
+           "outputs": outputs,
+           "modulederived": modulederived}
     return render(request, 'docserver/file.html', ret)
 

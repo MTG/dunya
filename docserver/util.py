@@ -127,7 +127,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         module = models.Module.objects.get(slug=slug)
     except models.Module.DoesNotExist:
         raise NoFileException("Cannot find a module with type %s" % slug)
-    moduleversions = module.moduleversion_set
+    moduleversions = module.versions
     if version:
         moduleversions = moduleversions.filter(version=version)
     else:

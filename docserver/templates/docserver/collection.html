@@ -1,17 +1,36 @@
 {% extends "dashboard/base.html" %}
+
+{% load docserver %}
+
 {% block title %}Collection {{collection.name}}{% endblock %}
 
 {% block wrap %}
 
 <h2>
-    <span class="breadcrumbs">Collection
-        <li>{{collection.name}}</li>
+    <span class="breadcrumbs">
+        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+        <li>Collection {{collection.name}}</li>
     </span>
 </h2>
 
-{% for d in collection.documents.all %}
-<li><a href="{{d.get_absolute_url}}">{{d.title}}</a>
-{% endfor %}
+
+<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
+    {% for m in collection.module_set.all %}
+    <tr><td colspan="5">{{m}}</td></tr>
+    {% for v in m.versions.all %}
+    <tr>
+        <td></td>
+        <td>{{v.version}}</td>
+        <td><a href="{% url 'docserver-collectionversion' 'processed' collection.slug v.pk %}">
+                {% processed_count_for_collection v collection %}</a></td>
+        <td><a href="{% url 'docserver-collectionversion' 'unprocessed' collection.slug v.pk %}">
+                {% unprocessed_count_for_collection v collection %}</a></td>
+        <td></td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+</table>
+
 
 {% endblock %}
 

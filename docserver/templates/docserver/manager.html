@@ -3,21 +3,11 @@
 
 {% block wrap %}
 
-<h2>Essentia versions</h2>
-
-{% if essentias %}
-<table><tr><th>Version</th><th>Added at</th></tr>
-    {% for e in essentias %}
-    <tr>
-        <td>{{e.version}}</td>
-        <td>{{e.date_added}}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% else %}
-<p>(none)
-{% endif %}
-<p><a href="{% url 'docserver-addessentia' %}">Add new essentia version</a>
+<h2>
+    <span class="breadcrumbs">
+        <li>Module manager</li>
+    </span>
+</h2>
 
 <h2>Extractor modules</h2>
 
@@ -25,7 +15,10 @@
 <table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
     {% for m in modules %}
     <tr>
-        <td>{{m.name}} ({{m.module}})</td>
+        <td><a href="{{m.get_absolute_url}}">{{m.name}}</a> ({{m.module}})<br>
+           {% for c in m.collections.all %}
+           <li>{{c}}
+           {% endfor %}</td>
         <td>{{m.latest_version_number}}</td>
         <td>{{m.processed_files.distinct|length}}</td>
         <td>{{m.unprocessed_files.distinct|length}}</td>
@@ -44,7 +37,7 @@
 {% if collections %}
 <table><tr><th>Collection</th></tr>
     {% for c in collections %}
-    <tr><td>{{c.name}}</td></tr>
+    <tr><td><a href="{{c.get_absolute_url}}">{{c.name}}</a></td></tr>
     {% endfor %}
 </table>
 {% endif %}

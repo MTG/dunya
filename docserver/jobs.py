@@ -41,7 +41,7 @@ class DatabaseLogHandler(logging.Handler):
         if modulename and moduleversion:
             try:
                 mod = models.Module.objects.get(module=modulename)
-                modv = mod.moduleversion_set.get(version=moduleversion)
+                modv = mod.versions.get(version=moduleversion)
             except (models.Module.DoesNotExist, models.ModuleVersion.DoesNotExist):
                 pass
 
@@ -96,9 +96,22 @@ def get_latest_module_version(themod_id=None):
         version = instance.__version__
         v = "%s" % version
 
-        versions = m.moduleversion_set.filter(version=version)
+        versions = m.versions.filter(version=version)
         if not len(versions):
             models.ModuleVersion.objects.create(module=m, version=v)
+
+@app.task
+def delete_moduleversion(vid):
+    version = models.ModuleVersion.objects.get(pk=vid)
+    print "deleting moduleversion", version
+    files = version.derivedfile_set.all()
+    for f in files:
+        for p in f.parts():
+            path = p.path
+            os.unlink(path)
+        f.delete()
+    version.delete()
+    print "done"
 
 class NumPyArangeEncoder(json.JSONEncoder):
     def default(self, obj):
