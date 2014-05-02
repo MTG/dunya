@@ -103,8 +103,13 @@ class Release(HindustaniStyle, data.models.Release):
     tracks = models.ManyToManyField("Recording", through="ReleaseRecording")
 
     def performers(self):
-        # TODO: Lead artist if they are not in this list
-        return InstrumentPerformance.objects.filter(recording__release=self)
+        artists = set()
+        performances = []
+        for ip in InstrumentPerformance.objects.filter(recording__release=self):
+            if ip.performer not in artists:
+                artists.add(ip.performer)
+                performances.append(ip)
+        return performances
 
     @classmethod
     def get_filter_criteria(cls):
