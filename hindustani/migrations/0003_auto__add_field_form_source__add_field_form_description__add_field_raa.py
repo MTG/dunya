@@ -8,6 +8,90 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding field 'Form.source'
+        db.add_column(u'hindustani_form', 'source',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'hindustani_form_source_set', null=True, to=orm['data.Source']),
+                      keep_default=False)
+
+        # Adding field 'Form.description'
+        db.add_column(u'hindustani_form', 'description',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['data.Description']),
+                      keep_default=False)
+
+        # Adding M2M table for field references on 'Form'
+        m2m_table_name = db.shorten_name(u'hindustani_form_references')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('form', models.ForeignKey(orm[u'hindustani.form'], null=False)),
+            ('source', models.ForeignKey(orm[u'data.source'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['form_id', 'source_id'])
+
+        # Adding M2M table for field images on 'Form'
+        m2m_table_name = db.shorten_name(u'hindustani_form_images')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('form', models.ForeignKey(orm[u'hindustani.form'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['form_id', 'image_id'])
+
+        # Adding field 'Raag.source'
+        db.add_column(u'hindustani_raag', 'source',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'hindustani_raag_source_set', null=True, to=orm['data.Source']),
+                      keep_default=False)
+
+        # Adding field 'Raag.description'
+        db.add_column(u'hindustani_raag', 'description',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['data.Description']),
+                      keep_default=False)
+
+        # Adding M2M table for field references on 'Raag'
+        m2m_table_name = db.shorten_name(u'hindustani_raag_references')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('raag', models.ForeignKey(orm[u'hindustani.raag'], null=False)),
+            ('source', models.ForeignKey(orm[u'data.source'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['raag_id', 'source_id'])
+
+        # Adding M2M table for field images on 'Raag'
+        m2m_table_name = db.shorten_name(u'hindustani_raag_images')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('raag', models.ForeignKey(orm[u'hindustani.raag'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['raag_id', 'image_id'])
+
+        # Adding field 'Laya.source'
+        db.add_column(u'hindustani_laya', 'source',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'hindustani_laya_source_set', null=True, to=orm['data.Source']),
+                      keep_default=False)
+
+        # Adding field 'Laya.description'
+        db.add_column(u'hindustani_laya', 'description',
+                      self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['data.Description']),
+                      keep_default=False)
+
+        # Adding M2M table for field references on 'Laya'
+        m2m_table_name = db.shorten_name(u'hindustani_laya_references')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('laya', models.ForeignKey(orm[u'hindustani.laya'], null=False)),
+            ('source', models.ForeignKey(orm[u'data.source'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['laya_id', 'source_id'])
+
+        # Adding M2M table for field images on 'Laya'
+        m2m_table_name = db.shorten_name(u'hindustani_laya_images')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('laya', models.ForeignKey(orm[u'hindustani.laya'], null=False)),
+            ('image', models.ForeignKey(orm[u'data.image'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['laya_id', 'image_id'])
+
         # Adding field 'Taal.source'
         db.add_column(u'hindustani_taal', 'source',
                       self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name=u'hindustani_taal_source_set', null=True, to=orm['data.Source']),
@@ -38,6 +122,42 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Deleting field 'Form.source'
+        db.delete_column(u'hindustani_form', 'source_id')
+
+        # Deleting field 'Form.description'
+        db.delete_column(u'hindustani_form', 'description_id')
+
+        # Removing M2M table for field references on 'Form'
+        db.delete_table(db.shorten_name(u'hindustani_form_references'))
+
+        # Removing M2M table for field images on 'Form'
+        db.delete_table(db.shorten_name(u'hindustani_form_images'))
+
+        # Deleting field 'Raag.source'
+        db.delete_column(u'hindustani_raag', 'source_id')
+
+        # Deleting field 'Raag.description'
+        db.delete_column(u'hindustani_raag', 'description_id')
+
+        # Removing M2M table for field references on 'Raag'
+        db.delete_table(db.shorten_name(u'hindustani_raag_references'))
+
+        # Removing M2M table for field images on 'Raag'
+        db.delete_table(db.shorten_name(u'hindustani_raag_images'))
+
+        # Deleting field 'Laya.source'
+        db.delete_column(u'hindustani_laya', 'source_id')
+
+        # Deleting field 'Laya.description'
+        db.delete_column(u'hindustani_laya', 'description_id')
+
+        # Removing M2M table for field references on 'Laya'
+        db.delete_table(db.shorten_name(u'hindustani_laya_references'))
+
+        # Removing M2M table for field images on 'Laya'
+        db.delete_table(db.shorten_name(u'hindustani_laya_images'))
+
         # Deleting field 'Taal.source'
         db.delete_column(u'hindustani_taal', 'source_id')
 
@@ -127,8 +247,12 @@ class Migration(SchemaMigration):
         u'hindustani.form': {
             'Meta': {'object_name': 'Form'},
             'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'hindustani_form_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_form_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
+            'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_form_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
         },
         u'hindustani.formalias': {
             'Meta': {'object_name': 'FormAlias'},
@@ -157,8 +281,12 @@ class Migration(SchemaMigration):
         u'hindustani.laya': {
             'Meta': {'object_name': 'Laya'},
             'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'hindustani_laya_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_laya_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
+            'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_laya_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
         },
         u'hindustani.layaalias': {
             'Meta': {'object_name': 'LayaAlias'},
@@ -174,8 +302,12 @@ class Migration(SchemaMigration):
         u'hindustani.raag': {
             'Meta': {'object_name': 'Raag'},
             'common_name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'description': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': u"orm['data.Description']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'hindustani_raag_image_set'", 'symmetrical': 'False', 'to': u"orm['data.Image']"}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'references': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "u'hindustani_raag_reference_set'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['data.Source']"}),
+            'source': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "u'hindustani_raag_source_set'", 'null': 'True', 'to': u"orm['data.Source']"})
         },
         u'hindustani.raagalias': {
             'Meta': {'object_name': 'RaagAlias'},

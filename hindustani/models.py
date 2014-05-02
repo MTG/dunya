@@ -193,7 +193,7 @@ class SectionAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Raag(models.Model):
+class Raag(data.models.BaseModel):
     missing_image = "raag.jpg"
 
     objects = managers.HindustaniRaagManager()
@@ -290,7 +290,7 @@ class TaalAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Laya(models.Model):
+class Laya(data.models.BaseModel):
     missing_image = "laya.jpg"
 
     objects = managers.HindustaniLayaManager()
@@ -319,7 +319,7 @@ class LayaAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Form(models.Model):
+class Form(data.models.BaseModel):
     missing_image = "form.jpg"
 
     objects = managers.HindustaniFormManager()
