@@ -21,6 +21,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 import json
 
 from hindustani import models
+import docserver
 
 def get_filter_items():
     filter_items = [
@@ -294,8 +295,90 @@ def release(request, uuid):
 def recording(request, uuid):
     recording = get_object_or_404(models.Recording, mbid=uuid)
 
-    ret = {"recording": recording
-          }
+    try:
+        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
+    except docserver.util.NoFileException:
+        wave = None
+    try:
+        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
+    except docserver.util.NoFileException:
+        spec = None
+    try:
+        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
+    except docserver.util.NoFileException:
+        small = None
+    try:
+        audio = docserver.util.docserver_get_mp3_url(recording.mbid)
+    except docserver.util.NoFileException:
+        audio = None
+    try:
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
+        notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
+        tonic = round(float(tonic), 2)
+        thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
+        thebin = int(round(thebin))
+        tonic = str(tonic)
+        if thebin <= 11 and thebin >= 0:
+            tonicname = notenames[thebin]
+        else:
+            print "bin is", thebin, "weird"
+            print tonic
+            tonicname = ""
+    except docserver.util.NoFileException:
+        tonic = None
+        tonicname = None
+    try:
+        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
+        akshara = str(round(float(akshara), 3) * 1000)
+    except docserver.util.NoFileException:
+        akshara = None
+
+    try:
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch")
+        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram")
+        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks")
+        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve")
+    except docserver.util.NoFileException:
+        pitchtrackurl = None
+        histogramurl = None
+        rhythmurl = None
+        aksharaurl = None
+
+    try:
+        release = recording.release_set.get()
+        tracks = list(release.tracks.all())
+        recordingpos = tracks.index(recording)
+    except models.Release.DoesNotExist:
+        release = None
+        tracks = []
+        recordingpos = 0
+    nextrecording = None
+    prevrecording = None
+    if recordingpos > 0:
+        prevrecording = tracks[recordingpos-1]
+    if recordingpos+1 < len(tracks):
+        nextrecording = tracks[recordingpos+1]
+    mbid = recording.mbid
+
+    ret = { "recording": recording,
+            "objecttype": "recording",
+            "objectid": recording.id,
+            "waveform": wave,
+            "spectrogram": spec,
+            "smallimage": small,
+            "audio": audio,
+            "tonic": tonic,
+            "tonicname": tonicname,
+            "akshara": akshara,
+            "mbid": mbid,
+            "nextrecording": nextrecording,
+            "prevrecording": prevrecording,
+            "pitchtrackurl": pitchtrackurl,
+            "histogramurl": histogramurl,
+            "rhythmurl": rhythmurl,
+            "aksharaurl": aksharaurl,
+            "release": release,
+        }
     return render(request, "hindustani/recording.html", ret)
 
 def work(request, uuid):
