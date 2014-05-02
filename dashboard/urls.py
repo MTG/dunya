@@ -43,6 +43,7 @@ urlpatterns = patterns('',
     url(r'carnatic/', statistic_views.carnatic_stats, name='dashboard-carnatic-stats'),
 
 
+    url(r'hindustani/coverart/', statistic_views.hindustani_coverart, name='dashboard-hindustani-coverart'),
     url(r'hindustani/releases/', statistic_views.hindustani_releases, name='dashboard-hindustani-releases'),
     url(r'hindustani/artists/', statistic_views.hindustani_artists, name='dashboard-hindustani-artists'),
     url(r'hindustani/recordings/', statistic_views.hindustani_recordings, name='dashboard-hindustani-recordings'),

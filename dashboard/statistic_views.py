@@ -310,6 +310,33 @@ def hindustani_releases(request):
     return render(request, 'stats/hindustani_releases.html', ret)
 
 @user_passes_test(views.is_staff)
+def hindustani_coverart(request):
+    releases = hindustani.models.Release.objects.select_related('artists')
+    counted = releases.annotate(Count('images'))
+    relids = [r.mbid for r in counted.all() if r.images__count > 0]
+
+    dashcoll = models.Collection.objects.get(id=compmusic.HINDUSTANI_COLLECTION)
+    checker = "dashboard.completeness.ReleaseCoverart"
+    nocaa = []
+    for dashrel in dashcoll.musicbrainzrelease_set.all():
+        results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
+        if results:
+            lastresult = results[0]
+            if lastresult.result == 'b': # Bad
+                nocaa.append(counted.get(mbid=dashrel.mbid))
+
+    noimages = [r for r in counted.all() if r.images__count == 0]
+    noimageids = [r.mbid for r in noimages]
+    dashnoimage = dashcoll.musicbrainzrelease_set.filter(mbid__in=noimageids)
+
+    noi = []
+    for m, d in zip(noimages, dashnoimage):
+        noi.append({"model": m, "dashboard": d})
+
+    ret = {"noimages": noi, "nocaa": nocaa}
+    return render(request, 'stats/hindustani_coverart.html', ret)
+
+@user_passes_test(views.is_staff)
 def hindustani_artists(request):
     artists = hindustani.models.Artist.objects
     image_counted = artists.annotate(Count('images'))

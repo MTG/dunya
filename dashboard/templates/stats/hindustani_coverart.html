@@ -1,0 +1,33 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Hindustani Coverart{% endblock %}
+
+{% block wrap %}
+
+<h1>Hindustani Coverart</h1>
+
+<h2>Releases missing coverart</h2>
+<ul>
+{% for r in noimages %}
+<li>{{r.model}} - <a href="{{r.get_musicbrainz_url}}">{{r.get_musicbrainz_url}}</a>
+<br>Paths:
+<ul>
+    {% for path in r.dashboard.collectiondirectory_set.all %}
+    <li>{{path.full_path}}
+    {% endfor %}
+</ul>
+{% endfor %}
+</ul>
+
+<h2>Releases with no coverart on CAA</h2>
+{% for r in nocaa %}
+<div style="clear: both;">
+<h3>{{r}}</h3>
+<a href="{{r.get_image_url}}"><img src="{{r.get_image_url}}" style="float:left; width:100px;" /></a>
+<li><a href="{{r.get_musicbrainz_url}}">View on Musicbrainz</a>
+<li><a href="{{r.get_musicbrainz_url}}/add-cover-art">Add coverart link</a>
+<li><a href="{{r.get_image_url}}">Full-size image</a>
+</div>
+{% endfor %}
+
+{% endblock %}
+
