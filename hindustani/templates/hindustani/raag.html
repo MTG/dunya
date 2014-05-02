@@ -62,17 +62,6 @@ $(document).ready(function() {
 									{% endfor %}
 								</div>
 							</div>
-							<div id="composers" class="metaDetails">
-								<div class="inner withpadding">
-									<h3>Composers</h3>
-									{% for c in raag.composers %}
-									{% badge_mini_composer c %}
-                                    {% empty %}
-                                        Sorry, we have no information for this section
-									{% endfor %}
-								</div>
-							</div>
-
 							<div id="works" class="metaDetails">
 								<div class="inner withpadding">
 									<h3>Compositions</h3>
