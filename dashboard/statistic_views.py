@@ -401,10 +401,10 @@ def hindustani_raagtaal(request):
     dirs = collections.defaultdict(lambda: collections.defaultdict(dict))
     for m, r in no_r.items():
         rel = r.directory.musicbrainzrelease
-        dirs[rel][f]["raag"] = True
+        dirs[rel][r]["raag"] = True
     for m, t in no_t.items():
         rel = t.directory.musicbrainzrelease
-        dirs[rel][t]["raag"] = True
+        dirs[rel][t]["taal"] = True
     for m, l in no_l.items():
         rel = l.directory.musicbrainzrelease
         dirs[rel][l]["laya"] = True
