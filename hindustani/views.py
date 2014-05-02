@@ -18,10 +18,14 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+
 import json
 import math
 
+import pysolr
+
 from hindustani import models
+from hindustani import search
 import docserver
 
 def get_filter_items():

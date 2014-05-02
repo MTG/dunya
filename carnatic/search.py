@@ -24,7 +24,7 @@ import carnatic
 solr = pysolr.Solr(settings.SOLR_URL)
 def search(name):
     name = name.lower()
-    query = "doctype_s:search AND title_t:(%s)" % name
+    query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
     klass_map = {"instrument": carnatic.models.Instrument,
