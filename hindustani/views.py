@@ -350,7 +350,7 @@ def taal(request, taalid):
     are only shown once in their first group
     """
     layas = models.Laya.objects.all().order_by('id') # To make sure the vilambit is the last
-    recordings = taal.recording_set()
+    recordings = taal.recording_set.all()
     tracks = []
     for laya in layas:
         tracks.append((laya, recordings.filter(layas=laya)))
