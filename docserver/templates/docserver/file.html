@@ -4,8 +4,10 @@
 {% block wrap %}
 
 <h2>
-    <span class="breadcrumbs">Document
+    <span class="breadcrumbs">
+        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
         <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
+        <li>Module {{modulever.module.name}} {{modulever.version}}</li>
         <li>{{document.title}}</li>
     </span>
 </h2>
@@ -17,10 +19,15 @@
         {% endfor %}
     {% endif %}
 
-    {% if document.derivedfiles.all %}
-        <h3>Derived files</h3>
-        {% for f in document.derivedfiles.all %}
-        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}/{{f.module_version.version}})</a>
+    {% if thisderived %}
+        <h3>Derived file</h3>
+        <li><a href="{{thisderived.get_absolute_url}}">{{thisderived.document.title}}</a>
+    {% endif %}
+
+    {% if outputs %}
+        <h3>All derived files</h3>
+        {% for m, vs in outputs.items %}
+        <li>{{m.name}} ({% for v in vs %}<a href="{{v.get_absolute_url}}">{{v.version}}</a>, {% endfor %})
         {% endfor %}
     {% endif %}
 

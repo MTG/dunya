@@ -202,7 +202,6 @@ class DerivedFile(models.Model):
     mimetype = models.CharField(max_length=100)
     computation_time = models.IntegerField(blank=True, null=True)
 
-    #essentia_version = models.ForeignKey("EssentiaVersion")
     date = models.DateTimeField(default=django.utils.timezone.now)
 
     def save_part(self, part_order, path, size):
@@ -211,7 +210,8 @@ class DerivedFile(models.Model):
 
     @property
     def versions(self):
-        versions = self.module_version.module.moduleversion_set.all()
+        # TODO: This is only the versions of the module, not the versions of files we have
+        versions = self.module_version.module.versions.all()
         return [v.version for v in versions]
 
     @property
@@ -254,26 +254,18 @@ class Module(models.Model):
 
     def processed_files(self):
         latest = self.get_latest_version()
-        all_collections = self.collections.all()
-        qs = Document.objects.filter(collection__in=all_collections,
-                sourcefiles__file_type=self.source_type)
         if latest:
-            qs = qs.filter(derivedfiles__module_version=self.get_latest_version())
+            return latest.processed_files()
         else:
             # If we don't have a version we probably can't show files yet
             return []
-        return qs
 
     def unprocessed_files(self):
         latest = self.get_latest_version()
-        all_collections = self.collections.all()
-        qs = Document.objects.filter(collection__in=all_collections,
-                sourcefiles__file_type=self.source_type)
         if latest:
-            qs = qs.exclude(derivedfiles__module_version=self.get_latest_version())
+            return latest.unprocessed_files()
         else:
             return []
-        return qs
 
     def latest_version_number(self):
         version = self.get_latest_version()
@@ -283,16 +275,39 @@ class Module(models.Model):
             return "(none)"
 
     def get_latest_version(self):
-        versions = self.moduleversion_set.order_by("-date_added")
+        versions = self.versions.order_by("-date_added")
         if len(versions):
             return versions[0]
         else:
             return None
 
+    def get_absolute_url(self):
+        return reverse("docserver-module", args=[self.pk])
+
 class ModuleVersion(models.Model):
-    module = models.ForeignKey(Module)
+    module = models.ForeignKey(Module, related_name="versions")
     version = models.CharField(max_length=10)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
+
+    def processed_files(self, collection=None):
+        if not collection:
+            collections = self.module.collections.all()
+        else:
+            collections = [collection]
+        qs = Document.objects.filter(collection__in=collections,
+                sourcefiles__file_type=self.module.source_type)
+        qs = qs.filter(derivedfiles__module_version=self)
+        return qs.distinct()
+
+    def unprocessed_files(self, collection=None):
+        if not collection:
+            collections = self.module.collections.all()
+        else:
+            collections = [collection]
+        qs = Document.objects.filter(collection__in=collections,
+                sourcefiles__file_type=self.module.source_type)
+        qs = qs.exclude(derivedfiles__module_version=self)
+        return qs.distinct()
 
     def __unicode__(self):
         return u"v%s for %s" % (self.version, self.module)

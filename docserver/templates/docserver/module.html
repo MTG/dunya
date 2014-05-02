@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Module {{module.slug}}{% endblock %}
+
+{% block wrap %}
+
+<h2>Module {{module.slug}}</h2>
+
+{% if confirm %}
+Are you sure you want to delete this module?
+<form method="post" action="">
+        {% csrf_token %}
+        <input type="hidden" name="version" value="{{confirm}}">
+        <input type="hidden" name="confirm" value="yes">
+        <input type="submit" value="Yes, delete"></form>
+
+{% else %}
+
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Update">
+    <input type="hidden" name="update" value="1">
+</form>
+<table><tr><th>Version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
+    {% for v in versions %}
+    <tr>
+        <td>{{v.version}}</td>
+        <td>{{v.processed_files.distinct|length}}</td>
+        <td>{{v.unprocessed_files.distinct|length}}</td>
+        <td><form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="delete" value="yes">
+                <input type="hidden" name="version" value="{{v.pk}}">
+                <input type="submit" value="Delete version"></form></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+
+{% endblock %}
+
