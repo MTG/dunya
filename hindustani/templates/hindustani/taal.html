@@ -101,10 +101,7 @@ $(document).ready(function() {
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="tracklist">
                             {% for t in tracks %}
-                                <h4>Laya: {{ t.0.name }} </h4>
-                                {% for r in t.1 %}
                                     {% badge_recording r %}
-                                {% endfor %}
                             {% endfor %}
 	                    </div>
 	     			</div>

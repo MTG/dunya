@@ -349,22 +349,37 @@ def taal(request, taalid):
     shown. Recordings that are associated with more than one laya
     are only shown once in their first group
     """
-    layas = models.Laya.objects.all()
-    recordings = taal.recording_set.all()
-    tracks = []
-    count = layas.count()
-    for i in range(count):
-        if layas[i] is not models.Laya.Vilambit:
-            tracks.append((layas[i], recordings.filter(layas=layas[i])))
-            recordings = recordings.exclude(layas=layas[i])
+    # Retrieve the three Layas in Dunya
+    dhrut = models.Laya.Dhrut
+    madhya = models.Laya.Madhya
+    vilambit = models.Laya.Vilambit
+    
+    def laya_ordering(recording):
+        """
+        A helper function passed as key to the sorting function
+        Depending on the recording's layas, the following is returned:
+            1-> if it has dhrut
+            2-> if it has madhya
+            3-> if it only has vilambit
+        """
+        layas = recording.layas.all()
+        if dhrut in layas:
+            return 1
+        elif madhya in layas:
+            return 2
+        elif vilambit in layas:
+            return 3
+        else:
+            raise AssertionError('None of the 3 Layas were found in the Layas of recording (id): %s'%recording.id)
 
-    # Add the remaining vilambit recordings
-    tracks.append((laya, recordings.filter(layas=models.Laya.Vilambit)))
+    recordings = taal.recording_set.all()
+    tracks = sorted(recordings, key=laya_ordering) 
     
     ret = { "taal": taal,
             "tracks": tracks,
           }
     return render(request, "hindustani/taal.html", ret)
+
 
 def formsearch(request):
     forms = models.Form.objects.all().order_by('name')
