@@ -764,6 +764,22 @@
     }
 },
 {
+    "pk": 13, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teenal"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teetal"
+    }
+},
+{
     "pk": 1, 
     "model": "hindustani.raag", 
     "fields": {
@@ -4152,6 +4168,30 @@
     }
 },
 {
+    "pk": 311, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "maalkauns", 
+        "raag": 125
+    }
+},
+{
+    "pk": 312, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "darbari kanhada", 
+        "raag": 53
+    }
+},
+{
+    "pk": 313, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "maanj khamaj", 
+        "raag": 119
+    }
+},
+{
     "pk": 1, 
     "model": "hindustani.laya", 
     "fields": {
@@ -4172,7 +4212,7 @@
         "source": null, 
         "references": [], 
         "common_name": "Madhya", 
-        "name": "Madhy"
+        "name": "Madhya"
     }
 },
 {
@@ -4497,6 +4537,22 @@
         "references": [], 
         "common_name": "Natya sangeet", 
         "name": "N\u0101\u1e6dya sa\u1e45g\u012bt"
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.formalias", 
+    "fields": {
+        "name": "tarana thillana", 
+        "form": 3
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.formalias", 
+    "fields": {
+        "name": "kajri", 
+        "form": 21
     }
 },
 {
