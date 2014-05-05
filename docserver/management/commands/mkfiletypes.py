@@ -26,11 +26,9 @@ class Command(BaseCommand):
     help = 'Create database data based on static data defined in code'
 
     def handle(self, *args, **options):
-        prefix = 'docserver.filetypes.'
         all_classes = []
         for name, ftype in inspect.getmembers(filetypes, inspect.isclass):
             if issubclass(ftype, filetypes.FileType) and not name == "FileType":
-                path = "%s%s" % (prefix, name)
                 all_classes.append(ftype.extension)
                 if models.SourceFileType.objects.filter(extension=ftype.extension).count() == 0:
                     if hasattr(ftype, "name"):
