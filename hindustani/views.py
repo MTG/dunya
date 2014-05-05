@@ -469,9 +469,13 @@ def taal(request, taalid):
             return 999
     recordings = taal.recording_set.all()
     tracks = sorted(recordings, key=laya_ordering) 
+    sample = None
+    if tracks:
+        sample = tracks[0]
     
     ret = { "taal": taal,
             "tracks": tracks,
+            "sample": sample
           }
     return render(request, "hindustani/taal.html", ret)
 

@@ -8,6 +8,7 @@
 $(document).ready(function() {
     widthOfChildren('.metaContainer');
     widthOfChildren('.inforight');
+    widthOfChildren('.tracklist');
       $(".inforight").packery({
         itemSelector: '.item',
         gutter: 0
@@ -41,7 +42,7 @@ $(document).ready(function() {
      			<div id="summaryBack"></div>
      			{% if user.is_authenticated %}
 				<div id="previewicon" class="enabled">
-						<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
+						<div class="ui360"><a href="{{sample.absolute_mp3_url}}">{{sample.title}}</a></div>
 				</div>
 				{% else %}
 				<div id="previewicon" class="disabled"></div>
@@ -101,12 +102,13 @@ $(document).ready(function() {
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="tracklist">
                             {% for t in tracks %}
-                                    {% badge_recording r %}
+                                    {% badge_recording t %}
                             {% endfor %}
 	                    </div>
 	     			</div>
 	     		</div>
 	     	</div>
+		 	<div class="clearfix"></div>
 	 	</div>
 </div>
 
