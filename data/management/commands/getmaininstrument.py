@@ -27,7 +27,7 @@ class Command(BaseCommand):
         if len(args) == 0 or args[0] not in ('carnatic', 'hindustani'):
             raise CommandError("""Missing argument. The argument passed to this
                                 command should be one of \'carnatic\' or 
-                                \'hindustani\'i""")
+                                \'hindustani\'""")
         models = {  'carnatic':     carnatic_models,
                     'hindustani':   hindustani_models,
                  }[args[0]]
