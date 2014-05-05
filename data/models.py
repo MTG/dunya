@@ -374,10 +374,10 @@ class Recording(BaseModel):
             # we return "4", because it might be more interesting than 1, but if it fails
             # (e.g. only 3?) then just return 1
             return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
-        except util.NoFileException:
+        except docserver.util.NoFileException:
             try:
                 return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
-            except util.NoFileException:
+            except docserver.util.NoFileException:
                 return ""
 
 
