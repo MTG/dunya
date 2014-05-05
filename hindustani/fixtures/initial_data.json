@@ -8,6 +8,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": false, 
         "name": "Voice"
     }
 },
@@ -20,6 +21,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": false, 
         "name": "Spanish acoustic guitar"
     }
 },
@@ -32,6 +34,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": false, 
         "name": "Additional"
     }
 },
@@ -39,11 +42,14 @@
     "pk": 4, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11255, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4322
+        ], 
+        "hidden": false, 
         "name": "Bansuri"
     }
 },
@@ -56,6 +62,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": true, 
         "name": "Cymbals"
     }
 },
@@ -68,6 +75,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": false, 
         "name": "Flute"
     }
 },
@@ -75,11 +83,14 @@
     "pk": 7, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11256, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4323
+        ], 
+        "hidden": false, 
         "name": "Ghatam"
     }
 },
@@ -92,6 +103,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": true, 
         "name": "Guitar"
     }
 },
@@ -99,11 +111,14 @@
     "pk": 9, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11257, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4324
+        ], 
+        "hidden": false, 
         "name": "Harmonium"
     }
 },
@@ -116,6 +131,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": true, 
         "name": "Harp"
     }
 },
@@ -123,11 +139,14 @@
     "pk": 11, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11258, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4325
+        ], 
+        "hidden": false, 
         "name": "Morsing"
     }
 },
@@ -135,11 +154,14 @@
     "pk": 12, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11259, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4326
+        ], 
+        "hidden": false, 
         "name": "Mridangam"
     }
 },
@@ -147,11 +169,14 @@
     "pk": 13, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
+        "description": 11260, 
+        "percussion": true, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4327
+        ], 
+        "hidden": false, 
         "name": "Pakhavaj"
     }
 },
@@ -159,11 +184,14 @@
     "pk": 14, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11261, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4328
+        ], 
+        "hidden": false, 
         "name": "Santoor"
     }
 },
@@ -171,11 +199,14 @@
     "pk": 15, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11262, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4329
+        ], 
+        "hidden": false, 
         "name": "Sarangi"
     }
 },
@@ -183,11 +214,14 @@
     "pk": 16, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11263, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4330
+        ], 
+        "hidden": false, 
         "name": "Sarod"
     }
 },
@@ -195,11 +229,14 @@
     "pk": 17, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11264, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4331
+        ], 
+        "hidden": false, 
         "name": "Shehnai"
     }
 },
@@ -207,11 +244,14 @@
     "pk": 18, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11265, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4332
+        ], 
+        "hidden": false, 
         "name": "Sitar"
     }
 },
@@ -224,6 +264,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": false, 
         "name": "Solo"
     }
 },
@@ -231,11 +272,14 @@
     "pk": 20, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
+        "description": 11266, 
+        "percussion": true, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4333
+        ], 
+        "hidden": false, 
         "name": "Tabla"
     }
 },
@@ -243,11 +287,14 @@
     "pk": 21, 
     "model": "hindustani.instrument", 
     "fields": {
-        "description": null, 
+        "description": 11267, 
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4334
+        ], 
+        "hidden": false, 
         "name": "Tambura"
     }
 },
@@ -259,7 +306,10 @@
         "percussion": false, 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "images": [
+            4335
+        ], 
+        "hidden": true, 
         "name": "Violin"
     }
 },
@@ -272,6 +322,7 @@
         "source": null, 
         "references": [], 
         "images": [], 
+        "hidden": true, 
         "name": "Zither"
     }
 },
@@ -4724,6 +4775,236 @@
     }
 },
 {
+    "pk": 11255, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7428, 
+        "description": "The bansuri is a transverse flute of India made from a single hollow shaft of bamboo with six or seven finger holes. An ancient musical instrument, the North Indian bansuri is typically about 14 inches in length, was traditionally used as a soprano instrument primarily for accompaniment in lighter compositions including film music. Bansuris range in size from less than 12\" to nearly 40\"."
+    }
+},
+{
+    "pk": 4322, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Bansuri.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11256, 
+    "model": "data.description", 
+    "fields": {
+        "source": 3940, 
+        "description": "The gha\u1e6dam is a percussion instrument used in the Carnatic music of South India. Its variant is played in Punjab and is known as gharha as is a part of Punjabi folk traditions. Its analogue in Rajasthan is known as the madga and pani mataqa (\"water jug\")."
+    }
+},
+{
+    "pk": 4323, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Ghatam.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11257, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7429, 
+        "description": "The harmonium is a type of reed pump organ used in Hindustani music as an important melodic accompaniment. Brought to India in the mid-19th century the hand-pumped harmoniums quickly became popular, and remain an important instrument in many genres of Indian music. Though derived from the designs developed in France, the harmonium was developed further in India in unique ways, such as the addition of drone stops and a scale-changing mechanism.\n"
+    }
+},
+{
+    "pk": 4324, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Harmonium.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11258, 
+    "model": "data.description", 
+    "fields": {
+        "source": 3941, 
+        "description": "A morsing (English: Jaw Harp) is a wind percussion instrument, mainly used in Rajasthan, in the Carnatic music of South India and in Sindh (Pakistan). It can be categorized under lamellophones, which is in the category of plucked idiophones. It consists of a metal ring in the shape of a horseshoe with two parallel forks which form the frame, and a metal tongue in the middle, between the forks, fixed to the ring at one end and free to vibrate at the other. The metal tongue is bent at the free end in a plane perpendicular to the circular ring so that it can be struck and is made to vibrate. "
+    }
+},
+{
+    "pk": 4325, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Morsing_1.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11259, 
+    "model": "data.description", 
+    "fields": {
+        "source": 3934, 
+        "description": "The Mr\u0325da\u1e45ga\u1e43 is a percussion instrument from India of ancient origin. It is the primary rhythmic accompaniment in a Carnatic music and Newa music ensemble. Alternate spellings include \"mrudangam\", \"mrdangam\", \"mritangam\" and \"miruthangam in Tamil\". The mridangam is also played in Carnatic concerts in countries outside of India, including Sri Lanka, Singapore, Malaysia, Australia, United Kingdom, Canada, and the United States. During a percussion ensemble, the mridangam is often accompanied by the ghatam, kanjira, and the morsing."
+    }
+},
+{
+    "pk": 4326, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Mridangam.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11260, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7430, 
+        "description": "The pakhavaj is an Indian barrel-shaped, two-headed drum, a variant and descendant of the mridangam. It is the standard percussion instrument in the dhrupad style and is widely used as an accompaniment for various forms of music and dance performances. The pakhavaj has a low, mellow tone, very rich in harmonics. Set horizontally on a cushion in front of the drummer's crossed leg, the larger bass-skin is played with the left hand, the treble skin by the right hand. The bass face is smeared with wet wheat dough which acts as the kiran and is the cause of the vivid, bass sound the pakhavaj produces."
+    }
+},
+{
+    "pk": 4327, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Pakhavaj.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11261, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7431, 
+        "description": "The Indian santoor is an ancient string musical instrument native to Jammu and Kashmir, with origins in Persia. The santoor is a trapezoid-shaped hammered dulcimer often made of walnut, with seventy two strings. The special-shaped mallets (mezrab) are lightweight and are held between the index and middle fingers. A typical santoor has two sets of bridges, providing a range of three octaves. The Indian santoor is more rectangular and can have more strings than the Persian counterpart, which generally has 72 strings."
+    }
+},
+{
+    "pk": 4328, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Santoor.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11262, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7432, 
+        "description": "The sarangi is a bowed, short-necked string instrument from South Asia which is used in Hindustani classical music. A priminent melodic accompaniment, Sarangi can imitate the nuances of khyal vocal music. The sarangi is also a traditional stringed musical instrument of Nepal, commonly played by the Gaine or Gandarbha ethnic group but the form and repertoire of sarangi is more towards the folk music as compared to the heavy and classical form of repertoire in India. "
+    }
+},
+{
+    "pk": 4329, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Sarangi.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11263, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7433, 
+        "description": "The sarod (or sarode) is a lutelike stringed instrument of India, used mainly in Indian classical music. Along with the sitar, it is among the most popular and prominent instruments in Hindustani (northern Indian, Bangladeshi and Pakistani) classical music. The sarod is known for a deep, weighty, introspective sound, in contrast with the sweet, overtone-rich texture of the sitar, with sympathetic strings that give it a resonant, reverberant quality. It is a fretless instrument able to produce the continuous slides between notes known as meend (glissandi), which is important to Indian music."
+    }
+},
+{
+    "pk": 4330, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Sarod.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11264, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7434, 
+        "description": "The shehnai is a double reed oboe, common in India, Pakistan, Bangladesh and Iran. It is made out of wood, with a metal flare bell at the end. This tubular instrument gradually broadens towards the lower end. It usually has between six and nine holes. It employs one set of quadruple reeds, making it a quadruple reed woodwind. By controlling the breath, various tunes can be played on it."
+    }
+},
+{
+    "pk": 4331, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Shehnai.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11265, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7435, 
+        "description": "The sitar is a plucked stringed instrument used mainly in Hindustani music and Indian classical music. The instrument descended from a similar but simpler Persian instrument called the Setar (meaning \"three strings\") and it's predecessor the Dutar (meaning \"two strings\"). The sitar flourished in the 16th and 17th centuries and arrived at its present form in 18th century India. It derives its distinctive timbre and resonance from sympathetic strings, bridge design, a long hollow neck and a gourd resonating chamber. Used widely throughout the Indian subcontinent, the sitar is a prominent instrument used in Hindustani music. "
+    }
+},
+{
+    "pk": 4332, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Sitar.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11266, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7436, 
+        "description": "The tabla is a membranophone percussion instrument often used in Hindustani classical music. It is also used in the music behind folk and sufi poetry. The instrument consists of a pair of hand drums of contrasting sizes and timbres. The term tabla is derived from an Arabic word, tabl, which simply means \"drum.\" The tabla is also used in some other Asian musical traditions outside of India, such as in the Indonesian dangdut genre. Playing technique involves extensive use of the fingers and palms in various configurations to create a wide variety of different sounds, reflected in the mnemonic syllables (bol). The heel of the hand is used to apply pressure or in a sliding motion on the larger drum so that the pitch is changed during the sound's decay."
+    }
+},
+{
+    "pk": 4333, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Tabla.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11267, 
+    "model": "data.description", 
+    "fields": {
+        "source": 4007, 
+        "description": "The tambura, tanpura, tamburi is a long-necked plucked lute (a stringed instrument) found in different forms in Indian music culture. Hindustani musicians speak of 'tanpura' whereas Carnatic musicians say 'tambura'; 'tamburi' is a smaller instrument used for accompanying instrumental soloists. "
+    }
+},
+{
+    "pk": 4334, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Tambura.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4335, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Violin_1.jpg", 
+        "small_image": ""
+    }
+},
+{
     "pk": 4317, 
     "model": "data.image", 
     "fields": {
@@ -4757,6 +5038,143 @@
         "source": null, 
         "image": "images/Teentaal.png", 
         "small_image": ""
+    }
+},
+{
+    "pk": 7428, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:37.959Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Bansuri", 
+        "title": "bansuri"
+    }
+},
+{
+    "pk": 3940, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-18T13:19:50.492Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Ghatam", 
+        "title": "Ghatam"
+    }
+},
+{
+    "pk": 7429, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:42.116Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Pump_organ", 
+        "title": "harmonium"
+    }
+},
+{
+    "pk": 3941, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-18T13:19:52.137Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Morsing", 
+        "title": "Morsing"
+    }
+},
+{
+    "pk": 3934, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-18T13:19:43.087Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Mridangam", 
+        "title": "Mridangam"
+    }
+},
+{
+    "pk": 7430, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:45.521Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Pakhavaj", 
+        "title": "pakhavaj"
+    }
+},
+{
+    "pk": 7431, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:45.669Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Santoor_(Indian_instrument)", 
+        "title": "santoor"
+    }
+},
+{
+    "pk": 7432, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:45.828Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Sarangi", 
+        "title": "sarangi"
+    }
+},
+{
+    "pk": 7433, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.151Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Sarod", 
+        "title": "sarod"
+    }
+},
+{
+    "pk": 7434, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.300Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Shehnai", 
+        "title": "shehnai"
+    }
+},
+{
+    "pk": 7435, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.449Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Sitar", 
+        "title": "sitar"
+    }
+},
+{
+    "pk": 7436, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.907Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Tabla", 
+        "title": "tabla"
+    }
+},
+{
+    "pk": 4007, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-30T23:12:05.540Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Tanpura_(instrument)", 
+        "title": "Tambura"
+    }
+},
+{
+    "pk": 2, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "Wikipedia"
     }
 }
 ]
