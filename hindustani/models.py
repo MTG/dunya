@@ -39,12 +39,23 @@ class HindustaniStyle(object):
 class Instrument(HindustaniStyle, data.models.Instrument):
     objects = managers.HindustaniInstrumentManager()
 
+    # Some instruments exist because they have relationships, but we
+    # don't want to show them
+    hidden = models.BooleanField(default=False)
+
     def performers(self):
         artistcount = collections.Counter()
         for p in InstrumentPerformance.objects.filter(instrument=self):
             artistcount[p.performer] += 1
 
         return [i[0] for i in artistcount.most_common()]
+
+    def related_items(self):
+        ret = []
+        # instrument
+        # artists (first 5, ordered by number of performances)
+        # releases
+        return ret
 
     @classmethod
     def get_filter_criteria(cls):
@@ -55,6 +66,21 @@ class Instrument(HindustaniStyle, data.models.Instrument):
         return ret
 
 class Artist(HindustaniStyle, data.models.Artist):
+
+    def related_items(self):
+        ret = []
+        # artist
+        ret.append("artist", self)
+        # instrument
+        if self.primary_instrument:
+            ret.append("instrument", self.primary_instrument)
+        # raags
+        # releases
+        for rel in self.releases:
+            ret.append("release", rel)
+        # forms
+        return ret
+
     def releases(self):
         # Releases in which we were the primary artist
         ret = []
@@ -110,6 +136,16 @@ class Release(HindustaniStyle, data.models.Release):
                 artists.add(ip.performer)
                 performances.append(ip)
         return performances
+
+    def related_items(self):
+        ret = []
+        # release
+        # artist
+        # instruments
+        # taals
+        # raags
+        # forms
+        return ret
 
     @classmethod
     def get_filter_criteria(cls):
@@ -227,6 +263,15 @@ class Raag(data.models.BaseModel):
             artists.append(artistmap[aid])
         return artists
 
+    def related_items(self):
+        ret = []
+        # raag
+        # artist
+        # forms
+        # releases
+        # recordings
+        return ret
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('hindustani-raag-search'),
@@ -274,6 +319,14 @@ class Taal(data.models.BaseModel):
 
     def composers(self):
         return Composer.objects.filter(works__recording__taals=self).distinct()
+
+    def related_items(self):
+        ret = []
+        # taal
+        # artists
+        # forms
+        # recordings
+        return ret
 
     @classmethod
     def get_filter_criteria(cls):
@@ -350,6 +403,14 @@ class Form(data.models.BaseModel):
 
     def recordings(self):
         return self.recording_set.all()
+
+    def related_items(self):
+        ret = []
+        # form
+        # artists
+        # Raags
+        # releases
+        return ret
 
     @classmethod
     def get_filter_criteria(cls):
