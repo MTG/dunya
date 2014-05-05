@@ -22,7 +22,7 @@ import pysolr
 import json
 import os
 
-from compmusic.essentia.similaritylib import recording
+from compmusic.extractors.similaritylib import recording
 from docserver import util
 import docserver
 

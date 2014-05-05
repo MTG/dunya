@@ -61,7 +61,7 @@ class DatabaseLogHandler(logging.Handler):
         else:
             print "no document, can't create a log file"
 
-logger = logging.getLogger("essentia")
+logger = logging.getLogger("extractor")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(DatabaseLogHandler())
 

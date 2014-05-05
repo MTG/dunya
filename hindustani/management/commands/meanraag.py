@@ -21,7 +21,7 @@ import numpy as np
 
 from hindustani import models
 from docserver import util
-from compmusic.essentia.similaritylib import raaga
+from compmusic.extractors.similaritylib import raaga
 
 class Command(BaseCommand):
     help = "Calculate mean pitch profile of all raags"
