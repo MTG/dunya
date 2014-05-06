@@ -4,10 +4,10 @@
 
 <div class="raaga item">
   <div class="disc pict" style="text-align: center">
-  <a href="{{raaga.get_absolute_url}}"><img src="{{raaga.get_image_url}}" style="vertical-align: middle; width:190px !important;"></a>
+  <a href="{{raag.get_absolute_url}}"><img src="{{raag.get_image_url}}" style="vertical-align: middle; width:190px !important;"></a>
 </div>
   <div class="desc">
-      <a href="{{raaga.get_absolute_url}}" class="title" title="{{raaga.transliteration.title}}"><b>{{raaga.name|title}} raaga</b></a>
+      <a href="{{raag.get_absolute_url}}" class="title" title="{{raag.transliteration.title}}"><b>{{raag.name|title}} raag</b></a>
 </div>
 {% comment %}
   <div class="descOpen">
@@ -15,13 +15,13 @@
   <div class="lists">
   <div class="left">
           <h3>Compositions</h3>
-          {% for w in raaga.works %}
+          {% for w in raag.works %}
           {% badge_mini_work w %}
           {% endfor %}
 </div>
   <div class="right">
           <h3>Artists who perform</h3>
-            {% for a in raaga.artists %}
+            {% for a in raag.artists %}
             {% badge_mini_artist a %}
             {% endfor %}
 </div>

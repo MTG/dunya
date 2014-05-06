@@ -74,6 +74,18 @@ def badge_work(work):
         work = Work.objects.get(pk=work)
     return {"work": work}
 
+@register.inclusion_tag("hindustani/badges/laya.html")
+def badge_laya(laya):
+    if not isinstance(laya, Laya):
+        laya = Laya.objects.get(pk=laya)
+    return {"laya": laya}
+
+@register.inclusion_tag("hindustani/badges/form.html")
+def badge_form(form):
+    if not isinstance(form, Form):
+        form = Form.objects.get(pk=form)
+    return {"form": form}
+
 #### Badges for comparing an item to other things of the same type
 
 @register.inclusion_tag("hindustani/badges/similar_artist.html")

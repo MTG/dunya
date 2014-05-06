@@ -48,13 +48,15 @@ class Instrument(HindustaniStyle, data.models.Instrument):
         for p in InstrumentPerformance.objects.filter(instrument=self):
             artistcount[p.performer] += 1
 
-        return [i[0] for i in artistcount.most_common()]
+        return [a for a, _ in artistcount.most_common()]
 
     def related_items(self):
         ret = []
         # instrument
+        ret.append( ("instrument", self) )
         # artists (first 5, ordered by number of performances)
-        # releases
+        for p in self.performers()[:5]:
+            ret.append( ("artist", p) )
         return ret
 
     @classmethod
@@ -70,15 +72,30 @@ class Artist(HindustaniStyle, data.models.Artist):
     def related_items(self):
         ret = []
         # artist
-        ret.append("artist", self)
+        ret.append( ("artist", self) )
         # instrument
-        if self.primary_instrument:
-            ret.append("instrument", self.primary_instrument)
+        if self.main_instrument:
+            ret.append( ("instrument", self.main_instrument) )
         # raags
+        forms = collections.Counter()
+        raags = collections.Counter()
+        for rel in self.releases():
+            for tr in rel.tracks.all():
+                for fo in tr.forms.all():
+                    forms[fo] += 1
+                for ra in tr.raags.all():
+                    raags[ra] += 1
+
+        for ra, _ in raags.most_common(5):
+            ret.append( ("raag", ra) )
+
         # releases
-        for rel in self.releases:
-            ret.append("release", rel)
+        for rel in self.releases()[:5]:
+            ret.append( ("release", rel) )
         # forms
+        for fo, _ in forms.most_common(5):
+            ret.append( ("form", fo) )
+
         return ret
 
     def releases(self):
@@ -140,11 +157,31 @@ class Release(HindustaniStyle, data.models.Release):
     def related_items(self):
         ret = []
         # release
+        ret.append( ("release", self) )
         # artist
         # instruments
+        for p in self.performers()[:5]:
+            ret.append( ("artist", p.performer) )
+            ret.append( ("instrument", p.instrument) )
         # taals
         # raags
         # forms
+        taals = collections.Counter()
+        raags = collections.Counter()
+        forms = collections.Counter()
+        for tr in self.tracks.all():
+            for ta in tr.taals.all():
+                taals[ta] += 1
+            for ra in tr.raags.all():
+                raags[ra] += 1
+            for fo in tr.forms.all():
+                forms[fo] += 1
+        for ta, _ in taals.most_common(5):
+            ret.append( ("taal", ta) )
+        for ra, _ in raags.most_common(5):
+            ret.append( ("raag", ra) )
+        for fo, _ in forms.most_common(5):
+            ret.append( ("form", fo) )
         return ret
 
     @classmethod
@@ -252,7 +289,6 @@ class Raag(data.models.BaseModel):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        voice = Instrument.objects.fuzzy("voice")
         artists = Artist.objects.filter(primary_concerts__tracks__raags=self)
         for a in artists:
             artistcounter[a.pk] += 1
@@ -264,12 +300,24 @@ class Raag(data.models.BaseModel):
         return artists
 
     def related_items(self):
+        # TODO: This should just be releases of the shown artists, maybe?
         ret = []
         # raag
+        ret.append( ("raag", self) )
         # artist
-        # forms
+        for a in self.artists()[:5]:
+            ret.append( ("artist", a) )
         # releases
-        # recordings
+        releases = Release.objects.filter(tracks__in=self.recording_set.all())
+        for r in releases:
+            ret.append( ("release", r) )
+        # forms (of recordings that also have this raag)
+        forms = collections.Counter()
+        for tr in self.recording_set.all():
+            for fo in tr.forms.all():
+                forms[fo] += 1
+        for fo, _ in forms.most_common(5):
+            ret.append( ("form", fo) )
         return ret
 
     @classmethod
@@ -321,11 +369,25 @@ class Taal(data.models.BaseModel):
         return Composer.objects.filter(works__recording__taals=self).distinct()
 
     def related_items(self):
+        # TODO: This should just be releases of the shown artists, maybe?
         ret = []
         # taal
+        ret.append( ("taal", self) )
         # artists
-        # forms
-        # recordings
+        for a in self.percussion_artists()[:5]:
+            ret.append( ("artist", a) )
+
+        # releases
+        releases = Release.objects.filter(tracks__in=self.recording_set.all())
+        for r in releases:
+            ret.append( ("release", r) )
+        # forms (of recordings that also have this taal)
+        forms = collections.Counter()
+        for tr in self.recording_set.all():
+            for fo in tr.forms.all():
+                forms[fo] += 1
+        for fo, _ in forms.most_common(5):
+            ret.append( ("form", fo) )
         return ret
 
     @classmethod
@@ -395,6 +457,21 @@ class Form(data.models.BaseModel):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
 
+    def artists(self):
+        """ Artists who are the lead artist of a release and 
+        who perform tracks with this form """
+        artistmap = {}
+        artistcounter = collections.Counter()
+        artists = Artist.objects.filter(primary_concerts__tracks__forms=self)
+        for a in artists:
+            artistcounter[a.pk] += 1
+            if a.pk not in artistmap:
+                artistmap[a.pk] = a
+        artists = []
+        for aid, count in artistcounter.most_common():
+            artists.append(artistmap[aid])
+        return artists
+
     def __unicode__(self):
         return self.name.capitalize()
 
@@ -405,11 +482,26 @@ class Form(data.models.BaseModel):
         return self.recording_set.all()
 
     def related_items(self):
+        # TODO: Only raags that are in the releases shown
+        # (or releases of the shown raags)
         ret = []
         # form
+        ret.append( ("form", self) )
         # artists
-        # Raags
+        for a in self.artists()[:5]:
+            ret.append( ("artist", a) )
+
+        # raags (of recordings that also have this form)
+        raags = collections.Counter()
+        for tr in self.recording_set.all():
+            for ra in tr.raags.all():
+                raags[ra] += 1
+        for ra, _ in raags.most_common(5):
+            ret.append( ("raag", ra) )
         # releases
+        releases = Release.objects.filter(tracks__in=self.recording_set.all())
+        for r in releases[:5]:
+            ret.append( ("release", r) )
         return ret
 
     @classmethod

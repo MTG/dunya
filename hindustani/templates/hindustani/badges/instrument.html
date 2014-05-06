@@ -14,8 +14,8 @@
   <div class="lists">
     <div class="left">
       <h3>Artists</h3>
-      {% for p in instrument.ordered_performers %}
-      {% badge_mini_artist p.performer %}
+      {% for p in instrument.performers %}
+      {% badge_mini_artist p %}
       {% endfor %}
     </div>
     <div class="right"></div>

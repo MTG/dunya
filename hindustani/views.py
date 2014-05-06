@@ -35,7 +35,6 @@ def get_filter_items():
             models.Instrument.get_filter_criteria(),
             models.Raag.get_filter_criteria(),
             models.Taal.get_filter_criteria(),
-            models.Laya.get_filter_criteria(),
             models.Form.get_filter_criteria()
     ]
     return filter_items
@@ -59,26 +58,35 @@ def main(request):
     qraag = []
     qtaal = []
     qrelease = []
+    qform = []
+    qlaya = []
     if "a" in request.GET:
         for i in request.GET.getlist("a"):
             qartist.append(int(i))
     if "i" in request.GET:
         for i in request.GET.getlist("i"):
             qinstr.append(int(i))
-    if "c" in request.GET:
-        for i in request.GET.getlist("c"):
-            qrelease.append(int(i))
     if "r" in request.GET:
         for i in request.GET.getlist("r"):
+            qrelease.append(int(i))
+    if "g" in request.GET:
+        for i in request.GET.getlist("g"):
             qraag.append(int(i))
     if "t" in request.GET:
         for i in request.GET.getlist("t"):
             qtaal.append(int(i))
+    if "l" in request.GET:
+        for i in request.GET.getlist("l"):
+            qlaya.append(int(i))
+    if "f" in request.GET:
+        for i in request.GET.getlist("f"):
+            qform.append(int(i))
     if "q" in request.GET:
         query = request.GET.get("q")
         # special case, we have this so we can put a ? in the arglist
         # but it's actually a browse
         if query == "1":
+            print "query is none"
             query = None
     else:
         query = None
@@ -88,114 +96,58 @@ def main(request):
     numraags = models.Raag.objects.count()
     numtaals = models.Taal.objects.count()
     numreleases = models.Release.objects.count()
-    numinstruments = models.Instrument.objects.count()
+    numinstruments = models.Instrument.objects.filter(hidden=False).count()
     numworks = models.Work.objects.count()
+    numforms = models.Form.objects.count()
+    numlayas = models.Laya.objects.count()
 
     displayres = []
     querybrowse = False
     searcherror = False
 
     if qartist:
-        # TODO: If instrument set, only show artists who perform this instrument
-        querybrowse = True
+        for a in qartist:
+            print "doing artist", a
+            try:
+                artist = models.Artist.objects.get(pk=a)
+                displayres.extend(artist.related_items())
+            except models.Artist.DoesNotExist:
+                pass
+    if qinstr:
+        for i in qinstr:
+            try:
+                instrument = models.Instrument.objects.get(pk=i)
+                displayres.extend(instrument.related_items())
+            except models.Instrument.DoesNotExist:
+                pass
+    if qraag:
+        for r in qraag:
+            try:
+                raag = models.Raag.objects.get(pk=r)
+                displayres.extend(raag.related_items())
+            except models.Raag.DoesNotExist:
+                pass
+    if qtaal:
+        for t in qtaal:
+            try:
+                taal = models.Taal.objects.get(pk=t)
+                displayres.extend(taal.related_items())
+            except models.Taal.objects.DoesNotExist:
+                pass
+    if qrelease:
+        for r in qrelease:
+            try:
+                release = models.Release.objects.get(pk=r)
+                displayres.extend(release.related_items())
+            except models.Release.DoesNotExist:
+                pass
+    layas = models.Laya.objects.filter(pk__in=qlaya)
+    [ displayres.extend(l.related_items()) for l in layas ]
 
-        # If raag or taal is set, make a list to filter releases by
-        rlist = []
-        tlist = []
-        if qraag:
-            for rid in qraag:
-                ra = models.Raag.objects.get(pk=rid)
-                rlist.append(ra)
-        if qtaal:
-            for tid in qtaal:
-                ta = models.Taal.objects.get(pk=tid)
-                tlist.append(ta)
+    forms = models.Form.objects.filter(pk__in=qform)
+    [ displayres.extend(f.related_items()) for f in forms ]
 
-        if len(qartist) == 1:
-            # If there is one artist selected, show their releases
-            # (optionally filtered by raag or taal)
-            aid = qartist[0]
-            art = models.Artist.objects.get(pk=aid)
-            displayres.append(("artist", art))
-            if art.main_instrument:
-                displayres.append(("instrument", art.main_instrument))
-            for ra in rlist:
-                displayres.append(("raag", ra))
-            for ta in tlist:
-                displayres.append(("taal", ta))
-            for c in art.releases():
-                displayres.append(("release", c))
-        else:
-            # Otherwise if more than one artist is selected,
-            # show only releases that all artists perform in
-            allreleases = []
-            for aid in qartist:
-                art = models.Artist.objects.get(pk=aid)
-                displayres.append(("artist", art))
-                if art.main_instrument:
-                    displayres.append(("instrument", art.main_instrument))
-                thisreleases = set(art.releases())
-                allreleases.append(thisreleases)
-            combinedreleases = reduce(lambda x, y: x & y, allreleases)
-
-            for ra in rlist:
-                displayres.append(("raag", ra))
-            for ta in tlist:
-                displayres.append(("taal", ta))
-
-            for c in list(combinedreleases):
-                displayres.append(("release", c))
-
-    elif qinstr: # instrument query, but no artist
-        querybrowse = True
-        # instrument, people
-        for iid in qinstr:
-            instr = models.Instrument.objects.get(pk=iid)
-            displayres.append(("instrument", instr))
-            for p in instr.ordered_performers()[:5]:
-                displayres.append(("artist", p.performer))
-
-    elif qraag:
-        querybrowse = True
-        # raag, people
-        for rid in qraag:
-            ra = models.Raag.objects.get(pk=rid)
-            displayres.append(("raag", ra))
-            artists = ra.artists()
-            if qinstr:
-                # if instrument, only people who play that
-                artists = artists.filter(main_instrument__in=qinstr)
-            for a in artists[:5]:
-                displayres.append(("artist", a))
-    elif qtaal:
-        querybrowse = True
-        # taal, people
-        for tid in qtaal[:5]:
-            ta = models.Taal.objects.get(pk=tid)
-            displayres.append(("taal", ta))
-            percussionists = ta.percussion_artists()
-            for a in ta.artists():
-                if a not in percussionists:
-                    percussionists.append(a)
-            # TODO: We could order by percussionists, or by number of times they've
-            # performed this taal, or by people with images
-            artists = percussionists[:5]
-            if qinstr:
-                # if instrument, only people who play that
-                artists = artists.filter(main_instrument__in=qinstr)
-            for a in artists:
-                displayres.append(("artist", a))
-    elif qrelease:
-        querybrowse = True
-        # release, people
-        for cid in qrelease:
-            con = models.Release.objects.get(pk=cid)
-            displayres.append(("release", con))
-            artists = con.performers()
-            for a in artists:
-                displayres.append(("artist", a.performer))
-                # if instrument, only people who play that?
-    elif query:
+    if query:
         try:
             results = search.search(query)
         except pysolr.SolrError:
@@ -206,6 +158,8 @@ def main(request):
         releases = results.get("release", [])
         raags = results.get("raag", [])
         taals = results.get("taal", [])
+        forms = results.get("form", [])
+        laya = results.get("laya", [])
 
         displayres = []
         for a in artists:
@@ -218,17 +172,19 @@ def main(request):
             displayres.append(("raag", r))
         for t in taals:
             displayres.append(("taal", t))
+        for f in forms:
+            displayres.append(("form", f))
+        for l in layas:
+            displayres.append(("laya", l))
 
         numartists = len(artists)
         numraags = len(raags)
         numtaals = len(taals)
         numreleases = len(releases)
         numinstruments = len(instruments)
+        numforms = len(forms)
+        numlayas = len(layas)
         results = True
-    else:
-        results = None
-
-        displayres = []
 
     if displayres:
         numartists = len([i for i in displayres if i[0] == "artist"])
@@ -236,9 +192,11 @@ def main(request):
         numtaals = len([i for i in displayres if i[0] == "taal"])
         numreleases = len([i for i in displayres if i[0] == "release"])
         numinstruments = len([i for i in displayres if i[0] == "instrument"])
-    
-    print displayres
+        numforms = len([i for i in displayres if i[0] == "form"])
+        numlayas = len([i for i in displayres if i[0] == "laya"])
 
+    print displayres
+    
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
            "numcomposers": numcomposers,
@@ -247,6 +205,8 @@ def main(request):
            "numreleases": numreleases,
            "numworks": numworks,
            "numinstruments": numinstruments,
+           "numforms": numforms,
+           "numlayas": numlayas,
 
            "results": displayres,
 
@@ -495,7 +455,7 @@ def form(request, formid):
     return render(request, "hindustani/form.html", ret)
 
 def instrumentsearch(request):
-    instruments = models.Instrument.objects.all().order_by('name')
+    instruments = models.Instrument.objects.filter(hidden=False).order_by('name')
     ret = []
     for l in instruments:
         ret.append({"id": l.id, "name": str(l)})

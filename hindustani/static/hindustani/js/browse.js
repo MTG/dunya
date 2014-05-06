@@ -162,11 +162,11 @@ function loadClicks(){
                 url += "&a="+n[0];
             }
         }
-        // Concert
+        // release
         if (selected.eid2) {
             for (var i=0; i < selected.eid2.length; i++) {
                 var n = selected.eid2[i];
-                url += "&c="+n[0];
+                url += "&r="+n[0];
             }
         }
         // Instrument
@@ -176,18 +176,34 @@ function loadClicks(){
                 url += "&i="+n[0];
             }
         }
-        // Raaga
+        // Raag
         if (selected.eid4) {
             for (var i=0; i < selected.eid4.length; i++) {
                 var n = selected.eid4[i];
-                url += "&r="+n[0];
+                url += "&g="+n[0];
             }
         }
-        // Taala
+        // Taal
         if (selected.eid5) {
             for (var i=0; i < selected.eid5.length; i++) {
                 var n = selected.eid5[i];
                 url += "&t="+n[0];
+            }
+        }
+
+        // Laya
+        if (selected.eid6) {
+            for (var i=0; i < selected.eid6.length; i++) {
+                var n = selected.eid6[i];
+                url += "&l="+n[0];
+            }
+        }
+
+        // Form
+        if (selected.eid7) {
+            for (var i=0; i < selected.eid7.length; i++) {
+                var n = selected.eid7[i];
+                url += "&f="+n[0];
             }
         }
         window.location.href = url;
