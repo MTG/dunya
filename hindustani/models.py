@@ -379,7 +379,7 @@ class Taal(data.models.BaseModel):
 
         # releases
         releases = Release.objects.filter(tracks__in=self.recording_set.all())
-        for r in releases:
+        for r in releases[:5]:
             ret.append( ("release", r) )
         # forms (of recordings that also have this taal)
         forms = collections.Counter()
