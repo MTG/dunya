@@ -35,6 +35,7 @@ def get_filter_items():
             models.Instrument.get_filter_criteria(),
             models.Raag.get_filter_criteria(),
             models.Taal.get_filter_criteria(),
+            models.Laya.get_filter_criteria(),
             models.Form.get_filter_criteria()
     ]
     return filter_items
