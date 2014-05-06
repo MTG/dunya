@@ -239,10 +239,13 @@ class ReleaseImporter(object):
                     if "lead" in a:
                         is_lead = True
                 if perf["type"] == "instrument":
-                    # The attribute 'additional' may be set. If this is the case then
-                    # remove it so that we don't select it as the instrument name
+                    # The attributes 'additional' or 'solo' may be set.
+                    # If this is the case then remove them so that we don't
+                    # select them as the instrument name
                     if "additional" in perf["attribute-list"]:
                         perf["attribute-list"].remove("additional")
+                    if "solo" in perf["attribute-list"]:
+                        perf["attribute-list"].remove("solo")
                     inst = perf["attribute-list"][0]
                 else:
                     inst = "vocal"
