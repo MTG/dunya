@@ -284,7 +284,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                     border-left-color: darken(@artist_color, 10%); 
                     &:after { border-left-color: @artist_color; }
                 }
-                &.concert .breadarrow { 
+                &.concert .breadarrow, &.release .breadarrow { 
                     border-left-color: darken(@concert_color, 10%); 
                     &:after { border-left-color: @concert_color; }
                 }
@@ -296,11 +296,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                     border-left-color: darken(@instrument_color, 10%); 
                     &:after { border-left-color: @instrument_color; }
                 }
-                &.raaga .breadarrow { 
+                &.raaga .breadarrow, &.raag .breadarrow { 
                     border-left-color: darken(@raaga_color, 10%); 
                     &:after { border-left-color: @raaga_color; }
                 }
-                &.taala .breadarrow { 
+                &.taala .breadarrow, &.taal .breadarrow { 
                     border-left-color: darken(@taala_color, 10%); 
                     &:after { border-left-color: @taala_color; }
                 }
@@ -311,6 +311,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 &.composer .breadarrow { 
                     border-left-color: darken(@composer_color, 10%); 
                     &:after { border-left-color: @composer_color; }
+                }
+                &.form .breadarrow { 
+                    border-left-color: darken(@form_color, 10%); 
+                    &:after { border-left-color: @form_color; }
+                }
+                &.laya .breadarrow { 
+                    border-left-color: darken(@laya_color, 10%); 
+                    &:after { border-left-color: @laya_color; }
                 }
                 span {
                     display: table-cell;
@@ -371,33 +379,32 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
    ========================================================================== */
    
 #filterMask #filterArea .filterList ul li.artist.selected .colorCode { background: darken( @artist_color, 20% ) !important; }
-#filterMask #filterArea .filterList ul li.concert.selected .colorCode { background: darken( @concert_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.concert.selected .colorCode,
+#filterMask #filterArea .filterList ul li.release.selected .colorCode { background: darken( @concert_color, 20% ) !important; }
 #filterMask #filterArea .filterList ul li.work.selected .colorCode { background: darken( @work_color, 20% ) !important; }
 #filterMask #filterArea .filterList ul li.instrument.selected .colorCode { background: darken( @instrument_color, 20% ) !important; }
-#filterMask #filterArea .filterList ul li.raaga.selected .colorCode { background: darken( @raaga_color, 20% ) !important; }
-#filterMask #filterArea .filterList ul li.taala.selected .colorCode { background: darken( @taala_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.raaga.selected .colorCode,
+#filterMask #filterArea .filterList ul li.raag.selected .colorCode
+{ background: darken( @raaga_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.taala.selected .colorCode,
+#filterMask #filterArea .filterList ul li.taal.selected .colorCode
+{ background: darken( @taala_color, 20% ) !important; }
 #filterMask #filterArea .filterList ul li.recording.selected .colorCode { background: darken( @recording_color, 20% ) !important; }
 #filterMask #filterArea .filterList ul li.composer.selected .colorCode { background: darken( @composer_color, 20% ) !important; }
-
-
-.filters.artist { background: lighten(@artist_color, 20%); }
-.filters.concert { background: lighten(@concert_color, 10%); }
-.filters.work { background: lighten(@work_color, 5%); }
-.filters.instrument { background: lighten(@instrument_color, 20%); }
-.filters.raaga { background: lighten(@raaga_color, 20%); }
-.filters.taala { background: lighten(@taala_color, 20%); }
-.filters.recording { background: lighten(@recording_color, 20%); }
-.filters.composer { background: lighten(@composer_color, 20%); }
+#filterMask #filterArea .filterList ul li.form.selected .colorCode { background: darken( @form_color, 20% ) !important; }
+#filterMask #filterArea .filterList ul li.laya.selected .colorCode { background: darken( @laya_color, 20% ) !important; }
 
 
 .filters.artist { background: fade(@artist_color, 20%); }
-.filters.concert { background: fade(@concert_color, 20%); }
+.filters.concert, .filters.release { background: fade(@concert_color, 20%); }
 .filters.work { background: fade(@work_color, 20%); }
 .filters.instrument { background: fade(@instrument_color, 20%); }
-.filters.raaga { background: fade(@raaga_color, 20%); }
-.filters.taala { background: fade(@taala_color, 20%); }
+.filters.raaga, .filters.raag { background: fade(@raaga_color, 20%); }
+.filters.taala, .filters.taal { background: fade(@taala_color, 20%); }
 .filters.recording { background: fade(@recording_color, 20%); }
 .filters.composer { background: fade(@composer_color, 20%); }
+.filters.form { background: fade(@form_color, 20%); }
+.filters.laya { background: fade(@laya_color, 20%); }
 
 
 /* Number bar showing number of results */
@@ -427,12 +434,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     }
   .artist>span{ border-color: @artist_color; }
   .composer>span { border-color: @composer_color; }
-  .concert>span { border-color: @concert_color; }
+  .concert>span, .release>span { border-color: @concert_color; }
   .recording>span { border-color: @recording_color; }
-  .raaga>span { border-color: @raaga_color; }
-  .taala>span { border-color: @taala_color; }
+  .raaga>span, .raag>span { border-color: @raaga_color; }
+  .taala>span, .taal>span { border-color: @taala_color; }
   .work>span { border-color: @work_color; }
   .instrument>span { border-color: @instrument_color; }
+  .form>span { border-color: @form_color; }
+  .laya>span { border-color: @laya_color; }
     table {
         position: relative;
         width: 100%;
@@ -555,28 +564,40 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 .artist .filterBall, .artist .filterList ul li.selected { background: @artist_color; }
-.concert .filterBall, .concert .filterList ul li.selected { background: @concert_color; }
+.concert .filterBall, .concert .filterList ul li.selected,
+.release .filterBall, .release .filterList ul li.selected
+    { background: @concert_color; }
 .work .filterBall, .work .filterList ul li.selected { background: @work_color; }
 .instrument .filterBall, .instrument .filterList ul li.selected { background: @instrument_color; }
-.raaga .filterBall, .raaga .filterList ul li.selected { background: @raaga_color; }
-.taala .filterBall, .taala .filterList ul li.selected { background: @taala_color; }
+.raaga .filterBall, .raaga .filterList ul li.selected,
+.raag .filterBall, .raag .filterList ul li.selected
+    { background: @raaga_color; }
+.taala .filterBall, .taala .filterList ul li.selected,
+.taal .filterBall, .taal .filterList ul li.selected
+    { background: @taala_color; }
 .recording .filterBall, .recording .filterList ul li.selected { background: @recording_color; }
 .composer .filterBall, .composer .filterList ul li.selected { background: @composer_color; }
+.form .filterBall, .form .filterList ul li.selected { background: @form_color; }
+.laya .filterBall, .laya .filterList ul li.selected { background: @laya_color; }
 
 .artist .formFilter { border-right: 4px solid @artist_color; }
-.concert .formFilter { border-right: 4px solid @concert_color; }
+.concert .formFilter, .release .formFilter { border-right: 4px solid @concert_color; }
 .work .formFilter { border-right: 4px solid @work_color; }
 .instrument .formFilter { border-right: 4px solid @instrument_color; }
-.raaga .formFilter { border-right: 4px solid @raaga_color; }
-.taala .formFilter { border-right: 4px solid @taala_color; }
+.raaga .formFilter, .raag .formFilter { border-right: 4px solid @raaga_color; }
+.taala .formFilter, .taal .formFilter { border-right: 4px solid @taala_color; }
 .recording .formFilter { border-right: 4px solid @recording_color; }
 .composer .formFilter { border-right: 4px solid @composer_color; }
+.form .formFilter { border-right: 4px solid @form_color; }
+.laya .formFilter { border-right: 4px solid @laya_color; }
 
 .artist .formSectionOpen { background: @artist_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.concert .formSectionOpen  { background: @concert_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.concert .formSectionOpen, .release .formSectionOpen { background: @concert_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .work .formSectionOpen  { background: @work_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .instrument .formSectionOpen  { background: @instrument_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.raaga .formSectionOpen  { background: @raaga_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
-.taala .formSectionOpen  { background: @taala_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.raaga .formSectionOpen, .raag .formSectionOpen { background: @raaga_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.taala .formSectionOpen, .taal .formSectionOpen { background: @taala_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .recording .formSectionOpen  { background: @recording_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
 .composer .formSectionOpen  { background: @composer_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.form .formSectionOpen  { background: @form_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
+.laya .formSectionOpen  { background: @laya_color url("../img/formSectionOpen.png") 98% 4px no-repeat; }
