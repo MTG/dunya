@@ -51,11 +51,11 @@ def updatecelery():
 
 def less():
     """Compile less into static css"""
-    local("lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
-    local("lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
-    local("lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
-    local("lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
-    local("lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
+    local("env/bin/lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
+    local("env/bin/lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
+    local("env/bin/lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
+    local("env/bin/lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
+    local("env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
 
 def setupdb():
     """ Run this when you are setting up a new installation
