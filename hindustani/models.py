@@ -68,6 +68,7 @@ class Instrument(HindustaniStyle, data.models.Instrument):
         return ret
 
 class Artist(HindustaniStyle, data.models.Artist):
+    missing_image = "hindustaniartist.jpg"
 
     def related_items(self):
         ret = []
