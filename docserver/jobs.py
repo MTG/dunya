@@ -191,9 +191,8 @@ def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)
     collections = module.collections.all()
     for c in collections:
-        run_module_on_collection.delay(c.pk, module.pk)
+        run_module_on_collection(c.pk, module.pk)
 
-@app.task
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
@@ -208,9 +207,8 @@ def run_module_on_recordings(moduleid, recids):
         for d in docs:
             print "  document", d
             print "  docid", d.pk
-            process_document(d.pk, version.pk)
+            process_document.delay(d.pk, version.pk)
 
-@app.task
 def run_module_on_collection(collectionid, moduleid):
     collection = models.Collection.objects.get(pk=collectionid)
     module = models.Module.objects.get(pk=moduleid)

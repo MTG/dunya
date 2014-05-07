@@ -158,7 +158,7 @@ def release(request, releaseid):
         # Get the recording ids in this release
         files = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
         recids = [r.recordingid for r in files]
-        docserver.jobs.run_module_on_recordings.delay(module, recids)
+        docserver.jobs.run_module_on_recordings(module, recids)
         return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
 
     files = release.collectiondirectory_set.order_by('path').all()
