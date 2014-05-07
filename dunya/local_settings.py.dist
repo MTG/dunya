@@ -42,6 +42,8 @@ DATABASES = {
 BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 # Celery result backend - where to store data
 CELERY_RESULT_BACKEND='redis://sitar.s.upf.edu/0'
+# Where the processing servers access redis for a cache
+WORKER_REDIS_HOST = 'localhost'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # for example, images

@@ -66,10 +66,16 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(DatabaseLogHandler())
 
 def _get_module_instance_by_path(modulepath):
+    args = {}
+    try:
+        redis_host = settings.WORKER_REDIS_HOST
+        args = {"redis_host": redis_host}
+    except AttributeError:
+        pass
     mod, clsname = modulepath.rsplit(".", 1)
     package = importlib.import_module(mod)
     cls = getattr(package, clsname)
-    return cls()
+    return cls(**args)
 
 def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)
