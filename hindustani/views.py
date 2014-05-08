@@ -263,8 +263,10 @@ def releasesearch(request):
 
 def release(request, uuid):
     release = get_object_or_404(models.Release, mbid=uuid)
+    similar = release.get_similar()
 
-    ret = {"release": release
+    ret = {"release": release,
+            "similar": similar
           }
     return render(request, "hindustani/release.html", ret)
 

@@ -63,45 +63,45 @@ def autocomplete(term):
             return suggestions
     return []
 
-# def get_similar_concerts(works, raagas, taalas, artists):
-#     workids = set(works)
-#     raagaids = set(raagas)
-#     taalaids = set(taalas)
-#     artistids = set(artists)
-#     raagas = " ".join(map(str, raagaids))
-#     taalas = " ".join(map(str, taalaids))
-#     works = " ".join(map(str, workids))
-#     artists = " ".join(map(str, artistids))
-# 
-#     searchitems = []
-#     if taalas:
-#         searchitems.append("taala_is:(%s)" % taalas)
-#     if raagas:
-#         searchitems.append("raaga_is:(%s)" % raagas)
-#     if works:
-#         searchitems.append("work_is:(%s)" % works)
-#     if artists:
-#         searchitems.append("artist_is:(%s)" % artists)
-# 
-#     if not searchitems:
-#         # If we have nothing to search for, return no matches
-#         return []
-# 
-#     query = "doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
-#     results = solr.search(query, rows=100)
-# 
-#     ret = []
-#     for d in results.docs:
-#         concertid = d["concertid_i"]
-#         dr = set(d.get("raaga_is", []))
-#         dt = set(d.get("taala_is", []))
-#         dw = set(d.get("work_is", []))
-#         da = set(d.get("artist_is", []))
-#         commonr = list(raagaids & dr)
-#         commont = list(taalaids & dt)
-#         commona = list(artistids & da)
-#         commonw = list(workids & dw)
-# 
-#         ret.append((concertid, {"works": commonw, "raagas": commonr, "taalas": commont, "artists": commona}))
-#     return ret
+def get_similar_releases(artists, raags, taals, layas):
+    artistids = set(artists)
+    raagids = set(raags)
+    taalids = set(taals)
+    layaids = set(layas)
+    artists = " ".join(map(str, artistids))
+    raags = " ".join(map(str, raagids))
+    taals = " ".join(map(str, taalids))
+    layas = " ".join(map(str, layaids))
+
+    searchitems = []
+    if artists:
+        searchitems.append("artist_is:(%s)" % artists)
+    if taals:
+        searchitems.append("taal_is:(%s)" % taals)
+    if raags:
+        searchitems.append("raag_is:(%s)" % raags)
+    if layas:
+        searchitems.append("laya_is:(%s)" % layas)
+
+    if not searchitems:
+        # If we have nothing to search for, return no matches
+        return []
+
+    query = "module_s:hindustani AND doctype_s:releasesimilar AND (%s)" % (" ".join(searchitems), )
+    results = solr.search(query, rows=100)
+
+    ret = []
+    for d in results.docs:
+        concertid = d["releaseid_i"]
+        da = set(d.get("artist_is", []))
+        dr = set(d.get("raag_is", []))
+        dt = set(d.get("taal_is", []))
+        dl = set(d.get("laya_is", []))
+        commona = list(artistids & da)
+        commonr = list(raagids & dr)
+        commont = list(taalids & dt)
+        commonl = list(layaids & dl)
+
+        ret.append((concertid, {"raags": commonr, "taals": commont, "artists": commona, "layas": commonl}))
+    return ret
 

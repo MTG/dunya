@@ -96,13 +96,13 @@ def badge_similar_artist(artist, releases=None, guru=None):
 
 @register.inclusion_tag("hindustani/badges/similar_release.html")
 def badge_similar_release(release, similarity):
-    if not isinstance(release, release):
+    if not isinstance(release, Release):
         release = release.objects.get(pk=release)
     return {"release": release,
-            "works": similarity.get("works", []),
             "taals": similarity.get("taals", []),
             "raags": similarity.get("raags", []),
             "artists": similarity.get("artists", []),
+            "layas": similarity.get("layas", []),
             }
 
 @register.inclusion_tag("hindustani/badges/similar_raag.html")
@@ -176,6 +176,12 @@ def badge_mini_work(work):
     if not isinstance(work, Work):
         work = Work.objects.get(pk=work)
     return {"work": work}
+
+@register.inclusion_tag("hindustani/badges/mini_laya.html")
+def badge_mini_laya(laya):
+    if not isinstance(laya, Laya):
+        laya = Laya.objects.get(pk=laya)
+    return {"laya": laya}
 
 @register.inclusion_tag("hindustani/badges/sample.html")
 def badge_sample(sample):

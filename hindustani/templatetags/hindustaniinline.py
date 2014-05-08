@@ -105,6 +105,10 @@ def inline_raag(raag):
     return '<span title="%s">%s</span>' % (raag.common_name.title(), raag.name.title())
 
 @register.simple_tag
+def inline_laya(laya):
+    return '<span title="%s">%s</span>' % (laya.common_name.title(), laya.name.title())
+
+@register.simple_tag
 def inline_form(form):
     return '<span title="%s">%s</span>' % (form.common_name.title(), form.name.title())
 

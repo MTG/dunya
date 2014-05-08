@@ -1,16 +1,16 @@
 {% load hindustaniinline %}
 {% load hindustanibadges %}
 
-{% comment %} arguments: concert, works, raaga, {% endcomment %}
+{% comment %} arguments: release, works, raaga, {% endcomment %}
 
 <div class="concert item similar">
         <div class="disc pict">
-            <a href="{{concert.get_absolute_url}}"><img src="{{concert.get_image_url}}"></a>
+            <a href="{{release.get_absolute_url}}"><img src="{{release.get_image_url}}"></a>
     </div>
         <div class="desc"><div class="plus"></div>
-            <a href="{{concert.get_absolute_url}}"><b>{{concert.title}}</b></a>
-            <p>{%inline_artist_list concert.artistnames %}</p>
-            {% if concert.year %}<p>{{concert.year}}</p>{% endif %}
+            <a href="{{release.get_absolute_url}}"><b>{{release.title}}</b></a>
+            <p>{%inline_artist_list release.artistnames %}</p>
+            {% if release.year %}<p>{{release.year}}</p>{% endif %}
     </div>
         <div class="lists similar">
         	<div class="left">
@@ -19,14 +19,14 @@
                   {% if artists|length %}
         		  <div class="artist" style="width:90px"><span>artist</span></div>
                   {% endif %}
-                  {% if works|length %}
-        		  <div class="work" style="width:90px"><span>work</span></div>
+                  {% if raags|length %}
+        		  <div class="raaga active" style="width:90px"><span>raag</span></div>
                   {% endif %}
-                  {% if raagas|length %}
-        		  <div class="raaga active" style="width:90px"><span>raaga</span></div>
+                  {% if taals|length %}
+        		  <div class="taala" style="width:90px"><span>taal</span></div>
                   {% endif %}
-                  {% if taalas|length %}
-        		  <div class="taala" style="width:90px"><span>taala</span></div>
+                  {% if layas|length %}
+        		  <div class="laya" style="width:90px"><span>laya</span></div>
                   {% endif %}
         		</div>
         	</div>
@@ -39,27 +39,27 @@
                   {% endfor %}
         	  </div>
             {% endif %}
-            {% if works %}
-        	  <div class="similarList work">
-                Albums share these same works:<br>
-                  {% for w in works %}
-                      {% badge_mini_work w %}
-                  {% endfor %}
-        	  </div>
-            {% endif %}
-            {% if taalas %}
+            {% if raags %}
         	  <div class="similarList raaga">
                 Albums share these same raagas:<br>
-                  {% for w in raagas %}
-                      {% badge_mini_raaga w %}
+                  {% for w in raaga %}
+                      {% badge_mini_raag w %}
                   {% endfor %}
         	  </div>
             {% endif %}
-            {% if taalas %}
+            {% if taals %}
         	  <div class="similarList taala">
-                Albums share these same taalas:<br>
-                  {% for t in taalas %}
-                      {% badge_mini_taala t %}
+                Albums share these same taals:<br>
+                  {% for t in taals %}
+                      {% badge_mini_taal t %}
+                  {% endfor %}
+        	  </div>
+            {% endif %}
+            {% if layas %}
+        	  <div class="similarList laya">
+                Albums share these same laya:<br>
+                  {% for l in layas %}
+                      {% badge_mini_laya l %}
                   {% endfor %}
         	  </div>
             {% endif %}
