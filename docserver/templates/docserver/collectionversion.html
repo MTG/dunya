@@ -16,7 +16,7 @@
 
 <ul>
 {% for f in unprocessedfiles %} 
-<li>{{f}}</li>
+<li>{{f}} (<a href="?run={{f.external_identifier}}">Process</a>)</li>
   <ul>
 {% for sf in f.sourcefiles.all %}
 <li>{{sf.fullpath}}</li>

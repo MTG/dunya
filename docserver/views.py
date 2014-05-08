@@ -182,6 +182,13 @@ def collection(request, slug):
 def collectionversion(request, slug, version, type):
     collection = get_object_or_404(models.Collection, slug=slug)
     mversion = get_object_or_404(models.ModuleVersion, pk=version)
+
+    run = request.GET.get("run")
+    if run:
+        document = models.Document(external_identifier=run)
+        jobs.process_document.delay(document.pk, mversion.pk)
+        return HttpResponseRedirect(reverse('docserver-collectionversion', args=[type, slug, version]))
+
     processedfiles = []
     unprocessedfiles = []
     if type == "processed":
