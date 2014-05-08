@@ -17,7 +17,7 @@
   </div>
   <div class="descOpen">
     {% if artist.description.description %}
-    {{artist.description.description}}
+    {{artist.description.description|safe}}
     {% else %}Sorry, we have no description for this artist{% endif %}
   </div>
 </div>

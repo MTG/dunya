@@ -9,7 +9,7 @@
     <a href="{{instrument.get_absolute_url}}" class="title"><b>{{instrument.name}}</b></a>
 </div>
   <div class="descOpen">
-    {{instrument.description.description}}
+    {{instrument.description.description|safe}}
 </div>
   <div class="lists">
     <div class="left">

@@ -12,7 +12,7 @@
 <span class="year">{{composer.begin}}{% if composer.end %} - {{composer.end}}{% endif %}</span>
 {% endif %}
 </div>
-  <div class="descOpen">{{composer.description.description}}
+  <div class="descOpen">{{composer.description.description|safe}}
 </div>
   <div class="lists">
     <div class="left">
