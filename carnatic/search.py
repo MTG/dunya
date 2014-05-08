@@ -85,7 +85,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
         # If we have nothing to search for, return no matches
         return []
 
-    query = "doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
+    query = "module_s:carnatic AND doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
     results = solr.search(query, rows=100)
 
     ret = []
@@ -104,7 +104,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
     return ret
 
 def similar_recordings(mbid):
-    query = "doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
+    query = "module_s:carnatic AND doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
     results = solr.search(query)
     docs = results.docs
     if len(docs):
