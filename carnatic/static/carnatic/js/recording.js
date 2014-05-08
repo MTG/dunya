@@ -27,7 +27,14 @@ $(document).ready(function() {
              waveform.css("cursor", "wait");
          }
      });
-     $(".zoom").click(function() {
+     $(".zoom").click(function(e) {
+         e.preventDefault();
+         // Remove selected
+         $(".zoom").removeClass("selected");
+         // Find all zooms with all our classes (e.g. 'zoom zoom<n>')
+         // and apply 'selected'
+         var zclasses = $(this).attr("class");
+         $("[class='"+zclasses+"']").addClass("selected");
          var level = $(this).data("length");
          zoom(level);
      });
@@ -434,6 +441,7 @@ function zoom(level){
     waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
     specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
     drawdata();
+
 }
 
 
