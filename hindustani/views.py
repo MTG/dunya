@@ -18,6 +18,7 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.urlresolvers import reverse
 
 import json
 import math
@@ -61,6 +62,15 @@ def main(request):
     qrelease = []
     qform = []
     qlaya = []
+
+    if len(request.GET) == 0:
+        # We have a 'default' query. If there's no other query we pre-seed it
+        # Bhimsen Joshi
+        qartist = [126]
+        # Miya Malhar raag
+        qraag = [147]
+        return redirect("%s?a=126&g=147" % reverse('hindustani-main'))
+
     if "a" in request.GET:
         for i in request.GET.getlist("a"):
             qartist.append(int(i))

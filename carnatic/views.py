@@ -66,6 +66,7 @@ def main(request):
         qartist = [10]
         # thodi raaga
         qraaga = [55]
+        return redirect("%s?a=10&r=55" % reverse('carnatic-main'))
     if "a" in request.GET:
         for i in request.GET.getlist("a"):
             qartist.append(int(i))
