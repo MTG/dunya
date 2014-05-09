@@ -40,7 +40,8 @@ class Command(BaseCommand):
         insert = {"id": "sim_%s" % (mbid, ),
                    "similar_s": json.dumps(sim),
                    "mbid_t": mbid,
-                   "doctype_s": "recordingsimilarity"
+                   "doctype_s": "recordingsimilarity",
+                   "module_s": "carnatic"
                   }
         return insert
 
@@ -63,7 +64,7 @@ class Command(BaseCommand):
         else:
             try:
                 adata = util.docserver_get_json(a, "normalisedpitch", "normalisedhistogram")
-            except docserver.models.Document.DoesNotExist:
+            except util.NoFileException:
                 return None
             self.intonationmap[a] = adata
         if b in self.intonationmap:
@@ -72,7 +73,7 @@ class Command(BaseCommand):
         else:
             try:
                 bdata = util.docserver_get_json(b, "normalisedpitch", "normalisedhistogram")
-            except docserver.models.Document.DoesNotExist:
+            except util.NoFileException:
                 return None
             self.intonationmap[b] = bdata
 
