@@ -441,13 +441,6 @@ class WorkTaala(models.Model):
 class Recording(CarnaticStyle, data.models.Recording):
     work = models.ForeignKey('Work', blank=True, null=True)
 
-    def absolute_mp3_url(self):
-        try:
-            url = docserver.util.docserver_get_mp3_url(self.mbid)
-        except docserver.util.NoFileException:
-            url = None
-        return url
-
     def raaga(self):
         if self.work:
             rs = self.work.raaga.all()

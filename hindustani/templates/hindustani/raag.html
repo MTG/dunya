@@ -38,13 +38,7 @@ $(document).ready(function() {
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
-     			{% if user.is_authenticated %}
-				<div id="previewicon" class="enabled">
-						<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
-				</div>
-				{% else %}
-				<div id="previewicon" class="disabled"></div>
-				{% endif %}
+                {% include "hindustani/sample.html" %}
      		</div>
             <div class="bigImage"><img src="{{raag.get_image_url}}" style="overflow: visible !important; width: 280px !important;"/></div>
      		<div id="meta">

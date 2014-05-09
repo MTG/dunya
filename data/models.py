@@ -337,6 +337,13 @@ class Recording(BaseModel):
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/recording/%s" % self.mbid
 
+    def absolute_mp3_url(self):
+        try:
+            url = docserver.util.docserver_get_mp3_url(self.mbid)
+        except docserver.util.NoFileException:
+            url = None
+        return url
+
     def length_format(self):
         numsecs = self.length/1000
         minutes = math.floor(numsecs / 60.0)

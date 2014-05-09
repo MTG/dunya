@@ -1,0 +1,15 @@
+{% if user.is_authenticated %}
+<div id="previewicon" class="enabled">
+    {% if sample %}
+        <div class="ui360" style="float: left; width: 70px">
+            <a href="{{sample.absolute_mp3_url}}" style="display:none"></a>
+        </div>
+        <div style="float: right; height: 50px; line-height:50px;">
+            <a href="{{sample.get_absolute_url}}" title="{{sample.title}}">{{sample.title|slice:":20"}}{% if sample.title|length > 20 %}...{% endif %}</a>
+        </div>
+    {% endif %}
+</div>
+{% else %}
+    <div id="previewicon" class="disabled"></div>
+{% endif %}
+

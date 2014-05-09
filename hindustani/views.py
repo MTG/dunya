@@ -22,6 +22,7 @@ from django.core.urlresolvers import reverse
 
 import json
 import math
+import random
 
 import pysolr
 
@@ -260,9 +261,18 @@ def artist(request, uuid):
     if desc and desc.source.source_name == w:
         wikipedia = artist.description.source.uri
 
+    # Sample is the first track of any of their releases (Vignesh, Dec 9)
+    releases = artist.releases()
+    sample = None
+    if releases:
+        tracks = releases[0].tracks.all()
+        if tracks:
+            sample = tracks[0]
+
     ret = {"artist": artist,
             "mb": musicbrainz,
-            "wiki": wikipedia
+            "wiki": wikipedia,
+            "sample": sample
           }
     return render(request, "hindustani/artist.html", ret)
 
@@ -409,8 +419,13 @@ def raagsearch(request):
 
 def raag(request, raagid):
     raag = get_object_or_404(models.Raag, pk=raagid)
+    recordings = raag.recording_set.all()
+    sample = None
+    if recordings.exists():
+        sample = random.sample(recordings, 1)[0]
 
-    ret = {"raag": raag
+    ret = {"raag": raag,
+            "sample": sample
           }
     return render(request, "hindustani/raag.html", ret)
 
@@ -475,7 +490,15 @@ def instrumentsearch(request):
 def instrument(request, instrumentid):
     instrument = get_object_or_404(models.Instrument, pk=instrumentid)
 
-    ret = {"instrument": instrument
+    sample = None
+    # Look for a release by an artist who plays this instrument and take
+    # the first track
+    releases = models.Release.objects.filter(artists__main_instrument=instrument)
+    if releases.exists():
+        sample = releases[0].tracks.all()[0]
+
+    ret = {"instrument": instrument,
+            "sample": sample
           }
     return render(request, "hindustani/instrument.html", ret)
 
