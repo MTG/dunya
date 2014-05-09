@@ -185,7 +185,7 @@ def collectionversion(request, slug, version, type):
 
     run = request.GET.get("run")
     if run:
-        document = models.Document(external_identifier=run)
+        document = models.Document.objects.get(external_identifier=run)
         jobs.process_document.delay(document.pk, mversion.pk)
         return HttpResponseRedirect(reverse('docserver-collectionversion', args=[type, slug, version]))
 
