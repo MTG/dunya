@@ -26,9 +26,16 @@ def updateweb():
         # compile and compress less
         # compress javascript
         run("env/bin/python manage.py collectstatic --noinput")
-        less()
+
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
+
     with cd("/srv/dunya/env/src/pycompmusic"):
         run("git pull")
+
     run("sudo supervisorctl restart dunya")
 
 @roles("workers")
@@ -48,14 +55,6 @@ def updatecelery():
     with cd("/srv/dunya/env/src/pycompmusic"):
         run("git pull")
     run("sudo supervisorctl restart dunyacelery")
-
-def less():
-    """Compile less into static css"""
-    local("env/bin/lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
-    local("env/bin/lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
-    local("env/bin/lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
-    local("env/bin/lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
-    local("env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
 
 def setupdb():
     """ Run this when you are setting up a new installation
