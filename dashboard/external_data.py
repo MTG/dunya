@@ -61,7 +61,7 @@ def import_artist_wikipedia(artist, overwrite):
                 existingimg = artist.images.get(image__contains="%s" % artist.mbid)
                 if not os.path.exists(existingimg.image.path):
                     existingimg.delete()
-                elif existingimg.image.size != len(i) or overwrite:
+                elif existingimg.image.size != len(img) or overwrite:
                     # If the imagesize has changed, or overwrite is set, remove the image
                     os.unlink(existingimg.image.path)
                     existingimg.delete()
