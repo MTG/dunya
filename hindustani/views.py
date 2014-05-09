@@ -25,6 +25,7 @@ import math
 
 import pysolr
 
+import data
 from hindustani import models
 from hindustani import search
 import docserver
@@ -252,7 +253,16 @@ def artistsearch(request):
 def artist(request, uuid):
     artist = get_object_or_404(models.Artist, mbid=uuid)
 
-    ret = {"artist": artist
+    musicbrainz = artist.get_musicbrainz_url()
+    w = data.models.SourceName.objects.get(name="Wikipedia")
+    wikipedia = None
+    desc = artist.description
+    if desc and desc.source.source_name == w:
+        wikipedia = artist.description.source.uri
+
+    ret = {"artist": artist,
+            "mb": musicbrainz,
+            "wiki": wikipedia
           }
     return render(request, "hindustani/artist.html", ret)
 
