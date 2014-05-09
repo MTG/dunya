@@ -27,13 +27,13 @@ class Command(BaseCommand):
     help = "Calculate mean pitch profile of all raags"
 
     def calc_profile(self, raag, recordings):
-        average = raaga.Raaga()
+        average = raaga.Raaga(raag.name, "")
         pitches = []
         tonics = []
         for r in recordings:
             mbid = r.mbid
             pitch = util.docserver_get_json(mbid, "pitch", "pitch")
-            tonic = util.docserver_get_contents(mbid, "ctonic", "tonic")
+            tonic = util.docserver_get_contents(mbid, "hindustanivotedtonic", "tonic")
             tonic = float(tonic)
             npp = np.array(pitch)
             pitches.append(npp)
@@ -49,7 +49,9 @@ class Command(BaseCommand):
             if r.raags.count() == 1:
                 raag = r.raags.get()
                 recmap[raag].append(r)
+        print "got", len(recmap.keys()), "raags"
         for raag, recordings in recmap.items():
+            print raag
             self.calc_profile(raag, recordings)
 
 
