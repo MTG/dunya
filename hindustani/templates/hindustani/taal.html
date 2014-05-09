@@ -63,17 +63,6 @@ $(document).ready(function() {
 									{% endfor %}
 								</div>
 							</div>
-							<div id="composers" class="metaDetails">
-								<div class="inner withpadding">
-									<h3>Composers who write in this taal</h3>
-									{% for c in taal.composers %}
-									{% badge_mini_composer c %}
-                                    {% empty %}
-                                        Sorry, we have no information for this section
-									{% endfor %}
-								</div>
-							</div>
-
 							<div id="works" class="metaDetails">
 								<div class="inner withpadding">
 									<h3>Compositions written in this taal</h3>

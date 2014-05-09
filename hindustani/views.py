@@ -423,25 +423,11 @@ def taal(request, taalid):
     madhya = models.Laya.Madhya
     vilambit = models.Laya.Vilambit
     
-    def laya_ordering(recording):
-        """
-        A helper function passed as key to the sorting function
-        Depending on the recording's layas, the following is returned:
-            1-> if it has dhrut
-            2-> if it has madhya
-            3-> if it only has vilambit
-        """
-        layas = recording.layas.all()
-        if dhrut in layas:
-            return 1
-        elif madhya in layas:
-            return 2
-        elif vilambit in layas:
-            return 3
-        else:
-            return 999
     recordings = taal.recording_set.all()
-    tracks = sorted(recordings, key=laya_ordering) 
+    tracks = []
+    tracks.extend( [r for r in recordings if r.layas.count() == 1 and dhrut in r.layas.all()][:5] )
+    tracks.extend( [r for r in recordings if r.layas.count() == 1 and madhya in r.layas.all()][:5] )
+    tracks.extend( [r for r in recordings if r.layas.count() == 1 and vilambit in r.layas.all()][:5] )
     sample = None
     if tracks:
         sample = tracks[0]
