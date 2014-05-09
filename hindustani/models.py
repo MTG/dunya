@@ -107,7 +107,9 @@ class Artist(HindustaniStyle, data.models.Artist):
         ret.extend([r for r in self.primary_concerts.all()])
         # Releases in which we performed
         ret.extend([r for r in Release.objects.filter(tracks__instrumentperformance__performer=self).distinct()])
-        return list(set(ret))
+        ret = list(set(ret))
+        ret = sorted(ret, key=lambda c: c.year if c.year else 0)
+        return ret
 
     def collaborating_artists(self):
         # Get all concerts
