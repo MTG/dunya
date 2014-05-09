@@ -9,6 +9,8 @@ var qartist = {{qartist}};
 var qinstr = {{qinstr}};
 var qraag = {{qraag}};
 var qtaal = {{qtaal}};
+var qlaya = {{qlaya}};
+var qform = {{qform}};
 var qrelease = {{qrelease}};
 $(document).ready(function() {
     parseAllFilters({{ filter_items|safe }});
@@ -95,6 +97,44 @@ $(document).ready(function() {
                 if (qtaal.indexOf(theitem.data("id")) !== -1) {
                     theitem.toggleClass("selected");
                     getResults2(theitem, "eid5");
+                }
+            }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
+                }
+            }
+        });
+    }
+
+    if (qlaya.length) {
+        toggleCategory($("div#entitiesList .laya"), function() {
+            var thelist = $("div.entity_6 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qlaya.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, "eid6");
+                }
+            }
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = thelist[i];
+                if ($(theitem).hasClass("selected")) {
+                    theitem.offsetParent.scrollTop=theitem.offsetTop;
+                }
+            }
+        });
+    }
+
+    if (qform.length) {
+        toggleCategory($("div#entitiesList .form"), function() {
+            var thelist = $("div.entity_7 div.filterList ul li");
+            for (var i = 0; i < thelist.length; i++) {
+                var theitem = $(thelist[i]);
+                if (qform.indexOf(theitem.data("id")) !== -1) {
+                    theitem.toggleClass("selected");
+                    getResults2(theitem, "eid7");
                 }
             }
             for (var i = 0; i < thelist.length; i++) {

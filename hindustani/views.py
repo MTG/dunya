@@ -152,8 +152,8 @@ def main(request):
                 displayres.extend(release.related_items())
             except models.Release.DoesNotExist:
                 pass
+
     layas = models.Laya.objects.filter(pk__in=qlaya)
-    [ displayres.extend(l.related_items()) for l in layas ]
 
     forms = models.Form.objects.filter(pk__in=qform)
     [ displayres.extend(f.related_items()) for f in forms ]
@@ -227,6 +227,8 @@ def main(request):
            "qinstr": json.dumps(qinstr),
            "qraag": json.dumps(qraag),
            "qtaal": json.dumps(qtaal),
+           "qlaya": json.dumps(qlaya),
+           "qform": json.dumps(qform),
            "qrelease": json.dumps(qrelease),
            "searcherror": searcherror
            }
