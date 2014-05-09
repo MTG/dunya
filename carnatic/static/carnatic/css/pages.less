@@ -17,6 +17,24 @@
     }
 
     border-bottom: 30px solid #333;
+    /* Specifics for taala image */
+    &.taala {
+        #header {
+            .bigImage {
+                position: relative; 
+                float: left;
+                width: 296px;
+                height: 296px;
+                line-height: 296px;
+                background: #eee;
+                z-index: 2;
+                img {
+                    vertical-align: middle;
+                    width: 297px;
+                }
+            }
+        }
+    }
     #header {
         background: #fff;
         border-bottom:1px solid @grisD;
