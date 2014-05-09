@@ -577,11 +577,12 @@ def taala(request, taalaid):
 
     similar = taala.get_similar()
     tracks = taala.recordings(10)
+    sample = None
     if len(tracks):
-        tracks = random.sample(tracks, 1)
+        sample = random.sample(tracks, 1)[0]
 
     ret = {"taala": taala,
-           "tracks": tracks,
+           "sample": sample,
            "similar": similar
           }
     return render(request, "carnatic/taala.html", ret)
@@ -597,11 +598,12 @@ def raaga(request, raagaid):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
     tracks = raaga.recordings(10)
+    sample = None
     if len(tracks):
-        tracks = random.sample(tracks, 1)
+        sample = random.sample(tracks, 1)[0]
 
     ret = {"raaga": raaga,
-           "tracks": tracks,
+           "sample": sample,
            "similar": similar
     }
     return render(request, "carnatic/raaga.html", ret)

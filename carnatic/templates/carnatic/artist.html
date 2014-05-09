@@ -69,16 +69,7 @@ $(document).ready(function() {
                      </span>
                 </div>
                 <div id="summaryBack"></div>
-                {% if user.is_authenticated %}
-				<div id="previewicon" class="enabled">
-                    {% if sample %}
-						<div class="ui360"><a href="{{sample.absolute_mp3_url}}" style="display: none;">{{sample.title}}</a></div>
-                <a href="{% url 'carnatic-recording' sample.mbid %}" title={{sample.title}}>{{sample.title|slice:":35"}}{% if sample.title|length > 35 %}...{% endif %}</a>
-                    {% endif %}
-				</div>
-				{% else %}
-				<div id="previewicon" class="disabled"></div>
-				{% endif %}
+                {% include "hindustani/sample.html" %}
             </div>
             <div class="bigImage"><img src="{{artist.get_image_url}}"></div>
             <div id="meta">
