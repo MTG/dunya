@@ -20,7 +20,7 @@
         		  <div class="artist" style="width:90px"><span>artist</span></div>
                   {% endif %}
                   {% if raags|length %}
-        		  <div class="raaga active" style="width:90px"><span>raag</span></div>
+        		  <div class="raaga" style="width:90px"><span>raag</span></div>
                   {% endif %}
                   {% if taals|length %}
         		  <div class="taala" style="width:90px"><span>taal</span></div>
@@ -42,8 +42,8 @@
             {% if raags %}
         	  <div class="similarList raaga">
                 Albums share these same raagas:<br>
-                  {% for w in raaga %}
-                      {% badge_mini_raag w %}
+                  {% for r in raags %}
+                      {% badge_mini_raag r %}
                   {% endfor %}
         	  </div>
             {% endif %}
