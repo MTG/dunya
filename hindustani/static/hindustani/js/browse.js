@@ -340,7 +340,7 @@ function sumarizeFilter(object){
 function showFilterData(data, entity_filter,filterName,eid,after){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
-    $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid).data("eid", eid);
+    $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid).data("eid", eid).show();
     $('#filterArea').width(480+(filtersArray.length*780));
     newFilter = "#filter_"+filterPosition;
     $(newFilter).find(".filterList").append(listFilterData(data, entity_filter));
