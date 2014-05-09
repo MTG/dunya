@@ -15,12 +15,15 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.core.management.base import BaseCommand, CommandError
-import collections
+from django.core.files.base import ContentFile
 
+import os
+import collections
 import numpy as np
 
-from hindustani import models
+import data
 from docserver import util
+from hindustani import models
 from compmusic.extractors.similaritylib import raaga
 
 class Command(BaseCommand):
@@ -40,7 +43,14 @@ class Command(BaseCommand):
             tonics.append(tonic)
 
         average.compute_average_hist_data(pitches, tonics)
-        average.generate_image("%s.png" % raag.common_name)
+
+        fname = "hindustani-raag-%s.png" % raag.common_name.lower().replace(" ", "")
+        average.generate_image(fname)
+        im = data.models.Image()
+        raag.images.remove()
+        im.image.save(fname, ContentFile(open(fname, "rb").read()))
+        raag.images.add(im)
+        os.unlink(fname)
 
     def handle(self, *args, **options):
         recordings = models.Recording.objects.all()
