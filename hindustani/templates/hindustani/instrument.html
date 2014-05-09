@@ -89,7 +89,7 @@ $(document).ready(function() {
 							<div id="excerpt" class="metaDetails">
 								<div class="inner">
 									<h3>Description</h3>
-			                        <span>{{instrument.description.description}}
+			                        <span>{{instrument.description.description|safe}}
                                     <p><label>Description from </label>
                                         <a href="{{instrument.description.source.uri}}">Wikipedia</a>
                                     </span>
