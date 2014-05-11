@@ -1,18 +1,18 @@
 # -*- coding: UTF-8 -*-
 
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -97,9 +97,8 @@ def main(request):
     if "q" in request.GET:
         query = request.GET.get("q")
         # special case, we have this so we can put a ? in the arglist
-        # but it's actually a browse
+        # in the javascript, but it's actually a browse
         if query == "1":
-            print "query is none"
             query = None
     else:
         query = None
@@ -119,35 +118,54 @@ def main(request):
     searcherror = False
 
     if qartist:
+        raags = None
+        if qraag:
+            raags = [models.Raag.objects.get(pk=r) for r in qraag]
+        taals = None
+        if qtaal:
+            taals = [models.Taal.objects.get(pk=t) for t in qtaal]
+        forms = None
+        if qform:
+            forms = [models.Form.objects.get(pk=f) for f in qform]
+
+        allartists = []
         for a in qartist:
-            print "doing artist", a
             try:
                 artist = models.Artist.objects.get(pk=a)
+                allartists.append(artist)
                 displayres.extend(artist.related_items())
             except models.Artist.DoesNotExist:
                 pass
-    if qinstr:
+
+        thea = allartists[0]
+        if len(allartists) > 1:
+            othera = allartists[1:]
+        else:
+            othera = None
+        displayres.extend(thea.combined_related_items(artists=othera, raags=raags, taals=taals, forms=forms))
+
+    elif qinstr:
         for i in qinstr:
             try:
                 instrument = models.Instrument.objects.get(pk=i)
                 displayres.extend(instrument.related_items())
             except models.Instrument.DoesNotExist:
                 pass
-    if qraag:
+    elif qraag:
         for r in qraag:
             try:
                 raag = models.Raag.objects.get(pk=r)
                 displayres.extend(raag.related_items())
             except models.Raag.DoesNotExist:
                 pass
-    if qtaal:
+    elif qtaal:
         for t in qtaal:
             try:
                 taal = models.Taal.objects.get(pk=t)
                 displayres.extend(taal.related_items())
             except models.Taal.objects.DoesNotExist:
                 pass
-    if qrelease:
+    elif qrelease:
         for r in qrelease:
             try:
                 release = models.Release.objects.get(pk=r)
@@ -155,10 +173,10 @@ def main(request):
             except models.Release.DoesNotExist:
                 pass
 
-    layas = models.Laya.objects.filter(pk__in=qlaya)
+    # layas = models.Laya.objects.filter(pk__in=qlaya)
 
-    forms = models.Form.objects.filter(pk__in=qform)
-    [ displayres.extend(f.related_items()) for f in forms ]
+    # forms = models.Form.objects.filter(pk__in=qform)
+    # [ displayres.extend(f.related_items()) for f in forms ]
 
     if query:
         try:
@@ -209,7 +227,7 @@ def main(request):
         numlayas = len([i for i in displayres if i[0] == "laya"])
 
     print displayres
-    
+
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
            "numcomposers": numcomposers,
@@ -440,7 +458,7 @@ def taal(request, taalid):
     taal = get_object_or_404(models.Taal, pk=taalid)
 
     """
-    We display all the recordings of a taal and group them by 
+    We display all the recordings of a taal and group them by
     layas. Currently, the vilambit laya should be the last group
     shown. Recordings that are associated with more than one laya
     are only shown once in their first group
@@ -449,7 +467,7 @@ def taal(request, taalid):
     dhrut = models.Laya.Dhrut
     madhya = models.Laya.Madhya
     vilambit = models.Laya.Vilambit
-    
+
     recordings = taal.recording_set.all()
     tracks = []
     tracks.extend( [r for r in recordings if r.layas.count() == 1 and dhrut in r.layas.all()][:5] )
@@ -458,7 +476,7 @@ def taal(request, taalid):
     sample = None
     if tracks:
         sample = tracks[0]
-    
+
     ret = { "taal": taal,
             "tracks": tracks,
             "sample": sample
