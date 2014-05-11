@@ -129,25 +129,26 @@ class Artist(HindustaniStyle, data.models.Artist):
         if raags:
             for r in raags:
                 ret.append( ("raag", r) )
-        for ra, _ in raag_count.most_common(5):
-            if not raags or ra not in raags:
-                ret.append( ("raag", ra) )
+        else:
+            for ra, _ in raag_count.most_common(5):
+                if not raags or ra not in raags:
+                    ret.append( ("raag", ra) )
 
         if taals:
             for t in taals:
                 ret.append( ("taal", t) )
 
+        # forms
         if forms:
             for f in forms:
                 ret.append( ("form", f) )
-
-        # forms
-        for fo, _ in form_count.most_common(5):
-            if not forms or fo not in forms:
-                ret.append( ("form", fo) )
+        elif not raags and not taals:
+            for fo, _ in form_count.most_common(5):
+                if not forms or fo not in forms:
+                    ret.append( ("form", fo) )
 
         # releases
-        for rel in releases:
+        for rel in releases[:5]:
             ret.append( ("release", rel) )
 
         return ret
