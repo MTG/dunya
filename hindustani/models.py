@@ -414,7 +414,7 @@ class Raag(data.models.BaseModel):
                 artistcount += 1
         # TODO: Should this only be releases from the shown artists?
         # releases
-        releases = Release.objects.filter(tracks__in=self.recording_set.all())
+        releases = Release.objects.filter(tracks__in=self.recording_set.all()).distinct()
         # If forms is set, reduce the releases that are shown
         if forms:
             for f in forms:
@@ -500,7 +500,7 @@ class Taal(data.models.BaseModel):
                 artistcount += 1
         # releases
         # TODO: Should this be releases by the shown artists?
-        releases = Release.objects.filter(tracks__in=self.recording_set.all())
+        releases = Release.objects.filter(tracks__in=self.recording_set.all()).distinct()
         if layas:
             # TODO: If we select more than 1 taal, and some layas, then
             # these layas will show more than once
@@ -626,7 +626,7 @@ class Form(data.models.BaseModel):
         for ra, _ in raags.most_common(5):
             ret.append( ("raag", ra) )
         # releases
-        releases = Release.objects.filter(tracks__in=self.recording_set.all())
+        releases = Release.objects.filter(tracks__in=self.recording_set.all()).distinct()
         if layas:
             for l in layas:
                 ret.append( ("laya", l) )

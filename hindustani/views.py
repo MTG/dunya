@@ -152,17 +152,32 @@ def main(request):
             except models.Instrument.DoesNotExist:
                 pass
     elif qraag:
+        forms = None
+        if qform:
+            forms = [models.Form.objects.get(pk=f) for f in qform]
+        instrs = None
+        if qinstr:
+            instrs = [models.Instrument.objects.get(pk=i) for i in qinstr]
         for r in qraag:
             try:
                 raag = models.Raag.objects.get(pk=r)
-                displayres.extend(raag.related_items())
+                displayres.extend(raag.related_items(instruments=instrs, forms=forms))
             except models.Raag.DoesNotExist:
                 pass
     elif qtaal:
+        forms = None
+        if qform:
+            forms = [models.Form.objects.get(pk=f) for f in qform]
+        instrs = None
+        if qinstr:
+            instrs = [models.Instrument.objects.get(pk=i) for i in qinstr]
+        layas = None
+        if qlaya:
+            layas = [models.Laya.objects.get(pk=l) for l in qlaya]
         for t in qtaal:
             try:
                 taal = models.Taal.objects.get(pk=t)
-                displayres.extend(taal.related_items())
+                displayres.extend(taal.related_items(layas=layas, instruments=instrs, forms=forms))
             except models.Taal.objects.DoesNotExist:
                 pass
     elif qrelease:
@@ -173,10 +188,13 @@ def main(request):
             except models.Release.DoesNotExist:
                 pass
 
-    # layas = models.Laya.objects.filter(pk__in=qlaya)
-
-    # forms = models.Form.objects.filter(pk__in=qform)
-    # [ displayres.extend(f.related_items()) for f in forms ]
+    elif qform:
+        layas = None
+        if qlaya:
+            layas = [models.Laya.objects.get(pk=l) for l in qlaya]
+        for f in qform:
+            form = models.Form.objects.get(pk=f)
+            displayres.extend(form.related_items(layas=layas))
 
     if query:
         try:
