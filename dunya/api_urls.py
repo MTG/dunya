@@ -67,5 +67,5 @@ urlpatterns = patterns('',
     url(r'^hindustani/release/%s$' % mbid_match, hindustani_api.ReleaseDetail.as_view(), name='api-hindustani-release-detail'),
 )
 
-urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'carnatic_api', 'hindustani_api',])
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api',])
 
