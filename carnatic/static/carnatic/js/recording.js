@@ -341,18 +341,24 @@ function drawdata() {
     $(".timecode3").html(formatseconds(start+skip*2));
     $(".timecode4").html(formatseconds(start+skip*3));
     $(".timecode5").html(formatseconds(start+skip*4));
+
+    // The highlighted miniview
+    var beginPercentage = (beginningOfView/recordinglengthseconds);
+    var endPercentage = (beginningOfView+secondsPerView) / recordinglengthseconds;
+
+    var beginPx = renderTotal.width() * beginPercentage;
+    var endPx = renderTotal.width() * endPercentage;
+    var mini = $('#miniviewHighlight');
+    mini.css('left', beginPx);
+    mini.css('width', endPx-beginPx);
 }
 
 function mouPlay(desti){
-    console.debug("play click!");
 	percent = desti/waveform.width();
-    console.debug("percent - "+percent);
-
     clickseconds = recordinglengthseconds * percent
-	console.log(clickseconds+" - "+ recordinglengthseconds);
 
     posms = clickseconds * 1000;
-    part = Math.ceil(clickseconds / secondsPerView);
+    part = Math.ceil(clickseconds / secondsPerView) - 1;
     // Update the internal position counter
     beginningOfView = part * secondsPerView;
 
@@ -417,7 +423,7 @@ function updateProgress() {
     capcalTotal.css('left', leftSmallView-6);
 
     if (leftLargeView > 900) {
-        beginningOfView += secondsPerView;
+        beginningOfView = Math.floor(currentTime / secondsPerView) * secondsPerView;
         pnum = Math.floor(beginningOfView / secondsPerView + 1);
         replacepart(pnum)
     }
