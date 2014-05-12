@@ -19,7 +19,10 @@
 from django.shortcuts import render
 
 def terms(request):
-    return render(request, "carnatic/terms.html", {})
+    return render(request, "carnatic/terms.html")
 
 def cookies(request):
-    return render(request, "carnatic/cookies.html", {})
+    return render(request, "carnatic/cookies.html")
+
+def contact(request):
+    return render(request, "carnatic/contact.html")
