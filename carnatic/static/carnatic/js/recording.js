@@ -50,6 +50,12 @@ $(document).ready(function() {
          });
 
      });
+
+        $(document).keypress(function(e) {
+            if (e.keyCode == 0 || e.keyCode == 32) {
+                playrecord();
+            }
+        });
 });
 
 function plotsa(context) {
