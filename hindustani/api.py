@@ -49,6 +49,16 @@ class TaalInnerSerializer(serializers.ModelSerializer):
         model = models.Taal
         fields = ['id', 'name']
 
+class LayaInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Taal
+        fields = ['id', 'name']
+
+class FormInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Taal
+        fields = ['id', 'name']
+
 class ReleaseInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Release
@@ -69,12 +79,12 @@ class TaalList(generics.ListAPIView):
     serializer_class = TaalListSerializer
 
 class TaalDetailSerializer(serializers.ModelSerializer):
-    works = WorkInnerSerializer(source='works')
+    recordings = RecordingInnerSerializer(source='recordings')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
     class Meta:
         model = models.Taal
-        fields = ['id', 'name', 'aliases', 'works', 'composers']
+        fields = ['id', 'name', 'aliases', 'recordings', 'composers']
 
 class TaalDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -92,12 +102,12 @@ class RaagList(generics.ListAPIView):
 
 class RaagDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
-    works = WorkInnerSerializer(source='works')
+    recordings = WorkInnerSerializer(source='recordings')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
     class Meta:
         model = models.Raag
-        fields = ['id', 'name', 'aliases', 'artists', 'works', 'composers']
+        fields = ['id', 'name', 'aliases', 'artists', 'recordings', 'composers']
 
 class RaagDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -156,14 +166,16 @@ class RecordingList(generics.ListAPIView):
     serializer_class = RecordingListSerializer
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
-    concert = ReleaseInnerSerializer(source='concert_set.get')
+    release = ReleaseInnerSerializer(source='release_set.get')
     artists = ArtistInnerSerializer(source='all_artists')
-    raag = RaagInnerSerializer(source='raag')
-    taal = TaalInnerSerializer(source='taal')
-    work = RecordingInnerSerializer(source='work')
+    raags = RaagInnerSerializer(source='raags')
+    taals = TaalInnerSerializer(source='taals')
+    layas = LayaInnerSerializer(source='layas')
+    forms = FormInnerSerializer(source='forms')
+    works = WorkInnerSerializer(source='works')
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'artists', 'raag', 'taal', 'work', 'concert']
+        fields = ['mbid', 'title', 'artists', 'raags', 'taals', 'layas','forms', 'works', 'release']
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -181,12 +193,12 @@ class ArtistList(generics.ListAPIView):
     serializer_class = ArtistListSerializer
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
-    concerts = ReleaseInnerSerializer(source='concerts')
+    releases = ReleaseInnerSerializer(source='releases')
     instruments = InstrumentInnerSerializer(source='instruments')
     recordings = RecordingInnerSerializer(source='recordings')
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'name', 'concerts', 'instruments', 'recordings']
+        fields = ['mbid', 'name', 'releases', 'instruments', 'recordings']
 
 class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -214,10 +226,10 @@ class ReleaseArtistSerializer(serializers.ModelSerializer):
 class ReleaseDetailSerializer(serializers.ModelSerializer):
     tracks = RecordingInnerSerializer(many=True)
     artists = ReleaseArtistSerializer(source='performers')
-    concert_artists = ArtistInnerSerializer(source='artists')
+    release_artists = ArtistInnerSerializer(source='artists')
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'tracks', 'artists', 'concert_artists']
+        fields = ['mbid', 'title', 'tracks', 'artists', 'release_artists']
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
