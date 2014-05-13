@@ -50,6 +50,12 @@ urlpatterns = patterns('',
     url(r'^hindustani/taal$', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
     url(r'^hindustani/taal/(?P<pk>\d+)$', hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
 
+    url(r'^hindustani/laya$', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
+    url(r'^hindustani/laya/(?P<pk>\d+)$', hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
+    
+    url(r'^hindustani/form$', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
+    url(r'^hindustani/form/(?P<pk>\d+)$', hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
+
     url(r'^hindustani/instrument$', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),
     url(r'^hindustani/instrument/(?P<pk>\d+)$', hindustani.api.InstrumentDetail.as_view(), name='api-hindustani-instrument-detail'),
 

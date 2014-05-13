@@ -114,6 +114,49 @@ class RaagDetail(generics.RetrieveAPIView):
     queryset = models.Raag.objects.all()
     serializer_class = RaagDetailSerializer
 
+class LayaListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Laya
+        fields = ['id', 'name']
+
+class LayaList(generics.ListAPIView):
+    queryset = models.Laya.objects.all()
+    serializer_class = LayaListSerializer
+
+class LayaDetailSerializer(serializers.ModelSerializer):
+    recordings = WorkInnerSerializer(source='recordings')
+    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    class Meta:
+        model = models.Laya
+        fields = ['id', 'name', 'recordings', 'aliases', ]
+
+class LayaDetail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = models.Laya.objects.all()
+    serializer_class = LayaDetailSerializer
+
+class FormListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Form
+        fields = ['id', 'name']
+
+class FormList(generics.ListAPIView):
+    queryset = models.Form.objects.all()
+    serializer_class = FormListSerializer
+
+class FormDetailSerializer(serializers.ModelSerializer):
+    artists = ArtistInnerSerializer(source='artists')
+    recordings = WorkInnerSerializer(source='recordings')
+    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    class Meta:
+        model = models.Form
+        fields = ['id', 'name', 'aliases', 'artists', 'recordings',]
+
+class FormDetail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = models.Form.objects.all()
+    serializer_class = FormDetailSerializer
+
 class InstrumentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument

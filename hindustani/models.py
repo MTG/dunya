@@ -556,6 +556,9 @@ class Laya(data.models.BaseModel):
     def get_absolute_url(self):
         return reverse('hindustani-laya', args=[str(self.id)])
 
+    def recordings(self):
+        return self.recording_set.all()
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('hindustani-laya-search'),
