@@ -177,6 +177,13 @@ class Artist(HindustaniStyle, data.models.Artist):
                     c[thea.id] += 1
 
         return [(Artist.objects.get(pk=pk), list(releases[pk])) for pk,count in c.most_common()]
+    
+    def recordings(self):
+        IPClass = self.get_object_map("performance")
+        performances = IPClass.objects.filter(performer=self)
+        performance_recs = [p.recording for p in performances]
+
+        return list(set(performance_recs))
 
     @classmethod
     def get_filter_criteria(cls):
