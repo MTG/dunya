@@ -20,12 +20,32 @@ $(document).ready(function() {
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
 	 });
-     waveform.mouseenter(function() {
+     waveform.mouseenter(function(e) {
          if (pagesound.duration) {
              waveform.css("cursor", "pointer");
+
          } else {
              waveform.css("cursor", "wait");
          }
+     });
+     waveform.mousemove(function(e) {
+         if (pagesound.duration) {
+             var offset_l = $(this).offset().left - $(window).scrollLeft();
+             var left = Math.round( (e.clientX - offset_l) );
+             var miniviewWidth = renderTotal.width();
+             var miniviewPercent = left / miniviewWidth;
+             var timeseconds = Math.floor(recordinglengthseconds * miniviewPercent);
+
+             $("#timepoint").html(formatseconds(timeseconds));
+             $("#timepoint").show();
+             $("#timepoint").css({
+                 "top" : e.pageY,
+                 "left" : e.pageX + 15
+             });
+        }
+     });
+     waveform.mouseleave(function() {
+        $("#timepoint").hide();
      });
      $(".zoom").click(function(e) {
          e.preventDefault();
@@ -53,6 +73,7 @@ $(document).ready(function() {
 
         $(document).keypress(function(e) {
             if (e.keyCode == 0 || e.keyCode == 32) {
+                e.preventDefault();
                 playrecord();
             }
         });
