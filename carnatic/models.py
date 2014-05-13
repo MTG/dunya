@@ -455,6 +455,21 @@ class Recording(CarnaticStyle, data.models.Recording):
                 return ts[0]
         return None
 
+    def all_artists(self):
+        ArtistClass = self.get_object_map("artist")
+        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+
+        IPClass = self.get_object_map("performance")
+        IRPClass = self.get_object_map("releaseperformance")
+        recperfs = IPClass.objects.filter(recording=self)
+        rec_artists = [r.performer for r in recperfs]
+        releaseperfs = IRPClass.objects.filter(concert__tracks=self)
+        release_artists = [r.performer for r in releaseperfs]
+
+        all_as = set(primary_artists) | set(rec_artists) | set(release_artists)
+        return list(all_as)
+
+
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
