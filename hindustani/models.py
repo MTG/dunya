@@ -388,7 +388,7 @@ class Raag(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-raag', args=[str(self.id, slugify(self.name))])
+        return reverse('hindustani-raag', args=[str(self.id), slugify(self.name)])
 
     def works(self):
         return Work.objects.filter(recording__raags=self).distinct()
