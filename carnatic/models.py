@@ -17,6 +17,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils.text import slugify
 
 import collections
 
@@ -191,7 +192,7 @@ class Concert(CarnaticStyle, data.models.Release):
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     @classmethod
     def get_filter_criteria(cls):
@@ -290,7 +291,7 @@ class Raaga(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id)])
+        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.name)])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -373,7 +374,7 @@ class Taala(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id)])
+        return reverse('carnatic-taala', args=[str(self.id), slugify(self.name)])
 
     def works(self):
         return self.work_set.distinct().all()

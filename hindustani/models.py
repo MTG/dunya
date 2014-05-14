@@ -17,6 +17,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils.text import slugify
 
 import collections
 import pysolr
@@ -387,7 +388,7 @@ class Raag(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-raag', args=[str(self.id)])
+        return reverse('hindustani-raag', args=[str(self.id, slugify(self.name))])
 
     def works(self):
         return Work.objects.filter(recording__raags=self).distinct()
@@ -471,7 +472,7 @@ class Taal(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-taal', args=[str(self.id)])
+        return reverse('hindustani-taal', args=[str(self.id), slugify(self.name)])
 
     def percussion_artists(self):
         artistmap = {}
@@ -554,7 +555,7 @@ class Laya(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-laya', args=[str(self.id)])
+        return reverse('hindustani-laya', args=[str(self.id), slugify(self.name)])
 
     def recordings(self):
         return self.recording_set.all()
@@ -616,7 +617,7 @@ class Form(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-form', args=[str(self.id)])
+        return reverse('hindustani-form', args=[str(self.id), slugify(self.name)])
 
     def recordings(self):
         return self.recording_set.all()

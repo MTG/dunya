@@ -19,6 +19,7 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db.models import Q
+from django.utils.text import slugify
 
 import docserver
 
@@ -145,7 +146,7 @@ class Artist(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.name)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -241,7 +242,7 @@ class Release(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-release" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -303,7 +304,7 @@ class Work(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-work" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/work/%s" % self.mbid
@@ -332,7 +333,7 @@ class Recording(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-recording" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/recording/%s" % self.mbid
@@ -407,7 +408,7 @@ class Instrument(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-instrument" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[str(self.id), slugify(self.Name)])
 
     def artists(self):
         ArtistClass = self.get_object_map("artist")
@@ -444,7 +445,7 @@ class Composer(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.name)])
 
 class ComposerAlias(models.Model):
     class Meta:

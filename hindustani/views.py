@@ -273,7 +273,7 @@ def main(request):
 
     return render(request, "hindustani/index.html", ret)
 
-def composer(request, uuid):
+def composer(request, uuid, composer_name=None):
     composer = get_object_or_404(models.Composer, mbid=uuid)
 
     ret = {"composer": composer
@@ -287,7 +287,7 @@ def artistsearch(request):
         ret.append({"id": a.id, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def artist(request, uuid):
+def artist(request, uuid, artist_name=None):
     artist = get_object_or_404(models.Artist, mbid=uuid)
 
     musicbrainz = artist.get_musicbrainz_url()
@@ -319,7 +319,7 @@ def releasesearch(request):
         ret.append({"id": r.id, "title": r.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def release(request, uuid):
+def release(request, uuid, release_title=None):
     release = get_object_or_404(models.Release, mbid=uuid)
     similar = release.get_similar()
 
@@ -328,7 +328,7 @@ def release(request, uuid):
           }
     return render(request, "hindustani/release.html", ret)
 
-def recording(request, uuid):
+def recording(request, uuid, recording_title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
 
     try:
@@ -425,7 +425,7 @@ def recording(request, uuid):
         }
     return render(request, "hindustani/recording.html", ret)
 
-def work(request, uuid):
+def work(request, uuid, work_title=None):
     work = get_object_or_404(models.Work, mbid=uuid)
 
     ret = {"work": work
@@ -439,7 +439,7 @@ def layasearch(request):
         ret.append({"id": l.id, "name": str(l)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def laya(request, layaid):
+def laya(request, layaid, laya_name=None):
     laya = get_object_or_404(models.Laya, pk=layaid)
 
     ret = {"laya": laya
@@ -453,7 +453,7 @@ def raagsearch(request):
         ret.append({"id": r.id, "name": str(r)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def raag(request, raagid):
+def raag(request, raagid, raag_name=None):
     raag = get_object_or_404(models.Raag, pk=raagid)
     recordings = raag.recording_set.all()
     sample = None
@@ -472,7 +472,7 @@ def taalsearch(request):
         ret.append({"id": t.id, "name": str(t)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def taal(request, taalid):
+def taal(request, taalid, taal_name=None):
     taal = get_object_or_404(models.Taal, pk=taalid)
 
     """
@@ -509,7 +509,7 @@ def formsearch(request):
         ret.append({"id": l.id, "name": str(l)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def form(request, formid):
+def form(request, formid, form_name=None):
     form = get_object_or_404(models.Form, pk=formid)
 
     ret = {"form": form
@@ -523,7 +523,7 @@ def instrumentsearch(request):
         ret.append({"id": l.id, "name": str(l)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def instrument(request, instrumentid):
+def instrument(request, instrumentid, instrument_name=None):
     instrument = get_object_or_404(models.Instrument, pk=instrumentid)
 
     sample = None
