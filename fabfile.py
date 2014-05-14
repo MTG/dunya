@@ -22,7 +22,7 @@ def test(module=None):
 def updateweb():
     """Update the webserver"""
     with cd("/srv/dunya"):
-        run("git pull")
+        run("git pull", pty=False)
         # compile and compress less
         # compress javascript
         run("env/bin/python manage.py collectstatic --noinput")
@@ -34,7 +34,7 @@ def updateweb():
         run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
 
     with cd("/srv/dunya/env/src/pycompmusic"):
-        run("git pull")
+        run("git pull", pty=False)
 
     run("sudo supervisorctl restart dunya")
 
@@ -43,7 +43,7 @@ def updateweb():
 def essentia(branch=None):
     """Update essentia on all workers"""
     with cd("/srv/essentia"):
-        run("git pull")
+        run("git pull", pty=False)
         run("./waf -j4")
         run("sudo ./waf install")
 
@@ -51,9 +51,9 @@ def essentia(branch=None):
 def updatecelery():
     """Update the code for celery on all workers and restart"""
     with cd("/srv/dunya"):
-        run("git pull")
+        run("git pull", pty=False)
     with cd("/srv/dunya/env/src/pycompmusic"):
-        run("git pull")
+        run("git pull", pty=False)
     run("sudo supervisorctl restart dunyacelery")
 
 def setupdb():
