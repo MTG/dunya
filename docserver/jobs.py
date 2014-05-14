@@ -154,6 +154,7 @@ def process_document(documentid, moduleversionid):
     instance = _get_module_instance_by_path(module.module)
 
     document = models.Document.objects.get(pk=documentid)
+    collection = document.collection
 
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
@@ -161,7 +162,8 @@ def process_document(documentid, moduleversionid):
         s = sfiles[0]
         fname = s.fullpath.encode("utf-8")
         starttime = time.time()
-        results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
+        results = instance.process_document(collection.collectionid, document.pk,
+                s.pk, document.external_identifier, fname)
         endtime = time.time()
         total_time = int(endtime-starttime)
 
