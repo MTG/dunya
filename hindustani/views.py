@@ -348,7 +348,7 @@ def recording(request, uuid, recording_title=None):
     except docserver.util.NoFileException:
         audio = None
     try:
-        tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic")
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12

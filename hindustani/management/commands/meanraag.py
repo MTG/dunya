@@ -37,7 +37,7 @@ class Command(BaseCommand):
             mbid = r.mbid
             try:
                 pitch = util.docserver_get_json(mbid, "pitch", "pitch")
-                tonic = util.docserver_get_contents(mbid, "hindustanivotedtonic", "tonic")
+                tonic = util.docserver_get_contents(mbid, "votedtonic", "tonic")
                 tonic = float(tonic)
                 npp = np.array(pitch)
                 pitches.append(npp)
