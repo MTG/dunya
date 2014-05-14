@@ -467,6 +467,7 @@ class Taal(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
+    num_aksharas = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.name.capitalize()
