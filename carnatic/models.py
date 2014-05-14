@@ -291,7 +291,7 @@ class Raaga(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.name)])
+        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.transliteration)])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -374,7 +374,7 @@ class Taala(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id), slugify(self.name)])
+        return reverse('carnatic-taala', args=[str(self.id), slugify(self.transliteration)])
 
     def works(self):
         return self.work_set.distinct().all()

@@ -388,7 +388,7 @@ class Raag(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-raag', args=[str(self.id), slugify(self.name)])
+        return reverse('hindustani-raag', args=[str(self.id), slugify(self.common_name)])
 
     def works(self):
         return Work.objects.filter(recording__raags=self).distinct()
@@ -472,7 +472,7 @@ class Taal(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-taal', args=[str(self.id), slugify(self.name)])
+        return reverse('hindustani-taal', args=[str(self.id), slugify(self.common_name)])
 
     def percussion_artists(self):
         artistmap = {}
@@ -555,7 +555,7 @@ class Laya(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-laya', args=[str(self.id), slugify(self.name)])
+        return reverse('hindustani-laya', args=[str(self.id), slugify(self.common_name)])
 
     def recordings(self):
         return self.recording_set.all()
@@ -617,7 +617,7 @@ class Form(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-form', args=[str(self.id), slugify(self.name)])
+        return reverse('hindustani-form', args=[str(self.id), slugify(self.common_name)])
 
     def recordings(self):
         return self.recording_set.all()
