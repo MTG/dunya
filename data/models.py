@@ -408,7 +408,7 @@ class Instrument(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-instrument" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id), slugify(self.Name)])
+        return reverse(viewname, args=[str(self.id), slugify(self.name)])
 
     def artists(self):
         ArtistClass = self.get_object_map("artist")
