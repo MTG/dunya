@@ -278,7 +278,7 @@ def artistsearch(request):
 
 def artistbyid(request, artistid, artist_name=None):
     artist = get_object_or_404(Artist, pk=artistid)
-    return redirect(reverse('carnatic-artist', args=[artist.mbid, slugify(artist.name)]), permanent=True)
+    return redirect(artist.get_absolute_url(), permanent=True)
 
 def artist(request, uuid, artist_name=None):
     artist = get_object_or_404(Artist, mbid=uuid)
@@ -369,7 +369,7 @@ def artist(request, uuid, artist_name=None):
 
 def composerbyid(request, composerid, composer_name=None):
     composer = get_object_or_404(Composer, pk=composerid)
-    return redirect(reverse('carnatic-composer', args=[composer.mbid, slugify(composer.name)]), permanent=True)
+    return redirect(composer.get_absolute_url(), permanent=True)
 
 def composer(request, uuid, composer_name=None):
     composer = get_object_or_404(Composer, mbid=uuid)
@@ -386,7 +386,7 @@ def concertsearch(request):
 
 def concertbyid(request, concertid, concert_title=None):
     concert = get_object_or_404(Concert, pk=concertid)
-    return redirect(reverse('carnatic-concert', args=[concert.mbid, slugify(concert.title)]), permanent=True)
+    return redirect(concert.get_absolute_url(), permanent=True)
 
 def concert(request, uuid, concert_title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
@@ -422,7 +422,7 @@ def concert(request, uuid, concert_title=None):
 
 def recordingbyid(request, recordingid, recording_title=None):
     recording = get_object_or_404(Recording, pk=recordingid)
-    return redirect(reverse('carnatic-recording', args=[recording.mbid, slugify(recording.title)]), permanent=True)
+    return redirect(recording.get_absolute_url(), permanent=True)
 
 def recording(request, uuid, recording_title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
@@ -543,7 +543,7 @@ def worksearch(request):
 
 def workbyid(request, workid, work_title=None):
     work = get_object_or_404(Work, pk=workid)
-    return redirect(reverse('carnatic-work', args=[work.mbid, slugify(work.title)]), permanent=True)
+    return redirect(work.get_absolute_url(), permanent=True)
 
 def work(request, uuid, work_title=None):
     work = get_object_or_404(Work, mbid=uuid)
