@@ -27,6 +27,38 @@ div.item {
         left: 6px;
         width: 207px !important;
         height: 207px !important;
+        line-height: 207px;
+        overflow: hidden;
+        a { 
+            position: relative;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            display: block;
+            background: #fff;
+        }
+        img {
+            width: 100%;
+            margin: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+    &.taala.widetaala .pict {
+        line-height: 207px;
+        img {
+            margin: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+    &.taala.widetaala.open .pict { 
+        position: absolute;
+        top: 6px;
+        left: 25px;
+        width: 400px !important;
+        height: 207px !important;
         overflow: hidden;
         a { 
             position: relative;

@@ -31,7 +31,7 @@ $(document).ready(function() {
 
 
   <div id="detail" class="taala">
-     	<div id="header">
+     	<div id="header"{% if taala.num_aksharas > 30 %}class="widetaala"{%endif%}">
      		<div id="summary">
      			<div id="innerSummary">
 	     			<span>
