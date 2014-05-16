@@ -31,6 +31,7 @@ from rest_framework.authtoken.models import Token
 
 import json
 import social.timeline as timeline
+from django.core.mail import send_mail
 
 def main_page(request):
     return render(request, "social/main_page.html")
@@ -56,6 +57,13 @@ def register_page(request):
             user.save()
             user.userprofile.affiliation=form.cleaned_data['affiliation']
             user.userprofile.save()
+
+            # send notification email to admin to review the account
+            subject = "New user registration - Username: %s"%user.username
+            message = "A new account has been created in Dunya. The username is %s.\nClick on the following link to activate the account in the dashboard:\n\thttp://localhost:8001/dashboard/accounts"%user.username
+            from_email = "no-reply@dunya.compmusic.upf.edu"
+            recipients = ['xavier.serra@upf.edu', 'alastair.porter@upf.edu']
+            send_mail(subject, message, from_email, recipients)
             
             return HttpResponseRedirect(reverse('social-auth-register-success'))
     else:

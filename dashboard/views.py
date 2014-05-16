@@ -21,6 +21,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 import django.utils.timezone
 from django.forms.models import modelformset_factory
+from django.core.mail import send_mail
 
 from dashboard import models
 from dashboard import forms
@@ -79,6 +80,14 @@ def accounts(request):
                 if is_active:
                     user.is_active = True
                     user.save()
+
+                    # send an email to the user notifying them that their account is active
+                    subject = "Your Dunya account is active"
+                    message = "Hi,\nYour Dunya account (username: %s) has been activated.\n\nGo to http://dunya.compmusic.upf.edu/social/login/ to login to your account.\nThank you for using Dunya.\n\nRegards,\n\nDunya Team"%user.username
+                    from_email = "no-reply@dunya.compmusic.upf.edu"
+                    recipients = [user.email,]
+                    send_mail(subject, message, from_email, recipients)
+
     formset = UserFormSet(queryset=User.objects.filter(is_active=False))
     ret = {"formset": formset}
     return render(request, 'dashboard/accounts.html', ret)
