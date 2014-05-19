@@ -36,7 +36,7 @@ def seeds(request, uuid):
     """ Seed pattern matches always occur in the same file. This means that Match.source.file
         and Match.target.file are always the same, therefore when we get matches we only check source"""
     rec = get_object_or_404(carnatic.models.Recording, mbid=uuid)
-    matches = models.Match.objects.using('motif').filter(source__file__mbid=uuid).filter(version=-1).order_by('distance')
+    matches = models.Match.objects.using('motif').filter(source__file__mbid=uuid).filter(version=-1).order_by('distance').prefetch_related('source__segment').prefetch_related('source__file').prefetch_related('target__file').prefetch_related('target__segment')
 
     ret = {"recording": rec, "matches": matches}
     return render(request, "motifdiscovery/seeds.html", ret)
