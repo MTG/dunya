@@ -43,7 +43,7 @@ def seeds(request, uuid):
 
 def results(request, uuid, seedid):
     rec = get_object_or_404(carnatic.models.Recording, mbid=uuid)
-    matches = models.Match.objects.using('motif').filter(source=seedid, version=1).order_by('distance')
+    matches = models.Match.objects.using('motif').filter(source=seedid, version=1).order_by('distance').prefetch_related('source').prefetch_related('target').prefetch_related('target__file').prefetch_related('target__segment')
     ret = {"recording": rec, "matches": matches}
     return render(request, "motifdiscovery/results.html", ret)
 
