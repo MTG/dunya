@@ -97,7 +97,7 @@ def accounts(request):
 
 @user_passes_test(is_staff)
 def collection(request, uuid):
-    c = get_object_or_404(models.Collection, pk=uuid)
+    c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), pk=uuid)
 
     rescan = request.GET.get("rescan")
     if rescan is not None:
@@ -109,7 +109,10 @@ def collection(request, uuid):
         return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
 
     order = request.GET.get("order")
-    releases = models.MusicbrainzRelease.objects.filter(collection=c)
+    releases = models.MusicbrainzRelease.objects.filter(collection=c)\
+            .prefetch_related('musicbrainzreleasestate_set')\
+            .prefetch_related('collectiondirectory_set')\
+            .prefetch_related('collectiondirectory_set__collectionfile_set')
     if order == "date":
         def sortkey(rel):
             return rel.get_current_state().state_date
