@@ -19,6 +19,8 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
+from django.template.loader import get_template
+from django.template import Context
 import django.utils.timezone
 from django.forms.models import modelformset_factory
 from django.core.mail import send_mail
@@ -84,7 +86,7 @@ def accounts(request):
 
                     # send an email to the user notifying them that their account is active
                     subject = "Your Dunya account is active"
-                    message = "Hi,\nYour Dunya account (username: %s) has been activated.\n\nGo to http://dunya.compmusic.upf.edu/social/login/ to login to your account.\nThank you for using Dunya.\n\nRegards,\n\nDunya Team"%user.username
+                    message = get_template('dashboard/acct_activation_email.html').render(Context({'username': user.username,}))
                     from_email = settings.ADMINS[0][1]
                     recipients = [user.email,]
                     send_mail(subject, message, from_email, recipients)

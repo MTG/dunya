@@ -16,6 +16,8 @@
 
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import RequestContext
+from django.template.loader import get_template
+from django.template import Context
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
@@ -61,7 +63,7 @@ def register_page(request):
 
             # send notification email to admin to review the account
             subject = "New user registration - Username: %s"%user.username
-            message = "A new account has been created in Dunya. The username is %s.\nClick on the following link to activate the account in the dashboard:\n\thttp://localhost:8001/dashboard/accounts"%user.username
+            message = get_template('registration/admin_notif_email.html').render(Context({'username': user.username,}))
             from_email = settings.ADMINS[0][1]
             recipients = [a[1] for a in settings.ADMINS]
             send_mail(subject, message, from_email, recipients, fail_silently=True)
