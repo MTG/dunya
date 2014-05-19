@@ -22,6 +22,7 @@ from django.contrib.auth.models import User
 import django.utils.timezone
 from django.forms.models import modelformset_factory
 from django.core.mail import send_mail
+from django.conf import settings
 
 from dashboard import models
 from dashboard import forms
@@ -84,7 +85,7 @@ def accounts(request):
                     # send an email to the user notifying them that their account is active
                     subject = "Your Dunya account is active"
                     message = "Hi,\nYour Dunya account (username: %s) has been activated.\n\nGo to http://dunya.compmusic.upf.edu/social/login/ to login to your account.\nThank you for using Dunya.\n\nRegards,\n\nDunya Team"%user.username
-                    from_email = "no-reply@dunya.compmusic.upf.edu"
+                    from_email = settings.ADMINS[0][1]
                     recipients = [user.email,]
                     send_mail(subject, message, from_email, recipients)
 

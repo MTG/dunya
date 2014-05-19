@@ -94,6 +94,12 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+ADMINS = (
+    # The email address of the first person in this list will be used in the 
+    # reply field of the emails sent by Dunya 
+    # ('YOUR NAME', 'EMAIL ADDRESS'),
+)
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",

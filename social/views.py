@@ -27,6 +27,7 @@ from datetime import datetime
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.utils.http import urlunquote_plus
+from django.conf import settings
 from rest_framework.authtoken.models import Token
 
 import json
@@ -61,9 +62,9 @@ def register_page(request):
             # send notification email to admin to review the account
             subject = "New user registration - Username: %s"%user.username
             message = "A new account has been created in Dunya. The username is %s.\nClick on the following link to activate the account in the dashboard:\n\thttp://localhost:8001/dashboard/accounts"%user.username
-            from_email = "no-reply@dunya.compmusic.upf.edu"
-            recipients = ['xavier.serra@upf.edu', 'alastair.porter@upf.edu']
-            send_mail(subject, message, from_email, recipients)
+            from_email = settings.ADMINS[0][1]
+            recipients = [a[1] for a in settings.ADMINS]
+            send_mail(subject, message, from_email, recipients, fail_silently=True)
             
             return HttpResponseRedirect(reverse('social-auth-register-success'))
     else:
