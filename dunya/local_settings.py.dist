@@ -1,6 +1,9 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+import settings
+INSTALLED_APPS = settings.INSTALLED_APPS
+
 # For development this needs to be set for the {{debug}} variable to be
 # available in templates
 # INTERNAL_IPS = ('127.0.0.1', )
@@ -9,8 +12,7 @@ TEMPLATE_DEBUG = DEBUG
 # on page access
 # pip install django-less
 #
-# import settings
-# INSTALLED_APPS = settings.INSTALLED_APPS + ('less', )
+# INSTALLED_APPS = INSTALLED_APPS + ('less', )
 # STATICFILES_FILTERS = settings.STATICFILES_FINDERS + ('less.finders.LessFinder', )
 # LESS_OPTIONS  = ["--source-map-map-inline", "--source-map-rootpath=/static/carnatic/css"]
 # LESS_ROOT = "carnatic/static/"
@@ -26,6 +28,9 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', )
 
 DATABASES = {
     'default': {
