@@ -139,7 +139,7 @@ class Artist(BaseModel):
     artist_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='P')
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
     group_members = models.ManyToManyField('Artist', blank=True, null=True, related_name='groups')
-    dummy = models.BooleanField(default=False)
+    dummy = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
         return self.name
