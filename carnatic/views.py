@@ -276,11 +276,11 @@ def artistsearch(request):
         ret.append({"id": a.id, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def artistbyid(request, artistid, artist_name=None):
+def artistbyid(request, artistid, name=None):
     artist = get_object_or_404(Artist, pk=artistid)
     return redirect(artist.get_absolute_url(), permanent=True)
 
-def artist(request, uuid, artist_name=None):
+def artist(request, uuid, name=None):
     artist = get_object_or_404(Artist, mbid=uuid)
 
     inst = artist.instruments()
@@ -367,11 +367,11 @@ def artist(request, uuid, artist_name=None):
 
     return render(request, "carnatic/artist.html", ret)
 
-def composerbyid(request, composerid, composer_name=None):
+def composerbyid(request, composerid, name=None):
     composer = get_object_or_404(Composer, pk=composerid)
     return redirect(composer.get_absolute_url(), permanent=True)
 
-def composer(request, uuid, composer_name=None):
+def composer(request, uuid, name=None):
     composer = get_object_or_404(Composer, mbid=uuid)
     ret = {"composer": composer}
 
@@ -384,11 +384,11 @@ def concertsearch(request):
         ret.append({"id": c.id, "title": "%s<br>%s" % (c.title, c.artistcredit)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def concertbyid(request, concertid, concert_title=None):
+def concertbyid(request, concertid, title=None):
     concert = get_object_or_404(Concert, pk=concertid)
     return redirect(concert.get_absolute_url(), permanent=True)
 
-def concert(request, uuid, concert_title=None):
+def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
     images = concert.images.all()
     if images:
@@ -420,11 +420,11 @@ def concert(request, uuid, concert_title=None):
 
     return render(request, "carnatic/concert.html", ret)
 
-def recordingbyid(request, recordingid, recording_title=None):
+def recordingbyid(request, recordingid, title=None):
     recording = get_object_or_404(Recording, pk=recordingid)
     return redirect(recording.get_absolute_url(), permanent=True)
 
-def recording(request, uuid, recording_title=None):
+def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
 
     tags = tagging.tag_cloud(recording.id, "recording")
@@ -541,11 +541,11 @@ def worksearch(request):
         ret.append({"id": w.id, "title": w.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def workbyid(request, workid, work_title=None):
+def workbyid(request, workid, title=None):
     work = get_object_or_404(Work, pk=workid)
     return redirect(work.get_absolute_url(), permanent=True)
 
-def work(request, uuid, work_title=None):
+def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
 
     tags = tagging.tag_cloud(work.id, "work")
@@ -573,7 +573,7 @@ def taalasearch(request):
         ret.append({"id": t.id, "name": str(t)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def taala(request, taalaid, taala_name=None):
+def taala(request, taalaid, name=None):
     taala = get_object_or_404(Taala, pk=taalaid)
 
     similar = taala.get_similar()
@@ -595,7 +595,7 @@ def raagasearch(request):
         ret.append({"id": r.id, "name": str(r)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def raaga(request, raagaid, raaga_name=None):
+def raaga(request, raagaid, name=None):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
     tracks = raaga.recordings(10)
@@ -616,7 +616,7 @@ def instrumentsearch(request):
         ret.append({"id": i.id, "name": i.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def instrument(request, instrumentid, instrument_name=None):
+def instrument(request, instrumentid, name=None):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
     samples = instrument.samples(10)
     sample = None
