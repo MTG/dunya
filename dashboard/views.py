@@ -19,12 +19,12 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-from django.template.loader import get_template
-from django.template import Context
+from django.template import loader
 import django.utils.timezone
 from django.forms.models import modelformset_factory
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.sites.models import get_current_site
 
 from dashboard import models
 from dashboard import forms
@@ -85,11 +85,13 @@ def accounts(request):
                     user.save()
 
                     # send an email to the user notifying them that their account is active
-                    subject = "Your Dunya account is active"
-                    message = get_template('dashboard/acct_activation_email.html').render(Context({'username': user.username,}))
-                    from_email = settings.ADMINS[0][1]
+                    subject = "Your Dunya account has been activated"
+                    current_site = get_current_site(request)
+                    context = {"username": user.username, "domain": current_site.domain}
+                    message = loader.render_to_string('registration/email_account_activated.html', context)
+                    from_email = settings.NOTIFICATION_EMAIL_FROM
                     recipients = [user.email,]
-                    send_mail(subject, message, from_email, recipients)
+                    send_mail(subject, message, from_email, recipients, fail_silently=True)
 
     formset = UserFormSet(queryset=User.objects.filter(is_active=False))
     ret = {"formset": formset}

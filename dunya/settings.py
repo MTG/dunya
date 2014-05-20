@@ -167,6 +167,12 @@ REST_FRAMEWORK = {
     )
 }
 
+# Notification emails (e.g. account activated)
+# Who emails are from
+NOTIFICATION_EMAIL_FROM = ""
+# Who gets system emails (e.g., new user) [list/set]
+NOTIFICATION_EMAIL_TO = ('', )
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.

@@ -60,3 +60,9 @@ SOLR_URL = 'http://dunya.compmusic.upf.edu:8080/solr'
 
 # Sendfile
 SENDFILE_BACKEND = 'sendfile.backends.development'
+
+# Notification emails (e.g. account activated)
+# Who emails are from
+NOTIFICATION_EMAIL_FROM = ""
+# Who gets system emails (e.g., new user) [list/set]
+NOTIFICATION_EMAIL_TO = ('', )
