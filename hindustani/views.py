@@ -208,7 +208,7 @@ def main(request):
         raags = results.get("raag", [])
         taals = results.get("taal", [])
         forms = results.get("form", [])
-        laya = results.get("laya", [])
+        layas = results.get("laya", [])
 
         displayres = []
         for a in artists:
