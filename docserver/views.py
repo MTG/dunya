@@ -70,9 +70,11 @@ def download_external(request, uuid, ftype):
     # or a logged-in user
 
     loggedin = request.user.is_authenticated()
+    is_staff = request.user.is_staff
     try:
         t = auther.authenticate(request)
         if t:
+            is_staff = t[0].is_staff
             token = True
         else:
             token = False
@@ -92,8 +94,8 @@ def download_external(request, uuid, ftype):
         fname = filepart.fullpath
         mimetype = filepart.mimetype
 
-        ratelimit = 0
-        if ftype == "mp3":
+        ratelimit = "off"
+        if ftype == "mp3" and not is_staff:
             # 200k
             ratelimit = 200*1024
 
