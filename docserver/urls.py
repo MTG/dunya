@@ -38,8 +38,9 @@ urlpatterns = patterns('',
     url(r'manager/addmodule', views.addmodule, name='docserver-addmodule'),
     url(r'manager/(?P<type>(un)?processed)/(?P<slug>[^/]+)/(?P<version>\d+)$', views.collectionversion, name='docserver-collectionversion'),
     url(r'manager/collection/(?P<slug>[^/]+)$', views.collection, name='docserver-collection'),
-    url(r'manager/collection/(?P<slug>[^/]+)/%s/(?P<version>\d+)$' % uuid_match, views.file, name='docserver-file'),
+    url(r'manager/collection/(?P<slug>[^/]+)/%s(?:/(?P<version>\d+))?$' % uuid_match, views.file, name='docserver-file'),
     url(r'manager/module/(?P<module>\d+)$', views.module, name='docserver-module'),
+    url(r'manager/worker/(?P<hostname>[^/]+)$', views.worker, name='docserver-worker'),
     url(r'manager/', views.manager, name='docserver-manager'),
 ) + api_patterns
 

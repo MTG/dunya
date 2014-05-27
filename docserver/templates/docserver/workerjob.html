@@ -1,0 +1,11 @@
+Job: {{j.nicename}} ({{j.name}})<br>
+{% if j.type == 'process' %}
+Module: {{j.moduleversion.module.name}} {{j.moduleversion.version}}<br>
+    Document: {{j.document.title}}<br>
+{% elif j.type == 'loadcollection' %}
+    Collection: <a href="{{j.collection.get_absolute_url}}">{{j.collection.name}}</a><br>
+{% elif j.type == 'importrelease' %}
+    Collection: <a href="{{j.collection.get_absolute_url}}">{{j.collection.name}}</a><br>
+{% endif %}
+
+

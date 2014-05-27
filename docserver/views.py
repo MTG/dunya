@@ -17,20 +17,22 @@
 import json, os
 import collections
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.urlresolvers import reverse
 from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 from docserver import models
 from docserver import forms
 from docserver import jobs
 from docserver import serializers
 from docserver import util
-from django.views.decorators.csrf import csrf_exempt
+from dunya.celery import app
+import dashboard
 
 from rest_framework import authentication
 from rest_framework import exceptions
@@ -126,20 +128,158 @@ def manager(request):
     scan = request.GET.get("scan")
     if scan is not None:
         jobs.run_module(int(scan))
-        return HttpResponseRedirect(reverse('docserver-manager'))
+        return redirect('docserver-manager')
     update = request.GET.get("update")
     if update is not None:
         jobs.get_latest_module_version(int(update))
-        return HttpResponseRedirect(reverse('docserver-manager'))
+        return redirect('docserver-manager')
+    register = request.GET.get("register")
+    if register is not None:
+        jobs.register_host.apply_async([register], queue=register)
+        return redirect('docserver-manager')
 
     modules = models.Module.objects.all()
     collections = models.Collection.objects.all()
 
-    ret = {"modules": modules, "collections": collections}
+    inspect = app.control.inspect()
+    # TODO: Load the task data via ajax, so the page loads quickly
+    hosts = inspect.active()
+    workerobs = models.Worker.objects.all()
+    workerkeys = ["celery@%s" % w.hostname for w in workerobs]
+    if hosts:
+        hostkeys = hosts.keys()
+        workers = list(set(workerkeys) & set(hostkeys))
+        neww = []
+        for w in workers:
+            host = w.split("@")[1] 
+            num_proc = len(hosts[w])
+            state = "Active" if num_proc else "Idle"
+            neww.append({"host": host, "number": num_proc, "state": state})
+        workers = neww
+        newworkers = list(set(hostkeys) - set(workerkeys))
+        newworkers = [w.split("@")[1] for w in newworkers]
+        inactiveworkers = list(set(workerkeys) - set(hostkeys))
+        inactiveworkers = [w.split("@")[1] for w in inactiveworkers]
+    else:
+        workers = []
+        newworkers = []
+        inactiveworkers = []
+
+    ret = {"modules": modules, "collections": collections, "workers": workers,\
+            "newworkers": newworkers, "inactiveworkers": inactiveworkers}
     return render(request, 'docserver/manager.html', ret)
+
+def understand_task(task):
+    tname = task["name"]
+    try:
+        args = json.loads(task["args"])
+    except ValueError:
+        args = []
+    thetask = {"name": tname}
+    # Magic task splitter
+    if tname == "dashboard.jobs.load_musicbrainz_collection":
+        thetask["type"] = "loadcollection"
+        thetask["nicename"] = "Import musicbrainz collection"
+        collectionid = args[0]
+        coll = dashboard.models.Collection.objects.get(pk=collectionid)
+        thetask["collection"] = coll
+    elif tname == "dashboard.jobs.import_all_releases" or tname == "dashboard.jobs.force_import_all_releases":
+        thetask["type"] = "importreleases"
+        thetask["nicename"] = "Import releases in collection"
+        collectionid = args[0]
+        coll = dashboard.models.Collection.objects.get(pk=collectionid)
+        thetask["collection"] = coll
+    elif tname == "dashboard.jobs.import_single_release":
+        thetask["type"] = ""
+        thetask["nicename"] = ""
+    elif tname == "docserver.jobs.update_essentia":
+        thetask["type"] = "essentia"
+        thetask["nicename"] = "Updating essentia"
+    elif tname == "docserver.jobs.update_pycompmusic":
+        thetask["type"] = ""
+        thetask["nicename"] = ""
+    elif tname == "docserver.jobs.process_document":
+        thetask["type"] = "process"
+        thetask["nicename"] = "Running extractor"
+
+        documentid = args[0]
+        moduleversionid = args[1]
+        version = models.ModuleVersion.objects.get(pk=moduleversionid)
+        document = models.Document.objects.get(pk=documentid)
+        thetask["moduleversion"] = version
+        thetask["document"] = document
+    return thetask
+
+@user_passes_test(is_staff)
+def worker(request, hostname):
+    # TODO: Worker uptime
+    # TODO: Use the 'updating essentia' database state?
+    # TODO: Show logs/stdout
+
+    # TODO: Load the task data via ajax, so the page loads quickly
+
+    # TODO: Can we use a redis queue to show the last 5 things that went
+    #       through this server? We'll have a moduleversion, so can show
+    #       the derived files too. Make it expire after 10 minutes
+    # TODO: We need logging when someone performs an action.
+    # Need to know and when (incase it goes bad)
+
+    updatee = request.GET.get("updateessentia")
+    if updatee is not None:
+        jobs.update_essentia.apply_async([hostname], queue=hostname)
+        return redirect('docserver-worker', hostname)
+    updatep = request.GET.get("updatepcm")
+    if updatep is not None:
+        jobs.update_pycompmusic.apply_async([hostname], queue=hostname)
+        return redirect('docserver-worker', hostname)
+    restart = request.GET.get("restart")
+    if restart is not None:
+        jobs.shutdown_celery(hostname)
+        return redirect('docserver-worker', hostname)
+
+    try:
+        wk = models.Worker.objects.get(hostname=hostname)
+    except models.Worker.DoesNotExist:
+        wk = None
+
+    workername = "celery@%s" % hostname
+    i = app.control.inspect([workername])
+    tasks = i.active()
+    active = []
+    if tasks:
+        workertasks = tasks[workername]
+        for t in workertasks:
+            thetask = understand_task(t)
+            active.append(thetask)
+
+    reservedtasks = i.reserved()
+    reserved = []
+    if reservedtasks:
+        workerreserved = reservedtasks[workername]
+        for t in workerreserved:
+            thetask = understand_task(t)
+            reserved.append(thetask)
+
+    if not tasks and not reservedtasks:
+        state = "Offline"
+    elif len(active) or len(reserved):
+        state = "Active"
+    elif len(active) == 0 and len(reserved) == 0:
+        state = "Idle"
+
+    ret = {"worker": wk, "state": state, "active": active, "reserved": reserved}
+    return render(request, 'docserver/worker.html', ret)
+
+
+@user_passes_test(is_staff)
+def update_all_workers(request):
+    jobs.update_all_workers()
+    return redirect('docserver-manager')
 
 @user_passes_test(is_staff)
 def addmodule(request):
+    # TODO: It would be cool if we just search for all modules in the `extractors` module
+    #       that haven't been installed yet
     if request.method == "POST":
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
@@ -148,7 +288,7 @@ def addmodule(request):
             for i in form.cleaned_data['collections']:
                 collections.append(get_object_or_404(models.Collection, pk=int(i)))
             jobs.create_module(module, collections)
-            return HttpResponseRedirect(reverse('docserver-manager'))
+            return redirect('docserver-manager')
     else:
         form = forms.ModuleForm()
     ret = {"form": form}
@@ -189,7 +329,7 @@ def collectionversion(request, slug, version, type):
     if run:
         document = models.Document.objects.get(external_identifier=run)
         jobs.process_document.delay(document.pk, mversion.pk)
-        return HttpResponseRedirect(reverse('docserver-collectionversion', args=[type, slug, version]))
+        return redirect('docserver-collectionversion', args=[type, slug, version])
 
     processedfiles = []
     unprocessedfiles = []
@@ -205,13 +345,16 @@ def collectionversion(request, slug, version, type):
     return render(request, 'docserver/collectionversion.html', ret)
 
 @user_passes_test(is_staff)
-def file(request, slug, uuid, version):
+def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
-    version = get_object_or_404(models.ModuleVersion, pk=version)
     doc = collection.documents.get_by_external_id(uuid)
 
     derived = doc.derivedfiles.all()
-    modulederived = derived.filter(module_version=version)
+    if version:
+        version = get_object_or_404(models.ModuleVersion, pk=version)
+        modulederived = derived.filter(module_version=version)
+    else:
+        modulederived = []
 
     outputs = doc.nestedderived()
 

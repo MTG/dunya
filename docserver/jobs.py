@@ -22,6 +22,7 @@ import os
 import json
 import logging
 import time
+import subprocess
 
 from docserver import models
 import dashboard
@@ -153,6 +154,15 @@ def process_document(documentid, moduleversionid):
     module = version.module
     instance = _get_module_instance_by_path(module.module)
 
+
+    hostname = process_document.request.hostname
+    try:
+        worker = models.Worker.objects.get(hostname=hostname)
+    except models.Worker.DoesNotExist:
+        # Not the end of the world, though we really should have a
+        # Worker object for all our hosts
+        worker = None
+
     document = models.Document.objects.get(pk=documentid)
     collection = document.collection
 
@@ -181,6 +191,10 @@ def process_document(documentid, moduleversionid):
                 df = models.DerivedFile.objects.create(document=document, derived_from=s,
                         module_version=version, outputname=dataslug, extension=extension,
                         mimetype=mimetype, computation_time=total_time)
+                if worker:
+                    df.essentia = worker.essentia
+                    df.pycompmusic = worker.pycompmusic
+                    df.save()
 
                 if not multipart:
                     contents = [contents]
@@ -224,3 +238,82 @@ def run_module_on_collection(collectionid, moduleid):
         for i, d in enumerate(docs, 1):
             print "  document %s/%s - %s" % (i, len(docs), d)
             process_document.delay(d.pk, version.pk)
+
+
+ESSENTIA_DIR = "/srv/essentia"
+COMPMUSIC_DIR = "/srv/dunya/env/src/pycompmusic"
+
+def get_git_hash(cwd):
+    proc = subprocess.Popen("git rev-parse HEAD", cwd=cwd, stdout=subprocess.PIPE, shell=True)
+    version = proc.communicate()[0].strip()
+    proc = subprocess.Popen("git log -1 --format=%ci", cwd=cwd, stdout=subprocess.PIPE, shell=True)
+    date = proc.communicate()[0].strip()
+    # Git puts a space before timezone identifier, but django doesn't like it
+    date = date.replace(" +", "+").replace(" -", "-")
+    return version, date
+
+def get_pycompmusic_hash():
+    return get_git_hash(COMPMUSIC_DIR)
+
+def get_essentia_hash():
+    return get_git_hash(ESSENTIA_DIR)
+
+def get_essentia_version():
+    import essentia
+    return essentia.__version__
+
+@app.task
+def register_host(hostname):
+    worker, created = models.Worker.objects.get_or_create(hostname=hostname)
+    ever = get_essentia_version()
+    ehash, edate = get_essentia_hash()
+    essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
+    phash, pdate = get_pycompmusic_hash()
+    pycompmusic, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
+
+    worker.essentia = essentia
+    worker.pycompmusic = pycompmusic
+    worker.set_state_updated()
+    worker.save()
+
+def git_update_and_compile_essentia():
+    subprocess.call("git pull", cwd=ESSENTIA_DIR, shell=True)
+    subprocess.call("./waf", cwd=ESSENTIA_DIR, shell=True)
+    subprocess.call("./waf install", cwd=ESSENTIA_DIR, shell=True)
+
+def git_update_pycompmusic():
+    subprocess.call("git pull", cwd=COMPMUSIC_DIR, shell=True)
+
+@app.task
+def update_essentia(hostname):
+    worker = models.Worker.objects.get(hostname=hostname)
+    worker.set_state_updating()
+    git_update_and_compile_essentia()
+    ever = get_essentia_version()
+    ehash, edate = get_essentia_hash()
+    version, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
+    worker.essentia = version
+    worker.set_state_updated()
+    worker.save()
+
+@app.task
+def update_pycompmusic(hostname):
+    worker = models.Worker.objects.get(hostname=hostname)
+    worker.set_state_updating()
+    git_update_pycompmusic()
+    phash, pdate = get_pycompmusic_hash()
+    version, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
+    worker.pycompmusic = version
+    worker.set_state_updated()
+    worker.save()
+
+def shutdown_celery(hostname):
+    name = "celery@%s" % hostname
+    app.control.broadcast("shutdown", destination=[name])
+
+def update_all_workers():
+    workers = models.Worker.objects.all()
+    for w in workers:
+        update_essentia.delay(w.hostname, queue=w.hostname)
+        update_pycompmusic.delay(w.hostname, queue=w.hostname)
+

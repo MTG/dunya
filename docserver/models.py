@@ -219,6 +219,10 @@ class DerivedFile(models.Model):
     mimetype = models.CharField(max_length=100)
     computation_time = models.IntegerField(blank=True, null=True)
 
+    # The version of essentia and pycompmusic we used to compute this file
+    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
+    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
+
     date = models.DateTimeField(default=django.utils.timezone.now)
 
     def save_part(self, part_order, path, size):
@@ -249,13 +253,57 @@ class DerivedFile(models.Model):
 
 # Essentia management stuff
 
+class Worker(models.Model):
+    NEW = "0"
+    UPDATING = "1"
+    UPDATED = "2"
+    STATE_CHOICES = (
+        (NEW, 'New'),
+        (UPDATING, 'Updating'),
+        (UPDATED, 'Updated')
+    )
+
+    hostname = models.CharField(max_length=200)
+    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
+    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
+    state = models.CharField(max_length=1, choices=STATE_CHOICES, default='0')
+
+    def set_state_updating(self):
+        self.state = self.UPDATING
+        self.save()
+
+    def set_state_updated(self):
+        self.state = self.UPDATED
+        self.save()
+
+    def __unicode__(self):
+        return u"%s with Essentia %s and Compmusic %s" % (self.hostname, self.essentia, self.pycompmusic)
+
+class PyCompmusicVersion(models.Model):
+    sha1 = models.CharField(max_length=200)
+    commit_date = models.DateTimeField(default=django.utils.timezone.now)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
+
+    @property
+    def short(self):
+        return self.sha1[:7]
+
+    def __unicode__(self):
+        return u"%s" % (self.sha1, )
+
 class EssentiaVersion(models.Model):
     version = models.CharField(max_length=200)
     sha1 = models.CharField(max_length=200)
+    commit_date = models.DateTimeField(default=django.utils.timezone.now)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
+
+    @property
+    def short(self):
+        return self.sha1[:7]
+
     def __unicode__(self):
-        return u"Essentia %s (%s)" % (self.version, self.sha1)
+        return u"%s (%s)" % (self.version, self.sha1)
 
 class Module(models.Model):
     name = models.CharField(max_length=200)

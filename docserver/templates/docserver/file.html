@@ -32,6 +32,9 @@
         <li>{{m.name}}</li>
         {% for v, parts in vs.items %}
         <ul>
+        {% if parts and parts.0.essentia %}
+            <li>Essentia version <a href="https://github.com/MTG/essentia/tree/{{parts.0.essentia.sha1}}">{{parts.0.essentia.short}}</a> ({{parts.0.essentia.commit_date|date:"DATETIME_FORMAT"}})</li>
+        {% endif %}
             <li><b>{{v}}</b></li>
         <ul>
             {% for p in parts %}

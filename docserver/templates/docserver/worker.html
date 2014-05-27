@@ -1,0 +1,43 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Worker {{worker.hostname}}{% endblock %}
+
+{% block wrap %}
+
+<h2>
+    <span class="breadcrumbs">
+        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+        <li>Worker {{worker.hostname}}</li>
+    </span>
+</h2>
+
+<h2>Worker {{worker.hostname}}</h2>
+
+<h2>Essentia version {{worker.essentia.short}} ({{worker.essentia.commit_date|date:"DATETIME_FORMAT"}})</h2>
+<h2>Pycompmusic version {{worker.pycompmusic.short}} ({{worker.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})</h2>
+
+<h3>State: {{state}}</h3>
+{% if uptime %}
+<h3>Uptime: {{uptime}}</h3>
+{% endif %}
+
+<h3>Current jobs:</h3>
+{% for j in active %}
+   {% include "docserver/workerjob.html" with j=j only %}
+{% endfor %}
+
+<h3>Queued jobs:</h3>
+{% for r in reserved %}
+   {% include "docserver/workerjob.html" with j=r only %}
+{% endfor %}
+
+<h3>Logs:</h3>
+
+<h2>Actions</h2>
+<ul>
+    <li><a href="?updateessentia">Update essentia</a></li>
+    <li><a href="?updatepcm">Update pycompmusic</a></li>
+    <li><a href="?restart">Restart</a></li>
+</ul>
+
+{% endblock %}
+

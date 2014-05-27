@@ -9,6 +9,30 @@
     </span>
 </h2>
 
+<h2>Workers</h2>
+
+<table><tr>
+        {% for w in workers %}
+        <td><a href="{% url 'docserver-worker' w.host %}">{{w.host}}</a><br>
+            State: {{w.state}}<br>
+            {% if w.number %}{{w.number}} active{% endif %}</td>
+        {% endfor %}
+    </tr></table>
+
+{% if newworkers %}
+New workers<br>
+{% for w in newworkers %}
+{{w}}<a href="?register={{w}}">Register</a><br>
+{% endfor %}
+{% endif %}
+
+{% if inactiveworkers %}
+Inactive workers<br>
+{% for w in inactiveworkers %}
+{{w}}<br>
+{% endfor %}
+{% endif %}
+
 <h2>Extractor modules</h2>
 
 {% if modules %}
