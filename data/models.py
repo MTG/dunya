@@ -83,6 +83,9 @@ class BaseModel(models.Model):
         u = {"url": self.source.uri, "title": self.source.source_name.name}
         return u
 
+    def has_image(self):
+        return bool(self.images.count())
+
     def get_image_url(self):
         media = settings.MEDIA_URL
         if self.images.all():

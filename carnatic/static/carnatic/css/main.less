@@ -466,6 +466,37 @@ input[type="text"], input[type="password"], input[type="email"] {
 #filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; } 
 #filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; } 
 
+#filterMask {
+    height: 80px;
+
+    #navigationhistory {
+        .inner {
+            width: 2000px;
+            .microitem {
+                float: left;
+                clear: none;
+                width: 300px !important;
+                height: 69px !important;
+                margin-left: 4px;
+            }
+            .microitem.artist {
+                background: #69d2e7;
+            }
+            .microitem.concert {
+                background: #a7dbd8;
+            }
+            .microitem.instrument {
+                background: #f38630;
+            }
+            .microitem.raaga {
+                background: #fa6900;
+            }
+            .microitem.taala {
+                background: #ecd078;
+            }
+        }
+    }
+}
 /* ==========================================================================
    Helper classes
    ========================================================================== */

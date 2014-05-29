@@ -81,6 +81,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'dunya.middleware.PageLoggerMiddleware',
+    'dunya.middleware.NavigationHistoryMiddleware',
 )
 
 ROOT_URLCONF = 'dunya.urls'
@@ -106,6 +107,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
+    "dunya.context_processors.navigation_header",
 )
 
 INSTALLED_APPS = (
@@ -205,5 +207,8 @@ LOGGING = {
 #Social part_PROFILE
 AUTH_PROFILE_MODULE = "social.UserProfile"
 AUTH_USER_MODULE = "django.contrib.auth.models.User"
+
+# Navigation Header settings
+MAX_NAV_HEADER_ITEMS = 4
 
 from local_settings import *

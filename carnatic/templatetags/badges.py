@@ -175,3 +175,25 @@ def badge_sample(sample):
 @register.inclusion_tag("badges/reference.html")
 def badge_reference(reference):
     return {"reference": reference}
+
+#### Micro badges (for inside badges)
+
+@register.inclusion_tag("badges/micro_artist.html")
+def badge_micro_artist(artist):
+    return {"artist": artist}
+
+@register.inclusion_tag("badges/micro_concert.html")
+def badge_micro_concert(concert):
+    return {"concert": concert}
+
+@register.inclusion_tag("badges/micro_instrument.html")
+def badge_micro_instrument(instrument):
+    return {"instrument": instrument}
+
+@register.inclusion_tag("badges/micro_taala.html")
+def badge_micro_taala(taala):
+    return {"taala": taala}
+
+@register.inclusion_tag("badges/micro_raaga.html")
+def badge_micro_raaga(raaga):
+    return {"raaga": raaga}
