@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
@@ -32,6 +32,7 @@ from dashboard import jobs
 import docserver
 
 import compmusic
+from eyed3 import mp3
 import os
 import importlib
 import json
@@ -44,7 +45,7 @@ def is_staff(user):
     return user.is_staff
 
 @user_passes_test(is_staff)
-def index(request):
+def addcollection(request):
     if request.method == 'POST':
         form = forms.AddCollectionForm(request.POST)
         if form.is_valid():
@@ -62,12 +63,17 @@ def index(request):
             docserver.models.Collection.objects.get_or_create(collectionid=coll_id, 
                     defaults={"root_directory":path, "name":coll_name})
             jobs.load_and_import_collection(new_collection.id)
-            return HttpResponseRedirect(reverse('dashboard-home'))
+            return redirect('dashboard-home')
     else:
         form = forms.AddCollectionForm()
+    ret = {'form': form}
+    return render(request, 'dashboard/addcollection.html', ret)
+
+@user_passes_test(is_staff)
+def index(request):
 
     collections = models.Collection.objects.all()
-    ret = {'form': form, 'collections': collections}
+    ret = {'collections': collections}
     return render(request, 'dashboard/index.html', ret)
 
 @user_passes_test(is_staff)
@@ -104,11 +110,11 @@ def collection(request, uuid):
     rescan = request.GET.get("rescan")
     if rescan is not None:
         jobs.load_and_import_collection(c.id)
-        return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
+        return redirect('dashboard.views.collection', args=[uuid])
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
         jobs.force_load_and_import_collection(c.id)
-        return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
+        return redirect('dashboard.views.collection', args=[uuid])
 
     order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)\
@@ -157,18 +163,18 @@ def release(request, releaseid):
     reimport = request.GET.get("reimport")
     if reimport is not None:
         jobs.import_single_release.delay(release.id)
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        return redirect('dashboard.views.release', args=[releaseid])
 
     ignore = request.GET.get("ignore")
     if ignore is not None:
         release.ignore = True
         release.save()
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        return redirect('dashboard.views.release', args=[releaseid])
     unignore = request.GET.get("unignore")
     if unignore is not None:
         release.ignore = False
         release.save()
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        return redirect('dashboard.views.release', args=[releaseid])
     run = request.GET.get("run")
     if run is not None:
         module = int(run)
@@ -176,7 +182,7 @@ def release(request, releaseid):
         files = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
         recids = [r.recordingid for r in files]
         docserver.jobs.run_module_on_recordings(module, recids)
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        return redirect('dashboard.views.release', args=[releaseid])
 
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
@@ -240,7 +246,7 @@ def directory(request, dirid):
         # TODO: Change to celery
         jobs.rematch_unknown_directory(dirid)
         directory = get_object_or_404(models.CollectionDirectory, pk=dirid)
-        return HttpResponseRedirect(reverse('dashboard.views.directory', args=[dirid]))
+        return redirect('dashboard.views.directory', args=[dirid])
 
     collection = directory.collection
     full_path = os.path.join(collection.root_directory, directory.path)
@@ -268,8 +274,6 @@ def directory(request, dirid):
     got_release_id = len(releaseids) == 1
     # TODO: This won't work if there are more than 1 lead artist?
     got_artist = len(artistids) == 1
-    print "releaseids", releaseids
-    print "artistids", artistids
 
     if directory.musicbrainzrelease:
         matched_release = directory.musicbrainzrelease

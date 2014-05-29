@@ -3,13 +3,11 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">File
-        <li><a href="{{file.directory.collection.get_absolute_url}}">{{file.directory.collection.name}}</a></li>
-        <li><a href="{{file.directory.musicbrainzrelease.get_absolute_url}}">{{file.directory.musicbrainzrelease.title}}</a></li>
-        <li>{{file.name}}</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">File
+    <li><a href="{{file.directory.collection.get_absolute_url}}">{{file.directory.collection.name}}</a></li>
+    <li><a href="{{file.directory.musicbrainzrelease.get_absolute_url}}">{{file.directory.musicbrainzrelease.title}}</a></li>
+    <li>{{file.name}}</li>
+</ul>
 
 <div class="topbox">
     <div class="topheader">Info</div>
@@ -53,19 +51,19 @@
     {% endif %}
 
     {% if derivedfiles %}
-        <h3>Derived files</h3>
-        {% for m, vs in derivedfiles.items %}
-        <li>{{m.name}}</li>
-        {% for v, parts in vs.items %}
-        <ul>
-            <li><b>{{v}}</b></li>
+    <h3>Derived files</h3>
+    {% for m, vs in derivedfiles.items %}
+    <li>{{m.name}}</li>
+    {% for v, parts in vs.items %}
+    <ul>
+        <li><b>{{v}}</b></li>
         <ul>
             {% for p in parts %}
             <li><a href="{{p.get_absolute_url}}">{{p}}</a></li>
+            {% endfor %}
+        </ul>
+    </ul>
         {% endfor %}
-    </ul>
-    {% endfor %}
-    </ul>
     {% endfor %}
     {% endif %}
 </div>

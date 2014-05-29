@@ -9,7 +9,8 @@ that their account has been activated. For more detailed account management use 
 
 <form method="post">
 {% csrf_token %}
-<table>
+<table class="table">
+<tr><th>Username</th><th>Email</th><th>Name</th><th>Surname</th><th>Affiliation</th><th>Approve?</th></tr>
 {{formset.management_form.as_p}}
 {% for f in formset.forms %}
     {{f.id.as_hidden}}

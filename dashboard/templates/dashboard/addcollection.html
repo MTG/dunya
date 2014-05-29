@@ -1,10 +1,9 @@
 {% extends "dashboard/base.html" %}
-{% block title %}Add essentia version{% endblock %}
+{% block title %}Add collection{% endblock %}
 
 {% block wrap %}
 
-Add Essentia version
-
+<h2>Add new collection</h2>
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />

@@ -108,7 +108,7 @@ This template is generic to allow editing of raagas, taalas, and instruments
 
 <form method="post" action="{% url entityurl %}">
 {% csrf_token %}
-<table style="width:auto">
+<table style="width:auto" class="table">
     <tr><th>{{entityn}}</th>
         {% if transliteration %}<th>Transliteration</th>{% endif %}
         {% if alias %}<th>Aliases</th>{% endif %}

@@ -3,15 +3,13 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">
-        <li>Module manager</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li>Module manager</li>
+</ul>
 
 <h2>Workers</h2>
 
-<table><tr>
+<table class="table"><tr>
         {% for w in workers %}
         <td><a href="{% url 'docserver-worker' w.host %}">{{w.host}}</a><br>
             State: {{w.state}}<br>
@@ -36,7 +34,7 @@ Inactive workers<br>
 <h2>Extractor modules</h2>
 
 {% if modules %}
-<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
+<table class="table table-condensed "><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
     {% for m in modules %}
     <tr>
         <td><a href="{{m.get_absolute_url}}">{{m.name}}</a> ({{m.module}})<br>
@@ -59,7 +57,7 @@ Inactive workers<br>
 
 <h2>Collection files</h2>
 {% if collections %}
-<table><tr><th>Collection</th></tr>
+<table class="table table-condensed"><tr><th>Collection</th></tr>
     {% for c in collections %}
     <tr><td><a href="{{c.get_absolute_url}}">{{c.name}}</a></td></tr>
     {% endfor %}

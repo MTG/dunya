@@ -4,9 +4,9 @@
 <head>
     <meta name="google" value="notranslate">
     <title>{% block title %}{% endblock %} - Dunya</title>
-    <link rel="stylesheet/less" href="{% static 'dashboard/css/style.less' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/bootstrap-theme.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'dashboard/css/dashboard.css' %}" />
-    <script src="{% static 'dashboard/js/less.min.js' %}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{% static 'dashboard/js/dashboard.js' %}"></script>
     {% block js %}
@@ -15,12 +15,15 @@
     {% endblock %}
 </head>
 <body>
-    <div id="navbar">
-        <ul>
-            <li class="title"><a href="{% url 'dashboard-home' %}">Dunya</a></li>
-        </ul>
+    <div class="navbar navbar-inverse navbar-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'dashboard-home' %}">
+            Dunya</a>
+        </div>
+      </div>
     </div>
-    <div id="wrap">
+    <div class="container">
         {% block wrap %}
         {% endblock %}
     </div>

@@ -3,12 +3,10 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">
-        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
-        <li>Worker {{worker.hostname}}</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>Worker {{worker.hostname}}</li>
+</ul>
 
 <h2>Worker {{worker.hostname}}</h2>
 
