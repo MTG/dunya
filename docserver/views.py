@@ -163,7 +163,7 @@ def manager(request):
     else:
         workers = []
         newworkers = []
-        inactiveworkers = []
+        inactiveworkers = [w.split("@")[1] for w in workerkeys]
 
     ret = {"modules": modules, "collections": collections, "workers": workers,\
             "newworkers": newworkers, "inactiveworkers": inactiveworkers}

@@ -5,13 +5,15 @@
 
 <ul class="breadcrumbs">
     <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
-    <li>Worker {{worker.hostname}}</li>
+    <li>Worker &ldquo;{{worker.hostname}}&rdquo;</li>
 </ul>
 
-<h2>Worker {{worker.hostname}}</h2>
+<h2>Worker &ldquo;{{worker.hostname}}&rdquo;</h2>
 
-<h2>Essentia version {{worker.essentia.short}} ({{worker.essentia.commit_date|date:"DATETIME_FORMAT"}})</h2>
-<h2>Pycompmusic version {{worker.pycompmusic.short}} ({{worker.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})</h2>
+<h2><small>Essentia version 
+        <a href="https://github.com/MTG/essentia/tree/{{worker.essentia.sha1}}">{{worker.essentia.short}}</a> ({{worker.essentia.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
+<h2><small>PyCompMusic version 
+        <a href="https://github.com/MTG/pycompmusic/tree/{{worker.pycompmusic.sha1}}">{{worker.pycompmusic.short}}</a> ({{worker.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
 
 <h3>State: {{state}}</h3>
 {% if uptime %}
@@ -27,8 +29,6 @@
 {% for r in reserved %}
    {% include "docserver/workerjob.html" with j=r only %}
 {% endfor %}
-
-<h3>Logs:</h3>
 
 <h2>Actions</h2>
 <ul>

@@ -83,3 +83,27 @@ span.yellow {
     background-repeat: no-repeat;
     padding-left: 60px !important;
 }
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+}
+.placeholder .info {
+  display: inline-block;
+  width: 50px;
+  height 50;
+}
+
