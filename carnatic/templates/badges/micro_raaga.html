@@ -2,6 +2,6 @@
 
 <div class="microitem raaga">
     <div class="colorCode shadow1"></div>
-    <div class="disco"><a href="{{raaga.get_absolute_url}}">{% if artist.has_image %}<img src="{{raaga.get_small_image_url}}">{% endif %}</a></div>
+    <div class="disco">{% if raaga.has_image %}<img src="{{raaga.get_small_image_url}}">{% endif %}</div>
     <label><b>{% inline_raaga raaga %}</b></label>
 </div>
