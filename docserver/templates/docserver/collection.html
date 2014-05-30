@@ -6,17 +6,16 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">
-        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
-        <li>Collection {{collection.name}}</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>Collection {{collection.name}}</li>
+</ul>
 
 
-<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
+<table class="table">
+    <tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th></tr>
     {% for m in collection.module_set.all %}
-    <tr><td colspan="5">{{m}}</td></tr>
+    <tr><td colspan="4">{{m}}</td></tr>
     {% for v in m.versions.all %}
     <tr>
         <td></td>

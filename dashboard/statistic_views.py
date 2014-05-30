@@ -170,6 +170,7 @@ def carnatic_recordings(request):
     concerts = carnatic.models.Concert.objects.all()
     badconcerts = []
     for c in concerts:
+        c.missing_rel_artists = False
         got_works = True
         got_track_perf = True
         got_perf = True

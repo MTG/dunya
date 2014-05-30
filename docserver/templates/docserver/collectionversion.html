@@ -3,14 +3,12 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">
-        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
-        <li><a href="{{collection.get_absolute_url}}">{{collection.name}}</a></li>
-        <li>Module {{modulever.module.name}} {{modulever.version}}</li>
-        <li>{{type|title}} files</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{{collection.get_absolute_url}}">{{collection.name}}</a></li>
+    <li>Module {{modulever.module.name}} {{modulever.version}}</li>
+    <li>{{type|title}} files</li>
+</ul>
 
 <h3>{{type|title}} files</h3>
 

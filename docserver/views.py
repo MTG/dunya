@@ -163,7 +163,7 @@ def manager(request):
     else:
         workers = []
         newworkers = []
-        inactiveworkers = []
+        inactiveworkers = [w.split("@")[1] for w in workerkeys]
 
     ret = {"modules": modules, "collections": collections, "workers": workers,\
             "newworkers": newworkers, "inactiveworkers": inactiveworkers}
@@ -297,11 +297,13 @@ def addmodule(request):
 @user_passes_test(is_staff)
 def module(request, module):
     module = get_object_or_404(models.Module, pk=module)
+    versions = module.versions.all()
     confirm = False
     form = forms.ModuleEditForm(instance=module)
     if request.method == "POST":
         if request.POST.get("delete"):
             version = request.POST.get("version")
+            versions = versions.filter(pk=version)
             confirm = version
         elif request.POST.get("confirm"):
             version = request.POST.get("version")
@@ -310,7 +312,6 @@ def module(request, module):
             form = forms.ModuleEditForm(request.POST, instance=module)
             form.save()
 
-    versions = module.versions.all()
     ret = {"module": module, "versions": versions, "form": form, "confirm": confirm}
     return render(request, 'docserver/module.html', ret)
 

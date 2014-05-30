@@ -31,21 +31,25 @@ Dependencies
 
     sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev 
 
-* Also install essentia + python libraries
-
-        git clone git@github.com:MTG/essentia.git
-        cd essentia
-        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
-        ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
-        ./waf
-        sudo ./waf install
-
 * Create a virtualenv
 
         virtualenv --no-site-packages env
         source env/bin/activate
         pip install --upgrade distribute
         pip install -r requirements
+
+* Also install essentia + python libraries
+
+We install essentia into the virtualenv that we created for python. This lets the automatic celery jobs upgrade essentia
+when we make changes to it without needing root.
+
+        git clone git@github.com:CompMusic/essentia.git
+        cd essentia
+        git checkout -t origin/deploy
+        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
+        ./waf configure --mode=release --with-python --prefix=/srv/dunya/env
+        ./waf
+        sudo ./waf install
 
 * Using essentia, numpy, and scipy in virtualenv
 

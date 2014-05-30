@@ -3,12 +3,10 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">Directory
-        <li><a href="{{directory.collection.get_absolute_url}}">{{directory.collection.name}}</a></li>
-        <li>{{directory.short_path}}</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">Directory
+    <li><a href="{{directory.collection.get_absolute_url}}">{{directory.collection.name}}</a></li>
+    <li>{{directory.short_path}}</li>
+</ul>
 
 <div class="topbox">
     <div class="topheader">Info</div>
@@ -30,11 +28,12 @@
     <li><a href="?rematch">Rematch directory to releases</a>
 </div>
 
-<table><tr><th>File</th></tr>
-{% for f in files %}
-<tr><td>{{f}}
-</td></tr>
-{% endfor %}
+<table class="table">
+    <tr><th>File</th></tr>
+    {% for f in files %}
+    <tr><td>{{f}}
+    </td></tr>
+    {% endfor %}
 </table>
 
 {% include "dashboard/log.html" with logs=directory.collectiondirectorylogmessage_set.all %}

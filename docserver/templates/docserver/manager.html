@@ -3,40 +3,52 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">
-        <li>Module manager</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li>Module manager</li>
+</ul>
 
 <h2>Workers</h2>
 
-<table><tr>
+  <div class="row placeholders">
         {% for w in workers %}
-        <td><a href="{% url 'docserver-worker' w.host %}">{{w.host}}</a><br>
-            State: {{w.state}}<br>
-            {% if w.number %}{{w.number}} active{% endif %}</td>
+    <div class="col-xs-6 col-sm-3 placeholder">
+<div class="info img-thumbnail">
+            {% if w.number %}{{w.number}} active
+{% else %}
+{{w.state}}
+    {% endif %}
+</div>
+      <h4><a href="{% url 'docserver-worker' w.host %}">{{w.host}}</a></h4>
+    </div>
         {% endfor %}
-    </tr></table>
+  </div>
 
 {% if newworkers %}
-New workers<br>
-{% for w in newworkers %}
-{{w}}<a href="?register={{w}}">Register</a><br>
-{% endfor %}
+<div class="topbox">
+    <div class="topheader">New workers</div>
+    <ul>
+        {% for w in newworkers %}
+        <li>{{w}} <a href="?register={{w}}">Register</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endif %}
 
 {% if inactiveworkers %}
-Inactive workers<br>
-{% for w in inactiveworkers %}
-{{w}}<br>
-{% endfor %}
+<div class="topbox">
+    <div class="topheader">Inactive workers</div>
+    <ul>
+        {% for w in inactiveworkers %}
+        <li>{{w}}</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endif %}
 
 <h2>Extractor modules</h2>
 
 {% if modules %}
-<table><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
+<table class="table table-condensed "><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
     {% for m in modules %}
     <tr>
         <td><a href="{{m.get_absolute_url}}">{{m.name}}</a> ({{m.module}})<br>
@@ -59,7 +71,7 @@ Inactive workers<br>
 
 <h2>Collection files</h2>
 {% if collections %}
-<table><tr><th>Collection</th></tr>
+<table class="table table-condensed"><tr><th>Collection</th></tr>
     {% for c in collections %}
     <tr><td><a href="{{c.get_absolute_url}}">{{c.name}}</a></td></tr>
     {% endfor %}

@@ -9,7 +9,6 @@
 <ul>
 {% for r in noimages %}
 <li>{{r.model}} - <a href="{{r.get_musicbrainz_url}}">{{r.get_musicbrainz_url}}</a>
-<br>Paths:
 <ul>
     {% for path in r.dashboard.collectiondirectory_set.all %}
     <li>{{path.full_path}}

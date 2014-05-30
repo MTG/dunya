@@ -3,14 +3,12 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">
-        <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
-        <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
-        <li>Module {{modulever.module.name}} {{modulever.version}}</li>
-        <li>{{document.title}}</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
+    <li>Module {{modulever.module.name}} {{modulever.version}}</li>
+    <li>{{document.title}}</li>
+</ul>
 
     {% if document.sourcefiles.all %}
         <h3>Source files</h3>
@@ -41,14 +39,14 @@
             <li><a href="{{p.get_absolute_url}}">{{p}}</a></li>
         {% endfor %}
     </ul>
-    {% endfor %}
     </ul>
+    {% endfor %}
     {% endfor %}
     {% endif %}
 
     <div class="topbox">
         <div class="topheader">Logs</div>
-    <table> 
+    <table class="table table-condensed"> 
         <tr>
             <th style="width:150px;">Date</th>
             <th style="width:150px;">Module</th>

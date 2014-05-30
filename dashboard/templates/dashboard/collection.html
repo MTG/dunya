@@ -19,11 +19,9 @@
 {% block wrap %}
 
 
-<h2>
-    <span class="breadcrumbs">Collection
-        <li>{{collection.name}}</li>
-    </span>
-</h2>
+<ol class="breadcrumbs">Collection
+    <li>{{collection.name}}</li>
+</ol>
 
 <h3>Releases</h3>
 
@@ -59,7 +57,7 @@
     {% endif %}
 </div>
 
-<table class="collection-list"><tr>
+<table class="collection-list table"><tr>
         <th class="release">Release</th>
         <th class="path">Matched path</th>
         <th class="status">Current status</th>
@@ -83,7 +81,7 @@
 </table>
 
 <h4>Folders with unknown releases</h4>
-<table><tr><th>Folder</th><th>Reload</th></tr>
+<table class="table table-condensed"><tr><th>Folder</th></tr>
     {% for f in folders %}
     <tr><td><a href="{{f.get_absolute_url}}">{{f.path}}<a></td></tr>
     {% endfor %}
