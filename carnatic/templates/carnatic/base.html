@@ -191,30 +191,26 @@
         <!-- //////  HEADER BLOCK end ////// -->
 
         <div class="main-container">
-             <div id="filterMask">
-                <div id="filterArea">
 
-                    <div id="breadcrumb">
-                         <div id="navigationhistory">
-                            <div class="inner">
-                                {% for type, item in navigation_history %}
-                                    {% if type == "concert" %}
-                                        {% badge_micro_concert item %}
-                                    {% elif type == "artist" %}
-                                        {% badge_micro_artist item %}
-                                    {% elif type == "instrument" %}
-                                        {% badge_micro_instrument item %}
-                                    {% elif type == "raaga" %}
-                                        {% badge_micro_raaga item %}
-                                    {% elif type == "taala" %}
-                                        {% badge_micro_taala item %}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                         </div>
+            <div id="breadcrumb">
+                 <div id="navigationhistory">
+                    <div class="inner">
+                        {% for type, item in navigation_history %}
+                            {% if type == "concert" %}
+                                {% badge_micro_concert item %}
+                            {% elif type == "artist" %}
+                                {% badge_micro_artist item %}
+                            {% elif type == "instrument" %}
+                                {% badge_micro_instrument item %}
+                            {% elif type == "raaga" %}
+                                {% badge_micro_raaga item %}
+                            {% elif type == "taala" %}
+                                {% badge_micro_taala item %}
+                            {% endif %}
+                        {% endfor %}
                     </div>
-                </div>
-             </div>
+                 </div>
+            </div>
 
         {% block wrap %}
         {% endblock %}
