@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^makamplayer/$', 'makam.views.makamplayer'),
 )
 
 if settings.DEBUG:

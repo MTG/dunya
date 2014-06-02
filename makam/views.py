@@ -20,6 +20,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from makam import models
 
+# Simple player for Georgi/Istanbul musicians
+def makamplayer(request):
+    return render(request, "makam/makamplayer.html")
+
 def main(request):
     return render(request, "makam/index.html", {})
 

@@ -1,0 +1,198 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+
+<title>Makam sample recordings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="{% static 'makam/jplayer-skins/blue.monday/jplayer.blue.monday.css' %}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'makam/js/jquery.jplayer.js' %}"></script>
+<script type="text/javascript" src="{% static 'makam/js/jplayer.playlist.min.js' %}"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	var myPlaylist = new jPlayerPlaylist({
+		jPlayer: "#jquery_jplayer_N",
+		cssSelectorAncestor: "#jp_container_N"
+	}, [
+		{
+			title:"huzzam--sarki--curcuna--kusade_taliim--sevki_bey",
+			artist:"Müzeyyen Senar",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/8a0260ac-e8a5-42ed-af2a-a6f547996281/mp3",
+			poster: "/static/makam/scores/huzzam--sarki--curcuna--kusade_taliim--sevki_bey.png"
+			// oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
+		},
+		{
+
+			title:"muhayyerkurdi--sarki--duyek--ruzgar_soyluyor--sekip_ayhan_ozisik",
+			artist:"Oya İşboğa",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/f5ddf3aa-643b-4655-a9b7-3736e9a4d3d3/mp3"
+		},
+
+		{
+
+			title:"nihavent--sarki--aksak--bakmiyor_cesm-i--haci_arif_bey",
+			artist:"Hamiyet_Yuceses",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/f5a89c06-d9bc-4425-a8e6-0f44f7c108ef/mp3"
+		},
+
+		{
+
+			title:"nihavent--sarki--aksak--gel_guzelim--faiz_kapanci",
+			artist:"Münir Nurettin Selçuk",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/727cff89-392f-4d15-926d-63b2697d7f3f/mp3"
+		},
+
+		{
+
+			title:"nihavent--sarki--aksak--koklasam_saclarini--artaki_candan",
+			artist:"Zeki Müren",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/b49c633c-5059-4658-a6e0-9f84a1ffb08b/mp3"
+		},
+
+
+		{
+
+			title:"nihavent--sarki--aksak--koklasam_saclarini--artaki_candan",
+			artist:"Münip Utandı",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/460ae776-552e-4d00-a06d-ef4fed327225/mp3"
+		},
+		{
+
+			title:"nihavent--sarki--curcuna--kimseye_etmem--kemani_sarkis_efendi",
+			artist:"Bekir Ünlüataer",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/567b6a3c-0f08-42f8-b844-e9affdc9d215/mp3"
+		},
+		
+		{
+
+			title:"nihavent--sarki--duyek--bir_ihtimal--osman_nihat_akin",
+			artist:"Semahat Özdenses",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/dd536d18-aa84-451c-b7e5-d97271300b8c/mp3"
+		},
+
+
+		{
+
+			title:"nihavent--sarki--turkaksagi--nerelerde_kaldin--ismail_hakki_efendi",
+			artist:"Melihat Gülses",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/eaea7f6b-fb94-4982-9ac7-162f1503182a/mp3"
+		},
+
+		{
+
+			title:"segah--sarki--curcuna--olmaz_ilac--haci_arif_bey",
+			artist:"Safiye Ayla",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/f3115293-7caa-4aad-ad1e-dd0316a95297/mp3"
+		},
+
+		{
+
+			title:"segah--sarki--curcuna--olmaz_ilac--haci_arif_bey",
+			artist:"Recep Birgit",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/bd1758b6-297b-47fe-97b7-bf5d94f23049/mp3"
+		},
+
+
+		{
+
+			title:"ussak--sarki--duyek--aksam_oldu_huzunlendim--semahat_ozdenses",
+			artist:"Semahat Özdenses",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/43745ff1-0848-4592-b1ad-9e7b172b0ebd/mp3"
+		},
+
+
+
+		{
+
+			title:"ussak--sarki--duyek--aksam_oldu_huzunlendim--semahat_ozdenses",
+			artist:"Şehnaz Uğurel",
+			mp3:"http://dunya.compmusic.upf.edu/document/by-id/92ef6776-09fa-41be-8661-025f9b33be4f/mp3"
+		}
+	], {
+		playlistOptions: {
+			enableRemoveControls: true
+		},
+		swfPath: "js",
+		supplied: "webmv, ogv, m4v, oga, mp3",
+		smoothPlayBar: true,
+		keyEnabled: true,
+		audioFullScreen: true,
+        size: {width: '480px', height: '600px'}
+	});
+});
+
+
+</script>
+
+</head>
+
+
+
+<body>
+		<div id="jp_container_N" class="jp-video jp-video-270p">
+			<div class="jp-type-playlist">
+				<div id="jquery_jplayer_N" class="jp-jplayer"></div>
+				<div class="jp-gui">
+					<div class="jp-video-play">
+						<a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+					</div>
+					<div class="jp-interface">
+						<div class="jp-progress">
+							<div class="jp-seek-bar">
+								<div class="jp-play-bar"></div>
+							</div>
+						</div>
+						<div class="jp-current-time"></div>
+						<div class="jp-duration"></div>
+						<div class="jp-controls-holder">
+							<ul class="jp-controls">
+								<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+								<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+								<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+								<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+								<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+								<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+								<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+								<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+							</ul>
+							<div class="jp-volume-bar">
+								<div class="jp-volume-bar-value"></div>
+							</div>
+							<ul class="jp-toggles">
+								<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+								<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+								<li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">shuffle</a></li>
+								<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">shuffle off</a></li>
+								<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+								<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+							</ul>
+						</div>
+						<div class="jp-details">
+							<ul>
+								<li><span class="jp-title"></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="jp-playlist">
+					<ul>
+						<li></li>
+					</ul>
+				</div>
+				<div class="jp-no-solution">
+					<span>Update Required</span>
+					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+				</div>
+			</div>
+		</div>
+			
+	
+			
+</body>
+
+
+
+</html>
