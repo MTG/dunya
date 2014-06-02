@@ -107,7 +107,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
-    "dunya.context_processors.navigation_header",
+    # "dunya.context_processors.navigation_header",
 )
 
 INSTALLED_APPS = (
