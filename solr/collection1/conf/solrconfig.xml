@@ -1230,6 +1230,21 @@
       <str name="buildOnCommit">true</str>
     </lst>
   </searchComponent>
+
+<!-- request handler to return typeahead suggestions -->
+<requestHandler name="/suggest" class="solr.SearchHandler">
+  <lst name="defaults">
+    <str name="echoParams">explicit</str>
+    <str name="defType">edismax</str>
+    <str name="rows">10</str>
+    <str name="fl">title_t,score</str>
+    <str name="fq">module_s:carnatic</str>
+    <str name="qf">title_suggest^30 title_suggest_ngram^50.0 title_suggest_edge^20</str>
+    <str name="sort">score desc</str>
+  </lst>
+</requestHandler>
+
+<!--
   <requestHandler class="org.apache.solr.handler.component.SearchHandler" name="/suggest">
     <lst name="defaults">
       <str name="spellcheck">true</str>
@@ -1242,6 +1257,7 @@
       <str>suggest</str>
     </arr>
   </requestHandler>
+-->
 
   <!-- Term Vector Component
 
