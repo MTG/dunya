@@ -83,8 +83,13 @@ def download_external(request, uuid, ftype):
     except exceptions.AuthenticationFailed:
         token = False
 
+    referrer = request.META.get("HTTP_REFERER")
+    good_referrer = False
+    if referrer and "dunya.compmusic.upf.edu" in referrer:
+        good_referrer = True
+
     # The only thing that's limited at the moment is mp3 files
-    if ftype == "mp3" and not (loggedin or token):
+    if ftype == "mp3" and not (loggedin or token or good_referrer):
         return HttpResponse("Not logged in", status=401)
 
     try:
