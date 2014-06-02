@@ -5,7 +5,7 @@ from carnatic.urls import uuid_match
 
 def navigation_header(request):
     displayhist = [] 
-    for entity in request.session.get('navigation_history', []):
+    for entity in request.session.get('carnatic_navigation_history', []):
         item_type = entity[0]
         id_ = entity[1]
         if item_type == 'artist':
@@ -22,4 +22,4 @@ def navigation_header(request):
             continue 
         displayhist.append((item_type, item)) 
 
-    return {"navigation_history": displayhist}
+    return {"carnatic_navigation_history": displayhist}
