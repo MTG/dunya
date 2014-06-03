@@ -17,7 +17,7 @@
 
 <h3>State: {{state}}</h3>
 {% if uptime %}
-<h3>Uptime: {{uptime}}</h3>
+<h3>Uptime: {{uptime|timesince}}</h3>
 {% endif %}
 
 <h3>Current jobs:</h3>

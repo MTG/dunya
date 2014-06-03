@@ -113,11 +113,27 @@ def delete_moduleversion(vid):
     print "deleting moduleversion", version
     files = version.derivedfile_set.all()
     for f in files:
-        for p in f.parts():
+        for p in f.parts.all():
             path = p.path
-            os.unlink(path)
+            try:
+                os.unlink(path)
+            except OSError:
+                pass # if the file doesn't exist
         f.delete()
+    module = version.module
     version.delete()
+    if module.versions.count() == 0:
+        print "No more moduleversions for this module, deleting the module"
+        module.delete()
+        print " .. module deleted"
+    print "done"
+
+@app.task
+def delete_module(mid):
+    module = models.Module.objects.get(pk=mid)
+    print "deleting entire module", module
+    for v in module.versions.all():
+        delete_moduleversion(v.pk)
     print "done"
 
 class NumPyArangeEncoder(json.JSONEncoder):
@@ -264,13 +280,13 @@ def get_essentia_version():
 
 @app.task
 def register_host(hostname):
-    worker, created = models.Worker.objects.get_or_create(hostname=hostname)
     ever = get_essentia_version()
     ehash, edate = get_essentia_hash()
     essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
     phash, pdate = get_pycompmusic_hash()
     pycompmusic, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
 
+    worker, created = models.Worker.objects.get_or_create(hostname=hostname)
     worker.essentia = essentia
     worker.pycompmusic = pycompmusic
     worker.set_state_updated()
@@ -311,9 +327,14 @@ def shutdown_celery(hostname):
     name = "celery@%s" % hostname
     app.control.broadcast("shutdown", destination=[name])
 
+@app.task
+def update_single_worker(hostname):
+    update_essentia(hostname)
+    update_pycompmusic(hostname)
+    shutdown_celery(hostname)
+
 def update_all_workers():
     workers = models.Worker.objects.all()
     for w in workers:
-        update_essentia.delay(w.hostname, queue=w.hostname)
-        update_pycompmusic.delay(w.hostname, queue=w.hostname)
+        update_single_worker.apply_async([w.hostname], queue=w.hostname)
 

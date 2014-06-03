@@ -16,6 +16,7 @@
 
 import json, os
 import collections
+import datetime
 
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
@@ -142,6 +143,11 @@ def manager(request):
     if register is not None:
         jobs.register_host.apply_async([register], queue=register)
         return redirect('docserver-manager')
+    if request.method == "POST":
+        update = request.POST.get("updateall")
+        if update is not None:
+            jobs.update_all_workers()
+            return redirect('docserver-manager')
 
     modules = models.Module.objects.all()
     collections = models.Collection.objects.all()
@@ -157,9 +163,19 @@ def manager(request):
         neww = []
         for w in workers:
             host = w.split("@")[1] 
+            theworker = workerobs.get(hostname=host)
             num_proc = len(hosts[w])
-            state = "Active" if num_proc else "Idle"
-            neww.append({"host": host, "number": num_proc, "state": state})
+            if theworker.state == models.Worker.UPDATING:
+                state = "Updating"
+            elif num_proc:
+                state = "Active"
+            else:
+                state = "Idle"
+            neww.append({"host": host,
+                         "number": num_proc,
+                         "state": state,
+                         "worker": theworker})
+
         workers = neww
         newworkers = list(set(hostkeys) - set(workerkeys))
         newworkers = [w.split("@")[1] for w in newworkers]
@@ -170,8 +186,12 @@ def manager(request):
         newworkers = []
         inactiveworkers = [w.split("@")[1] for w in workerkeys]
 
+    latestpycm = models.PyCompmusicVersion.objects.order_by('-commit_date').first()
+    latestessentia = models.EssentiaVersion.objects.order_by('-commit_date').first()
+
     ret = {"modules": modules, "collections": collections, "workers": workers,\
-            "newworkers": newworkers, "inactiveworkers": inactiveworkers}
+            "newworkers": newworkers, "inactiveworkers": inactiveworkers,
+            "latestpycm": latestpycm, "latestessentia": latestessentia}
     return render(request, 'docserver/manager.html', ret)
 
 def understand_task(task):
@@ -217,8 +237,6 @@ def understand_task(task):
 
 @user_passes_test(is_staff)
 def worker(request, hostname):
-    # TODO: Worker uptime
-    # TODO: Use the 'updating essentia' database state?
     # TODO: Show logs/stdout
 
     # TODO: Load the task data via ajax, so the page loads quickly
@@ -265,14 +283,24 @@ def worker(request, hostname):
             thetask = understand_task(t)
             reserved.append(thetask)
 
+    stats = i.clock()
+    uptime = None
+    if stats:
+        uptime = stats.get(workername, {}).get("clock")
+        delta = datetime.timedelta(seconds=uptime)
+        start = datetime.datetime.now() - delta
+
     if not tasks and not reservedtasks:
         state = "Offline"
+    elif wk and wk.state == models.Worker.UPDATING:
+        state = "Updating"
     elif len(active) or len(reserved):
         state = "Active"
     elif len(active) == 0 and len(reserved) == 0:
         state = "Idle"
 
-    ret = {"worker": wk, "state": state, "active": active, "reserved": reserved}
+    ret = {"worker": wk, "state": state, "active": active,
+            "reserved": reserved, "uptime": start}
     return render(request, 'docserver/worker.html', ret)
 
 
@@ -303,21 +331,28 @@ def addmodule(request):
 def module(request, module):
     module = get_object_or_404(models.Module, pk=module)
     versions = module.versions.all()
-    confirm = False
+    confirmversion = False
+    confirmmodule = False
     form = forms.ModuleEditForm(instance=module)
     if request.method == "POST":
-        if request.POST.get("delete"):
+        if request.POST.get("deleteversion"):
             version = request.POST.get("version")
             versions = versions.filter(pk=version)
-            confirm = version
-        elif request.POST.get("confirm"):
+            confirmversion = version
+        elif request.POST.get("confirmversion"):
             version = request.POST.get("version")
             jobs.delete_moduleversion.delay(version)
+        elif request.POST.get("deletemodule"):
+            # The module id is already in the argument to this method
+            # so we don't get it from POST like the mod-version above.
+            confirmmodule = module.pk
+        elif request.POST.get("confirmmodule"):
+            jobs.delete_module.delay(module.pk)
         elif request.POST.get("update"):
             form = forms.ModuleEditForm(request.POST, instance=module)
             form.save()
 
-    ret = {"module": module, "versions": versions, "form": form, "confirm": confirm}
+    ret = {"module": module, "versions": versions, "form": form, "confirmversion": confirmversion, "confirmmodule": confirmmodule}
     return render(request, 'docserver/module.html', ret)
 
 @user_passes_test(is_staff)

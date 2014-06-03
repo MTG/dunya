@@ -288,6 +288,12 @@ class PyCompmusicVersion(models.Model):
     def short(self):
         return self.sha1[:7]
 
+    def get_absolute_url(self):
+        return "https://github.com/MTG/pycompmusic/tree/%s" % self.sha1
+
+    def short_link(self):
+        return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
+
     def __unicode__(self):
         return u"%s" % (self.sha1, )
 
@@ -301,6 +307,12 @@ class EssentiaVersion(models.Model):
     @property
     def short(self):
         return self.sha1[:7]
+
+    def get_absolute_url(self):
+        return "https://github.com/CompMusic/essentia/tree/%s" % self.sha1
+
+    def short_link(self):
+        return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
 
     def __unicode__(self):
         return u"%s (%s)" % (self.version, self.sha1)

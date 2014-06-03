@@ -1,6 +1,18 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Essentia manager{% endblock %}
 
+{% block css %}
+<style type="text/css">
+.activenumber {
+    color: grey;
+}
+.img-thumbnail {
+    width: 100% !important;
+    padding: 1em !important;
+}
+</style>
+{% endblock %}
+
 {% block wrap %}
 
 <ul class="breadcrumbs">
@@ -13,10 +25,23 @@
         {% for w in workers %}
     <div class="col-xs-6 col-sm-3 placeholder">
 <div class="info img-thumbnail">
-            {% if w.number %}{{w.number}} active
+    {% if w.number %}<span class="h1 activenumber">{{w.number}}</span><br><span class="h3">{{w.state}}</span>
 {% else %}
-{{w.state}}
+<span class="h3">{{w.state}}</span>
     {% endif %}
+    <p class="text-left">
+    {% if w.worker.essentia.commit_date < latestessentia.commit_date %}
+    <span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of essentia is older than the most recent in the cluster"> Essentia: {{w.worker.essentia.short_link|safe}}</span>
+    {% else %}
+    <span class="label label-default">Ess: {{w.worker.essentia.short_link|safe}}</span>
+    {% endif %}
+    <br>
+    {% if w.worker.pycompmusic.commit_date < latestpycm.commit_date %}
+    <span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of pycompmusic is older than the most recent in the cluster"> Pcm: {{w.worker.pycompmusic.short_link|safe}}</span>
+    {% else %}
+    <span class="label label-default">Pcm: {{w.worker.pycompmusic.short_link|safe}}</span>
+    {% endif %}
+    </p>
 </div>
       <h4><a href="{% url 'docserver-worker' w.host %}">{{w.host}}</a></h4>
     </div>
@@ -45,6 +70,12 @@
 </div>
 {% endif %}
 
+<form method="post" action="">
+    {% csrf_token %}
+    <input type="hidden" name="updateall" value="yes">
+    <input type="submit" value="Update all workers">
+</form>
+
 <h2>Extractor modules</h2>
 
 {% if modules %}
@@ -56,8 +87,12 @@
            <li>{{c}}
            {% endfor %}</td>
         <td>{{m.latest_version_number}}</td>
-        <td>{{m.processed_files.distinct|length}}</td>
-        <td>{{m.unprocessed_files.distinct|length}}</td>
+        {% with proccount=m.processed_files.distinct|length %}
+        <td>{{proccount}}</td>
+        {% endwith %}
+        {% with unproccount=m.unprocessed_files.distinct|length %}
+        <td {% if unproccount > 0 %}class="warning"{% endif %}>{{unproccount}}</td>
+        {% endwith %}
         <td><a href="?scan={{m.pk}}">Scan all stuff</a><br>
             <a href="?update={{m.pk}}">Get new version</a></td>
     </tr>
