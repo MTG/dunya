@@ -54,14 +54,12 @@ def autocomplete(term):
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)
-    check = res.get("spellcheck", {})
-    suggs = check.get("suggestions", [])
-    if term in suggs:
-        index = suggs.index(term) + 1
-        if index < len(suggs):
-            suggestions = suggs[index].get("suggestion", [])
-            return suggestions
-    return []
+    check = res.get("response", {})
+    docs = check.get("docs", [])
+    ret = []
+    for d in docs:
+        ret.append(d["title_t"])
+    return ret[:5]
 
 def get_similar_releases(artists, raags, taals, layas):
     artistids = set(artists)
