@@ -21,6 +21,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
+from django.conf import settings
 
 from social import tagging
 from carnatic.models import *
@@ -430,15 +431,15 @@ def recording(request, uuid, title=None):
     tags = tagging.tag_cloud(recording.id, "recording")
 
     try:
-        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
+        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
+        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
+        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         small = None
     try:
@@ -446,7 +447,7 @@ def recording(request, uuid, title=None):
     except docserver.util.NoFileException:
         audio = None
     try:
-        tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic")
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
@@ -462,16 +463,16 @@ def recording(request, uuid, title=None):
         tonic = None
         tonicname = None
     try:
-        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
+        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
         akshara = str(round(float(akshara), 3) * 1000)
     except docserver.util.NoFileException:
         akshara = None
 
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch")
-        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram")
-        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks")
-        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve")
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch", version=settings.FEAT_VERSION_NORMALISED_PITCH)
+        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_NORMALISED_PITCH)
+        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
+        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
     except docserver.util.NoFileException:
         pitchtrackurl = None
         histogramurl = None
