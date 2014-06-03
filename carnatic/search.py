@@ -45,10 +45,10 @@ def search(name):
     return ret
 
 def autocomplete(term):
-    # specify json encoding of results
     params = {}
     params['wt'] = 'json'
     params['q'] = term
+    params['fq'] = "module_s:carnatic"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)
