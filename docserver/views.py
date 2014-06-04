@@ -283,13 +283,6 @@ def worker(request, hostname):
             thetask = understand_task(t)
             reserved.append(thetask)
 
-    stats = i.clock()
-    uptime = None
-    if stats:
-        uptime = stats.get(workername, {}).get("clock")
-        delta = datetime.timedelta(seconds=uptime)
-        start = datetime.datetime.now() - delta
-
     if not tasks and not reservedtasks:
         state = "Offline"
     elif wk and wk.state == models.Worker.UPDATING:
@@ -300,7 +293,7 @@ def worker(request, hostname):
         state = "Idle"
 
     ret = {"worker": wk, "state": state, "active": active,
-            "reserved": reserved, "uptime": start}
+            "reserved": reserved}
     return render(request, 'docserver/worker.html', ret)
 
 
