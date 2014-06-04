@@ -150,18 +150,22 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
         os.makedirs(fdir)
     except OSError:
         pass
-    fname = "%s-%s-%s.%s" % (slug, partslug, partnumber, extension)
+    fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
 
     fullname = os.path.join(fdir, fname)
     fullrelname = os.path.join(reldir, fname)
-    fp = open(fullname, "wb")
     if extension == "json":
         data = json.dumps(data, fp, cls=NumPyArangeEncoder)
-
     if not isinstance(data, basestring):
         print "Data is not a string-ish thing. instead it's %s" % type(data)
-    fp.write(data)
-    fp.close()
+    try:
+        fp = open(fullname, "wb")
+        fp.write(data)
+        fp.close()
+    except OSError:
+        print "Error writing to file %s" % fullname
+        print "Probably a permissions error"
+        return None, None, None
     return fullname, fullrelname, len(data)
 
 @app.task
@@ -217,7 +221,8 @@ def process_document(documentid, moduleversionid):
                 for i, partdata in enumerate(contents, 1):
                     saved_name, rel_path, saved_size = _save_file(collectionid, document.external_identifier,
                             version.version, moduleslug, dataslug, i, extension, partdata)
-                    df.save_part(i, rel_path, saved_size)
+                    if saved_name:
+                        df.save_part(i, rel_path, saved_size)
 
 def run_module(moduleid):
     module = models.Module.objects.get(pk=moduleid)
