@@ -280,9 +280,13 @@ def get_essentia_version():
 
 @app.task
 def register_host(hostname):
-    ever = get_essentia_version()
-    ehash, edate = get_essentia_hash()
-    essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
+    try:
+        # Some machines don't have essentia
+        ever = get_essentia_version()
+        ehash, edate = get_essentia_hash()
+        essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
+    except OSError:
+        essentia = None
     phash, pdate = get_pycompmusic_hash()
     pycompmusic, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
 
