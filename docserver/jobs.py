@@ -333,7 +333,11 @@ def shutdown_celery(hostname):
 
 @app.task
 def update_single_worker(hostname):
-    update_essentia(hostname)
+    try:
+        # Some workers don't have essentia
+        update_essentia(hostname)
+    except OSError:
+        pass
     update_pycompmusic(hostname)
     shutdown_celery(hostname)
 
