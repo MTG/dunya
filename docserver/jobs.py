@@ -117,8 +117,13 @@ def delete_moduleversion(vid):
             path = p.path
             try:
                 os.unlink(path)
+                dirname = os.path.dirname(path)
+                if len(os.listdir(dirname)) == 0:
+                    # If this directory is empty, remove it and all empty
+                    # parent dirs. May throw OSError (not really an error)
+                    os.removedirs(dirname)
             except OSError:
-                pass # if the file doesn't exist
+                pass # if the file doesn't exist, not really an error
         f.delete()
     module = version.module
     version.delete()
