@@ -10,10 +10,10 @@
 
 <h2>Worker &ldquo;{{worker.hostname}}&rdquo;</h2>
 
-<h2><small>Essentia version 
-        <a href="https://github.com/MTG/essentia/tree/{{worker.essentia.sha1}}">{{worker.essentia.short}}</a> ({{worker.essentia.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
-<h2><small>PyCompMusic version 
-        <a href="https://github.com/MTG/pycompmusic/tree/{{worker.pycompmusic.sha1}}">{{worker.pycompmusic.short}}</a> ({{worker.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
+<h2><small>Essentia version {{worker.essentia.short_link|safe}}
+        ({{worker.essentia.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
+<h2><small>PyCompMusic version {{worker.pycompmusic.short_link|safe}}
+         ({{worker.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
 
 <h3>State: {{state}}</h3>
 {% if uptime %}
