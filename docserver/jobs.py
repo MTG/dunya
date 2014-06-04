@@ -308,7 +308,7 @@ def register_host(hostname):
 
 def git_update_and_compile_essentia():
     subprocess.call("git pull", cwd=ESSENTIA_DIR, shell=True)
-    subprocess.call("./waf", cwd=ESSENTIA_DIR, shell=True)
+    subprocess.call("./waf -v", cwd=ESSENTIA_DIR, shell=True)
     subprocess.call("./waf install", cwd=ESSENTIA_DIR, shell=True)
 
 def git_update_pycompmusic():
