@@ -32,13 +32,13 @@
     <p class="text-left">
     {% if w.worker.essentia.commit_date < latestessentia.commit_date %}
     <span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of essentia is older than the most recent in the cluster"> Essentia: {{w.worker.essentia.short_link|safe}}</span>
-    {% else %}
+    {% elif w.worker.essentia %}
     <span class="label label-default">Ess: {{w.worker.essentia.short_link|safe}}</span>
     {% endif %}
     <br>
     {% if w.worker.pycompmusic.commit_date < latestpycm.commit_date %}
     <span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of pycompmusic is older than the most recent in the cluster"> Pcm: {{w.worker.pycompmusic.short_link|safe}}</span>
-    {% else %}
+    {% elif w.worker.pycompmusic %}
     <span class="label label-default">Pcm: {{w.worker.pycompmusic.short_link|safe}}</span>
     {% endif %}
     </p>
@@ -71,9 +71,10 @@
 {% endif %}
 
 <form method="post" action="">
+    Press this once to update essentia and pycompmusic from git and restart all workers<br>
     {% csrf_token %}
     <input type="hidden" name="updateall" value="yes">
-    <input type="submit" value="Update all workers">
+    <input type="submit" value="Update all workers" onclick="return confirm('Do you want to update and restart all workers?');">
 </form>
 
 <h2>Extractor modules</h2>
