@@ -94,6 +94,9 @@ def create_module(modulepath, collections):
     get_latest_module_version(module.pk)
 
 def get_latest_module_version(themod_id=None):
+    """ Create a new ModuleVersion if this module has been
+        updated.
+        If no argument is given, update all modules. """
     if themod_id:
         modules = [models.Module.objects.get(pk=themod_id)]
     else:
@@ -336,6 +339,11 @@ def update_pycompmusic(hostname):
     worker.pycompmusic = version
     worker.set_state_updated()
     worker.save()
+
+    if hostname == "sitar":
+        # Special case. If we upgrade pycompmusic on sitar, the webserver,
+        # make sure we scan for new versions of all extractors.
+        get_latest_module_version()
 
 def shutdown_celery(hostname):
     name = "celery@%s" % hostname
