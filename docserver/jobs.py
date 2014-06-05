@@ -114,7 +114,7 @@ def delete_moduleversion(vid):
     files = version.derivedfile_set.all()
     for f in files:
         for p in f.parts.all():
-            path = p.path
+            path = p.fullpath
             try:
                 os.unlink(path)
                 dirname = os.path.dirname(path)
