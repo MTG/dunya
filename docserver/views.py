@@ -17,6 +17,8 @@
 import json, os
 import collections
 import datetime
+import inspect
+import pkgutil
 
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
@@ -32,8 +34,11 @@ from docserver import forms
 from docserver import jobs
 from docserver import serializers
 from docserver import util
+from docserver import log
 from dunya.celery import app
 import dashboard
+
+from compmusic import extractors
 
 from rest_framework import authentication
 from rest_framework import exceptions
@@ -131,22 +136,21 @@ def is_staff(user):
 
 @user_passes_test(is_staff)
 def manager(request):
-    scan = request.GET.get("scan")
-    if scan is not None:
-        jobs.run_module(int(scan))
-        return redirect('docserver-manager')
-    update = request.GET.get("update")
-    if update is not None:
-        jobs.get_latest_module_version(int(update))
-        return redirect('docserver-manager')
+    # Add a new worker to the cluster
     register = request.GET.get("register")
     if register is not None:
         jobs.register_host.apply_async([register], queue=register)
         return redirect('docserver-manager')
     if request.method == "POST":
+        # Update essentia and pycompmusic on all workers
         update = request.POST.get("updateall")
         if update is not None:
-            jobs.update_all_workers()
+            jobs.update_all_workers(request.user.username)
+            return redirect('docserver-manager')
+        # Process a module version
+        run = request.POST.get("run")
+        if run is not None:
+            jobs.run_module(int(run))
             return redirect('docserver-manager')
 
     modules = models.Module.objects.all()
@@ -238,25 +242,22 @@ def understand_task(task):
 @user_passes_test(is_staff)
 def worker(request, hostname):
     # TODO: Show logs/stdout
-
     # TODO: Load the task data via ajax, so the page loads quickly
-
-    # TODO: Can we use a redis queue to show the last 5 things that went
-    #       through this server? We'll have a moduleversion, so can show
-    #       the derived files too. Make it expire after 10 minutes
-    # TODO: We need logging when someone performs an action.
-    # Need to know and when (incase it goes bad)
+    user = request.user.username
 
     updatee = request.GET.get("updateessentia")
     if updatee is not None:
+        log.log_worker_action(hostname, user, "updateessentia")
         jobs.update_essentia.apply_async([hostname], queue=hostname)
         return redirect('docserver-worker', hostname)
     updatep = request.GET.get("updatepcm")
     if updatep is not None:
+        log.log_worker_action(hostname, user, "updatepycm")
         jobs.update_pycompmusic.apply_async([hostname], queue=hostname)
         return redirect('docserver-worker', hostname)
     restart = request.GET.get("restart")
     if restart is not None:
+        log.log_worker_action(hostname, user, "restart")
         jobs.shutdown_celery(hostname)
         return redirect('docserver-worker', hostname)
 
@@ -292,8 +293,25 @@ def worker(request, hostname):
     elif len(active) == 0 and len(reserved) == 0:
         state = "Idle"
 
+    processed_files = log.get_processed_files(hostname)
+    recent = []
+    for p in processed_files:
+        collection = models.Collection.objects.get(collectionid=p["collection"])
+        document = collection.documents.get(external_identifier=p["recording"])
+        modver = models.ModuleVersion.objects.get(pk=p["moduleversion"])
+        recent.append({"document": document,
+                       "collection": collection,
+                       "modulever": modver,
+                       "date": p["date"]})
+
+    actions = log.get_worker_actions(hostname)
+    workerlog = []
+    for a in actions:
+        date = datetime.datetime.strptime(a["date"], "%Y-%m-%dT%H:%M:%S.%f")
+        workerlog.append({"date": date, "action": a["action"]})
+
     ret = {"worker": wk, "state": state, "active": active,
-            "reserved": reserved}
+            "reserved": reserved, "recent": recent, "workerlog": workerlog}
     return render(request, 'docserver/worker.html', ret)
 
 
@@ -302,10 +320,22 @@ def update_all_workers(request):
     jobs.update_all_workers()
     return redirect('docserver-manager')
 
+def extractor_modules():
+    ret = []
+    modules = models.Module.objects
+    for importer, modname, ispkg in pkgutil.iter_modules(extractors.__path__):
+        if not ispkg:
+            modname = "compmusic.extractors.%s" % modname
+            module = __import__(modname, fromlist="dummy")
+            for name, ftype in inspect.getmembers(module, inspect.isclass):
+                if issubclass(ftype, extractors.ExtractorModule):
+                    classname = "%s.%s" % (modname, name)
+                    if not modules.filter(module=classname).exists():
+                        ret.append(classname)
+    return ret
+
 @user_passes_test(is_staff)
 def addmodule(request):
-    # TODO: It would be cool if we just search for all modules in the `extractors` module
-    #       that haven't been installed yet
     if request.method == "POST":
         form = forms.ModuleForm(request.POST)
         if form.is_valid():
@@ -317,7 +347,8 @@ def addmodule(request):
             return redirect('docserver-manager')
     else:
         form = forms.ModuleForm()
-    ret = {"form": form}
+    newmodules = extractor_modules()
+    ret = {"form": form, "newmodules": newmodules}
     return render(request, 'docserver/addmodule.html', ret)
 
 @user_passes_test(is_staff)
@@ -328,22 +359,36 @@ def module(request, module):
     confirmmodule = False
     form = forms.ModuleEditForm(instance=module)
     if request.method == "POST":
+        # Delete a module version
         if request.POST.get("deleteversion"):
             version = request.POST.get("version")
             versions = versions.filter(pk=version)
             confirmversion = version
+        # Confirm deleting a module version
         elif request.POST.get("confirmversion"):
             version = request.POST.get("version")
             jobs.delete_moduleversion.delay(version)
+        # Delete an entire module
         elif request.POST.get("deletemodule"):
             # The module id is already in the argument to this method
             # so we don't get it from POST like the mod-version above.
             confirmmodule = module.pk
+        # Confirm deleting entire module
         elif request.POST.get("confirmmodule"):
             jobs.delete_module.delay(module.pk)
+        # Update list of collections for this module
         elif request.POST.get("update"):
             form = forms.ModuleEditForm(request.POST, instance=module)
             form.save()
+        # Scan for a new version
+        elif request.POST.get("newversion"):
+            jobs.get_latest_module_version(module.pk)
+            return redirect('docserver-module', module.pk)
+        # Process a module (specific version)
+        run = request.POST.get("runversion")
+        if run is not None:
+            jobs.run_module(module.pk, int(run))
+            return redirect('docserver-module', module.pk)
 
     ret = {"module": module, "versions": versions, "form": form, "confirmversion": confirmversion, "confirmmodule": confirmmodule}
     return render(request, 'docserver/module.html', ret)
@@ -363,7 +408,7 @@ def collectionversion(request, slug, version, type):
     if run:
         document = models.Document.objects.get(external_identifier=run)
         jobs.process_document.delay(document.pk, mversion.pk)
-        return redirect('docserver-collectionversion', args=[type, slug, version])
+        return redirect('docserver-collectionversion', type, slug, version)
 
     processedfiles = []
     unprocessedfiles = []

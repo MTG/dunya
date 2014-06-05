@@ -94,8 +94,13 @@
         {% with unproccount=m.unprocessed_files.distinct|length %}
         <td {% if unproccount > 0 %}class="warning"{% endif %}>{{unproccount}}</td>
         {% endwith %}
-        <td><a href="?scan={{m.pk}}">Scan all stuff</a><br>
-            <a href="?update={{m.pk}}">Get new version</a></td>
+        <td>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="run" value="{{m.pk}}">
+                <input type="submit" value="Process files">
+            </form>
+        </td>
     </tr>
     {% endfor %}
 </table>
@@ -103,7 +108,6 @@
 <p>(none)
 {% endif %}
 <p><a href="{% url 'docserver-addmodule' %}">Add new module</a><br>
-<p><a href="?update">Update module versions</a>
 
 <h2>Collection files</h2>
 {% if collections %}

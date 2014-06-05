@@ -25,10 +25,28 @@
    {% include "docserver/workerjob.html" with j=j only %}
 {% endfor %}
 
+{% if recent %}
+<h3>Recent completed jobs:</h3>
+<ul>
+{% for d in recent %}
+<li><a href="{% url 'docserver-file' d.collection.slug d.document.external_identifier d.modulever.pk %}">{{d.document.title}}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
 <h3>Queued jobs:</h3>
 {% for r in reserved %}
    {% include "docserver/workerjob.html" with j=r only %}
 {% endfor %}
+
+{% if workerlog %}
+<h3>Recent actions on this worker</h3>
+<ul>
+    {% for l in workerlog %}
+    <li>{{l.date|date:"DATETIME_FORMAT"}}: {{l.action}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <h2>Actions</h2>
 <ul>

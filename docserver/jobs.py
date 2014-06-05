@@ -25,6 +25,7 @@ import time
 import subprocess
 
 from docserver import models
+from docserver import log
 import dashboard
 import numpy as np
 
@@ -162,13 +163,14 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
 
     fullname = os.path.join(fdir, fname)
     fullrelname = os.path.join(reldir, fname)
-    if extension == "json":
-        data = json.dumps(data, fp, cls=NumPyArangeEncoder)
-    if not isinstance(data, basestring):
-        print "Data is not a string-ish thing. instead it's %s" % type(data)
     try:
         fp = open(fullname, "wb")
-        fp.write(data)
+        if extension == "json":
+            json.dump(data, fp, cls=NumPyArangeEncoder)
+        else:
+            if not isinstance(data, basestring):
+                print "Data is not a string-ish thing. instead it's %s" % type(data)
+            fp.write(data)
         fp.close()
     except OSError:
         print "Error writing to file %s" % fullname
@@ -184,6 +186,8 @@ def process_document(documentid, moduleversionid):
 
 
     hostname = process_document.request.hostname
+    if "@" in hostname:
+        hostname = hostname.split("@")[1]
     try:
         worker = models.Worker.objects.get(hostname=hostname)
     except models.Worker.DoesNotExist:
@@ -193,6 +197,8 @@ def process_document(documentid, moduleversionid):
 
     document = models.Document.objects.get(pk=documentid)
     collection = document.collection
+
+    log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
 
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
@@ -209,13 +215,12 @@ def process_document(documentid, moduleversionid):
         moduleslug = module.slug
         with transaction.atomic():
             for dataslug, contents in results.items():
-                print "data", dataslug
-                print "type", type(contents)
                 outputdata = instance.__output__[dataslug]
                 extension = outputdata["extension"]
                 mimetype = outputdata["mimetype"]
                 multipart = outputdata.get("parts", False)
-                print "multiparts", multipart
+                print "data %s (%s)" % (dataslug, type(contents))
+                print "multiparts %s" % multipart
                 df = models.DerivedFile.objects.create(document=document, derived_from=s,
                         module_version=version, outputname=dataslug, extension=extension,
                         mimetype=mimetype, computation_time=total_time)
@@ -232,11 +237,11 @@ def process_document(documentid, moduleversionid):
                     if saved_name:
                         df.save_part(i, rel_path, saved_size)
 
-def run_module(moduleid):
+def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
     collections = module.collections.all()
     for c in collections:
-        run_module_on_collection(c.pk, module.pk)
+        run_module_on_collection(c.pk, module.pk, versionid)
 
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
@@ -254,10 +259,13 @@ def run_module_on_recordings(moduleid, recids):
             print "  docid", d.pk
             process_document.delay(d.pk, version.pk)
 
-def run_module_on_collection(collectionid, moduleid):
+def run_module_on_collection(collectionid, moduleid, versionid=None):
     collection = models.Collection.objects.get(pk=collectionid)
     module = models.Module.objects.get(pk=moduleid)
-    version = module.get_latest_version()
+    if versionid:
+        version = module.versions.get(pk=versionid)
+    else:
+        version = module.get_latest_version()
     print "running module", module, "on collection", collection
     if version:
         print "version", version
@@ -359,8 +367,9 @@ def update_single_worker(hostname):
     update_pycompmusic(hostname)
     shutdown_celery(hostname)
 
-def update_all_workers():
+def update_all_workers(user=None):
     workers = models.Worker.objects.all()
     for w in workers:
+        log.log_worker_action(w.hostname, user, "updateall")
         update_single_worker.apply_async([w.hostname], queue=w.hostname)
 
