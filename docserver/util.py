@@ -170,7 +170,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
             # If no files, or none with this version
             msg = "No derived files with this type/subtype"
             if version:
-                msg =+ " or version"
+                msg += " or version"
             raise NoFileException(msg)
     else:
         raise NoFileException("No known versions for this module")
