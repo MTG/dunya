@@ -1,0 +1,58 @@
+{% extends "hindustani/base.html" %}
+{% load hindustaniinline %}
+{% load hindustanibadges %}
+{% load staticfiles %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    widthOfChildren('.metaContainer');
+    widthOfChildren('.inforight');
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
+});
+</script>
+{% endblock %}
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{form.name|title}} form - {% endblock %}
+
+{% block wrap %}
+
+
+  <div id="detail" class="form">
+      <!--
+     	<div id="header">
+     		<div id="summary">
+     			<div id="innerSummary">
+	     			<span>
+                        <h1 title="{{form.common_name|title}}">{{form.name|title}} form</h1>
+	     			</span>
+     			</div>
+     			<div id="summaryBack"></div>
+     		</div>
+            <div class="bigImage"></div>
+     		<div id="meta"></div>
+	     	<div class="clearfix"></div>
+     	</div>
+        -->
+			<div class="missingdata">
+				<h2>Sorry</h2>
+				<p>
+					We are still missing some information about this form.<br/> Our team is working on it. <br/> We are very sorry for the inconvenience.
+				</p>
+			</div>
+     		<div class="clearfix"></div>
+</div>
+
+{% endblock %}

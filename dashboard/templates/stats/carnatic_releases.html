@@ -9,9 +9,13 @@
 <ul>
 {% for r, missing in unmatched.items %}
 <li><a href="{{r.get_absolute_url}}">{{r.artist}}: {{r.title}}</a>
+<ul>
 {% for m in missing %}
 <li>{{m.title}} (<a href="http://musicbrainz.org/recording/{{m.id}}">http://musicbrainz.org/recording/{{m.id}}</a>)
 {% endfor %}
+</ul>
+{% empty %}
+<li> (none)
 {% endfor %}
 </ul>
 

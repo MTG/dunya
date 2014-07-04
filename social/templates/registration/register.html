@@ -4,10 +4,14 @@
 {% block wrap %}
 <div id="login">
     <h1>Register</h1>
+    For researchers wishing to participate in the evaluation of the CompMusic project we allow you to create an account to
+    access audio used in our research. Fill out this form completely, including your academic affiliation so that we can
+    review your account before granting access.
     <form method="post" action=".">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="send" />
+        By registering for Dunya you indicate that you agree to our <a href="{% url 'terms' %}">terms and conditions</a>.<br>
+        <input type="submit" value="Register" />
     </form>
 </div>
 {% endblock %}

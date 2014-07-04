@@ -20,14 +20,41 @@ $(document).ready(function() {
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
 	 });
-     waveform.mouseenter(function() {
+     waveform.mouseenter(function(e) {
          if (pagesound.duration) {
              waveform.css("cursor", "pointer");
+
          } else {
              waveform.css("cursor", "wait");
          }
      });
-     $(".zoom").click(function() {
+     waveform.mousemove(function(e) {
+         if (pagesound.duration) {
+             var offset_l = $(this).offset().left - $(window).scrollLeft();
+             var left = Math.round( (e.clientX - offset_l) );
+             var miniviewWidth = renderTotal.width();
+             var miniviewPercent = left / miniviewWidth;
+             var timeseconds = Math.floor(recordinglengthseconds * miniviewPercent);
+
+             $("#timepoint").html(formatseconds(timeseconds));
+             $("#timepoint").show();
+             $("#timepoint").css({
+                 "top" : e.pageY,
+                 "left" : e.pageX + 15
+             });
+        }
+     });
+     waveform.mouseleave(function() {
+        $("#timepoint").hide();
+     });
+     $(".zoom").click(function(e) {
+         e.preventDefault();
+         // Remove selected
+         $(".zoom").removeClass("selected");
+         // Find all zooms with all our classes (e.g. 'zoom zoom<n>')
+         // and apply 'selected'
+         var zclasses = $(this).attr("class");
+         $("[class='"+zclasses+"']").addClass("selected");
          var level = $(this).data("length");
          zoom(level);
      });
@@ -43,6 +70,13 @@ $(document).ready(function() {
          });
 
      });
+
+        $(document).keypress(function(e) {
+            if (e.keyCode == 0 || e.keyCode == 32) {
+                e.preventDefault();
+                playrecord();
+            }
+        });
 });
 
 function plotsa(context) {
@@ -303,12 +337,18 @@ function loaddata() {
             dodraw();
     }});
 
+    if (aksharaurl) {
     $.ajax(aksharaurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             aksharadata = data;
             rhythmDone = true;
             dodraw();
     }});
+    } else {
+        // If we have no data, don't draw the curve
+        aksharadata = [];
+        rhythmDone = true;
+    }
 
     function dodraw() {
         if (ticksDone && rhythmDone && pitchDone && histogramDone) {
@@ -328,18 +368,24 @@ function drawdata() {
     $(".timecode3").html(formatseconds(start+skip*2));
     $(".timecode4").html(formatseconds(start+skip*3));
     $(".timecode5").html(formatseconds(start+skip*4));
+
+    // The highlighted miniview
+    var beginPercentage = (beginningOfView/recordinglengthseconds);
+    var endPercentage = (beginningOfView+secondsPerView) / recordinglengthseconds;
+
+    var beginPx = renderTotal.width() * beginPercentage;
+    var endPx = renderTotal.width() * endPercentage;
+    var mini = $('#miniviewHighlight');
+    mini.css('left', beginPx);
+    mini.css('width', endPx-beginPx);
 }
 
 function mouPlay(desti){
-    console.debug("play click!");
 	percent = desti/waveform.width();
-    console.debug("percent - "+percent);
-
     clickseconds = recordinglengthseconds * percent
-	console.log(clickseconds+" - "+ recordinglengthseconds);
 
     posms = clickseconds * 1000;
-    part = Math.ceil(clickseconds / secondsPerView);
+    part = Math.ceil(clickseconds / secondsPerView) - 1;
     // Update the internal position counter
     beginningOfView = part * secondsPerView;
 
@@ -404,7 +450,7 @@ function updateProgress() {
     capcalTotal.css('left', leftSmallView-6);
 
     if (leftLargeView > 900) {
-        beginningOfView += secondsPerView;
+        beginningOfView = Math.floor(currentTime / secondsPerView) * secondsPerView;
         pnum = Math.floor(beginningOfView / secondsPerView + 1);
         replacepart(pnum)
     }
@@ -428,6 +474,7 @@ function zoom(level){
     waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
     specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
     drawdata();
+
 }
 
 

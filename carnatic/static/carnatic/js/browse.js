@@ -20,6 +20,16 @@ $(document).ready(function() {
             });
         }
     });
+
+    $(".filterCloseButton").click(function(e) {
+        e.preventDefault();
+        var eid = $(this).parent().parent().data("eid");
+        $("#entitiesList ul li").each(function(index, val) {
+            if ($(val).attr("eid") == eid) {
+                toggleCategory($(val));
+            }
+        });
+    });
 });
 
 function filterPackery(className){
@@ -38,7 +48,7 @@ function removeFilter(entity_filter){
     $(".filterBall").find(".arrow").addClass("arrowClosed");
     $(".filterBall").addClass("filterBallClosed");
     $("#entitiesList").addClass("filterListClosed");
-    $(".filters."+entity_filter).remove();
+    $(".filters.entity_"+entity_filter).remove();
 
     filtersArray.splice(filtersArray.indexOf(entity_filter), 1);
 
@@ -127,9 +137,9 @@ function parseAllFilters(data){
 function toggleCategory(item,after) {
     // Expand out the bubble if you click a name on the left-hand side
     if(item.hasClass("selected")){
-        removeFilter(item.attr("class").split(" ")[0]);
+        removeFilter(item.attr("entity_id"));
     }else{
-        loadFilter(item.data("filter"), item.attr("entity_id"),item.attr("eid"),after);
+        loadFilter(item.data("filter"), item.attr("entity_id"), item.attr("eid"),after);
     }
     item.toggleClass("selected");
     $("#summary").attr("class",item.attr("class"));
@@ -314,7 +324,7 @@ function sumarizeFilter(object){
 function showFilterData(data, entity_filter,filterName,eid,after){
     filtersArray.push(entity_filter);
     filterPosition = filtersArray.indexOf(entity_filter);
-    $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid);
+    $('#filterModel').clone(true).prependTo("#filterArea").attr("id","filter_"+filterPosition).attr("class","filters entity_"+entity_filter+" "+filterName.toLowerCase()).attr("eid",eid).data("eid", eid).show();
     $('#filterArea').width(480+(filtersArray.length*780));
     newFilter = "#filter_"+filterPosition;
     $(newFilter).find(".filterList").append(listFilterData(data, entity_filter));

@@ -1,9 +1,36 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Add module{% endblock %}
 
+{% block js %}
+<script>
+$(document).ready(function() {
+    $(".newmodule").click(function(e) {
+        e.preventDefault();
+        var module = $(this).text();
+        $("#id_module").val(module);
+    });
+});
+</script>
+{% endblock %}
+
 {% block wrap %}
 
-Add new module
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>Add new module</li>
+</ul>
+
+<h2>Add new module</h2>
+
+{% if newmodules %}
+Autodiscovered new modules:
+<ul>
+{% for m in newmodules %}
+<li><a href="" class="newmodule">{{m}}</a>
+{% endfor %}
+</ul>
+<p>
+{% endif %}
 
 <form method="post">{% csrf_token %}
     {{ form.as_p }}

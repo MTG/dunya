@@ -6,3 +6,104 @@
     background-color: gray;
     display: none;
 }
+.topbox {
+    margin-top:0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    border: 1px solid #E4E4E4;
+}
+
+.topbox .topheader {
+        border-bottom: 1px solid #E4E4E4;
+        font-weight: bold;
+        padding-bottom: 5px;
+        margin-bottom:5px;
+}
+
+
+span.red {
+    display:block;
+    width:20px;
+    height:20px;
+    background-color: red;
+    float: left;
+    margin-right: 5px;
+}
+
+span.green {
+    display:block;
+    width:20px;
+    height:20px;
+    background-color: green;
+    float: left;
+    margin-right: 5px;
+}
+
+span.yellow {
+    display:block;
+    width:20px;
+    height:20px;
+    background-color: yellow;
+    float: left;
+    margin-right: 5px;
+}
+
+/* Bootstrap breadcrumbs kind of suck, so let's use our own */
+.breadcrumbs {
+    font-size: 1.5em;
+    font-weight: bold;
+    list-style-type: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#fcfcfc), to(#f1f1f1));
+    background-image: -moz-linear-gradient(top, #fcfcfc, #f1f1f1);
+    background-image: -ms-linear-gradient(top, #fcfcfc, #f1f1f1);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fcfcfc), color-stop(100%, #f1f1f1));
+    background-image: -webkit-linear-gradient(top, #fcfcfc, #f1f1f1);
+    background-image: -o-linear-gradient(top, #fcfcfc, #f1f1f1);
+    background-image: linear-gradient(top, #fcfcfc, #f1f1f1);
+    border: 1px solid #e4e4e4;
+    padding: 7px 14px;
+}
+
+.breadcrumbs li {
+    display: inline-block;
+}
+
+.breadcrumbs li:not(:last-child):after {
+    content: "\00a0\00a0\00BB\00a0";
+}
+
+.navbar-brand {
+    background-image: url('../img/dunya.png');
+    background-position: 10px 6px;
+    background-repeat: no-repeat;
+    padding-left: 60px !important;
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+}
+.placeholder .info {
+  display: inline-block;
+  width: 50px;
+  height 50;
+}
+

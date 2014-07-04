@@ -1,0 +1,8 @@
+{% load staticfiles %}
+
+<div class="microitem concert">
+  <div class="colorCode shadow1"></div>
+  <div class="disco"><a href="{{concert.get_absolute_url}}">
+    {% if concert.has_image %}<img src="{{concert.get_small_image_url}}">{% endif %}</a></div>
+  <label><b>{{concert.title}}</b>{% if concert.year %}{{concert.year}}{% endif %}</label>
+</div>

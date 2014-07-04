@@ -1,0 +1,15 @@
+{% extends "carnatic/base.html" %}
+{% load inline %}
+
+{% block wrap %}
+<div id="login">
+    <h1>Delete account</h1>
+    If you wish to delete your account, select the checkbox below and click "Delete account". This operation <b>cannot</b> be undone.
+    <form method="post" action=".">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Delete account" />
+    </form>
+</div>
+{% endblock %}
+

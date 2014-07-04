@@ -1,0 +1,55 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Hindustani Artists{% endblock %}
+
+{% block wrap %}
+
+<h1>Hindustani Artists</h1>
+
+<a href="#all">All artists</a><br>
+<a href="#noinstrument">Artists without a main instrument</a><br>
+<a href="#noimages">Artists missing images</a><br>
+<a href="#nobios">Artists missing biographies</a><br>
+
+<a name="all"></a>
+<h2>All Artists</h2>
+{% for a in all %}
+<li><a href="{{a.get_musicbrainz_url}}">{{a}}</a> {% if a.dummy %} [dummy guru]{% endif %}
+{% endfor %}
+
+<a name="noinstrument"></a>
+<h2>Artists without a main instrument</h2>
+<ul>
+    {% for a in noinstrument %}
+    <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
+    {% endfor %}
+</ul>
+
+<a name="noimages"></a>
+<h2>Artists missing images</h2>
+<ul>
+    {% for a in noimages %}
+        <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
+        <ul>
+            {% for r in a.references.all %}
+            <li>{{r.source_name.name}} - <a href="{{r.uri}}">{{r.uri}}</a>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+
+<a name="nobios"></a>
+<h2>Artists missing biographies</h2>
+<ul>
+    {% for a in nobios %}
+        <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
+        <ul>
+            {% for r in a.references.all %}
+            <li>{{r.source_name.name}} - <a href="{{r.uri}}">{{r.uri}}</a>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+

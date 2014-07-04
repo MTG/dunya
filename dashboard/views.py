@@ -14,11 +14,17 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from django.template import loader
 import django.utils.timezone
+from django.forms.models import modelformset_factory
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.sites.models import get_current_site
 
 from dashboard import models
 from dashboard import forms
@@ -26,17 +32,20 @@ from dashboard import jobs
 import docserver
 
 import compmusic
+from eyed3 import mp3
 import os
 import importlib
 import json
 
 import carnatic
+import hindustani
+import makam
 
 def is_staff(user):
     return user.is_staff
 
 @user_passes_test(is_staff)
-def index(request):
+def addcollection(request):
     if request.method == 'POST':
         form = forms.AddCollectionForm(request.POST)
         if form.is_valid():
@@ -54,29 +63,64 @@ def index(request):
             docserver.models.Collection.objects.get_or_create(collectionid=coll_id, 
                     defaults={"root_directory":path, "name":coll_name})
             jobs.load_and_import_collection(new_collection.id)
-            return HttpResponseRedirect(reverse('dashboard-home'))
+            return redirect('dashboard-home')
     else:
         form = forms.AddCollectionForm()
+    ret = {'form': form}
+    return render(request, 'dashboard/addcollection.html', ret)
+
+@user_passes_test(is_staff)
+def index(request):
 
     collections = models.Collection.objects.all()
-    ret = {'form': form, 'collections': collections}
+    ret = {'collections': collections}
     return render(request, 'dashboard/index.html', ret)
 
 @user_passes_test(is_staff)
+def accounts(request):
+    UserFormSet = modelformset_factory(User, forms.InactiveUserForm, extra=0)
+    print User.objects.filter(is_active=False).all()
+    if request.method == 'POST':
+        formset = UserFormSet(request.POST, queryset=User.objects.filter(is_active=False))
+        if formset.is_valid():
+            for f in formset.forms:
+                user = f.cleaned_data["id"]
+                is_active = f.cleaned_data["is_active"]
+                if is_active:
+                    user.is_active = True
+                    user.save()
+
+                    # send an email to the user notifying them that their account is active
+                    subject = "Your Dunya account has been activated"
+                    current_site = get_current_site(request)
+                    context = {"username": user.username, "domain": current_site.domain}
+                    message = loader.render_to_string('registration/email_account_activated.html', context)
+                    from_email = settings.NOTIFICATION_EMAIL_FROM
+                    recipients = [user.email,]
+                    send_mail(subject, message, from_email, recipients, fail_silently=True)
+
+    formset = UserFormSet(queryset=User.objects.filter(is_active=False))
+    ret = {"formset": formset}
+    return render(request, 'dashboard/accounts.html', ret)
+
+@user_passes_test(is_staff)
 def collection(request, uuid):
-    c = get_object_or_404(models.Collection, pk=uuid)
+    c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), pk=uuid)
 
     rescan = request.GET.get("rescan")
     if rescan is not None:
         jobs.load_and_import_collection(c.id)
-        return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
+        return redirect('dashboard.views.collection', args=[uuid])
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
         jobs.force_load_and_import_collection(c.id)
-        return HttpResponseRedirect(reverse('dashboard.views.collection', args=[uuid]))
+        return redirect('dashboard.views.collection', args=[uuid])
 
     order = request.GET.get("order")
-    releases = models.MusicbrainzRelease.objects.filter(collection=c)
+    releases = models.MusicbrainzRelease.objects.filter(collection=c)\
+            .prefetch_related('musicbrainzreleasestate_set')\
+            .prefetch_related('collectiondirectory_set')\
+            .prefetch_related('collectiondirectory_set__collectionfile_set')
     if order == "date":
         def sortkey(rel):
             return rel.get_current_state().state_date
@@ -118,27 +162,27 @@ def release(request, releaseid):
 
     reimport = request.GET.get("reimport")
     if reimport is not None:
-        jobs.import_release.delay(release.id)
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        jobs.import_single_release.delay(release.id)
+        return redirect('dashboard.views.release', args=[releaseid])
 
     ignore = request.GET.get("ignore")
     if ignore is not None:
         release.ignore = True
         release.save()
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        return redirect('dashboard.views.release', args=[releaseid])
     unignore = request.GET.get("unignore")
     if unignore is not None:
         release.ignore = False
         release.save()
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        return redirect('dashboard.views.release', args=[releaseid])
     run = request.GET.get("run")
     if run is not None:
         module = int(run)
         # Get the recording ids in this release
         files = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
         recids = [r.recordingid for r in files]
-        docserver.jobs.run_module_on_recordings.delay(module, recids)
-        return HttpResponseRedirect(reverse('dashboard.views.release', args=[releaseid]))
+        docserver.jobs.run_module_on_recordings(module, recids)
+        return redirect('dashboard.views.release', args=[releaseid])
 
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
@@ -176,7 +220,7 @@ def file(request, fileid):
     try:
         docsrvdoc = docsrvcoll.documents.get(external_identifier=docid)
         sourcefiles = docsrvdoc.sourcefiles.all()
-        derivedfiles = docsrvdoc.derivedfiles.all()
+        derivedfiles = docsrvdoc.nestedderived()
     except docserver.models.Document.DoesNotExist:
         pass
     ret = {"file": thefile,
@@ -202,7 +246,7 @@ def directory(request, dirid):
         # TODO: Change to celery
         jobs.rematch_unknown_directory(dirid)
         directory = get_object_or_404(models.CollectionDirectory, pk=dirid)
-        return HttpResponseRedirect(reverse('dashboard.views.directory', args=[dirid]))
+        return redirect('dashboard.views.directory', args=[dirid])
 
     collection = directory.collection
     full_path = os.path.join(collection.root_directory, directory.path)
@@ -230,8 +274,6 @@ def directory(request, dirid):
     got_release_id = len(releaseids) == 1
     # TODO: This won't work if there are more than 1 lead artist?
     got_artist = len(artistids) == 1
-    print "releaseids", releaseids
-    print "artistids", artistids
 
     if directory.musicbrainzrelease:
         matched_release = directory.musicbrainzrelease
@@ -247,134 +289,214 @@ def directory(request, dirid):
         ret["artistid"] = list(artistids)[0]
     return render(request, 'dashboard/directory.html', ret)
 
-@user_passes_test(is_staff)
-def raagas(request):
-    # TODO: Raaga/taala/instrument is all duplicated code!
-    raagas = carnatic.models.Raaga.objects.all()
-    ret = {"items": raagas,
-           "entityn": "Raaga",
-           "entitynpl": "Raagas",
-           "entityurl": "dashboard-raagas",
-           "title": "Raaga editor"
+def _edit_attributedata(request, data):
+
+    stylename = data["stylename"]
+    entityname = data["entityname"]
+    entityurl = data["entityurl"]
+    klass = data["klass"]
+    aliasklass = data["aliasklass"]
+    template = data["template"]
+    transliteration = data.get("transliteration", False)
+
+    items = klass.objects.all()
+
+    ret = {"items": items,
+           "entityn": entityname,
+           "entitynpl": "%ss" % entityname,
+           "style": stylename,
+           "entityurl": entityurl,
+           "title": "%s editor" % entityname,
+           "transliteration": transliteration,
+           "alias": aliasklass
            }
+
     if request.method == 'POST':
         # Add aliases
-        for r in raagas:
-            isadd = request.POST.get("item-%s-alias" % r.id)
-            if isadd is not None:
-                carnatic.models.RaagaAlias.objects.create(raaga=r, name=isadd)
-        # Delete alias
-        for a in carnatic.models.RaagaAlias.objects.all():
-            isdel = request.POST.get("alias-rm-%s" % a.id)
-            if isdel is not None:
-                a.delete()
+        if aliasklass:
+            for i in items:
+                isadd = request.POST.get("item-%s-alias" % i.id)
+                if isadd is not None:
+                    i.aliases.create(name=isadd)
+            # Delete alias
+            for a in aliasklass.objects.all():
+                isdel = request.POST.get("alias-rm-%s" % a.id)
+                if isdel is not None:
+                    a.delete()
 
-        # Add new raaga
+        # Add new item
         refresh = False
-        newraaga = request.POST.get("newname")
-        if newraaga is not None and newraaga != "":
+        newname = request.POST.get("newname")
+        newtrans = request.POST.get("newtrans")
+        if newname is not None and newname != "":
             refresh = True
-            carnatic.models.Raaga.objects.create(name=newraaga)
-        # Delete raaga
-        for r in raagas:
-            isdel = request.POST.get("delete-item-%s" % r.id)
-            if isdel is not None:
-                refresh = True
-                r.delete()
-        if refresh:
-            raagas = carnatic.models.Raaga.objects.all()
-            ret["items"] = raagas
-    else:
-        newraaga = request.GET.get("newname")
-        if newraaga:
-            ret["newname"] = newraaga
-
-    return render(request, 'dashboard/raagataala.html', ret)
-
-@user_passes_test(is_staff)
-def taalas(request):
-    taalas = carnatic.models.Taala.objects.all()
-    ret = {"items": taalas,
-           "entityn": "Taala",
-           "entitynpl": "Taalas",
-           "entityurl": "dashboard-taalas",
-           "title": "Taala editor"
-           }
-    if request.method == 'POST':
-        # Add aliases
-        for t in taalas:
-            isadd = request.POST.get("item-%s-alias" % t.id)
-            if isadd is not None:
-                carnatic.models.TaalaAlias.objects.create(taala=t, name=isadd)
-        # Delete alias
-        for a in carnatic.models.TaalaAlias.objects.all():
-            isdel = request.POST.get("alias-rm-%s" % a.id)
-            if isdel is not None:
-                a.delete()
-
-        # Add new taala
-        refresh = False
-        newtaala = request.POST.get("newname")
-        if newtaala is not None and newtaala != "":
-            refresh = True
-            carnatic.models.Taala.objects.create(name=newtaala)
-        # Delete taala
-        for t in taalas:
-            isdel = request.POST.get("delete-item-%s" % t.id)
-            if isdel is not None:
-                refresh = True
-                t.delete()
-        if refresh:
-            taalas = carnatic.models.Taala.objects.all()
-            ret["items"] = taalas
-    else:
-        newtaala = request.GET.get("newname")
-        if newtaala:
-            ret["newname"] = newtaala
-
-    return render(request, 'dashboard/raagataala.html', ret)
-
-@user_passes_test(is_staff)
-def instruments(request):
-
-    instruments = carnatic.models.Instrument.objects.all()
-
-    ret = {"items": instruments,
-           "entityn": "Instrument",
-           "entitynpl": "Instruments",
-           "entityurl": "dashboard-instruments",
-           "title": "Instrument editor"
-           }
-    if request.method == 'POST':
-        # Add aliases
-        for i in instruments:
-            isadd = request.POST.get("item-%s-alias" % i.id)
-            if isadd is not None:
-                carnatic.models.InstrumentAlias.objects.create(instrument=i, name=isadd)
-        # Delete alias
-        for a in carnatic.models.InstrumentAlias.objects.all():
-            isdel = request.POST.get("alias-rm-%s" % a.id)
-            if isdel is not None:
-                a.delete()
-
-        # Add new instrument
-        refresh = False
-        newinstrument = request.POST.get("newname")
-        if newinstrument is not None and newinstrument != "":
-            refresh = True
-            carnatic.models.Instrument.objects.create(name=newinstrument)
-        # Delete instrument
-        for i in instruments:
+            args = {"name": newname}
+            if transliteration and newtrans is not None and newtrans != "":
+                args["transliteration"] = newtrans
+            klass.objects.create(**args)
+        # Delete item
+        for i in items:
             isdel = request.POST.get("delete-item-%s" % i.id)
             if isdel is not None:
                 refresh = True
                 i.delete()
         if refresh:
-            instruments = carnatic.models.Instrument.objects.all()
-            ret["items"] = instruments
+            items = klass.objects.all()
+            ret["items"] = items
     else:
-        newinstrument = request.GET.get("newname")
-        if newinstrument:
-            ret["newname"] = newinstrument
+        newname = request.GET.get("newname")
+        if newname:
+            ret["newname"] = newname
 
-    return render(request, 'dashboard/raagataala.html', ret)
+    return render(request, template, ret)
+
+@user_passes_test(is_staff)
+def carnatic_raagas(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Raaga",
+            "entityurl": "dashboard-carnatic-raagas",
+            "klass": carnatic.models.Raaga,
+            "aliasklass": carnatic.models.RaagaAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def carnatic_taalas(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Taala",
+            "entityurl": "dashboard-carnatic-taalas",
+            "klass": carnatic.models.Taala,
+            "aliasklass": carnatic.models.TaalaAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def carnatic_instruments(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Instrument",
+            "entityurl": "dashboard-carnatic-instruments",
+            "klass": carnatic.models.Instrument,
+            "aliasklass": carnatic.models.InstrumentAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+
+@user_passes_test(is_staff)
+def hindustani_raags(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Raag",
+            "entityurl": "dashboard-hindustani-raags",
+            "klass": hindustani.models.Raag,
+            "aliasklass": hindustani.models.RaagAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_taals(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Taal",
+            "entityurl": "dashboard-hindustani-taals",
+            "klass": hindustani.models.Taal,
+            "aliasklass": hindustani.models.TaalAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_layas(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Laya",
+            "entityurl": "dashboard-hindustani-layas",
+            "klass": hindustani.models.Laya,
+            "aliasklass": hindustani.models.LayaAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_forms(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Form",
+            "entityurl": "dashboard-hindustani-forms",
+            "klass": hindustani.models.Form,
+            "aliasklass": hindustani.models.FormAlias,
+            "template": "dashboard/styletag.html",
+            "transliteration": True # If this attribute has a transliteration
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_instruments(request):
+    data = {"stylename": "Hindustani",
+            "entityname": "Instrument",
+            "entityurl": "dashboard-hindustani-instruments",
+            "klass": hindustani.models.Instrument,
+            "aliasklass": None,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_makams(request):
+    data = {"stylename": "Makam",
+            "entityname": "Makam",
+            "entityurl": "dashboard-makam-makams",
+            "klass": makam.models.Makam,
+            "aliasklass": makam.models.MakamAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_forms(request):
+    data = {"stylename": "Makam",
+            "entityname": "Form",
+            "entityurl": "dashboard-makam-forms",
+            "klass": makam.models.Form,
+            "aliasklass": makam.models.FormAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_usuls(request):
+    data = {"stylename": "Makam",
+            "entityname": "Usul",
+            "entityurl": "dashboard-makam-usuls",
+            "klass": makam.models.Usul,
+            "aliasklass": makam.models.UsulAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_instruments(request):
+    data = {"stylename": "Makam",
+            "entityname": "Instrument",
+            "entityurl": "dashboard-makam-instruments",
+            "klass": makam.models.Instrument,
+            "aliasklass": None,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)

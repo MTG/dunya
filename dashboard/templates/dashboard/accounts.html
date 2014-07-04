@@ -1,0 +1,33 @@
+{% extends "dashboard/base.html" %}
+{% block title %}New accounts{% endblock %}
+
+{% block wrap %}
+
+<h1>New accounts</h1>
+<p>This page only shows new (inactive) accounts. If you approve an account the user will get sent an email telling them
+that their account has been activated. For more detailed account management use <a href="/admin">the django admin</a></p>
+
+<form method="post">
+{% csrf_token %}
+<table class="table">
+<tr><th>Username</th><th>Email</th><th>Name</th><th>Surname</th><th>Affiliation</th><th>Approve?</th></tr>
+{{formset.management_form.as_p}}
+{% for f in formset.forms %}
+    {{f.id.as_hidden}}
+<tr>
+<td> {{f.username}} </td>
+<td> {{f.email}} </td>
+<td> {{f.first_name}} </td>
+<td> {{f.last_name}} </td>
+<td> {{f.affiliation}} </td>
+<td> {{f.is_active.as_widget}} </td>
+
+</tr>
+
+{% endfor %}
+</table>
+<input type="submit">
+</form>
+
+{% endblock %}
+

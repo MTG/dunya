@@ -1,0 +1,58 @@
+Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordingid}}">http://musicbrainz.org/recording/{{data.recordingid}}</a><br>
+
+{% if data.gotraag  %}
+<h4>Raaga</h4>
+{% if data.gotraag %}Got raag tags: {{data.raag|join:", "}}{% else %}Missing raag tags{% endif %}
+{% endif %}
+{% if data.missingr %}
+<h4>Raags missing in database</h4>
+
+{% for r in data.missingr %}
+    <li><a href="{% url 'dashboard-hindustani-raagas' %}?newname={{r}}">{{r}}</a>
+{% endfor %}
+{% endif %}
+{% if not data.gotraag and not data.missingr %}
+<h4>Cannot find raag tag</h4>
+{% endif %}
+
+{% if data.gottaal %}
+<h4>Taal</h4>
+{% if data.gottaal %}Got taal tags: {{data.taal|join:", "}}{% else %}Missing taal tags{% endif %}
+{% endif %}
+{% if data.missingt %}
+<h4>Taala missing in database</h4>
+{% for t in data.missingt %}
+<li><a href="{% url 'dashboard-hindustani-taalas' %}?newname={{t}}">{{t}}</a>
+{% endfor %}
+{% endif %}
+{% if not data.gottaal and not data.missingt %}
+<h4>Cannot find taal tag</h4>
+{% endif %}
+
+{% if data.gotform %}
+<h4>Form</h4>
+{% if data.gotform %}Got form tags: {{data.form|join:", "}}{% else %}Missing form tags{% endif %}
+{% endif %}
+{% if data.missingf %}
+<h4>Form missing in database</h4>
+{% for f in data.missingf %}
+<li><a href="{% url 'dashboard-hindustani-forms' %}?newname={{f}}">{{f}}</a>
+{% endfor %}
+{% endif %}
+{% if not data.gotform and not data.missingf %}
+<h4>Cannot find form tag</h4>
+{% endif %}
+
+{% if data.gotlaya %}
+<h4>Laya</h4>
+{% if data.gotlaya %}Got laya tags: {{data.laya|join:", "}}{% else %}Missing laya tags{% endif %}
+{% endif %}
+{% if data.missingl %}
+<h4>Layas missing in database</h4>
+{% for l in data.missingl %}
+<li><a href="{% url 'dashboard-hindustani-layas' %}?newname={{l}}">{{l}}</a>
+{% endfor %}
+{% endif %}
+{% if not data.gotlaya and not data.missingl %}
+<h4>Cannot find laya tag</h4>
+{% endif %}

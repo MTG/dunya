@@ -5,7 +5,8 @@
 <div id="login" class="logCenter">
 	<h1>Welcome</h1>
  {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
+  <p>We were unable to log you in. Please try again.</p>
+  <p>If you have just created an account you must wait until it has been activated.</p>
   <p>Forgot your password? <a href="{% url 'social-pwreset' %}">Click here to reset it.</a></p>
  {% endif %}
   <form method="post" action=".">

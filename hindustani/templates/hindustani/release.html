@@ -1,0 +1,179 @@
+{% extends "hindustani/base.html" %}
+{% load hindustaniinline %}
+{% load hindustanibadges %}
+{% load staticfiles %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    widthOfChildren('.inforight');
+    widthOfChildren('.tracklist');
+	$(".inforight .desc .plus").click(function() {
+		$(this).parent().parent().toggleClass("open");
+        widthOfChildren('.inforight');
+	});
+	$( ".player" ).click(function() {
+      $( "#playback_dialog" ).dialog( "open" );
+    });
+	$('.item .similarity div').click(function(){
+        $('.item .similarity div').removeClass('active');
+        theparent = $(this).parent();
+        buscar = ".right ."+$(this).attr('class');
+        theparent.parent().parent().find(".right .similarList").removeClass('active');
+        theparent.parent().parent().find(buscar).addClass('active');
+        theparent.parent().parent().find(".right").fadeIn('slow');
+        $(this).addClass("active");
+        widthOfChildren('.inforight');
+    });
+});
+</script>
+{% endblock %}
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{release.title}} - {% endblock %}
+
+{% block wrap %}
+<!--
+    <div id="filterMask">
+	    <div id="filterArea">
+
+	    	<div id="entitiesList" class="filterList">
+	    		<h3>Chose your query</h3>
+	        	<ul>
+
+	        	</ul>
+	    	</div>
+
+	    	<div id="breadcrumb">
+	    		<div class="bread entity_1 artist">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    		<div class="bread entity_3 work">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    		<div class="bread entity_4 instrument">
+	    			<div class="breadarrow"></div>
+	    			<span><a href="#">No selection</a></span>
+	    		</div>
+	    	</div>
+
+	    </div>
+     </div>
+     -->
+     <div id="detail" class="concert">
+     	<div id="header">
+     		<div id="summary">
+     			<div id="innerSummary">
+	     			<span>
+		     			<h1>{{release.title}}</h1>
+		     			<h2>Release by {%inline_artist_list release.artistnames %}</h2>
+	     			</span>
+     			</div>
+
+     			<div id="summaryBack"></div>
+				{% if user.is_authenticated %}
+				<div id="previewicon" class="enabled">
+						<div class="ui360"><a href="{{sample.absolute_mp3_url}}">{{sample.title}}</a></div>
+				</div>
+				{% else %}
+				<div id="previewicon" class="disabled"></div>
+				{% endif %}
+     		</div>
+            <div class="bigImage"><img src="{{release.get_image_url}}" /></div>
+     		<div id="meta">
+     			<div class="metaBlock">
+					<div class="metaMask">
+			 			<div class="metaContainer">
+							<div  class="splitMeta">
+								<div id="editorial" class="metaDetails">
+									<h3>Editorial Metadata</h3>
+									<div class="inner">
+										<span class='list'>
+                                            <label>Year:</label><b>{{release.year}}</b>
+                                            <label>length:</label><b>{{release.length}}</b>
+                                            <label>Data source:</label><b><a href="{{release.ref.url}}">{{release.ref.title}}</a></b>
+									</div>
+								</div>
+							</div>
+
+			 			</div>
+			 		</div>
+			 	</div>
+     		</div>
+
+	     	<div class="clearfix"></div>
+
+     	</div><!-- HEADER END -->
+	 	<div class="alldata">
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>List of tracks</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata scrolldata nopad">
+	                    <div class="tracklist">
+                            {% for t in release.tracks.all %}
+                            {% badge_recording t %}
+                            {% endfor %}
+	                    </div>
+	     			</div>
+	     		</div>
+	     	</div>
+
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Artists</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata scrolldata nopad">
+                        {% if release.performers %}
+                        <div class="scrollblock inforight" style="height: 290px;">
+	                    {% for performance in release.performers %}
+	                        {% badge_performance performance %}
+	                    {% endfor %}
+                        </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        </div>
+                        {% endif %}
+		     			<div class="clearfix"></div>
+	     			</div>
+	     		</div>
+	     	</div>
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>Similar releases</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata scrolldata nopad">
+                        {% if similar %}
+	                    <div class="scrollblock inforight" style="height: 290px; width:3000px;">
+                            {% for release, similarity in similar %}
+                                {% badge_similar_release release similarity %}
+                            {% endfor %}
+	                    </div>
+                        {% else %}
+                        <div style="height: 290px;">
+                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                        </div>
+                        {% endif %}
+	     			</div>
+	     		</div>
+	     	</div>
+
+		 	<div class="clearfix"></div>
+	 	</div>
+</div>
+
+{% endblock %}

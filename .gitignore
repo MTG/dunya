@@ -6,3 +6,6 @@ dunya/local_settings.py
 *.sqlite
 .DS_Store
 dunya_data.json
+media
+/static
+LESS_CACHE

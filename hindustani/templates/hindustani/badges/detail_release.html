@@ -1,0 +1,21 @@
+{% load hindustaniinline %}
+  <div class="concert item">
+        <div class="disc pict">
+            <a href="{{release.get_absolute_url}}"><img src="{{release.get_image_url}}"></a>
+    </div>
+    {% comment %} TODO: Show track listing {% endcomment %}
+        <div class="desc">
+            {% inline_release release 1 %}
+        <p>{% inline_artist_list release.artists.all %}</p>
+        {% if release.year %}<p>{{release.year}}</p>{% endif %}
+    </div>
+
+        <div class="lists similar">
+            <div  class="left">
+
+            </div>
+            <div class="right">
+            </div>
+        </div>
+      </div>
+

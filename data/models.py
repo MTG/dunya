@@ -19,9 +19,17 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.db.models import Q
+from django.utils.text import slugify
+
+import docserver
+
 import os
 import time
 import math
+
+class ClassProperty(property):
+    def __get__(self, cls, owner):
+        return self.fget.__get__(None, owner)()
 
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
@@ -39,7 +47,7 @@ class Source(models.Model):
     last_updated = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
+        return u"From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
 
 class Description(models.Model):
     """ A short description of a thing in the database.
@@ -48,7 +56,7 @@ class Description(models.Model):
     description = models.TextField()
 
     def __unicode__(self):
-        return "%s - %s" % (self.source, self.description[:100])
+        return u"%s - %s" % (self.source, self.description[:100])
 
 class Image(models.Model):
     """ An image of a thing in the database """
@@ -57,9 +65,9 @@ class Image(models.Model):
     small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
     def __unicode__(self):
-        ret = "%s" % (self.image.name, )
+        ret = u"%s" % (self.image.name, )
         if self.source:
-            ret = "%s from %s" % (ret, self.source.uri)
+            ret = u"%s from %s" % (ret, self.source.uri)
         return ret
 
 class BaseModel(models.Model):
@@ -74,6 +82,9 @@ class BaseModel(models.Model):
     def ref(self):
         u = {"url": self.source.uri, "title": self.source.source_name.name}
         return u
+
+    def has_image(self):
+        return bool(self.images.count())
 
     def get_image_url(self):
         media = settings.MEDIA_URL
@@ -120,6 +131,7 @@ class Artist(BaseModel):
     )
     TYPE_CHOICES = (
         ('P', 'Person'),
+        #('C', 'Composer'),
         ('G', 'Group')
     )
     name = models.CharField(max_length=200)
@@ -130,14 +142,14 @@ class Artist(BaseModel):
     artist_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='P')
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
     group_members = models.ManyToManyField('Artist', blank=True, null=True, related_name='groups')
-    dummy = models.BooleanField(default=False)
+    dummy = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.name)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -148,11 +160,23 @@ class Artist(BaseModel):
         return concerts.all()
 
     def recordings(self):
-        perfs = self.performances()
         IPClass = self.get_object_map("performance")
         performances = IPClass.objects.filter(performer=self)
-        recs = [p.recording for p in performances]
-        return recs
+        performance_recs = [p.recording for p in performances]
+
+        # Releases where we were primary artist
+        RelClass = self.get_object_map("release")
+        pa_rels = RelClass.objects.filter(artists=self)
+        # Releases where we were a relationship
+        IRPClass = self.get_object_map("releaseperformance")
+        rel_perfs = IRPClass.objects.filter(performer=self)
+        rel_rels = [r.concert for r in rel_perfs]
+        concerts = set(pa_rels) | set(rel_rels)
+        concert_recordings = []
+        for c in concerts:
+            concert_recordings.extend(c.tracks.all())
+
+        return list(set(performance_recs)|set(concert_recordings))
 
     def performances(self, raagas=[], taalas=[]):
         ReleaseClass = self.get_object_map("release")
@@ -178,6 +202,17 @@ class Artist(BaseModel):
                     instruments.append(p.instrument)
             ret.append((c, theperf))
         return ret
+
+class ArtistAlias(models.Model):
+    class Meta:
+        abstract = True
+    artist = models.ForeignKey("Artist", related_name="aliases")
+    alias = models.CharField(max_length=100)
+    primary = models.BooleanField(default=False)
+    locale = models.CharField(max_length=10, blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s (alias for %s)" % (self.alias, self.artist)
 
 class Release(BaseModel):
     missing_image = "concert.jpg"
@@ -205,12 +240,12 @@ class Release(BaseModel):
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
     def __unicode__(self):
-        ret = ", ".join([unicode(a) for a in self.artists.all()])
-        return "%s (%s)" % (self.title, ret)
+        ret = u", ".join([unicode(a) for a in self.artists.all()])
+        return u"%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
-        viewname = "%s-concert" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        viewname = "%s-release" % (self.get_style(), )
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -264,14 +299,15 @@ class Work(BaseModel):
         abstract = True
     title = models.CharField(max_length=100)
     mbid = UUIDField(blank=True, null=True)
-    composer = models.ForeignKey('Composer', blank=True, null=True)
+    composers = models.ManyToManyField('Composer', blank=True, null=True, related_name="works")
+    lyricists = models.ManyToManyField('Composer', blank=True, null=True, related_name="lyric_works")
 
     def __unicode__(self):
         return self.title
 
     def get_absolute_url(self):
         viewname = "%s-work" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/work/%s" % self.mbid
@@ -287,7 +323,7 @@ class Work(BaseModel):
 class Recording(BaseModel):
     class Meta:
         abstract = True
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     mbid = UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
@@ -300,10 +336,17 @@ class Recording(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-recording" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/recording/%s" % self.mbid
+
+    def absolute_mp3_url(self):
+        try:
+            url = docserver.util.docserver_get_mp3_url(self.mbid)
+        except docserver.util.NoFileException:
+            url = None
+        return url
 
     def length_format(self):
         numsecs = self.length/1000
@@ -323,7 +366,28 @@ class Recording(BaseModel):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        return ArtistClass.objects.filter(primary_concerts__tracks=self)
+        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+
+        IPClass = self.get_object_map("performance")
+        recperfs = IPClass.objects.filter(recording=self)
+        rec_artists = [r.performer for r in recperfs]
+
+        all_as = set(primary_artists) | set(rec_artists)
+        return list(all_as)
+
+    def waveform_image(self):
+        # TODO: Select this image in a better way, or show a better
+        # representation
+        try:
+            # we return "4", because it might be more interesting than 1, but if it fails
+            # (e.g. only 3?) then just return 1
+            return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
+        except docserver.util.NoFileException:
+            try:
+                return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
+            except docserver.util.NoFileException:
+                return ""
+
 
 class InstrumentAlias(models.Model):
     class Meta:
@@ -347,7 +411,7 @@ class Instrument(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-instrument" % (self.get_style(), )
-        return reverse(viewname, args=[str(self.id)])
+        return reverse(viewname, args=[str(self.id), slugify(self.name)])
 
     def artists(self):
         ArtistClass = self.get_object_map("artist")
@@ -362,7 +426,7 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s playing %s on %s" % (self.performer, self.instrument, self.recording)
+        return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 class Composer(BaseModel):
     missing_image = "artist.jpg"
@@ -384,7 +448,18 @@ class Composer(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[self.mbid, slugify(self.name)])
+
+class ComposerAlias(models.Model):
+    class Meta:
+        abstract = True
+    composer = models.ForeignKey("Composer", related_name="aliases")
+    alias = models.CharField(max_length=100)
+    primary = models.BooleanField(default=False)
+    locale = models.CharField(max_length=10, blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s (alias for %s)" % (self.alias, self.composer)
 
 class VisitLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
@@ -394,5 +469,5 @@ class VisitLog(models.Model):
     path = models.CharField(max_length=256)
 
     def __unicode__(self):
-        return "%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
+        return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
 

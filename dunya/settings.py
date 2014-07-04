@@ -45,6 +45,8 @@ STATIC_ROOT = 'static/'
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/social/login'
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -79,6 +81,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'dunya.middleware.PageLoggerMiddleware',
+    'dunya.middleware.NavigationHistoryMiddleware',
 )
 
 ROOT_URLCONF = 'dunya.urls'
@@ -92,12 +95,19 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+ADMINS = (
+    # The email address of the first person in this list will be used in the 
+    # reply field of the emails sent by Dunya 
+    # ('YOUR NAME', 'EMAIL ADDRESS'),
+)
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
+    # "dunya.context_processors.navigation_header",
 )
 
 INSTALLED_APPS = (
@@ -122,13 +132,28 @@ INSTALLED_APPS = (
     'social',
     'makam',
     'dunya',
-    'hindustani'
+    'hindustani',
+    'motifdiscovery'
 )
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
 # Celery
-CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+class DunyaRouter(object):
+    def route_for_task(self, task, *args, **kwargs):
+        if task.startswith("dashboard."):
+            return {"queue": "import"}
+        return {"queue": "celery"}
+
+CELERY_ROUTES = (DunyaRouter(), )
+
+# Sendfile
+SENDFILE_BACKEND = 'sendfile.backends.nginx'
+SENDFILE_ROOT = '/'
+SENDFILE_URL = '/serve'
 
 # Django rest framework
 REST_FRAMEWORK = {
@@ -143,6 +168,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+# Notification emails (e.g. account activated)
+# Who emails are from
+NOTIFICATION_EMAIL_FROM = ""
+# Who gets system emails (e.g., new user) [list/set]
+NOTIFICATION_EMAIL_TO = ('', )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -176,5 +207,14 @@ LOGGING = {
 #Social part_PROFILE
 AUTH_PROFILE_MODULE = "social.UserProfile"
 AUTH_USER_MODULE = "django.contrib.auth.models.User"
+
+# Navigation Header settings
+MAX_NAV_HEADER_ITEMS = 4
+
+# Fixed versions of extracted features to show on dunya
+FEAT_VERSION_NORMALISED_PITCH = "0.5"
+FEAT_VERSION_TONIC = "0.2"
+FEAT_VERSION_RHYTHM = "0.3"
+FEAT_VERSION_IMAGE = "0.2"
 
 from local_settings import *

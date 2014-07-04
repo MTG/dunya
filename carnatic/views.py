@@ -18,9 +18,10 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils.text import slugify
+from django.conf import settings
 
 from social import tagging
 from carnatic.models import *
@@ -67,6 +68,7 @@ def main(request):
         qartist = [10]
         # thodi raaga
         qraaga = [55]
+        return redirect("%s?a=10&r=55" % reverse('carnatic-main'))
     if "a" in request.GET:
         for i in request.GET.getlist("a"):
             qartist.append(int(i))
@@ -275,11 +277,11 @@ def artistsearch(request):
         ret.append({"id": a.id, "name": a.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def artistbyid(request, artistid):
+def artistbyid(request, artistid, name=None):
     artist = get_object_or_404(Artist, pk=artistid)
-    return redirect(reverse('carnatic-artist', args=[artist.mbid]), permanent=True)
+    return redirect(artist.get_absolute_url(), permanent=True)
 
-def artist(request, uuid):
+def artist(request, uuid, name=None):
     artist = get_object_or_404(Artist, mbid=uuid)
 
     inst = artist.instruments()
@@ -366,19 +368,13 @@ def artist(request, uuid):
 
     return render(request, "carnatic/artist.html", ret)
 
-def composerbyid(request, composerid):
+def composerbyid(request, composerid, name=None):
     composer = get_object_or_404(Composer, pk=composerid)
-    return redirect(reverse('carnatic-composer', args=[composer.mbid]), permanent=True)
+    return redirect(composer.get_absolute_url(), permanent=True)
 
-def composer(request, uuid):
+def composer(request, uuid, name=None):
     composer = get_object_or_404(Composer, mbid=uuid)
-    recordings = []
-    for w in composer.work_set.all():
-        recordings.extend(w.recording_set.all())
-        break
-    ret = {"composer": composer,
-		   "tracks": recordings,
-		   "filter_items": json.dumps(get_filter_items())}
+    ret = {"composer": composer}
 
     return render(request, "carnatic/composer.html", ret)
 
@@ -386,14 +382,14 @@ def concertsearch(request):
     concerts = Concert.objects.all().order_by('title')
     ret = []
     for c in concerts:
-        ret.append({"id": c.id, "title": c.title})
+        ret.append({"id": c.id, "title": "%s<br>%s" % (c.title, c.artistcredit)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def concertbyid(request, concertid):
+def concertbyid(request, concertid, title=None):
     concert = get_object_or_404(Concert, pk=concertid)
-    return redirect(reverse('carnatic-concert', args=[concert.mbid]), permanent=True)
+    return redirect(concert.get_absolute_url(), permanent=True)
 
-def concert(request, uuid):
+def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
     images = concert.images.all()
     if images:
@@ -425,25 +421,25 @@ def concert(request, uuid):
 
     return render(request, "carnatic/concert.html", ret)
 
-def recordingbyid(request, recordingid):
+def recordingbyid(request, recordingid, title=None):
     recording = get_object_or_404(Recording, pk=recordingid)
-    return redirect(reverse('carnatic-recording', args=[recording.mbid]), permanent=True)
+    return redirect(recording.get_absolute_url(), permanent=True)
 
-def recording(request, uuid):
+def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
 
     tags = tagging.tag_cloud(recording.id, "recording")
 
     try:
-        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1)
+        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1)
+        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull")
+        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         small = None
     try:
@@ -451,7 +447,7 @@ def recording(request, uuid):
     except docserver.util.NoFileException:
         audio = None
     try:
-        tonic = docserver.util.docserver_get_contents(recording.mbid, "ctonic", "tonic")
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
@@ -467,16 +463,16 @@ def recording(request, uuid):
         tonic = None
         tonicname = None
     try:
-        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod")
+        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
         akshara = str(round(float(akshara), 3) * 1000)
     except docserver.util.NoFileException:
         akshara = None
 
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch")
-        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram")
-        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks")
-        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve")
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch", version=settings.FEAT_VERSION_NORMALISED_PITCH)
+        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_NORMALISED_PITCH)
+        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
+        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
     except docserver.util.NoFileException:
         pitchtrackurl = None
         histogramurl = None
@@ -487,8 +483,11 @@ def recording(request, uuid):
     try:
         similar_mbids = search.similar_recordings(recording.mbid)
         for m in similar_mbids:
-            rec = Recording.objects.get(mbid=m[0])
-            similar.append(rec)
+            try:
+                rec = Recording.objects.get(mbid=m[0])
+                similar.append(rec)
+            except Recording.DoesNotExist:
+                pass
     except pysolr.SolrError:
         # TODO: Show error in similar recordings page instead of empty
         pass
@@ -543,11 +542,11 @@ def worksearch(request):
         ret.append({"id": w.id, "title": w.title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def workbyid(request, workid):
+def workbyid(request, workid, title=None):
     work = get_object_or_404(Work, pk=workid)
-    return redirect(reverse('carnatic-work', args=[work.mbid]), permanent=True)
+    return redirect(work.get_absolute_url(), permanent=True)
 
-def work(request, uuid):
+def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
 
     tags = tagging.tag_cloud(work.id, "work")
@@ -575,16 +574,17 @@ def taalasearch(request):
         ret.append({"id": t.id, "name": str(t)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def taala(request, taalaid):
+def taala(request, taalaid, name=None):
     taala = get_object_or_404(Taala, pk=taalaid)
 
     similar = taala.get_similar()
     tracks = taala.recordings(10)
+    sample = None
     if len(tracks):
-        tracks = random.sample(tracks, 1)
+        sample = random.sample(tracks, 1)[0]
 
     ret = {"taala": taala,
-           "tracks": tracks,
+           "sample": sample,
            "similar": similar
           }
     return render(request, "carnatic/taala.html", ret)
@@ -596,15 +596,16 @@ def raagasearch(request):
         ret.append({"id": r.id, "name": str(r)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def raaga(request, raagaid):
+def raaga(request, raagaid, name=None):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
     tracks = raaga.recordings(10)
+    sample = None
     if len(tracks):
-        tracks = random.sample(tracks, 1)
+        sample = random.sample(tracks, 1)[0]
 
     ret = {"raaga": raaga,
-           "tracks": tracks,
+           "sample": sample,
            "similar": similar
     }
     return render(request, "carnatic/raaga.html", ret)
@@ -616,7 +617,7 @@ def instrumentsearch(request):
         ret.append({"id": i.id, "name": i.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def instrument(request, instrumentid):
+def instrument(request, instrumentid, name=None):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
     samples = instrument.samples(10)
     sample = None

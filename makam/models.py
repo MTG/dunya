@@ -27,7 +27,6 @@ class MakamStyle(object):
         return "makam"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "releaseperformance": InstrumentReleasePerformance,
                 "release": Release,
                 "composer": Composer,
                 "artist": Artist,
@@ -36,19 +35,21 @@ class MakamStyle(object):
                 "instrument": Instrument
                 }[key]
 
+class ArtistAlias(MakamStyle, data.models.ArtistAlias):
+    pass
+
 class Artist(MakamStyle, data.models.Artist):
+    pass
+
+class ComposerAlias(MakamStyle, data.models.ComposerAlias):
     pass
 
 class Composer(MakamStyle, data.models.Composer):
     pass
 
-class Lyricist(MakamStyle, data.models.Composer):
-    pass
-
 class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
-    performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_releases')
 
 class ReleaseRecording(models.Model):
     release = models.ForeignKey('Release')
@@ -57,7 +58,7 @@ class ReleaseRecording(models.Model):
     track = models.IntegerField()
 
     def __unicode__(self):
-        return "%s: %s from %s" % (self.track, self.recording, self.release)
+        return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 class RecordingWork(models.Model):
     work = models.ForeignKey("Work")
@@ -69,15 +70,6 @@ class Recording(MakamStyle, data.models.Recording):
 
 class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
-
-class InstrumentReleasePerformance(models.Model):
-    release = models.ForeignKey('Release')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
-    lead = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return "%s playing %s in %s" % (self.performer, self.instrument, self.release)
 
 class Instrument(MakamStyle, data.models.Instrument):
     pass
@@ -95,6 +87,9 @@ class Makam(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('makam-makam', args=[str(self.id)]) 
+
 class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
@@ -107,6 +102,9 @@ class Usul(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('makam-usul', args=[str(self.id)]) 
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=100)
@@ -121,13 +119,14 @@ class Form(models.Model):
     def __unicode__(self):
         return self.name
 
-class Work(MakamStyle, data.models.Work):
+    def get_absolute_url(self):
+        return reverse('makam-form', args=[str(self.id)]) 
 
-    lyricist = models.ManyToManyField('Lyricist', blank=True, null=True)
+class Work(MakamStyle, data.models.Work):
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
-    makam = models.ManyToManyField(Makam)
-    usul = models.ManyToManyField(Usul)
-    form = models.ForeignKey(Form)
+    makam = models.ManyToManyField(Makam, blank=True, null=True)
+    usul = models.ManyToManyField(Usul, blank=True, null=True)
+    form = models.ManyToManyField(Form, blank=True, null=True)
     is_taksim = models.BooleanField(default=False)
 

@@ -1,0 +1,12 @@
+{% extends "motifdiscovery/base.html" %}
+{% block body %}
+    <h2>Releases by {{artist.name}}</h2>
+    {% for r in concerts %}
+    <li class="b"><a href="{% url 'motif-release' r.mbid %}">{{r.title}}</a></li>
+    {% endfor %}      
+{% endblock %}
+
+{% block nav %}
+<li><a href="{% url 'motif-main'%}">Browsing options</a></li>
+<li><a href="{% url 'motif-artists'%}">Artist list </a></li>
+{% endblock %}  

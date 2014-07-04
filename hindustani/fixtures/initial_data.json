@@ -1,0 +1,5212 @@
+[
+{
+    "pk": 1, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": false, 
+        "name": "Voice"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": false, 
+        "name": "Spanish acoustic guitar"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": false, 
+        "name": "Additional"
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11255, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4322
+        ], 
+        "hidden": false, 
+        "name": "Bansuri"
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": true, 
+        "name": "Cymbals"
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": false, 
+        "name": "Flute"
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11256, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4323
+        ], 
+        "hidden": false, 
+        "name": "Ghatam"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": true, 
+        "name": "Guitar"
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11257, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4324
+        ], 
+        "hidden": false, 
+        "name": "Harmonium"
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": true, 
+        "name": "Harp"
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11258, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4325
+        ], 
+        "hidden": false, 
+        "name": "Morsing"
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11259, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4326
+        ], 
+        "hidden": false, 
+        "name": "Mridangam"
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11260, 
+        "percussion": true, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4327
+        ], 
+        "hidden": false, 
+        "name": "Pakhavaj"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11261, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4328
+        ], 
+        "hidden": false, 
+        "name": "Santoor"
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11262, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4329
+        ], 
+        "hidden": false, 
+        "name": "Sarangi"
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11263, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4330
+        ], 
+        "hidden": false, 
+        "name": "Sarod"
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11264, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4331
+        ], 
+        "hidden": false, 
+        "name": "Shehnai"
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11265, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4332
+        ], 
+        "hidden": false, 
+        "name": "Sitar"
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": false, 
+        "name": "Solo"
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11266, 
+        "percussion": true, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4333
+        ], 
+        "hidden": false, 
+        "name": "Tabla"
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": 11267, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4334
+        ], 
+        "hidden": false, 
+        "name": "Tambura"
+    }
+},
+{
+    "pk": 22, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [
+            4335
+        ], 
+        "hidden": true, 
+        "name": "Violin"
+    }
+},
+{
+    "pk": 23, 
+    "model": "hindustani.instrument", 
+    "fields": {
+        "description": null, 
+        "percussion": false, 
+        "source": null, 
+        "references": [], 
+        "images": [], 
+        "hidden": true, 
+        "name": "Zither"
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101/ja\u1e6d", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Aadhaa/jat", 
+        "num_maatras": 8
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101 caut\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ada chautal", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Addha", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101 t\u012bnt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Addha teental", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100di", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Adi", 
+        "num_maatras": 32
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Chachar t\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chachar tal", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "C\u0101r t\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Char taal", 
+        "num_maatras": null
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "C\u0101rt\u0101l k\u012b sav\u0101r\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chartal ki sawari", 
+        "num_maatras": 11
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Caut\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chautal", 
+        "num_maatras": 12
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "D\u0101dr\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dadra", 
+        "num_maatras": 6
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "D\u012bpaca\u1e47\u1e0d\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Deepchandi", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Dhamar", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhamar", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4317
+        ], 
+        "name": "\u0113kt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ektaal", 
+        "num_maatras": 12
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Ja\u1e6d", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jatt", 
+        "num_maatras": 8
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4318
+        ], 
+        "name": "Jhapt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jhaptaal", 
+        "num_maatras": 10
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Jh\u016bmr\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jhoomra", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "K\u0113harv\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Keherwa", 
+        "num_maatras": 8
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Kh\u0113mt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khemtal", 
+        "num_maatras": null
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Ma\u1e6d\u1e6d\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Matta", 
+        "num_maatras": 9
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Pan\u0304cam sav\u0101r\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Pancham savari", 
+        "num_maatras": 15
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Pan\u0304j\u0101b\u012b ", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Panjabi", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 22, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4320
+        ], 
+        "name": "R\u016bpak", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Rupak", 
+        "num_maatras": 7
+    }
+},
+{
+    "pk": 23, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Sadr\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sadara", 
+        "num_maatras": null
+    }
+},
+{
+    "pk": 24, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Sav\u0101r\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Savari tal", 
+        "num_maatras": 11
+    }
+},
+{
+    "pk": 25, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u015bikhar", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shikhar", 
+        "num_maatras": 17
+    }
+},
+{
+    "pk": 26, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Sit\u0101rkh\u0101n\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sitarkhani", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 27, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "S\u016bl phakt\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sool fakhta", 
+        "num_maatras": 10
+    }
+},
+{
+    "pk": 28, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "S\u016blt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sooltal", 
+        "num_maatras": 10
+    }
+},
+{
+    "pk": 29, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4321
+        ], 
+        "name": "T\u012bnt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Teentaal", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 30, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "T\u012bnt\u0101l-sit\u0101rkh\u0101n\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Teental-sitarkhani", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 31, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Tilav\u0101\u1e0d\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tilwada", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 32, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Upat\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Upatal", 
+        "num_maatras": null
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 2, 
+        "name": "adachautal"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 3, 
+        "name": "addha tal"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 13, 
+        "name": "ektal"
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 15, 
+        "name": "jhaptal"
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 16, 
+        "name": "jhumra"
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 17, 
+        "name": "keharwa"
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 19, 
+        "name": "matta tal"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 21, 
+        "name": "punjabi taal"
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 28, 
+        "name": "sul"
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teen tal"
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teental"
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 31, 
+        "name": "tilwara"
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teenal"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teetal"
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Abhogi", 
+        "name": "\u0100bh\u014dg\u012b"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Abhogi kanada", 
+        "name": "\u0100bh\u014dg\u012b k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Adana", 
+        "name": "Ad\u0101n\u0101"
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Adana malhar", 
+        "name": "Ad\u0101n\u0101 malh\u0101r"
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ahir bhairav", 
+        "name": "Ahira bhairav"
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ahir lalat", 
+        "name": "Ahir lalit"
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ahiri todi", 
+        "name": "Ahiri t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Alahiya bilawal", 
+        "name": "Alahaiy\u0101 bil\u0101val"
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ambika", 
+        "name": "Ambik\u0101"
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Amrit varshini", 
+        "name": "Amr\u0325t var\u1e63i\u1e47i"
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Anand malhar", 
+        "name": "\u0100nand malh\u0101r"
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Arabhi", 
+        "name": "\u0100rabhi"
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Asa mand", 
+        "name": "As\u0101 m\u0101\u1e47\u1e0d"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ashta raga malika", 
+        "name": "A\u1e63\u1e6da r\u0101g m\u0101lik\u0101"
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bageshree", 
+        "name": "B\u0101g\u0113\u015br\u012b"
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bahaduri todi", 
+        "name": "Bah\u0101dur\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bahar", 
+        "name": "Bah\u0101r"
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bairagi", 
+        "name": "Bair\u0101gi"
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bairagi bhairav", 
+        "name": "Bair\u0101g\u012b bhairav"
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Basant", 
+        "name": "Basant"
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Basant bahar", 
+        "name": "Basant bah\u0101r"
+    }
+},
+{
+    "pk": 22, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Basant mukhari", 
+        "name": "Basant mukh\u0101ri"
+    }
+},
+{
+    "pk": 23, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Basanti kedar", 
+        "name": "Basant\u012b k\u0113d\u0101r"
+    }
+},
+{
+    "pk": 24, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Beehad bairav", 
+        "name": "B\u012bh\u0101d bhairav"
+    }
+},
+{
+    "pk": 25, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhageshree kanada", 
+        "name": "B\u0101g\u0113\u015br\u012b k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 26, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhairabi", 
+        "name": "Bhairavi"
+    }
+},
+{
+    "pk": 27, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhairav", 
+        "name": "Bhairav"
+    }
+},
+{
+    "pk": 28, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhairav bahar", 
+        "name": "Bhairav bah\u0101r"
+    }
+},
+{
+    "pk": 29, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhairavi dhun", 
+        "name": "Bhairavi dhun"
+    }
+},
+{
+    "pk": 30, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhatiyar", 
+        "name": "Bh\u0101\u1e6diy\u0101r"
+    }
+},
+{
+    "pk": 31, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhavmat bhairav", 
+        "name": "Bhavamat bhairav"
+    }
+},
+{
+    "pk": 32, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bheem", 
+        "name": "Bh\u012bm"
+    }
+},
+{
+    "pk": 33, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhimpalas", 
+        "name": "Bhimapal\u0101s"
+    }
+},
+{
+    "pk": 34, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhoop", 
+        "name": "Bh\u016bp"
+    }
+},
+{
+    "pk": 35, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhopali", 
+        "name": "Bh\u014dp\u0101li"
+    }
+},
+{
+    "pk": 36, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhupal todi", 
+        "name": "Bh\u014dp\u0101l\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 37, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bibhas", 
+        "name": "Bibh\u0101s"
+    }
+},
+{
+    "pk": 38, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bihag", 
+        "name": "Bih\u0101g"
+    }
+},
+{
+    "pk": 39, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bihagda", 
+        "name": "Bih\u0101gd\u0101"
+    }
+},
+{
+    "pk": 40, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bilaskhani", 
+        "name": "Bil\u0101sakh\u0101ni"
+    }
+},
+{
+    "pk": 41, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bilaskhani todi", 
+        "name": "Bil\u0101sakh\u0101n\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 42, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Binna shadja", 
+        "name": "Bhinna \u1e63a\u1e0dja"
+    }
+},
+{
+    "pk": 43, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Brindavani sarang", 
+        "name": "Br\u0325nd\u0101van\u012b s\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 44, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chaiti bhoop", 
+        "name": "Cait\u012b bh\u016bp"
+    }
+},
+{
+    "pk": 45, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Champak", 
+        "name": "Campak"
+    }
+},
+{
+    "pk": 46, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Champakali", 
+        "name": "Camp\u0101kali"
+    }
+},
+{
+    "pk": 47, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chandani kedar", 
+        "name": "C\u0101ndan\u012b k\u0113d\u0101r"
+    }
+},
+{
+    "pk": 48, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chandrakauns", 
+        "name": "Candrakauns"
+    }
+},
+{
+    "pk": 49, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chandramauli", 
+        "name": "Candramauli"
+    }
+},
+{
+    "pk": 50, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Charukeshi", 
+        "name": "C\u0101ruk\u0113\u015bi"
+    }
+},
+{
+    "pk": 51, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chaya malhar", 
+        "name": "Ch\u0101y\u0101 malh\u0101r"
+    }
+},
+{
+    "pk": 52, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chhaya nat", 
+        "name": "Ch\u0101y\u0101n\u0101t"
+    }
+},
+{
+    "pk": 53, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Darbari", 
+        "name": "Darb\u0101ri"
+    }
+},
+{
+    "pk": 54, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Darbari todi", 
+        "name": "Darb\u0101r\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 55, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Deepawali", 
+        "name": "D\u012bp\u0101vali"
+    }
+},
+{
+    "pk": 56, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Des", 
+        "name": "D\u0113\u015b"
+    }
+},
+{
+    "pk": 57, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Desh malhar", 
+        "name": "D\u0113\u015b malh\u0101r"
+    }
+},
+{
+    "pk": 58, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Deshkar", 
+        "name": "D\u0113\u015bak\u0101r"
+    }
+},
+{
+    "pk": 59, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Desi", 
+        "name": "D\u0113si"
+    }
+},
+{
+    "pk": 60, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Desi todi", 
+        "name": "D\u0113s\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 61, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dev gandhar", 
+        "name": "D\u0113v g\u0101ndh\u0101r"
+    }
+},
+{
+    "pk": 62, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Devgiri bilawal", 
+        "name": "D\u0113vgir\u012b bil\u0101val"
+    }
+},
+{
+    "pk": 63, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhanashree", 
+        "name": "Dhana\u015br\u012b"
+    }
+},
+{
+    "pk": 64, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhani", 
+        "name": "Dhan\u012b"
+    }
+},
+{
+    "pk": 65, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Din ki puriya", 
+        "name": "Din k\u012b puriy\u0101"
+    }
+},
+{
+    "pk": 66, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Durga", 
+        "name": "Durg\u0101"
+    }
+},
+{
+    "pk": 67, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ek nishad bihagda", 
+        "name": "\u0112k ni\u1e63\u0101d bih\u0101g\u1e0d\u0101"
+    }
+},
+{
+    "pk": 68, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gandhi malhar", 
+        "name": "G\u0101ndh\u012b malh\u0101r"
+    }
+},
+{
+    "pk": 69, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gaud malhar", 
+        "name": "Gau\u1e0d malh\u0101r"
+    }
+},
+{
+    "pk": 70, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gaud sarang", 
+        "name": "Gau\u1e0d s\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 71, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gauri", 
+        "name": "Gaur\u012b"
+    }
+},
+{
+    "pk": 72, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gauri basant", 
+        "name": "Gaur\u012b basant"
+    }
+},
+{
+    "pk": 73, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gorakh kalyan", 
+        "name": "G\u014dr\u0101kh kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 74, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gunakri", 
+        "name": "Gu\u1e47ak\u0101r\u012b"
+    }
+},
+{
+    "pk": 75, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Gurjari todi", 
+        "name": "Gurjar\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 76, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hameer", 
+        "name": "Ham\u012br"
+    }
+},
+{
+    "pk": 77, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hamsadhvani", 
+        "name": "Hamsadhv\u0101ni"
+    }
+},
+{
+    "pk": 78, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hansnarayini", 
+        "name": "Hamsan\u0101r\u0101ya\u1e47i"
+    }
+},
+{
+    "pk": 79, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hem bihag", 
+        "name": "H\u0113m bih\u0101g"
+    }
+},
+{
+    "pk": 80, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hem lalit", 
+        "name": "H\u0113m lalit"
+    }
+},
+{
+    "pk": 81, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hemavanti", 
+        "name": "H\u0113m\u0101v\u0101nti"
+    }
+},
+{
+    "pk": 82, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hindol", 
+        "name": "Hind\u014dl"
+    }
+},
+{
+    "pk": 83, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Husseini kanada", 
+        "name": "Husaini"
+    }
+},
+{
+    "pk": 84, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jaijaivanti", 
+        "name": "Jaijaivanti"
+    }
+},
+{
+    "pk": 85, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jaunpuri", 
+        "name": "Jaunpuri"
+    }
+},
+{
+    "pk": 86, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jayawanti todi", 
+        "name": "Jayavant\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 87, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jhinjhat manj", 
+        "name": "Jhinjha\u1e6d m\u0101n\u0304j"
+    }
+},
+{
+    "pk": 88, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jhinjhoti", 
+        "name": "Jhinjh\u014d\u1e6di"
+    }
+},
+{
+    "pk": 89, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jog", 
+        "name": "J\u014dg"
+    }
+},
+{
+    "pk": 90, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jogia", 
+        "name": "J\u014dgiy\u0101"
+    }
+},
+{
+    "pk": 91, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jogia asawari", 
+        "name": "J\u014dgiy\u0101 asav\u0101ri"
+    }
+},
+{
+    "pk": 92, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jogkauns", 
+        "name": "J\u014dgkauns"
+    }
+},
+{
+    "pk": 93, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kafi", 
+        "name": "K\u0101ph\u012b"
+    }
+},
+{
+    "pk": 94, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kafi kanada", 
+        "name": "K\u0101ph\u012b k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 95, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kafi tappa", 
+        "name": "K\u0101ph\u012b \u1e6dapp\u0101"
+    }
+},
+{
+    "pk": 96, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kalashree", 
+        "name": "Kal\u0101\u015br\u012b"
+    }
+},
+{
+    "pk": 97, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kalavati", 
+        "name": "Kal\u0101vati"
+    }
+},
+{
+    "pk": 98, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kalyan", 
+        "name": "Kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 99, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kalyani", 
+        "name": "Kaly\u0101\u1e47i"
+    }
+},
+{
+    "pk": 100, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kambhoji", 
+        "name": "K\u0101mbh\u014dji"
+    }
+},
+{
+    "pk": 101, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kamodvanti", 
+        "name": "K\u0101m\u014ddvanti"
+    }
+},
+{
+    "pk": 102, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kanada", 
+        "name": "K\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 103, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kaunsi kanara", 
+        "name": "Kauns\u012b k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 104, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kaushi dhwani", 
+        "name": "Kau\u015bik dhvani"
+    }
+},
+{
+    "pk": 105, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kedar", 
+        "name": "K\u0113d\u0101r"
+    }
+},
+{
+    "pk": 106, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khamaj", 
+        "name": "Kham\u0101j"
+    }
+},
+{
+    "pk": 107, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khamaj bahar", 
+        "name": "Kham\u0101j bah\u0101r"
+    }
+},
+{
+    "pk": 108, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khambawati", 
+        "name": "Khamb\u0101vati"
+    }
+},
+{
+    "pk": 109, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khat", 
+        "name": "Kha\u1e6da"
+    }
+},
+{
+    "pk": 110, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kirwani", 
+        "name": "K\u012brav\u0101\u1e47i"
+    }
+},
+{
+    "pk": 111, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Komal rishabh asavari", 
+        "name": "K\u014dmal ri\u1e63abh as\u0101v\u0113ri"
+    }
+},
+{
+    "pk": 112, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Komal rishabh asavari todi", 
+        "name": "K\u014dmal ri\u1e63abh as\u0101v\u0113r\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 113, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kuntanavarali", 
+        "name": "Kuntavar\u0101li"
+    }
+},
+{
+    "pk": 114, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Lalat", 
+        "name": "Lalit"
+    }
+},
+{
+    "pk": 115, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Lalit bhatiyar", 
+        "name": "Lalit bha\u1e6diy\u0101r"
+    }
+},
+{
+    "pk": 116, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Lalit pancham", 
+        "name": "Lalit pa\u00f1cam"
+    }
+},
+{
+    "pk": 117, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Lalit vibhas", 
+        "name": "Lalit bibh\u0101s"
+    }
+},
+{
+    "pk": 118, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Lankeshri", 
+        "name": "La\u1e45k\u0113\u015br\u012b"
+    }
+},
+{
+    "pk": 119, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Maajh khamaj", 
+        "name": "M\u0101jh kham\u0101j"
+    }
+},
+{
+    "pk": 120, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Madhmad sarang", 
+        "name": "Madhmad s\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 121, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Madhukauns", 
+        "name": "Madhukauns"
+    }
+},
+{
+    "pk": 122, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Madhuvanti", 
+        "name": "Madhuvanti"
+    }
+},
+{
+    "pk": 123, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Malav", 
+        "name": "M\u0101lava"
+    }
+},
+{
+    "pk": 124, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Malavati", 
+        "name": "M\u0101l\u0101vati"
+    }
+},
+{
+    "pk": 125, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Malkauns", 
+        "name": "M\u0101lkauns"
+    }
+},
+{
+    "pk": 126, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mangal bhairav", 
+        "name": "Ma\u1e45gal bhairav"
+    }
+},
+{
+    "pk": 127, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Marubihag", 
+        "name": "M\u0101r\u016bbih\u0101g"
+    }
+},
+{
+    "pk": 128, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Marwa", 
+        "name": "M\u0101rv\u0101"
+    }
+},
+{
+    "pk": 129, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Marwashri marwa", 
+        "name": "M\u0101rv\u0101\u015br\u012b m\u0101rv\u0101"
+    }
+},
+{
+    "pk": 130, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Meera malhar", 
+        "name": "M\u012br\u0101 malh\u0101r"
+    }
+},
+{
+    "pk": 131, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Megh", 
+        "name": "M\u0113gh"
+    }
+},
+{
+    "pk": 132, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Megh malhar", 
+        "name": "M\u0113gh malah\u0101r"
+    }
+},
+{
+    "pk": 133, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Megh malhar sadra", 
+        "name": "M\u0113gh malah\u0101r s\u0101dr\u0101"
+    }
+},
+{
+    "pk": 134, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra bhairavi", 
+        "name": "Mi\u015bra bhairavi"
+    }
+},
+{
+    "pk": 135, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra desh", 
+        "name": "Mi\u015bra d\u0113\u015b"
+    }
+},
+{
+    "pk": 136, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra gaara", 
+        "name": "Mi\u015bra g\u0101r\u0101"
+    }
+},
+{
+    "pk": 137, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra kafi", 
+        "name": "Mi\u015bra k\u0101phi"
+    }
+},
+{
+    "pk": 138, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra kalingada", 
+        "name": "Mi\u015bra kali\u1e45ga\u1e0d\u0101"
+    }
+},
+{
+    "pk": 139, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra khamaj", 
+        "name": "Mi\u015bra kham\u0101j"
+    }
+},
+{
+    "pk": 140, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra kirwani", 
+        "name": "Mi\u015bra k\u012brv\u0101\u1e47i"
+    }
+},
+{
+    "pk": 141, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra maand", 
+        "name": "Mi\u015bra m\u0101\u1e47\u1e0d"
+    }
+},
+{
+    "pk": 142, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra pahadi", 
+        "name": "Mi\u015bra pah\u0101\u1e0di"
+    }
+},
+{
+    "pk": 143, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra piloo", 
+        "name": "Mi\u015bra p\u012bl\u016b"
+    }
+},
+{
+    "pk": 144, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra shivranjani", 
+        "name": "Mi\u015bra \u015bivaran\u0304jani"
+    }
+},
+{
+    "pk": 145, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra tilak kamod", 
+        "name": "Mi\u015bra tilak k\u0101m\u014dd"
+    }
+},
+{
+    "pk": 146, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Mishra tilang", 
+        "name": "Mi\u015bra til\u0101\u1e45g"
+    }
+},
+{
+    "pk": 147, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Miya malhar", 
+        "name": "Miy\u0101m\u0310 malh\u0101r"
+    }
+},
+{
+    "pk": 148, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Miyan ki sarang", 
+        "name": "Miy\u0101m\u0310 k\u012b s\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 149, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Miyan ki todi", 
+        "name": "Miy\u0101m\u0310 k\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 150, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Multani", 
+        "name": "Mult\u0101ni"
+    }
+},
+{
+    "pk": 151, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nagad", 
+        "name": "Naga\u1e0d"
+    }
+},
+{
+    "pk": 152, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Naiki kanada", 
+        "name": "N\u0101yak\u012b k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 153, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nanad", 
+        "name": "Nan\u0101d"
+    }
+},
+{
+    "pk": 154, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nat bhairav", 
+        "name": "Na\u1e6d bhairav"
+    }
+},
+{
+    "pk": 155, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nat bihag", 
+        "name": "Na\u1e6d bih\u0101g"
+    }
+},
+{
+    "pk": 156, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nat malhar", 
+        "name": "Na\u1e6d malh\u0101r"
+    }
+},
+{
+    "pk": 157, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nat narayan", 
+        "name": "Na\u1e6d n\u0101r\u0101ya\u1e47"
+    }
+},
+{
+    "pk": 158, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nayaki kanada", 
+        "name": "N\u0101yak\u012b k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 159, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Nilambari", 
+        "name": "N\u012bl\u0101mbari"
+    }
+},
+{
+    "pk": 160, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Pahadi", 
+        "name": "Pah\u0101\u1e0di"
+    }
+},
+{
+    "pk": 161, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Pancham", 
+        "name": "Pa\u00f1cam"
+    }
+},
+{
+    "pk": 162, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Paraj", 
+        "name": "Paraj"
+    }
+},
+{
+    "pk": 163, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Patdeep", 
+        "name": "Pa\u1e6dd\u012bp"
+    }
+},
+{
+    "pk": 164, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Patmanjari", 
+        "name": "Pa\u1e6daman\u0304jari"
+    }
+},
+{
+    "pk": 165, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Piloo", 
+        "name": "P\u012bl\u016b"
+    }
+},
+{
+    "pk": 166, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Poorvi", 
+        "name": "P\u016brvi"
+    }
+},
+{
+    "pk": 167, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Pratapvarali", 
+        "name": "Prat\u0101pavar\u0101li"
+    }
+},
+{
+    "pk": 168, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Puriya", 
+        "name": "Puriy\u0101"
+    }
+},
+{
+    "pk": 169, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Puriya dhanashree", 
+        "name": "Puriy\u0101 dhana\u015br\u012b"
+    }
+},
+{
+    "pk": 170, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Puriya kalyan", 
+        "name": "Puriy\u0101 kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 171, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Rageshri", 
+        "name": "R\u0101g\u0113\u015br\u012b"
+    }
+},
+{
+    "pk": 172, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Raj kalyan", 
+        "name": "R\u0101j kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 173, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ramdasi malhar", 
+        "name": "R\u0101md\u0101s\u012b malh\u0101r"
+    }
+},
+{
+    "pk": 174, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ramkali", 
+        "name": "R\u0101makali"
+    }
+},
+{
+    "pk": 175, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Saavani", 
+        "name": "S\u0101van\u012b"
+    }
+},
+{
+    "pk": 176, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Saheli todi", 
+        "name": "Sah\u0113l\u012b t\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 177, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sampurna malkauns", 
+        "name": "Samp\u016br\u1e47a m\u0101lkauns"
+    }
+},
+{
+    "pk": 178, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sanjari", 
+        "name": "San\u0304jari"
+    }
+},
+{
+    "pk": 179, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sarang", 
+        "name": "S\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 180, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Saraswati", 
+        "name": "Sarasvati"
+    }
+},
+{
+    "pk": 181, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Savani bihag", 
+        "name": "S\u0101van\u012b bih\u0101g"
+    }
+},
+{
+    "pk": 182, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shahana", 
+        "name": "Sahan\u0101"
+    }
+},
+{
+    "pk": 183, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shahana kanada", 
+        "name": "Sahan\u0101 k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 184, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shankara", 
+        "name": "\u015aa\u1e45kara"
+    }
+},
+{
+    "pk": 185, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shimhendra madhyamam", 
+        "name": "Simh\u0113ndra madhyama\u1e41"
+    }
+},
+{
+    "pk": 186, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shivaranjani", 
+        "name": "\u015aivaran\u0304jani"
+    }
+},
+{
+    "pk": 187, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shivmat bhairav", 
+        "name": "\u015aivamat bhairav"
+    }
+},
+{
+    "pk": 188, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shree", 
+        "name": "\u015ar\u012b"
+    }
+},
+{
+    "pk": 189, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shuddh sarang", 
+        "name": "\u015auddh s\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 190, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shuddha kalyan", 
+        "name": "\u015auddh kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 191, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shuddha nat", 
+        "name": "\u015auddh na\u1e6da"
+    }
+},
+{
+    "pk": 192, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shudh baradi", 
+        "name": "\u015auddh baradi"
+    }
+},
+{
+    "pk": 193, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shudh maaru", 
+        "name": "\u015auddh m\u0101r\u016b"
+    }
+},
+{
+    "pk": 194, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shudha basant", 
+        "name": "\u015auddh basant"
+    }
+},
+{
+    "pk": 195, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shudha kedar", 
+        "name": "\u015auddh k\u0113d\u0101ra"
+    }
+},
+{
+    "pk": 196, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shyam kalyan", 
+        "name": "\u015ay\u0101m kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 197, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sindhu bhairavi", 
+        "name": "Sindhu bhairavi"
+    }
+},
+{
+    "pk": 198, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sindhura", 
+        "name": "Sindh\u016bra"
+    }
+},
+{
+    "pk": 199, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sohini", 
+        "name": "S\u014dhin\u012b"
+    }
+},
+{
+    "pk": 200, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sohini bahar", 
+        "name": "S\u014dhin\u012b bah\u0101r"
+    }
+},
+{
+    "pk": 201, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sohoni", 
+        "name": "S\u014dh\u014dn\u012b"
+    }
+},
+{
+    "pk": 202, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sohoni bhatiyar", 
+        "name": "S\u014dh\u014dn\u012b bha\u1e6diy\u0101r"
+    }
+},
+{
+    "pk": 203, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sorath", 
+        "name": "S\u014drath"
+    }
+},
+{
+    "pk": 204, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Subhalakshmi", 
+        "name": "\u015aubhalak\u1e63mi"
+    }
+},
+{
+    "pk": 205, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sughrai", 
+        "name": "Sughara\u012b"
+    }
+},
+{
+    "pk": 206, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Suha", 
+        "name": "Suh\u0101"
+    }
+},
+{
+    "pk": 207, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Suha kanada", 
+        "name": "Suh\u0101 k\u0101na\u1e0d\u0101"
+    }
+},
+{
+    "pk": 208, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Suha kannada", 
+        "name": "Suh\u0101 kanna\u1e0d\u0101"
+    }
+},
+{
+    "pk": 209, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Suha sugharai", 
+        "name": "Sur sugharai"
+    }
+},
+{
+    "pk": 210, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Surmalhar", 
+        "name": "Sur malh\u0101r"
+    }
+},
+{
+    "pk": 211, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Swarashtram", 
+        "name": "Saur\u0101\u1e63\u1e6dram"
+    }
+},
+{
+    "pk": 212, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tankeshri", 
+        "name": "Tank\u0113\u015br\u012b"
+    }
+},
+{
+    "pk": 213, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tilak bihari", 
+        "name": "Tilak bih\u0101r\u012b"
+    }
+},
+{
+    "pk": 214, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tilak kamod", 
+        "name": "Tilak k\u0101m\u014dd"
+    }
+},
+{
+    "pk": 215, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tilak nat", 
+        "name": "Tilak na\u1e6d"
+    }
+},
+{
+    "pk": 216, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tilang", 
+        "name": "Til\u0101\u1e45g"
+    }
+},
+{
+    "pk": 217, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Todi", 
+        "name": "T\u014d\u1e0d\u012b"
+    }
+},
+{
+    "pk": 218, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Triveni gauri", 
+        "name": "Triv\u0113\u1e47\u012b gauri"
+    }
+},
+{
+    "pk": 219, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Vachaspati", 
+        "name": "V\u0101caspati"
+    }
+},
+{
+    "pk": 220, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Vrindavani sarang", 
+        "name": "Vr\u0325nd\u0101van\u012b s\u0101ra\u1e45g"
+    }
+},
+{
+    "pk": 221, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Yaman kalyan", 
+        "name": "Yaman kaly\u0101\u1e47"
+    }
+},
+{
+    "pk": 222, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Yamani bilawal", 
+        "name": "Yaman\u012b bil\u0101val"
+    }
+},
+{
+    "pk": 223, 
+    "model": "hindustani.raag", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Zilaf", 
+        "name": "Zil\u0101ph"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "abhogi kanrha", 
+        "raag": 2
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "abiri todi", 
+        "raag": 7
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "alhaiya bilawal", 
+        "raag": 8
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bageshri", 
+        "raag": 15
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhageshree", 
+        "raag": 15
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhageshri", 
+        "raag": 15
+    }
+},
+{
+    "pk": 22, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhageshwari", 
+        "raag": 15
+    }
+},
+{
+    "pk": 23, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhageshree kanada", 
+        "raag": 15
+    }
+},
+{
+    "pk": 27, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bairagi bhairav", 
+        "raag": 18
+    }
+},
+{
+    "pk": 34, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "beehad bhairav", 
+        "raag": 24
+    }
+},
+{
+    "pk": 37, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhairavi", 
+        "raag": 26
+    }
+},
+{
+    "pk": 38, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhairavi dhun", 
+        "raag": 26
+    }
+},
+{
+    "pk": 39, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra bhairavi", 
+        "raag": 26
+    }
+},
+{
+    "pk": 47, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhimpalasi", 
+        "raag": 33
+    }
+},
+{
+    "pk": 49, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhopali", 
+        "raag": 34
+    }
+},
+{
+    "pk": 52, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhupali todi", 
+        "raag": 36
+    }
+},
+{
+    "pk": 53, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bhopal todi", 
+        "raag": 36
+    }
+},
+{
+    "pk": 58, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "bilaskhani todi", 
+        "raag": 40
+    }
+},
+{
+    "pk": 62, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "vrindavani sarang", 
+        "raag": 43
+    }
+},
+{
+    "pk": 72, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "chhayanat", 
+        "raag": 52
+    }
+},
+{
+    "pk": 74, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "darbari kanada", 
+        "raag": 53
+    }
+},
+{
+    "pk": 78, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "desh", 
+        "raag": 56
+    }
+},
+{
+    "pk": 79, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "desh malhar", 
+        "raag": 56
+    }
+},
+{
+    "pk": 80, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra desh", 
+        "raag": 56
+    }
+},
+{
+    "pk": 83, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "deskar", 
+        "raag": 58
+    }
+},
+{
+    "pk": 85, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "desi todi", 
+        "raag": 59
+    }
+},
+{
+    "pk": 90, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "dhanashri", 
+        "raag": 63
+    }
+},
+{
+    "pk": 102, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "gunkali", 
+        "raag": 74
+    }
+},
+{
+    "pk": 104, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "gujari todi", 
+        "raag": 75
+    }
+},
+{
+    "pk": 105, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "gujri todi", 
+        "raag": 75
+    }
+},
+{
+    "pk": 107, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "hamir", 
+        "raag": 76
+    }
+},
+{
+    "pk": 109, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "hamsadhwani", 
+        "raag": 77
+    }
+},
+{
+    "pk": 110, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "hansdhwani", 
+        "raag": 77
+    }
+},
+{
+    "pk": 111, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "hansadhwani", 
+        "raag": 77
+    }
+},
+{
+    "pk": 119, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "jaijaiwanti", 
+        "raag": 84
+    }
+},
+{
+    "pk": 129, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "kafi kanada", 
+        "raag": 93
+    }
+},
+{
+    "pk": 130, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "kafi tappa", 
+        "raag": 93
+    }
+},
+{
+    "pk": 131, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra kafi", 
+        "raag": 93
+    }
+},
+{
+    "pk": 142, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "kaunsi kannada", 
+        "raag": 103
+    }
+},
+{
+    "pk": 143, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "kaushi kanada", 
+        "raag": 103
+    }
+},
+{
+    "pk": 144, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "kaushik kanada", 
+        "raag": 103
+    }
+},
+{
+    "pk": 146, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "kaushik dhwani", 
+        "raag": 104
+    }
+},
+{
+    "pk": 149, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra khamaj", 
+        "raag": 106
+    }
+},
+{
+    "pk": 152, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "khambhavati", 
+        "raag": 108
+    }
+},
+{
+    "pk": 155, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra kirwani", 
+        "raag": 110
+    }
+},
+{
+    "pk": 157, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "komal rishabh asawari", 
+        "raag": 111
+    }
+},
+{
+    "pk": 158, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "komal rishabh asavari todi", 
+        "raag": 111
+    }
+},
+{
+    "pk": 162, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "lalit", 
+        "raag": 114
+    }
+},
+{
+    "pk": 168, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "maajh-khamaj", 
+        "raag": 119
+    }
+},
+{
+    "pk": 170, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "madhmadh sarang", 
+        "raag": 120
+    }
+},
+{
+    "pk": 172, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "madhukaunse", 
+        "raag": 121
+    }
+},
+{
+    "pk": 173, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "madhukosh", 
+        "raag": 121
+    }
+},
+{
+    "pk": 180, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "maru bihag", 
+        "raag": 127
+    }
+},
+{
+    "pk": 186, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "megh malhar sadra", 
+        "raag": 132
+    }
+},
+{
+    "pk": 191, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra gara", 
+        "raag": 136
+    }
+},
+{
+    "pk": 197, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra mand", 
+        "raag": 141
+    }
+},
+{
+    "pk": 198, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "misra mand", 
+        "raag": 141
+    }
+},
+{
+    "pk": 201, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra pilu", 
+        "raag": 143
+    }
+},
+{
+    "pk": 202, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "misra pilu", 
+        "raag": 143
+    }
+},
+{
+    "pk": 203, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "piloo", 
+        "raag": 143
+    }
+},
+{
+    "pk": 208, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "miyan ki malhar", 
+        "raag": 147
+    }
+},
+{
+    "pk": 209, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "miyan malhar", 
+        "raag": 147
+    }
+},
+{
+    "pk": 216, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "nand", 
+        "raag": 153
+    }
+},
+{
+    "pk": 222, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "nayaki kannada", 
+        "raag": 158
+    }
+},
+{
+    "pk": 223, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "naiki kanada", 
+        "raag": 158
+    }
+},
+{
+    "pk": 226, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra pahadi", 
+        "raag": 160
+    }
+},
+{
+    "pk": 231, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "patmanjiri", 
+        "raag": 164
+    }
+},
+{
+    "pk": 234, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "purvi", 
+        "raag": 166
+    }
+},
+{
+    "pk": 238, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "puriya dhanashri", 
+        "raag": 169
+    }
+},
+{
+    "pk": 252, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "shahana kanada", 
+        "raag": 182
+    }
+},
+{
+    "pk": 257, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra shivranjani", 
+        "raag": 186
+    }
+},
+{
+    "pk": 261, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "shuddha sarang", 
+        "raag": 189
+    }
+},
+{
+    "pk": 262, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "shudh sarang", 
+        "raag": 189
+    }
+},
+{
+    "pk": 263, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "shudh saarang", 
+        "raag": 189
+    }
+},
+{
+    "pk": 265, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "shudha kalyan", 
+        "raag": 190
+    }
+},
+{
+    "pk": 266, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "shudh kalyan", 
+        "raag": 190
+    }
+},
+{
+    "pk": 274, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sindh bhairavi", 
+        "raag": 197
+    }
+},
+{
+    "pk": 277, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sohani", 
+        "raag": 199
+    }
+},
+{
+    "pk": 278, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sohni", 
+        "raag": 199
+    }
+},
+{
+    "pk": 279, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sohoni", 
+        "raag": 199
+    }
+},
+{
+    "pk": 283, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sohni bhatiyar", 
+        "raag": 202
+    }
+},
+{
+    "pk": 287, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sugharai", 
+        "raag": 205
+    }
+},
+{
+    "pk": 289, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "suha kanada", 
+        "raag": 206
+    }
+},
+{
+    "pk": 290, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "suha kannada", 
+        "raag": 206
+    }
+},
+{
+    "pk": 295, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "sur malhar", 
+        "raag": 210
+    }
+},
+{
+    "pk": 300, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra tilak kamod", 
+        "raag": 214
+    }
+},
+{
+    "pk": 303, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "mishra tilang", 
+        "raag": 216
+    }
+},
+{
+    "pk": 305, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "miyan ki todi", 
+        "raag": 217
+    }
+},
+{
+    "pk": 310, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "yaman", 
+        "raag": 221
+    }
+},
+{
+    "pk": 311, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "maalkauns", 
+        "raag": 125
+    }
+},
+{
+    "pk": 312, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "darbari kanhada", 
+        "raag": 53
+    }
+},
+{
+    "pk": 313, 
+    "model": "hindustani.raagalias", 
+    "fields": {
+        "name": "maanj khamaj", 
+        "raag": 119
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.laya", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhrut", 
+        "name": "Dhr\u0325t"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.laya", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Madhya", 
+        "name": "Madhya"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.laya", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Vilambit", 
+        "name": "Vila\u1e41bit"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.layaalias", 
+    "fields": {
+        "name": "drut", 
+        "laya": 1
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.layaalias", 
+    "fields": {
+        "name": "madhyalaya", 
+        "laya": 2
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.layaalias", 
+    "fields": {
+        "name": "madya", 
+        "laya": 2
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Qaida", 
+        "name": "Kaid\u0101"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tappa", 
+        "name": "\u1e6dapp\u0101"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tarana", 
+        "name": "Tar\u0101n\u0101"
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Thillana", 
+        "name": "Till\u0101n\u0101"
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Thumri", 
+        "name": "\u1e6dhumri"
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tirwat", 
+        "name": "Tirva\u1e6d"
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Varnam", 
+        "name": "Var\u1e47am"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Alap", 
+        "name": "\u0101l\u0101p"
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bada khayal", 
+        "name": "Ba\u1e0d\u0101 khy\u0101l"
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bandish", 
+        "name": "Bandi\u015b"
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhajan", 
+        "name": "Bhajan"
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Bhangra", 
+        "name": "Bh\u0101\u1e45ga\u1e5b\u0101"
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chaiti", 
+        "name": "Cait\u012b"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Commentary", 
+        "name": "Commentary"
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dadra", 
+        "name": "D\u0101dr\u0101"
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Demostration", 
+        "name": "Demonstration"
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhrupad", 
+        "name": "Dhr\u0325pad"
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ghazal", 
+        "name": "\u0120azal"
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Hori", 
+        "name": "H\u014dr\u012b"
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jugalbandi", 
+        "name": "Jugalband\u012b"
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Kajari", 
+        "name": "Kajar\u012b"
+    }
+},
+{
+    "pk": 22, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khayal", 
+        "name": "Khy\u0101l"
+    }
+},
+{
+    "pk": 23, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khayalnuma", 
+        "name": "Khy\u0101l n\u0101m\u0101"
+    }
+},
+{
+    "pk": 24, 
+    "model": "hindustani.form", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Natya sangeet", 
+        "name": "N\u0101\u1e6dya sa\u1e45g\u012bt"
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.formalias", 
+    "fields": {
+        "name": "tarana thillana", 
+        "form": 3
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.formalias", 
+    "fields": {
+        "name": "kajri", 
+        "form": 21
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Alap", 
+        "name": "\u0100l\u0101p"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Asthai", 
+        "name": "\u0101sth\u0101\u012b/sth\u0101\u012b"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Bada khayal", 
+        "name": "Ba\u1e0d\u0101 khy\u0101l"
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Bandish", 
+        "name": "Bandi\u015b"
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Chota khayal", 
+        "name": "Ch\u014d\u1e6d\u0101 khy\u0101l"
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Dhrupad", 
+        "name": "Dhr\u0325pad"
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Dhun", 
+        "name": "Dhun"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Drut khayal", 
+        "name": " khy\u0101l"
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Gat", 
+        "name": "Gat"
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Jalad", 
+        "name": "Jalad"
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Jati", 
+        "name": "J\u0101ti"
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Jhala", 
+        "name": "Jh\u0101l\u0101"
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Jod", 
+        "name": "J\u014d\u1e0d/j\u014dr"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Jog", 
+        "name": "J\u014dg"
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Khand", 
+        "name": "Kha\u1e47\u1e0d"
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Khayal", 
+        "name": "Khy\u0101l"
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Layakari", 
+        "name": "Layk\u0101r\u012b"
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Rachna", 
+        "name": "Racan\u0101"
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.section", 
+    "fields": {
+        "common_name": "Tarana", 
+        "name": "Tar\u0101n\u0101"
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.sectionalias", 
+    "fields": {
+        "section": 5, 
+        "name": "chota khyal"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.sectionalias", 
+    "fields": {
+        "section": 13, 
+        "name": "jor"
+    }
+},
+{
+    "pk": 11255, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7428, 
+        "description": "The bansuri is a transverse flute of India made from a single hollow shaft of bamboo with six or seven finger holes. An ancient musical instrument, the North Indian bansuri is typically about 14 inches in length, was traditionally used as a soprano instrument primarily for accompaniment in lighter compositions including film music. Bansuris range in size from less than 12\" to nearly 40\"."
+    }
+},
+{
+    "pk": 4322, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Bansuri.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11256, 
+    "model": "data.description", 
+    "fields": {
+        "source": 3940, 
+        "description": "The gha\u1e6dam is a percussion instrument used in the Carnatic music of South India. Its variant is played in Punjab and is known as gharha as is a part of Punjabi folk traditions. Its analogue in Rajasthan is known as the madga and pani mataqa (\"water jug\")."
+    }
+},
+{
+    "pk": 4323, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Ghatam.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11257, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7429, 
+        "description": "The harmonium is a type of reed pump organ used in Hindustani music as an important melodic accompaniment. Brought to India in the mid-19th century the hand-pumped harmoniums quickly became popular, and remain an important instrument in many genres of Indian music. Though derived from the designs developed in France, the harmonium was developed further in India in unique ways, such as the addition of drone stops and a scale-changing mechanism.\n"
+    }
+},
+{
+    "pk": 4324, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Harmonium.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11258, 
+    "model": "data.description", 
+    "fields": {
+        "source": 3941, 
+        "description": "A morsing (English: Jaw Harp) is a wind percussion instrument, mainly used in Rajasthan, in the Carnatic music of South India and in Sindh (Pakistan). It can be categorized under lamellophones, which is in the category of plucked idiophones. It consists of a metal ring in the shape of a horseshoe with two parallel forks which form the frame, and a metal tongue in the middle, between the forks, fixed to the ring at one end and free to vibrate at the other. The metal tongue is bent at the free end in a plane perpendicular to the circular ring so that it can be struck and is made to vibrate. "
+    }
+},
+{
+    "pk": 4325, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Morsing_1.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11259, 
+    "model": "data.description", 
+    "fields": {
+        "source": 3934, 
+        "description": "The Mr\u0325da\u1e45ga\u1e43 is a percussion instrument from India of ancient origin. It is the primary rhythmic accompaniment in a Carnatic music and Newa music ensemble. Alternate spellings include \"mrudangam\", \"mrdangam\", \"mritangam\" and \"miruthangam in Tamil\". The mridangam is also played in Carnatic concerts in countries outside of India, including Sri Lanka, Singapore, Malaysia, Australia, United Kingdom, Canada, and the United States. During a percussion ensemble, the mridangam is often accompanied by the ghatam, kanjira, and the morsing."
+    }
+},
+{
+    "pk": 4326, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Mridangam.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11260, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7430, 
+        "description": "The pakhavaj is an Indian barrel-shaped, two-headed drum, a variant and descendant of the mridangam. It is the standard percussion instrument in the dhrupad style and is widely used as an accompaniment for various forms of music and dance performances. The pakhavaj has a low, mellow tone, very rich in harmonics. Set horizontally on a cushion in front of the drummer's crossed leg, the larger bass-skin is played with the left hand, the treble skin by the right hand. The bass face is smeared with wet wheat dough which acts as the kiran and is the cause of the vivid, bass sound the pakhavaj produces."
+    }
+},
+{
+    "pk": 4327, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Pakhavaj.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11261, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7431, 
+        "description": "The Indian santoor is an ancient string musical instrument native to Jammu and Kashmir, with origins in Persia. The santoor is a trapezoid-shaped hammered dulcimer often made of walnut, with seventy two strings. The special-shaped mallets (mezrab) are lightweight and are held between the index and middle fingers. A typical santoor has two sets of bridges, providing a range of three octaves. The Indian santoor is more rectangular and can have more strings than the Persian counterpart, which generally has 72 strings."
+    }
+},
+{
+    "pk": 4328, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Santoor.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11262, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7432, 
+        "description": "The sarangi is a bowed, short-necked string instrument from South Asia which is used in Hindustani classical music. A priminent melodic accompaniment, Sarangi can imitate the nuances of khyal vocal music. The sarangi is also a traditional stringed musical instrument of Nepal, commonly played by the Gaine or Gandarbha ethnic group but the form and repertoire of sarangi is more towards the folk music as compared to the heavy and classical form of repertoire in India. "
+    }
+},
+{
+    "pk": 4329, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Sarangi.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11263, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7433, 
+        "description": "The sarod (or sarode) is a lutelike stringed instrument of India, used mainly in Indian classical music. Along with the sitar, it is among the most popular and prominent instruments in Hindustani (northern Indian, Bangladeshi and Pakistani) classical music. The sarod is known for a deep, weighty, introspective sound, in contrast with the sweet, overtone-rich texture of the sitar, with sympathetic strings that give it a resonant, reverberant quality. It is a fretless instrument able to produce the continuous slides between notes known as meend (glissandi), which is important to Indian music."
+    }
+},
+{
+    "pk": 4330, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Sarod.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11264, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7434, 
+        "description": "The shehnai is a double reed oboe, common in India, Pakistan, Bangladesh and Iran. It is made out of wood, with a metal flare bell at the end. This tubular instrument gradually broadens towards the lower end. It usually has between six and nine holes. It employs one set of quadruple reeds, making it a quadruple reed woodwind. By controlling the breath, various tunes can be played on it."
+    }
+},
+{
+    "pk": 4331, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Shehnai.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11265, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7435, 
+        "description": "The sitar is a plucked stringed instrument used mainly in Hindustani music and Indian classical music. The instrument descended from a similar but simpler Persian instrument called the Setar (meaning \"three strings\") and it's predecessor the Dutar (meaning \"two strings\"). The sitar flourished in the 16th and 17th centuries and arrived at its present form in 18th century India. It derives its distinctive timbre and resonance from sympathetic strings, bridge design, a long hollow neck and a gourd resonating chamber. Used widely throughout the Indian subcontinent, the sitar is a prominent instrument used in Hindustani music. "
+    }
+},
+{
+    "pk": 4332, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Sitar.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11266, 
+    "model": "data.description", 
+    "fields": {
+        "source": 7436, 
+        "description": "The tabla is a membranophone percussion instrument often used in Hindustani classical music. It is also used in the music behind folk and sufi poetry. The instrument consists of a pair of hand drums of contrasting sizes and timbres. The term tabla is derived from an Arabic word, tabl, which simply means \"drum.\" The tabla is also used in some other Asian musical traditions outside of India, such as in the Indonesian dangdut genre. Playing technique involves extensive use of the fingers and palms in various configurations to create a wide variety of different sounds, reflected in the mnemonic syllables (bol). The heel of the hand is used to apply pressure or in a sliding motion on the larger drum so that the pitch is changed during the sound's decay."
+    }
+},
+{
+    "pk": 4333, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Tabla.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 11267, 
+    "model": "data.description", 
+    "fields": {
+        "source": 4007, 
+        "description": "The tambura, tanpura, tamburi is a long-necked plucked lute (a stringed instrument) found in different forms in Indian music culture. Hindustani musicians speak of 'tanpura' whereas Carnatic musicians say 'tambura'; 'tamburi' is a smaller instrument used for accompanying instrumental soloists. "
+    }
+},
+{
+    "pk": 4334, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Tambura.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4335, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Violin_1.jpg", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4317, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Ektaal.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4318, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Jhaptaal.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4320, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Rupak.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4321, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Teentaal.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 7428, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:37.959Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Bansuri", 
+        "title": "bansuri"
+    }
+},
+{
+    "pk": 3940, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-18T13:19:50.492Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Ghatam", 
+        "title": "Ghatam"
+    }
+},
+{
+    "pk": 7429, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:42.116Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Pump_organ", 
+        "title": "harmonium"
+    }
+},
+{
+    "pk": 3941, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-18T13:19:52.137Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Morsing", 
+        "title": "Morsing"
+    }
+},
+{
+    "pk": 3934, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-18T13:19:43.087Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Mridangam", 
+        "title": "Mridangam"
+    }
+},
+{
+    "pk": 7430, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:45.521Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Pakhavaj", 
+        "title": "pakhavaj"
+    }
+},
+{
+    "pk": 7431, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:45.669Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Santoor_(Indian_instrument)", 
+        "title": "santoor"
+    }
+},
+{
+    "pk": 7432, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:45.828Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Sarangi", 
+        "title": "sarangi"
+    }
+},
+{
+    "pk": 7433, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.151Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Sarod", 
+        "title": "sarod"
+    }
+},
+{
+    "pk": 7434, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.300Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Shehnai", 
+        "title": "shehnai"
+    }
+},
+{
+    "pk": 7435, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.449Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Sitar", 
+        "title": "sitar"
+    }
+},
+{
+    "pk": 7436, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2014-05-05T15:07:46.907Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Tabla", 
+        "title": "tabla"
+    }
+},
+{
+    "pk": 4007, 
+    "model": "data.source", 
+    "fields": {
+        "last_updated": "2013-10-30T23:12:05.540Z", 
+        "source_name": 2, 
+        "uri": "http://en.wikipedia.org/wiki/Tanpura_(instrument)", 
+        "title": "Tambura"
+    }
+},
+{
+    "pk": 2, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "Wikipedia"
+    }
+}
+]

@@ -26,7 +26,39 @@ div.item {
         top: 6px;
         left: 6px;
         width: 207px !important;
-        height: 205px !important;
+        height: 207px !important;
+        line-height: 207px;
+        overflow: hidden;
+        a { 
+            position: relative;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            display: block;
+            background: #fff;
+        }
+        img {
+            width: 100%;
+            margin: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+    &.taala.widetaala .pict {
+        line-height: 207px;
+        img {
+            margin: auto;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+    &.taala.widetaala.open .pict { 
+        position: absolute;
+        top: 6px;
+        left: 25px;
+        width: 400px !important;
+        height: 207px !important;
         overflow: hidden;
         a { 
             position: relative;
@@ -99,7 +131,7 @@ div.item {
         z-index: 10;
     }
 
-    &.concert { 
+    &.concert, &.release { 
         .desc { background: @concert_color; }
         background: darken( @concert_color, 20% );
     }
@@ -111,11 +143,11 @@ div.item {
         .desc { background: @instrument_color; }
         background: darken( @instrument_color, 20% );
     }
-    &.raaga {
+    &.raaga, &.raag {
         .desc { background: @raaga_color; }
         background: darken( @raaga_color, 20% );
     }
-    &.taala {
+    &.taala, &.taal {
         .desc { background: @taala_color; }
         background: darken( @taala_color, 20% );
     }
@@ -126,5 +158,14 @@ div.item {
     &.artist {
         .desc { background: @artist_color; }
         background: darken( @artist_color, 20% );
+    }
+    &.form {
+        .disc { background: lighten( @form_color, 50%); }
+        .desc { background: @form_color; }
+        background: darken( @form_color, 20% );
+    }
+    &.laya {
+        .desc { background: @laya_color; }
+        background: darken( @laya_color, 20% );
     }
 }

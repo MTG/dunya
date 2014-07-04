@@ -25,9 +25,11 @@ logging.basicConfig(level=logging.INFO)
 from dashboard import models
 
 import carnatic
+import hindustani
 import makam
 import compmusic
 from musicbrainzngs import caa
+import musicbrainzngs
 
 class CompletenessBase(object):
     """ Base class for a task that checks something is correct """
@@ -176,13 +178,69 @@ class MakamTags(CompletenessBase):
         else:
             return (False, res)
 
+class HindustaniRaagTaal(CompletenessBase):
+    type = 'f'
+    templatefile = 'hindustaniraagtaal.html'
+    name = 'Hindustani Recording raag, taal, form, laya'
+
+    def task(self, collectionfile_id):
+        import hindustani_importer
+        hi = hindustani_importer.HindustaniReleaseImporter()
+
+        thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        fpath = thefile.path
+        meta = compmusic.file_metadata(fpath)
+        m = meta["meta"]
+        recordingid = m["recordingid"]
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
+        mbrec = mbrec["recording"]
+        tags = mbrec.get("tag-list", [])
+        res = {}
+
+        raags = hi._get_raag_tags(tags)
+        taals = hi._get_taal_tags(tags)
+        layas = hi._get_laya_tags(tags)
+        forms = hi._get_form_tags(tags)
+        res["recordingid"] = recordingid
+
+        missingr = [r for _, r in raags if hi._get_raag(r) is None]
+        missingt = [t for _, t in taals if hi._get_taal(t) is None]
+        missingf = [f for _, f in forms if hi._get_form(f) is None]
+        missingl = [l for _, l in layas if hi._get_laya(l) is None]
+
+        if missingr:
+            res["missingr"] = missingr
+        if missingt:
+            res["missingt"] = missingt
+        if missingf:
+            res["missingf"] = missingf
+        if missingl:
+            res["missingl"] = missingl
+                
+        res["gotraag"] = len(raags) > 0
+        res["gottaal"] = len(taals) > 0
+        res["gotform"] = len(forms) > 0
+        res["gotlaya"] = len(layas) > 0
+        res["raag"] = [r for _, r in raags]
+        res["taal"] = [t for _, t in taals]
+        res["form"] = [f for _, f in forms]
+        res["laya"] = [l for _, l in layas]
+        r = raags and not missingr
+        t = taals and not missingt
+        f = forms and not missingf
+        l = layas and not missingl
+        if r and t and f and l:
+            return (True, res)
+        else:
+            return (False, res)
+
 class RaagaTaalaFile(CompletenessBase):
     """ Check that the raaga and taala tags on this file's
     recording page in musicbrainz have matching entries
     in the local database """
     type = 'f'
     templatefile = 'raagataala.html'
-    name = 'Recording raaga and taala'
+    name = 'Carnatic Recording raaga and taala'
 
     def task(self, collectionfile_id):
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
@@ -209,20 +267,14 @@ class RaagaTaalaFile(CompletenessBase):
             try:
                 carnatic.models.Raaga.objects.fuzzy(r)
             except carnatic.models.Raaga.DoesNotExist:
-                try:
-                    carnatic.models.RaagaAlias.objects.fuzzy(r)
-                except carnatic.models.RaagaAlias.DoesNotExist:
-                    missingr.append(r)
+                missingr.append(r)
         if missingr:
             res["missingr"] = missingr
         for t in taalas:
             try:
                 carnatic.models.Taala.objects.fuzzy(t)
             except carnatic.models.Taala.DoesNotExist:
-                try:
-                    carnatic.models.TaalaAlias.objects.fuzzy(t)
-                except carnatic.models.TaalaAlias.DoesNotExist:
-                    missingt.append(t)
+                missingt.append(t)
         if missingt:
             res["missingt"] = missingt
                 
@@ -255,9 +307,13 @@ class ReleaseCoverart(CompletenessBase):
 
     def task(self, musicbrainzrelease_id):
         release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
-        coverart = caa.get_coverart_list(release.mbid)
+        try:
+            coverart = caa.get_image_list(release.mbid)
+            has_coverart = True
+        except musicbrainzngs.ResponseError:
+            has_coverart = False
         ret = {}
-        return (coverart is not None, ret)
+        return (has_coverart, ret)
 
 class FileTags(CompletenessBase):
     """ Check that a file has musicbrainz tags set.
@@ -438,6 +494,17 @@ class ReleaseRelationships(object):
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
 
+class HindustaniReleaseRelationships(ReleaseRelationships, CompletenessBase):
+    name = 'Hindustani release relationships'
+    def check_instrument(self, instrname):
+        from hindustani import models
+        try:
+            hindustani.models.Instrument.objects.filter(name=instrname)
+            return True
+        except hindustani.models.Instrument.DoesNotExist:
+            pass
+        return False
+
 class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
     name = 'Carnatic release relationships'
     def check_instrument(self, instrname):
@@ -446,11 +513,7 @@ class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
             models.Instrument.objects.fuzzy(instrname)
             return True
         except models.Instrument.DoesNotExist:
-            try:
-                models.InstrumentAlias.objects.fuzzy(instrname)
-                return True
-            except models.InstrumentAlias.DoesNotExist:
-                pass
+            pass
         return False
 
 class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):

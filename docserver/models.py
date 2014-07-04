@@ -15,12 +15,15 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django.conf import settings
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 import django.utils.timezone
 import urlparse
 import urllib
+import collections
+import os
 
 import uuid
 
@@ -33,9 +36,9 @@ class Collection(models.Model):
     root_directory = models.CharField(max_length=200)
 
     def __unicode__(self):
-        desc = "%s (%s)" % (self.name, self.slug)
+        desc = u"%s (%s)" % (self.name, self.slug)
         if self.description:
-            desc += " - %s" % (self.description, )
+            desc += u" - %s" % (self.description, )
         return desc
 
     def save(self, *args, **kwargs):
@@ -66,15 +69,63 @@ class Document(models.Model):
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
 
     def get_absolute_url(self):
-        return reverse("docserver-onefile", args=[self.collection.slug, self.external_identifier])
+        return reverse("ds-document-external", args=[self.external_identifier])
 
     def __unicode__(self):
-        ret = ""
+        ret = u""
         if self.title:
-            ret += "%s" % self.title
+            ret += u"%s" % self.title
         if self.external_identifier:
-            ret += " (%s)" % self.external_identifier
+            ret += u" (%s)" % self.external_identifier
         return ret
+
+    def nestedderived(self):
+        """Derived files to show on the dashboard """
+
+        outputs = collections.defaultdict(list)
+        for d in self.derivedfiles.all():
+            outputs[d.module_version.module].append(d)
+        for k, vs in outputs.items():
+            versions = {}
+            for v in vs:
+                if v.module_version.version in versions:
+                    versions[v.module_version.version].append(v)
+                else:
+                    versions[v.module_version.version] = [v]
+            outputs[k] = versions
+        outputs = dict(outputs)
+        return outputs
+
+    def derivedmap(self):
+        """ Derived files for the API.
+        returns {"slug": {"part": {"versions", [versions], "extension"...} ]}
+
+        This makes an assumption that the number of parts and extension
+        are the same for all versions. At the moment they are, but
+        I'm not sure what to do if 
+        """
+        ret = collections.defaultdict(list)
+        derived = self.derivedfiles.all()
+        for d in derived:
+            item = {"extension": d.extension, "version": d.module_version.version, 
+                    "outputname": d.outputname, "numparts": d.numparts,
+                    "mimetype": d.mimetype}
+            ret[d.module_version.module.slug].append(item)
+        newret = {}
+        for k, v in ret.items():
+            items = collections.defaultdict(list)
+            for i in v:
+                name = i['outputname']
+                if name in items:
+                    items[name]["versions"].append(i["version"])
+                else:
+                    items[name] = {"extension": i["extension"], 
+                            "numparts": i["numparts"],
+                            "mimetype": i["mimetype"],
+                            "versions": [i["version"]]}
+
+            newret[k] = items
+        return newret
 
 
 class FileTypeManager(models.Manager):
@@ -114,14 +165,27 @@ class SourceFile(models.Model):
     def fullpath(self):
         return os.path.join(self.document.collection.root_directory, self.path)
 
+    @property
+    def mimetype(self):
+        # TODO: For now all source files are mp3, but this won't be for long
+        return "audio/mpeg"
+
     def __unicode__(self):
-        return "%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
+        return u"%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
 class DerivedFilePart(models.Model):
     derivedfile = models.ForeignKey("DerivedFile", related_name='parts')
     part_order = models.IntegerField()
     path = models.CharField(max_length=500)
     size = models.IntegerField()
+
+    @property
+    def mimetype(self):
+        return self.derivedfile.mimetype
+
+    @property
+    def fullpath(self):
+        return os.path.join(settings.AUDIO_ROOT, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
         url = reverse(url_slug,
@@ -133,9 +197,9 @@ class DerivedFilePart(models.Model):
         return url
 
     def __unicode__(self):
-        ret = "%s: path %s" % (self.derivedfile, self.path)
+        ret = u"%s: path %s" % (self.derivedfile, self.path)
         if self.part_order:
-            ret = "%s - part %s" % (ret, self.part_order)
+            ret = u"%s - part %s" % (ret, self.part_order)
         return ret
 
 class DerivedFile(models.Model):
@@ -155,7 +219,10 @@ class DerivedFile(models.Model):
     mimetype = models.CharField(max_length=100)
     computation_time = models.IntegerField(blank=True, null=True)
 
-    #essentia_version = models.ForeignKey("EssentiaVersion")
+    # The version of essentia and pycompmusic we used to compute this file
+    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
+    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
+
     date = models.DateTimeField(default=django.utils.timezone.now)
 
     def save_part(self, part_order, path, size):
@@ -164,7 +231,8 @@ class DerivedFile(models.Model):
 
     @property
     def versions(self):
-        versions = self.module_version.module.moduleversion_set.all()
+        # TODO: This is only the versions of the module, not the versions of files we have
+        versions = self.module_version.module.versions.all()
         return [v.version for v in versions]
 
     @property
@@ -180,18 +248,74 @@ class DerivedFile(models.Model):
         return url
 
     def __unicode__(self):
-        return "%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
+        return u"%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
 
 
 # Essentia management stuff
 
+class Worker(models.Model):
+    NEW = "0"
+    UPDATING = "1"
+    UPDATED = "2"
+    STATE_CHOICES = (
+        (NEW, 'New'),
+        (UPDATING, 'Updating'),
+        (UPDATED, 'Updated')
+    )
+
+    hostname = models.CharField(max_length=200)
+    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
+    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
+    state = models.CharField(max_length=1, choices=STATE_CHOICES, default='0')
+
+    def set_state_updating(self):
+        self.state = self.UPDATING
+        self.save()
+
+    def set_state_updated(self):
+        self.state = self.UPDATED
+        self.save()
+
+    def __unicode__(self):
+        return u"%s with Essentia %s and Compmusic %s" % (self.hostname, self.essentia, self.pycompmusic)
+
+class PyCompmusicVersion(models.Model):
+    sha1 = models.CharField(max_length=200)
+    commit_date = models.DateTimeField(default=django.utils.timezone.now)
+    date_added = models.DateTimeField(default=django.utils.timezone.now)
+
+    @property
+    def short(self):
+        return self.sha1[:7]
+
+    def get_absolute_url(self):
+        return "https://github.com/MTG/pycompmusic/tree/%s" % self.sha1
+
+    def short_link(self):
+        return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
+
+    def __unicode__(self):
+        return u"%s" % (self.sha1, )
+
 class EssentiaVersion(models.Model):
     version = models.CharField(max_length=200)
     sha1 = models.CharField(max_length=200)
+    commit_date = models.DateTimeField(default=django.utils.timezone.now)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
+
+    @property
+    def short(self):
+        return self.sha1[:7]
+
+    def get_absolute_url(self):
+        return "https://github.com/CompMusic/essentia/tree/%s" % self.sha1
+
+    def short_link(self):
+        return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
+
     def __unicode__(self):
-        return "Essentia %s (%s)" % (self.version, self.sha1)
+        return u"%s (%s)" % (self.version, self.sha1)
 
 class Module(models.Model):
     name = models.CharField(max_length=200)
@@ -203,30 +327,22 @@ class Module(models.Model):
     collections = models.ManyToManyField(Collection)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.name, self.module)
+        return u"%s (%s)" % (self.name, self.module)
 
     def processed_files(self):
         latest = self.get_latest_version()
-        all_collections = self.collections.all()
-        qs = Document.objects.filter(collection__in=all_collections,
-                sourcefiles__file_type=self.source_type)
         if latest:
-            qs = qs.filter(derivedfiles__module_version=self.get_latest_version())
+            return latest.processed_files()
         else:
             # If we don't have a version we probably can't show files yet
             return []
-        return qs
 
     def unprocessed_files(self):
         latest = self.get_latest_version()
-        all_collections = self.collections.all()
-        qs = Document.objects.filter(collection__in=all_collections,
-                sourcefiles__file_type=self.source_type)
         if latest:
-            qs = qs.exclude(derivedfiles__module_version=self.get_latest_version())
+            return latest.unprocessed_files()
         else:
             return []
-        return qs
 
     def latest_version_number(self):
         version = self.get_latest_version()
@@ -236,19 +352,42 @@ class Module(models.Model):
             return "(none)"
 
     def get_latest_version(self):
-        versions = self.moduleversion_set.order_by("-date_added")
+        versions = self.versions.order_by("-date_added")
         if len(versions):
             return versions[0]
         else:
             return None
 
+    def get_absolute_url(self):
+        return reverse("docserver-module", args=[self.pk])
+
 class ModuleVersion(models.Model):
-    module = models.ForeignKey(Module)
+    module = models.ForeignKey(Module, related_name="versions")
     version = models.CharField(max_length=10)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
+    def processed_files(self, collection=None):
+        if not collection:
+            collections = self.module.collections.all()
+        else:
+            collections = [collection]
+        qs = Document.objects.filter(collection__in=collections,
+                sourcefiles__file_type=self.module.source_type)
+        qs = qs.filter(derivedfiles__module_version=self)
+        return qs.distinct()
+
+    def unprocessed_files(self, collection=None):
+        if not collection:
+            collections = self.module.collections.all()
+        else:
+            collections = [collection]
+        qs = Document.objects.filter(collection__in=collections,
+                sourcefiles__file_type=self.module.source_type)
+        qs = qs.exclude(derivedfiles__module_version=self)
+        return qs.distinct()
+
     def __unicode__(self):
-        return "v%s for %s" % (self.version, self.module)
+        return u"v%s for %s" % (self.version, self.module)
 
 class DocumentLogMessage(models.Model):
     """ A log message about a document. Normally the log message refers to ModuleVersion

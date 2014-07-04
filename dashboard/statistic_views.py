@@ -24,12 +24,14 @@ from dashboard import models
 from dashboard import views
 import docserver
 import carnatic
+import hindustani
 
 import json
 import collections
 import compmusic
 
 def _common_stats(collectionid):
+    """ Get some common statistics for all styles """
     releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid)
     ret = {}
     if releases.count():
@@ -116,9 +118,7 @@ def carnatic_releases(request):
                         unmatchedreleases[dashrel] = []
                     unmatchedreleases[dashrel].extend(unmatched.values())
 
-    print unmatchedreleases.keys()
     ret = {"unmatched": unmatchedreleases}
-    print ret
     return render(request, 'stats/carnatic_releases.html', ret)
 
 @user_passes_test(views.is_staff)
@@ -155,17 +155,22 @@ def carnatic_artists(request):
     noimages = [a for a in image_counted.order_by("name").all() if a.images__count == 0]
     nobiographies = [a for a in bio_counted.order_by("name").all() if a.description__count == 0]
     noinstrument = [a for a in bio_counted.order_by("name").all() if not a.main_instrument]
-    ret = {"noimages": noimages, "nobios": nobiographies, "noinstrument": noinstrument, "all": artists.order_by('name').all()}
+
+    ret = {"noimages": noimages,
+           "nobios": nobiographies,
+           "noinstrument": noinstrument,
+           "all": artists.order_by('name').all()}
     return render(request, 'stats/carnatic_artists.html', ret)
 
 @user_passes_test(views.is_staff)
 def carnatic_recordings(request):
-    # TODO: Also check if album artist has a relationship
     # TODO: Also make sure rels are on tracks not album (preferred)
     # TODO: Also check there is at least one 'lead' performer
 
     concerts = carnatic.models.Concert.objects.all()
+    badconcerts = []
     for c in concerts:
+        c.missing_rel_artists = False
         got_works = True
         got_track_perf = True
         got_perf = True
@@ -180,36 +185,29 @@ def carnatic_recordings(request):
         c.got_works = got_works
         c.got_perf = got_perf and got_track_perf
 
-    ret = {"concerts": concerts,
+        # Artists who are the primary artist of a release, but are not listed
+        # as a relationship on the release or any tracks.
+        # Note that this will incorrectly select groups where group members are listed
+        artists = c.artists.all()
+        perf = c.instrumentconcertperformance_set.filter(performer__in=artists)
+        tperf = carnatic.models.InstrumentPerformance.objects.filter(
+                recording__concert=c, performer__in=artists)
+        if not perf.exists() and not tperf.exists():
+            c.missing_rel_artists = True
+
+        if not c.got_works or not c.got_perf or c.missing_rel_artists:
+            badconcerts.append(c)
+
+    ret = {"concerts": badconcerts,
             }
     return render(request, 'stats/carnatic_recordings.html', ret)
 
 @user_passes_test(views.is_staff)
 def carnatic_raagataala(request):
     recordings = carnatic.models.Recording.objects
-    #raaga_count = recordings.annotate(Count('work__raaga'))
-    #taala_count = recordings.annotate(Count('work__taala'))
-    #missingr = []
-    #missingt = []
-    #no_raagas = [r for r in raaga_count if r.work__raaga__count == 0]
-    #no_taalas = [r for r in taala_count if r.work__taala__count == 0]
-    #for r in no_raagas:
-    #    if r.work:
-    #        otherrecs = r.work.recording_set.exclude(id=r.id)
-    #    else:
-    #        otherrecs = []
-    #    missingr.append({"recording": r, "otherrecs": otherrecs})
-    #for r in no_taalas:
-    #    if r.work:
-    #        otherrecs = r.work.recording_set.exclude(id=r.id)
-    #    else:
-    #        otherrecs = []
-    #    missingt.append({"recording": r, "otherrecs": otherrecs})
 
     dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
     dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
-    nodbr = set()
-    nodbt = set()
     checker = "dashboard.completeness.RaagaTaalaFile"
     missingr = []
     missingt = []
@@ -239,9 +237,12 @@ def carnatic_raagataala(request):
 @user_passes_test(views.is_staff)
 def carnatic_works(request):
     works = carnatic.models.Work.objects
-    composer_counted = works.annotate(Count('composer'))
-    nocomposer = [w for w in composer_counted if w.composer__count == 0]
-    ret = {"nocomposer": nocomposer, "all": works.order_by('title').all()}
+    composer_counted = works.annotate(Count('composers'))
+    nocomposer = [w for w in composer_counted if w.composers__count == 0]
+    duplicatecomposer = [w for w in composer_counted if w.composers__count > 1]
+    ret = {"nocomposer": nocomposer, 
+           "duplicatecomposer": duplicatecomposer,
+           "all": works.order_by('title').all()}
     return render(request, 'stats/carnatic_works.html', ret)
 
 
@@ -288,6 +289,181 @@ def hindustani_stats(request):
         ret["releaseartists"] = len(list(relartists))
     # Duration, num lead artists
     return render(request, 'stats/hindustani.html', ret)
+
+@user_passes_test(views.is_staff)
+def hindustani_releases(request):
+    dashcoll = models.Collection.objects.get(id=compmusic.HINDUSTANI_COLLECTION)
+    checker = "dashboard.completeness.CorrectMBID"
+    unmatchedreleases = {}
+    for dashrel in dashcoll.musicbrainzrelease_set.all():
+        results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
+        if results:
+            lastresult = results[0]
+            if lastresult.result == 'b': # Bad
+                data = json.loads(lastresult.data)
+                unmatched = data.get("unmatchedmb", {})
+                if unmatched:
+                    if dashrel not in unmatchedreleases:
+                        unmatchedreleases[dashrel] = []
+                    unmatchedreleases[dashrel].extend(unmatched.values())
+
+    ret = {"unmatched": unmatchedreleases}
+    return render(request, 'stats/hindustani_releases.html', ret)
+
+@user_passes_test(views.is_staff)
+def hindustani_coverart(request):
+    releases = hindustani.models.Release.objects.select_related('artists')
+    counted = releases.annotate(Count('images'))
+    relids = [r.mbid for r in counted.all() if r.images__count > 0]
+
+    dashcoll = models.Collection.objects.get(id=compmusic.HINDUSTANI_COLLECTION)
+    checker = "dashboard.completeness.ReleaseCoverart"
+    nocaa = []
+    for dashrel in dashcoll.musicbrainzrelease_set.all():
+        results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
+        if results:
+            lastresult = results[0]
+            if lastresult.result == 'b': # Bad
+                nocaa.append(counted.get(mbid=dashrel.mbid))
+
+    noimages = [r for r in counted.all() if r.images__count == 0]
+    noimageids = [r.mbid for r in noimages]
+    dashnoimage = dashcoll.musicbrainzrelease_set.filter(mbid__in=noimageids)
+
+    noi = []
+    for m, d in zip(noimages, dashnoimage):
+        noi.append({"model": m, "dashboard": d})
+
+    ret = {"noimages": noi, "nocaa": nocaa}
+    return render(request, 'stats/hindustani_coverart.html', ret)
+
+@user_passes_test(views.is_staff)
+def hindustani_artists(request):
+    artists = hindustani.models.Artist.objects
+    image_counted = artists.annotate(Count('images'))
+    bio_counted = artists.annotate(Count('description'))
+    noimages = [a for a in image_counted.order_by("name").all() if a.images__count == 0]
+    nobiographies = [a for a in bio_counted.order_by("name").all() if a.description__count == 0]
+    noinstrument = [a for a in bio_counted.order_by("name").all() if not a.main_instrument]
+
+    ret = {"noimages": noimages,
+           "nobios": nobiographies,
+           "noinstrument": noinstrument,
+           "all": artists.order_by('name').all()}
+    return render(request, 'stats/hindustani_artists.html', ret)
+
+@user_passes_test(views.is_staff)
+def hindustani_recordings(request):
+    # TODO: Also make sure rels are on tracks not album (preferred)
+    # TODO: Also check there is at least one 'lead' performer
+
+    releases = hindustani.models.Release.objects.all()
+    badreleases = []
+    for r in releases:
+        got_works = True
+        got_track_perf = True
+        got_perf = True
+        for t in r.tracks.all():
+            if not t.works.exists():
+                got_works = False
+            if t.performance.count() == 0:
+                got_track_perf = False
+        r.got_perf = got_track_perf
+        r.got_works = got_works
+
+        # Artists who are the primary artist of a release, but are not listed
+        # as a relationship on the release or any tracks.
+        # Note that this will incorrectly select groups where group members are listed
+        artists = r.artists.all()
+        tperf = hindustani.models.InstrumentPerformance.objects.filter(
+                recording__release=r, performer__in=artists)
+        r.missing_rel_artists = False
+        if not tperf.exists():
+            r.missing_rel_artists = True
+
+        if not r.got_works or not r.got_perf or r.missing_rel_artists:
+            badreleases.append(r)
+
+    ret = {"releases": badreleases,
+            }
+    return render(request, 'stats/hindustani_recordings.html', ret)
+
+@user_passes_test(views.is_staff)
+def hindustani_raagtaal(request):
+    recordings = hindustani.models.Recording.objects
+
+    dashcoll = models.Collection.objects.get(id=compmusic.HINDUSTANI_COLLECTION)
+    dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
+    checker = "dashboard.completeness.HindustaniRaagTaal"
+    missingr = []
+    missingt = []
+    missingf = []
+    missingl = []
+    no_r = {}
+    no_t = {}
+    no_f = {}
+    no_l = {}
+    for f in dashfiles:
+        checks = f.collectionfileresult_set.filter(checker__module=checker).order_by('-datetime')
+        if len(checks):
+            check = checks[0]
+            mbid = check.collectionfile.recordingid
+            data = json.loads(check.data) if check.data else {}
+            if "missingt" in data:
+                missingt.append({"taals": data.get("missingt"), "file": check.collectionfile})
+            if "missingr" in data:
+                missingr.append({"raags": data.get("missingr"), "file": check.collectionfile})
+            if "missingf" in data:
+                missingf.append({"forms": data.get("missingf"), "file": check.collectionfile})
+            if "missingl" in data:
+                missingl.append({"layas": data.get("missingl"), "file": check.collectionfile})
+            if len(data["raag"]) == 0:
+                no_r[mbid] = check.collectionfile
+            if len(data["taal"]) == 0:
+                no_t[mbid] = check.collectionfile
+            if len(data["form"]) == 0:
+                no_f[mbid] = check.collectionfile
+            if len(data["laya"]) == 0:
+                no_l[mbid] = check.collectionfile
+
+    dirs = collections.defaultdict(lambda: collections.defaultdict(dict))
+    for m, r in no_r.items():
+        rel = r.directory.musicbrainzrelease
+        dirs[rel][r]["raag"] = True
+    for m, t in no_t.items():
+        rel = t.directory.musicbrainzrelease
+        dirs[rel][t]["taal"] = True
+    for m, l in no_l.items():
+        rel = l.directory.musicbrainzrelease
+        dirs[rel][l]["laya"] = True
+    for m, f in no_f.items():
+        rel = f.directory.musicbrainzrelease
+        dirs[rel][f]["form"] = True
+
+    # convert back from defaultdict to dict for django
+    dirs = dict(dirs)
+    for k, v in dirs.items():
+        dirs[k] = dict(v)
+
+    ret = { "missingr": missingr,
+            "missingt": missingt,
+            "missingf": missingf,
+            "missingl": missingl,
+            "dirs": dirs
+            }
+    return render(request, 'stats/hindustani_raagtaal.html', ret)
+
+@user_passes_test(views.is_staff)
+def hindustani_works(request):
+    works = hindustani.models.Work.objects
+    composer_counted = works.annotate(Count('composers'))
+    nocomposer = [w for w in composer_counted if w.composers__count == 0]
+    duplicatecomposer = [w for w in composer_counted if w.composers__count > 1]
+    ret = {"nocomposer": nocomposer, 
+           "duplicatecomposer": duplicatecomposer,
+           "all": works.order_by('title').all()}
+    return render(request, 'stats/hindustani_works.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def makam_stats(request):

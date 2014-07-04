@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Melodic Patterns </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'motifdiscovery/style.css' %}" />
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="{% static 'motifdiscovery/soundmanager2.js' %}"></script>
+    </head>
+    <body>
+        <div id="content">
+            {% block body %}{% endblock %}
+        </div>
+        <div id="footer">
+            {% block footer %}{% endblock %}
+        </div>
+        <div id="nav">
+            <h4>Navigation:</h4><br />
+            <ul>
+                {% block nav %}{% endblock %}
+            </ul>
+        </div>
+    </body>
+</html>

@@ -24,54 +24,9 @@ from compmusic import kutcheris
 from compmusic import image
 from compmusic import file
 
-def import_instrument_description(instrument, overwrite=False):
-    iname = wikipedia.search(instrument.name)
-    img, imgurl, b, u = wikipedia.get_artist_details(instrument.name)
-    if b and b.startswith("#REDIR"):
-        newname = b.replace("#REDIRECT ", "")
-        img, imgurl, b, u = wikipedia.get_artist_details(newname)
-    if b:
-        sn = data.models.SourceName.objects.get(name="Wikipedia")
-        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": instrument.name})
-        description = data.models.Description.objects.create(description=b, source=source)
-        instrument.description = description
-    if imgurl:
-        sn = data.models.SourceName.objects.get(name="Wikipedia")
-        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=imgurl, defaults={"title": instrument.name})
-        imagefilename = instrument.name.replace(" ", "_")
-        try:
-            existingimg = instrument.images.get(image__contains="%s" % imagefilename)
-            # TODO: If the image doesn't exist on disk this is an error. fix it.
-            if existingimg.image.size != len(img) or overwrite:
-                # If the imagesize has changed, or overwrite is set, remove the image
-                existingimg.delete()
-        except data.models.Image.DoesNotExist:
-            pass
-
-        im = data.models.Image()
-        im.image.save("instrument-%s.jpg" % imagefilename, ContentFile(img))
-        instrument.images.add(im)
-    instrument.save()
-
-def import_artist_bio(a, overwrite):
+def import_artist_kutcheris(a, overwrite):
     artist = kutcheris.search_artist(a.name)
-    additional_urls = []
-    if not len(artist):
-        print "Looing for data on wikipedia"
-        i, iurl, b, u = wikipedia.get_artist_details(a.name)
-        if u:
-            additional_urls.append(u)
-        #if not b:
-        #    newname = wikipedia.search(a.name)
-        #    mx = max(len(a.name), len(newname))
-        #    mn = min(len(a.name), len(newname))
-        #    # Only accept the wikipedia search result if it's
-        #    if newname and mn + 3 < mx:
-        #        i, b, u = wikipedia.get_artist_details(newname)
-        if b:
-            sn = data.models.SourceName.objects.get(name="Wikipedia")
-
-    else:
+    if artist:
         print "Found data on kutcheris.com"
         aid = artist.values()[0]
         i, b, u = kutcheris.get_artist_details(aid)
@@ -82,66 +37,79 @@ def import_artist_bio(a, overwrite):
     if b:
         source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": a.name})
         description = data.models.Description.objects.create(description=b, source=source)
-        a.description = description
-        if i:
-            print "Found image"
+        if overwrite or not a.description:
+            a.description = description
+            a.save()
 
+def import_artist_wikipedia(artist, overwrite):
+    print "Looking for data on wikipedia"
+    sn = data.models.SourceName.objects.get(name="Wikipedia")
+    refs = artist.references.filter(source_name=sn)
+    if refs.exists():
+        source = refs.all()[0]
+        wikiurl = source.uri
+        name = os.path.basename(wikiurl)
+
+        img, bio = wikipedia.get_artist_details(name)
+        if bio:
+            description = data.models.Description.objects.create(description=bio, source=source)
+            if overwrite or not artist.description:
+                artist.description = description
+                artist.save()
+        if img:
             try:
-                existingimg = a.images.get(image__contains="%s" % a.mbid)
-                # TODO: If the image doesn't exist on disk this is an error. fix it.
-                #if existingimg.image.size != len(i) or overwrite:
-                if overwrite:
+                existingimg = artist.images.get(image__contains="%s" % artist.mbid)
+                if not os.path.exists(existingimg.image.path):
+                    existingimg.delete()
+                elif existingimg.image.size != len(img) or overwrite:
                     # If the imagesize has changed, or overwrite is set, remove the image
+                    os.unlink(existingimg.image.path)
                     existingimg.delete()
             except data.models.Image.DoesNotExist:
                 pass
 
             im = data.models.Image()
-            im.image.save("artist-%s.jpg" % a.mbid, ContentFile(i))
-            a.images.add(im)
-        if additional_urls:
-            for u in additional_urls:
-                # Currently we only have wikipedia additionals, but this may change
-                sn = data.models.SourceName.objects.get(name="Wikipedia")
-                title = u.split("/")[-1].replace("_", " ")
-                source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": title})
-                a.references.add(source)
-        a.save()
+            im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
+            artist.images.add(im)
 
-def import_concert_image(concert, directories=[], overwrite=False):
-    for existing in concert.images.all():
+def import_release_image(release, directories=[], overwrite=False):
+    for existing in release.images.all():
         name = os.path.splitext(os.path.basename(existing.image.name))
-        if name == concert.mbid:
-            print "Image for concert %s exists, skipping" % concert.mbid
+        if name == release.mbid:
+            print "Image for release %s exists, skipping" % release.mbid
             return
 
-    i = image.get_coverart_from_caa(concert.mbid)
+    i = image.get_coverart_from_caa(release.mbid)
     caa = True
     if not i:
         caa = False
-        print "No image on CAA for %s, looking in directory" % concert.mbid
+        print "No image on CAA for %s, looking in directory" % release.mbid
         i = image.get_coverart_from_directories(directories)
     if i:
         im = data.models.Image()
         if caa:
-            uri = "http://archive.org/details/mbid-%s" % concert.mbid
+            uri = "http://archive.org/details/mbid-%s" % release.mbid
             sn = data.models.SourceName.objects.get(name="Cover Art Archive")
-            source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=uri, defaults={"title": concert.title})
+            source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=uri, defaults={"title": release.title})
             im.source = source
-        im.image.save("concert-%s.jpg" % concert.mbid, ContentFile(i))
+        im.image.save("release-%s.jpg" % release.mbid, ContentFile(i))
 
         # If the image is a different size from one that already exists, then
-        # replace it
+        # replace it. Also remove if we have an item, but can't find the image
+        # for it.
         try:
-            existingimg = concert.images.get(image__contains="%s" % concert.mbid)
-            if existingimg.image.size != len(i) or overwrite:
+            existingimg = release.images.get(image__contains="%s" % release.mbid)
+            if not os.path.exists(existingimg.image.path):
+                existingimg.delete()
+            elif existingimg.image.size != len(i) or overwrite:
                 # If the imagesize has changed, or overwrite is set, remove the image
+                os.unlink(existingimg.image.path)
                 existingimg.delete()
         except data.models.Image.DoesNotExist:
             pass
 
-        concert.images.add(im)
-        concert.save()
+        release.images.add(im)
+        release.save()
     else:
-        print "Can't find an image for %s" % concert.mbid
+        print "Can't find an image for %s" % release.mbid
 

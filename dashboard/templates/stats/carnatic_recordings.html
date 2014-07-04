@@ -1,6 +1,15 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Carnatic Recordings{% endblock %}
 
+{% block css %}
+<style type="text/css">
+h3 {
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+</style>
+{% endblock %}
+
 {% block wrap %}
 
 <h1>Carnatic Recordings</h1>
@@ -25,19 +34,15 @@
             {% endif %}
         {% endfor %}
     {% endif %}
+
+    {% if c.missing_rel_artists %}
+        Lead artists who have no relationships<br>
+        {% for a in c.artists.all %}
+            <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a></li>
+        {% endfor %}
+    {% endif %}
 {% endif %}
 {% endfor %}
-
-<h2>Recordings missing performer information</h2>
-{% for r in noperf %}
-    <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>
-{% endfor %}
-
-<h2>Recordings missing works</h2>
-{% for r in nowork %}
-    <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>
-{% endfor %}
-
 
 {% endblock %}
 

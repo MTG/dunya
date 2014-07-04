@@ -63,6 +63,15 @@ textarea {
 .header-container, .main-container { min-width: 1024px; }
 #entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
 
+#aboutdialog {
+    padding: 1em;
+    display: none;
+}
+
+#playback_dialog {
+    display: none;
+}
+
 /* ==========================================================================
    HEADER 
    ========================================================================== */
@@ -128,7 +137,7 @@ textarea {
             list-style: none;
             margin:0px;
             position: absolute;
-            z-index: 1;
+            z-index: 4;
             .boxesCloth;
             display: none;
             li {
@@ -137,6 +146,29 @@ textarea {
                 white-space: nowrap;
                 cursor: pointer;
             }
+        }
+    }
+    #erclogo {
+        float: right;
+        position: relative;
+        width: 300px;
+        text-align: right;
+        padding-right: 10px;
+        margin-top: 5px;
+        >div {
+            font-size: 10px;
+            margin-top: 15px;
+            display: inline-block;
+            padding-right: 10px;
+        }
+        span {
+            display: block;
+            text-align: right;
+        }
+        >img {
+            height: 60px;
+            vertical-align: middle;
+            float: right;
         }
     }
     nav#mainmenu {
@@ -246,6 +278,59 @@ textarea {
         .oldie nav a {
             margin: 0 0.7%;
         }
+    }
+}
+
+#uncompatibleIE-bar {
+    position: relative;
+    top: 150px;
+    height: 200px;
+    z-index: 2;
+    opacity: 0.95;
+    background: black;
+    background: rgb(46,46,46);
+    width: 980px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    bottom: 0px;
+    margin: 0;
+    left: 50%;
+    margin-left: -490px; /* Half of the width */
+
+    p {
+        font-size: 28px;
+        font-style: italic;
+        color: white;
+        margin: 5px;
+    }
+    a {
+        color: #AB4646;
+    }
+}
+#cookie-bar {
+    display: none;
+    position: fixed;
+    height: 50px;
+    z-index: 2;
+    opacity: 0.95;
+    background: black;
+    background: rgb(46,46,46);
+    width: 980px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    bottom: 0px;
+    margin: 0;
+    left: 50%;
+    margin-left: -490px; /* Half of the width */
+
+    p {
+        font-size: 12px;
+        font-style: italic;
+        color: white;
+        margin: 5px;
+    }
+    a {
+        color: #AB4646;
     }
 }
 
@@ -381,6 +466,47 @@ input[type="text"], input[type="password"], input[type="email"] {
 #filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; } 
 #filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; } 
 
+#breadcrumb {
+    height: 80px;
+
+    #navigationhistory {
+        .inner {
+            width: 2000px;
+            .microitem {
+                float: left;
+                clear: none;
+                width: 300px !important;
+                height: 69px !important;
+                margin-left: 4px;
+                overflow: hidden;
+
+                .disco img {
+                    width: 15%;
+                    height: auto;
+
+                    float: right;
+                    margin-top: 3px;
+                    margin-right: 3px;
+                }
+            }
+            .microitem.artist {
+                background: #69d2e7;
+            }
+            .microitem.concert {
+                background: #a7dbd8;
+            }
+            .microitem.instrument {
+                background: #f38630;
+            }
+            .microitem.raaga {
+                background: #fa6900;
+            }
+            .microitem.taala {
+                background: #ecd078;
+            }
+        }
+    }
+}
 /* ==========================================================================
    Helper classes
    ========================================================================== */

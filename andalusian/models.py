@@ -25,7 +25,7 @@ class Source(models.Model):
     last_updated = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return "From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
+        return u"From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
 
 
 class Description(models.Model):
@@ -35,7 +35,7 @@ class Description(models.Model):
     description = models.TextField()
 
     def __unicode__(self):
-        return "%s - %s" % (self.source, self.description[:100])
+        return u"%s - %s" % (self.source, self.description[:100])
 
 
 class Image(models.Model):
@@ -45,9 +45,9 @@ class Image(models.Model):
     small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
     def __unicode__(self):
-        ret = "%s" % (self.image.name, )
+        ret = u"%s" % (self.image.name, )
         if self.source:
-            ret = "%s from %s" % (ret, self.source.uri)
+            ret = u"%s from %s" % (ret, self.source.uri)
         return ret
 
 
@@ -285,8 +285,8 @@ class Recording(AndalusianStyle, BaseModel):
     director = models.ForeignKey('Artist')
 
     def __unicode__(self):
-        ret = ", ".join([unicode(a) for a in self.performers()])
-        return "%s (%s)" % (self.title, ret)
+        ret = u", ".join([unicode(a) for a in self.performers()])
+        return u"%s (%s)" % (self.title, ret)
 
     def performers(self):
         performers = list(set([p.performer for p in self.instrumentperformance_set.all()]))
@@ -326,7 +326,7 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return "%s playing %s on %s" % (self.performer, self.instrument, self.recording)
+        return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 
 class OrchestraPerformer(models.Model):
@@ -338,13 +338,13 @@ class OrchestraPerformer(models.Model):
     end = models.CharField(max_length=10, blank=True, null=True)
 
     def __unicode__(self):
-        ret = "%s played %s on %s" % (self.performer, self.instrument, self.orchestra)
+        ret = u"%s played %s on %s" % (self.performer, self.instrument, self.orchestra)
         if self.director:
-            ret += ". Moreover, %s acted as the director of this orchestra" % self.performer
+            ret += u". Moreover, %s acted as the director of this orchestra" % self.performer
             if self.begin:
-                ret += " from %s" % self.begin
+                ret += u" from %s" % self.begin
             if self.end:
-                ret += " until %s" % self.end
+                ret += u" until %s" % self.end
         return ret
 
 
@@ -428,7 +428,7 @@ class Section(AndalusianStyle, BaseModel):
     form = models.ForeignKey('Form', blank=True, null=True)
 
     def __unicode__(self):
-        return "Section %s of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
+        return u"Section %s of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
                (self.order_number, self.recording, self.start_time, self.end_time,
                 self.form, self.mizan, self.tab, self.nawba)
     
@@ -440,7 +440,7 @@ class InstrumentSectionPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s playing %s on section %s of recording %s" % \
+        return u"%s playing %s on section %s of recording %s" % \
                (self.performer, self.instrument, self.section.order_number, self.section.recording)
 
 
@@ -491,5 +491,5 @@ class SectionSanaaPoem(models.Model):
     order_number = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return "Poem %s from san'a %s in section %s of recording %s" % \
+        return u"Poem %s from san'a %s in section %s of recording %s" % \
                (self.poem, self.sanaa, self.section.order_number, self.section.recording)

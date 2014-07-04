@@ -17,6 +17,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils.text import slugify
 
 import collections
 
@@ -57,7 +58,6 @@ class MusicalSchool(CarnaticStyle, models.Model):
 class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     gurus = models.ManyToManyField("Artist", related_name="students")
-    hidden = models.BooleanField(default=False)
 
     def instruments(self):
         insts = []
@@ -151,6 +151,9 @@ class Artist(CarnaticStyle, data.models.Artist):
               }
         return ret
 
+class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
+    pass
+
 class Language(CarnaticStyle, models.Model):
     name = models.CharField(max_length=50)
 
@@ -173,18 +176,23 @@ class Sabbah(CarnaticStyle, models.Model):
     city = models.CharField(max_length=100)
 
 class ConcertRecording(models.Model):
+    """ Links a concert to a recording with an implicit ordering """
     concert = models.ForeignKey('Concert')
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
 
     def __unicode__(self):
-        return "%s: %s from %s" % (self.track, self.recording, self.concert)
+        return u"%s: %s from %s" % (self.track, self.recording, self.concert)
 
 class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     tracks = models.ManyToManyField('Recording', through="ConcertRecording")
     performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
+
+    def get_absolute_url(self):
+        viewname = "%s-concert" % (self.get_style(), )
+        return reverse(viewname, args=[self.mbid, slugify(self.title)])
 
     @classmethod
     def get_filter_criteria(cls):
@@ -236,7 +244,8 @@ class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
     raaga = models.ForeignKey("Raaga", related_name="aliases")
 
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = models.Manager()
 
     def __unicode__(self):
         return self.name
@@ -244,7 +253,8 @@ class RaagaAlias(models.Model):
 class Form(models.Model):
     name = models.CharField(max_length=50)
 
-    objects = managers.FuzzySearchManager()
+    objects = managers.CarnaticFormManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -253,7 +263,7 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=50)
     form = models.ForeignKey(Form, related_name="aliases")
 
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
@@ -266,10 +276,11 @@ class Raaga(data.models.BaseModel):
     name = models.CharField(max_length=50)
     transliteration = models.CharField(max_length=50)
 
-    objects = managers.FuzzySearchManager()
+    objects = managers.CarnaticRaagaManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
-        return self.name.capitalize()
+        return self.name
 
     @classmethod
     def get_filter_criteria(cls):
@@ -280,13 +291,13 @@ class Raaga(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id)])
+        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.transliteration)])
 
     def works(self):
         return self.work_set.distinct().all()
 
     def composers(self):
-        return Composer.objects.filter(work__raaga=self).distinct()
+        return Composer.objects.filter(works__raaga=self).distinct()
 
     def artists(self):
         artistmap = {}
@@ -323,7 +334,8 @@ class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
     taala = models.ForeignKey("Taala", related_name="aliases")
 
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = models.Manager()
 
     def __unicode__(self):
         return self.name
@@ -339,11 +351,13 @@ class Taala(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     transliteration = models.CharField(max_length=50)
+    num_aksharas = models.IntegerField(null=True)
 
-    objects = managers.FuzzySearchManager()
+    objects = managers.CarnaticTaalaManager()
+    fuzzymanager = managers.FuzzySearchManager()
 
     def __unicode__(self):
-        return self.name.capitalize()
+        return self.name
 
     def get_similar(self):
         if self.pk in taala_similar:
@@ -360,13 +374,13 @@ class Taala(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id)])
+        return reverse('carnatic-taala', args=[str(self.id), slugify(self.transliteration)])
 
     def works(self):
         return self.work_set.distinct().all()
 
     def composers(self):
-        return Composer.objects.filter(work__taala=self).distinct()
+        return Composer.objects.filter(works__taala=self).distinct()
 
     def artists(self):
         return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
@@ -415,7 +429,7 @@ class WorkRaaga(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s, seq %d %s" % (self.work, self.sequence, self.raaga)
+        return u"%s, seq %d %s" % (self.work, self.sequence, self.raaga)
 
 class WorkTaala(models.Model):
     work = models.ForeignKey('Work')
@@ -423,17 +437,10 @@ class WorkTaala(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return "%s, seq %d %s" % (self.work, self.sequence, self.taala)
+        return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 class Recording(CarnaticStyle, data.models.Recording):
     work = models.ForeignKey('Work', blank=True, null=True)
-
-    def absolute_mp3_url(self):
-        try:
-            url = docserver.util.docserver_get_mp3_url(self.mbid)
-        except docserver.util.NoFileException:
-            url = None
-        return url
 
     def raaga(self):
         if self.work:
@@ -449,30 +456,29 @@ class Recording(CarnaticStyle, data.models.Recording):
                 return ts[0]
         return None
 
-    def artist(self):
-        aa = self.all_artists()
-        if aa:
-            return aa[0]
-        else:
-            return None
+    def all_artists(self):
+        ArtistClass = self.get_object_map("artist")
+        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
 
-    def waveform_image(self):
-        try:
-            # we return "4", because it might be more interesting than 1, but if it fails
-            # (e.g. only 3?) then just return 1
-            return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
-        except:
-            try:
-                return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
-            except:
-                return ""
+        IPClass = self.get_object_map("performance")
+        IRPClass = self.get_object_map("releaseperformance")
+        recperfs = IPClass.objects.filter(recording=self)
+        rec_artists = [r.performer for r in recperfs]
+        releaseperfs = IRPClass.objects.filter(concert__tracks=self)
+        release_artists = [r.performer for r in releaseperfs]
+
+        all_as = set(primary_artists) | set(rec_artists) | set(release_artists)
+        return list(all_as)
+
 
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = models.Manager()
 
 class Instrument(CarnaticStyle, data.models.Instrument):
-    objects = managers.FuzzySearchManager()
+    fuzzymanager = managers.FuzzySearchManager()
+    objects = managers.CarnaticInstrumentManager()
 
     def description(self):
         return "The description of an instrument"
@@ -528,13 +534,14 @@ class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
 
 class InstrumentConcertPerformance(models.Model):
+    # TODO: This should be 'release' over all music types
     concert = models.ForeignKey('Concert')
     performer = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return "%s playing %s in %s" % (self.performer, self.instrument, self.concert)
+        return u"%s playing %s in %s" % (self.performer, self.instrument, self.concert)
 
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
@@ -544,3 +551,5 @@ class Composer(CarnaticStyle, data.models.Composer):
     def taalas(self):
         return Taala.objects.filter(work__composer=self).all()
 
+class ComposerAlias(CarnaticStyle, data.models.ComposerAlias):
+    pass

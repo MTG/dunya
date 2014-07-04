@@ -24,13 +24,11 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 urlpatterns = patterns('',
     url(r'^$', views.index, name='dashboard-home'),
     url(r'collection/%s$' % (uuid_match, ), views.collection, name='dashboard-collection'),
+    url(r'addcollection$', views.addcollection, name='dashboard-addcollection'),
     url(r'release/(?P<releaseid>\d+)$', views.release, name='dashboard-release'),
     url(r'directory/(?P<dirid>\d+)$', views.directory, name='dashboard-directory'),
     url(r'file/(?P<fileid>\d+)$', views.file, name='dashboard-file'),
-
-    url(r'data/raagas', views.raagas, name='dashboard-raagas'),
-    url(r'data/taalas', views.taalas, name='dashboard-taalas'),
-    url(r'data/instruments', views.instruments, name='dashboard-instruments'),
+    url(r'accounts$', views.accounts, name='dashboard-accounts'),
 
     url(r'carnatic/coverart/', statistic_views.carnatic_coverart, name='dashboard-carnatic-coverart'),
     url(r'carnatic/releases/', statistic_views.carnatic_releases, name='dashboard-carnatic-releases'),
@@ -39,11 +37,36 @@ urlpatterns = patterns('',
     url(r'carnatic/raagataala/', statistic_views.carnatic_raagataala, name='dashboard-carnatic-raagataala'),
     url(r'carnatic/works/', statistic_views.carnatic_works, name='dashboard-carnatic-works'),
 
-    url(r'carnatic/', statistic_views.carnatic_stats, name='dashboard-stats-carnatic'),
-    url(r'hindustani/', statistic_views.hindustani_stats, name='dashboard-stats-hindustani'),
-    url(r'makam/', statistic_views.makam_stats, name='dashboard-stats-makam'),
-    url(r'beijing/', statistic_views.beijing_stats, name='dashboard-stats-beijing'),
-    url(r'arabandalusian/', statistic_views.andalusian_stats, name='dashboard-stats-andalusian'),
+    url(r'carnatic/data/raagas', views.carnatic_raagas, name='dashboard-carnatic-raagas'),
+    url(r'carnatic/data/taalas', views.carnatic_taalas, name='dashboard-carnatic-taalas'),
+    url(r'carnatic/data/instruments', views.carnatic_instruments, name='dashboard-carnatic-instruments'),
+
+    url(r'carnatic/', statistic_views.carnatic_stats, name='dashboard-carnatic-stats'),
+
+
+    url(r'hindustani/coverart/', statistic_views.hindustani_coverart, name='dashboard-hindustani-coverart'),
+    url(r'hindustani/releases/', statistic_views.hindustani_releases, name='dashboard-hindustani-releases'),
+    url(r'hindustani/artists/', statistic_views.hindustani_artists, name='dashboard-hindustani-artists'),
+    url(r'hindustani/recordings/', statistic_views.hindustani_recordings, name='dashboard-hindustani-recordings'),
+    url(r'hindustani/raagataala/', statistic_views.hindustani_raagtaal, name='dashboard-hindustani-raagtaal'),
+    url(r'hindustani/works/', statistic_views.hindustani_works, name='dashboard-hindustani-works'),
+
+    url(r'hindustani/data/raags', views.hindustani_raags, name='dashboard-hindustani-raags'),
+    url(r'hindustani/data/taals', views.hindustani_taals, name='dashboard-hindustani-taals'),
+    url(r'hindustani/data/layas', views.hindustani_layas, name='dashboard-hindustani-layas'),
+    url(r'hindustani/data/forms', views.hindustani_forms, name='dashboard-hindustani-forms'),
+    url(r'hindustani/data/instruments', views.hindustani_instruments, name='dashboard-hindustani-instruments'),
+
+    url(r'hindustani/', statistic_views.hindustani_stats, name='dashboard-hindustani-stats'),
+
+    url(r'makam/data/makams', views.makam_makams, name='dashboard-makam-makams'),
+    url(r'makam/data/usuls', views.makam_usuls, name='dashboard-makam-usuls'),
+    url(r'makam/data/forms', views.makam_forms, name='dashboard-makam-forms'),
+    url(r'makam/data/instruments', views.makam_instruments, name='dashboard-makam-instruments'),
+
+    url(r'makam/', statistic_views.makam_stats, name='dashboard-makam-stats'),
+    url(r'beijing/', statistic_views.beijing_stats, name='dashboard-beijing-stats'),
+    url(r'arabandalusian/', statistic_views.andalusian_stats, name='dashboard-andalusian-stats'),
 
 )
 

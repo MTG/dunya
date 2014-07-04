@@ -15,8 +15,53 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django.db.models import Q
 
-from compmusic.fuzzy import stringDuplicates
+import carnatic
+
+class CarnaticRaagaManager(models.Manager):
+    def fuzzy(self, name):
+        try:
+            return carnatic.models.Raaga.objects.get(Q(name__iexact=name) | Q(transliteration__iexact=name))
+        except carnatic.models.Raaga.DoesNotExist as e:
+            try:
+                alias = carnatic.models.RaagaAlias.objects.get(name__iexact=name)
+                return alias.raaga
+            except carnatic.models.RaagaAlias.DoesNotExist:
+                raise e
+
+class CarnaticTaalaManager(models.Manager):
+    def fuzzy(self, name):
+        try:
+            return carnatic.models.Taala.objects.get(Q(name__iexact=name) | Q(transliteration__iexact=name))
+        except carnatic.models.Taala.DoesNotExist as e:
+            try:
+                alias = carnatic.models.TaalaAlias.objects.get(name__iexact=name)
+                return alias.taala
+            except carnatic.models.TaalaAlias.DoesNotExist:
+                raise e
+
+class CarnaticFormManager(models.Manager):
+    def fuzzy(self, name):
+        try:
+            return carnatic.models.Form.objects.get(name__iexact=name)
+        except carnatic.models.Form.DoesNotExist as e:
+            try:
+                alias = carnatic.models.FormAlias.objects.get(name__iexact=name)
+                return alias.form
+            except carnatic.models.FormAlias.DoesNotExist:
+                raise e
+
+class CarnaticInstrumentManager(models.Manager):
+    def fuzzy(self, name):
+        try:
+            return carnatic.models.Instrument.objects.get(name__iexact=name)
+        except carnatic.models.Instrument.DoesNotExist as e:
+            try:
+                alias = carnatic.models.InstrumentAlias.objects.get(name__iexact=name)
+                return alias.instrument
+            except carnatic.models.InstrumentAlias.DoesNotExist:
+                raise e
 
 class FuzzySearchManager(models.Manager):
     def fuzzy(self, name):
@@ -25,7 +70,11 @@ class FuzzySearchManager(models.Manager):
             return self.model.objects.get(name__iexact=name)
         except self.model.DoesNotExist:
             items = self.model.objects.all()
-            names = [i.name.lower() for i in items]
+            names = []
+            for i in items:
+                names.append(i.name.lower())
+                if hasattr(i, "transliteration"):
+                    names.append(i.transliteration.lower())
             dups = stringDuplicates.stringDuplicates(name, names, stripped=True)
             if len(dups) != 1:
                 raise self.model.DoesNotExist()
@@ -33,5 +82,5 @@ class FuzzySearchManager(models.Manager):
             for i in items:
                 if i.name.lower() == n.lower():
                     return i
-            raise Exception("Whoops")
+            raise self.model.DoesNotExist()
 

@@ -1,0 +1,13 @@
+{% extends "motifdiscovery/base.html" %}
+{% block body %}
+    <h2>Tracks in {{release.title}} by {{release.artists.all.0.name}}</h2>
+    {% for t in tracks %}
+    <li><a href="{% url 'motif-seeds' t.mbid %}">{{t.title}}</a>
+    {% endfor %}
+{% endblock %}
+
+{% block nav %}
+<li><a href="{% url 'motif-main'%}">Browsing options</a></li>
+<li><a href="{% url 'motif-artists'%}">Artist list </a></li>
+<li><a href="{% url 'motif-artist' release.artists.all.0.mbid %}">Releases</a></li>
+{% endblock %}  

@@ -15,25 +15,41 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import json, os
+import collections
+import datetime
+import inspect
+import pkgutil
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.urlresolvers import reverse
-
 from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 from docserver import models
 from docserver import forms
 from docserver import jobs
 from docserver import serializers
-from django.views.decorators.csrf import csrf_exempt
+from docserver import util
+from docserver import log
+from dunya.celery import app
+import dashboard
 
+from compmusic import extractors
+
+from rest_framework import authentication
+from rest_framework import exceptions
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 from rest_framework.response import Response
+
+from sendfile import sendfile
+
+auther = authentication.TokenAuthentication()
 
 def index(request):
     return HttpResponse("Hello docserver")
@@ -57,89 +73,61 @@ class DocumentDetail(generics.RetrieveAPIView):
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
 
-@login_required
 def download_external(request, uuid, ftype):
-    # TODO we could replace this with
-    # https://github.com/MTG/freesound/blob/master/utils/nginxsendfile.py
-    try:
-        thetype = models.SourceFileType.objects.get_by_extension(ftype)
-    except models.SourceFileType.DoesNotExist:
-        thetype = None
+    # Test authentication. We support a rest-framework token
+    # or a logged-in user
 
+    loggedin = request.user.is_authenticated()
+    is_staff = request.user.is_staff
     try:
-        thedoc = models.Document.objects.get_by_external_id(uuid)
-    except models.Document.DoesNotExist:
-        thedoc = None
-
-    if thedoc and thetype:
-        # See if it's an extension
-        files = thedoc.sourcefiles.filter(file_type=thetype)
-        if len(files) == 0:
-            raise Http404
+        t = auther.authenticate(request)
+        if t:
+            is_staff = t[0].is_staff
+            token = True
         else:
-            fname = files[0].path
-            contents = open(fname, 'rb').read()
-            response = HttpResponse(contents)
-            response['Content-Length'] = len(contents)
-            return response
-    elif thedoc and not thetype:
-        # otherwise try derived type
-        try:
-            module = models.Module.objects.get(slug=ftype)
-            moduleversions = module.moduleversion_set
-            # If there's a ?v= tag, use that version, otherwise get the latest
-            version = request.GET.get("v")
-            if version:
-                moduleversions = moduleversions.filter(version=version)
-            else:
-                moduleversions = moduleversions.order_by("-date_added")
+            token = False
+    except exceptions.AuthenticationFailed:
+        token = False
 
-            if len(moduleversions):
-                # filter by ?subtype
-                # if a file has many subtypes and it's not set, then this is an error
-                subtype = request.GET.get("subtype")
-                dfs = None
-                for mv in moduleversions:
-                    # go through all the versions until we find a file of that version
-                    dfs = thedoc.derivedfiles.filter(module_version=mv).all()
-                    if subtype:
-                        dfs = dfs.filter(outputname=subtype)
-                    if dfs.count() > 0:
-                        # We found some files, break
-                        break
-                if dfs.count() > 1:
-                    return HttpResponse(status=400)
-                elif dfs.count() == 1:
-                    # Select the part.
-                    # If the file has many parts and ?part is not set then it's an error
-                    parts = dfs[0].parts
-                    part = request.GET.get("part")
-                    if part:
-                        parts = parts.filter(part_order=int(part))
-                    else:
-                        parts = parts.all()
-                    mimetype = dfs[0].mimetype
-                    if parts.count() > 1:
-                        return HttpResponse(status=400)
-                    elif parts.count() == 1:
-                        derived_root = settings.AUDIO_ROOT
-                        file_path = parts[0].path
-                        full_path = os.path.join(derived_root, file_path)
-                        contents = open(full_path, 'rb').read()
-                        return HttpResponse(contents, mimetype)
-                    else:
-                        raise Http404
-                else:
-                    # If no files, or none with this version
-                    raise Http404
-            else:
-                # If no files, or none with this version
-                raise Http404
-        except models.Module.DoesNotExist:
-            raise Http404
-    else:
-        # no extension or derived type
-        raise Http404
+    referrer = request.META.get("HTTP_REFERER")
+    good_referrer = False
+    if referrer and "dunya.compmusic.upf.edu" in referrer:
+        good_referrer = True
+
+    # The only thing that's limited at the moment is mp3 files
+    if ftype == "mp3" and not (loggedin or token or good_referrer):
+        return HttpResponse("Not logged in", status=401)
+
+    try:
+        version = request.GET.get("v")
+        subtype = request.GET.get("subtype")
+        part = request.GET.get("part")
+        filepart = util._docserver_get_part(uuid, ftype, subtype, part, version)
+
+        fname = filepart.fullpath
+        mimetype = filepart.mimetype
+
+        ratelimit = "off"
+        if ftype == "mp3" and not is_staff:
+            # 200k
+            ratelimit = 200*1024
+
+        # TODO: We should ratelimit mp3 requests, but not any others,
+        # so we need a different path for nginx for these ones
+        response = sendfile(request, fname, mimetype=mimetype)
+        response['X-Accel-Limit-Rate'] = ratelimit
+
+        return response
+    except util.TooManyFilesException as e:
+        r = ""
+        if e.args:
+            r = e.args[0]
+        return HttpResponseBadRequest(e)
+    except util.NoFileException as e:
+        r = ""
+        if e.args:
+            r = e.args[0]
+        return HttpResponseNotFound(e)
 
 #### Essentia manager
 
@@ -148,33 +136,203 @@ def is_staff(user):
 
 @user_passes_test(is_staff)
 def manager(request):
-    scan = request.GET.get("scan")
-    if scan is not None:
-        jobs.run_module(int(scan))
-        return HttpResponseRedirect(reverse('docserver-manager'))
-    update = request.GET.get("update")
-    if update is not None:
-        jobs.get_latest_module_version(int(update))
-        return HttpResponseRedirect(reverse('docserver-manager'))
+    # Add a new worker to the cluster
+    register = request.GET.get("register")
+    if register is not None:
+        jobs.register_host.apply_async([register], queue=register)
+        return redirect('docserver-manager')
+    if request.method == "POST":
+        # Update essentia and pycompmusic on all workers
+        update = request.POST.get("updateall")
+        if update is not None:
+            jobs.update_all_workers(request.user.username)
+            return redirect('docserver-manager')
+        # Process a module version
+        run = request.POST.get("run")
+        if run is not None:
+            jobs.run_module(int(run))
+            return redirect('docserver-manager')
 
-    essentias = models.EssentiaVersion.objects.all()
     modules = models.Module.objects.all()
     collections = models.Collection.objects.all()
 
-    ret = {"essentias": essentias, "modules": modules, "collections": collections}
+    inspect = app.control.inspect()
+    # TODO: Load the task data via ajax, so the page loads quickly
+    hosts = inspect.active()
+    workerobs = models.Worker.objects.all()
+    workerkeys = ["celery@%s" % w.hostname for w in workerobs]
+    if hosts:
+        hostkeys = hosts.keys()
+        workers = list(set(workerkeys) & set(hostkeys))
+        neww = []
+        for w in workers:
+            host = w.split("@")[1] 
+            theworker = workerobs.get(hostname=host)
+            num_proc = len(hosts[w])
+            if theworker.state == models.Worker.UPDATING:
+                state = "Updating"
+            elif num_proc:
+                state = "Active"
+            else:
+                state = "Idle"
+            neww.append({"host": host,
+                         "number": num_proc,
+                         "state": state,
+                         "worker": theworker})
+
+        workers = neww
+        newworkers = list(set(hostkeys) - set(workerkeys))
+        newworkers = [w.split("@")[1] for w in newworkers]
+        inactiveworkers = list(set(workerkeys) - set(hostkeys))
+        inactiveworkers = [w.split("@")[1] for w in inactiveworkers]
+    else:
+        workers = []
+        newworkers = []
+        inactiveworkers = [w.split("@")[1] for w in workerkeys]
+
+    latestpycm = models.PyCompmusicVersion.objects.order_by('-commit_date').first()
+    latestessentia = models.EssentiaVersion.objects.order_by('-commit_date').first()
+
+    ret = {"modules": modules, "collections": collections, "workers": workers,\
+            "newworkers": newworkers, "inactiveworkers": inactiveworkers,
+            "latestpycm": latestpycm, "latestessentia": latestessentia}
     return render(request, 'docserver/manager.html', ret)
 
+def understand_task(task):
+    tname = task["name"]
+    try:
+        args = json.loads(task["args"])
+    except ValueError:
+        args = []
+    thetask = {"name": tname}
+    # Magic task splitter
+    if tname == "dashboard.jobs.load_musicbrainz_collection":
+        thetask["type"] = "loadcollection"
+        thetask["nicename"] = "Import musicbrainz collection"
+        collectionid = args[0]
+        coll = dashboard.models.Collection.objects.get(pk=collectionid)
+        thetask["collection"] = coll
+    elif tname == "dashboard.jobs.import_all_releases" or tname == "dashboard.jobs.force_import_all_releases":
+        thetask["type"] = "importreleases"
+        thetask["nicename"] = "Import releases in collection"
+        collectionid = args[0]
+        coll = dashboard.models.Collection.objects.get(pk=collectionid)
+        thetask["collection"] = coll
+    elif tname == "dashboard.jobs.import_single_release":
+        thetask["type"] = ""
+        thetask["nicename"] = ""
+    elif tname == "docserver.jobs.update_essentia":
+        thetask["type"] = "essentia"
+        thetask["nicename"] = "Updating essentia"
+    elif tname == "docserver.jobs.update_pycompmusic":
+        thetask["type"] = ""
+        thetask["nicename"] = ""
+    elif tname == "docserver.jobs.process_document":
+        thetask["type"] = "process"
+        thetask["nicename"] = "Running extractor"
+
+        documentid = args[0]
+        moduleversionid = args[1]
+        version = models.ModuleVersion.objects.get(pk=moduleversionid)
+        document = models.Document.objects.get(pk=documentid)
+        thetask["moduleversion"] = version
+        thetask["document"] = document
+    return thetask
+
 @user_passes_test(is_staff)
-def addessentia(request):
-    if request.method == "POST":
-        form = forms.EssentiaVersionForm(request.POST)
-        if form.is_valid():
-            models.EssentiaVersion.objects.create(version=form.cleaned_data["version"], sha1=form.cleaned_data["sha1"])
-            return HttpResponseRedirect(reverse('docserver-manager'))
-    else:
-        form = forms.EssentiaVersionForm()
-    ret = {"form": form}
-    return render(request, 'docserver/addessentia.html', ret)
+def worker(request, hostname):
+    # TODO: Show logs/stdout
+    # TODO: Load the task data via ajax, so the page loads quickly
+    user = request.user.username
+
+    updatee = request.GET.get("updateessentia")
+    if updatee is not None:
+        log.log_worker_action(hostname, user, "updateessentia")
+        jobs.update_essentia.apply_async([hostname], queue=hostname)
+        return redirect('docserver-worker', hostname)
+    updatep = request.GET.get("updatepcm")
+    if updatep is not None:
+        log.log_worker_action(hostname, user, "updatepycm")
+        jobs.update_pycompmusic.apply_async([hostname], queue=hostname)
+        return redirect('docserver-worker', hostname)
+    restart = request.GET.get("restart")
+    if restart is not None:
+        log.log_worker_action(hostname, user, "restart")
+        jobs.shutdown_celery(hostname)
+        return redirect('docserver-worker', hostname)
+
+    try:
+        wk = models.Worker.objects.get(hostname=hostname)
+    except models.Worker.DoesNotExist:
+        wk = None
+
+    workername = "celery@%s" % hostname
+    i = app.control.inspect([workername])
+    tasks = i.active()
+    active = []
+    if tasks:
+        workertasks = tasks[workername]
+        for t in workertasks:
+            thetask = understand_task(t)
+            active.append(thetask)
+
+    reservedtasks = i.reserved()
+    reserved = []
+    if reservedtasks:
+        workerreserved = reservedtasks[workername]
+        for t in workerreserved:
+            thetask = understand_task(t)
+            reserved.append(thetask)
+
+    if not tasks and not reservedtasks:
+        state = "Offline"
+    elif wk and wk.state == models.Worker.UPDATING:
+        state = "Updating"
+    elif len(active) or len(reserved):
+        state = "Active"
+    elif len(active) == 0 and len(reserved) == 0:
+        state = "Idle"
+
+    processed_files = log.get_processed_files(hostname)
+    recent = []
+    for p in processed_files:
+        collection = models.Collection.objects.get(collectionid=p["collection"])
+        document = collection.documents.get(external_identifier=p["recording"])
+        modver = models.ModuleVersion.objects.get(pk=p["moduleversion"])
+        recent.append({"document": document,
+                       "collection": collection,
+                       "modulever": modver,
+                       "date": p["date"]})
+
+    actions = log.get_worker_actions(hostname)
+    workerlog = []
+    for a in actions:
+        date = datetime.datetime.strptime(a["date"], "%Y-%m-%dT%H:%M:%S.%f")
+        workerlog.append({"date": date, "action": a["action"]})
+
+    ret = {"worker": wk, "state": state, "active": active,
+            "reserved": reserved, "recent": recent, "workerlog": workerlog}
+    return render(request, 'docserver/worker.html', ret)
+
+
+@user_passes_test(is_staff)
+def update_all_workers(request):
+    jobs.update_all_workers()
+    return redirect('docserver-manager')
+
+def extractor_modules():
+    ret = []
+    modules = models.Module.objects
+    for importer, modname, ispkg in pkgutil.iter_modules(extractors.__path__):
+        if not ispkg:
+            modname = "compmusic.extractors.%s" % modname
+            module = __import__(modname, fromlist="dummy")
+            for name, ftype in inspect.getmembers(module, inspect.isclass):
+                if issubclass(ftype, extractors.ExtractorModule):
+                    classname = "%s.%s" % (modname, name)
+                    if not modules.filter(module=classname).exists():
+                        ret.append(classname)
+    return ret
 
 @user_passes_test(is_staff)
 def addmodule(request):
@@ -186,11 +344,54 @@ def addmodule(request):
             for i in form.cleaned_data['collections']:
                 collections.append(get_object_or_404(models.Collection, pk=int(i)))
             jobs.create_module(module, collections)
-            return HttpResponseRedirect(reverse('docserver-manager'))
+            return redirect('docserver-manager')
     else:
         form = forms.ModuleForm()
-    ret = {"form": form}
+    newmodules = extractor_modules()
+    ret = {"form": form, "newmodules": newmodules}
     return render(request, 'docserver/addmodule.html', ret)
+
+@user_passes_test(is_staff)
+def module(request, module):
+    module = get_object_or_404(models.Module, pk=module)
+    versions = module.versions.all()
+    confirmversion = False
+    confirmmodule = False
+    form = forms.ModuleEditForm(instance=module)
+    if request.method == "POST":
+        # Delete a module version
+        if request.POST.get("deleteversion"):
+            version = request.POST.get("version")
+            versions = versions.filter(pk=version)
+            confirmversion = version
+        # Confirm deleting a module version
+        elif request.POST.get("confirmversion"):
+            version = request.POST.get("version")
+            jobs.delete_moduleversion.delay(version)
+        # Delete an entire module
+        elif request.POST.get("deletemodule"):
+            # The module id is already in the argument to this method
+            # so we don't get it from POST like the mod-version above.
+            confirmmodule = module.pk
+        # Confirm deleting entire module
+        elif request.POST.get("confirmmodule"):
+            jobs.delete_module.delay(module.pk)
+        # Update list of collections for this module
+        elif request.POST.get("update"):
+            form = forms.ModuleEditForm(request.POST, instance=module)
+            form.save()
+        # Scan for a new version
+        elif request.POST.get("newversion"):
+            jobs.get_latest_module_version(module.pk)
+            return redirect('docserver-module', module.pk)
+        # Process a module (specific version)
+        run = request.POST.get("runversion")
+        if run is not None:
+            jobs.run_module(module.pk, int(run))
+            return redirect('docserver-module', module.pk)
+
+    ret = {"module": module, "versions": versions, "form": form, "confirmversion": confirmversion, "confirmmodule": confirmmodule}
+    return render(request, 'docserver/module.html', ret)
 
 @user_passes_test(is_staff)
 def collection(request, slug):
@@ -199,9 +400,47 @@ def collection(request, slug):
     return render(request, 'docserver/collection.html', ret)
 
 @user_passes_test(is_staff)
-def file(request, slug, uuid):
+def collectionversion(request, slug, version, type):
+    collection = get_object_or_404(models.Collection, slug=slug)
+    mversion = get_object_or_404(models.ModuleVersion, pk=version)
+
+    run = request.GET.get("run")
+    if run:
+        document = models.Document.objects.get(external_identifier=run)
+        jobs.process_document.delay(document.pk, mversion.pk)
+        return redirect('docserver-collectionversion', type, slug, version)
+
+    processedfiles = []
+    unprocessedfiles = []
+    if type == "processed":
+        processedfiles = mversion.processed_files(collection)
+    elif type == "unprocessed":
+        unprocessedfiles = mversion.unprocessed_files(collection)
+    ret = {"collection": collection,
+            "modulever": mversion,
+            "type": type,
+            "unprocessedfiles": unprocessedfiles,
+            "processedfiles": processedfiles}
+    return render(request, 'docserver/collectionversion.html', ret)
+
+@user_passes_test(is_staff)
+def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
     doc = collection.documents.get_by_external_id(uuid)
-    ret = {"document": doc}
+
+    derived = doc.derivedfiles.all()
+    if version:
+        version = get_object_or_404(models.ModuleVersion, pk=version)
+        modulederived = derived.filter(module_version=version)
+    else:
+        modulederived = []
+
+    outputs = doc.nestedderived()
+
+    ret = {"document": doc,
+           "collection": collection,
+           "modulever": version,
+           "outputs": outputs,
+           "modulederived": modulederived}
     return render(request, 'docserver/file.html', ret)
 

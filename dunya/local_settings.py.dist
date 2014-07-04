@@ -1,6 +1,9 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+import settings
+INSTALLED_APPS = settings.INSTALLED_APPS
+
 # For development this needs to be set for the {{debug}} variable to be
 # available in templates
 # INTERNAL_IPS = ('127.0.0.1', )
@@ -8,7 +11,8 @@ TEMPLATE_DEBUG = DEBUG
 # For development this is needed to automatically compile less files
 # on page access
 # pip install django-less
-# INSTALLED_APPS = settings.INSTALLED_APPS + ('less', )
+#
+# INSTALLED_APPS = INSTALLED_APPS + ('less', )
 # STATICFILES_FILTERS = settings.STATICFILES_FINDERS + ('less.finders.LessFinder', )
 # LESS_OPTIONS  = ["--source-map-map-inline", "--source-map-rootpath=/static/carnatic/css"]
 # LESS_ROOT = "carnatic/static/"
@@ -25,6 +29,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', )
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -40,6 +47,8 @@ DATABASES = {
 BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 # Celery result backend - where to store data
 CELERY_RESULT_BACKEND='redis://sitar.s.upf.edu/0'
+# Where the processing servers access redis for a cache
+WORKER_REDIS_HOST = 'localhost'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # for example, images
@@ -54,3 +63,11 @@ MEDIA_URL = '/media/'
 
 SOLR_URL = 'http://dunya.compmusic.upf.edu:8080/solr'
 
+# Sendfile
+SENDFILE_BACKEND = 'sendfile.backends.development'
+
+# Notification emails (e.g. account activated)
+# Who emails are from
+NOTIFICATION_EMAIL_FROM = ""
+# Who gets system emails (e.g., new user) [list/set]
+NOTIFICATION_EMAIL_TO = ('', )

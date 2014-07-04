@@ -1,0 +1,98 @@
+{% extends "hindustani/base.html" %}
+{% load hindustaniinline %}
+{% load hindustanibadges %}
+{% load staticfiles %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    widthOfChildren('.metaContainer');
+    widthOfChildren('.inforight');
+    widthOfChildren('.tracklist');
+      $(".inforight").packery({
+        itemSelector: '.item',
+        gutter: 0
+      });
+});
+</script>
+{% endblock %}
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{taal.name|title}} taal - {% endblock %}
+
+{% block wrap %}
+
+
+  <div id="detail" class="taala">
+     	<div id="header">
+     		<div id="summary">
+     			<div id="innerSummary">
+	     			<span>
+                        <h1 title="{{taal.common_name|title}}">Taal {{taal.name|title}}</h1>
+	     			</span>
+     			</div>
+     			<div id="summaryBack"></div>
+                {% include "hindustani/sample.html" %}
+     		</div>
+            <div class="bigImage"><img src="{{taal.get_image_url}}" /></div>
+     		<div id="meta">
+     			<div class="metaBlock">
+					<div class="metaMask">
+			 			<div class="metaContainer">
+							<div id="artists" class="metaDetails">
+								<div class="inner withpadding">
+									<h3>Percussionists who play this taal</h3>
+									{% for a in taal.percussion_artists %}
+										{% badge_mini_artist a %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
+									{% endfor %}
+								</div>
+							</div>
+							<div id="works" class="metaDetails">
+								<div class="inner withpadding">
+									<h3>Compositions written in this taal</h3>
+                                    {% for w in taal.works %}
+                                    {% badge_mini_work w %}
+                                    {% empty %}
+                                        Sorry, we have no information for this section
+                                    {% endfor %}
+								</div>
+							</div>
+			 			</div>
+			 		</div>
+				</div>
+     		</div>
+
+	     	<div class="clearfix"></div>
+
+     	</div><!-- HEADER END -->
+
+	 	<div class="alldata">
+	     	<div class="thedata">
+	     		<div class="leftdata">
+		     		<h3>List of tracks</h3>
+	     		</div>
+	     		<div class="rightdata">
+	     			<div class="innerrightdata scrolldata nopad">
+	                    <div class="tracklist">
+                            {% for t in tracks %}
+                                    {% badge_recording t %}
+                            {% endfor %}
+	                    </div>
+	     			</div>
+	     		</div>
+	     	</div>
+		 	<div class="clearfix"></div>
+	 	</div>
+</div>
+
+{% endblock %}

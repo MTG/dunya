@@ -12,16 +12,30 @@ def up(port="8001"):
 def celery():
     local("celery worker --app=dunya -l info")
 
+def test(module=None):
+    command = "python manage.py test --settings=dunya.test_settings"
+    if module:
+        command += " %s" % module
+    local(command)
+
 @roles("web")
 def updateweb():
     """Update the webserver"""
     with cd("/srv/dunya"):
-        run("git pull")
+        run("git pull", pty=False)
         # compile and compress less
         # compress javascript
         run("env/bin/python manage.py collectstatic --noinput")
+
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
+        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
+
     with cd("/srv/dunya/env/src/pycompmusic"):
-        run("git pull")
+        run("git pull", pty=False)
+
     run("sudo supervisorctl restart dunya")
 
 @roles("workers")
@@ -29,7 +43,7 @@ def updateweb():
 def essentia(branch=None):
     """Update essentia on all workers"""
     with cd("/srv/essentia"):
-        run("git pull")
+        run("git pull", pty=False)
         run("./waf -j4")
         run("sudo ./waf install")
 
@@ -37,19 +51,10 @@ def essentia(branch=None):
 def updatecelery():
     """Update the code for celery on all workers and restart"""
     with cd("/srv/dunya"):
-        run("git pull")
+        run("git pull", pty=False)
     with cd("/srv/dunya/env/src/pycompmusic"):
-        run("git pull")
+        run("git pull", pty=False)
     run("sudo supervisorctl restart dunyacelery")
-
-def less():
-    local("lessc carnatic/static/carnatic/css/main.less --source-map-map-inline carnatic/static/carnatic/css/main.css")
-
-def lesscompress():
-    local("lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
-    local("lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
-    local("lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
-    local("lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
 
 def setupdb():
     """ Run this when you are setting up a new installation
@@ -73,6 +78,14 @@ def dumpfixture(modname):
     elif modname == "carnatic":
         tables = ["Instrument", "InstrumentAlias", "Taala", "TaalaAlias", "Raaga", "RaagaAlias", "GeographicRegion", "Form", "FormAlias", "Language", "MusicalSchool"]
         modellist = " ".join(["carnatic.%s[:]" % t for t in tables])
+        local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
+    elif modname == "hindustani":
+        tables = ["Instrument", "Taal", "TaalAlias", "Raag", "RaagAlias", "Laya", "LayaAlias", "Form", "FormAlias", "Section", "SectionAlias"]
+        modellist = " ".join(["hindustani.%s[:]" % t for t in tables])
+        local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
+    elif modname == "makam":
+        tables = ["Instrument", "Makam", "Form", "Usul"]
+        modellist = " ".join(["makam.%s[:]" % t for t in tables])
         local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
 
 def dumpdata(fname="dunya_data.json"):

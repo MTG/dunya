@@ -1,0 +1,66 @@
+body{
+    font-family: 'Georgia', serif;
+    color:#3E4349;
+    background-color: #F5FFFF;
+}
+
+#nav {
+    position: absolute;
+    top: 20px;
+    left: 5px;
+    width: 15em;
+    background-color: #F5FFFF;
+    
+}
+
+#content {
+    margin-top: 5em;
+    margin-left: 15em;
+    background-color: #F5FFFF;
+}
+#footer {
+    margin-top: 5em;
+    margin-left: 15em;
+    background-color: #F5FFFF;
+}
+span.tab{
+    padding: 0 80px; /* Or desired space*/
+}
+
+span.smalltab{
+    padding: 0 25px; /* Or desired space*/
+}
+table
+{
+border-collapse:collapse;
+}
+td 
+{
+    text-align: center;
+    border: 0px solid black;
+    overflow: hidden;
+    table-layout: auto;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+th
+{
+    text-align: center;
+    border: 0px solid black;
+    overflow: hidden;
+    table-layout: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #E6FFFF;
+}
+
+h3
+{
+    padding-bottom: 0px;
+}
+
+li.b {list-style-type:square;}

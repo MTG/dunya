@@ -5,14 +5,9 @@
 
 <h1>Dunya Dashboard</h1>
 
-<p> Add new collection
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-</form>
-
+<p><a href="{% url 'dashboard-addcollection' %}">Add collection</a>
 {% if collections %}
-<table><tr><th>Collection</th><th>Current status</th><th>Last status at</th></tr>
+<table class="table"><tr><th>Collection</th><th>Current status</th><th>Last status at</th></tr>
     {% for c in collections %}
         <tr><td><a href="{{c.get_absolute_url}}">{{c.name}}</a></td>
             <td>
@@ -26,19 +21,77 @@
 </table>
 {% endif %}
 
-<h2>Carnatic fixed data management</h2>
-<li><a href="{% url 'dashboard-raagas' %}">Raagas</a>
-<li><a href="{% url 'dashboard-taalas' %}">Taalas</a>
-<li><a href="{% url 'dashboard-instruments' %}">Instruments</a>
+<div class="row">
+    <div class="col-md-6">
+        <h2>User management</h2>
+        <li><a href="{% url 'dashboard-accounts' %}">New accounts</a>
+    </div>
 
-<h2>Essentia module management</h2>
-<li><a href="{% url 'docserver-manager' %}">Manager</a>
+    <div class="col-md-6">
+        <h2>Essentia module management</h2>
+        <li><a href="{% url 'docserver-manager' %}">Manager</a>
+    </div>
+</div>
 
-<h2>Statistics</h2>
-<li><a href="{% url 'dashboard-stats-carnatic' %}">Carnatic</a>
-<li><a href="{% url 'dashboard-stats-hindustani' %}">Hindustani</a>
-<li><a href="{% url 'dashboard-stats-makam' %}">Makam</a>
-<li><a href="{% url 'dashboard-stats-beijing' %}">Beijing</a>
-<li><a href="{% url 'dashboard-stats-andalusian' %}">Andalusian</a>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Carnatic</h2>
+        <li><a href="{% url 'dashboard-carnatic-stats' %}">Statistics</a>
+
+        <h3>Data management</h3>
+        <li><a href="{% url 'dashboard-carnatic-raagas' %}">Raagas</a>
+        <li><a href="{% url 'dashboard-carnatic-taalas' %}">Taalas</a>
+        <li><a href="{% url 'dashboard-carnatic-instruments' %}">Instruments</a>
+
+        <h3>Reports</h3>
+        <li><a href="{% url 'dashboard-carnatic-releases' %}">Release cleanup</a>
+        <li><a href="{% url 'dashboard-carnatic-coverart' %}">Release coverart cleanup</a>
+        <li><a href="{% url 'dashboard-carnatic-artists' %}">Artist cleanup</a>
+        <li><a href="{% url 'dashboard-carnatic-recordings' %}">Recording cleanup</a>
+        <li><a href="{% url 'dashboard-carnatic-raagataala' %}">Raaga/Taala cleanup</a>
+        <li><a href="{% url 'dashboard-carnatic-works' %}">Work cleanup</a>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <h2>Hindustani</h2>
+        <li><a href="{% url 'dashboard-hindustani-stats' %}">Statistics</a>
+
+        <h3>Data management</h3>
+        <li><a href="{% url 'dashboard-hindustani-raags' %}">Raags</a>
+        <li><a href="{% url 'dashboard-hindustani-taals' %}">Taals</a>
+        <li><a href="{% url 'dashboard-hindustani-layas' %}">Layas</a>
+        <li><a href="{% url 'dashboard-hindustani-forms' %}">Forms</a>
+        <li><a href="{% url 'dashboard-hindustani-instruments' %}">Instruments</a>
+
+        <h3>Reports</h3>
+        <li><a href="{% url 'dashboard-hindustani-releases' %}">Release cleanup</a>
+        <li><a href="{% url 'dashboard-hindustani-coverart' %}">Release coverart cleanup</a>
+        <li><a href="{% url 'dashboard-hindustani-artists' %}">Artist cleanup</a>
+        <li><a href="{% url 'dashboard-hindustani-recordings' %}">Recording cleanup</a>
+        <li><a href="{% url 'dashboard-hindustani-raagtaal' %}">Raag/Taal/Form/Laya cleanup</a>
+        <li><a href="{% url 'dashboard-hindustani-works' %}">Work cleanup</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Makam</h2>
+        <li><a href="{% url 'dashboard-makam-stats' %}">Statistics</a>
+
+        <h3>Data management</h3>
+        <li><a href="{% url 'dashboard-makam-makams' %}">Makams</a>
+        <li><a href="{% url 'dashboard-makam-forms' %}">Forms</a>
+        <li><a href="{% url 'dashboard-makam-usuls' %}">Usuls</a>
+        <li><a href="{% url 'dashboard-makam-instruments' %}">Instruments</a>
+    </div>
+
+    <div class="col-md-6">
+        <h2>Other statistics</h2>
+        <li><a href="{% url 'dashboard-beijing-stats' %}">Beijing</a>
+        <li><a href="{% url 'dashboard-andalusian-stats' %}">Andalusian</a>
+    </div>
+</div>
 
 {% endblock %}

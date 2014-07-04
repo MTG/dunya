@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load badges %}
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -15,7 +16,7 @@
 
         {% if debug %}
         <link href="{% static 'carnatic/css/font.css' %}" rel="stylesheet" type="text/css">
-        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui-1.10.3.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'carnatic/css/ui-lightness/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
         {% load less %}
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/main.less' %}" />
@@ -36,7 +37,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-45126878-1', 'upf.edu');
+          ga('create', 'UA-4953363-6', 'upf.edu');
           ga('send', 'pageview');
 
         </script>
@@ -50,6 +51,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
         {% endif %}
+        <script src="{% static 'carnatic/js/vendor/jquery.cookie.js' %}"></script>
         <script src="{% static 'carnatic/js/vendor/packery.pkgd.min.js' %}"></script>
         <script src="{% static 'carnatic/js/berniecode-animator.js' %}"></script>
         <script src="{% static 'carnatic/js/soundmanager2.js' %}"></script>
@@ -83,6 +85,7 @@
 
                 $("#aboutdialog").dialog({
                   autoOpen: false,
+                  minWidth: 500
                 });
 
                 $("#aboutbutton").click(function() {
@@ -91,6 +94,19 @@
 
                 $("#previewicon.disabled").click(function() {
                     $( "#playback_dialog" ).dialog( "open" );
+                });
+                var presentationMode = $.cookie("presentationMode");
+                if (!presentationMode || presentationMode === "off") {
+                    $("#presmode").html("enable presentation mode");
+                } else {
+                    $("#presmode").html("disable presentation mode");
+                }
+                $("#presmode").click(function(event) {
+                    if (!presentationMode || presentationMode === "off") {
+                        $.cookie("presentationMode", "on", { expires: 500, path: '/' });
+                    } else {
+                        $.cookie("presentationMode", "off", { expires: 500, path: '/' });
+                    }
                 });
 
             });
@@ -106,10 +122,19 @@
         <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
         </div>
 
-        <div id="aboutdialog" title="Dunya">
-            <p>Dunya is a prototype being developed in the context of CompMusic, a research project that studies several world music traditions from the point of view of the information technologies, with the aim to facilitate the cataloging and discovery of music recordings within large repositories. For more information: <a href="http://compmusic.upf.edu">http://compmusic.upf.edu</a></p>
-        </div>
 
+		<div id="aboutdialog" title="Dunya">
+            <p>Dunya is a research prototype being developed in CompMusic, a research project that studies 
+            several world music traditions from an information technologies point of view. It has been 
+            developed to evaluate the results of the research, mainly to be able to get feedback from users 
+            to further improve the technologies being developed.</p>
+            <p>The information shown has been gathered from different sources and we have tried our best 
+            to get accurate data and to identify its provenance whenever possible.</p>
+            <p>For more information see <a href="{% url 'contact' %}">how to contact us</a></p>
+            <p>Use of Dunya is governed by our <a href="{% url 'terms' %}">Terms and Conditions</a></p>
+            <p>For presentations of the website using a projector, we recommend to enable presentation mode.
+            (<a href id="presmode">enable presentation mode</a>)</p>
+	    </div>
         <!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header>
@@ -123,16 +148,20 @@
                         <input id="searchbox" type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
                     <button type="submit" class="button"/>
                 </form>
-                </div><!-- globalserach -->
-                <div id="globalMusic">
+            </div>
+                <div id="globalMusic" class="upperMenu">
                     <label>Exploring music style</label>
                     <span id="gmSelected">Carnatic</span>
-                </div><!-- globalmusic -->
+                    <ul id="gmDropDown">
+                        <li>Carnatic</li>
+                        <li><a href="{% url 'hindustani-main' %}">Hindustani</a></li>
+                    </ul>
+                </div>
                 <nav id="mainmenu">
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">
             {% if user.is_authenticated %}
-                    <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/develop/avatar.png' %}" /></a>
+                    <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/avatar.png' %}" /></a>
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
@@ -152,14 +181,62 @@
             {% endif %}
                 </div>
                 </nav>
+               <div id="erclogo">
+                   <div><span>Funded by the</span><span>European Research Council</span></div>
+                <img src="{% static 'carnatic/img/erclogo.jpg' %}" />
+            </div> 
                 <div class="clearfix"></div>
             </header>
         </div>
         <!-- //////  HEADER BLOCK end ////// -->
 
         <div class="main-container">
+            {% comment %}
+            <div id="breadcrumb">
+                 <div id="navigationhistory">
+                    <div class="inner">
+                        {% for type, item in carnatic_navigation_history %}
+                            {% if type == "concert" %}
+                                {% badge_micro_concert item %}
+                            {% elif type == "artist" %}
+                                {% badge_micro_artist item %}
+                            {% elif type == "instrument" %}
+                                {% badge_micro_instrument item %}
+                            {% elif type == "raaga" %}
+                                {% badge_micro_raaga item %}
+                            {% elif type == "taala" %}
+                                {% badge_micro_taala item %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                 </div>
+            </div>
+            {% endcomment %}
         {% block wrap %}
         {% endblock %}
+        </div>
+
+
+        <div id="cookie-bar">
+           <div style="float:left">
+               <p>
+                   We use cookies to ensure you get the best experience on our website. By browsing our site you agree to our use of cookies.<br>
+                    For more information see our <a href="{% url 'cookies' %}">cookies policy</a>.
+               </p>
+           </div>
+           <div style="float:right; margin-top:10px;margin-right:10px;">
+               <button id="cookie-accept">Ok</button>
+           </div>
+        </div>
+        <!--[if lte IE 9]>
+        <div id="uncompatibleIE-bar">
+           <div style="float:left">
+                <p>Dunya is not compatible with Internet Explorer version 9 and lower. Consider upgrading your browser or switching to
+                 <a href="http://chrome.google.com">Chrome</a> or <a href="http://www.firefox.com">Firefox</a>.</p>
+            </div>
+        </div>
+        <![endif]-->
+
         </div>
         <div id="footage">
 
@@ -167,7 +244,10 @@
             <!-- FILTER BASE MODEL -->
             <!-- //////////////// -->
 
-            <div id="filterModel" class="filters">
+            <div id="filterModel" class="filters" style="display:none;">
+                <div class="close"><a class="filterCloseButton" href="">
+                        <img src="{% static 'carnatic/img/Cross.png' %}">
+                </a></div>
                 <div class="filterBall shadow1">
                     <span></span>
                     <div class="arrow"></div>

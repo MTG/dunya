@@ -24,7 +24,7 @@ import carnatic
 solr = pysolr.Solr(settings.SOLR_URL)
 def search(name):
     name = name.lower()
-    query = "doctype_s:search AND title_t:(%s)" % name
+    query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
     klass_map = {"instrument": carnatic.models.Instrument,
@@ -45,21 +45,19 @@ def search(name):
     return ret
 
 def autocomplete(term):
-    # specify json encoding of results
     params = {}
     params['wt'] = 'json'
     params['q'] = term
+    params['fq'] = "module_s:carnatic"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)
-    check = res.get("spellcheck", {})
-    suggs = check.get("suggestions", [])
-    if term in suggs:
-        index = suggs.index(term) + 1
-        if index < len(suggs):
-            suggestions = suggs[index].get("suggestion", [])
-            return suggestions
-    return []
+    check = res.get("response", {})
+    docs = check.get("docs", [])
+    ret = []
+    for d in docs:
+        ret.append(d["title_t"])
+    return ret[:5]
 
 def get_similar_concerts(works, raagas, taalas, artists):
     workids = set(works)
@@ -85,7 +83,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
         # If we have nothing to search for, return no matches
         return []
 
-    query = "doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
+    query = "module_s:carnatic AND doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
     results = solr.search(query, rows=100)
 
     ret = []
@@ -104,7 +102,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
     return ret
 
 def similar_recordings(mbid):
-    query = "doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
+    query = "module_s:carnatic AND doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
     results = solr.search(query)
     docs = results.docs
     if len(docs):

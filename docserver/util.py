@@ -25,6 +25,9 @@ from django.conf import settings
 class NoFileException(Exception):
     pass
 
+class TooManyFilesException(Exception):
+    pass
+
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
     mp3type = models.SourceFileType.objects.get_by_extension("mp3")
@@ -46,20 +49,25 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
 
 def docserver_add_sourcefile(document_id, ftype, path):
     """ Add a file to the given document. If a file with the given filetype
-        already exists for the document just update the path. """
+        already exists for the document just update the path and size. """
     document = models.Document.objects.get(pk=document_id)
+
+    size = os.stat(path).st_size
+    root_directory = document.collection.root_directory
+    if path.startswith(root_directory):
+        # If the path is absolute, remove it
+        path = path[len(root_directory):]
+    if path.startswith("/"):
+        path = path[1:]
+
     try:
         sfile = models.SourceFile.objects.get(document=document, file_type=ftype)
-        collection_root = document.collection.collection_root
-        if path.startswith(collection_root):
-            # If the path is absolute, remove it
-            path = path[len(collection_root):]
-        if path.startswith("/"):
-            path = path[1:]
         sfile.path = path
+        sfile.size = size
         sfile.save()
     except models.SourceFile.DoesNotExist:
-        sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path)
+
+        sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path, size=size)
 
 def docserver_get_wav_filename(documentid):
     """ Return a tuple (filename, created) containing the filename
@@ -103,7 +111,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
     try:
         doc = models.Document.objects.get(external_identifier=documentid)
     except models.Document.DoesNotExist:
-        raise NoFileException
+        raise NoFileException("Cannot find a document with id %s" % documentid)
     try:
         sourcetype = models.SourceFileType.objects.get_by_extension(slug)
     except models.SourceFileType.DoesNotExist:
@@ -115,8 +123,11 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
         else:
             return files[0]
 
-    module = models.Module.objects.get(slug=slug)
-    moduleversions = module.moduleversion_set
+    try:
+        module = models.Module.objects.get(slug=slug)
+    except models.Module.DoesNotExist:
+        raise NoFileException("Cannot find a module with type %s" % slug)
+    moduleversions = module.versions
     if version:
         moduleversions = moduleversions.filter(version=version)
     else:
@@ -132,24 +143,35 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
                 # We found some files, break
                 break
         if dfs.count() > 1:
-            raise NoFileException("Found more than 1 outputname per this modver without a subtype set")
+            raise TooManyFilesException("Found more than 1 outputname per this modver without a subtype set")
         elif dfs.count() == 1:
+            # Double-check if subtypes match. This is to catch the case where we
+            # have only one subtype for a type but we don't specify it in the
+            # query. By 'luck' we will get the right subtype, but this doesn't
+            # preclude the default subtype changing in a future version.
+            # Explicit is better than implicit
+            derived = dfs.get()
+            if derived.outputname != subtype:
+                raise NoFileException("Matched subtype (%s) doesn't match given (%s)" % (derived.outputname, subtype))
             # Select the part.
             # If the file has many parts and ?part is not set then it's an error
-            parts = dfs[0].parts
+            parts = derived.parts
             if part:
                 parts = parts.filter(part_order=int(part))
             else:
                 parts = parts.all()
             if parts.count() > 1:
-                raise NoFileException("Found more than 1 part without part set")
+                raise TooManyFilesException("Found more than 1 part without part set")
             elif parts.count() == 1:
                 return parts[0]
             else:
                 raise NoFileException("No parts on this file")
         else:
             # If no files, or none with this version
-            raise NoFileException("No derived files with this type/subtype")
+            msg = "No derived files with this type/subtype"
+            if version:
+                msg += " or version"
+            raise NoFileException(msg)
     else:
         raise NoFileException("No known versions for this module")
 

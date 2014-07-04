@@ -22,6 +22,6 @@
 {%if data.missinginstruments %}
 <h3>Unknown Instruments</h3>
 {% for i in data.missinginstruments %}
-    <li><a href="{% url 'dashboard-instruments' %}?newname={{i}}">{{i}}</a>
+    <li><a href="{% url 'dashboard-carnatic-instruments' %}?newname={{i}}">{{i}}</a>
 {% endfor %}
 {% endif %}

@@ -1,0 +1,90 @@
+{% extends "motifdiscovery/base.html" %}
+{% load staticfiles %}
+{% block body %}
+{% load app_filters %}
+    <h2>Seed patterns for recording: {{recording.title}}, release: {{recording.concert_set.all.0.title}}, by {{recording.concert_set.all.0.artists.all.0.name}}</h2>
+       
+        <ul>
+         <table>
+         <tr>
+                <th>Similarity</th>
+                <th>Seed_Id</th>
+                <th>Start(s)</th>
+                <th>End(s)</th>
+                <th>Pair_Id</th>
+                <th>Start(s)</th>
+                <th>End(s)</th>
+                <th>Distance</th>
+                
+
+         </tr>
+         {% for match in matches %}
+                <tr>                
+                    {% if match.distance < 1150000  %}
+                        <td><img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"></td>
+                    {% else %}
+                        <td><img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"></td>
+                    {% endif %}
+                    
+                    <td><a href="" class="seed" data-playback="{{match.source.segment.get_absolute_url}}">{{match.source.id}}</a>
+                    <a href="{% url 'motif-results' match.source.file.mbid match.source.id %}"><img src="{% static "motifdiscovery/search.png" %}" width="20" height="12"></a>
+                    </td>
+                    <td>{{match.source.start_time|floatformat:1}}</td>
+                    <td>{{match.source.end_time|floatformat:1}}</td>
+                     <td><a href="" class="seed" data-playback="{{match.target.segment.get_absolute_url}}">{{match.target.id}}</a>
+                    <a href="{% url 'motif-results' match.target.file.mbid match.target.id %}"><img src="{% static "motifdiscovery/search.png" %}" width="20" height="12"></a>
+                    </td>
+                    <td>{{match.target.start_time|floatformat:1}}</td>
+                    <td>{{match.target.end_time|floatformat:1}}</td>
+                    <td>{{match.distance|floatformat:2}}</td>
+
+            </tr>
+        {% endfor %}
+         </table>
+        </ul>
+        
+        
+        <script type="text/javascript">
+            $(function() {
+                soundManager.setup({
+                    url: '{% static 'motifdiscovery/swf' %}',
+                    preferFlash: false,
+                });
+
+            $(".seed").click(function(e) {
+                e.preventDefault();
+                var playbackurl = $(this).data('playback');
+
+                var sound = soundManager.createSound({
+                    url: playbackurl,
+                    autoLoad: true
+                });
+
+                sound.play();
+            }); 
+
+    $("#stop").click(function(e) {
+        e.preventDefault();
+        soundManager.stopAll();
+    });
+
+});
+        
+        </script>
+
+{% endblock %}
+{% block footer %}
+We obtain melodic similarity thresholds using expert feedback (explanation in the submitted article) and indicate similar by <img src="{% static "motifdiscovery/correct.png" %}" width="16" height="16"> and not similar by <img src="{% static "motifdiscovery/wrong.png" %}" width="12" height="12"><br/>
+*Time stamps are rounded off to 1 decimal point just for the sake of displaying
+{% endblock %}
+
+{% block nav %}
+<li><a href="{% url 'motif-main'%}">Browsing options</a></li>
+<li><a href="{% url 'motif-artists'%}">Artist list </a></li>
+<li><a href="{% url 'motif-artist' recording.concert_set.all.0.artists.all.0.mbid %}">Releases</a></li>
+<li><a href="{% url 'motif-release' recording.concert_set.get.mbid %}">Recordings</a></li>
+<br>
+<br>
+<a href="" id="stop">Stop Audio</a><p>
+
+{% endblock %}        

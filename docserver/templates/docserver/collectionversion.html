@@ -1,0 +1,34 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{document.title}}{% endblock %}
+
+{% block wrap %}
+
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{{collection.get_absolute_url}}">{{collection.name}}</a></li>
+    <li>Module {{modulever.module.name}} {{modulever.version}}</li>
+    <li>{{type|title}} files</li>
+</ul>
+
+<h3>{{type|title}} files</h3>
+
+<ul>
+{% for f in unprocessedfiles %} 
+<li>{{f}} (<a href="?run={{f.external_identifier}}">Process</a>)</li>
+  <ul>
+{% for sf in f.sourcefiles.all %}
+<li>{{sf.fullpath}}</li>
+{% empty %}
+<li>(no sourcefiles)</li>
+{% endfor %}
+</ul>
+{% endfor %}
+
+{% for f in processedfiles %}
+<li><a href="{% url 'docserver-file' collection.slug f.external_identifier modulever.pk %}">{{f}}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+

@@ -3,12 +3,12 @@
 
 {% block wrap %}
 
-<h2>
-    <span class="breadcrumbs">Document
-        <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
-        <li>{{document.title}}</li>
-    </span>
-</h2>
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
+    <li>Module {{modulever.module.name}} {{modulever.version}}</li>
+    <li>{{document.title}}</li>
+</ul>
 
     {% if document.sourcefiles.all %}
         <h3>Source files</h3>
@@ -17,16 +17,43 @@
         {% endfor %}
     {% endif %}
 
-    {% if document.derivedfiles.all %}
-        <h3>Derived files</h3>
-        {% for f in document.derivedfiles.all %}
-        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.module_version.module.name}}/{{f.module_version.version}})</a>
+    {% if modulederived %}
+    <h3>Derived files for {{modulever.module.name}} {{modulever.version}}</h3>
+    Essentia version {{modulederived.0.essentia.short_link|safe}} ({{modulederived.0.essentia.commit_date|date:"DATETIME_FORMAT"}})<br>
+    Pycompmusic version {{modulederived.0.pycompmusic.short_link|safe}} ({{modulederived.0.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})
+    {% for d in modulederived %}
+    <li><a href="{{d.get_absolute_url}}">{{d.document.title}} ({{d.module_version.module.slug}}/{{d.outputname}})</a><br>
+    <code>docserver.file_for_document("{{d.document.external_identifier}}", "{{d.module_version.module.slug}}", "{{d.outputname}}", {% if d.numparts > 1 %}[part], {% endif %}version="{{d.module_version.version}}")</code>
+    {% endfor %}
+    {% endif %}
+
+    {% if outputs %}
+        <h3>All other derived files</h3>
+        {% for m, vs in outputs.items %}
+        <li>{{m.name}}</li>
+        {% for v, parts in vs.items %}
+        <ul>
+            <li><b>{{v}}</b>
+            {% if parts and parts.0.essentia %}
+            Essentia version {{parts.0.essentia.short_link|safe}} ({{parts.0.essentia.commit_date|date:"DATETIME_FORMAT"}}),
+            {% endif %}
+            {% if parts and parts.0.pycompmusic %}
+            Pycompmusic version {{parts.0.pycompmusic.short_link|safe}} ({{parts.0.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})
+            {% endif %}
+            </li>
+        <ul>
+            {% for p in parts %}
+            <li><a href="{{p.get_absolute_url}}">{{p}}</a></li>
         {% endfor %}
+    </ul>
+    </ul>
+    {% endfor %}
+    {% endfor %}
     {% endif %}
 
     <div class="topbox">
         <div class="topheader">Logs</div>
-    <table> 
+    <table class="table table-condensed"> 
         <tr>
             <th style="width:150px;">Date</th>
             <th style="width:150px;">Module</th>

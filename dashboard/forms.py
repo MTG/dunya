@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import forms
+from django.contrib.auth.models import User
 import re
 import os
 
@@ -69,4 +70,17 @@ class AddCollectionForm(forms.Form):
 
         return cleaned_data
 
+class InactiveUserForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InactiveUserForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.username = instance.username
+            self.first_name = instance.first_name
+            self.last_name = instance.last_name
+            self.affiliation = instance.userprofile.affiliation
+            self.email = instance.email
 
+    class Meta:
+        model = User
+        fields = ['is_active']

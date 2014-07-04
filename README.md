@@ -31,21 +31,25 @@ Dependencies
 
     sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev 
 
-* Also install essentia + python libraries
-
-        git clone git@github.com:MTG/essentia.git
-        cd essentia
-        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
-        ./waf configure --mode=release --with-python --with-cpptests --with-examples --with-vamp
-        ./waf
-        sudo ./waf install
-
 * Create a virtualenv
 
         virtualenv --no-site-packages env
         source env/bin/activate
         pip install --upgrade distribute
         pip install -r requirements
+
+* Also install essentia + python libraries
+
+We install essentia into the virtualenv that we created for python. This lets the automatic celery jobs upgrade essentia
+when we make changes to it without needing root.
+
+        git clone git@github.com:CompMusic/essentia.git
+        cd essentia
+        git checkout -t origin/deploy
+        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
+        ./waf configure --mode=release --with-python --prefix=/srv/dunya/env
+        ./waf
+        sudo ./waf install
 
 * Using essentia, numpy, and scipy in virtualenv
 
@@ -87,6 +91,36 @@ is over 500mb. Set up postgres and run
     psql dunya < dunya_pg.sql
 
 Where `dunya` is the name of the database
+
+* If you want to manually add data to an empty database, follow these steps:
+    1.  To setup and configure your database, run:
+            fab setupdb
+
+    2.  Inside your database, add a row to django_site table:
+        Example: 
+            id |         domain          |            name
+            1  | dunya.compmusic.upf.edu | dunya.compmusic.upf.edu
+
+    3.  You need to have a collection of albums and audio files somewhere on your drive.
+        You will need to enter the path to this folder. You can download sample collections
+        from one of 'kora' if you have access to it. 
+
+    4.  Assuming you have a MusicBrainz account, create a public collection and make
+        sure the name contains the name of the music style that the collection is 
+        related to. For example, for Carnatic style the word 'carnatic' should be included
+        somewhere in the collection name (ie 'carnatic_coll_23423')
+        Add the releases for which you have a copy (step 3) into this collection.
+
+    5. Run the development server and direct your browser to localhost:XXXX/dashboard
+
+    6. Enter the corresponding data for the 'add collection' form.
+        - You can retrieve the collection id from the link of the page
+            (http://musicbrainz.org/collection/{collction_id})
+       Note:
+        At the moment, if you are adding a colleciton for Carnatic style, you can choose
+        all the checkers except the ones containing Makam.
+
+    7. Click on Submit.
 
 Updating file locations
 -----------------------

@@ -34,18 +34,11 @@ $(document).ready(function() {
      		<div id="summary">
      			<div id="innerSummary">
 	     			<span>
-                        <h1>Raaga <span title="{{raaga.transliteration}}">
-                                {{raaga.name|title}}</span></h1>
+                        <h1 title="{{raaga.transliteration|title}}">Raaga {{raaga.name|title}}</h1>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
-     			{% if user.is_authenticated %}
-				<div id="previewicon" class="enabled">
-						<div class="ui360"><a href="{{tracks.0.absolute_mp3_url}}">{{tracks.0.title}}</a></div>
-				</div>
-				{% else %}
-				<div id="previewicon" class="disabled"></div>
-				{% endif %}
+                {% include "hindustani/sample.html" %}
      		</div>
             <div class="bigImage"><img src="{{raaga.get_image_url}}" style="overflow: visible !important; width: 280px !important;"/></div>
      		<div id="meta">

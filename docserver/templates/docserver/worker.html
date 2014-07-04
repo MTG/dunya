@@ -1,0 +1,59 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Worker {{worker.hostname}}{% endblock %}
+
+{% block wrap %}
+
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>Worker &ldquo;{{worker.hostname}}&rdquo;</li>
+</ul>
+
+<h2>Worker &ldquo;{{worker.hostname}}&rdquo;</h2>
+
+<h2><small>Essentia version {{worker.essentia.short_link|safe}}
+        ({{worker.essentia.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
+<h2><small>PyCompMusic version {{worker.pycompmusic.short_link|safe}}
+         ({{worker.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})</small></h2>
+
+<h3>State: {{state}}</h3>
+{% if uptime %}
+<h3>Uptime: {{uptime|timesince}}</h3>
+{% endif %}
+
+<h3>Current jobs:</h3>
+{% for j in active %}
+   {% include "docserver/workerjob.html" with j=j only %}
+{% endfor %}
+
+{% if recent %}
+<h3>Recent completed jobs:</h3>
+<ul>
+{% for d in recent %}
+<li><a href="{% url 'docserver-file' d.collection.slug d.document.external_identifier d.modulever.pk %}">{{d.document.title}}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<h3>Queued jobs:</h3>
+{% for r in reserved %}
+   {% include "docserver/workerjob.html" with j=r only %}
+{% endfor %}
+
+{% if workerlog %}
+<h3>Recent actions on this worker</h3>
+<ul>
+    {% for l in workerlog %}
+    <li>{{l.date|date:"DATETIME_FORMAT"}}: {{l.action}}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Actions</h2>
+<ul>
+    <li><a href="?updateessentia">Update essentia</a></li>
+    <li><a href="?updatepcm">Update pycompmusic</a></li>
+    <li><a href="?restart">Restart</a></li>
+</ul>
+
+{% endblock %}
+
