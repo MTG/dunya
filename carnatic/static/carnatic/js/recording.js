@@ -1,4 +1,6 @@
 $(document).ready(function() {
+     hasfinished = false;
+     pagesound = ""
      audio = $("#theaudio")[0];
      renders = $('#renders');
      rendersMask = $('#rendersMask');
@@ -21,7 +23,7 @@ $(document).ready(function() {
 	    mouPlay(left);
 	 });
      waveform.mouseenter(function(e) {
-         if (pagesound.duration) {
+         if (pagesound && pagesound.duration) {
              waveform.css("cursor", "pointer");
 
          } else {
@@ -29,7 +31,7 @@ $(document).ready(function() {
          }
      });
      waveform.mousemove(function(e) {
-         if (pagesound.duration) {
+         if (pagesound && pagesound.duration) {
              var offset_l = $(this).offset().left - $(window).scrollLeft();
              var left = Math.round( (e.clientX - offset_l) );
              var miniviewWidth = renderTotal.width();
@@ -66,17 +68,17 @@ $(document).ready(function() {
 
      soundManager.onready(function() {
          pagesound = soundManager.createSound({
-               url: audiourl
+               url: audiourl,
          });
-
      });
 
-        $(document).keypress(function(e) {
-            if (e.keyCode == 0 || e.keyCode == 32) {
-                e.preventDefault();
-                playrecord();
-            }
-        });
+     $(document).keypress(function(e) {
+         // The Space key is play/pause unless in the searchbox
+         if ((e.keyCode == 0 || e.keyCode == 32) && !$(e.target).is("#searchbox")) {
+             e.preventDefault();
+             playrecord();
+         }
+     });
 });
 
 function plotsa(context) {
@@ -385,22 +387,37 @@ function mouPlay(desti){
     clickseconds = recordinglengthseconds * percent
 
     posms = clickseconds * 1000;
-    part = Math.ceil(clickseconds / secondsPerView) - 1;
-    // Update the internal position counter
-    beginningOfView = part * secondsPerView;
+    part = Math.ceil(clickseconds / secondsPerView);
+    console.debug("part " + part);
+    // Update the internal position counter (counts from 0, part counts from 1)
+    beginningOfView = (part - 1) * secondsPerView;
 
-    if (pagesound.duration) {
+    if (pagesound && pagesound.duration) {
         // We can only set a position if it's fully loaded
-        pagesound.pause();
+        var wasplaying = !pagesound.paused;
+        if (wasplaying) {
+            pagesound.pause();
+        }
         pagesound.setPosition(posms);
         replacepart(part);
-        pagesound.play();
+        updateProgress();
+        if (wasplaying) {
+            pagesound.resume();
+        }
     }
 }
 
 function play() {
+    if (hasfinished) {
+        hasfinished = false;
+        replacepart(1);
+        beginningOfView = 0;
+        drawdata();
+    }
     pagesound.play({onfinish: function() {
         window.clearInterval(int);
+        plButton.removeClass("stop");
+        hasfinished = true;
     }});
     int = window.setInterval(updateProgress, 30);
 }
