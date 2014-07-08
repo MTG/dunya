@@ -274,7 +274,7 @@ class Raaga(data.models.BaseModel):
     missing_image = "raaga.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -291,7 +291,7 @@ class Raaga(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.transliteration)])
+        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.common_name)])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -350,7 +350,7 @@ class Taala(data.models.BaseModel):
     missing_image = "taala.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
 
     objects = managers.CarnaticTaalaManager()
@@ -374,7 +374,7 @@ class Taala(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id), slugify(self.transliteration)])
+        return reverse('carnatic-taala', args=[str(self.id), slugify(self.common_name)])
 
     def works(self):
         return self.work_set.distinct().all()

@@ -208,7 +208,7 @@ Show details for a single taala. The argument is a numeric id (from the list)
     {
         "id": 1, 
         "name": "\u0100di", 
-        "transliteration": "adi", 
+        "common_name": "adi", 
         "artists": [
             {
                 "mbid": "ea284751-0153-433d-82db-25c22306daf1", 
@@ -240,7 +240,7 @@ Show details for a single raaga. The argument is a numeric id (from the list)
     {
         "id": 2, 
         "name": "\u0100bh\u014dgi", 
-        "transliteration": "abhogi", 
+        "common_name": "abhogi", 
         "artists": [
             {
                 "mbid": "beab6365-8162-4c64-8922-64702cea3227", 

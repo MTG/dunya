@@ -297,7 +297,7 @@ def _edit_attributedata(request, data):
     klass = data["klass"]
     aliasklass = data["aliasklass"]
     template = data["template"]
-    transliteration = data.get("transliteration", False)
+    common_name = data.get("common_name", False)
 
     items = klass.objects.all()
 
@@ -307,7 +307,7 @@ def _edit_attributedata(request, data):
            "style": stylename,
            "entityurl": entityurl,
            "title": "%s editor" % entityname,
-           "transliteration": transliteration,
+           "common_name": common_name,
            "alias": aliasklass
            }
 
@@ -327,12 +327,12 @@ def _edit_attributedata(request, data):
         # Add new item
         refresh = False
         newname = request.POST.get("newname")
-        newtrans = request.POST.get("newtrans")
+        newcommon = request.POST.get("newcommon")
         if newname is not None and newname != "":
             refresh = True
             args = {"name": newname}
-            if transliteration and newtrans is not None and newtrans != "":
-                args["transliteration"] = newtrans
+            if common_name and newcommon is not None and newcommon != "":
+                args["common_name"] = newcommon
             klass.objects.create(**args)
         # Delete item
         for i in items:
@@ -358,7 +358,7 @@ def carnatic_raagas(request):
             "klass": carnatic.models.Raaga,
             "aliasklass": carnatic.models.RaagaAlias,
             "template": "dashboard/styletag.html",
-            "transliteration": True # If this attribute has a transliteration
+            "common_name": True # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -371,7 +371,7 @@ def carnatic_taalas(request):
             "klass": carnatic.models.Taala,
             "aliasklass": carnatic.models.TaalaAlias,
             "template": "dashboard/styletag.html",
-            "transliteration": True # If this attribute has a transliteration
+            "common_name": True # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -397,7 +397,7 @@ def hindustani_raags(request):
             "klass": hindustani.models.Raag,
             "aliasklass": hindustani.models.RaagAlias,
             "template": "dashboard/styletag.html",
-            "transliteration": True # If this attribute has a transliteration
+            "common_name": True # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -410,7 +410,7 @@ def hindustani_taals(request):
             "klass": hindustani.models.Taal,
             "aliasklass": hindustani.models.TaalAlias,
             "template": "dashboard/styletag.html",
-            "transliteration": True # If this attribute has a transliteration
+            "common_name": True # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -423,7 +423,7 @@ def hindustani_layas(request):
             "klass": hindustani.models.Laya,
             "aliasklass": hindustani.models.LayaAlias,
             "template": "dashboard/styletag.html",
-            "transliteration": True # If this attribute has a transliteration
+            "common_name": True # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -436,7 +436,7 @@ def hindustani_forms(request):
             "klass": hindustani.models.Form,
             "aliasklass": hindustani.models.FormAlias,
             "template": "dashboard/styletag.html",
-            "transliteration": True # If this attribute has a transliteration
+            "common_name": True # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)

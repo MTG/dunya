@@ -22,7 +22,7 @@ import carnatic
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Raaga.objects.get(Q(name__iexact=name) | Q(transliteration__iexact=name))
+            return carnatic.models.Raaga.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except carnatic.models.Raaga.DoesNotExist as e:
             try:
                 alias = carnatic.models.RaagaAlias.objects.get(name__iexact=name)
@@ -33,7 +33,7 @@ class CarnaticRaagaManager(models.Manager):
 class CarnaticTaalaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Taala.objects.get(Q(name__iexact=name) | Q(transliteration__iexact=name))
+            return carnatic.models.Taala.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except carnatic.models.Taala.DoesNotExist as e:
             try:
                 alias = carnatic.models.TaalaAlias.objects.get(name__iexact=name)
@@ -73,8 +73,8 @@ class FuzzySearchManager(models.Manager):
             names = []
             for i in items:
                 names.append(i.name.lower())
-                if hasattr(i, "transliteration"):
-                    names.append(i.transliteration.lower())
+                if hasattr(i, "common_name"):
+                    names.append(i.common_name.lower())
             dups = stringDuplicates.stringDuplicates(name, names, stripped=True)
             if len(dups) != 1:
                 raise self.model.DoesNotExist()

@@ -287,14 +287,14 @@
     "pk": 1, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "adi", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 32, 
-        "references": [], 
         "images": [
             4298
         ], 
+        "source": null, 
+        "num_aksharas": 32, 
+        "references": [], 
+        "common_name": "adi", 
         "name": "\u0100di"
     }
 },
@@ -302,14 +302,14 @@
     "pk": 2, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "rupaka", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 12, 
-        "references": [], 
         "images": [
             4299
         ], 
+        "source": null, 
+        "num_aksharas": 12, 
+        "references": [], 
+        "common_name": "rupaka", 
         "name": "R\u016bpaka"
     }
 },
@@ -317,14 +317,14 @@
     "pk": 3, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "mishra chapu", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 14, 
-        "references": [], 
         "images": [
             4300
         ], 
+        "source": null, 
+        "num_aksharas": 14, 
+        "references": [], 
+        "common_name": "mishra chapu", 
         "name": "Mi\u015bra ch\u0101pu"
     }
 },
@@ -332,14 +332,14 @@
     "pk": 4, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "khanda chapu", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 10, 
-        "references": [], 
         "images": [
             4301
         ], 
+        "source": null, 
+        "num_aksharas": 10, 
+        "references": [], 
+        "common_name": "khanda chapu", 
         "name": "Kha\u1e47\u1e0da ch\u0101pu"
     }
 },
@@ -347,14 +347,14 @@
     "pk": 5, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "eka", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 16, 
-        "references": [], 
         "images": [
             4302
         ], 
+        "source": null, 
+        "num_aksharas": 16, 
+        "references": [], 
+        "common_name": "eka", 
         "name": "\u0112ka"
     }
 },
@@ -362,12 +362,12 @@
     "pk": 6, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "tishra eka", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "num_aksharas": 12, 
         "references": [], 
-        "images": [], 
+        "common_name": "tishra eka", 
         "name": "Ti\u015bra-j\u0101ti \u0113ka"
     }
 },
@@ -375,14 +375,14 @@
     "pk": 7, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "dhruva", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 56, 
-        "references": [], 
         "images": [
             4303
         ], 
+        "source": null, 
+        "num_aksharas": 56, 
+        "references": [], 
+        "common_name": "dhruva", 
         "name": "Dhr\u0325va"
     }
 },
@@ -390,14 +390,14 @@
     "pk": 8, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "matya", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 40, 
-        "references": [], 
         "images": [
             4304
         ], 
+        "source": null, 
+        "num_aksharas": 40, 
+        "references": [], 
+        "common_name": "matya", 
         "name": "Ma\u1e6dhya"
     }
 },
@@ -405,14 +405,14 @@
     "pk": 9, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "mishra jhampe", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 40, 
-        "references": [], 
         "images": [
             4305
         ], 
+        "source": null, 
+        "num_aksharas": 40, 
+        "references": [], 
+        "common_name": "mishra jhampe", 
         "name": "Mi\u015bra-j\u0101ti jha\u1e41pe"
     }
 },
@@ -420,14 +420,14 @@
     "pk": 10, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "tishra triputa", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 28, 
-        "references": [], 
         "images": [
             4306
         ], 
+        "source": null, 
+        "num_aksharas": 28, 
+        "references": [], 
+        "common_name": "tishra triputa", 
         "name": "Ti\u015bra-j\u0101ti tripu\u1e6da "
     }
 },
@@ -435,14 +435,14 @@
     "pk": 11, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "atta", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 56, 
-        "references": [], 
         "images": [
             4307
         ], 
+        "source": null, 
+        "num_aksharas": 56, 
+        "references": [], 
+        "common_name": "atta", 
         "name": "A\u1e6d\u1e6da"
     }
 },
@@ -450,14 +450,14 @@
     "pk": 13, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "chaturashra-jaati jhampe", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 28, 
-        "references": [], 
         "images": [
             4308
         ], 
+        "source": null, 
+        "num_aksharas": 28, 
+        "references": [], 
+        "common_name": "chaturashra-jaati jhampe", 
         "name": "Catura\u015bra-j\u0101ti jha\u1e41pe"
     }
 },
@@ -465,14 +465,14 @@
     "pk": 14, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "deshaadi", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 16, 
-        "references": [], 
         "images": [
             4309
         ], 
+        "source": null, 
+        "num_aksharas": 16, 
+        "references": [], 
+        "common_name": "deshaadi", 
         "name": "D\u0113\u015b\u0101di"
     }
 },
@@ -480,14 +480,14 @@
     "pk": 15, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "khanda-jaati triputa", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 36, 
-        "references": [], 
         "images": [
             4310
         ], 
+        "source": null, 
+        "num_aksharas": 36, 
+        "references": [], 
+        "common_name": "khanda-jaati triputa", 
         "name": "Kha\u1e47\u1e0da-j\u0101ti tripu\u1e6da "
     }
 },
@@ -495,14 +495,14 @@
     "pk": 16, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "khanda-jaati eka", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 20, 
-        "references": [], 
         "images": [
             4311
         ], 
+        "source": null, 
+        "num_aksharas": 20, 
+        "references": [], 
+        "common_name": "khanda-jaati eka", 
         "name": "Kha\u1e47\u1e0da-j\u0101ti \u0113ka"
     }
 },
@@ -510,14 +510,14 @@
     "pk": 17, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "madhyaadi", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 16, 
-        "references": [], 
         "images": [
             4312
         ], 
+        "source": null, 
+        "num_aksharas": 16, 
+        "references": [], 
+        "common_name": "madhyaadi", 
         "name": "Madhy\u0101di "
     }
 },
@@ -525,14 +525,14 @@
     "pk": 18, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "mahaalakshmi", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 76, 
-        "references": [], 
         "images": [
             4313
         ], 
+        "source": null, 
+        "num_aksharas": 76, 
+        "references": [], 
+        "common_name": "mahaalakshmi", 
         "name": "Mah\u0101lak\u1e63mi "
     }
 },
@@ -540,14 +540,14 @@
     "pk": 19, 
     "model": "carnatic.taala", 
     "fields": {
-        "transliteration": "mishra-jaati rupaka", 
         "description": null, 
-        "source": null, 
-        "num_aksharas": 36, 
-        "references": [], 
         "images": [
             4314
         ], 
+        "source": null, 
+        "num_aksharas": 36, 
+        "references": [], 
+        "common_name": "mishra-jaati rupaka", 
         "name": "Mi\u015bra-j\u0101ti r\u016bpaka"
     }
 },
@@ -859,13 +859,13 @@
     "pk": 1, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "abheri", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3384
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "abheri", 
         "name": "\u0100bh\u0113ri"
     }
 },
@@ -873,13 +873,13 @@
     "pk": 2, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "abhogi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3385
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "abhogi", 
         "name": "\u0100bh\u014dgi"
     }
 },
@@ -887,11 +887,11 @@
     "pk": 4, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "arabhi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "arabhi", 
         "name": "\u0100rabhi"
     }
 },
@@ -899,11 +899,11 @@
     "pk": 5, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "asaveri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "asaveri", 
         "name": "As\u0101v\u0113ri"
     }
 },
@@ -911,13 +911,13 @@
     "pk": 6, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "atana", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3466
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "atana", 
         "name": "A\u1e6d\u0101na"
     }
 },
@@ -925,13 +925,13 @@
     "pk": 7, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bahudari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3386
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "bahudari", 
         "name": "Bahud\u0101ri"
     }
 },
@@ -939,13 +939,13 @@
     "pk": 8, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "begada", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3387
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "begada", 
         "name": "B\u0113ga\u1e0da"
     }
 },
@@ -953,14 +953,14 @@
     "pk": 9, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "behag", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3388, 
             3468
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "behag", 
         "name": "Beh\u0101g"
     }
 },
@@ -968,16 +968,16 @@
     "pk": 10, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhairavi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3518, 
             3389, 
             3419, 
             3489
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "bhairavi", 
         "name": "Bhairavi"
     }
 },
@@ -985,13 +985,13 @@
     "pk": 11, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bilahari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3390
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "bilahari", 
         "name": "Bilahari"
     }
 },
@@ -999,13 +999,13 @@
     "pk": 13, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "darbar", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3391
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "darbar", 
         "name": "Darb\u0101r"
     }
 },
@@ -1013,14 +1013,14 @@
     "pk": 14, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "devagandhari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3392, 
             3446
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "devagandhari", 
         "name": "D\u0113vag\u0101ndh\u0101ri"
     }
 },
@@ -1028,13 +1028,13 @@
     "pk": 15, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "devamanohari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3393
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "devamanohari", 
         "name": "D\u0113vaman\u014dhari"
     }
 },
@@ -1042,11 +1042,11 @@
     "pk": 16, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "dhanashri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "dhanashri", 
         "name": "Dhana\u015br\u012b"
     }
 },
@@ -1054,13 +1054,13 @@
     "pk": 17, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "dhanyasi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3394
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "dhanyasi", 
         "name": "Dhany\u0101si"
     }
 },
@@ -1068,11 +1068,11 @@
     "pk": 20, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hamsadhvani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "hamsadhvani", 
         "name": "Hamsadhvani"
     }
 },
@@ -1080,13 +1080,13 @@
     "pk": 21, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hamsanandi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3396
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "hamsanandi", 
         "name": "Ha\u1e41s\u0101nandi"
     }
 },
@@ -1094,13 +1094,13 @@
     "pk": 23, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hindolam", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3398
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "hindolam", 
         "name": "Hind\u014d\u1e37a\u1e41"
     }
 },
@@ -1108,13 +1108,13 @@
     "pk": 24, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jaganmohini", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3399
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "jaganmohini", 
         "name": "Jaganm\u014dhini"
     }
 },
@@ -1122,13 +1122,13 @@
     "pk": 25, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jaunpuri", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3400
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "jaunpuri", 
         "name": "J\u014dnpuri"
     }
 },
@@ -1136,10 +1136,7 @@
     "pk": 27, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kalyani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3402, 
             3433, 
@@ -1147,6 +1144,9 @@
             3495, 
             3501
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kalyani", 
         "name": "Kaly\u0101\u1e47i"
     }
 },
@@ -1154,13 +1154,13 @@
     "pk": 28, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kamas", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3403
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kamas", 
         "name": "Kam\u0101s"
     }
 },
@@ -1168,13 +1168,13 @@
     "pk": 30, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kanada", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3405
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kanada", 
         "name": "K\u0101na\u1e0da"
     }
 },
@@ -1182,13 +1182,13 @@
     "pk": 31, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "karaharapriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3406
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "karaharapriya", 
         "name": "Karaharapriya"
     }
 },
@@ -1196,11 +1196,11 @@
     "pk": 32, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kedaragaula", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kedaragaula", 
         "name": "K\u0113d\u0101ragau\u1e37a"
     }
 },
@@ -1208,13 +1208,13 @@
     "pk": 33, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kuntalavarali", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3407
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kuntalavarali", 
         "name": "Kuntalavar\u0101\u1e37i"
     }
 },
@@ -1222,13 +1222,13 @@
     "pk": 35, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "manirangu", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3409
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "manirangu", 
         "name": "Ma\u1e47irangu"
     }
 },
@@ -1236,13 +1236,13 @@
     "pk": 36, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "manji", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3410
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "manji", 
         "name": "M\u0101nji"
     }
 },
@@ -1250,13 +1250,13 @@
     "pk": 37, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "mohanam", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3411
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "mohanam", 
         "name": "M\u014dhana\u1e41"
     }
 },
@@ -1264,13 +1264,13 @@
     "pk": 38, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "mukhari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3412
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "mukhari", 
         "name": "Mukh\u0101ri"
     }
 },
@@ -1278,11 +1278,11 @@
     "pk": 40, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "natakurinji", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "natakurinji", 
         "name": "N\u0101\u1e6dakurinji"
     }
 },
@@ -1290,16 +1290,16 @@
     "pk": 44, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ranjani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3503, 
             3414, 
             3474, 
             3492
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "ranjani", 
         "name": "Ranjani"
     }
 },
@@ -1307,13 +1307,13 @@
     "pk": 46, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sahana", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3415
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "sahana", 
         "name": "Sah\u0101n\u0101"
     }
 },
@@ -1321,13 +1321,13 @@
     "pk": 47, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "saurashtram", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3416
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "saurashtram", 
         "name": "Saur\u0101\u1e63tra\u1e41"
     }
 },
@@ -1335,11 +1335,11 @@
     "pk": 48, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "senchurutti", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "senchurutti", 
         "name": "Sencuru\u1e6d\u1e6di"
     }
 },
@@ -1347,11 +1347,11 @@
     "pk": 49, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shanmukhapriya", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shanmukhapriya", 
         "name": "\u1e62anmukhapriya"
     }
 },
@@ -1359,11 +1359,11 @@
     "pk": 52, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shuddha saveri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shuddha saveri", 
         "name": "\u015audda s\u0101v\u0113ri"
     }
 },
@@ -1371,11 +1371,11 @@
     "pk": 54, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "surati", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "surati", 
         "name": "Sura\u1e6di"
     }
 },
@@ -1383,13 +1383,13 @@
     "pk": 55, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "thodi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3420
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "thodi", 
         "name": "T\u014d\u1e0di"
     }
 },
@@ -1397,13 +1397,13 @@
     "pk": 56, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vachaspati", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3421
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "vachaspati", 
         "name": "V\u0101caspati"
     }
 },
@@ -1411,16 +1411,16 @@
     "pk": 57, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "varali", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3407, 
             3413, 
             3422, 
             3427
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "varali", 
         "name": "Var\u0101\u1e37i"
     }
 },
@@ -1428,14 +1428,14 @@
     "pk": 58, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vasanta", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3423, 
             3476
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "vasanta", 
         "name": "Vasanta"
     }
 },
@@ -1443,11 +1443,11 @@
     "pk": 59, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "yadukula kambhoji", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "yadukula kambhoji", 
         "name": "Yadukula k\u0101\u1e41b\u014dji"
     }
 },
@@ -1455,13 +1455,13 @@
     "pk": 60, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "huseni", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3424
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "huseni", 
         "name": "Huss\u0113n\u012b"
     }
 },
@@ -1469,11 +1469,11 @@
     "pk": 61, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "purna shadjam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "purna shadjam", 
         "name": "P\u016br\u1e47a \u1e63a\u1e0dja\u1e41"
     }
 },
@@ -1481,11 +1481,11 @@
     "pk": 62, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "Chaturdasha ragamalika", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "Chaturdasha ragamalika", 
         "name": "Carturda\u015ba r\u0101gam\u0101lika"
     }
 },
@@ -1493,11 +1493,11 @@
     "pk": 63, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vijayasaraswati", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vijayasaraswati", 
         "name": "Vijayasarasvati"
     }
 },
@@ -1505,11 +1505,11 @@
     "pk": 64, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "navaragamalika", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "navaragamalika", 
         "name": "Navar\u0101gam\u0101lika"
     }
 },
@@ -1517,11 +1517,11 @@
     "pk": 65, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "brindavani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "brindavani", 
         "name": "B\u1e5bnd\u0101vani"
     }
 },
@@ -1529,11 +1529,11 @@
     "pk": 66, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "dvijavanti", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "dvijavanti", 
         "name": "Dvij\u0101vanti"
     }
 },
@@ -1541,13 +1541,13 @@
     "pk": 68, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kokilapriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3425
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kokilapriya", 
         "name": "K\u014dkilapriya"
     }
 },
@@ -1555,13 +1555,13 @@
     "pk": 69, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kiranavali", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3426
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kiranavali", 
         "name": "K\u012bra\u1e47\u0101va\u1e37i"
     }
 },
@@ -1569,11 +1569,11 @@
     "pk": 70, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "riti gaula", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "riti gaula", 
         "name": "R\u012btigau\u1e37a"
     }
 },
@@ -1581,11 +1581,11 @@
     "pk": 71, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "mandhari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "mandhari", 
         "name": "Mand\u0101ri"
     }
 },
@@ -1593,11 +1593,11 @@
     "pk": 72, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "mayamalava gaula", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "mayamalava gaula", 
         "name": "M\u0101y\u0101m\u0101\u1e37avagau\u1e37a"
     }
 },
@@ -1605,11 +1605,11 @@
     "pk": 73, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "punnaga varali", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "punnaga varali", 
         "name": "Pu\u1e47\u1e47\u0101gavar\u0101\u1e37i"
     }
 },
@@ -1617,13 +1617,13 @@
     "pk": 74, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhavani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3428
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "bhavani", 
         "name": "Bhav\u0101ni"
     }
 },
@@ -1631,11 +1631,11 @@
     "pk": 75, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vandanatarini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vandanatarini", 
         "name": "Vandanadh\u0101ri\u1e47i"
     }
 },
@@ -1643,13 +1643,13 @@
     "pk": 76, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhimpalasi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3429
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "bhimpalasi", 
         "name": "Bh\u012bmpal\u0101si"
     }
 },
@@ -1657,13 +1657,13 @@
     "pk": 77, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "paras", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3430
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "paras", 
         "name": "Paras"
     }
 },
@@ -1671,11 +1671,11 @@
     "pk": 78, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "devamruta varshini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "devamruta varshini", 
         "name": "Dev\u0101m\u1e5btavar\u1e63i\u1e47i"
     }
 },
@@ -1683,11 +1683,11 @@
     "pk": 79, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sindhumandari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "sindhumandari", 
         "name": "Sindhumand\u0101ri"
     }
 },
@@ -1695,13 +1695,13 @@
     "pk": 80, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nadanamakriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3431
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "nadanamakriya", 
         "name": "N\u0101dan\u0101makriya"
     }
 },
@@ -1709,11 +1709,11 @@
     "pk": 81, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "simhendra madhyamam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "simhendra madhyamam", 
         "name": "Simh\u0113ndra madhyama\u1e41"
     }
 },
@@ -1721,11 +1721,11 @@
     "pk": 82, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "misra khamaj", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "misra khamaj", 
         "name": "Mi\u015bra kham\u0101j"
     }
 },
@@ -1733,11 +1733,11 @@
     "pk": 83, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "yamuna kalyani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "yamuna kalyani", 
         "name": "Yamuna kaly\u0101\u1e47i"
     }
 },
@@ -1745,13 +1745,13 @@
     "pk": 85, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ramapriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3434
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "ramapriya", 
         "name": "R\u0101mapriya"
     }
 },
@@ -1759,11 +1759,11 @@
     "pk": 86, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "varnarupini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "varnarupini", 
         "name": "Var\u1e47ar\u016bpini"
     }
 },
@@ -1771,13 +1771,13 @@
     "pk": 87, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gurjari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3435
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "gurjari", 
         "name": "Gurj\u0101ri"
     }
 },
@@ -1785,11 +1785,11 @@
     "pk": 89, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "manoranjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "manoranjani", 
         "name": "Man\u014dranjani"
     }
 },
@@ -1797,13 +1797,13 @@
     "pk": 90, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "navroj", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3437
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "navroj", 
         "name": "Navr\u014dj"
     }
 },
@@ -1811,13 +1811,13 @@
     "pk": 91, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "desh", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3445
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "desh", 
         "name": "D\u0113\u015b"
     }
 },
@@ -1825,11 +1825,11 @@
     "pk": 92, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "karnataka devagandhari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "karnataka devagandhari", 
         "name": "Kar\u1e47\u0101\u1e6daka d\u0113vag\u0101ndh\u0101ri"
     }
 },
@@ -1837,13 +1837,13 @@
     "pk": 93, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "simhavahini", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3447
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "simhavahini", 
         "name": "Simhav\u0101hini"
     }
 },
@@ -1851,11 +1851,11 @@
     "pk": 94, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chakravakam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "chakravakam", 
         "name": "Cakrav\u0101ka\u1e41"
     }
 },
@@ -1863,13 +1863,13 @@
     "pk": 95, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kalavathi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3448
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kalavathi", 
         "name": "Kal\u0101vati"
     }
 },
@@ -1877,13 +1877,13 @@
     "pk": 96, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ragamalika", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3507
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "ragamalika", 
         "name": "R\u0101gam\u0101lika"
     }
 },
@@ -1891,11 +1891,11 @@
     "pk": 97, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gangeyabhushani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "gangeyabhushani", 
         "name": "G\u0101ng\u0113yabh\u016b\u1e63a\u1e47i"
     }
 },
@@ -1903,11 +1903,11 @@
     "pk": 98, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shri ranjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shri ranjani", 
         "name": "\u015ar\u012branjani"
     }
 },
@@ -1915,11 +1915,11 @@
     "pk": 99, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kadanakutuhulam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kadanakutuhulam", 
         "name": "Kathanakut\u016bhala\u1e41"
     }
 },
@@ -1927,11 +1927,11 @@
     "pk": 100, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "misra shivaranjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "misra shivaranjani", 
         "name": "Mi\u015bra \u015bivaranjani"
     }
 },
@@ -1939,11 +1939,11 @@
     "pk": 101, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "veera vasantam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "veera vasantam", 
         "name": "V\u012bra vasanta\u1e41"
     }
 },
@@ -1951,11 +1951,11 @@
     "pk": 102, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bageshri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "bageshri", 
         "name": "B\u0101g\u0113\u015br\u012b"
     }
 },
@@ -1963,13 +1963,13 @@
     "pk": 104, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chintamani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3438
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "chintamani", 
         "name": "Cint\u0101ma\u1e47i"
     }
 },
@@ -1977,11 +1977,11 @@
     "pk": 105, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "meghmalhar", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "meghmalhar", 
         "name": "Meghamalhar"
     }
 },
@@ -1989,11 +1989,11 @@
     "pk": 106, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gambhira nata", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "gambhira nata", 
         "name": "Ga\u1e41bh\u012bra n\u0101\u1e6da"
     }
 },
@@ -2001,11 +2001,11 @@
     "pk": 107, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hamsanadam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "hamsanadam", 
         "name": "Ha\u1e41san\u0101da\u1e41"
     }
 },
@@ -2013,11 +2013,11 @@
     "pk": 108, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jhankaradhwani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "jhankaradhwani", 
         "name": "Jhank\u0101radhvani"
     }
 },
@@ -2025,11 +2025,11 @@
     "pk": 110, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bauli", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "bauli", 
         "name": "Bau\u1e37i"
     }
 },
@@ -2037,13 +2037,13 @@
     "pk": 111, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "amritavarshini", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3449
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "amritavarshini", 
         "name": "Am\u1e5btavar\u1e63i\u1e47i"
     }
 },
@@ -2051,11 +2051,11 @@
     "pk": 112, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "saraswati", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "saraswati", 
         "name": "Sarasvati"
     }
 },
@@ -2063,13 +2063,13 @@
     "pk": 113, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kurinji", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3450
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kurinji", 
         "name": "Kurinji"
     }
 },
@@ -2077,13 +2077,13 @@
     "pk": 114, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ghanta", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3451
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "ghanta", 
         "name": "Ghan\u1e6da"
     }
 },
@@ -2091,11 +2091,11 @@
     "pk": 115, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chenchu kambhoji", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "chenchu kambhoji", 
         "name": "Cencu k\u0101mbh\u014dji"
     }
 },
@@ -2103,11 +2103,11 @@
     "pk": 116, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "garudadvani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "garudadvani", 
         "name": "Garu\u1e0dadhvani"
     }
 },
@@ -2115,11 +2115,11 @@
     "pk": 117, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vijayashri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vijayashri", 
         "name": "Vijaya\u015br\u012b"
     }
 },
@@ -2127,11 +2127,11 @@
     "pk": 118, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "revagupti", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "revagupti", 
         "name": "R\u0113vagupti"
     }
 },
@@ -2139,11 +2139,11 @@
     "pk": 119, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vijayanagari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vijayanagari", 
         "name": "Vijayanagari"
     }
 },
@@ -2151,11 +2151,11 @@
     "pk": 120, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kiravani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kiravani", 
         "name": "K\u012brav\u0101\u1e47i"
     }
 },
@@ -2163,11 +2163,11 @@
     "pk": 121, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "saraswati manohari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "saraswati manohari", 
         "name": "Sarasvat\u012b man\u014dhari"
     }
 },
@@ -2175,13 +2175,13 @@
     "pk": 122, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "velavali", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3440
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "velavali", 
         "name": "V\u0113l\u0101vali"
     }
 },
@@ -2189,13 +2189,13 @@
     "pk": 124, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "rudrapriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3442
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "rudrapriya", 
         "name": "Rudrapriya"
     }
 },
@@ -2203,13 +2203,13 @@
     "pk": 125, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kalanidhi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3443
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kalanidhi", 
         "name": "Ka\u1e37\u0101nidhi"
     }
 },
@@ -2217,13 +2217,13 @@
     "pk": 126, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "madhuvanti", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3444
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "madhuvanti", 
         "name": "Maduvanti"
     }
 },
@@ -2231,11 +2231,11 @@
     "pk": 127, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gopika vasantham", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "gopika vasantham", 
         "name": "G\u014dpik\u0101vasanta\u1e41"
     }
 },
@@ -2243,13 +2243,13 @@
     "pk": 128, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "palamanjari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3453
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "palamanjari", 
         "name": "P\u0101lamanjari"
     }
 },
@@ -2257,13 +2257,13 @@
     "pk": 129, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ganamurti", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3454
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "ganamurti", 
         "name": "G\u0101nam\u016brti"
     }
 },
@@ -2271,13 +2271,13 @@
     "pk": 131, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "padi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3456
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "padi", 
         "name": "P\u0101\u1e0di"
     }
 },
@@ -2285,11 +2285,11 @@
     "pk": 132, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chayatarangini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "chayatarangini", 
         "name": "C\u0101y\u0101tarangi\u1e47i"
     }
 },
@@ -2297,13 +2297,13 @@
     "pk": 133, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hemavati", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3457
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "hemavati", 
         "name": "H\u0113mavati"
     }
 },
@@ -2311,11 +2311,11 @@
     "pk": 134, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ahiri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "ahiri", 
         "name": "\u0100hiri"
     }
 },
@@ -2323,11 +2323,11 @@
     "pk": 135, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kapi narayani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kapi narayani", 
         "name": "K\u0101pi n\u0101r\u0101ya\u1e47i"
     }
 },
@@ -2335,11 +2335,11 @@
     "pk": 136, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sindhubhairavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "sindhubhairavi", 
         "name": "Sindhubhairavi"
     }
 },
@@ -2347,13 +2347,13 @@
     "pk": 137, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kamavardani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3459
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kamavardani", 
         "name": "K\u0101mavardani/Pantuvar\u0101\u1e37i"
     }
 },
@@ -2361,13 +2361,13 @@
     "pk": 138, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "lalitha", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3460
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "lalitha", 
         "name": "Lalita"
     }
 },
@@ -2375,13 +2375,13 @@
     "pk": 139, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "manavati", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3461
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "manavati", 
         "name": "M\u0101navati"
     }
 },
@@ -2389,11 +2389,11 @@
     "pk": 140, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "pushpalatika", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "pushpalatika", 
         "name": "Pu\u1e63palatika"
     }
 },
@@ -2401,11 +2401,11 @@
     "pk": 141, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ananda bhairavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "ananda bhairavi", 
         "name": "\u0100nandabhairavi"
     }
 },
@@ -2413,11 +2413,11 @@
     "pk": 142, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vegavahini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vegavahini", 
         "name": "V\u0113gav\u0101hi\u1e47i"
     }
 },
@@ -2425,11 +2425,11 @@
     "pk": 144, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "", 
         "name": "jog - sarastram"
     }
 },
@@ -2437,13 +2437,13 @@
     "pk": 145, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "valaji", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3462
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "valaji", 
         "name": "Valaji"
     }
 },
@@ -2451,11 +2451,11 @@
     "pk": 146, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ravi chandrika", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "ravi chandrika", 
         "name": "Ravicandrika"
     }
 },
@@ -2463,13 +2463,13 @@
     "pk": 148, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "andolika", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3464
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "andolika", 
         "name": "\u0100nd\u014d\u1e37ika"
     }
 },
@@ -2477,11 +2477,11 @@
     "pk": 149, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "purna chandrika", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "purna chandrika", 
         "name": "P\u016br\u1e47acandrika"
     }
 },
@@ -2489,13 +2489,13 @@
     "pk": 151, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "natanarayani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3466
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "natanarayani", 
         "name": "Na\u1e6dan\u0101r\u0101ya\u1e47i"
     }
 },
@@ -2503,13 +2503,13 @@
     "pk": 152, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "deepakam", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3467
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "deepakam", 
         "name": "D\u012bpaka\u1e41"
     }
 },
@@ -2517,11 +2517,11 @@
     "pk": 153, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "karnataka behag", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "karnataka behag", 
         "name": "Kar\u1e47\u0101\u1e6daka beh\u0101g"
     }
 },
@@ -2529,11 +2529,11 @@
     "pk": 154, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shri", 
         "name": "\u015ar\u012b"
     }
 },
@@ -2541,11 +2541,11 @@
     "pk": 156, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "karnataka kapi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "karnataka kapi", 
         "name": "Kar\u1e47\u0101\u1e6daka k\u0101pi"
     }
 },
@@ -2553,13 +2553,13 @@
     "pk": 157, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "dharmavati", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3471
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "dharmavati", 
         "name": "Dharm\u0101vati"
     }
 },
@@ -2567,11 +2567,11 @@
     "pk": 158, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jingala", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "jingala", 
         "name": "Jingala"
     }
 },
@@ -2579,14 +2579,14 @@
     "pk": 159, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kapi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3458, 
             3470
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kapi", 
         "name": "K\u0101pi"
     }
 },
@@ -2594,11 +2594,11 @@
     "pk": 160, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "navarasa kannada", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "navarasa kannada", 
         "name": "Navarasa kanna\u1e0da"
     }
 },
@@ -2606,11 +2606,11 @@
     "pk": 161, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kala saveri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kala saveri", 
         "name": "Ka\u1e37\u0101 s\u0101v\u0113ri"
     }
 },
@@ -2618,11 +2618,11 @@
     "pk": 162, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jayantasri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "jayantasri", 
         "name": "Jayanta\u015br\u012b"
     }
 },
@@ -2630,14 +2630,14 @@
     "pk": 163, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "narayani", 
         "description": null, 
+        "images": [
+            3466, 
+            3458
+        ], 
         "source": null, 
         "references": [], 
-        "images": [
-            3458, 
-            3466
-        ], 
+        "common_name": "narayani", 
         "name": "N\u0101r\u0101ya\u1e47i"
     }
 },
@@ -2645,13 +2645,13 @@
     "pk": 164, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ganavaridhi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3473
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "ganavaridhi", 
         "name": "G\u0101nav\u0101ridhi"
     }
 },
@@ -2659,13 +2659,13 @@
     "pk": 165, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kamaranjani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3474
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kamaranjani", 
         "name": "K\u0101maranjani"
     }
 },
@@ -2673,11 +2673,11 @@
     "pk": 166, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nilambari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "nilambari", 
         "name": "N\u012bl\u0101\u1e41bari"
     }
 },
@@ -2685,11 +2685,11 @@
     "pk": 167, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nayaki", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "nayaki", 
         "name": "N\u0101yaki"
     }
 },
@@ -2697,11 +2697,11 @@
     "pk": 168, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kalyana vasantham", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kalyana vasantham", 
         "name": "Ka\u1e37y\u0101\u1e47a vasanta\u1e41"
     }
 },
@@ -2709,13 +2709,13 @@
     "pk": 169, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sucharitra", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3475
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "sucharitra", 
         "name": "Sucaritra"
     }
 },
@@ -2723,11 +2723,11 @@
     "pk": 170, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "mayura saveri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "mayura saveri", 
         "name": "May\u016bra s\u0101v\u0113ri"
     }
 },
@@ -2735,11 +2735,11 @@
     "pk": 171, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vagadeeswari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vagadeeswari", 
         "name": "V\u0101gad\u012b\u015bvari"
     }
 },
@@ -2747,11 +2747,11 @@
     "pk": 172, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hindola vasantam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "hindola vasantam", 
         "name": "Hind\u014d\u1e37a vasanta\u1e41"
     }
 },
@@ -2759,11 +2759,11 @@
     "pk": 173, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shulini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shulini", 
         "name": "\u015a\u016b\u1e37i\u1e47i"
     }
 },
@@ -2771,13 +2771,13 @@
     "pk": 174, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "purvi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3485
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "purvi", 
         "name": "P\u016brvi"
     }
 },
@@ -2785,11 +2785,11 @@
     "pk": 175, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "maund", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "maund", 
         "name": "M\u0101n\u1e0du"
     }
 },
@@ -2797,11 +2797,11 @@
     "pk": 176, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "Kannada gaula", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "Kannada gaula", 
         "name": "Kanna\u1e0da gaula"
     }
 },
@@ -2809,13 +2809,13 @@
     "pk": 177, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "devakriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3477
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "devakriya", 
         "name": "D\u0113vakriya"
     }
 },
@@ -2823,11 +2823,11 @@
     "pk": 178, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhoga saveri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "bhoga saveri", 
         "name": "Bh\u014dga s\u0101v\u0113ri"
     }
 },
@@ -2835,13 +2835,13 @@
     "pk": 179, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "deepali", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3478
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "deepali", 
         "name": "D\u012bp\u0101\u1e37i"
     }
 },
@@ -2849,11 +2849,11 @@
     "pk": 180, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "niroshtha", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "niroshtha", 
         "name": "Nir\u014d\u1e63ita"
     }
 },
@@ -2861,13 +2861,13 @@
     "pk": 181, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jayantasena", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3479
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "jayantasena", 
         "name": "Jayantas\u0113na"
     }
 },
@@ -2875,13 +2875,13 @@
     "pk": 182, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gaulipantu", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3480
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "gaulipantu", 
         "name": "Gau\u1e37ipantu"
     }
 },
@@ -2889,13 +2889,13 @@
     "pk": 183, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chandrakauns", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3481
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "chandrakauns", 
         "name": "Candrakauns"
     }
 },
@@ -2903,11 +2903,11 @@
     "pk": 184, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "harikambhoji", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "harikambhoji", 
         "name": "Harik\u0101mbh\u014dji"
     }
 },
@@ -2915,11 +2915,11 @@
     "pk": 185, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "brindavana saranga", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "brindavana saranga", 
         "name": "B\u1e5bnd\u0101vana s\u0101ranga"
     }
 },
@@ -2927,11 +2927,11 @@
     "pk": 186, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "misra pahadi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "misra pahadi", 
         "name": "Mi\u015bra pah\u0101\u1e0di"
     }
 },
@@ -2939,11 +2939,11 @@
     "pk": 187, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "revati", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "revati", 
         "name": "R\u0113vati"
     }
 },
@@ -2951,13 +2951,13 @@
     "pk": 188, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sunadavinodini", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3483
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "sunadavinodini", 
         "name": "Sun\u0101davin\u014ddini"
     }
 },
@@ -2965,13 +2965,13 @@
     "pk": 189, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhushavali", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3484
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "bhushavali", 
         "name": "Bh\u016b\u1e63\u0101va\u1e37i"
     }
 },
@@ -2979,11 +2979,11 @@
     "pk": 190, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kamalamanohari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kamalamanohari", 
         "name": "Kamal\u0101man\u014dhari"
     }
 },
@@ -2991,13 +2991,13 @@
     "pk": 193, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gaula", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3511
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "gaula", 
         "name": "Gau\u1e37a"
     }
 },
@@ -3005,11 +3005,11 @@
     "pk": 194, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "subhapantuvarali", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "subhapantuvarali", 
         "name": "\u015aubhapantuvar\u0101\u1e37i"
     }
 },
@@ -3017,11 +3017,11 @@
     "pk": 195, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "udaya ravichandrika", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "udaya ravichandrika", 
         "name": "Udaya ravicandrika"
     }
 },
@@ -3029,11 +3029,11 @@
     "pk": 196, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "rama manohari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "rama manohari", 
         "name": "R\u0101ma man\u014dhari"
     }
 },
@@ -3041,11 +3041,11 @@
     "pk": 197, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "naga gandhari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "naga gandhari", 
         "name": "N\u0101ga g\u0101ndh\u0101ri"
     }
 },
@@ -3053,11 +3053,11 @@
     "pk": 198, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "Vasanta varali", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "Vasanta varali", 
         "name": "Vasanta var\u0101\u1e37i"
     }
 },
@@ -3065,11 +3065,11 @@
     "pk": 199, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ahir bhairavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "ahir bhairavi", 
         "name": "\u0100hir bhairav"
     }
 },
@@ -3077,11 +3077,11 @@
     "pk": 200, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "karnataka shuddha saveri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "karnataka shuddha saveri", 
         "name": "Kar\u1e47\u0101\u1e6daka \u015budda s\u0101v\u0113ri"
     }
 },
@@ -3089,14 +3089,14 @@
     "pk": 201, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "saranga", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3482, 
             3491
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "saranga", 
         "name": "S\u0101ranga"
     }
 },
@@ -3104,11 +3104,11 @@
     "pk": 202, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shuddhaseemantini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shuddhaseemantini", 
         "name": "\u015auddas\u012bmantini"
     }
 },
@@ -3116,13 +3116,13 @@
     "pk": 203, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "janaranjani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3492
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "janaranjani", 
         "name": "Janaranjani"
     }
 },
@@ -3130,11 +3130,11 @@
     "pk": 204, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "margahindolam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "margahindolam", 
         "name": "M\u0101rgahind\u014d\u1e37a\u1e41"
     }
 },
@@ -3142,13 +3142,13 @@
     "pk": 205, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "patdeep", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3493
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "patdeep", 
         "name": "Pa\u1e6dd\u012bp"
     }
 },
@@ -3156,11 +3156,11 @@
     "pk": 206, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gauda malhar", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "gauda malhar", 
         "name": "Gau\u1e0da malh\u0101r"
     }
 },
@@ -3168,13 +3168,13 @@
     "pk": 207, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jayamanohari", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3494
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "jayamanohari", 
         "name": "Jaya man\u014dhari"
     }
 },
@@ -3182,11 +3182,11 @@
     "pk": 208, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hameer kalyani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "hameer kalyani", 
         "name": "Ham\u012br ka\u1e37ya\u1e47i"
     }
 },
@@ -3194,11 +3194,11 @@
     "pk": 209, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "malayamarutam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "malayamarutam", 
         "name": "Malayam\u0101ruta\u1e41"
     }
 },
@@ -3206,11 +3206,11 @@
     "pk": 210, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kamboji", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kamboji", 
         "name": "K\u0101\u1e41bh\u014dji"
     }
 },
@@ -3218,13 +3218,13 @@
     "pk": 211, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kalgada", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3496
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kalgada", 
         "name": "Kalga\u1e0da"
     }
 },
@@ -3232,13 +3232,13 @@
     "pk": 213, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "balahamsa", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3497
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "balahamsa", 
         "name": "Balaha\u1e41sa"
     }
 },
@@ -3246,11 +3246,11 @@
     "pk": 214, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jyoti swarupini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "jyoti swarupini", 
         "name": "Jy\u014dti svar\u016bpi\u1e47i"
     }
 },
@@ -3258,13 +3258,13 @@
     "pk": 216, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "dhenuka", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3499
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "dhenuka", 
         "name": "Dh\u0113nuka"
     }
 },
@@ -3272,11 +3272,11 @@
     "pk": 218, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jogiya", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "jogiya", 
         "name": "J\u014dgiya"
     }
 },
@@ -3284,13 +3284,13 @@
     "pk": 219, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "durga", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3500
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "durga", 
         "name": "Durga"
     }
 },
@@ -3298,11 +3298,11 @@
     "pk": 220, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "mohana kalyani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "mohana kalyani", 
         "name": "M\u014dhan ka\u1e37y\u0101\u1e47i"
     }
 },
@@ -3310,11 +3310,11 @@
     "pk": 221, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "darbari kanada", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "darbari kanada", 
         "name": "Darb\u0101r\u012b k\u0101na\u1e0da"
     }
 },
@@ -3322,13 +3322,13 @@
     "pk": 222, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chandrajyothi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3502
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "chandrajyothi", 
         "name": "Candrajy\u014dti"
     }
 },
@@ -3336,13 +3336,13 @@
     "pk": 223, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chittaranjani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3503
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "chittaranjani", 
         "name": "Cittaranjani"
     }
 },
@@ -3350,13 +3350,13 @@
     "pk": 224, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kedaram", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3504
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "kedaram", 
         "name": "Ked\u0101ra\u1e41"
     }
 },
@@ -3364,13 +3364,13 @@
     "pk": 225, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "latangi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3505
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "latangi", 
         "name": "Lat\u0101ngi"
     }
 },
@@ -3378,13 +3378,13 @@
     "pk": 226, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vakulabharanam", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3506
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "vakulabharanam", 
         "name": "Vaku\u1e37\u0101bhara\u1e47a\u1e41"
     }
 },
@@ -3392,11 +3392,11 @@
     "pk": 227, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "lalitha panchamam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "lalitha panchamam", 
         "name": "Lalita pancama\u1e41"
     }
 },
@@ -3404,11 +3404,11 @@
     "pk": 229, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kokiladvani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kokiladvani", 
         "name": "K\u014dkiladhvani"
     }
 },
@@ -3416,11 +3416,11 @@
     "pk": 231, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sumanesaranjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "sumanesaranjani", 
         "name": "Suman\u0113\u015baranjani"
     }
 },
@@ -3428,13 +3428,13 @@
     "pk": 232, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "charukesi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3508
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "charukesi", 
         "name": "C\u0101ruk\u0113\u015bi"
     }
 },
@@ -3442,13 +3442,13 @@
     "pk": 233, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nasikabhushani", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3509
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "nasikabhushani", 
         "name": "N\u0101sikabh\u016b\u1e63a\u1e47i"
     }
 },
@@ -3456,11 +3456,11 @@
     "pk": 236, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ratipati priya", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "ratipati priya", 
         "name": "Ratipati priya"
     }
 },
@@ -3468,11 +3468,11 @@
     "pk": 237, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hindustan gandhari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "hindustan gandhari", 
         "name": "Hindust\u0101n g\u0101ndh\u0101ri"
     }
 },
@@ -3480,11 +3480,11 @@
     "pk": 238, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nalinakanti", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "nalinakanti", 
         "name": "Na\u1e37inak\u0101nti"
     }
 },
@@ -3492,11 +3492,11 @@
     "pk": 239, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kavadi chindu", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kavadi chindu", 
         "name": "K\u0101va\u1e0dicindu"
     }
 },
@@ -3504,13 +3504,13 @@
     "pk": 240, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "tanarupi", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3515
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "tanarupi", 
         "name": "Tanar\u016bpi"
     }
 },
@@ -3518,13 +3518,13 @@
     "pk": 241, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "thilang", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3516
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "thilang", 
         "name": "Till\u0101ng"
     }
 },
@@ -3532,11 +3532,11 @@
     "pk": 242, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sankarabharanam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "sankarabharanam", 
         "name": "\u015aankar\u0101bhara\u1e47a\u1e41"
     }
 },
@@ -3544,11 +3544,11 @@
     "pk": 244, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "salaga bhairavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "salaga bhairavi", 
         "name": "S\u0101laga bhairavi"
     }
 },
@@ -3556,11 +3556,11 @@
     "pk": 245, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhupalam", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "bhupalam", 
         "name": "Bh\u016bp\u0101\u1e37a\u1e41"
     }
 },
@@ -3568,11 +3568,11 @@
     "pk": 246, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "malavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "malavi", 
         "name": "M\u0101\u1e37avi"
     }
 },
@@ -3580,13 +3580,13 @@
     "pk": 247, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sama", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3519
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "sama", 
         "name": "S\u0101ma"
     }
 },
@@ -3594,11 +3594,11 @@
     "pk": 248, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gaurimanohari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "gaurimanohari", 
         "name": "Gaur\u012bman\u014dhari"
     }
 },
@@ -3606,11 +3606,11 @@
     "pk": 249, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shuddhadhanyasi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shuddhadhanyasi", 
         "name": "\u015auddadhany\u0101si"
     }
 },
@@ -3618,11 +3618,11 @@
     "pk": 251, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "amritavahini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "amritavahini", 
         "name": "Am\u1e5btav\u0101hi\u1e47i"
     }
 },
@@ -3630,11 +3630,11 @@
     "pk": 252, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "bhavapriya", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "bhavapriya", 
         "name": "Bh\u0101vapriya"
     }
 },
@@ -3642,11 +3642,11 @@
     "pk": 253, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "budamanohari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "budamanohari", 
         "name": "Budaman\u014dhari"
     }
 },
@@ -3654,13 +3654,13 @@
     "pk": 254, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gamakakriya", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
             3465
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "gamakakriya", 
         "name": "Gamakakriya/P\u016brv\u012bka\u1e37y\u0101\u1e47i"
     }
 },
@@ -3668,11 +3668,11 @@
     "pk": 255, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "gambhira vaani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "gambhira vaani", 
         "name": "Ga\u1e41bh\u012bra v\u0101\u1e47i"
     }
 },
@@ -3680,11 +3680,11 @@
     "pk": 256, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "hamsavinodini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "hamsavinodini", 
         "name": "Hamsavin\u014ddini"
     }
 },
@@ -3692,11 +3692,11 @@
     "pk": 257, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "jog", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "jog", 
         "name": "J\u014dg"
     }
 },
@@ -3704,11 +3704,11 @@
     "pk": 258, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kantamani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kantamani", 
         "name": "K\u0101nt\u0101ma\u1e47i"
     }
 },
@@ -3716,11 +3716,11 @@
     "pk": 259, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "karnaranjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "karnaranjani", 
         "name": "Kar\u1e47aranjani"
     }
 },
@@ -3728,11 +3728,11 @@
     "pk": 260, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "lavangi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "lavangi", 
         "name": "Lav\u0101ngi"
     }
 },
@@ -3740,11 +3740,11 @@
     "pk": 261, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "madhyama varali", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "madhyama varali", 
         "name": "Madhyam\u0101 var\u0101\u1e37i"
     }
 },
@@ -3752,11 +3752,11 @@
     "pk": 262, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "madyamavati", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "madyamavati", 
         "name": "Madhyam\u0101vati"
     }
 },
@@ -3764,11 +3764,11 @@
     "pk": 263, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "malahari", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "malahari", 
         "name": "Malahari"
     }
 },
@@ -3776,11 +3776,11 @@
     "pk": 264, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "misra yaman", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "misra yaman", 
         "name": "Mi\u015bra yaman"
     }
 },
@@ -3788,11 +3788,11 @@
     "pk": 265, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nagasvaravali", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "nagasvaravali", 
         "name": "N\u0101gasvar\u0101va\u1e37i"
     }
 },
@@ -3800,19 +3800,19 @@
     "pk": 266, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "nata", 
         "description": null, 
-        "source": null, 
-        "references": [], 
         "images": [
-            3439, 
-            3446, 
             3466, 
             3468, 
+            3446, 
             3470, 
+            3439, 
             3486, 
             3490
         ], 
+        "source": null, 
+        "references": [], 
+        "common_name": "nata", 
         "name": "N\u0101\u1e6da"
     }
 },
@@ -3820,11 +3820,11 @@
     "pk": 267, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "natabhairavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "natabhairavi", 
         "name": "Na\u1e6dabhairavi"
     }
 },
@@ -3832,11 +3832,11 @@
     "pk": 268, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "natakapriya", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "natakapriya", 
         "name": "N\u0101\u1e6dakapriya"
     }
 },
@@ -3844,11 +3844,11 @@
     "pk": 269, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "ragavinodini", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "ragavinodini", 
         "name": "R\u0101gavin\u014ddini"
     }
 },
@@ -3856,11 +3856,11 @@
     "pk": 270, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "rageshri", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "rageshri", 
         "name": "R\u0101g\u0113\u015br\u012b"
     }
 },
@@ -3868,11 +3868,11 @@
     "pk": 271, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "rasikapriya", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "rasikapriya", 
         "name": "Rasikapriya"
     }
 },
@@ -3880,11 +3880,11 @@
     "pk": 272, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "saramathi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "saramathi", 
         "name": "S\u0101r\u0101mati"
     }
 },
@@ -3892,11 +3892,11 @@
     "pk": 273, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "sarasangi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "sarasangi", 
         "name": "Saras\u0101ngi"
     }
 },
@@ -3904,14 +3904,14 @@
     "pk": 274, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "saveri", 
         "description": null, 
+        "images": [
+            3490, 
+            3418
+        ], 
         "source": null, 
         "references": [], 
-        "images": [
-            3418, 
-            3490
-        ], 
+        "common_name": "saveri", 
         "name": "S\u0101v\u0113ri"
     }
 },
@@ -3919,11 +3919,11 @@
     "pk": 275, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shivaranjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shivaranjani", 
         "name": "\u015aivaranjani"
     }
 },
@@ -3931,11 +3931,11 @@
     "pk": 276, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shuddhasarang", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shuddhasarang", 
         "name": "\u015audda s\u0101rang"
     }
 },
@@ -3943,11 +3943,11 @@
     "pk": 277, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "swararanjani", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "swararanjani", 
         "name": "Svararanjani"
     }
 },
@@ -3955,11 +3955,11 @@
     "pk": 278, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "shyam kalyan", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "shyam kalyan", 
         "name": "\u015ay\u0101\u1e41 ka\u1e37y\u0101\u1e47"
     }
 },
@@ -3967,11 +3967,11 @@
     "pk": 279, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "varamu", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "varamu", 
         "name": "Varamu"
     }
 },
@@ -3979,11 +3979,11 @@
     "pk": 280, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vasanta bhairavi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vasanta bhairavi", 
         "name": "Vasantabhairavi"
     }
 },
@@ -3991,11 +3991,11 @@
     "pk": 281, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "vaasanthi", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "vaasanthi", 
         "name": "V\u0101santi"
     }
 },
@@ -4003,11 +4003,11 @@
     "pk": 283, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "kannada", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "kannada", 
         "name": "Kanna\u1e0da"
     }
 },
@@ -4015,11 +4015,11 @@
     "pk": 284, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chalanata", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "chalanata", 
         "name": "C\u0101l\u0101n\u0101\u1e6da"
     }
 },
@@ -4027,11 +4027,11 @@
     "pk": 285, 
     "model": "carnatic.raaga", 
     "fields": {
-        "transliteration": "chayanata", 
         "description": null, 
+        "images": [], 
         "source": null, 
         "references": [], 
-        "images": [], 
+        "common_name": "chayanata", 
         "name": "C\u0101y\u0101n\u0101\u1e6da"
     }
 },

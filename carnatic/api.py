@@ -75,7 +75,7 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
     aliases = serializers.RelatedField(many=True, source='aliases.all')
     class Meta:
         model = models.Taala
-        fields = ['id', 'name', 'transliteration', 'aliases', 'artists', 'works', 'composers']
+        fields = ['id', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class TaalaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -99,7 +99,7 @@ class RaagaDetailSerializer(serializers.ModelSerializer):
     aliases = serializers.RelatedField(many=True, source='aliases.all')
     class Meta:
         model = models.Raaga
-        fields = ['id', 'name', 'transliteration', 'aliases', 'artists', 'works', 'composers']
+        fields = ['id', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class RaagaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
