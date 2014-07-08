@@ -1,4 +1,4 @@
-from fabric.api import local, settings, env, roles, run, cd
+from fabric.api import local, settings, env, roles, run, cd, hide
 import os
 
 env.roledefs["web"] = ["sitar.s.upf.edu"]
