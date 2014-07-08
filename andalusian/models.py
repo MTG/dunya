@@ -160,9 +160,6 @@ class OrchestraAlias(models.Model):
 class Artist(AndalusianStyle, BaseModel):
     missing_image = "artist.jpg"
 
-    class Meta:
-        abstract = True
-
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female')
@@ -244,9 +241,6 @@ class AlbumType(models.Model):
 
 class Album(AndalusianStyle, BaseModel):
     missing_image = "album.jpg"
-
-    class Meta:
-        abstract = True
 
     mbid = UUIDField(blank=True, null=True)
     title = models.CharField(max_length=255)
