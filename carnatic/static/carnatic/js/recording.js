@@ -25,7 +25,6 @@ $(document).ready(function() {
      waveform.mouseenter(function(e) {
          if (pagesound && pagesound.duration) {
              waveform.css("cursor", "pointer");
-
          } else {
              waveform.css("cursor", "wait");
          }
@@ -40,9 +39,10 @@ $(document).ready(function() {
 
              $("#timepoint").html(formatseconds(timeseconds));
              $("#timepoint").show();
+             var offset = $("#renderTotal").offset();
              $("#timepoint").css({
-                 "top" : e.pageY,
-                 "left" : e.pageX + 15
+                 "top" : e.pageY - offset.top,
+                 "left" : e.pageX - offset.left + 15
              });
         }
      });
@@ -388,7 +388,6 @@ function mouPlay(desti){
 
     posms = clickseconds * 1000;
     part = Math.ceil(clickseconds / secondsPerView);
-    console.debug("part " + part);
     // Update the internal position counter (counts from 0, part counts from 1)
     beginningOfView = (part - 1) * secondsPerView;
 
