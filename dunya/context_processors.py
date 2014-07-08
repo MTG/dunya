@@ -1,7 +1,5 @@
-import re
-from django.conf import settings
 from carnatic.models import *
-from carnatic.urls import uuid_match
+from django.core.urlresolvers import reverse
 
 def navigation_header(request):
     displayhist = [] 
@@ -23,3 +21,19 @@ def navigation_header(request):
         displayhist.append((item_type, item)) 
 
     return {"carnatic_navigation_history": displayhist}
+
+def style_context(request):
+    hindustani_prefix = reverse("hindustani-main")
+    carnatic_prefix = reverse("carnatic-main")
+    makam_prefix = reverse("makam-main")
+    #andalusian_prefix = reverse("andalusian-main")
+    path = request.path
+
+    if path.startswith(hindustani_prefix):
+        return {"style_root": hindustani_prefix, "style_name": "Hindustani"}
+    elif path.startswith(carnatic_prefix):
+        return {"style_root": carnatic_prefix, "style_name": "Carnatic"}
+    elif path.startswith(makam_prefix):
+        return {"style_root": makam_prefix, "style_name": "Makam"}
+    # elif path.startswith(andalusian_prefix):
+    #     return {"style_root": andalusian_prefix, "style_name": "Andalusian"}

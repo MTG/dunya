@@ -80,8 +80,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Log every page that people go to
     'dunya.middleware.PageLoggerMiddleware',
-    'dunya.middleware.NavigationHistoryMiddleware',
+    # Show a history of the pages that people have been to
+    #'dunya.middleware.NavigationHistoryMiddleware',
 )
 
 ROOT_URLCONF = 'dunya.urls'
@@ -108,6 +110,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     # "dunya.context_processors.navigation_header",
+    # Add metadata to the context about what style we are in
+    'dunya.context_processors.style_context',
 )
 
 INSTALLED_APPS = (
