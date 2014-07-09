@@ -216,7 +216,7 @@ AUTH_USER_MODULE = "django.contrib.auth.models.User"
 MAX_NAV_HEADER_ITEMS = 4
 
 # Fixed versions of extracted features to show on dunya
-FEAT_VERSION_NORMALISED_PITCH = "0.5"
+FEAT_VERSION_NORMALISED_PITCH = "0.6"
 FEAT_VERSION_TONIC = "0.2"
 FEAT_VERSION_RHYTHM = "0.3"
 FEAT_VERSION_IMAGE = "0.2"
