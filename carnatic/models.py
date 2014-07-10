@@ -59,16 +59,6 @@ class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     gurus = models.ManyToManyField("Artist", related_name="students")
 
-    def instruments(self):
-        insts = []
-        for perf in self.instrumentperformance_set.all():
-            if perf.instrument.name not in insts:
-                insts.append(perf.instrument)
-        if insts:
-            return insts[0]
-        else:
-            return None
-
     def similar_artists(self):
         idset = set()
         # we are not similar to ourselves

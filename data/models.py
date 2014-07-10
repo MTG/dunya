@@ -203,6 +203,17 @@ class Artist(BaseModel):
             ret.append((c, theperf))
         return ret
 
+    def instruments(self):
+        insts = []
+        for perf in self.instrumentperformance_set.all():
+            if perf.instrument.name not in insts:
+                insts.append(perf.instrument)
+        if insts:
+            return insts[0]
+        else:
+            return None
+
+
 class ArtistAlias(models.Model):
     class Meta:
         abstract = True
