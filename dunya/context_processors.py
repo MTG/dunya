@@ -37,3 +37,4 @@ def style_context(request):
         return {"style_root": makam_prefix, "style_name": "Makam"}
     # elif path.startswith(andalusian_prefix):
     #     return {"style_root": andalusian_prefix, "style_name": "Andalusian"}
+    return {}
