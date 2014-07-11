@@ -114,9 +114,9 @@ class Command(BaseCommand):
         total = len(recordings)
         for i, rec in enumerate(recordings, 1):
             raaga = rec.raaga()
-            otherrecordings = carnatic.models.Recording.objects.filter(work__raaga__in=[raaga]).exclude(pk=rec.pk)
-            print "Recording %s (%s/%s)" % (r, i, total)
-            self.compute_similarity(r, otherrecordings)
+            otherrecordings = carnatic.models.Recording.objects.filter(work__raaga__in=[raaga]).exclude(pk=rec.pk).distinct()
+            print "Recording %s (%s/%s)" % (rec, i, total)
+            self.compute_similarity(rec, otherrecordings)
 
     def compute_matrix_hindustani(self):
         recordings = hindustani.models.Recording.objects.all()
@@ -124,9 +124,9 @@ class Command(BaseCommand):
         for i, rec in enumerate(recordings, 1):
             if rec.raags.count() == 1:
                 raag = rec.raags.get()
-                otherrecordings = hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(pk=rec.pk)
-                print "Recording %s (%s/%s)" % (r, i, total)
-                self.compute_similarity(r, otherrecordings)
+                otherrecordings = hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(pk=rec.pk).distinct()
+                print "Recording %s (%s/%s)" % (rec, i, total)
+                self.compute_similarity(rec, otherrecordings)
 
     def handle(self, *args, **options):
         if len(args) < 1:
