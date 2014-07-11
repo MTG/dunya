@@ -1,7 +1,7 @@
 {% extends "carnatic/base.html" %}
-{% load inline %}
+{% load carnatic.inline %}
 {% load comments %}
-{% load badges %}
+{% load carnatic.badges %}
 {% load staticfiles %}
 {% block extra_css %}
     {% if debug %}
@@ -19,18 +19,18 @@
 
 {% block script %}
 <script>
-    var pitchtrackurl = "{{pitchtrackurl|safe}}";
-    var histogramurl = "{{histogramurl|safe}}";
-    var rhythmurl = "{{rhythmurl|safe}}";
-    var aksharaurl = "{{aksharaurl|safe}}";
-    var waveformurl = "{{waveform|safe}}";
-    var specurl = "{{spectrogram|safe}}";
+    var pitchtrackurl = "http://dunya.compmusic.upf.edu{{pitchtrackurl|safe}}";
+    var histogramurl = "http://dunya.compmusic.upf.edu{{histogramurl|safe}}";
+    var rhythmurl = "http://dunya.compmusic.upf.edu{{rhythmurl|safe}}";
+    var aksharaurl = "http://dunya.compmusic.upf.edu{{aksharaurl|safe}}";
+    var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
+    var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
     var secondsPerView = 32;
     var pitchtrackdata = null;
     var histogramdata = null;
     var rhythmdata = null;
     var aksharadata = null;
-    var audiourl = "{{audio|safe}}";
+    var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
     var recordinglengthfmt = "{{recording.length_format}}";
     var recordinglengthseconds = "{{recording.length_seconds}}";
 

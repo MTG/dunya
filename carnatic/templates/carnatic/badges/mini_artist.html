@@ -1,9 +1,9 @@
 {% load staticfiles %}
-{% load inline %}
-<div class="microitem artist">
+{% load carnatic.inline %}
+<div class="miniitem artist">
   <div class="colorCode shadow1"></div>
   <div class="disco"><a href="{{artist.get_absolute_url}}">
-          {% if artist.has_image %}<img src="{{artist.get_small_image_url}}">{% endif %}</a></div>
+          <img src="{{artist.get_small_image_url}}"></a></div>
   <label><b>{% inline_artist artist %}</b></label>
 </div>
 
