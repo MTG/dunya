@@ -148,7 +148,7 @@ class Command(BaseCommand):
         numraagas = len(recmap.keys())
         print "Got", numraagas, "raags"
         raagaprofiles = {}
-        for i, (raag, recordings) in enumerate(recmap.items()[:30], 1):
+        for i, (raag, recordings) in enumerate(recmap.items(), 1):
             print "(%s/%s) %s" % (i, numraagas, raag)
             profile = self.calc_profile(raag, recordings)
             raagaprofiles[raag] = profile
