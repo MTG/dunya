@@ -457,6 +457,9 @@ class Composer(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/composer/%s" % self.mbid
+
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid, slugify(self.name)])
