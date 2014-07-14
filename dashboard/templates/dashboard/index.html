@@ -4,6 +4,14 @@
 {% block wrap %}
 
 <h1>Dunya Dashboard</h1>
+ 
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span></button>
+      {{message}}
+    </div>
+{% endfor %}
 
 <p><a href="{% url 'dashboard-addcollection' %}">Add collection</a>
 {% if collections %}

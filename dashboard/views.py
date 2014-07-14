@@ -25,6 +25,7 @@ from django.forms.models import modelformset_factory
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.sites.models import get_current_site
+from django.contrib import messages
 
 from dashboard import models
 from dashboard import forms
@@ -102,6 +103,23 @@ def accounts(request):
     formset = UserFormSet(queryset=User.objects.filter(is_active=False))
     ret = {"formset": formset}
     return render(request, 'dashboard/accounts.html', ret)
+
+@user_passes_test(is_staff)
+def delete_collection(request, uuid):
+    c = get_object_or_404(models.Collection, pk=uuid)
+
+    if request.method == "POST":
+        delete = request.POST.get("delete")
+        if delete.lower().startswith("yes"):
+            msg = "The collection %s is being deleted" % c.name
+            messages.add_message(request, messages.INFO, msg)
+            jobs.delete_collection.delay(c.pk)
+            return redirect("dashboard-home")
+        elif delete.lower().startswith("no"):
+            return redirect("dashboard-collection", c.pk)
+
+    ret = {"collection": c}
+    return render(request, 'dashboard/delete_collection.html', ret)
 
 @user_passes_test(is_staff)
 def collection(request, uuid):

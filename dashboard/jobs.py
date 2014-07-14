@@ -383,3 +383,8 @@ def scan_and_link(collectionid):
     for cd in cds:
         _match_directory_to_release(coll.id, cd.full_path)
 
+@app.task
+def delete_collection(cid):
+    collection = models.Collection.objects.get(pk=cid)
+    collection.delete()
+
