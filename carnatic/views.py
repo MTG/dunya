@@ -374,7 +374,28 @@ def composerbyid(request, composerid, name=None):
 
 def composer(request, uuid, name=None):
     composer = get_object_or_404(Composer, mbid=uuid)
-    ret = {"composer": composer}
+
+    works = composer.works.all()
+    # We show all compositions, ordered by number of recordings
+    works = sorted(works, key=lambda w: w.recording_set.count(), reverse=True)
+
+    musicbrainz = composer.get_musicbrainz_url()
+    w = data.models.SourceName.objects.get(name="Wikipedia")
+    wikipedia = None
+    wr = composer.references.filter(carnatic_composer_source_set=w)
+    if wr.count():
+        wikipedia = wr[0].uri
+    desc = composer.description
+    if desc and desc.source.source_name == w:
+        wikipedia = composer.description.source.uri
+    wr = composer.references.filter(source_name=w)
+    if wr.count() and not wikipedia:
+        wikipedia = wr[0].uri
+
+    ret = {"composer": composer,
+           "mb": musicbrainz,
+           "wiki": wikipedia,
+           "works": works}
 
     return render(request, "carnatic/composer.html", ret)
 
@@ -474,10 +495,10 @@ def recording(request, uuid, title=None):
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
         aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
     except docserver.util.NoFileException:
-        pitchtrackurl = None
-        histogramurl = None
-        rhythmurl = None
-        aksharaurl = None
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "normalisedpitch", "packedpitch", settings.FEAT_VERSION_NORMALISED_PITCH)
+        histogramurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "normalisedpitch", "drawhistogram", settings.FEAT_VERSION_NORMALISED_PITCH)
+        rhythmurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "rhythm", "aksharaTicks", settings.FEAT_VERSION_RHYTHM)
+        aksharaurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "rhythm", "APcurve", settings.FEAT_VERSION_RHYTHM)
 
     similar = []
     try:

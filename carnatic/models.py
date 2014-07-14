@@ -405,6 +405,18 @@ class Work(CarnaticStyle, data.models.Work):
     form = models.ForeignKey('Form', blank=True, null=True)
     language = models.ForeignKey('Language', blank=True, null=True)
 
+    @property
+    def single_raaga(self):
+        if self.raaga.count():
+            return self.raaga.first()
+        return None
+
+    @property
+    def single_taala(self):
+        if self.taala.count():
+            return self.taala.first()
+        return None
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-work-search'),

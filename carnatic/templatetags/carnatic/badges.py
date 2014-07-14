@@ -111,8 +111,11 @@ def badge_detail_concert(concert):
 
 @register.inclusion_tag("carnatic/badges/detail_artist.html")
 def badge_detail_artist(artist):
-    print "detail badge artist", artist
     return {"artist": artist}
+
+@register.inclusion_tag("carnatic/badges/detail_work.html")
+def badge_detail_work(work):
+    return {"work": work}
 
 #### Mini badges (for inside badges)
 

@@ -91,7 +91,10 @@ def inline_work(work):
 
 @register.simple_tag
 def inline_raaga(raaga):
-    return '<span title="%s">%s</span>' % (raaga.common_name.title(), raaga.name.title())
+    if raaga:
+        return '<span title="%s">%s</span>' % (raaga.common_name.title(), raaga.name.title())
+    else:
+        return '(unknown)'
 
 @register.simple_tag
 def inline_raaga_link(raaga):
@@ -99,7 +102,10 @@ def inline_raaga_link(raaga):
 
 @register.simple_tag
 def inline_taala(taala):
-    return '<span title="%s">%s</span>' % (taala.common_name.title(), taala.name.title())
+    if taala:
+        return '<span title="%s">%s</span>' % (taala.common_name.title(), taala.name.title())
+    else:
+        return '(unknown)'
 
 @register.simple_tag
 def inline_taala_link(taala):
