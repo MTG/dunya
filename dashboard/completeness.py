@@ -73,7 +73,7 @@ class MakamTags(CompletenessBase):
     in the local database """
     type = 'f'
     templatefile = 'makam.html'
-    name = 'Recording makam, usul, and form'
+    name = 'Makam Recording makam, usul, and form'
 
     def _get_tags_from_list(self, tags):
         makams = []
@@ -85,8 +85,8 @@ class MakamTags(CompletenessBase):
                 makams.append(compmusic.tags.parse_makam(tag))
             if compmusic.tags.has_usul(tag):
                 usuls.append(compmusic.tags.parse_usul(tag))
-            if compmusic.tags.has_form(tag):
-                forms.append(compmusic.tags.parse_form(tag))
+            if compmusic.tags.has_makam_form(tag):
+                forms.append(compmusic.tags.parse_makam_form(tag))
         return makams, usuls, forms
 
     def task(self, collectionfile_id):
