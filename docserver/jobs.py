@@ -20,6 +20,7 @@ from django.db import transaction
 import importlib
 import os
 import json
+import shutil
 import logging
 import time
 import subprocess
@@ -145,6 +146,24 @@ def delete_module(mid):
         delete_moduleversion(v.pk)
     print "done"
 
+@app.task
+def delete_collection(cid):
+    """ Delete a collection and all its documents from the docserver.
+    Also remove the physical files from all the derivedfiles that 
+    have been created for the documents.
+    """
+    collection = models.Collection.objects.get(pk=cid)
+    # Because we are deleting all files for a collection we can just
+    # directly delete the collection's directory - e.g.
+    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6/71/718840e9-8715-4f59-ae47-f52d1691dab1/wav/0.5/wav-length-1.dat ->
+    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6
+    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collection=collection)
+    paths = [f.fullpath for f in dfparts]
+    prefix = os.path.commonprefix(paths)
+    if os.path.isdir(prefix):
+        shutil.rmtree(prefix)
+    collection.delete()
+
 class NumPyArangeEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
@@ -183,7 +202,6 @@ def process_document(documentid, moduleversionid):
     version = models.ModuleVersion.objects.get(pk=moduleversionid)
     module = version.module
     instance = _get_module_instance_by_path(module.module)
-
 
     hostname = process_document.request.hostname
     if "@" in hostname:

@@ -28,6 +28,7 @@ from django.core.urlresolvers import reverse
 from django.core.servers.basehttp import FileWrapper
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 from docserver import models
 from docserver import forms
@@ -394,8 +395,33 @@ def module(request, module):
     return render(request, 'docserver/module.html', ret)
 
 @user_passes_test(is_staff)
+def delete_collection(request, slug):
+    c = get_object_or_404(models.Collection, slug=slug)
+
+    if request.method == "POST":
+        delete = request.POST.get("delete")
+        if delete.lower().startswith("yes"):
+            msg = "The collection %s and all its documents are being deleted" % c.name
+            messages.add_message(request, messages.INFO, msg)
+            jobs.delete_collection.delay(c.pk)
+            return redirect("docserver-manager")
+        elif delete.lower().startswith("no"):
+            return redirect("docserver-collection", c.slug)
+
+    modules = models.Module.objects.filter(versions__derivedfile__document__collection=c).distinct()
+
+    ret = {"collection": c, "modules": modules}
+    return render(request, 'docserver/delete_collection.html', ret)
+
+@user_passes_test(is_staff)
 def collection(request, slug):
     collection = get_object_or_404(models.Collection, slug=slug)
+
+    if request.method == "POST":
+        delete = request.POST.get("delete")
+        if delete is not None:
+            jobs.delete_collection.delay(c.pk)
+
     ret = {"collection": collection}
     return render(request, 'docserver/collection.html', ret)
 
