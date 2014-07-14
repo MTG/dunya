@@ -128,11 +128,11 @@ def collection(request, uuid):
     rescan = request.GET.get("rescan")
     if rescan is not None:
         jobs.load_and_import_collection(c.id)
-        return redirect('dashboard.views.collection', args=[uuid])
+        return redirect('dashboard-collection', args=[uuid])
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
         jobs.force_load_and_import_collection(c.id)
-        return redirect('dashboard.views.collection', args=[uuid])
+        return redirect('dashboard-collection', args=[uuid])
 
     order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)\
