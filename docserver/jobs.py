@@ -198,8 +198,6 @@ def process_document(documentid, moduleversionid):
     document = models.Document.objects.get(pk=documentid)
     collection = document.collection
 
-    log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
-
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
         # TODO: If there is more than 1 source file
@@ -236,6 +234,10 @@ def process_document(documentid, moduleversionid):
                             version.version, moduleslug, dataslug, i, extension, partdata)
                     if saved_name:
                         df.save_part(i, rel_path, saved_size)
+
+        # When we've finished, log that we processed the file. If this throws an
+        # exception, we won't do the log.
+        log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
