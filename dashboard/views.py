@@ -128,11 +128,11 @@ def collection(request, uuid):
     rescan = request.GET.get("rescan")
     if rescan is not None:
         jobs.load_and_import_collection(c.id)
-        return redirect('dashboard-collection', args=[uuid])
+        return redirect('dashboard-collection', uuid)
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
         jobs.force_load_and_import_collection(c.id)
-        return redirect('dashboard-collection', args=[uuid])
+        return redirect('dashboard-collection', uuid)
 
     order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)\
@@ -181,18 +181,18 @@ def release(request, releaseid):
     reimport = request.GET.get("reimport")
     if reimport is not None:
         jobs.import_single_release.delay(release.id)
-        return redirect('dashboard-release', args=[releaseid])
+        return redirect('dashboard-release', releaseid)
 
     ignore = request.GET.get("ignore")
     if ignore is not None:
         release.ignore = True
         release.save()
-        return redirect('dashboard-release', args=[releaseid])
+        return redirect('dashboard-release', releaseid)
     unignore = request.GET.get("unignore")
     if unignore is not None:
         release.ignore = False
         release.save()
-        return redirect('dashboard-release', args=[releaseid])
+        return redirect('dashboard-release', releaseid)
     run = request.GET.get("run")
     if run is not None:
         module = int(run)
@@ -200,7 +200,7 @@ def release(request, releaseid):
         files = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
         recids = [r.recordingid for r in files]
         docserver.jobs.run_module_on_recordings(module, recids)
-        return redirect('dashboard-release', args=[releaseid])
+        return redirect('dashboard-release', releaseid)
 
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
@@ -264,7 +264,7 @@ def directory(request, dirid):
         # TODO: Change to celery
         jobs.rematch_unknown_directory(dirid)
         directory = get_object_or_404(models.CollectionDirectory, pk=dirid)
-        return redirect('dashboard-directory', args=[dirid])
+        return redirect('dashboard-directory', dirid)
 
     collection = directory.collection
     full_path = os.path.join(collection.root_directory, directory.path)
