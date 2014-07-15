@@ -149,17 +149,17 @@ class MakamTags(CompletenessBase):
         missingm = []
         for m in res["makams"]:
             try:
-                makam.models.Makam.objects.fuzzy(name=m)
+                makam.models.Makam.objects.get(name__iexact=m)
             except makam.models.Makam.DoesNotExist:
                 missingm.append(m)
         for u in res["usuls"]:
             try:
-                makam.models.Usul.objects.fuzzy(name=u)
+                makam.models.Usul.objects.get(name__iexact=u)
             except makam.models.Usul.DoesNotExist:
                 missingu.append(u)
         for f in res["form"]:
             try:
-                makam.models.Form.objects.fuzzy(name=f)
+                makam.models.Form.objects.get(name__iexact=f)
             except makam.models.Form.DoesNotExist:
                 missingf.append(f)
 
