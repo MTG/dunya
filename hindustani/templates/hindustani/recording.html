@@ -79,7 +79,7 @@
                                     {% if recording.release_set %}
 									<label>From album</label><b>{% inline_release recording.release_set.get %}</b>
                                     {% endif %}
-                                    {% if recording.works %}
+                                    {% if recording.works.count %}
 									<label>Performing</label><b>{% inline_work_list recording.works.all %}</b>
                                     {% endif %}
 
