@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Delete collection {{collection.name}}{% endblock %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock %}
+
+{% block wrap %}
+
+<ol class="breadcrumbs">Delete Collection
+    <li>{{collection.name}}</li>
+</ol>
+
+Do you want to delete this collection?<br>
+You will be deleting all this interesting information, such as:
+<ul>
+    {% with count=collection.documents.count %}
+    <li>Extracted features for {{count}} document{{count|pluralize}} using these modules:</li>
+    {% endwith %}
+    <ul>
+        {% for m in modules %}
+        <li>{{m}}
+        {% endfor %}
+    </ul>
+</ul>
+
+<form method="post" action="">
+    {% csrf_token %}
+    <input type="submit" name="delete" value="Yes, delete it">
+    <input type="submit" name="delete" value="No, I changed my mind">
+</form>
+
+{% endblock %}
+
