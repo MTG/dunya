@@ -74,15 +74,25 @@ class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
 class Instrument(MakamStyle, data.models.Instrument):
     pass
 
+class UnaccentManager(models.Manager):
+    """ A manager to use postgres' unaccent module to get items
+    with a specified `name` field """
+    def unaccent_get(self, name):
+        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(name) = unaccent(%s)"], params=[name]).get()
+
 class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
     makam = models.ForeignKey("Makam", related_name="aliases")
+
+    objects = UnaccentManager()
 
     def __unicode__(self):
         return self.name
 
 class Makam(models.Model):
     name = models.CharField(max_length=100)
+
+    objects = UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -94,11 +104,15 @@ class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
 
+    objects = UnaccentManager()
+
     def __unicode__(self):
         return self.name
 
 class Usul(models.Model):
     name = models.CharField(max_length=100)
+
+    objects = UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -110,11 +124,15 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=100)
     form = models.ForeignKey("Form", related_name="aliases")
 
+    objects = UnaccentManager()
+
     def __unicode__(self):
         return self.name
 
 class Form(models.Model):
     name = models.CharField(max_length=100)
+
+    objects = UnaccentManager()
 
     def __unicode__(self):
         return self.name
