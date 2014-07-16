@@ -5,6 +5,7 @@ virtualenv env
 pip install --upgrade setuptools
 pip install --upgrade pip
 pip install python-dateutil
+pip install --allow-external eyed3 --allow-unverified eyed3 eyed3 
 ln -s /usr/lib/python2.7/dist-packages/numpy env/lib/python2.7/site-packages
 ln -s /usr/share/pyshared/numpy-1.6.1.egg-info env/lib/python2.7/site-packages
 ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
