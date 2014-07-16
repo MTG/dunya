@@ -74,8 +74,17 @@ when we make changes to it without needing root.
 Database
 --------
 
-Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and edit it
-to point to your database. It does not matter if you use postgres, mysql, or sqlite.
+Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and
+edit it to point to your database. We currently use postgres for its
+unaccent support.
+
+Create the database:
+
+    createdb dunya
+
+and also create the unaccent extension:
+
+    echo 'create extension unaccent;' | psql dunya
 
 To add tables to the database run
 
