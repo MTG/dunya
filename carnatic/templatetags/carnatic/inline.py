@@ -70,7 +70,6 @@ def inline_concert(concert, bold=False):
 
 @register.simple_tag
 def inline_composer(composer):
-    return composer.name
     return '<a href="%s">%s</a>' % (composer.get_absolute_url(), composer.name)
 
 @register.simple_tag
