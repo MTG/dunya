@@ -1,0 +1,552 @@
+[
+{
+    "pk": 1, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101/ja\u1e6d", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Aadhaa/jat", 
+        "num_maatras": 8
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101 caut\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ada chautal", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100dh\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Addha", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u0100di", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Adi", 
+        "num_maatras": 32
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "C\u0101r t\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Char taal", 
+        "num_maatras": null
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "C\u0101rt\u0101l k\u012b sav\u0101r\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chartal ki sawari", 
+        "num_maatras": 11
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Caut\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Chautal", 
+        "num_maatras": 12
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "D\u0101dr\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dadra", 
+        "num_maatras": 6
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "D\u012bpaca\u1e47\u1e0d\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Deepchandi", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Dhamar", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhamar", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4317
+        ], 
+        "name": "\u0113kt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Ektaal", 
+        "num_maatras": 12
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Ja\u1e6d", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jatt", 
+        "num_maatras": 8
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4318
+        ], 
+        "name": "Jhapt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jhaptaal", 
+        "num_maatras": 10
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Jh\u016bmr\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Jhoomra", 
+        "num_maatras": 14
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "K\u0113harv\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Keherwa", 
+        "num_maatras": 8
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Kh\u0113mt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Khemtal", 
+        "num_maatras": null
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Ma\u1e6d\u1e6d\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Matta", 
+        "num_maatras": 9
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Pan\u0304cam sav\u0101r\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Pancham savari", 
+        "num_maatras": 15
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Pan\u0304j\u0101b\u012b ", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Panjabi", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 22, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4320
+        ], 
+        "name": "R\u016bpak", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Rupak", 
+        "num_maatras": 7
+    }
+},
+{
+    "pk": 25, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "\u015bikhar", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Shikhar", 
+        "num_maatras": 17
+    }
+},
+{
+    "pk": 26, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Sit\u0101rkh\u0101n\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sitarkhani", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 28, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "S\u016blt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Sooltal", 
+        "num_maatras": 10
+    }
+},
+{
+    "pk": 29, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4321
+        ], 
+        "name": "T\u012bnt\u0101l", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Teentaal", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 30, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "T\u012bnt\u0101l-sit\u0101rkh\u0101n\u012b", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Teental-sitarkhani", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 31, 
+    "model": "hindustani.taal", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "name": "Tilav\u0101\u1e0d\u0101", 
+        "source": null, 
+        "references": [], 
+        "common_name": "Tilwada", 
+        "num_maatras": 16
+    }
+},
+{
+    "pk": 1, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 2, 
+        "name": "adachautal"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 3, 
+        "name": "addha tal"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 13, 
+        "name": "ektal"
+    }
+},
+{
+    "pk": 4, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 15, 
+        "name": "jhaptal"
+    }
+},
+{
+    "pk": 5, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 16, 
+        "name": "jhumra"
+    }
+},
+{
+    "pk": 6, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 17, 
+        "name": "keharwa"
+    }
+},
+{
+    "pk": 7, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 19, 
+        "name": "matta tal"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 21, 
+        "name": "punjabi taal"
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 28, 
+        "name": "sul"
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teen tal"
+    }
+},
+{
+    "pk": 11, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teental"
+    }
+},
+{
+    "pk": 12, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 31, 
+        "name": "tilwara"
+    }
+},
+{
+    "pk": 13, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teenal"
+    }
+},
+{
+    "pk": 14, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 29, 
+        "name": "teetal"
+    }
+},
+{
+    "pk": 15, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 11, 
+        "name": "chachar"
+    }
+},
+{
+    "pk": 16, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 11, 
+        "name": "Chachar tal"
+    }
+},
+{
+    "pk": 17, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 3, 
+        "name": "Addha teental"
+    }
+},
+{
+    "pk": 18, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 28, 
+        "name": "Sool fakhta"
+    }
+},
+{
+    "pk": 19, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 28, 
+        "name": "Sul phakta"
+    }
+},
+{
+    "pk": 20, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 8, 
+        "name": "savari"
+    }
+},
+{
+    "pk": 21, 
+    "model": "hindustani.taalalias", 
+    "fields": {
+        "taal": 8, 
+        "name": "savari tal"
+    }
+},
+{
+    "pk": 4317, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Ektaal.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4318, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Jhaptaal.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4320, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Rupak.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4321, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/Teentaal.png", 
+        "small_image": ""
+    }
+}
+]
