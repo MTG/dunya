@@ -21,8 +21,6 @@ ecdsa==0.10
 # Don't leave eyed3 in requirements, because it's weirdly
 # unsigned and remote-hosted
 #eyeD3==0.7.4
-## FIXME: could not find svn URL in dependency_links for this package:
-flup==1.0.3.dev-20110405
 functools32==3.2.3-1
 ipdb==0.8
 ipython==2.1.0
@@ -49,6 +47,6 @@ six==1.4.1
 solrpy==0.9.6
 sqlparse==0.1.10
 ssh==1.8.0
-tornado==3.2
+uWSGI==2.0.6
 wikitools==1.1.1
 wsgiref==0.1.2
