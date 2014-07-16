@@ -9,10 +9,10 @@ class ArtistCountTest(TestCase):
     """
 
     def setUp(self):
-        self.a1 = models.Artist.objects.create(name="Artist1")
-        self.a2 = models.Artist.objects.create(name="Artist2")
-        self.a3 = models.Artist.objects.create(name="Artist3")
         self.i = models.Instrument.objects.create(name="Violin")
+        self.a1 = models.Artist.objects.create(name="Artist1", main_instrument=self.i)
+        self.a2 = models.Artist.objects.create(name="Artist2", main_instrument=self.i)
+        self.a3 = models.Artist.objects.create(name="Artist3", main_instrument=self.i)
 
         self.c1 = models.Concert.objects.create(title="Concert1")
         self.r1 = models.Recording.objects.create(title="Recording1")
