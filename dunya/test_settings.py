@@ -1,8 +1,5 @@
 from settings import *
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'dunya_test.sqlite',
-    }
-} 
+INSTALLED_APPS = INSTALLED_APPS + ('django_nose', )
+del DATABASES["motif"]
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
