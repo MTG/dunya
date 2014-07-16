@@ -277,8 +277,28 @@ def main(request):
 def composer(request, uuid, name=None):
     composer = get_object_or_404(models.Composer, mbid=uuid)
 
-    ret = {"composer": composer
-          }
+    works = composer.works.all()
+    # We show all compositions, ordered by number of recordings
+    works = sorted(works, key=lambda w: w.recording_set.count(), reverse=True)
+
+    musicbrainz = composer.get_musicbrainz_url()
+    w = data.models.SourceName.objects.get(name="Wikipedia")
+    wikipedia = None
+    wr = composer.references.filter(hindustani_composer_source_set=w)
+    if wr.count():
+        wikipedia = wr[0].uri
+    desc = composer.description
+    if desc and desc.source.source_name == w:
+        wikipedia = composer.description.source.uri
+    wr = composer.references.filter(source_name=w)
+    if wr.count() and not wikipedia:
+        wikipedia = wr[0].uri
+
+    ret = {"composer": composer,
+           "mb": musicbrainz,
+           "wiki": wikipedia,
+           "works": works}
+
     return render(request, "hindustani/composer.html", ret)
 
 def artistsearch(request):

@@ -125,6 +125,10 @@ def badge_detail_release(release):
 def badge_detail_artist(artist):
     return {"artist": artist}
 
+@register.inclusion_tag("hindustani/badges/detail_work.html")
+def badge_detail_work(work):
+    return {"work": work}
+
 #### Mini badges (for inside badges)
 
 @register.inclusion_tag("hindustani/badges/mini_release.html")
