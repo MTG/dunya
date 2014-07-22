@@ -1,0 +1,534 @@
+[
+{
+    "pk": 1, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "(Formsuz)"
+    }
+},
+{
+    "pk": 2, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "A\u011f\u0131rsem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 3, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Arana\u011fme"
+    }
+},
+{
+    "pk": 4, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ay\u00een-i\u015fer\u00eef"
+    }
+},
+{
+    "pk": 5, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Beste"
+    }
+},
+{
+    "pk": 6, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Bozlak"
+    }
+},
+{
+    "pk": 7, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Cumhuril\u00e2hi"
+    }
+},
+{
+    "pk": 8, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u00c7ocuk \u015eark\u0131s\u0131"
+    }
+},
+{
+    "pk": 9, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Destan"
+    }
+},
+{
+    "pk": 10, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "D\u00eev\u00e2n"
+    }
+},
+{
+    "pk": 11, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Durak"
+    }
+},
+{
+    "pk": 12, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Et\u00fcd"
+    }
+},
+{
+    "pk": 13, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ezan"
+    }
+},
+{
+    "pk": 14, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Fantezi"
+    }
+},
+{
+    "pk": 15, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Gazel"
+    }
+},
+{
+    "pk": 16, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "G\u00fcvende"
+    }
+},
+{
+    "pk": 17, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Halk T\u00fcrk\u00fcs\u00fc"
+    }
+},
+{
+    "pk": 18, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Hutbe"
+    }
+},
+{
+    "pk": 19, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u0130l\u00e2h\u00ee"
+    }
+},
+{
+    "pk": 20, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kalender\u00ee"
+    }
+},
+{
+    "pk": 21, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kamet"
+    }
+},
+{
+    "pk": 22, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kanto"
+    }
+},
+{
+    "pk": 23, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r"
+    }
+},
+{
+    "pk": 24, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r\u00e7e"
+    }
+},
+{
+    "pk": 25, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r-\u0131 N\u00e2t\u0131k"
+    }
+},
+{
+    "pk": 26, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00e2r-\u0131 Nev"
+    }
+},
+{
+    "pk": 27, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kar\u015f\u0131lama"
+    }
+},
+{
+    "pk": 28, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kasaphavas\u0131"
+    }
+},
+{
+    "pk": 29, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Koda"
+    }
+},
+{
+    "pk": 30, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ko\u015fma"
+    }
+},
+{
+    "pk": 31, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00f6\u00e7ek\u00e7e"
+    }
+},
+{
+    "pk": 32, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Kur`\u00e2n-\u0131ker\u00eem"
+    }
+},
+{
+    "pk": 33, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00fcpe"
+    }
+},
+{
+    "pk": 34, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "K\u00fcrthavas\u0131"
+    }
+},
+{
+    "pk": 35, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Longa"
+    }
+},
+{
+    "pk": 36, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mahfels\u00fcrmesi"
+    }
+},
+{
+    "pk": 37, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mandra"
+    }
+},
+{
+    "pk": 38, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mar\u015f"
+    }
+},
+{
+    "pk": 39, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Medhal"
+    }
+},
+{
+    "pk": 40, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mehter"
+    }
+},
+{
+    "pk": 41, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mersiye"
+    }
+},
+{
+    "pk": 42, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Mevl\u00eedi\u015ferif"
+    }
+},
+{
+    "pk": 43, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "M\u00ee`r\u00e2ciye"
+    }
+},
+{
+    "pk": 44, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "M\u00fcnacaat"
+    }
+},
+{
+    "pk": 45, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Na`t"
+    }
+},
+{
+    "pk": 46, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Nak\u0131\u015f"
+    }
+},
+{
+    "pk": 47, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Natipeygamber\u00ee"
+    }
+},
+{
+    "pk": 48, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Nefes"
+    }
+},
+{
+    "pk": 49, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Ninni"
+    }
+},
+{
+    "pk": 50, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Oyunhavas\u0131"
+    }
+},
+{
+    "pk": 51, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u00d6rnek-\u00f6z"
+    }
+},
+{
+    "pk": 52, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Pe\u015frev"
+    }
+},
+{
+    "pk": 53, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Pop \u015eark\u0131s\u0131"
+    }
+},
+{
+    "pk": 54, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Rumelit\u00fcrk\u00fcs\u00fc"
+    }
+},
+{
+    "pk": 55, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sal\u00e2t\u0131\u00fcmmiye"
+    }
+},
+{
+    "pk": 56, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sal\u00e2t\u00fcsel\u00e2m"
+    }
+},
+{
+    "pk": 57, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Savt"
+    }
+},
+{
+    "pk": 58, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sazeseri"
+    }
+},
+{
+    "pk": 59, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sazsem\u00e2\u00eesi"
+    }
+},
+{
+    "pk": 60, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Selam"
+    }
+},
+{
+    "pk": 61, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Seyir"
+    }
+},
+{
+    "pk": 62, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Sirto"
+    }
+},
+{
+    "pk": 63, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u015eark\u0131"
+    }
+},
+{
+    "pk": 64, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "\u015eu\u011ful"
+    }
+},
+{
+    "pk": 65, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Taksim"
+    }
+},
+{
+    "pk": 66, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tango"
+    }
+},
+{
+    "pk": 67, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tav\u015fanca"
+    }
+},
+{
+    "pk": 68, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tekb\u00eer"
+    }
+},
+{
+    "pk": 69, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Temcidm\u00fcn\u00e2c\u00e2t\u0131"
+    }
+},
+{
+    "pk": 70, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tesbih"
+    }
+},
+{
+    "pk": 71, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tesb\u00eehil\u00e2hi"
+    }
+},
+{
+    "pk": 72, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Tev\u015fihil\u00e2hi"
+    }
+},
+{
+    "pk": 73, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "T\u00fcrk\u00fc"
+    }
+},
+{
+    "pk": 74, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Uzunhava"
+    }
+},
+{
+    "pk": 75, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee"
+    }
+},
+{
+    "pk": 76, 
+    "model": "makam.form", 
+    "fields": {
+        "name": "Zeybek"
+    }
+}
+]
