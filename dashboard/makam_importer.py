@@ -21,6 +21,7 @@ from dashboard import release_importer
 
 import makam
 import data
+import compmusic
 
 class MakamReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = makam.models.Artist
@@ -32,14 +33,16 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     _InstrumentClass = makam.models.Instrument
     _WorkClass = makam.models.Work
 
-    def _link_release_recording(self, concert, recording, trackorder):
-        if not concert.tracks.filter(pk=recording.pk).exists():
+    def _link_release_recording(self, release, recording, trackorder):
+        if not release.tracks.filter(pk=recording.pk).exists():
             makam.models.ReleaseRecording.objects.create(
-                    concert=concert, recording=recording, track=trackorder)
+                    release=release, recording=recording, track=trackorder)
 
 
     def _join_recording_and_works(self, recording, works):
-        # A makam recording can have many works
+        # A makam recording can be of many works. Note that because works
+        # in musicbrainz are unordered we don't know if this sequence is
+        # correct. All of these recordings will need to be manually checked.
         if self.overwrite:
             makam.models.RecordingWork.objects.filter(recording=recording).delete()
         sequence = 1
@@ -47,14 +50,128 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             makam.models.RecordingWork.objects.create(work=w, recording=recording, sequence=sequence)
             sequence += 1
 
+    def _get_makam(self, makamname):
+        try:
+            return makam.models.Makam.objects.unaccent_get(makamname)
+        except makam.models.Makam.DoesNotExist:
+            return None
+
+    def _get_usul(self, usul):
+        try:
+            return makam.models.Usul.objects.unaccent_get(usul)
+        except makam.models.Usul.DoesNotExist:
+            return None
+
+    def _get_form(self, form):
+        try:
+            return makam.models.Form.objects.unaccent_get(form)
+        except makam.models.Form.DoesNotExist:
+            return None
+
+    def _get_makam_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compmusic.tags.has_makam(name):
+                parsed = compmusic.tags.parse_makam(name)
+                if parsed and parsed[1]:
+                    ret.append(parsed)
+        return ret
+
+    def _get_usul_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compmusic.tags.has_usul(name):
+                parsed = compmusic.tags.parse_usul(name)
+                if parsed and parsed[1]:
+                    ret.append(parsed)
+        return ret
+
+    def _get_form_tags(self, taglist):
+        ret = []
+        for t in taglist:
+            name = t["name"].lower()
+            if compmusic.tags.has_makam_form(name):
+                parsed = compmusic.tags.parse_makam_form(name)
+                if parsed and parsed[1]:
+                    ret.append(parsed)
+        return ret
+
     def _apply_tags(self, recording, works, tags):
-        # `tags` includes tags for the recording. But we should also look
-        # for tags in the work and add them
-        pass
+        # If the form is Taksim and usul Serbest, this is an instrumental
+        # improvisation. If form is Gazel, it is a vocal improvisation.
+        # These don't have a work. Instead set recording.has_{taksim,gazel}
+        # In this case, add the makam tag to the recording, because we
+        # don't have a work for it.
+
+        # TODO:
+        # Double-check the works in musicbrainz to see if they have tags and
+        # if so add their tags to the works.
+        # We do have some taksims in musicbrainz as works. Eventually we should
+        # remove them.
+
+        makams = self._get_makam_tags(tags)
+        forms = self._get_form_tags(tags)
+        usuls = self._get_usul_tags(tags)
+
+        groups = compmusic.tags.group_makam_tags(makams, forms, usuls)
+
+        # Tags for taksim
+        taksimt = [g for g in groups if g["form"] == "taksim"]
+        gazelt = [g for g in groups if g["form"] == "gazel"]
+
+        for t in taksimt:
+            recording.has_taksim = True
+            makam = self._get_makam(t.get("makam"))
+            recording.makam.add(makam)
+            recording.save()
+        for t in gazelt:
+            recording.has_gazel = True
+            makam = self._get_makam(t.get("makam"))
+            recording.makam.add(makam)
+            recording.save()
+
+        # tags for no taksim
+        notaksimt = [g for g in groups if g["form"] != "taksim" and g["form"] != "gazel"]
+
+        # If a recording has two works, it will almost always have two of each
+        # of the makam/form/usul tags. However, if one of the form tags is
+        # Taksim it may only have one work (since the taksim is an improvisation)
+        if len(works) == 1 and len(notaksimt) == 1:
+            # If we have a work from two different recordings and the tags are
+            # different, we'll add them anyway, but we need to check this because
+            # it might be bad data.
+            t = notaksimt[0]
+            makam = self._get_makam(t.get("makam"))
+            form = self._get_form(t.get("form"))
+            usul = self._get_usul(t.get("usul"))
+            w = works[0]
+            if makam and not w.makam.filter(pk=makam.pk).exists():
+                w.makam.add(makam)
+            if usul and not w.usul.filter(pk=usul.pk).exists():
+                w.usul.add(usul)
+            if form and not w.form.filter(pk=form.pk).exists():
+                w.form.add(form)
+        elif len(works) == len(notaksimt):
+            pass
+            # If a recording has two works and two sets of tags, we don't know which
+            # tags go to which work, because works in musicbrainz are unordered.
+            # In this case, flag them for manual interaction. TODO: How?
+            # There are 2 possibilities:
+            # If we have 2 works, a and b, and this recording x has both,
+            # but y has only a and z has only b, then later in the import
+            # this will be fixed
+            # But, if work a only has this recording x, and z has b, we could
+            # import z->b, and then other tags for x->a would work.
 
     def get_instrument(self, instname):
+        instname = instname.lower()
+        # Some relations were added to musicbrainz incorrectly.
+        if instname == "nai":
+            instname = "ney"
         try:
-            return makam.models.Instrument.objects.get(name=instname)
+            return makam.models.Instrument.objects.get(name__iexact=instname)
         except makam.models.Instrument.DoesNotExist:
             return None
 
@@ -72,10 +189,15 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         release.performance.clear()
 
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
-        logger.info("  Adding concert performance...")
+        logger.info("  Adding release performance...")
         artist = self.add_and_get_artist(artistid)
         instrument = self.get_instrument(instrument)
         if instrument:
-            concert = makam.models.Concert.objects.get(mbid=releaseid)
-            perf = makam.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
-            perf.save()
+            release = makam.models.Release.objects.get(mbid=releaseid)
+            # For each recording in the release, see if the relationship
+            # already exists. If not, create it.
+            for rec in release.tracks.all():
+                if not makam.models.InstrumentPerformance.objects.filter(
+                   recording=rec, instrument=instrument, performer=artist).exists():
+                    perf = makam.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)
+                    perf.save()

@@ -65,8 +65,20 @@ class RecordingWork(models.Model):
     recording = models.ForeignKey("Recording")
     sequence = models.IntegerField()
 
+    def __unicode__(self):
+        return u"%s: %s" % (self.sequence, self.work.title)
+
 class Recording(MakamStyle, data.models.Recording):
     works = models.ManyToManyField("Work", through="RecordingWork")
+
+    # the form Taksim refers to an instrumental improvisation
+    has_taksim = models.BooleanField(default=False)
+    # and form gazel is a vocal improvisation
+    has_gazel = models.BooleanField(default=False)
+    # If either of these flags is set, we don't have a work to store
+    # the `makam` field to, so we store it here. Only use this field
+    # if one of the above two flags are set.
+    makam = models.ManyToManyField("Makam", blank=True, null=True)
 
 class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
@@ -78,7 +90,7 @@ class UnaccentManager(models.Manager):
     """ A manager to use postgres' unaccent module to get items
     with a specified `name` field """
     def unaccent_get(self, name):
-        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(name) = unaccent(%s)"], params=[name]).get()
+        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name]).get()
 
 class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
@@ -146,5 +158,4 @@ class Work(MakamStyle, data.models.Work):
     makam = models.ManyToManyField(Makam, blank=True, null=True)
     usul = models.ManyToManyField(Usul, blank=True, null=True)
     form = models.ManyToManyField(Form, blank=True, null=True)
-    is_taksim = models.BooleanField(default=False)
 

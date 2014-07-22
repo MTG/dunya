@@ -198,6 +198,8 @@ def get_release_importer(name, force=False):
         ri = hindustani_importer.HindustaniReleaseImporter(force)
     elif "carnatic" in name:
         ri = carnatic_importer.CarnaticReleaseImporter(force)
+    elif "makam" in name:
+        ri = makam_importer.MakamReleaseImporter(force)
     return ri
 
 @app.task(base=CollectionDunyaTask)
