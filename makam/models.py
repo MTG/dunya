@@ -39,7 +39,11 @@ class ArtistAlias(MakamStyle, data.models.ArtistAlias):
     pass
 
 class Artist(MakamStyle, data.models.Artist):
-    pass
+    def get_collaborating_artists(self):
+        our_releases = Release.objects.filter(tracks__instrumentperformance__performer=self).distinct()
+        others = Artist.objects.filter(instrumentperformance__recording__release__in=our_releases).exclude(pk=self.pk)
+        counts = collections.Counter(others)
+        return [a for a, c in counts.most_common(10)]
 
 class ComposerAlias(MakamStyle, data.models.ComposerAlias):
     pass

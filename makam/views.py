@@ -25,65 +25,80 @@ def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
 def main(request):
-    return render(request, "makam/index.html", {})
 
-def composer(request, uuid):
+    artists = models.Artist.objects.all()
+    releases = models.Release.objects.all()
+    
+    ret = {"artists": artists, "releases": releases}
+    return render(request, "makam/index.html", ret)
+
+def composer(request, uuid, name=None):
     composer = get_object_or_404(models.Composer, mbid=uuid)
 
     ret = {"composer": composer
           }
     return render(request, "makam/composer.html", ret)
 
-def artist(request, uuid):
+def artist(request, uuid, name=None):
     artist = get_object_or_404(models.Artist, mbid=uuid)
 
-    ret = {"artist": artist
+    instruments = models.Instrument.objects.filter(instrumentperformance__performer=artist).distinct()
+    main_releases = artist.primary_concerts.all()
+    other_releases = models.Release.objects.filter(tracks__instrumentperformance__performer=artist).distinct()
+
+    collaborating_artists = artist.get_collaborating_artists()
+
+    ret = {"artist": artist,
+           "instruments": instruments,
+           "main_releases": main_releases,
+           "other_releases": other_releases,
+           "collaborating_artists": collaborating_artists
           }
     return render(request, "makam/artist.html", ret)
 
-def release(request, uuid):
+def release(request, uuid, title=None):
     release = get_object_or_404(models.Release, mbid=uuid)
 
     ret = {"release": release
           }
     return render(request, "makam/release.html", ret)
 
-def recording(request, uuid):
+def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
 
     ret = {"recording": recording
           }
     return render(request, "makam/recording.html", ret)
 
-def work(request, uuid):
+def work(request, uuid, title=None):
     work = get_object_or_404(models.Work, mbid=uuid)
 
     ret = {"work": work
           }
     return render(request, "makam/work.html", ret)
 
-def makam(request, makamid):
+def makam(request, makamid, name=None):
     makam = get_object_or_404(models.Makam, pk=makamid)
 
     ret = {"makam": makam
           }
     return render(request, "makam/makam.html", ret)
 
-def usul(request, usulid):
+def usul(request, usulid, name=None):
     usul = get_object_or_404(models.Usul, pk=usulid)
 
     ret = {"usul": usul
           }
     return render(request, "makam/usul.html", ret)
 
-def form(request, formid):
+def form(request, formid, name=None):
     form = get_object_or_404(models.Form, pk=formid)
 
     ret = {"form": form
           }
     return render(request, "makam/form.html", ret)
 
-def instrument(request, instrumentid):
+def instrument(request, instrumentid, name=None):
     instrument = get_object_or_404(models.Instrument, pk=instrumentid)
 
     ret = {"instrument": instrument

@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -16,6 +17,37 @@
 {% block wrap %}
 <div id="detail">
     <h1>Artist {{artist.name}}</h1>
+
+<p>Instrument(s): {% for i in instruments %} {% inline_instrument i %} {% endfor %}
+
+<h3>External</h3>
+<ul>
+{% for r in artist.references.all %}
+<li><a href="{{r.uri}}">{{r.source_name.name}}</a></li>
+{% endfor %}
+</ul>
+
+
+<h3>Main releases</h3>
+<ul>
+    {% for r in main_releases %}
+    <li>{% inline_release r %}</li>
+    {% endfor %}
+</ul>
+
+    <h3>Accompaning releases</h3>
+<ul>
+    {% for r in other_releases %}
+    <li>{% inline_release r %}</li>
+    {% endfor %}
+</ul>
+
+    <h3>Collaborating artists</h3>
+<ul>
+    {% for a in collaborating_artists %}
+    <li>{% inline_artist a %}</li>
+    {% endfor %}
+</ul>
 
     <div class="clearfix"></div>
 </div>
