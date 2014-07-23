@@ -196,6 +196,12 @@ To import data into solr
     python manage.py solrdelete
     python manage.py solrimport
 
+Modify  `SOLR_URL` in `local_settings.py.dist` to point to your solr server.
+For example, if you are running solr on port 8080 in your localhost:
+
+    SOLR_URL = 'http://localhost:8080'
+
+
 Less stylesheets
 ----------------
 We use the less css compiler for stylesheets. You'll need `lessc` installed in order
