@@ -82,11 +82,11 @@ class MakamTags(CompletenessBase):
         for t in tags:
             tag = t["name"]
             if compmusic.tags.has_makam(tag):
-                makams.append(compmusic.tags.parse_makam(tag))
+                makams.append(compmusic.tags.parse_makam(tag)[1])
             if compmusic.tags.has_usul(tag):
-                usuls.append(compmusic.tags.parse_usul(tag))
+                usuls.append(compmusic.tags.parse_usul(tag)[1])
             if compmusic.tags.has_makam_form(tag):
-                forms.append(compmusic.tags.parse_makam_form(tag))
+                forms.append(compmusic.tags.parse_makam_form(tag)[1])
         return makams, usuls, forms
 
     def task(self, collectionfile_id):

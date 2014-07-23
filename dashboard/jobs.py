@@ -24,6 +24,7 @@ from dashboard import models
 from dashboard.log import logger
 from dashboard import carnatic_importer
 from dashboard import hindustani_importer
+from dashboard import makam_importer
 
 import carnatic
 import compmusic

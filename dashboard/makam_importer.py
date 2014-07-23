@@ -118,22 +118,24 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         groups = compmusic.tags.group_makam_tags(makams, forms, usuls)
 
         # Tags for taksim
-        taksimt = [g for g in groups if g["form"] == "taksim"]
-        gazelt = [g for g in groups if g["form"] == "gazel"]
+        taksimt = [g for g in groups if g.get("form") == "taksim"]
+        gazelt = [g for g in groups if g.get("form") == "gazel"]
 
         for t in taksimt:
             recording.has_taksim = True
             makam = self._get_makam(t.get("makam"))
-            recording.makam.add(makam)
-            recording.save()
+            if makam:
+                recording.makam.add(makam)
+                recording.save()
         for t in gazelt:
             recording.has_gazel = True
             makam = self._get_makam(t.get("makam"))
-            recording.makam.add(makam)
-            recording.save()
+            if makam:
+                recording.makam.add(makam)
+                recording.save()
 
         # tags for no taksim
-        notaksimt = [g for g in groups if g["form"] != "taksim" and g["form"] != "gazel"]
+        notaksimt = [g for g in groups if g.get("form") != "taksim" and g.get("form") != "gazel"]
 
         # If a recording has two works, it will almost always have two of each
         # of the makam/form/usul tags. However, if one of the form tags is
@@ -165,7 +167,9 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             # But, if work a only has this recording x, and z has b, we could
             # import z->b, and then other tags for x->a would work.
 
-    def get_instrument(self, instname):
+    def _get_instrument(self, instname):
+        if not instname:
+            return None
         instname = instname.lower()
         # Some relations were added to musicbrainz incorrectly.
         if instname == "nai":
@@ -179,19 +183,16 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self.get_instrument(instrument)
+        instrument = self._get_instrument(instrument)
         if instrument:
             recording = makam.models.Recording.objects.get(mbid=recordingid)
             perf = makam.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
-    def _clear_release_performances(self, release):
-        release.performance.clear()
-
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
         logger.info("  Adding release performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self.get_instrument(instrument)
+        instrument = self._get_instrument(instrument)
         if instrument:
             release = makam.models.Release.objects.get(mbid=releaseid)
             # For each recording in the release, see if the relationship

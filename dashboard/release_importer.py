@@ -97,7 +97,6 @@ class ReleaseImporter(object):
         for medium in rel["medium-list"]:
             for track in medium["track-list"]:
                 recordings.append(track["recording"]["id"])
-        print recordings
         if self.overwrite:
             release.tracks.clear()
         trackorder = 1
@@ -242,11 +241,17 @@ class ReleaseImporter(object):
                     # The attributes 'additional' or 'solo' may be set.
                     # If this is the case then remove them so that we don't
                     # select them as the instrument name
-                    if "additional" in perf["attribute-list"]:
+                    if "additional" in perf.get("attribute-list", []):
                         perf["attribute-list"].remove("additional")
-                    if "solo" in perf["attribute-list"]:
+                    if "solo" in perf.get("attribute-list", []):
                         perf["attribute-list"].remove("solo")
-                    inst = perf["attribute-list"][0]
+                    insts = perf.get("attribute-list", [])
+                    # TODO: If someone performed more than 1 instrument
+                    # we won't catch it
+                    if insts:
+                        inst = insts[0]
+                    else:
+                        inst = None
                 else:
                     inst = "vocal"
                 performances.append((artistid, inst, is_lead))

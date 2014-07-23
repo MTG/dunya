@@ -433,11 +433,15 @@ class InstrumentPerformance(models.Model):
         abstract = True
     recording = models.ForeignKey('Recording')
     performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
+    instrument = models.ForeignKey('Instrument', blank=True, null=True)
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
+        person = "%s" % self.performer
+        if self.instrument:
+            person += " playing %s" % self.instrument
+        person += " on %s" % self.recording
+        return person
 
 class Composer(BaseModel):
     missing_image = "artist.jpg"
