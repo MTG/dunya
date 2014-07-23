@@ -294,7 +294,7 @@ def artist(request, uuid, name=None):
     if artist.main_instrument and artist.main_instrument.percussion:
         taalamap = {}
         taalacount = collections.Counter()
-        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__concert__instrumentconcertperformance__performer=artist) | Q(work__recording__instrumentperformance__performer=artist))
+        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__performer=artist))
         for t in taalas:
             taalacount[t.name] += 1
             if t.name not in taalamap:
@@ -308,7 +308,7 @@ def artist(request, uuid, name=None):
     if artist.main_instrument and artist.main_instrument.id in [1, 2]:
         raagamap = {}
         raagacount = collections.Counter()
-        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__concert__instrumentconcertperformance__performer=artist) | Q(work__recording__instrumentperformance__performer=artist))
+        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) |  Q(work__recording__instrumentperformance__performer=artist))
         for r in raagas:
             raagacount[r.name] += 1
             if r.name not in raagamap:

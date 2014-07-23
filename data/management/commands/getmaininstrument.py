@@ -36,9 +36,6 @@ class Command(BaseCommand):
             counter = collections.Counter()
             for ip in a.instrumentperformance_set.all():
                 counter[ip.instrument] += 1
-            if models == carnatic_models:
-                for ip in a.instrumentconcertperformance_set.all():
-                    counter[ip.instrument] += 1
             try:
                 common = counter.most_common(1)[0]
                 inst = common[0]

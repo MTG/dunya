@@ -33,6 +33,10 @@ class ConcertRecordingInline(admin.TabularInline):
     model = models.ConcertRecording
     extra = 1
 
+class InstrumentPerformanceInline(admin.TabularInline):
+    model = models.InstrumentPerformance
+    extra = 1
+
 class WorkAdmin(admin.ModelAdmin):
     inlines = (WorkRaagaInline, WorkTaalaInline)
     exclude = ('source', 'references', 'images', 'description')
@@ -55,6 +59,7 @@ class InstrumentAdmin(admin.ModelAdmin):
     exclude = ('source', 'references', 'images', 'description')
 
 class RecordingAdmin(admin.ModelAdmin):
+    inlines = (InstrumentPerformanceInline, )
     exclude = ('source', 'references', 'images', 'description')
 
 admin.site.register(models.GeographicRegion)
@@ -66,7 +71,6 @@ admin.site.register(models.Taala, TaalaAdmin)
 admin.site.register(models.Work, WorkAdmin)
 admin.site.register(models.Recording, RecordingAdmin)
 admin.site.register(models.Instrument, InstrumentAdmin)
-admin.site.register(models.InstrumentPerformance)
 admin.site.register(models.Composer)
 admin.site.register(models.ComposerAlias)
 

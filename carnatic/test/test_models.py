@@ -19,9 +19,8 @@ class ArtistCountTest(TestCase):
         models.ConcertRecording.objects.create(concert=self.c1, recording=self.r1, track=1)
         # artist 1 on concert
         self.c1.artists.add(self.a1)
-        # artist 2 concert rel
-        models.InstrumentConcertPerformance.objects.create(instrument=self.i, performer=self.a2, concert=self.c1)
-        # artist 3 on recording rel
+        # artist 2, 3 on recording rel
+        models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a2, recording=self.r1)
         models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a3, recording=self.r1)
 
         self.c2 = models.Concert.objects.create(title="Concert2")
@@ -29,24 +28,12 @@ class ArtistCountTest(TestCase):
         self.r3 = models.Recording.objects.create(title="Recording3")
         models.ConcertRecording.objects.create(concert=self.c2, recording=self.r2, track=1)
         models.ConcertRecording.objects.create(concert=self.c2, recording=self.r3, track=2)
+        # artist 2 on concert
         self.c2.artists.add(self.a2)
-        models.InstrumentConcertPerformance.objects.create(instrument=self.i, performer=self.a1, concert=self.c2)
+        # artist 1 & 3 on r2, but only a1 on r3
+        models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a1, recording=self.r2)
         models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a3, recording=self.r2)
-
-        self.c3 = models.Concert.objects.create(title="Concert3")
-        self.r4 = models.Recording.objects.create(title="Recording4")
-        models.ConcertRecording.objects.create(concert=self.c3, recording=self.r4, track=1)
-        self.c3.artists.add(self.a3)
-        models.InstrumentConcertPerformance.objects.create(instrument=self.i, performer=self.a2, concert=self.c3)
-        models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a1, recording=self.r4)
-
-
-        self.c4 = models.Concert.objects.create(title="Concert4")
-        self.r5 = models.Recording.objects.create(title="Recording5")
-        models.ConcertRecording.objects.create(concert=self.c4, recording=self.r5, track=1)
-        self.c4.artists.add(self.a1)
-        models.InstrumentConcertPerformance.objects.create(instrument=self.i, performer=self.a3, concert=self.c4)
-        models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a2, recording=self.r5)
+        models.InstrumentPerformance.objects.create(instrument=self.i, performer=self.a1, recording=self.r3)
 
     def test_recording_get_artists(self):
         """ The artists that performed on a recording
@@ -75,25 +62,19 @@ class ArtistCountTest(TestCase):
         artists = self.c2.performers()
         self.assertEqual(3, len(artists))
 
-        artists = self.c3.performers()
-        self.assertEqual(3, len(artists))
-
-        artists = self.c4.performers()
-        self.assertEqual(3, len(artists))
-
     def test_artist_get_concerts(self):
         """ Concerts performed by an artist """
         c = self.a1.concerts()
-        self.assertEqual(4, len(c))
+        self.assertEqual(2, len(c))
         c = self.a2.concerts()
-        self.assertEqual(4, len(c))
+        self.assertEqual(2, len(c))
         c = self.a3.concerts()
-        self.assertEqual(4, len(c))
+        self.assertEqual(2, len(c))
 
         concert = models.Concert.objects.create(title="Other concert")
         concert.artists.add(self.a3)
         c = self.a3.concerts()
-        self.assertEqual(5, len(c))
+        self.assertEqual(3, len(c))
 
     def test_artist_group_get_concerts(self):
         """ If you're in a group, you performed in that group's concerts """
@@ -113,10 +94,10 @@ class ArtistCountTest(TestCase):
          - Also if they're a concert primary artist or have a rel
         """
         c = self.a1.recordings()
-        self.assertEqual(5, len(c))
+        self.assertEqual(3, len(c))
         c = self.a2.recordings()
-        self.assertEqual(5, len(c))
+        self.assertEqual(3, len(c))
         # A3 is not on recording3
         c = self.a3.recordings()
-        self.assertEqual(4, len(c))
+        self.assertEqual(2, len(c))
 

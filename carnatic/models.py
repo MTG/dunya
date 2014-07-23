@@ -34,7 +34,6 @@ class CarnaticStyle(object):
         return "carnatic"
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "releaseperformance": InstrumentConcertPerformance,
                 "release": Concert,
                 "composer": Composer,
                 "artist": Artist,
@@ -178,7 +177,6 @@ class ConcertRecording(models.Model):
 class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     tracks = models.ManyToManyField('Recording', through="ConcertRecording")
-    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
@@ -378,11 +376,6 @@ class Taala(data.models.BaseModel):
     def percussion_artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(Q(instrumentconcertperformance__concert__tracks__work__taala=self) & Q(instrumentconcertperformance__instrument__percussion=True))
-        for a in artists:
-            artistcounter[a.pk] += 1
-            if a.pk not in artistmap:
-                artistmap[a.pk] = a
         artists = Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True))
         for a in artists:
             artistcounter[a.pk] += 1
@@ -463,13 +456,10 @@ class Recording(CarnaticStyle, data.models.Recording):
         primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
 
         IPClass = self.get_object_map("performance")
-        IRPClass = self.get_object_map("releaseperformance")
         recperfs = IPClass.objects.filter(recording=self)
         rec_artists = [r.performer for r in recperfs]
-        releaseperfs = IRPClass.objects.filter(concert__tracks=self)
-        release_artists = [r.performer for r in releaseperfs]
 
-        all_as = set(primary_artists) | set(rec_artists) | set(release_artists)
+        all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
 
 
@@ -503,15 +493,6 @@ class Instrument(CarnaticStyle, data.models.Instrument):
                 ret.append(p)
                 artists.append(p.performer)
 
-        # TODO: This might be slow getting 2 sets of performances and doing tests
-        ICPClass = self.get_object_map("releaseperformance")
-        performances = ICPClass.objects.filter(instrument=self).distinct()
-        for p in performances:
-            artistcount[p.performer] += 1
-            if p.performer not in artists:
-                ret.append(p)
-                artists.append(p.performer)
-
         return ret, artistcount
 
     def references(self):
@@ -534,16 +515,6 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
-
-class InstrumentConcertPerformance(models.Model):
-    # TODO: This should be 'release' over all music types
-    concert = models.ForeignKey('Concert')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
-    lead = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return u"%s playing %s in %s" % (self.performer, self.instrument, self.concert)
 
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)

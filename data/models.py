@@ -156,7 +156,7 @@ class Artist(BaseModel):
 
     def concerts(self):
         ReleaseClass = self.get_object_map("release")
-        concerts = ReleaseClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
+        concerts = ReleaseClass.objects.filter(tracks__instrumentperformance__performer=self)
         return concerts.all()
 
     def recordings(self):
@@ -166,22 +166,17 @@ class Artist(BaseModel):
 
         # Releases where we were primary artist
         RelClass = self.get_object_map("release")
-        pa_rels = RelClass.objects.filter(artists=self)
-        # Releases where we were a relationship
-        IRPClass = self.get_object_map("releaseperformance")
-        rel_perfs = IRPClass.objects.filter(performer=self)
-        rel_rels = [r.concert for r in rel_perfs]
-        concerts = set(pa_rels) | set(rel_rels)
+        pa_rels = RelClass.objects.filter(artists=self).distinct()
         concert_recordings = []
-        for c in concerts:
-            concert_recordings.extend(c.tracks.all())
+        for r in pa_rels:
+            concert_recordings.extend(r.tracks.all())
 
         return list(set(performance_recs)|set(concert_recordings))
 
     def performances(self, raagas=[], taalas=[]):
         ReleaseClass = self.get_object_map("release")
         IPClass = self.get_object_map("performance")
-        concerts = ReleaseClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
+        concerts = ReleaseClass.objects.filter(tracks__instrumentperformance__performer=self)
         if raagas:
             concerts = concerts.filter(tracks__work__raaga__in=raagas)
         if taalas:
@@ -239,8 +234,6 @@ class Release(BaseModel):
 
     # These fields are specified on the concrete model classes because they might use
     # different spellings (Release/Concert)
-    # Other artists who played on this concert (musicbrainz relationships)
-    #performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_concerts')
     # Ordered tracks
     #tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
 
@@ -274,31 +267,27 @@ class Release(BaseModel):
         """ The performers on a concert are those who are in the performance relations,
         both on the concert and the concerts recordings.
         TODO: Should this return a performance object, or an artist?
+        If it returns just artists, we don't need to put the artist
+        checks last.
         """
         person = set()
         ret = []
         IPClass = self.get_object_map("performance")
-        ICPClass = self.get_object_map("releaseperformance")
         IClass = self.get_object_map("instrument")
-        for p in self.performance.all():
-            if p.id not in person:
-                person.add(p.id)
-                perf = ICPClass.objects.get(concert=self, performer=p)
-                ret.append(perf)
+
         for t in self.tracks.all():
             for p in t.performance.all():
                 if p.id not in person:
                     perf = IPClass.objects.get(recording=t, performer=p)
                     person.add(p.id)
                     ret.append(perf)
-        if len(self.artists.all()):
-            maina = self.artists.all()[0]
-            if maina.id not in person:
-                dummyp = ICPClass()
-                dummyp.performer = maina
+        for a in self.artists.all():
+            if a.id not in person:
+                dummyp = IPClass()
+                dummyp.performer = a
                 dummyp.concert = self
-                if maina.main_instrument:
-                    dummyp.instrument = maina.main_instrument
+                if a.main_instrument:
+                    dummyp.instrument = a.main_instrument
                 else:
                     # TODO: If we don't know the instrument it's almost certainly a vocalist
                     dummyp.instrument = IClass.objects.get(pk=1)

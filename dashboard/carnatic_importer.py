@@ -167,14 +167,16 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
-    def _clear_release_performances(self, release):
-        release.performance.clear()
-
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
         logger.info("  Adding concert performance...")
         artist = self.add_and_get_artist(artistid)
         instrument = self._get_instrument(instrument)
-        if instrument:
-            concert = carnatic.models.Concert.objects.get(mbid=releaseid)
-            perf = carnatic.models.InstrumentConcertPerformance(concert=concert, instrument=instrument, performer=artist, lead=is_lead)
-            perf.save()
+
+        concert = carnatic.models.Concert.objects.get(mbid=releaseid)
+        # Instrument could be None if we don't know it
+
+        for rec in concert.tracks.all():
+            if not carnatic.models.InstrumentPerformance.objects.filter(
+               recording=rec, instrument=instrument, performer=artist).exists():
+                perf = carnatic.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)
+                perf.save()

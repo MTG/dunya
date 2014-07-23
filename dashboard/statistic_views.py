@@ -189,10 +189,9 @@ def carnatic_recordings(request):
         # as a relationship on the release or any tracks.
         # Note that this will incorrectly select groups where group members are listed
         artists = c.artists.all()
-        perf = c.instrumentconcertperformance_set.filter(performer__in=artists)
         tperf = carnatic.models.InstrumentPerformance.objects.filter(
                 recording__concert=c, performer__in=artists)
-        if not perf.exists() and not tperf.exists():
+        if not tperf.exists():
             c.missing_rel_artists = True
 
         if not c.got_works or not c.got_perf or c.missing_rel_artists:

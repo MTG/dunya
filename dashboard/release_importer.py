@@ -105,8 +105,6 @@ class ReleaseImporter(object):
             self._link_release_recording(release, recob, trackorder)
             trackorder += 1
 
-        if self.overwrite:
-            self._clear_release_performances(release)
         for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
             artistid, instrument, is_lead = perf
             self._add_release_performance(release.mbid, artistid, instrument, is_lead)
@@ -114,10 +112,6 @@ class ReleaseImporter(object):
         external_data.import_release_image(release, directories, self.overwrite)
         self.imported_releases.append(releaseid)
         return release
-
-    def _clear_release_performances(self, release):
-        pass
-
 
     def _create_release_object(self, mbrelease):
         release, created = self._ReleaseClass.objects.get_or_create(
