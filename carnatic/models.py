@@ -178,6 +178,13 @@ class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     tracks = models.ManyToManyField('Recording', through="ConcertRecording")
 
+    bootleg = models.BooleanField(default=False)
+
+    # Regular objects show bootlegs
+    objects = managers.BootlegConcertManager()
+    # Or you can ask for concerts with no bootlegs
+    nobootlegs = managers.NoBootlegConcertManager()
+
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid, slugify(self.title)])
@@ -436,6 +443,12 @@ class WorkTaala(models.Model):
 
 class Recording(CarnaticStyle, data.models.Recording):
     work = models.ForeignKey('Work', blank=True, null=True)
+
+    def is_bootleg(self):
+        for rel in self.concert_set.all():
+            if rel.bootleg:
+                return True
+        return False
 
     def raaga(self):
         if self.work:

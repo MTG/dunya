@@ -57,7 +57,17 @@
 {% endblock %}
 
 {% block wrap %}
-
+{% if bootleg %}
+    <div id="bootleg-bar">
+       <div style="float:left">
+           <p>This is a bootleg recording only visible to CompMusic researchers.
+           <br>Do not share.</p>
+       </div>
+       <div style="float:right; margin-top:10px;margin-right:10px;">
+           <button onclick='$("#bootleg-bar").hide()'>Ok</button>
+       </div>
+    </div>
+{% endif %}
 <div id="detail" class="recording">
      	<div id="header">
      	   <div id="scrollrec">

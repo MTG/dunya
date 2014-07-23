@@ -19,6 +19,13 @@ from django.db.models import Q
 
 import carnatic
 
+class BootlegConcertManager(models.Manager):
+    use_for_related_fields = True
+
+class NoBootlegConcertManager(models.Manager):
+    def get_queryset(self):
+        return super(NoBootlegConcertManager, self).get_queryset().filter(bootleg=False)
+
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):
         try:

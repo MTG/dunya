@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -412,6 +412,13 @@ def concertbyid(request, concertid, title=None):
 
 def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
+
+    bootleg = False
+    if not request.user.is_staff and concert.bootleg:
+        raise Http404
+    else:
+        bootleg = True
+
     images = concert.images.all()
     if images:
         image = images[0].image.url
@@ -438,6 +445,7 @@ def concert(request, uuid, title=None):
        "sample": sample,
        "similar_concerts": similar,
        "tracks": tracks,
+       "bootleg": bootleg
        }
 
     return render(request, "carnatic/concert.html", ret)
@@ -448,6 +456,12 @@ def recordingbyid(request, recordingid, title=None):
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
+
+    bootleg = False
+    if not request.user.is_staff and recording.is_bootleg():
+        raise Http404
+    else:
+        bootleg = True
 
     tags = tagging.tag_cloud(recording.id, "recording")
 
@@ -552,6 +566,7 @@ def recording(request, uuid, title=None):
             "aksharaurl": aksharaurl,
             "similar": similar,
             "concert": concert,
+            "bootleg": bootleg,
     }
 
     return render(request, "carnatic/recording.html", ret)
