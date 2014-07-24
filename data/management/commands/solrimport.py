@@ -27,13 +27,20 @@ class Command(BaseCommand):
     solr = pysolr.Solr(settings.SOLR_URL)
 
     def make_search_data(self, module, data, etype, namefield):
-        insert = [{"id": "%s_%s" % (etype, i.pk),
-                   "object_id_i": i.pk,
-                   "type_s": etype,
-                   "module_s": module,
-                   "title_t": getattr(i, namefield),
-                   "doctype_s": "search"
-                  } for i in data]
+        insert = []
+        for i in data:
+            doc = {     "id": "%s_%s" % (etype, i.pk),
+                        "object_id_i": i.pk,
+                        "type_s": etype,
+                        "module_s": module,
+                        "title_txt": getattr(i, namefield),
+                        "doctype_s": "search"
+                    }
+            if etype in ["raaga", "taala", "laya", "raag", "taal"]:
+                aliases = [alias.name for alias in i.aliases.all()]
+                aliases.append(doc.get("title_txt"))
+                doc.update({"title_txt": aliases})
+            insert.append(doc)
         return insert
 
     def create_carnatic_search_index(self):
@@ -46,14 +53,14 @@ class Command(BaseCommand):
         concerts = carnatic.models.Concert.objects.all()
         raagas = carnatic.models.Raaga.objects.all()
         taalas = carnatic.models.Taala.objects.all()
-
+        
         insertinstr = self.make_search_data("carnatic", instruments, "instrument", "name")
         insertartist = self.make_search_data("carnatic", artists, "artist", "name")
         insertcomposer = self.make_search_data("carnatic", composers, "composer", "name")
         insertwork = self.make_search_data("carnatic", works, "work", "title")
         insertconcert = self.make_search_data("carnatic", concerts, "concert", "title")
-        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "name")
-        inserttaala = self.make_search_data("carnatic", taalas, "taala", "name")
+        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "common_name")
+        inserttaala = self.make_search_data("carnatic", taalas, "taala", "common_name")
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)

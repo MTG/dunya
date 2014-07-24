@@ -27,18 +27,11 @@ def search(name):
     query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
-    klass_map = {"instrument": carnatic.models.Instrument,
-                 "raaga": carnatic.models.Raaga,
-                 "taala": carnatic.models.Taala,
-                 "concert": carnatic.models.Concert,
-                 "artist": carnatic.models.Artist,
-                 "work": carnatic.models.Work,
-                 "composer": carnatic.models.Composer}
     for d in results.docs:
         type = d["type_s"]
         id = d["object_id_i"]
         id = int(id)
-        klass = klass_map.get(type)
+        klass = get_klassmap().get(type)
         if klass:
             instance = klass.objects.get(pk=id)
             ret[type].append(instance)
@@ -49,6 +42,7 @@ def autocomplete(term):
     params['wt'] = 'json'
     params['q'] = term
     params['fq'] = "module_s:carnatic"
+    params['fl'] = "title_txt,type_s,object_id_i"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)
@@ -56,7 +50,14 @@ def autocomplete(term):
     docs = check.get("docs", [])
     ret = []
     for d in docs:
-        ret.append(d["title_t"])
+        type = d["type_s"]
+        id = int(d["object_id_i"])
+        if type in ["raaga", "taala"]:
+            cls = get_klassmap().get(type)
+            obj = cls.objects.get(pk=id)
+            ret.append(obj.name)
+        else :
+            ret.append(d["title_txt"][0])
     return ret[:5]
 
 def get_similar_concerts(works, raagas, taalas, artists):
@@ -111,3 +112,11 @@ def similar_recordings(mbid):
     else:
         return []
 
+def get_klassmap():
+    return {"instrument": carnatic.models.Instrument,
+                 "raaga": carnatic.models.Raaga,
+                 "taala": carnatic.models.Taala,
+                 "concert": carnatic.models.Concert,
+                 "artist": carnatic.models.Artist,
+                 "work": carnatic.models.Work,
+                 "composer": carnatic.models.Composer}
