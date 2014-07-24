@@ -27,20 +27,11 @@ def search(name):
     query = "module_s:hindustani AND doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
-    klass_map = {"instrument": hindustani.models.Instrument,
-                 "raag": hindustani.models.Raag,
-                 "taal": hindustani.models.Taal,
-                 "laya": hindustani.models.Laya,
-                 "form": hindustani.models.Form,
-                 "release": hindustani.models.Release,
-                 "artist": hindustani.models.Artist,
-                 "work": hindustani.models.Work,
-                 "composer": hindustani.models.Composer}
     for d in results.docs:
         type = d["type_s"]
         id = d["object_id_i"]
         id = int(id)
-        klass = klass_map.get(type)
+        klass = get_klassmap().get(type)
         if klass:
             instance = klass.objects.get(pk=id)
             ret[type].append(instance)
@@ -58,7 +49,14 @@ def autocomplete(term):
     docs = check.get("docs", [])
     ret = []
     for d in docs:
-        ret.append(d["title_t"])
+        type = d["type_s"]
+        id = int(d["object_id_i"])
+        if type in ["raag", "taal", "laya", "form"]:
+            cls = get_klassmap().get(type)
+            obj = cls.objects.get(pk=id)
+            ret.append(obj.name)
+        else :
+            ret.append(d["title_txt"][0])
     return ret[:5]
 
 def get_similar_releases(artists, raags, taals, layas):
@@ -103,3 +101,13 @@ def get_similar_releases(artists, raags, taals, layas):
         ret.append((concertid, {"raags": commonr, "taals": commont, "artists": commona, "layas": commonl}))
     return ret
 
+def get_klassmap():
+    return {"instrument": hindustani.models.Instrument,
+                 "raag": hindustani.models.Raag,
+                 "taal": hindustani.models.Taal,
+                 "laya": hindustani.models.Laya,
+                 "form": hindustani.models.Form,
+                 "release": hindustani.models.Release,
+                 "artist": hindustani.models.Artist,
+                 "work": hindustani.models.Work,
+                 "composer": hindustani.models.Composer}
