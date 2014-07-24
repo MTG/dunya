@@ -26,7 +26,7 @@ class Command(BaseCommand):
     help = 'Load data in the database to solr'
     solr = pysolr.Solr(settings.SOLR_URL)
 
-    def make_search_data(self, module, data, etype, namefield):
+    def make_search_data(self, module, data, etype, namefield, alias=False):
         insert = []
         for i in data:
             doc = {     "id": "%s_%s" % (etype, i.pk),
@@ -36,8 +36,8 @@ class Command(BaseCommand):
                         "title_txt": getattr(i, namefield),
                         "doctype_s": "search"
                     }
-            if etype in ["raaga", "taala", "laya", "raag", "taal"]:
-                aliases = [alias.name for alias in i.aliases.all()]
+            if alias: 
+                aliases = [a.name for a in i.aliases.all()]
                 aliases.append(doc.get("title_txt"))
                 doc.update({"title_txt": aliases})
             insert.append(doc)
@@ -59,8 +59,8 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data("carnatic", composers, "composer", "name")
         insertwork = self.make_search_data("carnatic", works, "work", "title")
         insertconcert = self.make_search_data("carnatic", concerts, "concert", "title")
-        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "common_name")
-        inserttaala = self.make_search_data("carnatic", taalas, "taala", "common_name")
+        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "common_name", alias=True)
+        inserttaala = self.make_search_data("carnatic", taalas, "taala", "common_name", alias=True)
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)
@@ -89,10 +89,10 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data("hindustani", composers, "composer", "name")
         insertwork = self.make_search_data("hindustani", works, "work", "title")
         insertrelease = self.make_search_data("hindustani", releases, "release", "title")
-        insertraag = self.make_search_data("hindustani", raags, "raag", "name")
-        inserttaal = self.make_search_data("hindustani", taals, "taal", "name")
-        insertform = self.make_search_data("hindustani", forms, "form", "name")
-        insertlaya = self.make_search_data("hindustani", layas, "laya", "name")
+        insertraag = self.make_search_data("hindustani", raags, "raag", "common_name", alias=True)
+        inserttaal = self.make_search_data("hindustani", taals, "taal", "common_name", alias=True)
+        insertform = self.make_search_data("hindustani", forms, "form", "common_name", alias=True)
+        insertlaya = self.make_search_data("hindustani", layas, "laya", "common_name", alias=True)
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)
