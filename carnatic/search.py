@@ -42,7 +42,7 @@ def autocomplete(term):
     params['wt'] = 'json'
     params['q'] = term
     params['fq'] = "module_s:carnatic"
-    params['fl'] = "title_txt,type_s,object_id_i"
+    params['fl'] = "title_t,type_s,object_id_i"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)
@@ -50,14 +50,7 @@ def autocomplete(term):
     docs = check.get("docs", [])
     ret = []
     for d in docs:
-        type = d["type_s"]
-        id = int(d["object_id_i"])
-        if type in ["raaga", "taala"]:
-            cls = get_klassmap().get(type)
-            obj = cls.objects.get(pk=id)
-            ret.append(obj.name)
-        else :
-            ret.append(d["title_txt"][0])
+        ret.append(d["title_t"])
     return ret[:5]
 
 def get_similar_concerts(works, raagas, taalas, artists):
