@@ -100,4 +100,3 @@ class ArtistCountTest(TestCase):
         # A3 is not on recording3
         c = self.a3.recordings()
         self.assertEqual(2, len(c))
-

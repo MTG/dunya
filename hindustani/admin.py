@@ -125,4 +125,3 @@ admin.site.register(models.Form, FormAdmin)
 admin.site.register(models.Work)
 admin.site.register(models.Recording, RecordingAdmin)
 admin.site.register(models.Composer, ComposerAdmin)
-

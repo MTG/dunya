@@ -16,7 +16,6 @@
 
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 
 import collections
 
@@ -25,6 +24,7 @@ import data.models
 class MakamStyle(object):
     def get_style(self):
         return "makam"
+
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
                 "release": Release,
@@ -114,7 +114,7 @@ class Makam(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('makam-makam', args=[str(self.id)]) 
+        return reverse('makam-makam', args=[str(self.id)])
 
 class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
@@ -134,7 +134,7 @@ class Usul(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('makam-usul', args=[str(self.id)]) 
+        return reverse('makam-usul', args=[str(self.id)])
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=100)
@@ -154,7 +154,7 @@ class Form(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('makam-form', args=[str(self.id)]) 
+        return reverse('makam-form', args=[str(self.id)])
 
 class Work(MakamStyle, data.models.Work):
     composition_date = models.CharField(max_length=100, blank=True, null=True)
@@ -162,4 +162,3 @@ class Work(MakamStyle, data.models.Work):
     makam = models.ManyToManyField(Makam, blank=True, null=True)
     usul = models.ManyToManyField(Usul, blank=True, null=True)
     form = models.ManyToManyField(Form, blank=True, null=True)
-

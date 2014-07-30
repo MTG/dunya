@@ -21,6 +21,11 @@
     <h3>From release:</h3>
     x by y
 
+    <h3>Works</h3>
+
+    <h4>Additional items</h4>
+
+
     <h3>Musicians</h3>
     {% for ip in recording.instrumentperformance_set.all %}
     {% inline_artist ip.performer %} playing {% inline_instrument ip.instrument %}<br>

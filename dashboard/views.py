@@ -1,26 +1,23 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.template import loader
-import django.utils.timezone
 from django.forms.models import modelformset_factory
 from django.core.mail import send_mail
 from django.conf import settings
@@ -33,10 +30,7 @@ from dashboard import jobs
 import docserver
 
 import compmusic
-from eyed3 import mp3
 import os
-import importlib
-import json
 
 import carnatic
 import hindustani
@@ -58,11 +52,13 @@ def addcollection(request):
             checkers = []
             for i in form.cleaned_data['checkers']:
                 checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
-            new_collection = models.Collection.objects.create(id=coll_id, name=coll_name,
-                                    root_directory=path, do_import=do_import)
-            new_collection.checkers.add(*checkers) 
-            docserver.models.Collection.objects.get_or_create(collectionid=coll_id, 
-                    defaults={"root_directory":path, "name":coll_name})
+            new_collection = models.Collection.objects.create(
+                id=coll_id, name=coll_name,
+                root_directory=path, do_import=do_import)
+            new_collection.checkers.add(*checkers)
+            docserver.models.Collection.objects.get_or_create(
+                collectionid=coll_id,
+                defaults={"root_directory": path, "name": coll_name})
             jobs.load_and_import_collection(new_collection.id)
             return redirect('dashboard-home')
     else:
@@ -97,7 +93,7 @@ def accounts(request):
                     context = {"username": user.username, "domain": current_site.domain}
                     message = loader.render_to_string('registration/email_account_activated.html', context)
                     from_email = settings.NOTIFICATION_EMAIL_FROM
-                    recipients = [user.email,]
+                    recipients = [user.email, ]
                     send_mail(subject, message, from_email, recipients, fail_silently=True)
 
     formset = UserFormSet(queryset=User.objects.filter(is_active=False))
@@ -136,9 +132,9 @@ def collection(request, uuid):
 
     order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)\
-            .prefetch_related('musicbrainzreleasestate_set')\
-            .prefetch_related('collectiondirectory_set')\
-            .prefetch_related('collectiondirectory_set__collectionfile_set')
+        .prefetch_related('musicbrainzreleasestate_set')\
+        .prefetch_related('collectiondirectory_set')\
+        .prefetch_related('collectiondirectory_set__collectionfile_set')
     if order == "date":
         def sortkey(rel):
             return rel.get_current_state().state_date
@@ -170,8 +166,9 @@ def collection(request, uuid):
 
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
     log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
-    ret = {"collection": c, "log_messages": log, "releases": releases, "folders": folders, \
-            "numtotal": numtotal, "numfinished": numfinished}
+    ret = {"collection": c, "log_messages": log, "releases": releases,
+           "folders": folders,
+           "numtotal": numtotal, "numfinished": numfinished}
     return render(request, 'dashboard/collection.html', ret)
 
 @user_passes_test(is_staff)
@@ -210,11 +207,11 @@ def release(request, releaseid):
     for r in results:
         allres.append({"latest": r,
                        "others": release.get_rest_results_for_checker(r.checker.id)
-                      })
+                       })
 
     modules = docserver.models.Module.objects.all()
     ret = {"release": release, "files": files, "results": allres, "log_messages": log,
-            "modules": modules}
+           "modules": modules}
     return render(request, 'dashboard/release.html', ret)
 
 @user_passes_test(is_staff)
@@ -227,7 +224,7 @@ def file(request, fileid):
     for r in results:
         allres.append({"latest": r,
                        "others": thefile.get_rest_results_for_checker(r.checker.id)
-                      })
+                       })
 
     collection = thefile.directory.collection
     docid = thefile.recordingid
@@ -242,11 +239,11 @@ def file(request, fileid):
     except docserver.models.Document.DoesNotExist:
         pass
     ret = {"file": thefile,
-            "results": allres,
-            "log_messages": log,
-            "sourcefiles": sourcefiles,
-            "derivedfiles": derivedfiles,
-            "docsrvdoc": docsrvdoc}
+           "results": allres,
+           "log_messages": log,
+           "sourcefiles": sourcefiles,
+           "derivedfiles": derivedfiles,
+           "docsrvdoc": docsrvdoc}
     return render(request, 'dashboard/file.html', ret)
 
 @user_passes_test(is_staff)
@@ -269,7 +266,6 @@ def directory(request, dirid):
     collection = directory.collection
     full_path = os.path.join(collection.root_directory, directory.path)
     files = os.listdir(full_path)
-    meta = {}
     releaseids = set()
     releasename = set()
     artistids = set()
@@ -376,7 +372,7 @@ def carnatic_raagas(request):
             "klass": carnatic.models.Raaga,
             "aliasklass": carnatic.models.RaagaAlias,
             "template": "dashboard/styletag.html",
-            "common_name": True # If this attribute has a common_name
+            "common_name": True  # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -389,7 +385,7 @@ def carnatic_taalas(request):
             "klass": carnatic.models.Taala,
             "aliasklass": carnatic.models.TaalaAlias,
             "template": "dashboard/styletag.html",
-            "common_name": True # If this attribute has a common_name
+            "common_name": True  # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -415,7 +411,7 @@ def hindustani_raags(request):
             "klass": hindustani.models.Raag,
             "aliasklass": hindustani.models.RaagAlias,
             "template": "dashboard/styletag.html",
-            "common_name": True # If this attribute has a common_name
+            "common_name": True  # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -428,7 +424,7 @@ def hindustani_taals(request):
             "klass": hindustani.models.Taal,
             "aliasklass": hindustani.models.TaalAlias,
             "template": "dashboard/styletag.html",
-            "common_name": True # If this attribute has a common_name
+            "common_name": True  # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -441,7 +437,7 @@ def hindustani_layas(request):
             "klass": hindustani.models.Laya,
             "aliasklass": hindustani.models.LayaAlias,
             "template": "dashboard/styletag.html",
-            "common_name": True # If this attribute has a common_name
+            "common_name": True  # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)
@@ -454,7 +450,7 @@ def hindustani_forms(request):
             "klass": hindustani.models.Form,
             "aliasklass": hindustani.models.FormAlias,
             "template": "dashboard/styletag.html",
-            "common_name": True # If this attribute has a common_name
+            "common_name": True  # If this attribute has a common_name
             }
 
     return _edit_attributedata(request, data)

@@ -1,18 +1,18 @@
 # -*- coding: UTF-8 -*-
 
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -20,7 +20,6 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.utils.text import slugify
 from django.conf import settings
 
 from social import tagging
@@ -36,11 +35,11 @@ import pysolr
 
 def get_filter_items():
     filter_items = [
-            Artist.get_filter_criteria(),
-            Concert.get_filter_criteria(),
-            Instrument.get_filter_criteria(),
-            Raaga.get_filter_criteria(),
-            Taala.get_filter_criteria()
+        Artist.get_filter_criteria(),
+        Concert.get_filter_criteria(),
+        Instrument.get_filter_criteria(),
+        Raaga.get_filter_criteria(),
+        Taala.get_filter_criteria()
     ]
     return filter_items
 
@@ -156,7 +155,7 @@ def main(request):
             for c in list(combinedconcerts):
                 displayres.append(("concert", c))
 
-    elif qinstr: # instrument query, but no artist
+    elif qinstr:  # instrument query, but no artist
         querybrowse = True
         # instrument, people
         for iid in qinstr:
@@ -308,7 +307,7 @@ def artist(request, uuid, name=None):
     if artist.main_instrument and artist.main_instrument.id in [1, 2]:
         raagamap = {}
         raagacount = collections.Counter()
-        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) |  Q(work__recording__instrumentperformance__performer=artist))
+        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__performer=artist))
         for r in raagas:
             raagacount[r.name] += 1
             if r.name not in raagamap:
@@ -352,19 +351,19 @@ def artist(request, uuid, name=None):
             sample = tracks[0]
 
     ret = {"filter_items": json.dumps(get_filter_items()),
-    	   "artist": artist,
+           "artist": artist,
            "form": TagSaveForm(),
-            "objecttype": "artist",
-            "objectid": artist.id,
-            "tags": tags,
-            "similar_artists": similar_artists,
-            "raagas": raagas,
-            "taalas": taalas,
-            "sample": sample,
-            "mb": musicbrainz,
-            "kutcheris": kutcheris,
-            "wiki": wikipedia
-    }
+           "objecttype": "artist",
+           "objectid": artist.id,
+           "tags": tags,
+           "similar_artists": similar_artists,
+           "raagas": raagas,
+           "taalas": taalas,
+           "sample": sample,
+           "mb": musicbrainz,
+           "kutcheris": kutcheris,
+           "wiki": wikipedia
+           }
 
     return render(request, "carnatic/artist.html", ret)
 
@@ -437,16 +436,16 @@ def concert(request, uuid, title=None):
     # Raaga in
     ret = {"filter_items": json.dumps(get_filter_items()),
            "concert": concert,
-	   "form": TagSaveForm(),
-	   "objecttype": "concert",
-	   "objectid": concert.id,
-	   "tags": tags,
-       "image": image,
-       "sample": sample,
-       "similar_concerts": similar,
-       "tracks": tracks,
-       "bootleg": bootleg
-       }
+           "form": TagSaveForm(),
+           "objecttype": "concert",
+           "objectid": concert.id,
+           "tags": tags,
+           "image": image,
+           "sample": sample,
+           "similar_concerts": similar,
+           "tracks": tracks,
+           "bootleg": bootleg
+           }
 
     return render(request, "carnatic/concert.html", ret)
 
@@ -485,7 +484,7 @@ def recording(request, uuid, title=None):
         tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
-        thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
+        thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
         thebin = int(round(thebin))
         tonic = str(tonic)
         if thebin <= 11 and thebin >= 0:
@@ -539,35 +538,35 @@ def recording(request, uuid, title=None):
     nextrecording = None
     prevrecording = None
     if recordingpos > 0:
-        prevrecording = tracks[recordingpos-1]
-    if recordingpos+1 < len(tracks):
-        nextrecording = tracks[recordingpos+1]
+        prevrecording = tracks[recordingpos - 1]
+    if recordingpos + 1 < len(tracks):
+        nextrecording = tracks[recordingpos + 1]
     mbid = recording.mbid
 
     ret = {"filter_items": json.dumps(get_filter_items()),
-    	   "recording": recording,
+           "recording": recording,
            "form": TagSaveForm(),
-            "objecttype": "recording",
-            "objectid": recording.id,
-            "tags": tags,
-            "waveform": wave,
-            "spectrogram": spec,
-            "smallimage": small,
-            "audio": audio,
-            "tonic": tonic,
-            "tonicname": tonicname,
-            "akshara": akshara,
-            "mbid": mbid,
-            "nextrecording": nextrecording,
-            "prevrecording": prevrecording,
-            "pitchtrackurl": pitchtrackurl,
-            "histogramurl": histogramurl,
-            "rhythmurl": rhythmurl,
-            "aksharaurl": aksharaurl,
-            "similar": similar,
-            "concert": concert,
-            "bootleg": bootleg,
-    }
+           "objecttype": "recording",
+           "objectid": recording.id,
+           "tags": tags,
+           "waveform": wave,
+           "spectrogram": spec,
+           "smallimage": small,
+           "audio": audio,
+           "tonic": tonic,
+           "tonicname": tonicname,
+           "akshara": akshara,
+           "mbid": mbid,
+           "nextrecording": nextrecording,
+           "prevrecording": prevrecording,
+           "pitchtrackurl": pitchtrackurl,
+           "histogramurl": histogramurl,
+           "rhythmurl": rhythmurl,
+           "aksharaurl": aksharaurl,
+           "similar": similar,
+           "concert": concert,
+           "bootleg": bootleg,
+           }
 
     return render(request, "carnatic/recording.html", ret)
 
@@ -592,15 +591,14 @@ def work(request, uuid, title=None):
     else:
         sample = None
 
-
     ret = {"filter_items": json.dumps(get_filter_items()),
            "work": work,
            "form": TagSaveForm(),
-            "objecttype": "work",
-            "objectid": work.id,
-			"sample": sample,
-            "tags": tags,
-    }
+           "objecttype": "work",
+           "objectid": work.id,
+           "sample": sample,
+           "tags": tags,
+           }
     return render(request, "carnatic/work.html", ret)
 
 def taalasearch(request):
@@ -622,7 +620,7 @@ def taala(request, taalaid, name=None):
     ret = {"taala": taala,
            "sample": sample,
            "similar": similar
-          }
+           }
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -643,7 +641,7 @@ def raaga(request, raagaid, name=None):
     ret = {"raaga": raaga,
            "sample": sample,
            "similar": similar
-    }
+           }
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):
@@ -662,6 +660,6 @@ def instrument(request, instrumentid, name=None):
     ret = {"instrument": instrument,
            "sample": sample,
            "filter_items": json.dumps(get_filter_items())
-          }
+           }
 
     return render(request, "carnatic/instrument.html", ret)

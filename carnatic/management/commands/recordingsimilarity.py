@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -23,7 +23,6 @@ import os
 
 from compmusic.extractors.similaritylib import recording
 from docserver import util
-import docserver
 import carnatic
 import hindustani
 
@@ -39,10 +38,10 @@ class Command(BaseCommand):
         if not sim:
             return None
         insert = {"id": "sim_%s" % (mbid, ),
-                   "similar_s": json.dumps(sim),
-                   "mbid_t": mbid,
-                   "doctype_s": "recordingsimilarity",
-                   "module_s": module
+                  "similar_s": json.dumps(sim),
+                  "mbid_t": mbid,
+                  "doctype_s": "recordingsimilarity",
+                  "module_s": module
                   }
         return insert
 
@@ -61,7 +60,7 @@ class Command(BaseCommand):
 
     def compute_distance(self, a, b):
         if a in self.intonationmap:
-            #print " -hit a"
+            # print " -hit a"
             adata = self.intonationmap[a]
         else:
             try:
@@ -71,7 +70,7 @@ class Command(BaseCommand):
                 return None
             self.intonationmap[a] = adata
         if b in self.intonationmap:
-            #print " -hit b"
+            # print " -hit b"
             bdata = self.intonationmap[b]
         else:
             try:
@@ -82,10 +81,10 @@ class Command(BaseCommand):
             self.intonationmap[b] = bdata
 
         if (a, b) in self.distancemap:
-            #print " -hit d-ab"
+            # print " -hit d-ab"
             distance = self.distancemap[(a, b)]
         elif (b, a) in self.distancemap:
-            #print " -hit d-ba"
+            # print " -hit d-ba"
             distance = self.distancemap[(b, a)]
         else:
             distance = recording.kldiv(adata, bdata)

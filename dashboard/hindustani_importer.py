@@ -1,20 +1,18 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
-
-from django.db.models import Q
 
 from dashboard.log import logger
 from dashboard import release_importer
@@ -32,11 +30,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _InstrumentClass = hindustani.models.Instrument
     _WorkClass = hindustani.models.Work
 
-
     def _link_release_recording(self, release, recording, trackorder):
         if not release.tracks.filter(pk=recording.pk).exists():
             hindustani.models.ReleaseRecording.objects.create(
-                    release=release, recording=recording, track=trackorder)
+                release=release, recording=recording, track=trackorder)
 
     def _join_recording_and_works(self, recording, works):
         # A hindustani recording can have many works
@@ -75,7 +72,6 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
                 hindustani.models.RecordingTaal.objects.create(recording=recording, taal=tob, sequence=tpos)
             else:
                 print "couldn't find a taal", t
-
 
         for r in raags:
             rpos = r[0]
@@ -180,4 +176,3 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         release = hindustani.models.Release.objects.get(mbid=releaseid)
         for t in release.tracks.all():
             self._add_recording_performance(t.mbid, artistid, instrument, is_lead)
-

@@ -68,4 +68,3 @@ admin.site.register(models.Usul)
 admin.site.register(models.Work, WorkAdmin)
 admin.site.register(models.Release, ReleaseAdmin)
 admin.site.register(models.Recording, RecordingAdmin)
-

@@ -73,4 +73,3 @@ admin.site.register(models.Recording, RecordingAdmin)
 admin.site.register(models.Instrument, InstrumentAdmin)
 admin.site.register(models.Composer)
 admin.site.register(models.ComposerAlias)
-

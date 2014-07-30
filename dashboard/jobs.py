@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -21,19 +21,15 @@ import traceback
 import celery
 
 from dashboard import models
-from dashboard.log import logger
 from dashboard import carnatic_importer
 from dashboard import hindustani_importer
 from dashboard import makam_importer
 
-import carnatic
 import compmusic
-import data
 
 import docserver
 import docserver.util
 
-from dashboard import completeness
 #import populate_images
 from dunya.celery import app
 
@@ -216,7 +212,7 @@ def force_import_all_releases(collectionid):
         collection.set_state_error()
         return
     collection.set_state_importing()
-    # unlike the non-force version, we select all releases, not 
+    # unlike the non-force version, we select all releases, not
     # only ones that haven't been ignored
     releases = collection.musicbrainzrelease_set.all()
     unstarted = []
@@ -293,9 +289,9 @@ def update_collection(collectionid):
             title = mbrelease["title"]
             artist = mbrelease["artist-credit-phrase"]
             rel, created = models.MusicbrainzRelease.objects.get_or_create(
-                    mbid=relid,
-                    collection=coll,
-                    defaults={"title": title, "artist": artist})
+                mbid=relid,
+                collection=coll,
+                defaults={"title": title, "artist": artist})
         except compmusic.mb.ResponseError:
             coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
 
@@ -366,7 +362,7 @@ def scan_and_link(collectionid):
         mp3files = _get_mp3_files(files)
         if len(mp3files) > 0:
             found_directories.append(root)
-    existing_directories = [c.full_path for c in coll.collectiondirectory_set.all()] 
+    existing_directories = [c.full_path for c in coll.collectiondirectory_set.all()]
 
     to_remove = set(existing_directories) - set(found_directories)
     to_add = set(found_directories) - set(existing_directories)
@@ -390,4 +386,3 @@ def scan_and_link(collectionid):
 def delete_collection(cid):
     collection = models.Collection.objects.get(pk=cid)
     collection.delete()
-

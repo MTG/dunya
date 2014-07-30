@@ -14,8 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.template import RequestContext
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
@@ -41,7 +40,7 @@ def main_page(request):
 
 def logout_page(request):
     logout(request)
-    if request.GET.has_key("next"):
+    if "next" in request.GET:
         return HttpResponseRedirect(request.GET['next'])
     return HttpResponseRedirect(reverse('carnatic-main'))
 
@@ -58,7 +57,7 @@ def register_page(request):
             )
             user.is_active = False
             user.save()
-            user.userprofile.affiliation=form.cleaned_data['affiliation']
+            user.userprofile.affiliation = form.cleaned_data['affiliation']
             user.userprofile.save()
 
             # send notification email to admin to review the account
@@ -104,7 +103,6 @@ def user_profile(request):
     users_id = []
     users_id.append(request.user.id)
 
-    timelines = timeline.timeline(users_id)
     token = Token.objects.get(user=request.user)
 
     ret = {
@@ -140,7 +138,7 @@ def user_page(request, username):
            "profile": profile,
            "timeline": timelines,
            "follow": follow
-    }
+           }
 
     return render(request, "social/user_page.html", ret)
 
@@ -193,7 +191,7 @@ def tag_save_page(request):
             tag_names = form.cleaned_data['tags'].split(",")
             for tag_name in tag_names:
                 if len(tag_name) > 0:
-                    tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip()) # tag to lower case
+                    tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip())
                     if len(Annotation.objects.filter(tag=tag, user=request.user, entity_type=objecttype, entity_id=objectid)) == 0:
                         object_tag, _ = Annotation.objects.get_or_create(tag=tag, user=request.user, entity_type=objecttype, entity_id=objectid)
 
@@ -212,9 +210,9 @@ def ajax_tag_autocomplete(request):
     tags = Tag.objects.filter(name__istartswith=q)[:10]
     results = []
     for tag in tags:
-        tag_dict = {'id':tag.id, 'label':tag.name, 'value':tag.name}
+        tag_dict = {'id': tag.id, 'label': tag.name, 'value': tag.name}
         results.append(tag_dict)
-    return HttpResponse(json.dumps(results),mimetype='application/json')
+    return HttpResponse(json.dumps(results), mimetype='application/json')
 
 
 def __get_entity(entity_type, entity_id):
@@ -230,10 +228,9 @@ def __get_entity(entity_type, entity_id):
 
 def tag_page(request, tagname, modeltype="concert"):
     tagname = urlunquote_plus(tagname)
-    tag = get_object_or_404(Tag, name=tagname)
 
     lists = Annotation.objects.filter(tag__name=tagname, entity_type=modeltype).values('entity_type', 'entity_id', 'tag').annotate(freq=Count('entity_type'))
-    objects=[]
+    objects = []
     for lista in lists:
         objects.append([__get_entity(modeltype, lista['entity_id']), lista['freq']])
 
@@ -243,4 +240,3 @@ def tag_page(request, tagname, modeltype="concert"):
         'modeltype': modeltype,
     }
     return render(request, 'social/tag_page.html', ret)
-

@@ -59,7 +59,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -69,7 +68,6 @@ SECRET_KEY = '_11by(qyct6gy7d0$8t%(#s2l(#w13d+48pc%wchv4v8hn^$+0'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,7 +81,7 @@ MIDDLEWARE_CLASSES = (
     # Log every page that people go to
     'dunya.middleware.PageLoggerMiddleware',
     # Show a history of the pages that people have been to
-    #'dunya.middleware.NavigationHistoryMiddleware',
+    # 'dunya.middleware.NavigationHistoryMiddleware',
 )
 
 ROOT_URLCONF = 'dunya.urls'
@@ -98,8 +96,8 @@ TEMPLATE_DIRS = (
 )
 
 ADMINS = (
-    # The email address of the first person in this list will be used in the 
-    # reply field of the emails sent by Dunya 
+    # The email address of the first person in this list will be used in the
+    # reply field of the emails sent by Dunya
     # ('YOUR NAME', 'EMAIL ADDRESS'),
 )
 
@@ -138,7 +136,8 @@ INSTALLED_APPS = (
     'makam',
     'dunya',
     'hindustani',
-    'motifdiscovery'
+    'motifdiscovery',
+    'andalusian'
 )
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
@@ -162,7 +161,7 @@ SENDFILE_URL = '/serve'
 
 # Django rest framework
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 100, # Default
+    'PAGINATE_BY': 100,  # Default
     'PAGINATE_BY_PARAM': 'count',  # Allow client to override default
     'MAX_PAGINATE_BY': 200,         # Maximum limit allowed to override
     'DEFAULT_PERMISSION_CLASSES': (
@@ -209,7 +208,7 @@ LOGGING = {
     }
 }
 
-#Social part_PROFILE
+# Social part_PROFILE
 AUTH_PROFILE_MODULE = "social.UserProfile"
 AUTH_USER_MODULE = "django.contrib.auth.models.User"
 

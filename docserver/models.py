@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -20,12 +20,8 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 import django.utils.timezone
-import urlparse
-import urllib
 import collections
 import os
-
-import uuid
 
 class Collection(models.Model):
     """A set of related documents"""
@@ -102,12 +98,12 @@ class Document(models.Model):
 
         This makes an assumption that the number of parts and extension
         are the same for all versions. At the moment they are, but
-        I'm not sure what to do if 
+        I'm not sure what to do if
         """
         ret = collections.defaultdict(list)
         derived = self.derivedfiles.all()
         for d in derived:
-            item = {"extension": d.extension, "version": d.module_version.version, 
+            item = {"extension": d.extension, "version": d.module_version.version,
                     "outputname": d.outputname, "numparts": d.numparts,
                     "mimetype": d.mimetype}
             ret[d.module_version.module.slug].append(item)
@@ -119,10 +115,10 @@ class Document(models.Model):
                 if name in items:
                     items[name]["versions"].append(i["version"])
                 else:
-                    items[name] = {"extension": i["extension"], 
-                            "numparts": i["numparts"],
-                            "mimetype": i["mimetype"],
-                            "versions": [i["version"]]}
+                    items[name] = {"extension": i["extension"],
+                                   "numparts": i["numparts"],
+                                   "mimetype": i["mimetype"],
+                                   "versions": [i["version"]]}
 
             newret[k] = items
         return newret
@@ -158,8 +154,9 @@ class SourceFile(models.Model):
         return self.file_type.extension
 
     def get_absolute_url(self, url_slug='ds-download-external'):
-        return reverse(url_slug,
-                args=[self.document.external_identifier, self.file_type.extension])
+        return reverse(
+            url_slug,
+            args=[self.document.external_identifier, self.file_type.extension])
 
     @property
     def fullpath(self):
@@ -188,8 +185,9 @@ class DerivedFilePart(models.Model):
         return os.path.join(settings.AUDIO_ROOT, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
-        url = reverse(url_slug,
-            args=[self.derivedfile.document.external_identifier, self.derivedfile.module_version.module.slug ])
+        url = reverse(
+            url_slug,
+            args=[self.derivedfile.document.external_identifier, self.derivedfile.module_version.module.slug])
         v = self.derivedfile.module_version.version
         sub = self.derivedfile.outputname
         part = self.part_order
@@ -240,8 +238,9 @@ class DerivedFile(models.Model):
         return self.parts.count()
 
     def get_absolute_url(self):
-        url = reverse("ds-download-external",
-                args=[self.document.external_identifier, self.module_version.module.slug])
+        url = reverse(
+            "ds-download-external",
+            args=[self.document.external_identifier, self.module_version.module.slug])
         v = self.module_version.version
         sub = self.outputname
         url = "%s?v=%s&subtype=%s" % (url, v, sub)
@@ -302,7 +301,6 @@ class EssentiaVersion(models.Model):
     sha1 = models.CharField(max_length=200)
     commit_date = models.DateTimeField(default=django.utils.timezone.now)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
-
 
     @property
     def short(self):
@@ -371,8 +369,9 @@ class ModuleVersion(models.Model):
             collections = self.module.collections.all()
         else:
             collections = [collection]
-        qs = Document.objects.filter(collection__in=collections,
-                sourcefiles__file_type=self.module.source_type)
+        qs = Document.objects.filter(
+            collection__in=collections,
+            sourcefiles__file_type=self.module.source_type)
         qs = qs.filter(derivedfiles__module_version=self)
         return qs.distinct()
 
@@ -381,8 +380,9 @@ class ModuleVersion(models.Model):
             collections = self.module.collections.all()
         else:
             collections = [collection]
-        qs = Document.objects.filter(collection__in=collections,
-                sourcefiles__file_type=self.module.source_type)
+        qs = Document.objects.filter(
+            collection__in=collections,
+            sourcefiles__file_type=self.module.source_type)
         qs = qs.exclude(derivedfiles__module_version=self)
         return qs.distinct()
 
@@ -402,4 +402,3 @@ class DocumentLogMessage(models.Model):
     level = models.CharField(max_length=20)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
-

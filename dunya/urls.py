@@ -1,7 +1,6 @@
-from django.conf.urls import patterns, include, url, static
+from django.conf.urls import include, url, static
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.comments.models import Comment
 from django.views.generic.base import RedirectView
 
 admin.autodiscover()
@@ -10,7 +9,7 @@ js_info_dict = {
     'packages': ('django.conf',),
 }
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     url(r'^$', RedirectView.as_view(pattern_name="carnatic-main"), name="main"),
     url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
@@ -33,7 +32,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     url(r'^makamplayer/$', 'makam.views.makamplayer'),
-)
+]
 
 if settings.DEBUG:
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

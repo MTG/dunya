@@ -128,7 +128,7 @@ class Orchestra(AndalusianStyle, BaseModel):
     mbid = UUIDField(blank=True, null=True)
     name = models.CharField(max_length=255)
     school = models.ForeignKey(MusicalSchool, blank=True, null=True)
-    
+
     def __unicode__(self):
         return self.name
 
@@ -152,7 +152,7 @@ class Orchestra(AndalusianStyle, BaseModel):
 class OrchestraAlias(models.Model):
     name = models.CharField(max_length=255)
     orchestra = models.ForeignKey("Orchestra", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
 
@@ -169,14 +169,14 @@ class Artist(AndalusianStyle, BaseModel):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
-    
+
     def __unicode__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid])
-    
+
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
 
@@ -185,10 +185,10 @@ class Artist(AndalusianStyle, BaseModel):
         performances = IPClass.objects.filter(performer=self)
         recs = [p.recording for p in performances]
         return recs
-    
+
     def performances(self, tab=[], nawba=[], mizan=[]):
         pass
-    
+
     def instruments(self):
         insts = []
         for perf in self.instrumentperformance_set.all():
@@ -212,7 +212,7 @@ class Artist(AndalusianStyle, BaseModel):
                 if p.id != self.id:
                     recordings[p.id].add(recording)
                     c[p.id] += 1
-    
+
         return [(Artist.objects.get(pk=pk), list(recordings[pk])) for pk, count in c.most_common()]
 
     @classmethod
@@ -220,24 +220,24 @@ class Artist(AndalusianStyle, BaseModel):
         ret = {"url": reverse('andalusian-artist-search'),
                "name": "Artist",
                "data": [filters.School().object, filters.Generation().object]
-        }
+               }
         return ret
 
 
 class ArtistAlias(models.Model):
     name = models.CharField(max_length=200)
     artist = models.ForeignKey("Artist", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
 
 
 class AlbumType(models.Model):
     type = models.CharField(max_length=255)
-    
+
     def __unicode__(self):
         return self.type
-    
+
 
 class Album(AndalusianStyle, BaseModel):
     missing_image = "album.jpg"
@@ -263,7 +263,7 @@ class Album(AndalusianStyle, BaseModel):
 class AlbumAlias(models.Model):
     title = models.CharField(max_length=255)
     album = models.ForeignKey("Album", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.title
 
@@ -290,7 +290,7 @@ class Recording(AndalusianStyle, BaseModel):
 class RecordingAlias(models.Model):
     title = models.CharField(max_length=255)
     recording = models.ForeignKey("Recording", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.title
 
@@ -298,7 +298,7 @@ class RecordingAlias(models.Model):
 class Instrument(AndalusianStyle, BaseModel):
     percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
-    
+
     def __unicode__(self):
         return self.name
 
@@ -306,19 +306,19 @@ class Instrument(AndalusianStyle, BaseModel):
 class InstrumentAlias(models.Model):
     name = models.CharField(max_length=50)
     instrument = models.ForeignKey("Instrument", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
 
 
 class InstrumentPerformance(models.Model):
-    class Meta:        
+    class Meta:
         abstract = True
     recording = models.ForeignKey('Recording')
     performer = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
-    
+
     def __unicode__(self):
         return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
@@ -347,12 +347,12 @@ class Tab(BaseModel):
 
     def __unicode__(self):
         return self.name
-    
+
 
 class TabAlias(models.Model):
     name = models.CharField(max_length=50)
     tab = models.ForeignKey("Tab", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
 
@@ -362,37 +362,37 @@ class Nawba(BaseModel):
 
     def __unicode__(self):
         return self.name
-    
+
 
 class NawbaAlias(models.Model):
     name = models.CharField(max_length=50)
     nawba = models.ForeignKey("Nawba", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
-    
+
 
 class Mizan(BaseModel):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
-    
+
 
 class MizanAlias(models.Model):
     name = models.CharField(max_length=50)
     mizan = models.ForeignKey("Mizan", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
-    
+
 
 class FormType(models.Model):
     type = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.type
-    
+
 
 class Form(BaseModel):
     name = models.CharField(max_length=50)
@@ -400,15 +400,15 @@ class Form(BaseModel):
 
     def __unicode__(self):
         return self.name
-    
+
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=50)
     form = models.ForeignKey("Form", related_name="aliases")
-    
+
     def __unicode__(self):
         return self.name
-    
+
 
 class Section(AndalusianStyle, BaseModel):
     recording = models.ForeignKey('Recording')
@@ -425,7 +425,7 @@ class Section(AndalusianStyle, BaseModel):
         return u"Section %s of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
                (self.order_number, self.recording, self.start_time, self.end_time,
                 self.form, self.mizan, self.tab, self.nawba)
-    
+
 
 class InstrumentSectionPerformance(models.Model):
     section = models.ForeignKey('Section')
@@ -443,7 +443,7 @@ class Sanaa(BaseModel):
 
     def __unicode__(self):
         return self.title
-    
+
 
 class SanaaAlias(models.Model):
     title = models.CharField(max_length=255)
@@ -468,7 +468,7 @@ class Poem(BaseModel):
 
     def __unicode__(self):
         return self.identifier
-    
+
 
 class PoemAlias(models.Model):
     identifier = models.CharField(max_length=100, blank=True, null=True)
@@ -476,7 +476,7 @@ class PoemAlias(models.Model):
 
     def __unicode__(self):
         return self.identifier
-    
+
 
 class SectionSanaaPoem(models.Model):
     section = models.ForeignKey('Section')

@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -33,9 +33,9 @@ class Command(BaseCommand):
 
     option_list = BaseCommand.option_list + (
         make_option('-d', action='store_true', dest='delete',
-                            default=False,
-                            help='Delete images for a raag(a) and reimport'),
-        )
+                    default=False,
+                    help='Delete images for a raag(a) and reimport'),
+    )
 
     def calc_profile(self, raag, recordings, style):
         average = compmusic.extractors.similaritylib.raaga.Raaga(raag.name, "")
@@ -53,12 +53,11 @@ class Command(BaseCommand):
             except util.NoFileException:
                 pass
 
-
         average.compute_average_hist_data(pitches, tonics)
 
-        if style=="carnatic":
+        if style == "carnatic":
             entityname = "raaga"
-        elif style=="hindustani":
+        elif style == "hindustani":
             entityname = "raag"
         fname = "%s-%s-%s.png" % (style, entityname, raag.common_name.lower().replace(" ", ""))
         average.generate_image(fname)
@@ -68,7 +67,7 @@ class Command(BaseCommand):
         raag.images.add(im)
         os.unlink(fname)
 
-    def hindustani(self, delete): 
+    def hindustani(self, delete):
         print "Creating hindustani raag images"
         recordings = hindustani.models.Recording.objects.all()
         recmap = collections.defaultdict(list)
@@ -87,7 +86,7 @@ class Command(BaseCommand):
                         try:
                             i.image.delete()
                         except ValueError:
-                            pass 
+                            pass
                         i.delete()
                     print " - Deleting images and remaking"
                 else:
@@ -116,7 +115,7 @@ class Command(BaseCommand):
                         try:
                             i.image.delete()
                         except ValueError:
-                            pass 
+                            pass
                         i.delete()
                     print " - Deleting images and remaking"
                 else:
@@ -133,4 +132,3 @@ class Command(BaseCommand):
             self.hindustani(options['delete'])
         elif args[0] == "carnatic":
             self.carnatic(options['delete'])
-

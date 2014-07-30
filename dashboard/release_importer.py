@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -68,7 +68,6 @@ class ReleaseImporter(object):
             source.save()
         return source
 
-
     def import_release(self, releaseid, directories):
         if releaseid in self.imported_releases:
             print "Release already updated in this import. Not doing it again"
@@ -117,7 +116,7 @@ class ReleaseImporter(object):
 
     def _create_release_object(self, mbrelease):
         release, created = self._ReleaseClass.objects.get_or_create(
-                mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
+            mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
         if created or self.overwrite:
             release.title = mbrelease["title"]
             year = self._get_year_from_date(mbrelease.get("date"))
@@ -135,7 +134,8 @@ class ReleaseImporter(object):
     def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, composer=False):
         artistid = mbartist["id"]
 
-        artist, created = ArtistKlass.objects.get_or_create(mbid=artistid,
+        artist, created = ArtistKlass.objects.get_or_create(
+            mbid=artistid,
             defaults={"name": mbartist["name"]})
 
         if created or self.overwrite:
@@ -192,7 +192,7 @@ class ReleaseImporter(object):
                 if locale:
                     aob.locale = locale
                 aob.save()
-            
+
             external_data.import_artist_wikipedia(artist, self.overwrite)
         return artist
 
@@ -292,8 +292,9 @@ class ReleaseImporter(object):
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
-        work, created = self._WorkClass.objects.get_or_create(mbid=workid,
-                defaults={"title": mbwork["title"]})
+        work, created = self._WorkClass.objects.get_or_create(
+            mbid=workid,
+            defaults={"title": mbwork["title"]})
 
         if created or self.overwrite:
             source = self.make_mb_source("http://musicbrainz.org/work/%s" % workid)
@@ -317,4 +318,3 @@ class ReleaseImporter(object):
                     work.lyricists.add(lyricist)
 
         return work
-

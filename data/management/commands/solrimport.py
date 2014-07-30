@@ -1,20 +1,20 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 import carnatic
 import hindustani
@@ -29,14 +29,14 @@ class Command(BaseCommand):
     def make_search_data(self, module, data, etype, namefield, alias=False, common_name=False):
         insert = []
         for i in data:
-            doc = {     "id": "%s_%s" % (etype, i.pk),
-                        "object_id_i": i.pk,
-                        "type_s": etype,
-                        "module_s": module,
-                        "title_t": getattr(i, namefield),
-                        "doctype_s": "search"
-                    }
-            if alias: 
+            doc = {"id": "%s_%s" % (etype, i.pk),
+                   "object_id_i": i.pk,
+                   "type_s": etype,
+                   "module_s": module,
+                   "title_t": getattr(i, namefield),
+                   "doctype_s": "search"
+                   }
+            if alias:
                 aliases = [a.name for a in i.aliases.all()]
                 if common_name:
                     aliases.append(i.common_name)
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         concerts = carnatic.models.Concert.objects.all()
         raagas = carnatic.models.Raaga.objects.all()
         taalas = carnatic.models.Taala.objects.all()
-        
+
         insertinstr = self.make_search_data("carnatic", instruments, "instrument", "name")
         insertartist = self.make_search_data("carnatic", artists, "artist", "name")
         insertcomposer = self.make_search_data("carnatic", composers, "composer", "name")
@@ -111,7 +111,7 @@ class Command(BaseCommand):
         concerts = carnatic.models.Concert.objects.all()
         ret = []
         for c in concerts:
-            raagas = [] # list of (rid, rname)
+            raagas = []  # list of (rid, rname)
             taalas = []
             works = []
             artists = []
@@ -135,7 +135,7 @@ class Command(BaseCommand):
                         "work_is": works,
                         "artist_is": artists,
                         "module_s": "carnatic"
-                       })
+                        })
         self.solr.add(ret)
         self.solr.commit()
 
@@ -145,7 +145,7 @@ class Command(BaseCommand):
         releases = hindustani.models.Release.objects.all()
         ret = []
         for r in releases:
-            raags = [] # list of (rid, rname)
+            raags = []  # list of (rid, rname)
             taals = []
             forms = []
             layas = []
@@ -179,7 +179,7 @@ class Command(BaseCommand):
                         "work_is": works,
                         "artist_is": artists,
                         "module_s": "hindustani",
-                       })
+                        })
         self.solr.add(ret)
         self.solr.commit()
 
@@ -189,4 +189,3 @@ class Command(BaseCommand):
 
         self.create_hindustani_search_index()
         self.create_hindustani_release_index()
-

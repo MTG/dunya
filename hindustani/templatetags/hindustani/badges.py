@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -19,7 +19,6 @@ from django import template
 from hindustani.models import *
 
 register = template.Library()
-
 
 #### Badges for the front page
 
@@ -92,7 +91,7 @@ def badge_form(form):
 def badge_similar_artist(artist, releases=None, guru=None):
     if not isinstance(artist, Artist):
         artist = Artist.objects.get(pk=artist)
-    return {"artist": artist, "releases":releases, "guru": guru}
+    return {"artist": artist, "releases": releases, "guru": guru}
 
 @register.inclusion_tag("hindustani/badges/similar_release.html")
 def badge_similar_release(release, similarity):

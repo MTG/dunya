@@ -26,12 +26,12 @@ from carnatic import search
 import managers
 import filters
 import random
-import docserver
 import pysolr
 
 class CarnaticStyle(object):
     def get_style(self):
         return "carnatic"
+
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
                 "release": Concert,
@@ -79,7 +79,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         ourage = int(self.begin[:4]) if self.begin else 9999
         gurus = sorted(gurus, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
         students = sorted(students, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
-        siblings = sorted(siblings, key=lambda a: abs((int(a[1].begin[:4]) if a[1].begin else 9999)-ourage))
+        siblings = sorted(siblings, key=lambda a: abs((int(a[1].begin[:4]) if a[1].begin else 9999) - ourage))
 
         for g in gurus:
             ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
@@ -110,7 +110,7 @@ class Artist(CarnaticStyle, data.models.Artist):
                     concerts[thea.id].add(concert)
                     c[thea.id] += 1
 
-        return [(Artist.objects.get(pk=pk), list(concerts[pk])) for pk,count in c.most_common()]
+        return [(Artist.objects.get(pk=pk), list(concerts[pk])) for pk, count in c.most_common()]
 
     def concerts(self, raagas=[], taalas=[]):
         """ Get all the concerts that this artist performs in
@@ -137,7 +137,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = {"url": reverse('carnatic-artist-search'),
                "name": "Artist",
                "data": [filters.School().object, filters.Region().object, filters.Generation().object]
-              }
+               }
         return ret
 
 class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
@@ -194,7 +194,7 @@ class Concert(CarnaticStyle, data.models.Release):
         ret = {"url": reverse('carnatic-concert-search'),
                "name": "Concert",
                "data": [filters.Venue().object, filters.Instrument().object]
-              }
+               }
         return ret
 
     def get_similar(self):
@@ -215,7 +215,7 @@ class Concert(CarnaticStyle, data.models.Release):
         try:
             similar = search.get_similar_concerts(wid, rid, tid, aid)
             similar = sorted(similar, reverse=True,
-                    key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
+                             key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
 
             similar = similar[:10]
             for s, v in similar:
@@ -228,7 +228,10 @@ class Concert(CarnaticStyle, data.models.Release):
                 taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
                 artists = [Artist.objects.get(pk=a) for a in v["artists"]]
                 ret.append((concert,
-                    {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
+                           {"works": works,
+                            "raagas": raagas,
+                            "taalas": taalas,
+                            "artists": artists}))
         except pysolr.SolrError:
             # TODO: Should show an error message
             pass
@@ -282,7 +285,7 @@ class Raaga(data.models.BaseModel):
         ret = {"url": reverse('carnatic-raaga-search'),
                "name": "Raaga",
                "data": [filters.Text().object]
-              }
+               }
         return ret
 
     def get_absolute_url(self):
@@ -297,7 +300,7 @@ class Raaga(data.models.BaseModel):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1,2])
+        artists = Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1, 2])
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -339,7 +342,8 @@ class TaalaAlias(models.Model):
 # similarity matrix. key: a taala id, val: an ordered list of similarities (taala ids)
 # We fill in 'above' and 'below' the diagonal - e.g. 1: 2,3 / 2: 1
 taala_similar = {1: [5], 3: [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
-        7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4], 10: [7, 3], 11: [7, 3]}
+                 7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4],
+                 10: [7, 3], 11: [7, 3]}
 
 class Taala(data.models.BaseModel):
     missing_image = "taala.jpg"
@@ -365,7 +369,7 @@ class Taala(data.models.BaseModel):
         ret = {"url": reverse('carnatic-taala-search'),
                "name": "Taala",
                "data": [filters.Text().object]
-              }
+               }
         return ret
 
     def get_absolute_url(self):
@@ -422,7 +426,7 @@ class Work(CarnaticStyle, data.models.Work):
         ret = {"url": reverse('carnatic-work-search'),
                "name": "Composition",
                "data": [filters.Form().object, filters.Language().object, filters.WorkDate().object]
-              }
+               }
         return ret
 
 class WorkRaaga(models.Model):
@@ -475,8 +479,6 @@ class Recording(CarnaticStyle, data.models.Recording):
         all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
 
-
-
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
@@ -523,7 +525,7 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         ret = {"url": reverse('carnatic-instrument-search'),
                "name": "Instrument",
                "data": [filters.Text().object]
-              }
+               }
         return ret
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
@@ -531,6 +533,7 @@ class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
 
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+
     def raagas(self):
         return Raaga.objects.filter(work__composer=self).all()
 

@@ -1,6 +1,5 @@
 from django.conf import settings
 import data.models
-import carnatic.models
 
 class PageLoggerMiddleware(object):
 
@@ -23,12 +22,12 @@ class NavigationHistoryMiddleware(object):
 
         if request.path.startswith('/carnatic/'):
             entities = request.session.get('carnatic_navigation_history', [])
-            
+
             name = view_func.func_name
             if name in ['artist', 'concert']:
                 entity = [name, view_kwargs['uuid']]
             elif name in ['instrument', 'raaga', 'taala']:
-                entity = [name, view_kwargs['%sid'%name]]
+                entity = [name, view_kwargs['%sid' % name]]
             else:
                 return None
 

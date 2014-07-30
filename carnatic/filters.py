@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -28,8 +28,8 @@ class SearchFilter(object):
     @property
     def object(self):
         ob = {"name": self.name,
-                "type": self.type
-             }
+              "type": self.type
+              }
         if hasattr(self, "datasource"):
             ob["data"] = [o.name for o in self.datasource.objects.all()]
         elif hasattr(self, "datalist"):
@@ -44,6 +44,7 @@ class School(SearchFilter):
     name = "school"
     multiselect = True
     type = "list"
+
     @property
     def datasource(self):
         return models.MusicalSchool
@@ -52,6 +53,7 @@ class Region(SearchFilter):
     name = "region"
     multiselect = True
     type = "list"
+
     @property
     def datasource(self):
         return models.GeographicRegion
@@ -66,6 +68,7 @@ class Venue(SearchFilter):
     name = "venue"
     type = "list"
     multiselect = True
+
     @property
     def datasource(self):
         return models.Sabbah
@@ -74,6 +77,7 @@ class Instrument(SearchFilter):
     name = "instrument"
     type = "list"
     multiselect = True
+
     @property
     def datasource(self):
         return models.Instrument
@@ -82,6 +86,7 @@ class Form(SearchFilter):
     name = "form"
     type = "list"
     multiselect = True
+
     @property
     def datasource(self):
         return models.Form
@@ -90,6 +95,7 @@ class Language(SearchFilter):
     name = "language"
     type = "list"
     multiselect = True
+
     @property
     def datasource(self):
         return models.Language

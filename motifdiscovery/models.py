@@ -33,7 +33,7 @@ class Pattern(models.Model):
     file = models.ForeignKey(File)
     start_time = models.FloatField()
     end_time = models.FloatField()
-    pair_id = models.IntegerField(blank=True, null=True) # ForeignKey to Pattern
+    pair_id = models.IntegerField(blank=True, null=True)  # ForeignKey to Pattern
     isseed = models.IntegerField()
     segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True)
 

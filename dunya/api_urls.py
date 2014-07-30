@@ -1,28 +1,28 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 
-import carnatic.api 
-import hindustani.api 
+import carnatic.api
+import hindustani.api
 
 mbid_match = r'(?P<mbid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^carnatic/raaga$', carnatic.api.RaagaList.as_view(), name='api-carnatic-raaga-list'),
     url(r'^carnatic/raaga/(?P<pk>\d+)$', carnatic.api.RaagaDetail.as_view(), name='api-carnatic-raaga-detail'),
 
@@ -46,13 +46,13 @@ urlpatterns = patterns('',
 
     url(r'^hindustani/raag$', hindustani.api.RaagList.as_view(), name='api-hindustani-raag-list'),
     url(r'^hindustani/raag/(?P<pk>\d+)$', hindustani.api.RaagDetail.as_view(), name='api-hindustani-raag-detail'),
-    
+
     url(r'^hindustani/taal$', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
     url(r'^hindustani/taal/(?P<pk>\d+)$', hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
 
     url(r'^hindustani/laya$', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
     url(r'^hindustani/laya/(?P<pk>\d+)$', hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
-    
+
     url(r'^hindustani/form$', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
     url(r'^hindustani/form/(?P<pk>\d+)$', hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
 
@@ -70,7 +70,6 @@ urlpatterns = patterns('',
 
     url(r'^hindustani/release$', hindustani.api.ReleaseList.as_view(), name='api-hindustani-release-list'),
     url(r'^hindustani/release/%s$' % mbid_match, hindustani.api.ReleaseDetail.as_view(), name='api-hindustani-release-detail'),
-)
+]
 
-urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api',])
-
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

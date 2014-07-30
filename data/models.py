@@ -18,7 +18,6 @@ from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.db.models import Q
 from django.utils.text import slugify
 
 import docserver
@@ -131,7 +130,6 @@ class Artist(BaseModel):
     )
     TYPE_CHOICES = (
         ('P', 'Person'),
-        #('C', 'Composer'),
         ('G', 'Group')
     )
     name = models.CharField(max_length=200)
@@ -171,7 +169,7 @@ class Artist(BaseModel):
         for r in pa_rels:
             concert_recordings.extend(r.tracks.all())
 
-        return list(set(performance_recs)|set(concert_recordings))
+        return list(set(performance_recs) | set(concert_recordings))
 
     def performances(self, raagas=[], taalas=[]):
         ReleaseClass = self.get_object_map("release")
@@ -235,12 +233,12 @@ class Release(BaseModel):
     # These fields are specified on the concrete model classes because they might use
     # different spellings (Release/Concert)
     # Ordered tracks
-    #tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
+    # tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
 
     def length(self):
         tot_len = 0
         for t in self.tracks.all():
-            tot_len += t.length/1000
+            tot_len += t.length / 1000
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
     def __unicode__(self):
@@ -260,12 +258,12 @@ class Release(BaseModel):
     def tracklist(self):
         """Return an ordered list of recordings in this concert"""
         tracks = self.get_object_map("recording").objects.filter(
-                concertrecording__concert=self).order_by('concertrecording__track')
+            concertrecording__concert=self).order_by('concertrecording__track')
         return tracks
 
     def performers(self):
-        """ The performers on a concert are those who are in the performance relations,
-        both on the concert and the concerts recordings.
+        """ The performers on a release are those who are in the performance
+        relations, and the lead artist of the release (if not in relations)
         TODO: Should this return a performance object, or an artist?
         If it returns just artists, we don't need to put the artist
         checks last.
@@ -329,7 +327,7 @@ class Recording(BaseModel):
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
 
     # On concrete class because a recording may have >1 work in some styles
-    #work = models.ForeignKey('Work', blank=True, null=True)
+    # work = models.ForeignKey('Work', blank=True, null=True)
 
     def __unicode__(self):
         return self.title
@@ -349,11 +347,11 @@ class Recording(BaseModel):
         return url
 
     def length_format(self):
-        numsecs = self.length/1000
+        numsecs = self.length / 1000
         minutes = math.floor(numsecs / 60.0)
         hours = math.floor(minutes / 60.0)
-        minutes = math.floor(minutes - hours*60)
-        seconds = math.floor(numsecs - hours*3600 - minutes*60)
+        minutes = math.floor(minutes - hours * 60)
+        seconds = math.floor(numsecs - hours * 3600 - minutes * 60)
         if hours:
             val = "%02d:%02d:%02d" % (hours, minutes, seconds)
         else:
@@ -426,10 +424,10 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        person = "%s" % self.performer
+        person = u"%s" % self.performer
         if self.instrument:
-            person += " playing %s" % self.instrument
-        person += " on %s" % self.recording
+            person += u" playing %s" % self.instrument
+        person += u" on %s" % self.recording
         return person
 
 class Composer(BaseModel):
@@ -477,4 +475,3 @@ class VisitLog(models.Model):
 
     def __unicode__(self):
         return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
-

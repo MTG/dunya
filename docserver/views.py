@@ -1,21 +1,20 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import json, os
-import collections
+import json
 import datetime
 import inspect
 import pkgutil
@@ -23,11 +22,7 @@ import pkgutil
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import user_passes_test, login_required
-from django.core.urlresolvers import reverse
-from django.core.servers.basehttp import FileWrapper
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
 from docserver import models
@@ -44,9 +39,6 @@ from compmusic import extractors
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework import generics
-from rest_framework.decorators import api_view
-from rest_framework.reverse import reverse
-from rest_framework.response import Response
 
 from sendfile import sendfile
 
@@ -65,12 +57,12 @@ class CollectionDetail(generics.RetrieveAPIView):
     serializer_class = serializers.CollectionDetailSerializer
 
 class DocumentDetailExternal(generics.RetrieveAPIView):
-    lookup_field='external_identifier'
+    lookup_field = 'external_identifier'
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
 
 class DocumentDetail(generics.RetrieveAPIView):
-    lookup_field='pk'
+    lookup_field = 'pk'
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
 
@@ -111,7 +103,7 @@ def download_external(request, uuid, ftype):
         ratelimit = "off"
         if ftype == "mp3" and not is_staff:
             # 200k
-            ratelimit = 200*1024
+            ratelimit = 200 * 1024
 
         # TODO: We should ratelimit mp3 requests, but not any others,
         # so we need a different path for nginx for these ones
@@ -120,14 +112,8 @@ def download_external(request, uuid, ftype):
 
         return response
     except util.TooManyFilesException as e:
-        r = ""
-        if e.args:
-            r = e.args[0]
         return HttpResponseBadRequest(e)
     except util.NoFileException as e:
-        r = ""
-        if e.args:
-            r = e.args[0]
         return HttpResponseNotFound(e)
 
 #### Essentia manager
@@ -167,7 +153,7 @@ def manager(request):
         workers = list(set(workerkeys) & set(hostkeys))
         neww = []
         for w in workers:
-            host = w.split("@")[1] 
+            host = w.split("@")[1]
             theworker = workerobs.get(hostname=host)
             num_proc = len(hosts[w])
             if theworker.state == models.Worker.UPDATING:
@@ -194,9 +180,9 @@ def manager(request):
     latestpycm = models.PyCompmusicVersion.objects.order_by('-commit_date').first()
     latestessentia = models.EssentiaVersion.objects.order_by('-commit_date').first()
 
-    ret = {"modules": modules, "collections": collections, "workers": workers,\
-            "newworkers": newworkers, "inactiveworkers": inactiveworkers,
-            "latestpycm": latestpycm, "latestessentia": latestessentia}
+    ret = {"modules": modules, "collections": collections, "workers": workers,
+           "newworkers": newworkers, "inactiveworkers": inactiveworkers,
+           "latestpycm": latestpycm, "latestessentia": latestessentia}
     return render(request, 'docserver/manager.html', ret)
 
 def understand_task(task):
@@ -312,7 +298,7 @@ def worker(request, hostname):
         workerlog.append({"date": date, "action": a["action"]})
 
     ret = {"worker": wk, "state": state, "active": active,
-            "reserved": reserved, "recent": recent, "workerlog": workerlog}
+           "reserved": reserved, "recent": recent, "workerlog": workerlog}
     return render(request, 'docserver/worker.html', ret)
 
 
@@ -420,7 +406,7 @@ def collection(request, slug):
     if request.method == "POST":
         delete = request.POST.get("delete")
         if delete is not None:
-            jobs.delete_collection.delay(c.pk)
+            jobs.delete_collection.delay(collection.pk)
 
     ret = {"collection": collection}
     return render(request, 'docserver/collection.html', ret)
@@ -443,10 +429,10 @@ def collectionversion(request, slug, version, type):
     elif type == "unprocessed":
         unprocessedfiles = mversion.unprocessed_files(collection)
     ret = {"collection": collection,
-            "modulever": mversion,
-            "type": type,
-            "unprocessedfiles": unprocessedfiles,
-            "processedfiles": processedfiles}
+           "modulever": mversion,
+           "type": type,
+           "unprocessedfiles": unprocessedfiles,
+           "processedfiles": processedfiles}
     return render(request, 'docserver/collectionversion.html', ret)
 
 @user_passes_test(is_staff)
@@ -469,4 +455,3 @@ def file(request, slug, uuid, version=None):
            "outputs": outputs,
            "modulederived": modulederived}
     return render(request, 'docserver/file.html', ret)
-

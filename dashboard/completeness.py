@@ -1,23 +1,19 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import django.utils.timezone
-
-import celery
-import os
 import json
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -53,14 +49,14 @@ class CompletenessBase(object):
         checker = models.CompletenessChecker.objects.get(module=thismodule)
         if self.type == 'f':
             thefile = models.CollectionFile.objects.get(pk=the_id)
-            result = 'g' if result else 'b' 
+            result = 'g' if result else 'b'
             fs = models.CollectionFileResult.objects.create(collectionfile=thefile, checker=checker, result=result)
             if data:
                 fs.data = json.dumps(data)
                 fs.save()
         elif self.type == 'r':
             therelease = models.MusicbrainzRelease.objects.get(pk=the_id)
-            result = 'g' if result else 'b' 
+            result = 'g' if result else 'b'
             rs = models.MusicbrainzReleaseResult.objects.create(musicbrainzrelease=therelease, checker=checker, result=result)
             if data:
                 rs.data = json.dumps(data)
@@ -95,8 +91,9 @@ class MakamTags(CompletenessBase):
         meta = compmusic.file_metadata(fpath)
         m = meta["meta"]
         recordingid = m["recordingid"]
-        mbrec = compmusic.mb.get_recording_by_id(recordingid, 
-                includes=["tags", "work-rels"])["recording"]
+        mbrec = compmusic.mb.get_recording_by_id(
+            recordingid,
+            includes=["tags", "work-rels"])["recording"]
         tags = mbrec.get("tag-list", [])
         res = {}
         m, u, f = self._get_tags_from_list(tags)
@@ -138,7 +135,6 @@ class MakamTags(CompletenessBase):
         if wkfs and recfs and wkfs != recfs:
             res["formerr"].append("Work and Recording forms don't match")
 
-
         # de-duplicate the lists
         res["makams"] = list(wkms | recms)
         res["usuls"] = list(wkus | recus)
@@ -147,6 +143,8 @@ class MakamTags(CompletenessBase):
         res["recordingid"] = recordingid
 
         missingm = []
+        missingu = []
+        missingf = []
         for m in res["makams"]:
             try:
                 makam.models.Makam.objects.get(name__iexact=m)
@@ -216,7 +214,7 @@ class HindustaniRaagTaal(CompletenessBase):
             res["missingf"] = missingf
         if missingl:
             res["missingl"] = missingl
-                
+
         res["gotraag"] = len(raags) > 0
         res["gottaal"] = len(taals) > 0
         res["gotform"] = len(forms) > 0
@@ -277,7 +275,7 @@ class RaagaTaalaFile(CompletenessBase):
                 missingt.append(t)
         if missingt:
             res["missingt"] = missingt
-                
+
         res["gotraaga"] = len(raagas) > 0
         res["gottaala"] = len(taalas) > 0
         res["raaga"] = raagas
@@ -308,7 +306,7 @@ class ReleaseCoverart(CompletenessBase):
     def task(self, musicbrainzrelease_id):
         release = models.MusicbrainzRelease.objects.get(pk=musicbrainzrelease_id)
         try:
-            coverart = caa.get_image_list(release.mbid)
+            caa.get_image_list(release.mbid)
             has_coverart = True
         except musicbrainzngs.ResponseError:
             has_coverart = False
@@ -381,7 +379,7 @@ class ReleaseRelationships(object):
             thework["composers"] = composers
             retworks.append(thework)
 
-        return {"id": recording["id"], "title": recording["title"], \
+        return {"id": recording["id"], "title": recording["title"],
                 "works": retworks, "artists": artists, "leadartists": leadartists}
 
     def get_artist_performances(self, relationlist):
@@ -389,7 +387,6 @@ class ReleaseRelationships(object):
         artists = []
         for arel in relationlist:
             if arel["type"] in ["vocal", "instrument", "performer"]:
-                aid = arel["target"]
                 attrs = arel.get("attribute-list", [])
                 lead = False
                 for a in attrs:
@@ -430,7 +427,7 @@ class ReleaseRelationships(object):
             if len(r["works"]) == 0:
                 missingworks.append({"id": r["id"], "title": r["title"]})
 
-        # Missing a composer relationship for each of the works 
+        # Missing a composer relationship for each of the works
         # [{"id": workid, "title": worktitle}, ]
         missingcomposers = []
         for r in recordings:
@@ -447,12 +444,11 @@ class ReleaseRelationships(object):
             # If the release has some artists set, we're fine
             pass
         else:
-            # Otherwise check that all recordings have either an artist or 
+            # Otherwise check that all recordings have either an artist or
             # a lead artist
             for r in recordings:
                 if not r["artists"] and not r["leadartists"]:
                     missingperformers.append({"id": r["id"], "title": r["title"]})
-
 
         # Instrument exists in the DB for each performance
         # We test instruments in the 'release' test, not a separate 'recording'
@@ -481,23 +477,22 @@ class ReleaseRelationships(object):
                     if not self.check_instrument(instrumentname):
                         missinginstruments.add(instrumentname)
 
-        ret = {
-                "missingworks": missingworks,
-                "missingcomposers": missingcomposers,
-                "missingperfomers": missingperformers,
-                "missinginstruments": list(missinginstruments),
-                "releaseartistrels": relartists,
-                "releaseleadartistrels": relleadartists,
-                "recordings": recordings,
-                "artists": artists
-                }
+        ret = {"missingworks": missingworks,
+               "missingcomposers": missingcomposers,
+               "missingperfomers": missingperformers,
+               "missinginstruments": list(missinginstruments),
+               "releaseartistrels": relartists,
+               "releaseleadartistrels": relleadartists,
+               "recordings": recordings,
+               "artists": artists
+               }
         val = not (len(missingworks) or len(missingcomposers) or len(missingperformers) or len(missinginstruments))
         return (val, ret)
 
 class HindustaniReleaseRelationships(ReleaseRelationships, CompletenessBase):
     name = 'Hindustani release relationships'
+
     def check_instrument(self, instrname):
-        from hindustani import models
         try:
             hindustani.models.Instrument.objects.filter(name=instrname)
             return True
@@ -507,6 +502,7 @@ class HindustaniReleaseRelationships(ReleaseRelationships, CompletenessBase):
 
 class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
     name = 'Carnatic release relationships'
+
     def check_instrument(self, instrname):
         from carnatic import models
         try:
@@ -518,6 +514,7 @@ class CarnaticReleaseRelationships(ReleaseRelationships, CompletenessBase):
 
 class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):
     name = 'Makam release relationships'
+
     def check_instrument(self, instrname):
         try:
             makam.models.Instrument.objects.fuzzy(instrname)
