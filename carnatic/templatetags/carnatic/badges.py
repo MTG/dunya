@@ -16,7 +16,7 @@
 
 from django import template
 
-from carnatic.models import *
+from carnatic import models
 
 register = template.Library()
 
@@ -25,8 +25,8 @@ register = template.Library()
 
 @register.inclusion_tag("carnatic/badges/concert.html")
 def badge_concert(concert):
-    if not isinstance(concert, Concert):
-        concert = Concert.objects.get(pk=concert)
+    if not isinstance(concert, models.Concert):
+        concert = models.Concert.objects.get(pk=concert)
     return {"concert": concert}
 
 @register.inclusion_tag("carnatic/badges/performance.html")
@@ -36,8 +36,8 @@ def badge_performance(performance):
 
 @register.inclusion_tag("carnatic/badges/artist.html")
 def badge_artist(artist):
-    if not isinstance(artist, Artist):
-        artist = Artist.objects.get(pk=artist)
+    if not isinstance(artist, models.Artist):
+        artist = models.Artist.objects.get(pk=artist)
     return {"artist": artist}
 
 @register.inclusion_tag("carnatic/badges/recording.html")
@@ -46,46 +46,46 @@ def badge_recording(recording):
 
 @register.inclusion_tag("carnatic/badges/instrument.html")
 def badge_instrument(instrument):
-    if not isinstance(instrument, Instrument):
-        instrument = Instrument.objects.get(pk=instrument)
+    if not isinstance(instrument, models.Instrument):
+        instrument = models.Instrument.objects.get(pk=instrument)
     return {"instrument": instrument}
 
 @register.inclusion_tag("carnatic/badges/raaga.html")
 def badge_raaga(raaga):
-    if not isinstance(raaga, Raaga):
-        raaga = Raaga.objects.get(pk=raaga)
+    if not isinstance(raaga, models.Raaga):
+        raaga = models.Raaga.objects.get(pk=raaga)
     return {"raaga": raaga}
 
 @register.inclusion_tag("carnatic/badges/taala.html")
 def badge_taala(taala):
-    if not isinstance(taala, Taala):
-        taala = Taala.objects.get(pk=taala)
+    if not isinstance(taala, models.Taala):
+        taala = models.Taala.objects.get(pk=taala)
     return {"taala": taala}
 
 @register.inclusion_tag("carnatic/badges/composer.html")
 def badge_composer(composer):
-    if not isinstance(composer, Composer):
-        composer = Composer.objects.get(pk=composer)
+    if not isinstance(composer, models.Composer):
+        composer = models.Composer.objects.get(pk=composer)
     return {"composer": composer}
 
 @register.inclusion_tag("carnatic/badges/work.html")
 def badge_work(work):
-    if not isinstance(work, Work):
-        work = Work.objects.get(pk=work)
+    if not isinstance(work, models.Work):
+        work = models.Work.objects.get(pk=work)
     return {"work": work}
 
 #### Badges for comparing an item to other things of the same type
 
 @register.inclusion_tag("carnatic/badges/similar_artist.html")
 def badge_similar_artist(artist, concerts=None, guru=None):
-    if not isinstance(artist, Artist):
-        artist = Artist.objects.get(pk=artist)
+    if not isinstance(artist, models.Artist):
+        artist = models.Artist.objects.get(pk=artist)
     return {"artist": artist, "concerts": concerts, "guru": guru}
 
 @register.inclusion_tag("carnatic/badges/similar_concert.html")
 def badge_similar_concert(concert, similarity):
-    if not isinstance(concert, Concert):
-        concert = Concert.objects.get(pk=concert)
+    if not isinstance(concert, models.Concert):
+        concert = models.Concert.objects.get(pk=concert)
     return {"concert": concert,
             "works": similarity.get("works", []),
             "taalas": similarity.get("taalas", []),
@@ -105,8 +105,8 @@ def badge_similar_recording(recording):
 
 @register.inclusion_tag("carnatic/badges/detail_concert.html")
 def badge_detail_concert(concert):
-    if not isinstance(concert, Concert):
-        concert = Concert.objects.get(pk=concert)
+    if not isinstance(concert, models.Concert):
+        concert = models.Concert.objects.get(pk=concert)
     return {"concert": concert}
 
 @register.inclusion_tag("carnatic/badges/detail_artist.html")
@@ -135,38 +135,38 @@ def badge_mini_artist(artist):
 
 @register.inclusion_tag("carnatic/badges/mini_recording.html")
 def badge_mini_recording(recording):
-    if not isinstance(recording, Recording):
-        recording = Recording.objects.get(pk=recording)
+    if not isinstance(recording, models.Recording):
+        recording = models.Recording.objects.get(pk=recording)
     return {"recording": recording}
 
 @register.inclusion_tag("carnatic/badges/mini_instrument.html")
 def badge_mini_instrument(instrument):
-    if not isinstance(instrument, Instrument):
-        instrument = Instrument.objects.get(pk=instrument)
+    if not isinstance(instrument, models.Instrument):
+        instrument = models.Instrument.objects.get(pk=instrument)
     return {"instrument": instrument}
 
 @register.inclusion_tag("carnatic/badges/mini_raaga.html")
 def badge_mini_raaga(raaga):
-    if not isinstance(raaga, Raaga):
-        raaga = Raaga.objects.get(pk=raaga)
+    if not isinstance(raaga, models.Raaga):
+        raaga = models.Raaga.objects.get(pk=raaga)
     return {"raaga": raaga}
 
 @register.inclusion_tag("carnatic/badges/mini_taala.html")
 def badge_mini_taala(taala):
-    if not isinstance(taala, Taala):
-        taala = Taala.objects.get(pk=taala)
+    if not isinstance(taala, models.Taala):
+        taala = models.Taala.objects.get(pk=taala)
     return {"taala": taala}
 
 @register.inclusion_tag("carnatic/badges/mini_composer.html")
 def badge_mini_composer(composer):
-    if not isinstance(composer, Composer):
-        composer = Composer.objects.get(pk=composer)
+    if not isinstance(composer, models.Composer):
+        composer = models.Composer.objects.get(pk=composer)
     return {"composer": composer}
 
 @register.inclusion_tag("carnatic/badges/mini_work.html")
 def badge_mini_work(work):
-    if not isinstance(work, Work):
-        work = Work.objects.get(pk=work)
+    if not isinstance(work, models.Work):
+        work = models.Work.objects.get(pk=work)
     return {"work": work}
 
 @register.inclusion_tag("carnatic/badges/sample.html")

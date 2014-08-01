@@ -17,7 +17,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import csv
 
-from carnatic.models import *
+from carnatic import models
 
 class Command(BaseCommand):
     help = "load data and aliases from a csv file"
@@ -68,22 +68,22 @@ class Command(BaseCommand):
         # has header in the csv
         has_header = False
         if t == "instrument":
-            obclass = Instrument
+            obclass = models.Instrument
         elif t == "raaga":
-            obclass = Raaga
+            obclass = models.Raaga
             has_com = True
             has_header = True
         elif t == "taala":
-            obclass = Taala
+            obclass = models.Taala
             has_com = True
             has_header = True
         elif t == "region":
-            obclass = GeographicRegion
+            obclass = models.GeographicRegion
         elif t == "form":
-            obclass = Form
+            obclass = models.Form
         elif t == "language":
-            obclass = Language
+            obclass = models.Language
         elif t == "school":
-            obclass = MusicalSchool
+            obclass = models.MusicalSchool
         if obclass:
             self.load(fname, obclass, has_com, has_header)

@@ -17,7 +17,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import csv
 
-from makam.models import *
+from makam import models
 
 class Command(BaseCommand):
     help = "load data and aliases from a csv file"
@@ -45,12 +45,12 @@ class Command(BaseCommand):
 
         obclass = None
         if t == "instrument":
-            obclass = Instrument
+            obclass = models.Instrument
         elif t == "form":
-            obclass = Form
+            obclass = models.Form
         elif t == "makam":
-            obclass = Makam
+            obclass = models.Makam
         elif t == "usul":
-            obclass = Usul
+            obclass = models.Usul
         if obclass:
             self.load(fname, obclass)
