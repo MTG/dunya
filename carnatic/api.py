@@ -225,13 +225,13 @@ class ConcertArtistSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'name', 'instrument']
 
 class ConcertDetailSerializer(serializers.ModelSerializer):
-    tracks = RecordingInnerSerializer(many=True)
+    recordings  = RecordingInnerSerializer(many=True)
     artists = ConcertArtistSerializer(source='performers')
     concert_artists = ArtistInnerSerializer(source='artists')
 
     class Meta:
         model = models.Concert
-        fields = ['mbid', 'title', 'tracks', 'artists', 'concert_artists']
+        fields = ['mbid', 'title', 'recordings ', 'artists', 'concert_artists']
 
 class ConcertDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
