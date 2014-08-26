@@ -163,44 +163,45 @@ function loadClicks(){
 		console.log(EspecificOutputArray);
 		console.log("-------------------------");
         */
-        var url = "/carnatic/?q=1";
+        var urlParts = Array()
         var selected = EspecificOutputArray;
         // Artist
         if (selected.eid1) {
             for (var i=0; i < selected.eid1.length; i++) {
                 var n = selected.eid1[i];
-                url += "&a="+n[0];
+                urlParts.push("a="+n[0]);
             }
         }
         // Concert
         if (selected.eid2) {
             for (var i=0; i < selected.eid2.length; i++) {
                 var n = selected.eid2[i];
-                url += "&c="+n[0];
+                urlParts.push("c="+n[0]);
             }
         }
         // Instrument
         if (selected.eid3) {
             for (var i=0; i < selected.eid3.length; i++) {
                 var n = selected.eid3[i];
-                url += "&i="+n[0];
+                urlParts.push("i="+n[0]);
             }
         }
         // Raaga
         if (selected.eid4) {
             for (var i=0; i < selected.eid4.length; i++) {
                 var n = selected.eid4[i];
-                url += "&r="+n[0];
+                urlParts.push("r="+n[0]);
             }
         }
         // Taala
         if (selected.eid5) {
             for (var i=0; i < selected.eid5.length; i++) {
                 var n = selected.eid5[i];
-                url += "&t="+n[0];
+                urlParts.push("t="+n[0]);
             }
         }
-        window.location.href = url;
+        var searchData = urlParts.join("&");
+        window.location.search = searchData;
 	});
 
     /* Select Music Style */
