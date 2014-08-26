@@ -22,9 +22,20 @@ import carnatic
 class BootlegConcertManager(models.Manager):
     use_for_related_fields = True
 
-class NoBootlegConcertManager(models.Manager):
-    def get_queryset(self):
-        return super(NoBootlegConcertManager, self).get_queryset().filter(bootleg=False)
+    def with_bootlegs(self, show_bootlegs):
+        qs = self.get_queryset()
+        if not show_bootlegs:
+            qs = qs.filter(bootleg=False)
+        return qs
+
+class BootlegRecordingManager(models.Manager):
+    use_for_related_fields = True
+
+    def with_bootlegs(self, show_bootlegs):
+        qs = self.get_queryset()
+        if not show_bootlegs:
+            qs = qs.filter(concert__bootleg=False)
+        return qs
 
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):

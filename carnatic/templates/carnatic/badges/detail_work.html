@@ -12,11 +12,15 @@
         <b>Raaga:</b>&nbsp;{% inline_raaga work.single_raaga %} <b>Taala:</b>&nbsp;{% inline_taala work.single_taala %}
 </div>
   <div class="descOpen">
-      {% if work.recording_set %}
+      {% work_recordings_with_bootleg work request.show_bootlegs as recordings %}
+      {% if recordings.recordings|length %}
       Recordings of this composition<br>
-      {% for r in work.recording_set.all %}
+      {% for r in recordings.recordings %}
       {% badge_mini_recording r %}
       {% endfor %}
+      {% if recordings.bootlegs %}
+      And {{recordings.bootlegs}} others
+      {% endif %}
       {% endif %}
 </div>
 </div>

@@ -30,9 +30,9 @@ def badge_concert(concert):
     return {"concert": concert}
 
 @register.inclusion_tag("carnatic/badges/performance.html")
-def badge_performance(performance):
-    artist = performance.performer
-    return {"performance": performance, "artist": artist}
+def badge_performance(concert, artist):
+    instruments = concert.instruments_for_artist(artist)
+    return {"instruments": instruments, "artist": artist}
 
 @register.inclusion_tag("carnatic/badges/artist.html")
 def badge_artist(artist):
@@ -77,10 +77,14 @@ def badge_work(work):
 #### Badges for comparing an item to other things of the same type
 
 @register.inclusion_tag("carnatic/badges/similar_artist.html")
-def badge_similar_artist(artist, concerts=None, guru=None):
+def badge_similar_artist(artist, concerts=None, bootlegs=None, guru=None):
     if not isinstance(artist, models.Artist):
         artist = models.Artist.objects.get(pk=artist)
-    return {"artist": artist, "concerts": concerts, "guru": guru}
+    print "similar artist badge"
+    print " artist  ", artist
+    print " concerts", concerts
+    print " bootlegs", bootlegs
+    return {"artist": artist, "concerts": concerts, "guru": guru, "bootlegs": bootlegs}
 
 @register.inclusion_tag("carnatic/badges/similar_concert.html")
 def badge_similar_concert(concert, similarity):
@@ -113,9 +117,9 @@ def badge_detail_concert(concert):
 def badge_detail_artist(artist):
     return {"artist": artist}
 
-@register.inclusion_tag("carnatic/badges/detail_work.html")
-def badge_detail_work(work):
-    return {"work": work}
+@register.inclusion_tag("carnatic/badges/detail_work.html", takes_context=True)
+def badge_detail_work(context, work):
+    return {"work": work, "request": context["request"]}
 
 #### Mini badges (for inside badges)
 

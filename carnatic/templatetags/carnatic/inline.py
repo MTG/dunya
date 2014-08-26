@@ -21,6 +21,27 @@ import carnatic
 
 register = template.Library()
 
+@register.assignment_tag
+def work_recordings_with_bootleg(work, with_bootlegs):
+    all_recordings = work.recordings(with_bootlegs=True)
+    bootlegs = 0
+    ret = []
+    for r in all_recordings:
+        is_b = r.is_bootleg()
+        if not with_bootlegs and is_b:
+            bootlegs += 1
+        elif with_bootlegs and is_b:
+            ret.append(r)
+        elif not is_b:
+            ret.append(r)
+
+    return {"recordings": ret, "bootlegs": bootlegs}
+
+@register.assignment_tag
+def artist_collaborating_artists_with_bootleg(artist, with_bootlegs):
+    coll_artists = artist.collaborating_artists(with_bootlegs)
+    return [{"artist": a, "concerts": c, "bootlegs": b} for a, c, b in coll_artists]
+
 @register.simple_tag
 def url_host_and_path(request, url):
     return request.build_absolute_uri(url)

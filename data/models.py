@@ -25,6 +25,7 @@ import docserver
 import os
 import time
 import math
+import unidecode
 
 class ClassProperty(property):
     def __get__(self, cls, owner):
@@ -147,45 +148,36 @@ class Artist(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.name)])
+        if isinstance(self.name, unicode):
+            aname = unidecode.unidecode(self.name)
+        else:
+            aname = self.name
+        return reverse(viewname, args=[self.mbid, slugify(unicode(aname))])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
 
     def concerts(self):
         ReleaseClass = self.get_object_map("release")
-        concerts = ReleaseClass.objects.filter(tracks__instrumentperformance__performer=self)
+        concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
         return concerts.all()
 
-    def recordings(self):
-        IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(performer=self)
-        performance_recs = [p.recording for p in performances]
-
-        # Releases where we were primary artist
-        RelClass = self.get_object_map("release")
-        pa_rels = RelClass.objects.filter(artists=self).distinct()
-        concert_recordings = []
-        for r in pa_rels:
-            concert_recordings.extend(r.tracks.all())
-
-        return list(set(performance_recs) | set(concert_recordings))
 
     def performances(self, raagas=[], taalas=[]):
         ReleaseClass = self.get_object_map("release")
         IPClass = self.get_object_map("performance")
-        concerts = ReleaseClass.objects.filter(tracks__instrumentperformance__performer=self)
+        concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
         if raagas:
-            concerts = concerts.filter(tracks__work__raaga__in=raagas)
+            concerts = concerts.filter(recordings__work__raaga__in=raagas)
         if taalas:
-            concerts = concerts.filter(tracks__work__taala__in=taalas)
+            concerts = concerts.filter(recordings__work__taala__in=taalas)
         concerts = concerts.distinct()
         ret = []
         for c in concerts:
             # If the relation is on the track, we'll have lots of performances,
             # restrict the list to just one instance
             # TODO: If more than one person plays the same instrument this won't work well
-            performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
+            performances = IPClass.objects.filter(artist=self, recording__concert=c).distinct()
             # Unique the instrument list
             instruments = []
             theperf = []
@@ -237,7 +229,7 @@ class Release(BaseModel):
 
     def length(self):
         tot_len = 0
-        for t in self.tracks.all():
+        for t in self.recordings.all():
             tot_len += t.length / 1000
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
@@ -254,43 +246,6 @@ class Release(BaseModel):
 
     def artistnames(self):
         return self.artists.all()
-
-    def tracklist(self):
-        """Return an ordered list of recordings in this concert"""
-        tracks = self.get_object_map("recording").objects.filter(
-            concertrecording__concert=self).order_by('concertrecording__track')
-        return tracks
-
-    def performers(self):
-        """ The performers on a release are those who are in the performance
-        relations, and the lead artist of the release (if not in relations)
-        TODO: Should this return a performance object, or an artist?
-        If it returns just artists, we don't need to put the artist
-        checks last.
-        """
-        person = set()
-        ret = []
-        IPClass = self.get_object_map("performance")
-        IClass = self.get_object_map("instrument")
-
-        for t in self.tracks.all():
-            for p in t.performance.all():
-                if p.id not in person:
-                    perf = IPClass.objects.get(recording=t, performer=p)
-                    person.add(p.id)
-                    ret.append(perf)
-        for a in self.artists.all():
-            if a.id not in person:
-                dummyp = IPClass()
-                dummyp.performer = a
-                dummyp.concert = self
-                if a.main_instrument:
-                    dummyp.instrument = a.main_instrument
-                else:
-                    # TODO: If we don't know the instrument it's almost certainly a vocalist
-                    dummyp.instrument = IClass.objects.get(pk=1)
-                ret.insert(0, dummyp)
-        return ret
 
 class Work(BaseModel):
     class Meta:
@@ -310,13 +265,9 @@ class Work(BaseModel):
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/work/%s" % self.mbid
 
-    def concerts(self):
-        ReleaseClass = self.get_object_map("concert")
-        return ReleaseClass.objects.filter(tracks__work=self).all()
-
     def artists(self):
         ArtistClass = self.get_object_map("artist")
-        return ArtistClass.objects.filter(primary_concerts__tracks__work=self).distinct()
+        return ArtistClass.objects.filter(primary_concerts__recordings__work=self).distinct()
 
 class Recording(BaseModel):
     class Meta:
@@ -364,11 +315,11 @@ class Recording(BaseModel):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+        primary_artists = ArtistClass.objects.filter(primary_concerts__recordings=self)
 
         IPClass = self.get_object_map("performance")
         recperfs = IPClass.objects.filter(recording=self)
-        rec_artists = [r.performer for r in recperfs]
+        rec_artists = [r.artist for r in recperfs]
 
         all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
@@ -419,12 +370,12 @@ class InstrumentPerformance(models.Model):
     class Meta:
         abstract = True
     recording = models.ForeignKey('Recording')
-    performer = models.ForeignKey('Artist')
+    artist = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument', blank=True, null=True)
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        person = u"%s" % self.performer
+        person = u"%s" % self.artist
         if self.instrument:
             person += u" playing %s" % self.instrument
         person += u" on %s" % self.recording

@@ -97,10 +97,6 @@ def main(request):
             qform.append(int(i))
     if "q" in request.GET:
         query = request.GET.get("q")
-        # special case, we have this so we can put a ? in the arglist
-        # in the javascript, but it's actually a browse
-        if query == "1":
-            query = None
     else:
         query = None
 

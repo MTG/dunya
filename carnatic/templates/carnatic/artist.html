@@ -185,10 +185,11 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        {% if artist.collaborating_artists %}
+                        {% artist_collaborating_artists_with_bootleg artist request.show_bootlegs as collaborating_artists %}
+                        {% if collaborating_artists %}
                         <div class="scrollblock inforight" style="height: 290px;">
-                            {% for a, concerts in artist.collaborating_artists %}
-                                {% badge_similar_artist a concerts=concerts %}
+                            {% for a in collaborating_artists %}
+                                {% badge_similar_artist a.artist a.concerts a.bootlegs %}
                             {% endfor %}
                         </div>
                         {% else %}

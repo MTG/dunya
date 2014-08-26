@@ -85,10 +85,6 @@ def main(request):
             qtaala.append(int(i))
     if "q" in request.GET:
         query = request.GET.get("q")
-        # special case, we have this so we can put a ? in the arglist
-        # but it's actually a browse
-        if query == "1":
-            query = None
     else:
         query = None
 
@@ -287,13 +283,13 @@ def artist(request, uuid, name=None):
     ips = InstrumentPerformance.objects.filter(instrument=inst)
     similar_artists = []
     for i in ips:
-        if i.performer not in similar_artists:
-            similar_artists.append(i.performer)
+        if i.artist not in similar_artists:
+            similar_artists.append(i.artist)
 
     if artist.main_instrument and artist.main_instrument.percussion:
         taalamap = {}
         taalacount = collections.Counter()
-        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__performer=artist))
+        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__artist=artist))
         for t in taalas:
             taalacount[t.name] += 1
             if t.name not in taalamap:
@@ -307,7 +303,7 @@ def artist(request, uuid, name=None):
     if artist.main_instrument and artist.main_instrument.id in [1, 2]:
         raagamap = {}
         raagacount = collections.Counter()
-        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__performer=artist))
+        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__artist=artist))
         for r in raagas:
             raagacount[r.name] += 1
             if r.name not in raagamap:
@@ -342,13 +338,13 @@ def artist(request, uuid, name=None):
     if wr.count() and not wikipedia:
         wikipedia = wr[0].uri
 
-    # Sample is the first track of any of their concerts (Vignesh, Dec 9)
+    # Sample is the first recording of any of their concerts (Vignesh, Dec 9)
     concerts = artist.concerts()
     sample = None
     if concerts:
-        tracks = concerts[0].tracks.all()
-        if tracks:
-            sample = tracks[0]
+        recordings = concerts[0].recordings.all()
+        if recordings:
+            sample = recordings[0]
 
     ret = {"filter_items": json.dumps(get_filter_items()),
            "artist": artist,
@@ -413,10 +409,10 @@ def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
 
     bootleg = False
-    if not request.user.is_staff and concert.bootleg:
-        raise Http404
-    else:
+    if concert.bootleg and request.show_bootlegs:
         bootleg = True
+    elif concert.bootleg and not request.show_bootlegs:
+        raise Http404
 
     images = concert.images.all()
     if images:
@@ -424,9 +420,9 @@ def concert(request, uuid, title=None):
     else:
         image = "/media/images/noconcert.jpg"
     sample = None
-    tracks = concert.tracklist()
-    if tracks:
-        sample = tracks[:1]
+    recordings = concert.recordings.all()
+    if recordings:
+        sample = recordings[:1]
 
     tags = tagging.tag_cloud(concert.id, "concert")
 
@@ -443,7 +439,7 @@ def concert(request, uuid, title=None):
            "image": image,
            "sample": sample,
            "similar_concerts": similar,
-           "tracks": tracks,
+           "recordings": recordings,
            "bootleg": bootleg
            }
 
@@ -457,10 +453,10 @@ def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
 
     bootleg = False
-    if not request.user.is_staff and recording.is_bootleg():
-        raise Http404
-    else:
+    if recording.is_bootleg() and request.show_bootlegs:
         bootleg = True
+    elif recording.is_bootleg() and not request.show_bootlegs:
+        raise Http404
 
     tags = tagging.tag_cloud(recording.id, "recording")
 
@@ -529,18 +525,18 @@ def recording(request, uuid, title=None):
 
     try:
         concert = recording.concert_set.get()
-        tracks = list(concert.tracks.all())
-        recordingpos = tracks.index(recording)
+        recordings = list(concert.recordings.all())
+        recordingpos = recordings.index(recording)
     except Concert.DoesNotExist:
         concert = None
-        tracks = []
+        recordings = []
         recordingpos = 0
     nextrecording = None
     prevrecording = None
     if recordingpos > 0:
-        prevrecording = tracks[recordingpos - 1]
-    if recordingpos + 1 < len(tracks):
-        nextrecording = tracks[recordingpos + 1]
+        prevrecording = recordings[recordingpos - 1]
+    if recordingpos + 1 < len(recordings):
+        nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
     ret = {"filter_items": json.dumps(get_filter_items()),
@@ -585,9 +581,9 @@ def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
 
     tags = tagging.tag_cloud(work.id, "work")
-    tracks = work.recording_set.all()
-    if len(tracks):
-        sample = random.sample(tracks, 1)
+    recordings = work.recording_set.all()
+    if len(recordings):
+        sample = random.sample(recordings, 1)
     else:
         sample = None
 
@@ -612,10 +608,10 @@ def taala(request, taalaid, name=None):
     taala = get_object_or_404(Taala, pk=taalaid)
 
     similar = taala.get_similar()
-    tracks = taala.recordings(10)
+    recordings = taala.recordings(10)
     sample = None
-    if len(tracks):
-        sample = random.sample(tracks, 1)[0]
+    if len(recordings):
+        sample = random.sample(recordings, 1)[0]
 
     ret = {"taala": taala,
            "sample": sample,
@@ -633,10 +629,10 @@ def raagasearch(request):
 def raaga(request, raagaid, name=None):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
-    tracks = raaga.recordings(10)
+    recordings = raaga.recordings(10)
     sample = None
-    if len(tracks):
-        sample = random.sample(tracks, 1)[0]
+    if len(recordings):
+        sample = random.sample(recordings, 1)[0]
 
     ret = {"raaga": raaga,
            "sample": sample,

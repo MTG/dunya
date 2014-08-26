@@ -55,6 +55,19 @@ class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
 
+    def instruments_for_artist(self, artist):
+        """ Returns a list of instruments that this
+        artist performs on this release."""
+        return []
+
+    def performers(self):
+        """ The performers on a release are those who are in the performance
+        relations, and the lead artist of the release (if not in relations)
+        """
+        ret = self.artists.all()
+        artists = Artist.objects.filter(instrumentperformance__track__concert=self).exclude(id__in=ret)
+        return artists
+
 class ReleaseRecording(models.Model):
     release = models.ForeignKey('Release')
     recording = models.ForeignKey('Recording')

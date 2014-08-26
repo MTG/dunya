@@ -97,32 +97,49 @@ class Artist(CarnaticStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
-    def collaborating_artists(self):
+    def collaborating_artists(self, with_bootlegs):
+        # Returns [ (collaborating artist, list of concerts, number of bootlegs) ]
+        #   - number of bootlegs is only set if `with_bootlegs=False`
         # Get all concerts
         # For each artist on the concerts (both types), add a counter
-        # top 10 artist ids + the concerts they collaborate on
+        # top artist ids + the concerts they collaborate on
         c = collections.Counter()
         concerts = collections.defaultdict(set)
-        for concert in self.concerts():
+        bootlegs = collections.Counter()
+        for concert in self.concerts(with_bootlegs=True):
+            # We always use bootlegs to see if an artist is similar
+            # However, if the user can't see bootlegs, we need to say
+            # `Artist a performed with b on these concerts and n more`
             for p in concert.performers():
-                thea = p.performer
-                if thea.id != self.id:
-                    concerts[thea.id].add(concert)
-                    c[thea.id] += 1
+                if p.id != self.id:
+                    if concert.bootleg and with_bootlegs:
+                        concerts[p.id].add(concert)
+                    elif concert.bootleg and not with_bootlegs:
+                        bootlegs[p.id] += 1
+                    elif not concert.bootleg:
+                        concerts[p.id].add(concert)
+                    c[p.id] += 1
 
-        return [(Artist.objects.get(pk=pk), list(concerts[pk])) for pk, count in c.most_common()]
+        collaborators =  [(Artist.objects.get(pk=pk), list(concerts[pk]), bootlegs[pk]) for pk, count in c.most_common()]
+        collaborators = sorted(collaborators, key=lambda c: (len(c[1])+c[2], len(c[1])), reverse=True)
+        return collaborators
 
-    def concerts(self, raagas=[], taalas=[]):
+    def recordings(self, with_bootlegs=False):
+        return Recording.objects.with_bootlegs(with_bootlegs).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
+
+    def concerts(self, raagas=[], taalas=[], with_bootlegs=False):
         """ Get all the concerts that this artist performs in
         If `raagas` or `taalas` is set, only show concerts where
         these raagas or taalas were performed.
+        By default don't show concerts with a bootleg flag set,
+        but if `show_bootlegs` is True then show them.
         """
         ret = []
-        concerts = self.primary_concerts
+        concerts = self.primary_concerts.with_bootlegs(with_bootlegs)
         if raagas:
-            concerts = concerts.filter(tracks__work__raaga__in=raagas)
+            concerts = concerts.filter(recordings__work__raaga__in=raagas)
         if taalas:
-            concerts = concerts.filter(tracks__work__taala__in=taalas)
+            concerts = concerts.filter(recordings__work__taala__in=taalas)
         ret.extend(concerts.all())
         for a in self.groups.all():
             ret.extend([c for c in a.concerts(raagas, taalas) if c not in ret])
@@ -165,29 +182,47 @@ class Sabbah(CarnaticStyle, models.Model):
     city = models.CharField(max_length=100)
 
 class ConcertRecording(models.Model):
-    """ Links a concert to a recording with an implicit ordering """
+    """ Links a concert to a recording with an explicit ordering """
     concert = models.ForeignKey('Concert')
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
+
+    class Meta:
+        ordering = ("track", )
 
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.concert)
 
 class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
-    tracks = models.ManyToManyField('Recording', through="ConcertRecording")
+    recordings = models.ManyToManyField('Recording', through="ConcertRecording")
 
     bootleg = models.BooleanField(default=False)
 
     # Regular objects show bootlegs
     objects = managers.BootlegConcertManager()
-    # Or you can ask for concerts with no bootlegs
-    nobootlegs = managers.NoBootlegConcertManager()
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid, slugify(self.title)])
+
+    def tracklist(self):
+        """Return an ordered list of recordings in this concert"""
+        return self.recordings.order_by('concertrecording')
+
+    def instruments_for_artist(self, artist):
+        """ Returns a list of instruments that this
+        artist performs on this release."""
+        return Instrument.objects.filter(instrumentperformance__artist=artist).distinct()
+
+    def performers(self):
+        """ The performers on a release are those who are in the performance
+        relations, and the lead artist of the release (listed first)
+        """
+        ret = self.artists.all()
+        artists = Artist.objects.filter(instrumentperformance__recording__concert=self).exclude(id__in=ret).distinct()
+        return list(ret) + list(artists)
 
     @classmethod
     def get_filter_criteria(cls):
@@ -201,7 +236,7 @@ class Concert(CarnaticStyle, data.models.Release):
 
         artists = set(self.artists.all())
         for p in self.performers():
-            artists.add(p.performer)
+            artists.add(p)
         works = Work.objects.filter(recording__concert=self)
         raagas = Raaga.objects.filter(work__recording__concert=self)
         taalas = Taala.objects.filter(work__recording__concert=self)
@@ -300,7 +335,7 @@ class Raaga(data.models.BaseModel):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1, 2])
+        artists = Artist.objects.filter(primary_concerts__recordings__work__raaga=self).filter(main_instrument__in=[1, 2])
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -358,6 +393,9 @@ class Taala(data.models.BaseModel):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('carnatic-taala', args=[str(self.id), slugify(self.common_name)])
+
     def get_similar(self):
         if self.pk in taala_similar:
             return [Taala.objects.get(pk=id) for id in taala_similar[self.pk]]
@@ -372,9 +410,6 @@ class Taala(data.models.BaseModel):
                }
         return ret
 
-    def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id), slugify(self.common_name)])
-
     def works(self):
         return self.work_set.distinct().all()
 
@@ -382,7 +417,7 @@ class Taala(data.models.BaseModel):
         return Composer.objects.filter(works__taala=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
+        return Artist.objects.filter(primary_concerts__recordings__work__taala=self).distinct()
 
     def percussion_artists(self):
         artistmap = {}
@@ -429,6 +464,9 @@ class Work(CarnaticStyle, data.models.Work):
                }
         return ret
 
+    def recordings(self, with_bootlegs):
+        return self.recording_set.with_bootlegs(with_bootlegs).all()
+
 class WorkRaaga(models.Model):
     work = models.ForeignKey('Work')
     raaga = models.ForeignKey('Raaga')
@@ -446,7 +484,10 @@ class WorkTaala(models.Model):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 class Recording(CarnaticStyle, data.models.Recording):
+
     work = models.ForeignKey('Work', blank=True, null=True)
+
+    objects = managers.BootlegRecordingManager()
 
     def is_bootleg(self):
         for rel in self.concert_set.all():
@@ -470,11 +511,11 @@ class Recording(CarnaticStyle, data.models.Recording):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+        primary_artists = ArtistClass.objects.filter(primary_concerts__recordings=self)
 
         IPClass = self.get_object_map("performance")
         recperfs = IPClass.objects.filter(recording=self)
-        rec_artists = [r.performer for r in recperfs]
+        rec_artists = [r.artist for r in recperfs]
 
         all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
@@ -492,7 +533,7 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 
     def ordered_performers(self):
         perfs, counts = self.performers()
-        perfs = sorted(perfs, key=lambda p: counts[p.performer], reverse=True)
+        perfs = sorted(perfs, key=lambda p: counts[p.artist], reverse=True)
         return perfs
 
     def performers(self):
@@ -503,10 +544,10 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         # Sort how many performances this artist makes
         artistcount = collections.Counter()
         for p in performances:
-            artistcount[p.performer] += 1
-            if p.performer not in artists:
+            artistcount[p.artist] += 1
+            if p.artist not in artists:
                 ret.append(p)
-                artists.append(p.performer)
+                artists.append(p.artist)
 
         return ret, artistcount
 

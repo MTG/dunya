@@ -9,11 +9,9 @@
     <div class="plus"></div>
         {% inline_artist artist %}
         {% if artist.begin %}<p>{{artist.begin}}</p>{% endif %}
-{% if artist.main_instrument %}
-  {% inline_instrument artist.main_instrument %}
-    {% elif performance.instrument %}
-  {% inline_instrument performance.instrument %}
-    {% endif %}
+        {% if instruments %}
+          {% inline_instrument instruments %}
+        {% endif %}
   </div>
   <div class="descOpen">
     {% if artist.description.description %}

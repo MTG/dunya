@@ -50,7 +50,7 @@ class Instrument(HindustaniStyle, data.models.Instrument):
     def performers(self):
         artistcount = collections.Counter()
         for p in InstrumentPerformance.objects.filter(instrument=self):
-            artistcount[p.performer] += 1
+            artistcount[p.artist] += 1
 
         return [a for a, _ in artistcount.most_common()]
 
@@ -160,7 +160,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         ret = []
         ret.extend([r for r in self.primary_concerts.all()])
         # Releases in which we performed
-        ret.extend([r for r in Release.objects.filter(tracks__instrumentperformance__performer=self).distinct()])
+        ret.extend([r for r in Release.objects.filter(tracks__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -173,7 +173,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         releases = collections.defaultdict(set)
         for release in self.releases():
             for p in release.performers():
-                thea = p.performer
+                thea = p.artist
                 if thea.id != self.id:
                     releases[thea.id].add(release)
                     c[thea.id] += 1
@@ -182,7 +182,7 @@ class Artist(HindustaniStyle, data.models.Artist):
 
     def recordings(self):
         IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(performer=self)
+        performances = IPClass.objects.filter(artist=self)
         performance_recs = [p.recording for p in performances]
 
         return list(set(performance_recs))
@@ -205,20 +205,31 @@ class ReleaseRecording(models.Model):
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
 
+    class Meta:
+        ordering = ("track", )
+
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 class Release(HindustaniStyle, data.models.Release):
     tracks = models.ManyToManyField("Recording", through="ReleaseRecording")
 
+    def tracklist(self):
+        """Return an ordered list of recordings in this concert"""
+        return self.tracks.order_by('releaserecording')
+
+    def instruments_for_artist(self, artist):
+        """ Returns a list of instruments that this
+        artist performs on this release."""
+        return Instrument.objects.filter(instrumentperformance__artist=artist).distinct()
+
     def performers(self):
-        artists = set()
-        performances = []
-        for ip in InstrumentPerformance.objects.filter(recording__release=self):
-            if ip.performer not in artists:
-                artists.add(ip.performer)
-                performances.append(ip)
-        return performances
+        """ The performers on a release are those who are in the performance
+        relations, and the lead artist of the release (listed first)
+        """
+        ret = self.artists.all()
+        artists = Artist.objects.filter(instrumentperformance__track__concert=self).exclude(id__in=ret).distinct()
+        return list(ret) + list(artists)
 
     def related_items(self):
         ret = []
@@ -227,7 +238,7 @@ class Release(HindustaniStyle, data.models.Release):
         # artist
         # instruments
         for p in self.performers()[:5]:
-            ret.append(("artist", p.performer))
+            ret.append(("artist", p.artist))
             ret.append(("instrument", p.instrument))
         # taals
         # raags
@@ -254,7 +265,7 @@ class Release(HindustaniStyle, data.models.Release):
 
         artists = set()
         for p in self.performers():
-            artists.add(p.performer)
+            artists.add(p.artist)
         raags = set()
         taals = set()
         layas = set()

@@ -22,6 +22,9 @@
           {% for c in concerts %}
               {% badge_mini_concert c %}
           {% endfor %}
+          {% if bootlegs %}And {{bootlegs}} other concert{{bootlegs|pluralize}}{% endif %}
+        {% elif bootlegs and not concerts %}
+            These artists collaborate on {{bootlegs}} concert{{bootlegs|pluralize}}
         {% endif %}
     </div>
 </div>

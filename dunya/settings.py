@@ -80,6 +80,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Log every page that people go to
     'dunya.middleware.PageLoggerMiddleware',
+    'dunya.middleware.ShowBootlegMiddleware',
     # Show a history of the pages that people have been to
     # 'dunya.middleware.NavigationHistoryMiddleware',
 )
