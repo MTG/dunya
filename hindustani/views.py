@@ -318,9 +318,9 @@ def artist(request, uuid, name=None):
     releases = artist.releases()
     sample = None
     if releases:
-        tracks = releases[0].tracks.all()
-        if tracks:
-            sample = tracks[0]
+        recordings = releases[0].recordings.all()
+        if recordings:
+            sample = recordings[0]
 
     ret = {"artist": artist,
            "mb": musicbrainz,
@@ -406,18 +406,18 @@ def recording(request, uuid, title=None):
 
     try:
         release = recording.release_set.get()
-        tracks = list(release.tracks.all())
-        recordingpos = tracks.index(recording)
+        recordings = list(release.recordings.all())
+        recordingpos = recordings.index(recording)
     except models.Release.DoesNotExist:
         release = None
-        tracks = []
+        recordings = []
         recordingpos = 0
     nextrecording = None
     prevrecording = None
     if recordingpos > 0:
-        prevrecording = tracks[recordingpos - 1]
-    if recordingpos + 1 < len(tracks):
-        nextrecording = tracks[recordingpos + 1]
+        prevrecording = recordings[recordingpos - 1]
+    if recordingpos + 1 < len(recordings):
+        nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
     ret = {"recording": recording,
@@ -504,16 +504,16 @@ def taal(request, taalid, name=None):
     vilambit = models.Laya.Vilambit
 
     recordings = taal.recording_set.all()
-    tracks = []
-    tracks.extend([r for r in recordings if r.layas.count() == 1 and dhrut in r.layas.all()][:5])
-    tracks.extend([r for r in recordings if r.layas.count() == 1 and madhya in r.layas.all()][:5])
-    tracks.extend([r for r in recordings if r.layas.count() == 1 and vilambit in r.layas.all()][:5])
+    recordings = []
+    recordings.extend([r for r in recordings if r.layas.count() == 1 and dhrut in r.layas.all()][:5])
+    recordings.extend([r for r in recordings if r.layas.count() == 1 and madhya in r.layas.all()][:5])
+    recordings.extend([r for r in recordings if r.layas.count() == 1 and vilambit in r.layas.all()][:5])
     sample = None
-    if tracks:
-        sample = tracks[0]
+    if recordings:
+        sample = recordings[0]
 
     ret = {"taal": taal,
-           "tracks": tracks,
+           "recordings": recordings,
            "sample": sample
            }
     return render(request, "hindustani/taal.html", ret)
@@ -548,7 +548,7 @@ def instrument(request, instrumentid, name=None):
     # the first track
     releases = models.Release.objects.filter(artists__main_instrument=instrument)
     if releases.exists():
-        sample = releases[0].tracks.all()[0]
+        sample = releases[0].recordings.all()[0]
 
     ret = {"instrument": instrument,
            "sample": sample

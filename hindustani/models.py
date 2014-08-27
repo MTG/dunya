@@ -106,15 +106,15 @@ class Artist(HindustaniStyle, data.models.Artist):
             new_releases = []
             if raags:
                 for r in releases:
-                    if r.tracks.filter(raags__in=raags).exists():
+                    if r.recordings.filter(raags__in=raags).exists():
                         new_releases.append(r)
             if taals:
                 for r in releases:
-                    if r.tracks.filter(taals__in=taals).exists():
+                    if r.recordings.filter(taals__in=taals).exists():
                         new_releases.append(r)
             if forms:
                 for r in releases:
-                    if r.tracks.filter(forms__in=forms).exists():
+                    if r.recordings.filter(forms__in=forms).exists():
                         new_releases.append(r)
             releases = new_releases
 
@@ -122,7 +122,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         form_count = collections.Counter()
         raag_count = collections.Counter()
         for rel in releases:
-            for tr in rel.tracks.all():
+            for tr in rel.recordings.all():
                 for fo in tr.forms.all():
                     form_count[fo] += 1
                 for ra in tr.raags.all():
@@ -160,7 +160,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         ret = []
         ret.extend([r for r in self.primary_concerts.all()])
         # Releases in which we performed
-        ret.extend([r for r in Release.objects.filter(tracks__instrumentperformance__artist=self).distinct()])
+        ret.extend([r for r in Release.objects.filter(recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -173,10 +173,9 @@ class Artist(HindustaniStyle, data.models.Artist):
         releases = collections.defaultdict(set)
         for release in self.releases():
             for p in release.performers():
-                thea = p.artist
-                if thea.id != self.id:
-                    releases[thea.id].add(release)
-                    c[thea.id] += 1
+                if p != self.id:
+                    releases[p].add(release)
+                    c[p] += 1
 
         return [(Artist.objects.get(pk=pk), list(releases[pk])) for pk, count in c.most_common()]
 
@@ -212,11 +211,11 @@ class ReleaseRecording(models.Model):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 class Release(HindustaniStyle, data.models.Release):
-    tracks = models.ManyToManyField("Recording", through="ReleaseRecording")
+    recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
 
     def tracklist(self):
-        """Return an ordered list of recordings in this concert"""
-        return self.tracks.order_by('releaserecording')
+        """Return an ordered list of recordings in this release"""
+        return self.recordings.order_by('releaserecording')
 
     def instruments_for_artist(self, artist):
         """ Returns a list of instruments that this
@@ -228,7 +227,7 @@ class Release(HindustaniStyle, data.models.Release):
         relations, and the lead artist of the release (listed first)
         """
         ret = self.artists.all()
-        artists = Artist.objects.filter(instrumentperformance__track__concert=self).exclude(id__in=ret).distinct()
+        artists = Artist.objects.filter(instrumentperformance__recording__release=self).exclude(id__in=ret).distinct()
         return list(ret) + list(artists)
 
     def related_items(self):
@@ -238,15 +237,16 @@ class Release(HindustaniStyle, data.models.Release):
         # artist
         # instruments
         for p in self.performers()[:5]:
-            ret.append(("artist", p.artist))
-            ret.append(("instrument", p.instrument))
+            ret.append(("artist", p))
+            if p.main_instrument:
+                ret.append(("instrument", p.main_instrument))
         # taals
         # raags
         # forms
         taals = collections.Counter()
         raags = collections.Counter()
         forms = collections.Counter()
-        for tr in self.tracks.all():
+        for tr in self.recordings.all():
             for ta in tr.taals.all():
                 taals[ta] += 1
             for ra in tr.raags.all():
@@ -265,11 +265,11 @@ class Release(HindustaniStyle, data.models.Release):
 
         artists = set()
         for p in self.performers():
-            artists.add(p.artist)
+            artists.add(p)
         raags = set()
         taals = set()
         layas = set()
-        for tr in self.tracks.all():
+        for tr in self.recordings.all():
             for ta in tr.taals.all():
                 taals.add(ta)
             for ra in tr.raags.all():
@@ -411,7 +411,7 @@ class Raag(data.models.BaseModel):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__tracks__raags=self)
+        artists = Artist.objects.filter(primary_concerts__recordings__raags=self)
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -435,12 +435,12 @@ class Raag(data.models.BaseModel):
                 artistcount += 1
         # TODO: Should this only be releases from the shown artists?
         # releases
-        releases = Release.objects.filter(tracks__in=self.recording_set.all()).distinct()
+        releases = Release.objects.filter(recordings__in=self.recording_set.all()).distinct()
         # If forms is set, reduce the releases that are shown
         if forms:
             for f in forms:
                 ret.append(("form", f))
-            releases = releases.filter(tracks__forms__in=forms)
+            releases = releases.filter(recordings__forms__in=forms)
         for r in releases[:5]:
             ret.append(("release", r))
         # forms (of recordings that also have this raag)
@@ -522,13 +522,13 @@ class Taal(data.models.BaseModel):
                 artistcount += 1
         # releases
         # TODO: Should this be releases by the shown artists?
-        releases = Release.objects.filter(tracks__in=self.recording_set.all()).distinct()
+        releases = Release.objects.filter(recordings__in=self.recording_set.all()).distinct()
         if layas:
             # TODO: If we select more than 1 taal, and some layas, then
             # these layas will show more than once
             for l in layas:
                 ret.append(("laya", l))
-            releases = releases.filter(tracks__layas__in=layas)
+            releases = releases.filter(recordings__layas__in=layas)
         for r in releases[:5]:
             ret.append(("release", r))
         # forms (of recordings that also have this taal, filtered by
@@ -613,10 +613,10 @@ class Form(data.models.BaseModel):
 
     def artists(self):
         """ Artists who are the lead artist of a release and
-        who perform tracks with this form """
+        who perform releases with this form """
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__tracks__forms=self)
+        artists = Artist.objects.filter(primary_concerts__recordings__forms=self)
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -651,11 +651,11 @@ class Form(data.models.BaseModel):
         for ra, _ in raags.most_common(5):
             ret.append(("raag", ra))
         # releases
-        releases = Release.objects.filter(tracks__in=self.recording_set.all()).distinct()
+        releases = Release.objects.filter(recordings__in=self.recording_set.all()).distinct()
         if layas:
             for l in layas:
                 ret.append(("laya", l))
-            releases = releases.filter(tracks__layas__in=layas)
+            releases = releases.filter(recordings__layas__in=layas)
         for r in releases[:5]:
             ret.append(("release", r))
         return ret

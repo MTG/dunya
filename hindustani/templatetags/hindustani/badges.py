@@ -29,9 +29,9 @@ def badge_release(release):
     return {"release": release}
 
 @register.inclusion_tag("hindustani/badges/performance.html")
-def badge_performance(performance):
-    artist = performance.performer
-    return {"performance": performance, "artist": artist}
+def badge_performance(release, artist):
+    instruments = release.instruments_for_artist(artist)
+    return {"instruments": instruments, "artist": artist}
 
 @register.inclusion_tag("hindustani/badges/artist.html")
 def badge_artist(artist):
