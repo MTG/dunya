@@ -16,6 +16,7 @@
 
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 import collections
 
@@ -39,9 +40,10 @@ class ArtistAlias(MakamStyle, data.models.ArtistAlias):
     pass
 
 class Artist(MakamStyle, data.models.Artist):
-    def get_collaborating_artists(self):
-        our_releases = Release.objects.filter(tracks__instrumentperformance__performer=self).distinct()
-        others = Artist.objects.filter(instrumentperformance__recording__release__in=our_releases).exclude(pk=self.pk)
+
+    def collaborating_artists(self):
+        our_releases = Release.objects.filter(Q(recordings__instrumentperformance__artist=self)|Q(artists=self)).distinct()
+        others = Artist.objects.filter(Q(instrumentperformance__recording__release__in=our_releases)|Q(primary_concerts__in=our_releases)).exclude(pk=self.pk).distinct()
         counts = collections.Counter(others)
         return [a for a, c in counts.most_common(10)]
 
@@ -53,26 +55,33 @@ class Composer(MakamStyle, data.models.Composer):
 
 class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
-    tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
+    recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
+
+    def tracklist(self):
+        """Return an ordered list of recordings in this release"""
+        return self.recordings.order_by('releaserecording')
 
     def instruments_for_artist(self, artist):
         """ Returns a list of instruments that this
         artist performs on this release."""
-        return []
+        return Instrument.objects.filter(instrumentperformance__artist=artist).distinct()
 
     def performers(self):
         """ The performers on a release are those who are in the performance
         relations, and the lead artist of the release (if not in relations)
         """
-        ret = self.artists.all()
-        artists = Artist.objects.filter(instrumentperformance__track__concert=self).exclude(id__in=ret)
-        return artists
+        artists = self.artists.all()
+        performers = Artist.objects.filter(instrumentperformance__recording__release=self).exclude(id__in=artists).distinct()
+        return list(artists) + list(performers)
 
 class ReleaseRecording(models.Model):
     release = models.ForeignKey('Release')
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the release. Numerical 1-n
     track = models.IntegerField()
+
+    class Meta:
+        ordering = ("track", )
 
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)

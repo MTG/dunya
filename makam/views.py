@@ -46,7 +46,7 @@ def artist(request, uuid, name=None):
     main_releases = artist.primary_concerts.all()
     other_releases = models.Release.objects.filter(tracks__instrumentperformance__performer=artist).distinct()
 
-    collaborating_artists = artist.get_collaborating_artists()
+    collaborating_artists = artist.collaborating_artists()
 
     ret = {"artist": artist,
            "instruments": instruments,
