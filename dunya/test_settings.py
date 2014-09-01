@@ -9,7 +9,7 @@ SOUTH_TESTS_MIGRATE = False
 
 NOSE_ARGS = [
     '--with-xcoverage',
-    '--cover-package=carnatic,dashboard,docserver,hindustani',
+    '--cover-package=carnatic,dashboard,docserver,hindustani,makam',
     '--with-xunit',
     '--cover-erase'
 ]
