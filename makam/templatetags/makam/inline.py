@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import template
+import collections
 
 register = template.Library()
 
@@ -58,7 +59,13 @@ def inline_release(release):
 
 @register.simple_tag
 def inline_instrument(instrument):
-    return '<a href="%s">%s</a>' % (instrument.get_absolute_url(), instrument.name)
+    if not isinstance(instrument, collections.Iterable):
+        instrument = [instrument]
+    ret = []
+    for i in instrument:
+        if i:
+            ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
+    return ", ".join(ret)
 
 @register.simple_tag
 def inline_work(work):

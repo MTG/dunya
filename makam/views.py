@@ -59,7 +59,15 @@ def artist(request, uuid, name=None):
 def release(request, uuid, title=None):
     release = get_object_or_404(models.Release, mbid=uuid)
 
-    ret = {"release": release
+    tracklist = release.tracklist()
+    performers = release.performers()
+    perfinst = []
+    for p in performers:
+        perfinst.append((p, release.instruments_for_artist(p)))
+
+    ret = {"release": release,
+           "tracklist": tracklist,
+           "performers": perfinst
            }
     return render(request, "makam/release.html", ret)
 

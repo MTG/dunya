@@ -20,16 +20,16 @@
 
     <h3>Tracks:</h3>
     <ul>
-    {% for t in release.tracks.all %}
-    <li>{% inline_recording t %}</li>
+    {% for r in release.tracklist %}
+    <li>{% inline_recording r %}</li>
     {% endfor %}
     </ul>
 
 
     <h3>Participating musicans</h3>
     <ul>
-        {% for a in release.performers %}
-        <li>{% inline_artist a.performer %}</li>
+        {% for a, i in performers %}
+        <li>{% inline_artist a %} ({% inline_instrument i %})</li>
         {% endfor %}
     </ul>
 
