@@ -160,37 +160,6 @@ class Artist(BaseModel):
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
 
-    def concerts(self):
-        ReleaseClass = self.get_object_map("release")
-        concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
-        return concerts.all()
-
-
-    def performances(self, raagas=[], taalas=[]):
-        ReleaseClass = self.get_object_map("release")
-        IPClass = self.get_object_map("performance")
-        concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
-        if raagas:
-            concerts = concerts.filter(recordings__work__raaga__in=raagas)
-        if taalas:
-            concerts = concerts.filter(recordings__work__taala__in=taalas)
-        concerts = concerts.distinct()
-        ret = []
-        for c in concerts:
-            # If the relation is on the track, we'll have lots of performances,
-            # restrict the list to just one instance
-            # TODO: If more than one person plays the same instrument this won't work well
-            performances = IPClass.objects.filter(artist=self, recording__concert=c).distinct()
-            # Unique the instrument list
-            instruments = []
-            theperf = []
-            for p in performances:
-                if p.instrument not in instruments:
-                    theperf.append(p)
-                    instruments.append(p.instrument)
-            ret.append((c, theperf))
-        return ret
-
     def instruments(self):
         InstrumentKlass = self.get_object_map("instrument")
         return InstrumentKlass.objects.filter(instrumentperformance__artist=self).distinct()

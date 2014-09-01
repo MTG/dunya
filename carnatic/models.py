@@ -149,6 +149,31 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
 
+    def performances(self, raagas=[], taalas=[]):
+        ReleaseClass = self.get_object_map("release")
+        IPClass = self.get_object_map("performance")
+        concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
+        if raagas:
+            concerts = concerts.filter(recordings__work__raaga__in=raagas)
+        if taalas:
+            concerts = concerts.filter(recordings__work__taala__in=taalas)
+        concerts = concerts.distinct()
+        ret = []
+        for c in concerts:
+            # If the relation is on the track, we'll have lots of performances,
+            # restrict the list to just one instance
+            # TODO: If more than one person plays the same instrument this won't work well
+            performances = IPClass.objects.filter(artist=self, recording__concert=c).distinct()
+            # Unique the instrument list
+            instruments = []
+            theperf = []
+            for p in performances:
+                if p.instrument not in instruments:
+                    theperf.append(p)
+                    instruments.append(p.instrument)
+            ret.append((c, theperf))
+        return ret
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-artist-search'),
