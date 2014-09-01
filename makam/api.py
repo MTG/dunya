@@ -179,13 +179,13 @@ class ArtistList(generics.ListAPIView):
     serializer_class = ArtistListSerializer
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
-    concerts = ReleaseInnerSerializer(source='concerts')
+    releases = ReleaseInnerSerializer(source='main_releases')
     instruments = InstrumentInnerSerializer(source='instruments')
-    recordings = RecordingInnerSerializer(source='recordings')
+    # recordings = RecordingInnerSerializer(source='recordings')
 
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'name', 'concerts', 'instruments', 'recordings']
+        fields = ['mbid', 'name', 'releases', 'instruments']
 
 class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'

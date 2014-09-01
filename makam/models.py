@@ -47,6 +47,14 @@ class Artist(MakamStyle, data.models.Artist):
         counts = collections.Counter(others)
         return [a for a, c in counts.most_common(10)]
 
+    def main_releases(self):
+        """ Releases where this artist is named on the cover """
+        return self.primary_concerts.all()
+
+    def accompanying_releases(self):
+        """ Releases where this artist performs, but isn't named on the cover """
+        return Release.objects.filter(recordings__instrumentperformance__artist=self).exclude(id__in=self.primary_concerts.all()).distinct()
+
 class ComposerAlias(MakamStyle, data.models.ComposerAlias):
     pass
 

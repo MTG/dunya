@@ -22,11 +22,15 @@
 
 <h3>External</h3>
 <ul>
-{% for r in artist.references.all %}
-<li><a href="{{r.uri}}">{{r.source_name.name}}</a></li>
+{% for r in artist.refs %}
+<li><a href="{{r.url}}">{{r.title}}</a></li>
 {% endfor %}
 </ul>
 
+{% if artist.description %}
+<h3>Description</h3>
+<p>{{artist.description.description|safe}}</p>
+{% endif %}
 
 <h3>Main releases</h3>
 <ul>
@@ -35,7 +39,7 @@
     {% endfor %}
 </ul>
 
-    <h3>Accompaning releases</h3>
+    <h3>Accompanying releases</h3>
 <ul>
     {% for r in other_releases %}
     <li>{% inline_release r %}</li>

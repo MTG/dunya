@@ -42,9 +42,9 @@ def composer(request, uuid, name=None):
 def artist(request, uuid, name=None):
     artist = get_object_or_404(models.Artist, mbid=uuid)
 
-    instruments = models.Instrument.objects.filter(instrumentperformance__performer=artist).distinct()
+    instruments = artist.instruments()
     main_releases = artist.primary_concerts.all()
-    other_releases = models.Release.objects.filter(tracks__instrumentperformance__performer=artist).distinct()
+    other_releases = artist.accompanying_releases()
 
     collaborating_artists = artist.collaborating_artists()
 
