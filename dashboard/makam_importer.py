@@ -18,6 +18,7 @@ from dashboard.log import logger
 from dashboard import release_importer
 
 import makam
+import makam.models
 import compmusic
 
 class MakamReleaseImporter(release_importer.ReleaseImporter):
