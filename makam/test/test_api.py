@@ -19,10 +19,27 @@ class ComposerTest(TestCase):
     pass
 
 class ReleaseTest(TestCase):
-    pass
+    def test_render_release_detail(self):
+        r = models.Release.objects.create(title="Rel", mbid="805a3604-92e6-482f-a0e3-6620c4523d7a")
+        s = api.ReleaseDetailSerializer(r)
+        self.assertEquals(["artists", "mbid", "recordings", "release_artists", "title"], sorted(s.data.keys()))
+
+    def test_render_release_list(self):
+        r = models.Release(title="Rel", mbid="805a3604-92e6-482f-a0e3-6620c4523d7a")
+        s = api.ReleaseInnerSerializer(r)
+        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
+
 
 class RecordingTest(TestCase):
-    pass
+    def test_render_recording_detail(self):
+        r = models.Recording.objects.create(title="recording", mbid="2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
+        s = api.RecordingDetailSerializer(r)
+        self.assertEqual(["mbid", "performers", "releases", "title", "works"], sorted(s.data.keys()))
+
+    def test_render_recording_list(self):
+        r = models.Recording(title="recording", mbid="2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
+        s = api.RecordingInnerSerializer(r)
+        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
 
 class WorkTest(TestCase):
     pass

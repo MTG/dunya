@@ -74,7 +74,9 @@ def release(request, uuid, title=None):
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
 
-    ret = {"recording": recording
+    ret = {"recording": recording,
+           "worklist": recording.worklist(),
+
            }
     return render(request, "makam/recording.html", ret)
 

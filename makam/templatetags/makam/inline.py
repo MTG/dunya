@@ -19,6 +19,10 @@ import collections
 
 register = template.Library()
 
+@register.assignment_tag
+def recording_instruments_for_artist(recording, artist):
+    return recording.instruments_for_artist(artist)
+
 @register.simple_tag
 def inline_artist(artist):
     if artist:
@@ -54,6 +58,13 @@ def inline_recording(recording):
     return '<a href="%s">%s</a>' % (recording.get_absolute_url(), recording.title)
 
 @register.simple_tag
+def inline_release_list(releases):
+    ret = []
+    for r in releases:
+        ret.append(inline_release(r))
+    return ", ".join(ret)
+
+@register.simple_tag
 def inline_release(release):
     return '<a href="%s">%s</a>' % (release.get_absolute_url(), release.title)
 
@@ -70,3 +81,15 @@ def inline_instrument(instrument):
 @register.simple_tag
 def inline_work(work):
     return '<a href="%s">%s</a>' % (work.get_absolute_url(), work.title)
+
+@register.simple_tag
+def inline_makam(makam):
+    return '<a href="%s">%s</a>' % (makam.get_absolute_url(), makam.name)
+
+@register.simple_tag
+def inline_makam_list(makams):
+    ret = []
+    for m in makams:
+        ret.append(inline_makam(m))
+    return ", ".join(ret)
+

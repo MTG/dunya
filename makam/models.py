@@ -99,6 +99,9 @@ class RecordingWork(models.Model):
     recording = models.ForeignKey("Recording")
     sequence = models.IntegerField()
 
+    class Meta:
+        ordering = ("sequence", )
+
     def __unicode__(self):
         return u"%s: %s" % (self.sequence, self.work.title)
 
@@ -113,6 +116,25 @@ class Recording(MakamStyle, data.models.Recording):
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True, null=True)
+
+    def releaselist(self):
+        return self.release_set.all()
+
+    def worklist(self):
+        return self.works.order_by('recordingwork')
+
+    def instruments_for_artist(self, artist):
+        """ Returns a list of instruments that this
+        artist performs on this release."""
+        return Instrument.objects.filter(instrumentperformance__artist=artist, instrumentperformance__recording=self).distinct()
+
+    def performers(self):
+        """ The performers on a recording are those who are in the performance
+        relations, and the lead artist of the recording's release (if not in relations)
+        """
+        artists = Artist.objects.filter(primary_concerts__recordings=self).distinct()
+        performers = Artist.objects.filter(instrumentperformance__recording=self).exclude(id__in=artists).distinct()
+        return list(artists) + list(performers)
 
 class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
