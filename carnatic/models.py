@@ -559,7 +559,7 @@ class Instrument(CarnaticStyle, data.models.Instrument):
     def ordered_performers(self):
         perfs, counts = self.performers()
         perfs = sorted(perfs, key=lambda p: counts[p.artist], reverse=True)
-        return perfs
+        return [p.artist for p in perfs]
 
     def performers(self):
         IPClass = self.get_object_map("performance")
