@@ -370,7 +370,11 @@ class Composer(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.name)])
+        if isinstance(self.name, unicode):
+            cname = unidecode.unidecode(self.name)
+        else:
+            cname = self.name
+        return reverse(viewname, args=[self.mbid, slugify(unicode(cname))])
 
 class ComposerAlias(models.Model):
     class Meta:

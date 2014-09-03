@@ -214,3 +214,21 @@ class Work(MakamStyle, data.models.Work):
     makam = models.ManyToManyField(Makam, blank=True, null=True)
     usul = models.ManyToManyField(Usul, blank=True, null=True)
     form = models.ManyToManyField(Form, blank=True, null=True)
+
+    def recordinglist(self):
+        return self.recording_set.all()
+
+    def makamlist(self):
+        return self.makam.all()
+
+    def usullist(self):
+        return self.usul.all()
+
+    def formlist(self):
+        return self.form.all()
+
+    def composerlist(self):
+        return self.composers.all()
+
+    def lyricistlist(self):
+        return self.lyricists.all()

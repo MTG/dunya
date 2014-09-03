@@ -45,7 +45,20 @@ class WorkTest(TestCase):
     pass
 
 class InstrumentTest(TestCase):
-    pass
+    def setUp(self):
+        self.i1 = models.Instrument.objects.create(name="inst1")
+        self.rec1 = models.Recording.objects.create(title="rec1")
+        self.a1 = models.Artist.objects.create(name="a1")
+        models.InstrumentPerformance.objects.create(recording=self.rec1, artist=self.a1, instrument=self.i1)
+
+    def test_render_instrument_detail(self):
+        s = api.InstrumentDetailSerializer(self.i1)
+        self.assertEquals(["artists", "id", "name"], sorted(s.data.keys()))
+        self.assertEquals(1, len(s.data["artists"]))
+
+    def test_render_instrument_list(self):
+        s = api.InstrumentInnerSerializer(self.i1)
+        self.assertEquals(["id", "name"], sorted(s.data.keys()))
 
 class MakamTest(TestCase):
     pass

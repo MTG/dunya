@@ -87,6 +87,14 @@ def inline_makam(makam):
     return '<a href="%s">%s</a>' % (makam.get_absolute_url(), makam.name)
 
 @register.simple_tag
+def inline_form(form):
+    return '<a href="%s">%s</a>' % (form.get_absolute_url(), form.name)
+
+@register.simple_tag
+def inline_usul(usul):
+    return '<a href="%s">%s</a>' % (usul.get_absolute_url(), usul.name)
+
+@register.simple_tag
 def inline_makam_list(makams):
     ret = []
     for m in makams:
