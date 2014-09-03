@@ -51,6 +51,11 @@ class FormInnerSerializer(serializers.ModelSerializer):
         model = models.Form
         fields = ['id', 'name']
 
+class UsulInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Usul
+        fields = ['id', 'name']
+
 class MakamInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Makam
@@ -139,12 +144,16 @@ class WorkList(generics.ListAPIView):
     serializer_class = WorkListSerializer
 
 class WorkDetailSerializer(serializers.ModelSerializer):
-    composer = ComposerInnerSerializer(source='composer')
+    composers = ComposerInnerSerializer(source='composerlist', many=True)
+    lyricists = ComposerInnerSerializer(source='lyricistlist', many=True)
+    makams = MakamInnerSerializer(source='makamlist', many=True)
+    forms = FormInnerSerializer(source='formlist', many=True)
+    usuls = UsulInnerSerializer(source='usullist', many=True)
+    recordings = RecordingInnerSerializer(source='recordinglist', many=True)
 
     class Meta:
         model = models.Work
-        fields = ['mbid', 'title', 'composer']
-        # fields = ['mbid', 'title', 'composer', 'recordings']
+        fields = ['mbid', 'title', 'composers', 'lyricists', 'makams', 'forms', 'usuls', 'recordings']
 
 class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -207,6 +216,29 @@ class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Artist.objects.all()
     serializer_class = ArtistDetailSerializer
+
+
+class ComposerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Composer
+        fields = ['mbid', 'name']
+
+class ComposerList(generics.ListAPIView):
+    queryset = models.Composer.objects.all()
+    serializer_class = ComposerListSerializer
+
+class ComposerDetailSerializer(serializers.ModelSerializer):
+    works = WorkInnerSerializer(source='worklist')
+    lyric_works = WorkInnerSerializer(source='lyricworklist')
+
+    class Meta:
+        model = models.Composer
+        fields = ['mbid', 'name', 'works', 'lyric_works']
+
+class ComposerDetail(generics.RetrieveAPIView):
+    lookup_field = 'mbid'
+    queryset = models.Composer.objects.all()
+    serializer_class = ComposerDetailSerializer
 
 
 class ReleaseListSerializer(serializers.ModelSerializer):

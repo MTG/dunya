@@ -40,6 +40,9 @@ urlpatterns = [
     url(r'^artist$', makam.api.ArtistList.as_view(), name='api-makam-artist-list'),
     url(r'^artist/%s$' % mbid_match, makam.api.ArtistDetail.as_view(), name='api-makam-artist-detail'),
 
+    url(r'^composer$', makam.api.ComposerList.as_view(), name='api-makam-artist-list'),
+    url(r'^composer/%s$' % mbid_match, makam.api.ComposerDetail.as_view(), name='api-makam-artist-detail'),
+
     url(r'^release$', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
     url(r'^release/%s$' % mbid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail')
 ]

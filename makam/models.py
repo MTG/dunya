@@ -59,7 +59,11 @@ class ComposerAlias(MakamStyle, data.models.ComposerAlias):
     pass
 
 class Composer(MakamStyle, data.models.Composer):
-    pass
+    def worklist(self):
+        return self.works.all()
+
+    def lyricworklist(self):
+        return self.lyric_works.all()
 
 class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)

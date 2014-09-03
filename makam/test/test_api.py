@@ -16,7 +16,16 @@ class ArtistTest(TestCase):
         self.assertEquals(expected, s.data)
 
 class ComposerTest(TestCase):
-    pass
+    def test_render_composer_detail(self):
+        c = models.Composer.objects.create(name="Composer", mbid="392fa7ab-f87d-4a07-9c83-bd23130e711b")
+        s = api.ComposerDetailSerializer(c)
+        self.assertEqual(["lyric_works", "mbid", "name", "works"], sorted(s.data.keys()))
+
+    def test_render_composer_list(self):
+        c = models.Composer.objects.create(name="Composer", mbid="392fa7ab-f87d-4a07-9c83-bd23130e711b")
+        s = api.ComposerInnerSerializer(c)
+        expected = {"name": "Composer", "mbid": "392fa7ab-f87d-4a07-9c83-bd23130e711b"}
+        self.assertEquals(expected, s.data)
 
 class ReleaseTest(TestCase):
     def test_render_release_detail(self):
@@ -42,7 +51,17 @@ class RecordingTest(TestCase):
         self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
 
 class WorkTest(TestCase):
-    pass
+    def test_render_work_detail(self):
+        w = models.Work.objects.create(title="work", mbid="5f41f3ed-6c48-403f-ba6c-3e810b58295c")
+        s = api.WorkDetailSerializer(w)
+        fields = ['mbid', 'title', 'composers', 'lyricists', 'makams', 'forms', 'usuls', 'recordings']
+        self.assertEquals(sorted(fields), sorted(s.data.keys()))
+
+
+    def test_render_work_list(self):
+        w = models.Work(title="work", mbid="5f41f3ed-6c48-403f-ba6c-3e810b58295c")
+        s = api.WorkInnerSerializer(w)
+        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
 
 class InstrumentTest(TestCase):
     def setUp(self):
@@ -64,5 +83,8 @@ class MakamTest(TestCase):
     pass
 
 class FormTest(TestCase):
+    pass
+
+class UsulTest(TestCase):
     pass
 
