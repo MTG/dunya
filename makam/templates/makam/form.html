@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -16,6 +17,11 @@
 {% block wrap %}
 <div id="detail">
     <h1>Form {{form.name}}</h1>
+
+    <h3>Works</h3>
+    {% for w in form.worklist %}
+    <li>{% inline_work w %}
+    {% endfor %}
 
     <div class="clearfix"></div>
 </div>

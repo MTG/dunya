@@ -17,8 +17,10 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.utils.text import slugify
 
 import collections
+import unidecode
 
 import data.models
 
@@ -121,6 +123,9 @@ class Recording(MakamStyle, data.models.Recording):
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True, null=True)
 
+    def makamlist(self):
+        return self.makam.all()
+
     def releaselist(self):
         return self.release_set.all()
 
@@ -170,7 +175,20 @@ class Makam(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('makam-makam', args=[str(self.id)])
+        if isinstance(self.name, unicode):
+            mname = unidecode.unidecode(self.name)
+        else:
+            mname = self.name
+        return reverse('makam-makam', args=[str(self.id), slugify(unicode(mname))])
+
+    def worklist(self):
+        return self.work_set.all()
+
+    def taksimlist(self):
+        return self.recording_set.filter(has_taksim=True)
+
+    def gazellist(self):
+        return self.recording_set.filter(has_gazel=True)
 
 class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
@@ -190,7 +208,24 @@ class Usul(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('makam-usul', args=[str(self.id)])
+        if isinstance(self.name, unicode):
+            uname = unidecode.unidecode(self.name)
+        else:
+            uname = self.name
+        return reverse('makam-usul', args=[str(self.id), slugify(unicode(uname))])
+
+    def worklist(self):
+        return self.work_set.all()
+
+    def taksimlist(self):
+        if self.name.lower() != "serbest":
+            return []
+        return Recording.objects.filter(has_taksim=True)
+
+    def gazellist(self):
+        if self.name.lower() != "serbest":
+            return []
+        return Recording.objects.filter(has_gazel=True)
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=100)
@@ -210,7 +245,14 @@ class Form(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('makam-form', args=[str(self.id)])
+        if isinstance(self.name, unicode):
+            fname = unidecode.unidecode(self.name)
+        else:
+            fname = self.name
+        return reverse('makam-form', args=[str(self.id), slugify(unicode(fname))])
+
+    def worklist(self):
+        return self.work_set.all()
 
 class Work(MakamStyle, data.models.Work):
     composition_date = models.CharField(max_length=100, blank=True, null=True)

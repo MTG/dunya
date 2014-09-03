@@ -80,11 +80,35 @@ class InstrumentTest(TestCase):
         self.assertEquals(["id", "name"], sorted(s.data.keys()))
 
 class MakamTest(TestCase):
-    pass
+    def test_render_makam_detail(self):
+        m = models.Makam.objects.create(name="makam")
+        s = api.MakamDetailSerializer(m)
+        self.assertEquals(["gazels", "id", "name", "taksims", "works"], sorted(s.data.keys()))
+
+    def test_render_makam_list(self):
+        m = models.Makam.objects.create(name="makam")
+        s = api.MakamInnerSerializer(m)
+        self.assertEquals(["id", "name"], sorted(s.data.keys()))
 
 class FormTest(TestCase):
-    pass
+    def test_render_form_detail(self):
+        f = models.Form.objects.create(name="form")
+        s = api.FormDetailSerializer(f)
+        self.assertEquals(["id", "name", "works"], sorted(s.data.keys()))
+
+    def test_render_form_list(self):
+        f = models.Form.objects.create(name="form")
+        s = api.FormInnerSerializer(f)
+        self.assertEquals(["id", "name"], sorted(s.data.keys()))
 
 class UsulTest(TestCase):
-    pass
+    def test_render_usul_detail(self):
+        u = models.Usul.objects.create(name="usul")
+        s = api.UsulDetailSerializer(u)
+        self.assertEquals(["gazels", "id", "name", "taksims", "works"], sorted(s.data.keys()))
+
+    def test_render_usul_list(self):
+        u = models.Usul.objects.create(name="usul")
+        s = api.UsulInnerSerializer(u)
+        self.assertEquals(["id", "name"], sorted(s.data.keys()))
 

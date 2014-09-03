@@ -28,6 +28,9 @@ urlpatterns = [
     url(r'^makam$', makam.api.MakamList.as_view(), name='api-makam-makam-list'),
     url(r'^makam/(?P<pk>\d+)$', makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
 
+    url(r'^usul$', makam.api.UsulList.as_view(), name='api-makam-usul-list'),
+    url(r'^usul/(?P<pk>\d+)$', makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
+
     url(r'^instrument$', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),
     url(r'^instrument/(?P<pk>\d+)$', makam.api.InstrumentDetail.as_view(), name='api-makam-instrument-detail'),
 
@@ -40,8 +43,8 @@ urlpatterns = [
     url(r'^artist$', makam.api.ArtistList.as_view(), name='api-makam-artist-list'),
     url(r'^artist/%s$' % mbid_match, makam.api.ArtistDetail.as_view(), name='api-makam-artist-detail'),
 
-    url(r'^composer$', makam.api.ComposerList.as_view(), name='api-makam-artist-list'),
-    url(r'^composer/%s$' % mbid_match, makam.api.ComposerDetail.as_view(), name='api-makam-artist-detail'),
+    url(r'^composer$', makam.api.ComposerList.as_view(), name='api-makam-composer-list'),
+    url(r'^composer/%s$' % mbid_match, makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
 
     url(r'^release$', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
     url(r'^release/%s$' % mbid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail')

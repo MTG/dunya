@@ -71,45 +71,58 @@ class InstrumentInnerSerializer(serializers.ModelSerializer):
         model = models.Instrument
         fields = ['id', 'name']
 
-class MakamListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Makam
-        fields = ['id', 'name']
-
 class MakamList(generics.ListAPIView):
     queryset = models.Makam.objects.all()
-    serializer_class = MakamListSerializer
+    serializer_class = MakamInnerSerializer
 
 class MakamDetailSerializer(serializers.ModelSerializer):
+    works = WorkInnerSerializer(source='worklist', many=True)
+    taksims = RecordingInnerSerializer(source='taksimlist', many=True)
+    gazels = RecordingInnerSerializer(source='gazellist', many=True)
 
     class Meta:
         model = models.Makam
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'works', 'taksims', 'gazels']
 
 class MakamDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Makam.objects.all()
     serializer_class = MakamDetailSerializer
 
-
-class FormListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Form
-        fields = ['id', 'name']
-
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
-    serializer_class = FormListSerializer
+    serializer_class = FormInnerSerializer
 
 class FormDetailSerializer(serializers.ModelSerializer):
+    works = WorkInnerSerializer(source='worklist', many=True)
+
     class Meta:
         model = models.Form
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'works']
 
 class FormDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
+
+
+class UsulList(generics.ListAPIView):
+    queryset = models.Usul.objects.all()
+    serializer_class = UsulInnerSerializer
+
+class UsulDetailSerializer(serializers.ModelSerializer):
+    works = WorkInnerSerializer(source='worklist', many=True)
+    taksims = RecordingInnerSerializer(source='taksimlist', many=True)
+    gazels = RecordingInnerSerializer(source='gazellist', many=True)
+
+    class Meta:
+        model = models.Usul
+        fields = ['id', 'name', 'works', 'taksims', 'gazels']
+
+class UsulDetail(generics.RetrieveAPIView):
+    lookup_field = 'pk'
+    queryset = models.Usul.objects.all()
+    serializer_class = UsulDetailSerializer
 
 
 class InstrumentListSerializer(serializers.ModelSerializer):
@@ -182,7 +195,7 @@ class InstrumentPerformanceSerializer(serializers.ModelSerializer):
 class RecordingDetailSerializer(serializers.ModelSerializer):
     releases = ReleaseInnerSerializer(source='releaselist')
     performers = InstrumentPerformanceSerializer(source='instrumentperformance_set')
-    works = RecordingInnerSerializer(source='worklist')
+    works = WorkInnerSerializer(source='worklist', many=True)
 
     class Meta:
         model = models.Recording

@@ -33,11 +33,11 @@
 
     {% if recording.has_gazel %}
        <h3>Recording contains gazel</h3>
-       With makam(s) {% inline_makam_list recording.makams.all %}
+       With makam(s) {% inline_makam_list recording.makamlist %}
     {% endif %}
     {% if recording.has_taksim %}
        <h3>Recording contains taksim</h3>
-       With makam(s) {% inline_makam_list recording.makams.all %}
+       With makam(s) {% inline_makam_list recording.makamlist %}
     {% endif %}
 
     <h3>Musicians</h3>
