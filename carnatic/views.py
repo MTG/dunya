@@ -158,7 +158,7 @@ def main(request):
             instr = Instrument.objects.get(pk=iid)
             displayres.append(("instrument", instr))
             for p in instr.ordered_performers()[:5]:
-                displayres.append(("artist", p.performer))
+                displayres.append(("artist", p))
 
     elif qraaga:
         querybrowse = True
@@ -198,7 +198,7 @@ def main(request):
             displayres.append(("concert", con))
             artists = con.performers()
             for a in artists:
-                displayres.append(("artist", a.performer))
+                displayres.append(("artist", a))
                 # if instrument, only people who play that?
     elif query:
         try:
