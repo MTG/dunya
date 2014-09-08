@@ -40,7 +40,7 @@ class CompletenessBase(object):
     # The task to run.
     # It returns a tuple (status, data) where data is a dict that is
     # stored in the database. Prepare_view knows what to do with the data.
-    def task(self, fileid, releaseid):
+    def task(self, collectionfile_id):
         pass
 
     def do_check(self, the_id):
@@ -155,7 +155,7 @@ class MakamTags(CompletenessBase):
                 makam.models.Usul.objects.get(name__iexact=u)
             except makam.models.Usul.DoesNotExist:
                 missingu.append(u)
-        for f in res["form"]:
+        for f in res["forms"]:
             try:
                 makam.models.Form.objects.get(name__iexact=f)
             except makam.models.Form.DoesNotExist:
@@ -517,7 +517,7 @@ class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):
 
     def check_instrument(self, instrname):
         try:
-            makam.models.Instrument.objects.fuzzy(instrname)
+            makam.models.Instrument.objects.get(name=instrname)
             return True
         except makam.models.Instrument.DoesNotExist:
             pass
