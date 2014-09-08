@@ -163,8 +163,6 @@ def import_release(releasepk, ri):
 
         # 3b. Import release to dunya database
         if collection.do_import:
-            # All the directories that make up the files in the collection
-            dirs = [c.full_path for c in collection.collectiondirectory_set.all()]
             try:
                 directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
                 ri.import_release(release.mbid, directories)
