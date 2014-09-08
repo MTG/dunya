@@ -32,7 +32,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     _WorkClass = makam.models.Work
 
     def _link_release_recording(self, release, recording, trackorder):
-        if not release.tracks.filter(pk=recording.pk).exists():
+        if not release.recordings.filter(pk=recording.pk).exists():
             makam.models.ReleaseRecording.objects.create(
                 release=release, recording=recording, track=trackorder)
 
@@ -193,7 +193,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             release = makam.models.Release.objects.get(mbid=releaseid)
             # For each recording in the release, see if the relationship
             # already exists. If not, create it.
-            for rec in release.tracks.all():
+            for rec in release.recordings.all():
                 if not makam.models.InstrumentPerformance.objects.filter(
                    recording=rec, instrument=instrument, performer=artist).exists():
                     perf = makam.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)

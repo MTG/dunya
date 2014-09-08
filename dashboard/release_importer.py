@@ -99,7 +99,7 @@ class ReleaseImporter(object):
             for track in medium["track-list"]:
                 recordings.append(track["recording"]["id"])
         if self.overwrite:
-            release.tracks.clear()
+            release.recordings.clear()
         trackorder = 1
         for recid in recordings:
             recob = self.add_and_get_recording(recid)

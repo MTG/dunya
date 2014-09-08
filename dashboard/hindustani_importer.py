@@ -31,7 +31,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _WorkClass = hindustani.models.Work
 
     def _link_release_recording(self, release, recording, trackorder):
-        if not release.tracks.filter(pk=recording.pk).exists():
+        if not release.recordings.filter(pk=recording.pk).exists():
             hindustani.models.ReleaseRecording.objects.create(
                 release=release, recording=recording, track=trackorder)
 
@@ -172,7 +172,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             perf.save()
 
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
-        logger.info("  Adding concert performance to all tracks...")
+        logger.info("  Adding concert performance to all recordings...")
         release = hindustani.models.Release.objects.get(mbid=releaseid)
-        for t in release.tracks.all():
+        for t in release.recordings.all():
             self._add_recording_performance(t.mbid, artistid, instrument, is_lead)

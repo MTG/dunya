@@ -78,7 +78,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _WorkClass = carnatic.models.Work
 
     def _link_release_recording(self, concert, recording, trackorder):
-        if not concert.tracks.filter(pk=recording.pk).exists():
+        if not concert.recordings.filter(pk=recording.pk).exists():
             carnatic.models.ConcertRecording.objects.create(
                 concert=concert, recording=recording, track=trackorder)
 
@@ -171,7 +171,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         concert = carnatic.models.Concert.objects.get(mbid=releaseid)
         # Instrument could be None if we don't know it
 
-        for rec in concert.tracks.all():
+        for rec in concert.recordings.all():
             if not carnatic.models.InstrumentPerformance.objects.filter(
                recording=rec, instrument=instrument, performer=artist).exists():
                 perf = carnatic.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)
