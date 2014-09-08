@@ -182,7 +182,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         instrument = self._get_instrument(instrument)
         if instrument:
             recording = makam.models.Recording.objects.get(mbid=recordingid)
-            perf = makam.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf = makam.models.InstrumentPerformance(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
             perf.save()
 
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
@@ -195,6 +195,6 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             # already exists. If not, create it.
             for rec in release.recordings.all():
                 if not makam.models.InstrumentPerformance.objects.filter(
-                   recording=rec, instrument=instrument, performer=artist).exists():
-                    perf = makam.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)
+                   recording=rec, instrument=instrument, artist=artist).exists():
+                    perf = makam.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
                     perf.save()

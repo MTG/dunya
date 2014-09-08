@@ -168,7 +168,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         instrument = self.get_instrument(instrument)
         if instrument:
             recording = hindustani.models.Recording.objects.get(mbid=recordingid)
-            perf = hindustani.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf = hindustani.models.InstrumentPerformance(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
             perf.save()
 
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
