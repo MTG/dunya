@@ -133,7 +133,8 @@ INSTALLED_APPS = (
     'makam',
     'dunya',
     'hindustani',
-    'motifdiscovery'
+    'motifdiscovery',
+    'andalusian'
 )
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'

@@ -13,12 +13,13 @@ ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
 ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
 ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
 ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
+pip install --allow-external eyeD3 --allow-unverified eyeD3 eyeD3
 pip install -r requirements
 
-pushd ..
-git clone git@github.com:CompMusic/essentia.git
-pushd essentia
-git checkout -t origin/deploy
-./waf configure --mode=release --with-python --prefix=/srv/dunya/env
-./waf -j4
-./waf install
+#pushd ..
+#git clone git@github.com:CompMusic/essentia.git
+#pushd essentia
+#git checkout -t origin/deploy
+#./waf configure --mode=release --with-python --prefix=/srv/dunya/env
+#./waf -j4
+#./waf install

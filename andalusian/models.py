@@ -267,6 +267,19 @@ class AlbumAlias(models.Model):
     def __unicode__(self):
         return self.title
 
+class Work(AndalusianStyle, BaseModel):
+	mbid = UUIDField(blank=True, null=True)
+	title = models.CharField(max_length=255)
+	def __unicode__(self):
+		return self.title
+
+class WorkRecording(models.Model):
+	class Meta:        
+		abstract = True
+	work = models.ForeignKey('Work')
+	recording = models.ForeignKey('Recording')
+	def __unicode__(self):
+		return u"%s is recording of %s" % (self.recording, self.work)
 
 class Recording(AndalusianStyle, BaseModel):
     mbid = UUIDField(blank=True, null=True)
