@@ -1,28 +1,25 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import template
-from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from django.utils.http import urlquote, urlquote_plus
+from django.utils.http import urlquote_plus
 
-import collections
-
-from carnatic.models import * # TODO: shouldn't be here
+from carnatic import models
 
 register = template.Library()
 
@@ -39,20 +36,20 @@ def inline_user(user):
 def inline_tag(tag):
     return '<a href="%s">%s</a>' % (reverse('social-tag-page', args=[urlquote_plus(tag["value"]), tag["content_type"]]), tag["value"])
     #return '<a href="%s">%s</a>' % (reverse('social-tag-page', args=[urlquote_plus(tag.tag_name), tag.modeltype]), tag.tag_name)
-    
+
 
 def reverse_comment(content_type, content_id):
     if content_type == "artist":
-        artist = Artist.objects.get(pk=content_id)
+        artist = models.Artist.objects.get(pk=content_id)
         return artist.get_absolute_url()
     if content_type == "concert":
-        concert = Concert.objects.get(pk=content_id)
+        concert = models.Concert.objects.get(pk=content_id)
         return concert.get_absolute_url()
     if content_type == "recording":
-        recording = Recording.objects.get(pk=content_id)
+        recording = models.Recording.objects.get(pk=content_id)
         return recording.get_absolute_url()
     if content_type == "work":
-        work = Work.objects.get(pk=content_id)
+        work = models.Work.objects.get(pk=content_id)
         return work.get_absolute_url()
     return None
 

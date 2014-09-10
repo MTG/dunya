@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -19,10 +19,28 @@ from django.db.models import Q
 
 import carnatic
 
+class BootlegConcertManager(models.Manager):
+    use_for_related_fields = True
+
+    def with_bootlegs(self, show_bootlegs):
+        qs = self.get_queryset()
+        if not show_bootlegs:
+            qs = qs.filter(bootleg=False)
+        return qs
+
+class BootlegRecordingManager(models.Manager):
+    use_for_related_fields = True
+
+    def with_bootlegs(self, show_bootlegs):
+        qs = self.get_queryset()
+        if not show_bootlegs:
+            qs = qs.filter(concert__bootleg=False)
+        return qs
+
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Raaga.objects.get(Q(name__iexact=name) | Q(transliteration__iexact=name))
+            return carnatic.models.Raaga.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except carnatic.models.Raaga.DoesNotExist as e:
             try:
                 alias = carnatic.models.RaagaAlias.objects.get(name__iexact=name)
@@ -33,7 +51,7 @@ class CarnaticRaagaManager(models.Manager):
 class CarnaticTaalaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Taala.objects.get(Q(name__iexact=name) | Q(transliteration__iexact=name))
+            return carnatic.models.Taala.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except carnatic.models.Taala.DoesNotExist as e:
             try:
                 alias = carnatic.models.TaalaAlias.objects.get(name__iexact=name)
@@ -73,8 +91,8 @@ class FuzzySearchManager(models.Manager):
             names = []
             for i in items:
                 names.append(i.name.lower())
-                if hasattr(i, "transliteration"):
-                    names.append(i.transliteration.lower())
+                if hasattr(i, "common_name"):
+                    names.append(i.common_name.lower())
             dups = stringDuplicates.stringDuplicates(name, names, stripped=True)
             if len(dups) != 1:
                 raise self.model.DoesNotExist()
@@ -83,4 +101,3 @@ class FuzzySearchManager(models.Manager):
                 if i.name.lower() == n.lower():
                     return i
             raise self.model.DoesNotExist()
-

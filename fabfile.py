@@ -1,4 +1,4 @@
-from fabric.api import local, settings, env, roles, run, cd
+from fabric.api import local, settings, env, roles, run, cd, hide, shell_env
 import os
 
 env.roledefs["web"] = ["sitar.s.upf.edu"]
@@ -12,11 +12,15 @@ def up(port="8001"):
 def celery():
     local("celery worker --app=dunya -l info")
 
-def test(module=None):
-    command = "python manage.py test --settings=dunya.test_settings"
+def test(module=None, reusedb=1):
+    command = "python manage.py test --settings=dunya.test_settings --noinput"
     if module:
         command += " %s" % module
-    local(command)
+    with shell_env(REUSE_DB=str(reusedb)):
+        local(command)
+
+def cleantest(module=None):
+    test(module, 0)
 
 @roles("web")
 def updateweb():
@@ -72,20 +76,31 @@ def updatedb():
     local("python manage.py migrate")
 
 def dumpfixture(modname):
-    redir = "%s/fixtures/initial_data.json" % modname
+    redir_base = "%s/fixtures/%s_%%s.json" % (modname, modname)
     if modname == "data":
+        redir = redir_base % "initial_data"
         local("python manage.py dumpdata data.SourceName --indent=4 > %s" % redir)
     elif modname == "carnatic":
-        tables = ["Instrument", "InstrumentAlias", "Taala", "TaalaAlias", "Raaga", "RaagaAlias", "GeographicRegion", "Form", "FormAlias", "Language", "MusicalSchool"]
-        modellist = " ".join(["carnatic.%s[:]" % t for t in tables])
-        local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
+        tablemap = {"instrument": ["Instrument", "InstrumentAlias"],
+                  "taala": ["Taala", "TaalaAlias"],
+                  "raaga": ["Raaga", "RaagaAlias"],
+                  "form": ["Form", "FormAlias"],
+                  "misc": ["Language", "MusicalSchool"]}
     elif modname == "hindustani":
-        tables = ["Instrument", "Taal", "TaalAlias", "Raag", "RaagAlias", "Laya", "LayaAlias", "Form", "FormAlias", "Section", "SectionAlias"]
-        modellist = " ".join(["hindustani.%s[:]" % t for t in tables])
-        local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
+        tablemap = {"instrument": ["Instrument"],
+                  "taal": ["Taal", "TaalAlias"],
+                  "raag": ["Raag", "RaagAlias"],
+                  "form": ["Form", "FormAlias"],
+                  "laya": ["Laya", "LayaAlias"],
+                  "section": ["Section", "SectionAlias"]}
     elif modname == "makam":
-        tables = ["Instrument", "Makam", "Form", "Usul"]
-        modellist = " ".join(["makam.%s[:]" % t for t in tables])
+        tablemap = {"instrument": ["Instrument"],
+                    "makam": ["Makam"],
+                    "form": ["Form"],
+                    "usul": ["Usul"]}
+    for filename, tables in tablemap.items():
+        modellist = " ".join(["%s.%s[:]" % (modname, t) for t in tables])
+        redir = redir_base % filename
         local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
 
 def dumpdata(fname="dunya_data.json"):

@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -16,6 +17,25 @@
 {% block wrap %}
 <div id="detail">
     <h1>Usul {{usul.name}}</h1>
+
+    <h3>Works</h3>
+    {% for w in usul.worklist %}
+    <li>{% inline_work w %}
+    {% endfor %}
+
+    {% if usul.taksimlist %}
+    <h3>Taksim recordings</h3>
+    {% for r in usul.taksimlist %}
+    <li>{% inline_recording r %}
+    {% endfor %}
+    {% endif %}
+
+    {% if usul.gazellist %}
+    <h3>Gazel recordings</h3>
+    {% for r in usul.gazellist %}
+    <li>{% inline_recording r %}
+    {% endfor %}
+    {% endif %}
 
     <div class="clearfix"></div>
 </div>

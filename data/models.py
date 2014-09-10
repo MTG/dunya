@@ -18,7 +18,6 @@ from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from django.db.models import Q
 from django.utils.text import slugify
 
 import docserver
@@ -26,6 +25,7 @@ import docserver
 import os
 import time
 import math
+import unidecode
 
 class ClassProperty(property):
     def __get__(self, cls, owner):
@@ -79,9 +79,12 @@ class BaseModel(models.Model):
     description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
     images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
 
-    def ref(self):
-        u = {"url": self.source.uri, "title": self.source.source_name.name}
-        return u
+    def refs(self):
+        ret = []
+        ret.append({"url": self.source.uri, "title": self.source.source_name.name})
+        for r in self.references.all():
+            ret.append({"url": r.uri, "title": r.source_name.name})
+        return ret
 
     def has_image(self):
         return bool(self.images.count())
@@ -131,7 +134,6 @@ class Artist(BaseModel):
     )
     TYPE_CHOICES = (
         ('P', 'Person'),
-        #('C', 'Composer'),
         ('G', 'Group')
     )
     name = models.CharField(max_length=200)
@@ -149,59 +151,19 @@ class Artist(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.name)])
+        if isinstance(self.name, unicode):
+            aname = unidecode.unidecode(self.name)
+        else:
+            aname = self.name
+        return reverse(viewname, args=[self.mbid, slugify(unicode(aname))])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
 
-    def concerts(self):
-        ReleaseClass = self.get_object_map("release")
-        concerts = ReleaseClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
-        return concerts.all()
+    def instruments(self):
+        InstrumentKlass = self.get_object_map("instrument")
+        return InstrumentKlass.objects.filter(instrumentperformance__artist=self).distinct()
 
-    def recordings(self):
-        IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(performer=self)
-        performance_recs = [p.recording for p in performances]
-
-        # Releases where we were primary artist
-        RelClass = self.get_object_map("release")
-        pa_rels = RelClass.objects.filter(artists=self)
-        # Releases where we were a relationship
-        IRPClass = self.get_object_map("releaseperformance")
-        rel_perfs = IRPClass.objects.filter(performer=self)
-        rel_rels = [r.concert for r in rel_perfs]
-        concerts = set(pa_rels) | set(rel_rels)
-        concert_recordings = []
-        for c in concerts:
-            concert_recordings.extend(c.tracks.all())
-
-        return list(set(performance_recs)|set(concert_recordings))
-
-    def performances(self, raagas=[], taalas=[]):
-        ReleaseClass = self.get_object_map("release")
-        IPClass = self.get_object_map("performance")
-        concerts = ReleaseClass.objects.filter(Q(tracks__instrumentperformance__performer=self)|Q(instrumentconcertperformance__performer=self))
-        if raagas:
-            concerts = concerts.filter(tracks__work__raaga__in=raagas)
-        if taalas:
-            concerts = concerts.filter(tracks__work__taala__in=taalas)
-        concerts = concerts.distinct()
-        ret = []
-        for c in concerts:
-            # If the relation is on the track, we'll have lots of performances,
-            # restrict the list to just one instance
-            # TODO: If more than one person plays the same instrument this won't work well
-            performances = IPClass.objects.filter(performer=self, recording__concert=c).distinct()
-            # Unique the instrument list
-            instruments = []
-            theperf = []
-            for p in performances:
-                if p.instrument not in instruments:
-                    theperf.append(p)
-                    instruments.append(p.instrument)
-            ret.append((c, theperf))
-        return ret
 
 class ArtistAlias(models.Model):
     class Meta:
@@ -228,15 +190,13 @@ class Release(BaseModel):
 
     # These fields are specified on the concrete model classes because they might use
     # different spellings (Release/Concert)
-    # Other artists who played on this concert (musicbrainz relationships)
-    #performance = models.ManyToManyField('Artist', through="InstrumentReleasePerformance", related_name='accompanying_concerts')
     # Ordered tracks
-    #tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
+    # tracks = models.ManyToManyField('Recording', through="ReleaseRecording")
 
     def length(self):
         tot_len = 0
-        for t in self.tracks.all():
-            tot_len += t.length/1000
+        for t in self.recordings.all():
+            tot_len += t.length / 1000
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
     def __unicode__(self):
@@ -252,47 +212,6 @@ class Release(BaseModel):
 
     def artistnames(self):
         return self.artists.all()
-
-    def tracklist(self):
-        """Return an ordered list of recordings in this concert"""
-        tracks = self.get_object_map("recording").objects.filter(
-                concertrecording__concert=self).order_by('concertrecording__track')
-        return tracks
-
-    def performers(self):
-        """ The performers on a concert are those who are in the performance relations,
-        both on the concert and the concerts recordings.
-        TODO: Should this return a performance object, or an artist?
-        """
-        person = set()
-        ret = []
-        IPClass = self.get_object_map("performance")
-        ICPClass = self.get_object_map("releaseperformance")
-        IClass = self.get_object_map("instrument")
-        for p in self.performance.all():
-            if p.id not in person:
-                person.add(p.id)
-                perf = ICPClass.objects.get(concert=self, performer=p)
-                ret.append(perf)
-        for t in self.tracks.all():
-            for p in t.performance.all():
-                if p.id not in person:
-                    perf = IPClass.objects.get(recording=t, performer=p)
-                    person.add(p.id)
-                    ret.append(perf)
-        if len(self.artists.all()):
-            maina = self.artists.all()[0]
-            if maina.id not in person:
-                dummyp = ICPClass()
-                dummyp.performer = maina
-                dummyp.concert = self
-                if maina.main_instrument:
-                    dummyp.instrument = maina.main_instrument
-                else:
-                    # TODO: If we don't know the instrument it's almost certainly a vocalist
-                    dummyp.instrument = IClass.objects.get(pk=1)
-                ret.insert(0, dummyp)
-        return ret
 
 class Work(BaseModel):
     class Meta:
@@ -312,13 +231,9 @@ class Work(BaseModel):
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/work/%s" % self.mbid
 
-    def concerts(self):
-        ReleaseClass = self.get_object_map("concert")
-        return ReleaseClass.objects.filter(tracks__work=self).all()
-
     def artists(self):
         ArtistClass = self.get_object_map("artist")
-        return ArtistClass.objects.filter(primary_concerts__tracks__work=self).distinct()
+        return ArtistClass.objects.filter(primary_concerts__recordings__work=self).distinct()
 
 class Recording(BaseModel):
     class Meta:
@@ -329,7 +244,7 @@ class Recording(BaseModel):
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
 
     # On concrete class because a recording may have >1 work in some styles
-    #work = models.ForeignKey('Work', blank=True, null=True)
+    # work = models.ForeignKey('Work', blank=True, null=True)
 
     def __unicode__(self):
         return self.title
@@ -349,11 +264,11 @@ class Recording(BaseModel):
         return url
 
     def length_format(self):
-        numsecs = self.length/1000
+        numsecs = self.length / 1000
         minutes = math.floor(numsecs / 60.0)
         hours = math.floor(minutes / 60.0)
-        minutes = math.floor(minutes - hours*60)
-        seconds = math.floor(numsecs - hours*3600 - minutes*60)
+        minutes = math.floor(minutes - hours * 60)
+        seconds = math.floor(numsecs - hours * 3600 - minutes * 60)
         if hours:
             val = "%02d:%02d:%02d" % (hours, minutes, seconds)
         else:
@@ -366,11 +281,11 @@ class Recording(BaseModel):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+        primary_artists = ArtistClass.objects.filter(primary_concerts__recordings=self)
 
         IPClass = self.get_object_map("performance")
         recperfs = IPClass.objects.filter(recording=self)
-        rec_artists = [r.performer for r in recperfs]
+        rec_artists = [r.artist for r in recperfs]
 
         all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
@@ -421,12 +336,16 @@ class InstrumentPerformance(models.Model):
     class Meta:
         abstract = True
     recording = models.ForeignKey('Recording')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
+    artist = models.ForeignKey('Artist')
+    instrument = models.ForeignKey('Instrument', blank=True, null=True)
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
+        person = u"%s" % self.artist
+        if self.instrument:
+            person += u" playing %s" % self.instrument
+        person += u" on %s" % self.recording
+        return person
 
 class Composer(BaseModel):
     missing_image = "artist.jpg"
@@ -446,9 +365,16 @@ class Composer(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/composer/%s" % self.mbid
+
     def get_absolute_url(self):
         viewname = "%s-composer" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.name)])
+        if isinstance(self.name, unicode):
+            cname = unidecode.unidecode(self.name)
+        else:
+            cname = self.name
+        return reverse(viewname, args=[self.mbid, slugify(unicode(cname))])
 
 class ComposerAlias(models.Model):
     class Meta:
@@ -470,4 +396,3 @@ class VisitLog(models.Model):
 
     def __unicode__(self):
         return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
-

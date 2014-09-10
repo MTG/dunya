@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -28,6 +28,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
     derivedfiles = fields.Field(source='derivedmap')
     collection = serializers.CharField(max_length=100, source='collection.slug', read_only=True)
+
     class Meta:
         model = models.Document
         fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
@@ -39,7 +40,7 @@ class DocumentIdSerializer(serializers.ModelSerializer):
 
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
     documents = DocumentIdSerializer(many=True)
+
     class Meta:
         model = models.Collection
         fields = ['name', 'documents']
-

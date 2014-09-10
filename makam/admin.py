@@ -33,27 +33,38 @@ class RecordingWorkInline(admin.TabularInline):
     model = models.RecordingWork
     extra = 1
 
+class InstrumentPerformanceInline(admin.TabularInline):
+    model = models.InstrumentPerformance
+    extra = 1
+
 class ArtistAdmin(admin.ModelAdmin):
     inlines = (ArtistAliasInline, )
+    exclude = ('source', 'references', 'images', 'description')
+
+class InstrumentAdmin(admin.ModelAdmin):
+    exclude = ('source', 'references', 'images', 'description')
 
 class ComposerAdmin(admin.ModelAdmin):
     inlines = (ComposerAliasInline, )
+    exclude = ('source', 'references', 'images', 'description')
 
 class ReleaseAdmin(admin.ModelAdmin):
     inlines = (RecordingWorkInline, )
+    exclude = ('source', 'references', 'images', 'description')
 
 class RecordingAdmin(admin.ModelAdmin):
-    inlines = (RecordingWorkInline, )
+    inlines = (RecordingWorkInline, InstrumentPerformanceInline)
+    exclude = ('source', 'references', 'images', 'description')
+
+class WorkAdmin(admin.ModelAdmin):
+    exclude = ('source', 'references', 'images', 'description')
 
 admin.site.register(models.Artist, ArtistAdmin)
 admin.site.register(models.Composer, ComposerAdmin)
-
-admin.site.register(models.Instrument)
+admin.site.register(models.Instrument, InstrumentAdmin)
 admin.site.register(models.Makam)
 admin.site.register(models.Form)
 admin.site.register(models.Usul)
-admin.site.register(models.Work)
-admin.site.register(models.InstrumentPerformance)
+admin.site.register(models.Work, WorkAdmin)
 admin.site.register(models.Release, ReleaseAdmin)
 admin.site.register(models.Recording, RecordingAdmin)
-

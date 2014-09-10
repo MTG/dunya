@@ -1,8 +1,0 @@
-{% load inline %}
-
-<div class="microitem raaga">
-    <div class="colorCode shadow1"></div>
-    <div class="disco"><a href="{{taala.get_absolute_url}}">
-	  {% if raaga.has_image %}<img src="{{raaga.get_small_image_url}}">{% endif %}</a></div>
-    <label><b>{% inline_raaga raaga %}</b></label>
-</div>

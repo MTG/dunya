@@ -59,7 +59,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -69,7 +68,6 @@ SECRET_KEY = '_11by(qyct6gy7d0$8t%(#s2l(#w13d+48pc%wchv4v8hn^$+0'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,8 +78,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Log every page that people go to
     'dunya.middleware.PageLoggerMiddleware',
-    'dunya.middleware.NavigationHistoryMiddleware',
+    'dunya.middleware.ShowBootlegMiddleware',
+    # Show a history of the pages that people have been to
+    # 'dunya.middleware.NavigationHistoryMiddleware',
 )
 
 ROOT_URLCONF = 'dunya.urls'
@@ -96,8 +97,8 @@ TEMPLATE_DIRS = (
 )
 
 ADMINS = (
-    # The email address of the first person in this list will be used in the 
-    # reply field of the emails sent by Dunya 
+    # The email address of the first person in this list will be used in the
+    # reply field of the emails sent by Dunya
     # ('YOUR NAME', 'EMAIL ADDRESS'),
 )
 
@@ -107,7 +108,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages",
     # "dunya.context_processors.navigation_header",
+    # Add metadata to the context about what style we are in
+    'dunya.context_processors.style_context',
 )
 
 INSTALLED_APPS = (
@@ -158,7 +162,7 @@ SENDFILE_URL = '/serve'
 
 # Django rest framework
 REST_FRAMEWORK = {
-    'PAGINATE_BY': 100, # Default
+    'PAGINATE_BY': 100,  # Default
     'PAGINATE_BY_PARAM': 'count',  # Allow client to override default
     'MAX_PAGINATE_BY': 200,         # Maximum limit allowed to override
     'DEFAULT_PERMISSION_CLASSES': (
@@ -205,7 +209,7 @@ LOGGING = {
     }
 }
 
-#Social part_PROFILE
+# Social part_PROFILE
 AUTH_PROFILE_MODULE = "social.UserProfile"
 AUTH_USER_MODULE = "django.contrib.auth.models.User"
 
@@ -213,7 +217,7 @@ AUTH_USER_MODULE = "django.contrib.auth.models.User"
 MAX_NAV_HEADER_ITEMS = 4
 
 # Fixed versions of extracted features to show on dunya
-FEAT_VERSION_NORMALISED_PITCH = "0.5"
+FEAT_VERSION_NORMALISED_PITCH = "0.6"
 FEAT_VERSION_TONIC = "0.2"
 FEAT_VERSION_RHYTHM = "0.3"
 FEAT_VERSION_IMAGE = "0.2"

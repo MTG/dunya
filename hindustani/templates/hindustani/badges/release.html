@@ -1,5 +1,5 @@
-{% load hindustaniinline %}
-{% load hindustanibadges %}
+{% load hindustani.inline %}
+{% load hindustani.badges %}
 
 <div class="concert item">
       <div class="disc pict">
@@ -25,7 +25,7 @@
       <div class="lists">
         <div class="left">
           <h3>Tracks</h3>
-          {% for t in release.tracks.all %}
+          {% for t in release.tracklist %}
           {% badge_mini_recording t %}
           {% endfor %}
         </div>

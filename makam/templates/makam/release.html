@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -16,6 +17,21 @@
 {% block wrap %}
 <div id="detail">
     <h1>Release {{release.title}}</h1>
+
+    <h3>Tracks:</h3>
+    <ul>
+    {% for r in release.tracklist %}
+    <li>{% inline_recording r %}</li>
+    {% endfor %}
+    </ul>
+
+
+    <h3>Participating musicans</h3>
+    <ul>
+        {% for a, i in performers %}
+        <li>{% inline_artist a %} ({% inline_instrument i %})</li>
+        {% endfor %}
+    </ul>
 
     <div class="clearfix"></div>
 </div>

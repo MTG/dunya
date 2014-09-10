@@ -1,28 +1,25 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.shortcuts import render
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Count
 
 from dashboard import models
 from dashboard import views
-import docserver
 import carnatic
 import hindustani
 
@@ -38,13 +35,13 @@ def _common_stats(collectionid):
         total_releases = releases.count()
         releases_ignored = releases.filter(ignore=True).count()
         counts = releases.annotate(Count('collectiondirectory'))
-        releases_missing_dir = len([r for r in counts if r.collectiondirectory__count==0])
+        releases_missing_dir = len([r for r in counts if r.collectiondirectory__count == 0])
         ret["releases"] = total_releases
         ret["releases_ignored"] = releases_ignored
         ret["releases_missing"] = releases_missing_dir
 
         num_recordings = models.CollectionFile.objects.filter(
-                directory__musicbrainzrelease__collection__id=collectionid).count()
+            directory__musicbrainzrelease__collection__id=collectionid).count()
         ret["recordings"] = num_recordings
     else:
         ret["missing"] = True
@@ -57,8 +54,8 @@ def _raaga_taala_by_results(collectionid):
     taalas = set()
     # TODO: Only get the most rest CollectionFileResult for each file
     results = models.CollectionFileResult.objects.filter(
-           collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
-           checker__module=raagachecker)
+        collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
+        checker__module=raagachecker)
     for r in results.all():
         data = json.loads(r.data) if r.data else {}
         thistaala = data.get("taala", [])
@@ -97,7 +94,6 @@ def carnatic_stats(request):
         leadartists = artists.annotate(Count('primary_concerts'))
         ret["lead_artists_objects"] = len([a for a in leadartists if a.primary_concerts__count > 0])
 
-
     # Duration
     return render(request, 'stats/carnatic.html', ret)
 
@@ -110,7 +106,7 @@ def carnatic_releases(request):
         results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
         if results:
             lastresult = results[0]
-            if lastresult.result == 'b': # Bad
+            if lastresult.result == 'b':  # Bad
                 data = json.loads(lastresult.data)
                 unmatched = data.get("unmatchedmb", {})
                 if unmatched:
@@ -134,7 +130,7 @@ def carnatic_coverart(request):
         results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
         if results:
             lastresult = results[0]
-            if lastresult.result == 'b': # Bad
+            if lastresult.result == 'b':  # Bad
                 nocaa.append(counted.get(mbid=dashrel.mbid))
 
     noimageids = [r.mbid for r in noimages]
@@ -189,23 +185,20 @@ def carnatic_recordings(request):
         # as a relationship on the release or any tracks.
         # Note that this will incorrectly select groups where group members are listed
         artists = c.artists.all()
-        perf = c.instrumentconcertperformance_set.filter(performer__in=artists)
         tperf = carnatic.models.InstrumentPerformance.objects.filter(
-                recording__concert=c, performer__in=artists)
-        if not perf.exists() and not tperf.exists():
+            recording__concert=c, performer__in=artists)
+        if not tperf.exists():
             c.missing_rel_artists = True
 
         if not c.got_works or not c.got_perf or c.missing_rel_artists:
             badconcerts.append(c)
 
     ret = {"concerts": badconcerts,
-            }
+           }
     return render(request, 'stats/carnatic_recordings.html', ret)
 
 @user_passes_test(views.is_staff)
 def carnatic_raagataala(request):
-    recordings = carnatic.models.Recording.objects
-
     dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
     dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
     checker = "dashboard.completeness.RaagaTaalaFile"
@@ -227,11 +220,11 @@ def carnatic_raagataala(request):
             if len(data["taala"]) == 0:
                 no_t.append(check.collectionfile)
 
-    ret = { "no_r": no_r,
-            "no_t": no_t,
-            "missingr": missingr,
-            "missingt": missingt
-            }
+    ret = {"no_r": no_r,
+           "no_t": no_t,
+           "missingr": missingr,
+           "missingt": missingt
+           }
     return render(request, 'stats/carnatic_raagataala.html', ret)
 
 @user_passes_test(views.is_staff)
@@ -240,7 +233,7 @@ def carnatic_works(request):
     composer_counted = works.annotate(Count('composers'))
     nocomposer = [w for w in composer_counted if w.composers__count == 0]
     duplicatecomposer = [w for w in composer_counted if w.composers__count > 1]
-    ret = {"nocomposer": nocomposer, 
+    ret = {"nocomposer": nocomposer,
            "duplicatecomposer": duplicatecomposer,
            "all": works.order_by('title').all()}
     return render(request, 'stats/carnatic_works.html', ret)
@@ -263,7 +256,7 @@ def hindustani_stats(request):
         works = set()
         relartists = set()
         results = models.MusicbrainzReleaseResult.objects.filter(
-               musicbrainzrelease__collection__id=collectionid).filter(checker__module=relchecker)
+            musicbrainzrelease__collection__id=collectionid).filter(checker__module=relchecker)
         for r in results.all():
             data = json.loads(r.data) if r.data else {}
             for a in data["releaseartistrels"]:
@@ -299,7 +292,7 @@ def hindustani_releases(request):
         results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
         if results:
             lastresult = results[0]
-            if lastresult.result == 'b': # Bad
+            if lastresult.result == 'b':  # Bad
                 data = json.loads(lastresult.data)
                 unmatched = data.get("unmatchedmb", {})
                 if unmatched:
@@ -314,7 +307,6 @@ def hindustani_releases(request):
 def hindustani_coverart(request):
     releases = hindustani.models.Release.objects.select_related('artists')
     counted = releases.annotate(Count('images'))
-    relids = [r.mbid for r in counted.all() if r.images__count > 0]
 
     dashcoll = models.Collection.objects.get(id=compmusic.HINDUSTANI_COLLECTION)
     checker = "dashboard.completeness.ReleaseCoverart"
@@ -323,7 +315,7 @@ def hindustani_coverart(request):
         results = dashrel.musicbrainzreleaseresult_set.filter(checker__module=checker)
         if results:
             lastresult = results[0]
-            if lastresult.result == 'b': # Bad
+            if lastresult.result == 'b':  # Bad
                 nocaa.append(counted.get(mbid=dashrel.mbid))
 
     noimages = [r for r in counted.all() if r.images__count == 0]
@@ -362,7 +354,6 @@ def hindustani_recordings(request):
     for r in releases:
         got_works = True
         got_track_perf = True
-        got_perf = True
         for t in r.tracks.all():
             if not t.works.exists():
                 got_works = False
@@ -376,7 +367,7 @@ def hindustani_recordings(request):
         # Note that this will incorrectly select groups where group members are listed
         artists = r.artists.all()
         tperf = hindustani.models.InstrumentPerformance.objects.filter(
-                recording__release=r, performer__in=artists)
+            recording__release=r, performer__in=artists)
         r.missing_rel_artists = False
         if not tperf.exists():
             r.missing_rel_artists = True
@@ -385,13 +376,11 @@ def hindustani_recordings(request):
             badreleases.append(r)
 
     ret = {"releases": badreleases,
-            }
+           }
     return render(request, 'stats/hindustani_recordings.html', ret)
 
 @user_passes_test(views.is_staff)
 def hindustani_raagtaal(request):
-    recordings = hindustani.models.Recording.objects
-
     dashcoll = models.Collection.objects.get(id=compmusic.HINDUSTANI_COLLECTION)
     dashfiles = models.CollectionFile.objects.filter(directory__collection=dashcoll)
     checker = "dashboard.completeness.HindustaniRaagTaal"
@@ -445,12 +434,12 @@ def hindustani_raagtaal(request):
     for k, v in dirs.items():
         dirs[k] = dict(v)
 
-    ret = { "missingr": missingr,
-            "missingt": missingt,
-            "missingf": missingf,
-            "missingl": missingl,
-            "dirs": dirs
-            }
+    ret = {"missingr": missingr,
+           "missingt": missingt,
+           "missingf": missingf,
+           "missingl": missingl,
+           "dirs": dirs
+           }
     return render(request, 'stats/hindustani_raagtaal.html', ret)
 
 @user_passes_test(views.is_staff)
@@ -459,7 +448,7 @@ def hindustani_works(request):
     composer_counted = works.annotate(Count('composers'))
     nocomposer = [w for w in composer_counted if w.composers__count == 0]
     duplicatecomposer = [w for w in composer_counted if w.composers__count > 1]
-    ret = {"nocomposer": nocomposer, 
+    ret = {"nocomposer": nocomposer,
            "duplicatecomposer": duplicatecomposer,
            "all": works.order_by('title').all()}
     return render(request, 'stats/hindustani_works.html', ret)
@@ -476,8 +465,8 @@ def makam_stats(request):
         usuls = set()
         makams = set()
         results = models.CollectionFileResult.objects.filter(
-               collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
-               checker__module=makamchecker)
+            collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
+            checker__module=makamchecker)
         for r in results.all():
             data = json.loads(r.data) if r.data else {}
             thismakam = data.get("makams", [])
@@ -493,7 +482,7 @@ def makam_stats(request):
         works = set()
         relartists = set()
         results = models.MusicbrainzReleaseResult.objects.filter(
-               musicbrainzrelease__collection__id=collectionid).filter(checker__module=relchecker)
+            musicbrainzrelease__collection__id=collectionid).filter(checker__module=relchecker)
         for r in results.all():
             data = json.loads(r.data) if r.data else {}
             for a in data["releaseartistrels"]:

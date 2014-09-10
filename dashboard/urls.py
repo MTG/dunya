@@ -1,29 +1,30 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from dashboard import views
 from dashboard import statistic_views
 
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', views.index, name='dashboard-home'),
-    url(r'collection/%s$' % (uuid_match, ), views.collection, name='dashboard-collection'),
+    url(r'^collection/%s$' % (uuid_match, ), views.collection, name='dashboard-collection'),
+    url(r'^delete_collection/%s$' % (uuid_match, ), views.delete_collection, name='dashboard-delete-collection'),
     url(r'addcollection$', views.addcollection, name='dashboard-addcollection'),
     url(r'release/(?P<releaseid>\d+)$', views.release, name='dashboard-release'),
     url(r'directory/(?P<dirid>\d+)$', views.directory, name='dashboard-directory'),
@@ -67,6 +68,4 @@ urlpatterns = patterns('',
     url(r'makam/', statistic_views.makam_stats, name='dashboard-makam-stats'),
     url(r'beijing/', statistic_views.beijing_stats, name='dashboard-beijing-stats'),
     url(r'arabandalusian/', statistic_views.andalusian_stats, name='dashboard-andalusian-stats'),
-
-)
-
+]

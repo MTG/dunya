@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -17,6 +18,16 @@
 <div id="detail">
 
     <h1>Composer {{composer.name}}</h1>
+
+    <h3>Works</h3>
+    {% for w in composer.worklist %}
+    <li>{% inline_work w %}
+    {% endfor %}
+
+    <h3>Works where composed lyrics</h3>
+    {% for w in composer.lyricworklist %}
+    <li>{% inline_work w %}
+    {% endfor %}
 
     <div class="clearfix"></div>
 </div>

@@ -1,21 +1,22 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import re
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django import forms
 
 class RegistrationForm(forms.Form):
@@ -25,8 +26,8 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField(label=u'Last name', max_length=30)
     affiliation = forms.CharField(label="Affiliation", max_length=100)
     email = forms.EmailField(label=u'Email')
-    password1 = forms.CharField(label=u'Password',widget=forms.PasswordInput())
-    password2 = forms.CharField(label=u'Password (Again)',widget=forms.PasswordInput())
+    password1 = forms.CharField(label=u'Password', widget=forms.PasswordInput())
+    password2 = forms.CharField(label=u'Password (Again)', widget=forms.PasswordInput())
 
     def clean_affiliation(self):
         affiliation = self.cleaned_data['affiliation']
@@ -64,5 +65,3 @@ class UserProfileForm(forms.Form):
     first_name = forms.CharField(label=u'First Name', max_length=50)
     last_name = forms.CharField(label=u'Last Name', max_length=100)
     birthdate = forms.DateField(label=u'Birthdate', required=False)
-
-

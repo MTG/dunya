@@ -1,0 +1,121 @@
+[
+{
+    "pk": 1, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Alapana"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Tanam"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Pallavi"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Kriti"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Keertana (Devara nama)"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Varnam - Tana Varnam"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Varnam - Pada Varnam"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Thillana"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Padam"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Javali"
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Geetham"
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Swarajati"
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Jatiswaram"
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Tani avartanam"
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Mangalam"
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Bhajan"
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.form", 
+    "fields": {
+        "name": "Thiruppugazh"
+    }
+}
+]

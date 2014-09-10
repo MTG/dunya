@@ -1,20 +1,20 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 import carnatic
 import hindustani
@@ -26,14 +26,22 @@ class Command(BaseCommand):
     help = 'Load data in the database to solr'
     solr = pysolr.Solr(settings.SOLR_URL)
 
-    def make_search_data(self, module, data, etype, namefield):
-        insert = [{"id": "%s_%s" % (etype, i.pk),
+    def make_search_data(self, module, data, etype, namefield, alias=False, common_name=False):
+        insert = []
+        for i in data:
+            doc = {"id": "%s_%s" % (etype, i.pk),
                    "object_id_i": i.pk,
                    "type_s": etype,
                    "module_s": module,
                    "title_t": getattr(i, namefield),
                    "doctype_s": "search"
-                  } for i in data]
+                   }
+            if alias:
+                aliases = [a.name for a in i.aliases.all()]
+                if common_name:
+                    aliases.append(i.common_name)
+                doc.update({"alias_txt": aliases})
+            insert.append(doc)
         return insert
 
     def create_carnatic_search_index(self):
@@ -52,8 +60,8 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data("carnatic", composers, "composer", "name")
         insertwork = self.make_search_data("carnatic", works, "work", "title")
         insertconcert = self.make_search_data("carnatic", concerts, "concert", "title")
-        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "name")
-        inserttaala = self.make_search_data("carnatic", taalas, "taala", "name")
+        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "name", alias=True, common_name=True)
+        inserttaala = self.make_search_data("carnatic", taalas, "taala", "name", alias=True, common_name=True)
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)
@@ -82,10 +90,10 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data("hindustani", composers, "composer", "name")
         insertwork = self.make_search_data("hindustani", works, "work", "title")
         insertrelease = self.make_search_data("hindustani", releases, "release", "title")
-        insertraag = self.make_search_data("hindustani", raags, "raag", "name")
-        inserttaal = self.make_search_data("hindustani", taals, "taal", "name")
-        insertform = self.make_search_data("hindustani", forms, "form", "name")
-        insertlaya = self.make_search_data("hindustani", layas, "laya", "name")
+        insertraag = self.make_search_data("hindustani", raags, "raag", "common_name", alias=True, common_name=True)
+        inserttaal = self.make_search_data("hindustani", taals, "taal", "common_name", alias=True, common_name=True)
+        insertform = self.make_search_data("hindustani", forms, "form", "common_name", alias=True, common_name=True)
+        insertlaya = self.make_search_data("hindustani", layas, "laya", "common_name", alias=True, common_name=True)
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)
@@ -103,7 +111,7 @@ class Command(BaseCommand):
         concerts = carnatic.models.Concert.objects.all()
         ret = []
         for c in concerts:
-            raagas = [] # list of (rid, rname)
+            raagas = []  # list of (rid, rname)
             taalas = []
             works = []
             artists = []
@@ -127,7 +135,7 @@ class Command(BaseCommand):
                         "work_is": works,
                         "artist_is": artists,
                         "module_s": "carnatic"
-                       })
+                        })
         self.solr.add(ret)
         self.solr.commit()
 
@@ -137,7 +145,7 @@ class Command(BaseCommand):
         releases = hindustani.models.Release.objects.all()
         ret = []
         for r in releases:
-            raags = [] # list of (rid, rname)
+            raags = []  # list of (rid, rname)
             taals = []
             forms = []
             layas = []
@@ -171,7 +179,7 @@ class Command(BaseCommand):
                         "work_is": works,
                         "artist_is": artists,
                         "module_s": "hindustani",
-                       })
+                        })
         self.solr.add(ret)
         self.solr.commit()
 
@@ -181,4 +189,3 @@ class Command(BaseCommand):
 
         self.create_hindustani_search_index()
         self.create_hindustani_release_index()
-

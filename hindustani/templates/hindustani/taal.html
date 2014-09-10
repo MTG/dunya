@@ -1,6 +1,6 @@
-{% extends "hindustani/base.html" %}
-{% load hindustaniinline %}
-{% load hindustanibadges %}
+{% extends "carnatic/base.html" %}
+{% load hindustani.inline %}
+{% load hindustani.badges %}
 {% load staticfiles %}
 
 {% block script %}
@@ -84,8 +84,8 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="tracklist">
-                            {% for t in tracks %}
-                                    {% badge_recording t %}
+                            {% for r in recordings %}
+                                    {% badge_recording r %}
                             {% endfor %}
 	                    </div>
 	     			</div>

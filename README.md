@@ -74,8 +74,17 @@ when we make changes to it without needing root.
 Database
 --------
 
-Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and edit it
-to point to your database. It does not matter if you use postgres, mysql, or sqlite.
+Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and
+edit it to point to your database. We currently use postgres for its
+unaccent support.
+
+Create the database:
+
+    createdb dunya
+
+and also create the unaccent extension:
+
+    echo 'create extension unaccent;' | psql dunya
 
 To add tables to the database run
 
@@ -96,7 +105,7 @@ Where `dunya` is the name of the database
     1.  To setup and configure your database, run:
             fab setupdb
 
-    2.  Inside your database, add a row to django_site table:
+    2.  Inside your database, add a row to the `django_site` table:
         Example: 
             id |         domain          |            name
             1  | dunya.compmusic.upf.edu | dunya.compmusic.upf.edu
@@ -115,9 +124,9 @@ Where `dunya` is the name of the database
 
     6. Enter the corresponding data for the 'add collection' form.
         - You can retrieve the collection id from the link of the page
-            (http://musicbrainz.org/collection/{collction_id})
+            (http://musicbrainz.org/collection/{collection_id})
        Note:
-        At the moment, if you are adding a colleciton for Carnatic style, you can choose
+        At the moment, if you are adding a collection for Carnatic style, you can choose
         all the checkers except the ones containing Makam.
 
     7. Click on Submit.
@@ -187,6 +196,12 @@ To import data into solr
     python manage.py solrdelete
     python manage.py solrimport
 
+Modify  `SOLR_URL` in `local_settings.py.dist` to point to your solr server.
+For example, if you are running solr on port 8080 in your localhost:
+
+    SOLR_URL = 'http://localhost:8080'
+
+
 Less stylesheets
 ----------------
 We use the less css compiler for stylesheets. You'll need `lessc` installed in order
@@ -234,7 +249,7 @@ Updating Fixtures
 =================
 
 Some data in Dunya should only rarely change (e.g., Raaga, Taala, Form, Location, Language lists).
-We store this in _fixtures,_ and it is automatically loaded when you create a new database.
+We store this data in _fixtures,_ and it is automatically loaded when you create a new database.
 Fixure files are in `fixtures/initial_data.json` in the app (e.g., `data` and `carnatic`).
 
 If you make a new fixture table, you can easily import data into it by creating a CSV file with
@@ -340,11 +355,33 @@ Use this configuration for supervisor.
     redirect_stderr=true
     stopasgroup=true
 
+Workers
+=======
+
+Dunya must also be installed on worker machines to run remote processes. This machine
+will need access to the main database, configured in `local_settings.py`
+
+Essentia should be installed into the virtual environment, `/srv/dunya/env`. The
+whole dunya directory should be owned by a user that has write permission to the
+directory. Celery should run as this user too.
+
+You need to make sure that this user can connect to github via ssh. Either log in as the 
+use and run `ssh github.com`, or use https.
+
+The celery configuration should have a queue and hostname configured that are the
+same (`-Q` and `-n`). These settings are needed for remote control of a single worker.
+The machines must also listen on the standard `celery` queue for all other work.
+
     [program:dunyacelery]
-    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8'
+    # We need to set the path to include the virtualenv so that e.g. essentia gets the right pythonpath
+    # Supervisor doesn't overwrite HOME or USER, so we need to add it so that os.path.expanduser works
+    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8',PATH='/srv/dunya/env/bin:/usr/local/bin:/bin:/usr/bin',HOME='/home/dunya',USER='dunya'
     user=dunya
     directory=/srv/dunya
-    command=/srv/dunya/env/bin/celery -A dunya worker -l info
+    command=/srv/dunya/env/bin/celery -A dunya -n kora worker -l info -Q kora,celery
     redirect_stderr=true
     stopasgroup=true
+    autorestart=true
 
+One machine must listen on the `import` queue. This is used for processes that run from
+the dashboard.

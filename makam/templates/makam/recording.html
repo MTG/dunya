@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -16,6 +17,35 @@
 {% block wrap %}
 <div id="detail">
     <h1>Recording {{recording.title}}</h1>
+
+    <h3>External sites</h3>
+    {% for r in recording.refs %}
+    <li><a href="{{r.url}}">{{r.title}}</a>
+    {% endfor %}
+
+    <h3>From release(s)</h3>
+    {% inline_release_list recording.releaselist %}
+
+    <h3>Works</h3>
+    {% for w in worklist %}
+    <li>{% inline_work w %}</li>
+    {% endfor %}
+
+    {% if recording.has_gazel %}
+       <h3>Recording contains gazel</h3>
+       With makam(s) {% inline_makam_list recording.makamlist %}
+    {% endif %}
+    {% if recording.has_taksim %}
+       <h3>Recording contains taksim</h3>
+       With makam(s) {% inline_makam_list recording.makamlist %}
+    {% endif %}
+
+    <h3>Musicians</h3>
+    {% for p in recording.performers %}
+    {% recording_instruments_for_artist recording p as instrumentlist %}
+    <li>{% inline_artist p %}
+    {% if instrumentlist %}({% inline_instrument instrumentlist %}){% endif %}</li>
+    {% endfor %}
 
     <div class="clearfix"></div>
 </div>

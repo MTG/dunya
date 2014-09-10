@@ -1,6 +1,6 @@
-{% extends "hindustani/base.html" %}
-{% load hindustaniinline %}
-{% load hindustanibadges %}
+{% extends "carnatic/base.html" %}
+{% load hindustani.inline %}
+{% load hindustani.badges %}
 {% load staticfiles %}
 
 {% block script %}
@@ -122,7 +122,7 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="tracklist">
-                            {% for t in release.tracks.all %}
+                            {% for t in release.tracklist %}
                             {% badge_recording t %}
                             {% endfor %}
 	                    </div>
@@ -138,8 +138,8 @@ $(document).ready(function() {
 	     			<div class="innerrightdata scrolldata nopad">
                         {% if release.performers %}
                         <div class="scrollblock inforight" style="height: 290px;">
-	                    {% for performance in release.performers %}
-	                        {% badge_performance performance %}
+	                    {% for artist in release.performers %}
+	                        {% badge_performance release artist %}
 	                    {% endfor %}
                         </div>
                         {% else %}

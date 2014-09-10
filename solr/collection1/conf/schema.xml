@@ -15,10 +15,16 @@
 
    <dynamicField name="random_*" type="random" />
 
-   <field name="title_suggest" type="text_suggest" indexed="true" stored="false"/>
-   <field name="title_suggest_edge" type="text_suggest_edge" indexed="true" stored="false"/>
-   <field name="title_suggest_ngram" type="text_suggest_ngram" indexed="true" stored="false"/>
+   <field name="title_suggest" type="text_suggest" indexed="true" stored="false" multiValued="true"/>
+   <field name="title_suggest_edge" type="text_suggest_edge" indexed="true" stored="false" multiValued="true"/>
+   <field name="title_suggest_ngram" type="text_suggest_ngram" indexed="true" stored="false" multiValued="true"/>
+   <field name="alias_txt_suggest" type="text_suggest" indexed="true" stored="false" multiValued="true"/>
+   <field name="alias_txt_suggest_edge" type="text_suggest_edge" indexed="true" stored="false" multiValued="true"/>
+   <field name="alias_txt_suggest_ngram" type="text_suggest_ngram" indexed="true" stored="false" multiValued="true"/>
 
+   <copyField source="alias_txt" dest="title_suggest" />
+   <copyField source="alias_txt" dest="title_suggest_edge" />
+   <copyField source="alias_txt" dest="title_suggest_ngram" />
    <copyField source="title_t" dest="title_suggest" />
    <copyField source="title_t" dest="title_suggest_edge" />
    <copyField source="title_t" dest="title_suggest_ngram" />

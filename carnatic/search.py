@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -27,18 +27,11 @@ def search(name):
     query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
-    klass_map = {"instrument": carnatic.models.Instrument,
-                 "raaga": carnatic.models.Raaga,
-                 "taala": carnatic.models.Taala,
-                 "concert": carnatic.models.Concert,
-                 "artist": carnatic.models.Artist,
-                 "work": carnatic.models.Work,
-                 "composer": carnatic.models.Composer}
     for d in results.docs:
         type = d["type_s"]
         id = d["object_id_i"]
         id = int(id)
-        klass = klass_map.get(type)
+        klass = get_klassmap().get(type)
         if klass:
             instance = klass.objects.get(pk=id)
             ret[type].append(instance)
@@ -49,6 +42,7 @@ def autocomplete(term):
     params['wt'] = 'json'
     params['q'] = term
     params['fq'] = "module_s:carnatic"
+    params['fl'] = "title_t,type_s,object_id_i"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)
@@ -111,3 +105,11 @@ def similar_recordings(mbid):
     else:
         return []
 
+def get_klassmap():
+    return {"instrument": carnatic.models.Instrument,
+            "raaga": carnatic.models.Raaga,
+            "taala": carnatic.models.Taala,
+            "concert": carnatic.models.Concert,
+            "artist": carnatic.models.Artist,
+            "work": carnatic.models.Work,
+            "composer": carnatic.models.Composer}

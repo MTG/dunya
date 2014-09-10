@@ -1,7 +1,6 @@
-from django.conf.urls import patterns, include, url, static
+from django.conf.urls import include, url, static
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.comments.models import Comment
 from django.views.generic.base import RedirectView
 
 admin.autodiscover()
@@ -10,14 +9,16 @@ js_info_dict = {
     'packages': ('django.conf',),
 }
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Examples:
     url(r'^$', RedirectView.as_view(pattern_name="carnatic-main"), name="main"),
     url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
     url(r'^about/terms', 'dunya.views.terms', name="terms"),
     url(r'^about/cookies', 'dunya.views.cookies', name="cookies"),
     url(r'^about/contact', 'dunya.views.contact', name="contact"),
-    url(r'^api/', include('dunya.api_urls')),
+    url(r'^api/carnatic/', include('carnatic.api_urls')),
+    url(r'^api/hindustani/', include('hindustani.api_urls')),
+    url(r'^api/makam/', include('makam.api_urls')),
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^motifdiscovery/', include('motifdiscovery.urls')),
     url(r'^hindustani/', include('hindustani.urls')),
@@ -33,7 +34,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     url(r'^makamplayer/$', 'makam.views.makamplayer'),
-)
+]
 
 if settings.DEBUG:
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

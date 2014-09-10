@@ -1,0 +1,21 @@
+{% load staticfiles %}
+{% load carnatic.inline %}
+
+<div class="artist item">
+  <div class="disc pict">
+    <a href="{{artist.get_absolute_url}}"><img src="{{artist.get_image_url}}"></a>
+</div>
+  <div class="desc">
+    <div class="plus"></div>
+        {% inline_artist artist %}
+        {% if artist.begin %}<p>{{artist.begin}}</p>{% endif %}
+        {% if instruments %}
+          {% inline_instrument instruments %}
+        {% endif %}
+  </div>
+  <div class="descOpen">
+    {% if artist.description.description %}
+    {{artist.description.description|safe}}
+    {% else %}Sorry, we have no description for this artist{% endif %}
+  </div>
+</div>

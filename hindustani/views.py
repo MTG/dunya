@@ -34,13 +34,13 @@ import docserver
 
 def get_filter_items():
     filter_items = [
-            models.Artist.get_filter_criteria(),
-            models.Release.get_filter_criteria(),
-            models.Instrument.get_filter_criteria(),
-            models.Raag.get_filter_criteria(),
-            models.Taal.get_filter_criteria(),
-            models.Laya.get_filter_criteria(),
-            models.Form.get_filter_criteria()
+        models.Artist.get_filter_criteria(),
+        models.Release.get_filter_criteria(),
+        models.Instrument.get_filter_criteria(),
+        models.Raag.get_filter_criteria(),
+        models.Taal.get_filter_criteria(),
+        models.Laya.get_filter_criteria(),
+        models.Form.get_filter_criteria()
     ]
     return filter_items
 
@@ -97,10 +97,6 @@ def main(request):
             qform.append(int(i))
     if "q" in request.GET:
         query = request.GET.get("q")
-        # special case, we have this so we can put a ? in the arglist
-        # in the javascript, but it's actually a browse
-        if query == "1":
-            query = None
     else:
         query = None
 
@@ -277,8 +273,28 @@ def main(request):
 def composer(request, uuid, name=None):
     composer = get_object_or_404(models.Composer, mbid=uuid)
 
-    ret = {"composer": composer
-          }
+    works = composer.works.all()
+    # We show all compositions, ordered by number of recordings
+    works = sorted(works, key=lambda w: w.recording_set.count(), reverse=True)
+
+    musicbrainz = composer.get_musicbrainz_url()
+    w = data.models.SourceName.objects.get(name="Wikipedia")
+    wikipedia = None
+    wr = composer.references.filter(hindustani_composer_source_set=w)
+    if wr.count():
+        wikipedia = wr[0].uri
+    desc = composer.description
+    if desc and desc.source.source_name == w:
+        wikipedia = composer.description.source.uri
+    wr = composer.references.filter(source_name=w)
+    if wr.count() and not wikipedia:
+        wikipedia = wr[0].uri
+
+    ret = {"composer": composer,
+           "mb": musicbrainz,
+           "wiki": wikipedia,
+           "works": works}
+
     return render(request, "hindustani/composer.html", ret)
 
 def artistsearch(request):
@@ -302,15 +318,15 @@ def artist(request, uuid, name=None):
     releases = artist.releases()
     sample = None
     if releases:
-        tracks = releases[0].tracks.all()
-        if tracks:
-            sample = tracks[0]
+        recordings = releases[0].recordings.all()
+        if recordings:
+            sample = recordings[0]
 
     ret = {"artist": artist,
-            "mb": musicbrainz,
-            "wiki": wikipedia,
-            "sample": sample
-          }
+           "mb": musicbrainz,
+           "wiki": wikipedia,
+           "sample": sample
+           }
     return render(request, "hindustani/artist.html", ret)
 
 def releasesearch(request):
@@ -325,8 +341,8 @@ def release(request, uuid, title=None):
     similar = release.get_similar()
 
     ret = {"release": release,
-            "similar": similar
-          }
+           "similar": similar
+           }
     return render(request, "hindustani/release.html", ret)
 
 def recording(request, uuid, title=None):
@@ -352,7 +368,7 @@ def recording(request, uuid, title=None):
         tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
-        thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
+        thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
         thebin = int(round(thebin))
         tonic = str(tonic)
         if thebin <= 11 and thebin >= 0:
@@ -390,47 +406,47 @@ def recording(request, uuid, title=None):
 
     try:
         release = recording.release_set.get()
-        tracks = list(release.tracks.all())
-        recordingpos = tracks.index(recording)
+        recordings = list(release.recordings.all())
+        recordingpos = recordings.index(recording)
     except models.Release.DoesNotExist:
         release = None
-        tracks = []
+        recordings = []
         recordingpos = 0
     nextrecording = None
     prevrecording = None
     if recordingpos > 0:
-        prevrecording = tracks[recordingpos-1]
-    if recordingpos+1 < len(tracks):
-        nextrecording = tracks[recordingpos+1]
+        prevrecording = recordings[recordingpos - 1]
+    if recordingpos + 1 < len(recordings):
+        nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
-    ret = { "recording": recording,
-            "objecttype": "recording",
-            "objectid": recording.id,
-            "waveform": wave,
-            "spectrogram": spec,
-            "smallimage": small,
-            "audio": audio,
-            "tonic": tonic,
-            "tonicname": tonicname,
-            "akshara": akshara,
-            "mbid": mbid,
-            "nextrecording": nextrecording,
-            "prevrecording": prevrecording,
-            "pitchtrackurl": pitchtrackurl,
-            "histogramurl": histogramurl,
-            "rhythmurl": rhythmurl,
-            "aksharaurl": aksharaurl,
-            "drawtempo": drawtempo,
-            "release": release,
-        }
+    ret = {"recording": recording,
+           "objecttype": "recording",
+           "objectid": recording.id,
+           "waveform": wave,
+           "spectrogram": spec,
+           "smallimage": small,
+           "audio": audio,
+           "tonic": tonic,
+           "tonicname": tonicname,
+           "akshara": akshara,
+           "mbid": mbid,
+           "nextrecording": nextrecording,
+           "prevrecording": prevrecording,
+           "pitchtrackurl": pitchtrackurl,
+           "histogramurl": histogramurl,
+           "rhythmurl": rhythmurl,
+           "aksharaurl": aksharaurl,
+           "drawtempo": drawtempo,
+           "release": release,
+           }
     return render(request, "hindustani/recording.html", ret)
 
 def work(request, uuid, title=None):
     work = get_object_or_404(models.Work, mbid=uuid)
 
     ret = {"work": work
-          }
+           }
     return render(request, "hindustani/work.html", ret)
 
 def layasearch(request):
@@ -444,7 +460,7 @@ def laya(request, layaid, name=None):
     laya = get_object_or_404(models.Laya, pk=layaid)
 
     ret = {"laya": laya
-          }
+           }
     return render(request, "hindustani/laya.html", ret)
 
 def raagsearch(request):
@@ -462,8 +478,8 @@ def raag(request, raagid, name=None):
         sample = random.sample(recordings, 1)[0]
 
     ret = {"raag": raag,
-            "sample": sample
-          }
+           "sample": sample
+           }
     return render(request, "hindustani/raag.html", ret)
 
 def taalsearch(request):
@@ -488,18 +504,18 @@ def taal(request, taalid, name=None):
     vilambit = models.Laya.Vilambit
 
     recordings = taal.recording_set.all()
-    tracks = []
-    tracks.extend( [r for r in recordings if r.layas.count() == 1 and dhrut in r.layas.all()][:5] )
-    tracks.extend( [r for r in recordings if r.layas.count() == 1 and madhya in r.layas.all()][:5] )
-    tracks.extend( [r for r in recordings if r.layas.count() == 1 and vilambit in r.layas.all()][:5] )
+    recordings = []
+    recordings.extend([r for r in recordings if r.layas.count() == 1 and dhrut in r.layas.all()][:5])
+    recordings.extend([r for r in recordings if r.layas.count() == 1 and madhya in r.layas.all()][:5])
+    recordings.extend([r for r in recordings if r.layas.count() == 1 and vilambit in r.layas.all()][:5])
     sample = None
-    if tracks:
-        sample = tracks[0]
+    if recordings:
+        sample = recordings[0]
 
-    ret = { "taal": taal,
-            "tracks": tracks,
-            "sample": sample
-          }
+    ret = {"taal": taal,
+           "recordings": recordings,
+           "sample": sample
+           }
     return render(request, "hindustani/taal.html", ret)
 
 
@@ -514,7 +530,7 @@ def form(request, formid, name=None):
     form = get_object_or_404(models.Form, pk=formid)
 
     ret = {"form": form
-          }
+           }
     return render(request, "hindustani/form.html", ret)
 
 def instrumentsearch(request):
@@ -532,10 +548,9 @@ def instrument(request, instrumentid, name=None):
     # the first track
     releases = models.Release.objects.filter(artists__main_instrument=instrument)
     if releases.exists():
-        sample = releases[0].tracks.all()[0]
+        sample = releases[0].recordings.all()[0]
 
     ret = {"instrument": instrument,
-            "sample": sample
-          }
+           "sample": sample
+           }
     return render(request, "hindustani/instrument.html", ret)
-

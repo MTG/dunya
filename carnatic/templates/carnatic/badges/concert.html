@@ -1,0 +1,40 @@
+{% load carnatic.inline %}
+{% load carnatic.badges %}
+
+<div class="concert item">
+      <div class="disc pict">
+          <a href="{{concert.get_absolute_url}}">
+              <img width="200" src="{{concert.get_small_image_url}}"></a>
+      </div>
+      <div class="desc">
+        <div class="plus"></div>
+        <a href="{{concert.get_absolute_url}}" class="title"><b>{{concert.title}}</b></a>
+        {% if concert.artists.all %}
+        <a href="{{concert.artists.all.0.get_absolute_url}}" class="belongs">{{concert.artists.all.0}}</a>
+        {% endif %}
+      </div>
+      <div class="descOpen">
+        <div class="meta">
+            <label>Release year</label> <span class="value">{{concert.year}}</span><br>
+          <label>Length</label> <span class="value">02:26:57</span>
+          <div class="clearer"></div>
+        </div>
+        <h3></h3>
+        <p class="value"></p>
+      </div>
+      <div class="lists">
+        <div class="left">
+          <h3>Tracks</h3>
+          {% for t in concert.recordings.all %}
+          {% badge_mini_recording t %}
+          {% endfor %}
+        </div>
+
+        <div class="right">
+          <h3>Performers</h3>
+           {% for perf in concert.performers %}
+           {% badge_mini_performance perf %}
+           {% endfor %}
+        </div>
+      </div>
+    </div>

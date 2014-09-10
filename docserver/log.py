@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -19,13 +19,11 @@ import json
 import datetime
 from django.conf import settings
 
-from docserver import models
-
 redis = redis.StrictRedis(host=settings.WORKER_REDIS_HOST)
 
 def _send_item_with_size(key, data, size):
     redis.lpush(key, data)
-    redis.ltrim(key, 0, size-1)
+    redis.ltrim(key, 0, size - 1)
 
 def log_processed_file(worker, collection, recordingid, moduleversion):
     now = datetime.datetime.now()

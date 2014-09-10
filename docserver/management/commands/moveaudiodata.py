@@ -1,22 +1,20 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
-from django.db import transaction
-from optparse import make_option
+from django.core.management.base import BaseCommand
 
 import sys
 import os
@@ -28,15 +26,12 @@ import os
 """
 
 import dashboard.models
-import docserver.models
-
-from django.conf import settings
 
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
     for i in xrange(0, len(l), n):
-        yield l[i:i+n]
+        yield l[i:i + n]
 
 
 class Command(BaseCommand):
@@ -56,8 +51,6 @@ class Command(BaseCommand):
         self.main(args[0], args[1])
 
     def main(self, collmbid, audiodir):
-        derivedlocation = settings.AUDIO_ROOT
-
         try:
             c = dashboard.models.Collection.objects.get(pk=collmbid)
         except dashboard.models.Collection.DoesNotExist:
@@ -65,7 +58,6 @@ class Command(BaseCommand):
             return
 
         if os.path.exists(audiodir) and os.path.isdir(audiodir):
-            oldroot = c.root_directory
             if not audiodir.endswith("/"):
                 audiodir += "/"
             c.root_directory = audiodir

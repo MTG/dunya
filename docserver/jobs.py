@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -20,13 +20,13 @@ from django.db import transaction
 import importlib
 import os
 import json
+import shutil
 import logging
 import time
 import subprocess
 
 from docserver import models
 from docserver import log
-import dashboard
 import numpy as np
 
 from django.conf import settings
@@ -86,11 +86,12 @@ def create_module(modulepath, collections):
     except models.SourceFileType.DoesNotExist as e:
         raise Exception("Cannot find source file type '%s'" % instance.__sourcetype__, e)
 
-    module = models.Module.objects.create(name=modulepath.rsplit(".", 1)[1],
-                    slug=instance.__slug__,
-                    depends=instance.__depends__,
-                    module=modulepath,
-                    source_type=sourcetype)
+    module = models.Module.objects.create(
+        name=modulepath.rsplit(".", 1)[1],
+        slug=instance.__slug__,
+        depends=instance.__depends__,
+        module=modulepath,
+        source_type=sourcetype)
     module.collections.add(*collections)
     get_latest_module_version(module.pk)
 
@@ -127,7 +128,7 @@ def delete_moduleversion(vid):
                     # parent dirs. May throw OSError (not really an error)
                     os.removedirs(dirname)
             except OSError:
-                pass # if the file doesn't exist, not really an error
+                pass  # if the file doesn't exist, not really an error
         f.delete()
     module = version.module
     version.delete()
@@ -145,10 +146,28 @@ def delete_module(mid):
         delete_moduleversion(v.pk)
     print "done"
 
+@app.task
+def delete_collection(cid):
+    """ Delete a collection and all its documents from the docserver.
+    Also remove the physical files from all the derivedfiles that
+    have been created for the documents.
+    """
+    collection = models.Collection.objects.get(pk=cid)
+    # Because we are deleting all files for a collection we can just
+    # directly delete the collection's directory - e.g.
+    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6/71/718840e9-8715-4f59-ae47-f52d1691dab1/wav/0.5/wav-length-1.dat ->
+    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6
+    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collection=collection)
+    paths = [f.fullpath for f in dfparts]
+    prefix = os.path.commonprefix(paths)
+    if os.path.isdir(prefix):
+        shutil.rmtree(prefix)
+    collection.delete()
+
 class NumPyArangeEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
-            return obj.tolist() # or map(int, obj)
+            return obj.tolist()  # or map(int, obj)
         return json.JSONEncoder.default(self, obj)
 
 def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
@@ -184,7 +203,6 @@ def process_document(documentid, moduleversionid):
     module = version.module
     instance = _get_module_instance_by_path(module.module)
 
-
     hostname = process_document.request.hostname
     if "@" in hostname:
         hostname = hostname.split("@")[1]
@@ -198,18 +216,17 @@ def process_document(documentid, moduleversionid):
     document = models.Document.objects.get(pk=documentid)
     collection = document.collection
 
-    log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
-
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
         # TODO: If there is more than 1 source file
         s = sfiles[0]
         fname = s.fullpath.encode("utf-8")
         starttime = time.time()
-        results = instance.process_document(collection.collectionid, document.pk,
-                s.pk, document.external_identifier, fname)
+        results = instance.process_document(
+            collection.collectionid, document.pk,
+            s.pk, document.external_identifier, fname)
         endtime = time.time()
-        total_time = int(endtime-starttime)
+        total_time = int(endtime - starttime)
 
         collectionid = document.collection.collectionid
         moduleslug = module.slug
@@ -221,9 +238,10 @@ def process_document(documentid, moduleversionid):
                 multipart = outputdata.get("parts", False)
                 print "data %s (%s)" % (dataslug, type(contents))
                 print "multiparts %s" % multipart
-                df = models.DerivedFile.objects.create(document=document, derived_from=s,
-                        module_version=version, outputname=dataslug, extension=extension,
-                        mimetype=mimetype, computation_time=total_time)
+                df = models.DerivedFile.objects.create(
+                    document=document, derived_from=s,
+                    module_version=version, outputname=dataslug, extension=extension,
+                    mimetype=mimetype, computation_time=total_time)
                 if worker:
                     df.essentia = worker.essentia
                     df.pycompmusic = worker.pycompmusic
@@ -232,10 +250,15 @@ def process_document(documentid, moduleversionid):
                 if not multipart:
                     contents = [contents]
                 for i, partdata in enumerate(contents, 1):
-                    saved_name, rel_path, saved_size = _save_file(collectionid, document.external_identifier,
-                            version.version, moduleslug, dataslug, i, extension, partdata)
+                    saved_name, rel_path, saved_size = _save_file(
+                        collectionid, document.external_identifier,
+                        version.version, moduleslug, dataslug, i, extension, partdata)
                     if saved_name:
                         df.save_part(i, rel_path, saved_size)
+
+        # When we've finished, log that we processed the file. If this throws an
+        # exception, we won't do the log.
+        log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
@@ -251,9 +274,9 @@ def run_module_on_recordings(moduleid, recids):
         print "version", version, version.pk
         # All documents that don't already have a derived file for this module version
         docs = models.Document.objects.filter(
-                sourcefiles__file_type=module.source_type,
-                external_identifier__in=recids,
-                ).exclude(derivedfiles__module_version=version)
+            sourcefiles__file_type=module.source_type,
+            external_identifier__in=recids,
+        ).exclude(derivedfiles__module_version=version)
         for d in docs:
             print "  document", d
             print "  docid", d.pk
@@ -270,8 +293,9 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
     if version:
         print "version", version
         # All documents that don't already have a derived file for this module version
-        docs = models.Document.objects.filter(sourcefiles__file_type=module.source_type,
-                collection=collection).exclude(derivedfiles__module_version=version)
+        docs = models.Document.objects.filter(
+            sourcefiles__file_type=module.source_type,
+            collection=collection).exclude(derivedfiles__module_version=version)
         for i, d in enumerate(docs, 1):
             print "  document %s/%s - %s" % (i, len(docs), d)
             process_document.delay(d.pk, version.pk)
@@ -372,4 +396,3 @@ def update_all_workers(user=None):
     for w in workers:
         log.log_worker_action(w.hostname, user, "updateall")
         update_single_worker.apply_async([w.hostname], queue=w.hostname)
-

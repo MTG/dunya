@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 
 import carnatic
 from motifdiscovery import models
@@ -11,7 +11,7 @@ def main(request):
 def artists(request):
     f = models.File.objects.using('motif').filter(hasseed=1)
     mbids = [m.mbid for m in f]
-    arts = carnatic.models.Artist.objects.filter(primary_concerts__tracks__mbid__in=mbids).distinct().order_by('name')
+    arts = carnatic.models.Artist.objects.filter(primary_concerts__recordings__mbid__in=mbids).distinct().order_by('name')
     ret = {"artists": arts}
     return render(request, "motifdiscovery/artists.html", ret)
 
@@ -19,7 +19,7 @@ def artist(request, uuid):
     a = get_object_or_404(carnatic.models.Artist, mbid=uuid)
     f = models.File.objects.using('motif').filter(hasseed=1)
     mbids = [m.mbid for m in f]
-    concerts = a.primary_concerts.filter(tracks__mbid__in=mbids).distinct()
+    concerts = a.primary_concerts.filter(recordings__mbid__in=mbids).distinct()
     ret = {"artist": a, "concerts": concerts}
     return render(request, "motifdiscovery/artist.html", ret)
 
@@ -27,7 +27,7 @@ def release(request, uuid):
     r = get_object_or_404(carnatic.models.Concert, mbid=uuid)
     f = models.File.objects.using('motif').filter(hasseed=1)
     mbids = [m.mbid for m in f]
-    tracks = r.tracks.filter(mbid__in=mbids)
+    tracks = r.recordings.filter(mbid__in=mbids)
 
     ret = {"release": r, "tracks": tracks}
     return render(request, "motifdiscovery/release.html", ret)

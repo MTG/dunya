@@ -1,7 +1,7 @@
 {% extends "carnatic/base.html" %}
-{% load inline %}
+{% load carnatic.inline %}
 {% load comments %}
-{% load badges %}
+{% load carnatic.badges %}
 {% load staticfiles %}
 
 {% block script %}
@@ -58,7 +58,7 @@ $(document).ready(function() {
      </div>-->
 
  <div id="detail" class="work">
-			<!--
+            {% comment %}
 	     	<div class="thedata">
 	     		<div class="leftdata">
 		     		<h3>List of concerts</h3>
@@ -87,10 +87,7 @@ $(document).ready(function() {
 	     		</div>
 	     	</div>
 
-            {% comment %}
-            {% include "carnatic/social.html" %}
             {% endcomment %}
-			-->
 			<div class="missingdata">
 				<h2>Sorry</h2>
 				<p>

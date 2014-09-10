@@ -1,8 +1,24 @@
-{% load hindustaniinline %}
+{% load hindustani.inline %}
 
 <div class="miniitem recording">
     <div class="colorCode shadow1"></div>
     <div class="disco"><a href="{{recording.get_absolute_url}}"><img src="{{recording.get_image_url}}"></a></div>
-    <label><b>{% inline_recording recording %}</b> by {% inline_artist recording.artist %}</label>
+    <label><b>{% inline_recording recording %}</b><br>
+        {% with rs=recording.raags %}
+        {% if rs.count %}
+        <b>Raag:</b>
+        {% for r in rs.all %}
+        {% inline_raag r %}{% if not forloop.last %}, {% endif %}{% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% with ts=recording.taals %}
+        {% if ts.count %}
+        <b>Taal:</b>{% for t in ts.all %}
+        {% inline_taal t %}{% if not forloop.last %}, {% endif %}{% endfor %}
+        {% endif %}
+        {% endwith %}
+
+    </label>
 </div>
 

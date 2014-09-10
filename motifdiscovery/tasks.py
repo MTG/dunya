@@ -50,16 +50,14 @@ def fix_segments(file_id):
             r_end = round(p.end_time, 1)
             qs = models.Segment.objects.filter(file=thefile, rounded_start=r_start, rounded_end=r_end)
             if qs.exists():
-                s = qs.get()
-
                 start_str = str(r_start)
                 end_str = str(r_end)
                 fname = "%s-%s.wav" % (start_str, end_str)
                 dname = start_str[0]
-                
+
                 full_dir = os.path.join(ROOT_DIR, str(thefile.id), dname)
                 full_path = os.path.join(full_dir, fname)
-                mp3_path = full_path[:-3]+"mp3"
+                mp3_path = full_path[:-3] + "mp3"
 
                 if os.path.exists(mp3_path) and os.stat(mp3_path).st_size == 0:
                     print "deleting", mp3_path
@@ -67,7 +65,7 @@ def fix_segments(file_id):
                     sframe = int(math.floor(r_start * samplerate))
                     eframe = int(math.ceil(r_end * samplerate))
                     wav_in.setpos(sframe)
-                    frames = wav_in.readframes(eframe-sframe)
+                    frames = wav_in.readframes(eframe - sframe)
 
                     wav_out = wave.open(full_path, 'wb')
                     wav_out.setparams(params)
@@ -105,7 +103,7 @@ def make_segments(file_id):
                 end_str = str(r_end)
                 fname = "%s-%s.wav" % (start_str, end_str)
                 dname = start_str[0]
-                
+
                 full_dir = os.path.join(ROOT_DIR, str(thefile.id), dname)
                 full_path = os.path.join(full_dir, fname)
                 try:
@@ -116,7 +114,7 @@ def make_segments(file_id):
                 sframe = int(math.floor(r_start * samplerate))
                 eframe = int(math.ceil(r_end * samplerate))
                 wav_in.setpos(sframe)
-                frames = wav_in.readframes(eframe-sframe)
+                frames = wav_in.readframes(eframe - sframe)
 
                 # create the file, save it, add a entry
                 # args = ["ffmpeg", "-i", wav_file, "-ss", str(r_start), "-t", str((r_end-r_start)), full_path]

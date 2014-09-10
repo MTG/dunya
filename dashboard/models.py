@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -20,7 +20,6 @@ from django.core.urlresolvers import reverse
 from django.db.models.loading import get_model
 import django.utils.timezone
 
-import uuid
 import os
 import importlib
 import json
@@ -73,11 +72,11 @@ class MusicbrainzReleaseManager(StateCarryingManager):
 
 class CompletenessChecker(models.Model):
     """ Stores information about modules that have been written to check
-    the completeness and consistency of the data that we have stored in 
+    the completeness and consistency of the data that we have stored in
     external sources and the audio files.
     See the dashboard.jobs module for more information
     """
-    TYPE_CHOICE = ( ('r', 'Release'), ('f', 'File') )
+    TYPE_CHOICE = (('r', 'Release'), ('f', 'File'))
     name = models.CharField(max_length=200)
     module = models.CharField(max_length=200)
     templatefile = models.CharField(max_length=200, blank=True, null=True)
@@ -102,7 +101,7 @@ class CollectionState(models.Model):
         ordering = ['-state_date']
 
     collection = models.ForeignKey("Collection")
-    STATE_CHOICE = ( ('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error') )
+    STATE_CHOICE = (('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -151,7 +150,7 @@ class Collection(models.Model):
         return self.collectionstate_set.all()[1:]
 
     def update_state(self, state):
-        cs = CollectionState.objects.create(collection=self, state=state)
+        CollectionState.objects.create(collection=self, state=state)
 
     def set_state_importing(self):
         self.update_state('i')
@@ -207,10 +206,10 @@ class MusicbrainzReleaseState(models.Model):
         ordering = ['-state_date']
 
     musicbrainzrelease = models.ForeignKey("MusicbrainzRelease")
-    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error') )
+    STATE_CHOICE = (('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
-    
+
     @property
     def state_name(self):
         return dict(self.STATE_CHOICE)[self.state]
@@ -250,7 +249,7 @@ class MusicbrainzRelease(models.Model):
         return r
 
     def update_state(self, state):
-        rs = MusicbrainzReleaseState.objects.create(musicbrainzrelease=self, state=state)
+        MusicbrainzReleaseState.objects.create(musicbrainzrelease=self, state=state)
 
     def set_state_importing(self):
         """ Set the state of the release to 'importing'. Also sets
@@ -318,10 +317,11 @@ class CollectionDirectory(models.Model):
     @property
     def full_path(self):
         return os.path.join(self.collection.root_directory, self.path)
-    
+
     def __unicode__(self):
-        return u"From collection %s, release %s, path on disk %s" % (self.collection,
-                self.musicbrainzrelease, self.path)
+        return u"From collection %s, release %s, path on disk %s" % (
+            self.collection,
+            self.musicbrainzrelease, self.path)
 
     def short_path(self):
         if len(self.path) < 60:
@@ -361,7 +361,7 @@ class CollectionFileState(models.Model):
         ordering = ['-state_date']
 
     collectionfile = models.ForeignKey("CollectionFile")
-    STATE_CHOICE = ( ('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error') )
+    STATE_CHOICE = (('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -388,8 +388,9 @@ class CollectionFile(models.Model):
     @property
     def path(self):
         """ Absolute path """
-        return os.path.join(self.directory.collection.root_directory,
-                self.directory.path, self.name)
+        return os.path.join(
+            self.directory.collection.root_directory,
+            self.directory.path, self.name)
 
     @property
     def relativepath(self):
@@ -400,7 +401,7 @@ class CollectionFile(models.Model):
         return u"%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
 
     def update_state(self, state):
-        fs = CollectionFileState.objects.create(collectionfile=self, state=state)
+        CollectionFileState.objects.create(collectionfile=self, state=state)
 
     def set_state_importing(self):
         self.update_state('i')
@@ -452,14 +453,14 @@ class CollectionFileLogMessage(models.Model):
 
 class CollectionFileResult(models.Model):
     """ The result of running a single completeness checker
-    on a single file. The a completeness checker either returns 
+    on a single file. The a completeness checker either returns
     True or False.
     """
 
     class Meta:
         ordering = ['-datetime']
 
-    RESULT_CHOICE = ( ('g', 'Good'), ('b', 'Bad') )
+    RESULT_CHOICE = (('g', 'Good'), ('b', 'Bad'))
     datetime = models.DateTimeField(default=django.utils.timezone.now)
     collectionfile = models.ForeignKey(CollectionFile)
     checker = models.ForeignKey(CompletenessChecker)
@@ -472,7 +473,7 @@ class CollectionFileResult(models.Model):
     def get_result_icon(self):
         icons = {"g": "tick.png",
                  "b": "cross.png"
-                }
+                 }
         return icons[self.result]
 
     @property
@@ -484,14 +485,14 @@ class CollectionFileResult(models.Model):
 
 class MusicbrainzReleaseResult(models.Model):
     """ The result of running a single completeness checker
-    on a single release. The a completeness checker either returns 
+    on a single release. The a completeness checker either returns
     True or False.
     """
 
     class Meta:
         ordering = ['-datetime']
 
-    RESULT_CHOICE = ( ('g', 'Good'), ('b', 'Bad') )
+    RESULT_CHOICE = (('g', 'Good'), ('b', 'Bad'))
     datetime = models.DateTimeField(default=django.utils.timezone.now)
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
     checker = models.ForeignKey(CompletenessChecker)
@@ -504,7 +505,7 @@ class MusicbrainzReleaseResult(models.Model):
     def get_result_icon(self):
         icons = {"g": "tick.png",
                  "b": "cross.png"
-                }
+                 }
         return icons[self.result]
 
     @property

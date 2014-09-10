@@ -1,8 +1,0 @@
-{% load inline %}
-
-<div class="miniitem recording">
-    <div class="colorCode shadow1"></div>
-    <div class="disco"><a href="{{recording.get_absolute_url}}"><img src="{{recording.get_image_url}}"></a></div>
-    <label><b>{% inline_recording recording %}</b> by {% inline_artist recording.artist %}</label>
-</div>
-

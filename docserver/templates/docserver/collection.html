@@ -11,6 +11,11 @@
     <li>Collection {{collection.name}}</li>
 </ul>
 
+<div class="topbox">
+    <div class="topheader">Actions</div>
+    <li><a href="{% url 'docserver-delete-collection' collection.slug %}">Delete collection and all files</a>
+</div>
+
 
 <table class="table">
     <tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th></tr>

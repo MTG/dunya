@@ -21,5 +21,5 @@ Methods
 -------
 
 We are currently working hard on making the Arab-Andalusian data available in Dunya.
-We expect to have a working version of the API for Arab-Andalusian music by mid-July 2014.
+We expect to have a working version of the API for Arab-Andalusian music by the 3rd week of July 2014.
 The API methods will be very similar to the [Carnatic Music API](https://github.com/MTG/dunya/blob/master/carnatic/API_README.md) 

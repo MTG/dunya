@@ -82,6 +82,7 @@ class TaalDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(source='recordings')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
+
     class Meta:
         model = models.Taal
         fields = ['id', 'name', 'aliases', 'recordings', 'composers']
@@ -105,6 +106,7 @@ class RaagDetailSerializer(serializers.ModelSerializer):
     recordings = WorkInnerSerializer(source='recordings')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
+
     class Meta:
         model = models.Raag
         fields = ['id', 'name', 'aliases', 'artists', 'recordings', 'composers']
@@ -126,6 +128,7 @@ class LayaList(generics.ListAPIView):
 class LayaDetailSerializer(serializers.ModelSerializer):
     recordings = WorkInnerSerializer(source='recordings')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
+
     class Meta:
         model = models.Laya
         fields = ['id', 'name', 'recordings', 'aliases', ]
@@ -148,9 +151,10 @@ class FormDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
     recordings = WorkInnerSerializer(source='recordings')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
+
     class Meta:
         model = models.Form
-        fields = ['id', 'name', 'aliases', 'artists', 'recordings',]
+        fields = ['id', 'name', 'aliases', 'artists', 'recordings']
 
 class FormDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -168,6 +172,7 @@ class InstrumentList(generics.ListAPIView):
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
+
     class Meta:
         model = models.Instrument
         fields = ['id', 'name', 'artists']
@@ -189,6 +194,7 @@ class WorkList(generics.ListAPIView):
 
 class WorkDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(source='recording_set')
+
     class Meta:
         model = models.Work
         fields = ['mbid', 'title', 'recordings']
@@ -216,9 +222,10 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     layas = LayaInnerSerializer(source='layas')
     forms = FormInnerSerializer(source='forms')
     works = WorkInnerSerializer(source='works')
+
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'artists', 'raags', 'taals', 'layas','forms', 'works', 'release']
+        fields = ['mbid', 'title', 'artists', 'raags', 'taals', 'layas', 'forms', 'works', 'release']
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -239,6 +246,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
     releases = ReleaseInnerSerializer(source='releases')
     instruments = InstrumentInnerSerializer(source='instruments')
     recordings = RecordingInnerSerializer(source='recordings')
+
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name', 'releases', 'instruments', 'recordings']
@@ -262,21 +270,21 @@ class ReleaseArtistSerializer(serializers.ModelSerializer):
     name = serializers.Field(source='performer.name')
     mbid = serializers.Field(source='performer.mbid')
     instrument = serializers.Field(source='instrument.name')
+
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name', 'instrument']
 
 class ReleaseDetailSerializer(serializers.ModelSerializer):
-    tracks = RecordingInnerSerializer(many=True)
+    recordings = RecordingInnerSerializer(many=True)
     artists = ReleaseArtistSerializer(source='performers')
     release_artists = ArtistInnerSerializer(source='artists')
+
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'tracks', 'artists', 'release_artists']
+        fields = ['mbid', 'title', 'recordings', 'artists', 'release_artists']
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Release.objects.all()
     serializer_class = ReleaseDetailSerializer
-
-

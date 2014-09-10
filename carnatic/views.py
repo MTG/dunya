@@ -1,26 +1,25 @@
 # -*- coding: UTF-8 -*-
 
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.utils.text import slugify
 from django.conf import settings
 
 from social import tagging
@@ -36,11 +35,11 @@ import pysolr
 
 def get_filter_items():
     filter_items = [
-            Artist.get_filter_criteria(),
-            Concert.get_filter_criteria(),
-            Instrument.get_filter_criteria(),
-            Raaga.get_filter_criteria(),
-            Taala.get_filter_criteria()
+        Artist.get_filter_criteria(),
+        Concert.get_filter_criteria(),
+        Instrument.get_filter_criteria(),
+        Raaga.get_filter_criteria(),
+        Taala.get_filter_criteria()
     ]
     return filter_items
 
@@ -86,10 +85,6 @@ def main(request):
             qtaala.append(int(i))
     if "q" in request.GET:
         query = request.GET.get("q")
-        # special case, we have this so we can put a ? in the arglist
-        # but it's actually a browse
-        if query == "1":
-            query = None
     else:
         query = None
 
@@ -156,14 +151,14 @@ def main(request):
             for c in list(combinedconcerts):
                 displayres.append(("concert", c))
 
-    elif qinstr: # instrument query, but no artist
+    elif qinstr:  # instrument query, but no artist
         querybrowse = True
         # instrument, people
         for iid in qinstr:
             instr = Instrument.objects.get(pk=iid)
             displayres.append(("instrument", instr))
             for p in instr.ordered_performers()[:5]:
-                displayres.append(("artist", p.performer))
+                displayres.append(("artist", p))
 
     elif qraaga:
         querybrowse = True
@@ -203,7 +198,7 @@ def main(request):
             displayres.append(("concert", con))
             artists = con.performers()
             for a in artists:
-                displayres.append(("artist", a.performer))
+                displayres.append(("artist", a))
                 # if instrument, only people who play that?
     elif query:
         try:
@@ -288,13 +283,13 @@ def artist(request, uuid, name=None):
     ips = InstrumentPerformance.objects.filter(instrument=inst)
     similar_artists = []
     for i in ips:
-        if i.performer not in similar_artists:
-            similar_artists.append(i.performer)
+        if i.artist not in similar_artists:
+            similar_artists.append(i.artist)
 
     if artist.main_instrument and artist.main_instrument.percussion:
         taalamap = {}
         taalacount = collections.Counter()
-        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__concert__instrumentconcertperformance__performer=artist) | Q(work__recording__instrumentperformance__performer=artist))
+        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__artist=artist))
         for t in taalas:
             taalacount[t.name] += 1
             if t.name not in taalamap:
@@ -308,7 +303,7 @@ def artist(request, uuid, name=None):
     if artist.main_instrument and artist.main_instrument.id in [1, 2]:
         raagamap = {}
         raagacount = collections.Counter()
-        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__concert__instrumentconcertperformance__performer=artist) | Q(work__recording__instrumentperformance__performer=artist))
+        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__artist=artist))
         for r in raagas:
             raagacount[r.name] += 1
             if r.name not in raagamap:
@@ -343,28 +338,28 @@ def artist(request, uuid, name=None):
     if wr.count() and not wikipedia:
         wikipedia = wr[0].uri
 
-    # Sample is the first track of any of their concerts (Vignesh, Dec 9)
+    # Sample is the first recording of any of their concerts (Vignesh, Dec 9)
     concerts = artist.concerts()
     sample = None
     if concerts:
-        tracks = concerts[0].tracks.all()
-        if tracks:
-            sample = tracks[0]
+        recordings = concerts[0].recordings.all()
+        if recordings:
+            sample = recordings[0]
 
     ret = {"filter_items": json.dumps(get_filter_items()),
-    	   "artist": artist,
+           "artist": artist,
            "form": TagSaveForm(),
-            "objecttype": "artist",
-            "objectid": artist.id,
-            "tags": tags,
-            "similar_artists": similar_artists,
-            "raagas": raagas,
-            "taalas": taalas,
-            "sample": sample,
-            "mb": musicbrainz,
-            "kutcheris": kutcheris,
-            "wiki": wikipedia
-    }
+           "objecttype": "artist",
+           "objectid": artist.id,
+           "tags": tags,
+           "similar_artists": similar_artists,
+           "raagas": raagas,
+           "taalas": taalas,
+           "sample": sample,
+           "mb": musicbrainz,
+           "kutcheris": kutcheris,
+           "wiki": wikipedia
+           }
 
     return render(request, "carnatic/artist.html", ret)
 
@@ -374,7 +369,28 @@ def composerbyid(request, composerid, name=None):
 
 def composer(request, uuid, name=None):
     composer = get_object_or_404(Composer, mbid=uuid)
-    ret = {"composer": composer}
+
+    works = composer.works.all()
+    # We show all compositions, ordered by number of recordings
+    works = sorted(works, key=lambda w: w.recording_set.count(), reverse=True)
+
+    musicbrainz = composer.get_musicbrainz_url()
+    w = data.models.SourceName.objects.get(name="Wikipedia")
+    wikipedia = None
+    wr = composer.references.filter(carnatic_composer_source_set=w)
+    if wr.count():
+        wikipedia = wr[0].uri
+    desc = composer.description
+    if desc and desc.source.source_name == w:
+        wikipedia = composer.description.source.uri
+    wr = composer.references.filter(source_name=w)
+    if wr.count() and not wikipedia:
+        wikipedia = wr[0].uri
+
+    ret = {"composer": composer,
+           "mb": musicbrainz,
+           "wiki": wikipedia,
+           "works": works}
 
     return render(request, "carnatic/composer.html", ret)
 
@@ -391,15 +407,22 @@ def concertbyid(request, concertid, title=None):
 
 def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
+
+    bootleg = False
+    if concert.bootleg and request.show_bootlegs:
+        bootleg = True
+    elif concert.bootleg and not request.show_bootlegs:
+        raise Http404
+
     images = concert.images.all()
     if images:
         image = images[0].image.url
     else:
         image = "/media/images/noconcert.jpg"
     sample = None
-    tracks = concert.tracklist()
-    if tracks:
-        sample = tracks[:1]
+    recordings = concert.recordings.all()
+    if recordings:
+        sample = recordings[:1]
 
     tags = tagging.tag_cloud(concert.id, "concert")
 
@@ -409,15 +432,16 @@ def concert(request, uuid, title=None):
     # Raaga in
     ret = {"filter_items": json.dumps(get_filter_items()),
            "concert": concert,
-	   "form": TagSaveForm(),
-	   "objecttype": "concert",
-	   "objectid": concert.id,
-	   "tags": tags,
-       "image": image,
-       "sample": sample,
-       "similar_concerts": similar,
-       "tracks": tracks,
-       }
+           "form": TagSaveForm(),
+           "objecttype": "concert",
+           "objectid": concert.id,
+           "tags": tags,
+           "image": image,
+           "sample": sample,
+           "similar_concerts": similar,
+           "recordings": recordings,
+           "bootleg": bootleg
+           }
 
     return render(request, "carnatic/concert.html", ret)
 
@@ -427,6 +451,12 @@ def recordingbyid(request, recordingid, title=None):
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
+
+    bootleg = False
+    if recording.is_bootleg() and request.show_bootlegs:
+        bootleg = True
+    elif recording.is_bootleg() and not request.show_bootlegs:
+        raise Http404
 
     tags = tagging.tag_cloud(recording.id, "recording")
 
@@ -450,7 +480,7 @@ def recording(request, uuid, title=None):
         tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
-        thebin = (12 * math.log(tonic/440.0) / math.log(2)) % 12
+        thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
         thebin = int(round(thebin))
         tonic = str(tonic)
         if thebin <= 11 and thebin >= 0:
@@ -474,10 +504,10 @@ def recording(request, uuid, title=None):
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
         aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
     except docserver.util.NoFileException:
-        pitchtrackurl = None
-        histogramurl = None
-        rhythmurl = None
-        aksharaurl = None
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "normalisedpitch", "packedpitch", settings.FEAT_VERSION_NORMALISED_PITCH)
+        histogramurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "normalisedpitch", "drawhistogram", settings.FEAT_VERSION_NORMALISED_PITCH)
+        rhythmurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "rhythm", "aksharaTicks", settings.FEAT_VERSION_RHYTHM)
+        aksharaurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "rhythm", "APcurve", settings.FEAT_VERSION_RHYTHM)
 
     similar = []
     try:
@@ -495,43 +525,44 @@ def recording(request, uuid, title=None):
 
     try:
         concert = recording.concert_set.get()
-        tracks = list(concert.tracks.all())
-        recordingpos = tracks.index(recording)
+        recordings = list(concert.recordings.all())
+        recordingpos = recordings.index(recording)
     except Concert.DoesNotExist:
         concert = None
-        tracks = []
+        recordings = []
         recordingpos = 0
     nextrecording = None
     prevrecording = None
     if recordingpos > 0:
-        prevrecording = tracks[recordingpos-1]
-    if recordingpos+1 < len(tracks):
-        nextrecording = tracks[recordingpos+1]
+        prevrecording = recordings[recordingpos - 1]
+    if recordingpos + 1 < len(recordings):
+        nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
     ret = {"filter_items": json.dumps(get_filter_items()),
-    	   "recording": recording,
+           "recording": recording,
            "form": TagSaveForm(),
-            "objecttype": "recording",
-            "objectid": recording.id,
-            "tags": tags,
-            "waveform": wave,
-            "spectrogram": spec,
-            "smallimage": small,
-            "audio": audio,
-            "tonic": tonic,
-            "tonicname": tonicname,
-            "akshara": akshara,
-            "mbid": mbid,
-            "nextrecording": nextrecording,
-            "prevrecording": prevrecording,
-            "pitchtrackurl": pitchtrackurl,
-            "histogramurl": histogramurl,
-            "rhythmurl": rhythmurl,
-            "aksharaurl": aksharaurl,
-            "similar": similar,
-            "concert": concert,
-    }
+           "objecttype": "recording",
+           "objectid": recording.id,
+           "tags": tags,
+           "waveform": wave,
+           "spectrogram": spec,
+           "smallimage": small,
+           "audio": audio,
+           "tonic": tonic,
+           "tonicname": tonicname,
+           "akshara": akshara,
+           "mbid": mbid,
+           "nextrecording": nextrecording,
+           "prevrecording": prevrecording,
+           "pitchtrackurl": pitchtrackurl,
+           "histogramurl": histogramurl,
+           "rhythmurl": rhythmurl,
+           "aksharaurl": aksharaurl,
+           "similar": similar,
+           "concert": concert,
+           "bootleg": bootleg,
+           }
 
     return render(request, "carnatic/recording.html", ret)
 
@@ -550,21 +581,20 @@ def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
 
     tags = tagging.tag_cloud(work.id, "work")
-    tracks = work.recording_set.all()
-    if len(tracks):
-        sample = random.sample(tracks, 1)
+    recordings = work.recording_set.all()
+    if len(recordings):
+        sample = random.sample(recordings, 1)
     else:
         sample = None
-
 
     ret = {"filter_items": json.dumps(get_filter_items()),
            "work": work,
            "form": TagSaveForm(),
-            "objecttype": "work",
-            "objectid": work.id,
-			"sample": sample,
-            "tags": tags,
-    }
+           "objecttype": "work",
+           "objectid": work.id,
+           "sample": sample,
+           "tags": tags,
+           }
     return render(request, "carnatic/work.html", ret)
 
 def taalasearch(request):
@@ -578,15 +608,15 @@ def taala(request, taalaid, name=None):
     taala = get_object_or_404(Taala, pk=taalaid)
 
     similar = taala.get_similar()
-    tracks = taala.recordings(10)
+    recordings = taala.recordings(10)
     sample = None
-    if len(tracks):
-        sample = random.sample(tracks, 1)[0]
+    if len(recordings):
+        sample = random.sample(recordings, 1)[0]
 
     ret = {"taala": taala,
            "sample": sample,
            "similar": similar
-          }
+           }
     return render(request, "carnatic/taala.html", ret)
 
 def raagasearch(request):
@@ -599,15 +629,15 @@ def raagasearch(request):
 def raaga(request, raagaid, name=None):
     raaga = get_object_or_404(Raaga, pk=raagaid)
     similar = raaga.get_similar()
-    tracks = raaga.recordings(10)
+    recordings = raaga.recordings(10)
     sample = None
-    if len(tracks):
-        sample = random.sample(tracks, 1)[0]
+    if len(recordings):
+        sample = random.sample(recordings, 1)[0]
 
     ret = {"raaga": raaga,
            "sample": sample,
            "similar": similar
-    }
+           }
     return render(request, "carnatic/raaga.html", ret)
 
 def instrumentsearch(request):
@@ -626,6 +656,6 @@ def instrument(request, instrumentid, name=None):
     ret = {"instrument": instrument,
            "sample": sample,
            "filter_items": json.dumps(get_filter_items())
-          }
+           }
 
     return render(request, "carnatic/instrument.html", ret)

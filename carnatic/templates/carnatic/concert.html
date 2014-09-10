@@ -1,6 +1,6 @@
 {% extends "carnatic/base.html" %}
-{% load inline %}
-{% load badges %}
+{% load carnatic.inline %}
+{% load carnatic.badges %}
 {% load staticfiles %}
 
 {% block script %}
@@ -41,6 +41,17 @@ $(document).ready(function() {
 {% block title %}{{concert.title}} - {% endblock %}
 
 {% block wrap %}
+{% if bootleg %}
+    <div id="bootleg-bar">
+       <div style="float:left">
+           <p>This is a bootleg release only visible to CompMusic researchers.
+           <br>Do not share.</p>
+       </div>
+       <div style="float:right; margin-top:10px;margin-right:10px;">
+           <button onclick='$("#bootleg-bar").hide()'>Ok</button>
+       </div>
+    </div>
+{% endif %}
 <!--
     <div id="filterMask">
 	    <div id="filterArea">
@@ -116,7 +127,7 @@ $(document).ready(function() {
 	     		<div class="rightdata">
 	     			<div class="innerrightdata scrolldata nopad">
 	                    <div class="tracklist">
-                            {% for t in tracks %}
+                            {% for t in recordings  %}
                             {% badge_recording t %}
                             {% endfor %}
 	                    </div>
@@ -132,8 +143,8 @@ $(document).ready(function() {
 	     			<div class="innerrightdata scrolldata nopad">
                         {% if concert.performers %}
                         <div class="scrollblock inforight" style="height: 290px;">
-	                    {% for performance in concert.performers %}
-	                        {% badge_performance performance %}
+	                    {% for artist in concert.performers %}
+	                        {% badge_performance concert artist %}
 	                    {% endfor %}
                         </div>
                         {% else %}

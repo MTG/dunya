@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -29,13 +29,15 @@ RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
 RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
 
 class ReleaseImporter(object):
-    def __init__(self, overwrite=False):
+    def __init__(self, overwrite=False, is_bootleg=False):
         """Create a release importer.
         Arguments:
           overwrite: If we replace everything in the database with new
                      data even if it exists.
+          is_bootleg: If true, mark releases as bootleg
         """
         self.overwrite = overwrite
+        self.is_bootleg = is_bootleg
         self.date_import_started = django.utils.timezone.now()
 
         self.imported_artists = []
@@ -65,7 +67,6 @@ class ReleaseImporter(object):
             source.last_updated = django.utils.timezone.now()
             source.save()
         return source
-
 
     def import_release(self, releaseid, directories):
         if releaseid in self.imported_releases:
@@ -97,17 +98,14 @@ class ReleaseImporter(object):
         for medium in rel["medium-list"]:
             for track in medium["track-list"]:
                 recordings.append(track["recording"]["id"])
-        print recordings
         if self.overwrite:
-            release.tracks.clear()
+            release.recordings.clear()
         trackorder = 1
         for recid in recordings:
             recob = self.add_and_get_recording(recid)
             self._link_release_recording(release, recob, trackorder)
             trackorder += 1
 
-        if self.overwrite:
-            self._clear_release_performances(release)
         for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
             artistid, instrument, is_lead = perf
             self._add_release_performance(release.mbid, artistid, instrument, is_lead)
@@ -116,13 +114,9 @@ class ReleaseImporter(object):
         self.imported_releases.append(releaseid)
         return release
 
-    def _clear_release_performances(self, release):
-        pass
-
-
     def _create_release_object(self, mbrelease):
         release, created = self._ReleaseClass.objects.get_or_create(
-                mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
+            mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
         if created or self.overwrite:
             release.title = mbrelease["title"]
             year = self._get_year_from_date(mbrelease.get("date"))
@@ -131,6 +125,8 @@ class ReleaseImporter(object):
             release.artistcredit = credit_phrase
             source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbrelease["id"])
             release.source = source
+            if self.is_bootleg:
+                release.bootleg = True
             release.save()
 
         return release
@@ -138,7 +134,8 @@ class ReleaseImporter(object):
     def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, composer=False):
         artistid = mbartist["id"]
 
-        artist, created = ArtistKlass.objects.get_or_create(mbid=artistid,
+        artist, created = ArtistKlass.objects.get_or_create(
+            mbid=artistid,
             defaults={"name": mbartist["name"]})
 
         if created or self.overwrite:
@@ -195,7 +192,7 @@ class ReleaseImporter(object):
                 if locale:
                     aob.locale = locale
                 aob.save()
-            
+
             external_data.import_artist_wikipedia(artist, self.overwrite)
         return artist
 
@@ -242,11 +239,17 @@ class ReleaseImporter(object):
                     # The attributes 'additional' or 'solo' may be set.
                     # If this is the case then remove them so that we don't
                     # select them as the instrument name
-                    if "additional" in perf["attribute-list"]:
+                    if "additional" in perf.get("attribute-list", []):
                         perf["attribute-list"].remove("additional")
-                    if "solo" in perf["attribute-list"]:
+                    if "solo" in perf.get("attribute-list", []):
                         perf["attribute-list"].remove("solo")
-                    inst = perf["attribute-list"][0]
+                    insts = perf.get("attribute-list", [])
+                    # TODO: If someone performed more than 1 instrument
+                    # we won't catch it
+                    if insts:
+                        inst = insts[0]
+                    else:
+                        inst = None
                 else:
                     inst = "vocal"
                 performances.append((artistid, inst, is_lead))
@@ -289,8 +292,9 @@ class ReleaseImporter(object):
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
-        work, created = self._WorkClass.objects.get_or_create(mbid=workid,
-                defaults={"title": mbwork["title"]})
+        work, created = self._WorkClass.objects.get_or_create(
+            mbid=workid,
+            defaults={"title": mbwork["title"]})
 
         if created or self.overwrite:
             source = self.make_mb_source("http://musicbrainz.org/work/%s" % workid)
@@ -314,4 +318,3 @@ class ReleaseImporter(object):
                     work.lyricists.add(lyricist)
 
         return work
-

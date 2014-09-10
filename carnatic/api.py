@@ -73,9 +73,10 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
     works = WorkInnerSerializer(source='works')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
+
     class Meta:
         model = models.Taala
-        fields = ['id', 'name', 'transliteration', 'aliases', 'artists', 'works', 'composers']
+        fields = ['id', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class TaalaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -97,9 +98,10 @@ class RaagaDetailSerializer(serializers.ModelSerializer):
     works = WorkInnerSerializer(source='works')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
+
     class Meta:
         model = models.Raaga
-        fields = ['id', 'name', 'transliteration', 'aliases', 'artists', 'works', 'composers']
+        fields = ['id', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class RaagaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -118,6 +120,7 @@ class InstrumentList(generics.ListAPIView):
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
+
     class Meta:
         model = models.Instrument
         fields = ['id', 'name', 'artists']
@@ -142,6 +145,7 @@ class WorkDetailSerializer(serializers.ModelSerializer):
     raagas = RaagaInnerSerializer(source='raaga')
     taalas = TaalaInnerSerializer(source='taala')
     recordings = RecordingInnerSerializer(source='recording_set')
+
     class Meta:
         model = models.Work
         fields = ['mbid', 'title', 'composer', 'raagas', 'taalas', 'recordings']
@@ -167,6 +171,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     raaga = RaagaInnerSerializer(source='raaga')
     taala = TaalaInnerSerializer(source='taala')
     work = RecordingInnerSerializer(source='work')
+
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'artists', 'raaga', 'taala', 'work', 'concert']
@@ -190,6 +195,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
     concerts = ConcertInnerSerializer(source='concerts')
     instruments = InstrumentInnerSerializer(source='instruments')
     recordings = RecordingInnerSerializer(source='recordings')
+
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name', 'concerts', 'instruments', 'recordings']
@@ -213,21 +219,21 @@ class ConcertArtistSerializer(serializers.ModelSerializer):
     name = serializers.Field(source='performer.name')
     mbid = serializers.Field(source='performer.mbid')
     instrument = serializers.Field(source='instrument.name')
+
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name', 'instrument']
 
 class ConcertDetailSerializer(serializers.ModelSerializer):
-    tracks = RecordingInnerSerializer(many=True)
+    recordings  = RecordingInnerSerializer(many=True)
     artists = ConcertArtistSerializer(source='performers')
     concert_artists = ArtistInnerSerializer(source='artists')
+
     class Meta:
         model = models.Concert
-        fields = ['mbid', 'title', 'tracks', 'artists', 'concert_artists']
+        fields = ['mbid', 'title', 'recordings ', 'artists', 'concert_artists']
 
 class ConcertDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Concert.objects.all()
     serializer_class = ConcertDetailSerializer
-
-

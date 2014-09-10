@@ -1,0 +1,62 @@
+[
+{
+    "pk": 1, 
+    "model": "hindustani.laya", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Dhrut", 
+        "name": "Dhr\u0325t"
+    }
+},
+{
+    "pk": 2, 
+    "model": "hindustani.laya", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Madhya", 
+        "name": "Madhya"
+    }
+},
+{
+    "pk": 3, 
+    "model": "hindustani.laya", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "references": [], 
+        "common_name": "Vilambit", 
+        "name": "Vila\u1e41bit"
+    }
+},
+{
+    "pk": 8, 
+    "model": "hindustani.layaalias", 
+    "fields": {
+        "name": "drut", 
+        "laya": 1
+    }
+},
+{
+    "pk": 9, 
+    "model": "hindustani.layaalias", 
+    "fields": {
+        "name": "madhyalaya", 
+        "laya": 2
+    }
+},
+{
+    "pk": 10, 
+    "model": "hindustani.layaalias", 
+    "fields": {
+        "name": "madya", 
+        "laya": 2
+    }
+}
+]

@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -11,10 +12,25 @@
     {% endif %}
 {% endblock %}
 
-{% block title %}Makam index{% endblock %}
+{% block title %}Makam index | {% endblock %}
 
 {% block wrap %}
 <div id="detail">
+
+    <table width="100%">
+        <tr><td>Artists</td><td>Releases</td></tr>
+        <tr>
+            <td>
+                {% for a in artists %}
+                {% inline_artist a %}<br>
+                {% endfor %}
+            </td><td>
+                {% for r in releases %}
+                {% inline_release r %}<br>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
 
     <div class="clearfix"></div>
 </div>

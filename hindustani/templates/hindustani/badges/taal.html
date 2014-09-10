@@ -1,13 +1,13 @@
 {% load staticfiles %}
-{% load hindustaniinline %}
-{% load hindustanibadges %}
+{% load hindustani.inline %}
+{% load hindustani.badges %}
 
 <div class="taala item">
   <div class="disc pict">
       <a href="{{taal.get_absolute_url}}"><img src="{{taal.get_image_url}}" width="297" style="vertical-align: middle"></a>
 </div>
   <div class="desc">
-      <a href="{{taal.get_absolute_url}}" class="title" title="{{taal.transliteration.title}}"><b>Taal {{taal.name|title}}</b></a>
+      <a href="{{taal.get_absolute_url}}" class="title" title="{{taal.common_name.title}}"><b>Taal {{taal.name|title}}</b></a>
 </div>
   <div class="descOpen">
 </div>

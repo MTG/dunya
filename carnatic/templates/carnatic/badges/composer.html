@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% load carnatic.inline %}
+
+<div class="composer item">
+<div class="disc pict">
+    <a href="{{composer.get_absolute_url}}"><img src="{{composer.get_image_url}}"></a>
+</div>
+  <div class="desc">
+    <div class="plus"></div>
+    <a href="{{composer.get_absolute_url}}" class="title"><b>{{composer.name}}</b></a>
+{% if composer.begin %}
+<span class="year">{{composer.begin}}{% if composer.end %} - {{composer.end}}{% endif %}</span>
+{% endif %}
+</div>
+  <div class="descOpen">{{composer.description.description|safe}}
+</div>
+  <div class="lists">
+    <div class="left">
+      <h3>Works</h3>
+    </div>
+    <div class="right">
+      <h3>Instruments</h3>
+    </div>
+  </div>
+</div>

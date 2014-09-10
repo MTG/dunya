@@ -1,10 +1,10 @@
-#From http://www.djangosnippets.org/snippets/918/
+# From http://www.djangosnippets.org/snippets/918/
 # copied to dunya from https://github.com/ericholscher/django-test-utils
 
-#v0.1 -- current version
-#known issues:
-#no support for generic relations
-#no support for one-to-one relations
+# v0.1 -- current version
+# known issues:
+# no support for generic relations
+# no support for one-to-one relations
 from optparse import make_option
 from django.core import serializers
 from django.core.management.base import BaseCommand
@@ -17,7 +17,7 @@ from django.db.models.loading import get_models
 DEBUG = False
 
 def model_name(m):
-    module = m.__module__.split('.')[:-1] # remove .models
+    module = m.__module__.split('.')[:-1]  # remove .models
     return ".".join(module + [m._meta.object_name])
 
 class Command(LabelCommand):
@@ -25,16 +25,16 @@ class Command(LabelCommand):
     args = 'modelname[pk] or modelname[id1:id2] repeated one or more times'
     option_list = BaseCommand.option_list + (
         make_option('--skip-related', default=True, action='store_false', dest='propagate',
-            help='Specifies if we shall not add related objects.'),
+                    help='Specifies if we shall not add related objects.'),
         make_option('--format', default='json', dest='format',
-            help='Specifies the output serialization format for fixtures.'),
+                    help='Specifies the output serialization format for fixtures.'),
         make_option('--indent', default=None, dest='indent', type='int',
-            help='Specifies the indent level to use when pretty-printing output'),
+                    help='Specifies the indent level to use when pretty-printing output'),
     )
 
     def handle_models(self, models, **options):
-        format = options.get('format','json')
-        indent = options.get('indent',None)
+        format = options.get('format', 'json')
+        indent = options.get('indent', None)
         show_traceback = options.get('traceback', False)
         propagate = options.get('propagate', True)
 
@@ -73,7 +73,7 @@ class Command(LabelCommand):
                         print "Adding %s[%s]" % (model_name(x), x.pk)
                     for f in x.__class__._meta.fields + x.__class__._meta.many_to_many:
                         if isinstance(f, ForeignKey):
-                            new = getattr(x, f.name) # instantiate object
+                            new = getattr(x, f.name)  # instantiate object
                             if new and not (new.__class__, new.pk) in collected:
                                 collected.add((new.__class__, new.pk))
                                 related.append(new)
@@ -107,10 +107,10 @@ class Command(LabelCommand):
             elif pks:
                 slice = pks.rstrip(']')
             models = [model for model, name in self.get_models()
-                            if name.endswith('.'+search) or name == search]
+                      if name.endswith('.' + search) or name == search]
             if not models:
                 raise CommandError("Wrong model: %s" % search)
-            if len(models)>1:
+            if len(models) > 1:
                 raise CommandError("Ambiguous model name: %s" % search)
             parsed.append((models[0], slice))
         return self.handle_models(parsed, **options)

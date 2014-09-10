@@ -1,5 +1,6 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
+{% load makam.inline %}
 
 {% block extra_css %}
     {% if debug %}
@@ -16,6 +17,36 @@
 {% block wrap %}
 <div id="detail">
     <h1>Work {{work.title}}</h1>
+
+    <h3>External sites</h3>
+    {% for r in work.refs %}
+    <li><a href="{{r.url}}">{{r.title}}</a>
+    {% endfor %}
+
+    <h3>Composer</h3>
+    {% for c in work.composerlist %}
+    <li>{% inline_composer c %}
+    {% endfor %}
+    <h3>Lyricist</h3>
+    {% for l in work.lyricistlist %}
+    <li>{% inline_composer l %}
+    {% endfor %}
+    <h3>Makam</h3>
+    {% for m in work.makamlist %}
+    <li>{% inline_makam m %}
+    {% endfor %}
+    <h3>Form</h3>
+    {% for f in work.formlist %}
+    <li>{% inline_form f %}
+    {% endfor %}
+    <h3>Usul</h3>
+    {% for u in work.usullist %}
+    <li>{% inline_usul u %}
+    {% endfor %}
+    <h3>Recordings</h3>
+    {% for r in work.recordinglist %}
+    <li>{% inline_recording r %}
+    {% endfor %}
 
     <div class="clearfix"></div>
 </div>

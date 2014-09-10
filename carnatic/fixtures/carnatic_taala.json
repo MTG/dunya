@@ -1,0 +1,727 @@
+[
+{
+    "pk": 1, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4298
+        ], 
+        "source": null, 
+        "num_aksharas": 32, 
+        "references": [], 
+        "common_name": "adi", 
+        "name": "\u0100di"
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4299
+        ], 
+        "source": null, 
+        "num_aksharas": 12, 
+        "references": [], 
+        "common_name": "rupaka", 
+        "name": "R\u016bpaka"
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4300
+        ], 
+        "source": null, 
+        "num_aksharas": 14, 
+        "references": [], 
+        "common_name": "mishra chapu", 
+        "name": "Mi\u015bra ch\u0101pu"
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4301
+        ], 
+        "source": null, 
+        "num_aksharas": 10, 
+        "references": [], 
+        "common_name": "khanda chapu", 
+        "name": "Kha\u1e47\u1e0da ch\u0101pu"
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4302
+        ], 
+        "source": null, 
+        "num_aksharas": 16, 
+        "references": [], 
+        "common_name": "eka", 
+        "name": "\u0112ka"
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [], 
+        "source": null, 
+        "num_aksharas": 12, 
+        "references": [], 
+        "common_name": "tishra eka", 
+        "name": "Ti\u015bra-j\u0101ti \u0113ka"
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4303
+        ], 
+        "source": null, 
+        "num_aksharas": 56, 
+        "references": [], 
+        "common_name": "dhruva", 
+        "name": "Dhr\u0325va"
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4304
+        ], 
+        "source": null, 
+        "num_aksharas": 40, 
+        "references": [], 
+        "common_name": "matya", 
+        "name": "Ma\u1e6dhya"
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4305
+        ], 
+        "source": null, 
+        "num_aksharas": 40, 
+        "references": [], 
+        "common_name": "mishra jhampe", 
+        "name": "Mi\u015bra-j\u0101ti jha\u1e41pe"
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4306
+        ], 
+        "source": null, 
+        "num_aksharas": 28, 
+        "references": [], 
+        "common_name": "tishra triputa", 
+        "name": "Ti\u015bra-j\u0101ti tripu\u1e6da "
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4307
+        ], 
+        "source": null, 
+        "num_aksharas": 56, 
+        "references": [], 
+        "common_name": "atta", 
+        "name": "A\u1e6d\u1e6da"
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4308
+        ], 
+        "source": null, 
+        "num_aksharas": 28, 
+        "references": [], 
+        "common_name": "chaturashra-jaati jhampe", 
+        "name": "Catura\u015bra-j\u0101ti jha\u1e41pe"
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4309
+        ], 
+        "source": null, 
+        "num_aksharas": 16, 
+        "references": [], 
+        "common_name": "deshaadi", 
+        "name": "D\u0113\u015b\u0101di"
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4310
+        ], 
+        "source": null, 
+        "num_aksharas": 36, 
+        "references": [], 
+        "common_name": "khanda-jaati triputa", 
+        "name": "Kha\u1e47\u1e0da-j\u0101ti tripu\u1e6da "
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4311
+        ], 
+        "source": null, 
+        "num_aksharas": 20, 
+        "references": [], 
+        "common_name": "khanda-jaati eka", 
+        "name": "Kha\u1e47\u1e0da-j\u0101ti \u0113ka"
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4312
+        ], 
+        "source": null, 
+        "num_aksharas": 16, 
+        "references": [], 
+        "common_name": "madhyaadi", 
+        "name": "Madhy\u0101di "
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4313
+        ], 
+        "source": null, 
+        "num_aksharas": 76, 
+        "references": [], 
+        "common_name": "mahaalakshmi", 
+        "name": "Mah\u0101lak\u1e63mi "
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.taala", 
+    "fields": {
+        "description": null, 
+        "images": [
+            4314
+        ], 
+        "source": null, 
+        "num_aksharas": 36, 
+        "references": [], 
+        "common_name": "mishra-jaati rupaka", 
+        "name": "Mi\u015bra-j\u0101ti r\u016bpaka"
+    }
+},
+{
+    "pk": 1, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda ekam", 
+        "taala": 16
+    }
+},
+{
+    "pk": 2, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi tisra", 
+        "taala": 1
+    }
+},
+{
+    "pk": 3, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "aadi", 
+        "taala": 1
+    }
+},
+{
+    "pk": 4, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi khanda", 
+        "taala": 1
+    }
+},
+{
+    "pk": 5, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi chatusra", 
+        "taala": 1
+    }
+},
+{
+    "pk": 6, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi chaturasra", 
+        "taala": 1
+    }
+},
+{
+    "pk": 7, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi chaturashra", 
+        "taala": 1
+    }
+},
+{
+    "pk": 8, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chaturasra rupakam", 
+        "taala": 2
+    }
+},
+{
+    "pk": 9, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra rupakam", 
+        "taala": 2
+    }
+},
+{
+    "pk": 10, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra rupakam khanda gathi", 
+        "taala": 2
+    }
+},
+{
+    "pk": 11, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chapu", 
+        "taala": 3
+    }
+},
+{
+    "pk": 12, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "misra laghu", 
+        "taala": 3
+    }
+},
+{
+    "pk": 13, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "misram", 
+        "taala": 3
+    }
+},
+{
+    "pk": 14, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chaturashra eka", 
+        "taala": 5
+    }
+},
+{
+    "pk": 15, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "ekam", 
+        "taala": 5
+    }
+},
+{
+    "pk": 16, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jampe", 
+        "taala": 9
+    }
+},
+{
+    "pk": 17, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jhampa", 
+        "taala": 9
+    }
+},
+{
+    "pk": 18, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jhaptal", 
+        "taala": 9
+    }
+},
+{
+    "pk": 19, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "jampa", 
+        "taala": 9
+    }
+},
+{
+    "pk": 20, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra triputa tisra gathi", 
+        "taala": 10
+    }
+},
+{
+    "pk": 21, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra triputa", 
+        "taala": 10
+    }
+},
+{
+    "pk": 22, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "triputa", 
+        "taala": 10
+    }
+},
+{
+    "pk": 23, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "ata", 
+        "taala": 11
+    }
+},
+{
+    "pk": 24, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda ata", 
+        "taala": 11
+    }
+},
+{
+    "pk": 25, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda jati ata", 
+        "taala": 11
+    }
+},
+{
+    "pk": 26, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda atta", 
+        "taala": 11
+    }
+},
+{
+    "pk": 31, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra jhampa", 
+        "taala": 13
+    }
+},
+{
+    "pk": 32, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusra jati jhampe", 
+        "taala": 13
+    }
+},
+{
+    "pk": 33, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "desadi", 
+        "taala": 14
+    }
+},
+{
+    "pk": 34, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "khanda triputa", 
+        "taala": 15
+    }
+},
+{
+    "pk": 35, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "kanda triputa", 
+        "taala": 15
+    }
+},
+{
+    "pk": 37, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "madhyad", 
+        "taala": 17
+    }
+},
+{
+    "pk": 38, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "misra rupakam", 
+        "taala": 19
+    }
+},
+{
+    "pk": 39, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "chatusrarupakam", 
+        "taala": 2
+    }
+},
+{
+    "pk": 40, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi (tishra nade)", 
+        "taala": 1
+    }
+},
+{
+    "pk": 41, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "adi (tisram)", 
+        "taala": 1
+    }
+},
+{
+    "pk": 42, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra gati adi", 
+        "taala": 1
+    }
+},
+{
+    "pk": 43, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "tisra nadai", 
+        "taala": 1
+    }
+},
+{
+    "pk": 4298, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-adi.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4299, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-rupaka.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4300, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-mishra_chapu.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4301, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-khanda_chapu.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4302, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-eka.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4303, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-dhruva.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4304, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-matya.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4305, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-mishra_jhampe.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4306, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-tishra_triputa.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4307, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-atta.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4308, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-chaturashra-jaati_jhampe.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4309, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-deshaadi.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4310, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-khanda-jaati_triputa.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4311, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-khanda-jaati_eka.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4312, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-madhyaadi.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4313, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-mahaalakshmi.png", 
+        "small_image": ""
+    }
+},
+{
+    "pk": 4314, 
+    "model": "data.image", 
+    "fields": {
+        "source": null, 
+        "image": "images/carnatic-taala-mishra-jaati_rupaka.png", 
+        "small_image": ""
+    }
+}
+]

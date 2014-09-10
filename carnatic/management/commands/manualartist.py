@@ -1,25 +1,23 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
 
-import re
 from carnatic import models
-from django.conf import settings
 import data
 from compmusic import kutcheris
 from compmusic import musicbrainz as mb
@@ -27,8 +25,8 @@ mb.mb.set_hostname("musicbrainz.org")
 
 # dunya id: Kutcheris id
 themap = {38: 6,
-        64: 103
-        }
+          64: 103
+          }
 
 class Command(BaseCommand):
     help = 'Load biographies and images from kutcheris data'
@@ -80,4 +78,3 @@ class Command(BaseCommand):
                 title = theurl.split("/")[-1].replace("_", " ")
                 source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=theurl, defaults={"title": title})
                 a.references.add(source)
-

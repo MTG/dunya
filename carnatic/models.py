@@ -26,15 +26,14 @@ from carnatic import search
 import managers
 import filters
 import random
-import docserver
 import pysolr
 
 class CarnaticStyle(object):
     def get_style(self):
         return "carnatic"
+
     def get_object_map(self, key):
         return {"performance": InstrumentPerformance,
-                "releaseperformance": InstrumentConcertPerformance,
                 "release": Concert,
                 "composer": Composer,
                 "artist": Artist,
@@ -59,16 +58,6 @@ class Artist(CarnaticStyle, data.models.Artist):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     gurus = models.ManyToManyField("Artist", related_name="students")
 
-    def instruments(self):
-        insts = []
-        for perf in self.instrumentperformance_set.all():
-            if perf.instrument.name not in insts:
-                insts.append(perf.instrument)
-        if insts:
-            return insts[0]
-        else:
-            return None
-
     def similar_artists(self):
         idset = set()
         # we are not similar to ourselves
@@ -90,7 +79,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         ourage = int(self.begin[:4]) if self.begin else 9999
         gurus = sorted(gurus, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
         students = sorted(students, key=lambda a: int(a.begin[:4]) if a.begin else 9999)
-        siblings = sorted(siblings, key=lambda a: abs((int(a[1].begin[:4]) if a[1].begin else 9999)-ourage))
+        siblings = sorted(siblings, key=lambda a: abs((int(a[1].begin[:4]) if a[1].begin else 9999) - ourage))
 
         for g in gurus:
             ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
@@ -108,32 +97,49 @@ class Artist(CarnaticStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
-    def collaborating_artists(self):
+    def collaborating_artists(self, with_bootlegs):
+        # Returns [ (collaborating artist, list of concerts, number of bootlegs) ]
+        #   - number of bootlegs is only set if `with_bootlegs=False`
         # Get all concerts
         # For each artist on the concerts (both types), add a counter
-        # top 10 artist ids + the concerts they collaborate on
+        # top artist ids + the concerts they collaborate on
         c = collections.Counter()
         concerts = collections.defaultdict(set)
-        for concert in self.concerts():
+        bootlegs = collections.Counter()
+        for concert in self.concerts(with_bootlegs=True):
+            # We always use bootlegs to see if an artist is similar
+            # However, if the user can't see bootlegs, we need to say
+            # `Artist a performed with b on these concerts and n more`
             for p in concert.performers():
-                thea = p.performer
-                if thea.id != self.id:
-                    concerts[thea.id].add(concert)
-                    c[thea.id] += 1
+                if p.id != self.id:
+                    if concert.bootleg and with_bootlegs:
+                        concerts[p.id].add(concert)
+                    elif concert.bootleg and not with_bootlegs:
+                        bootlegs[p.id] += 1
+                    elif not concert.bootleg:
+                        concerts[p.id].add(concert)
+                    c[p.id] += 1
 
-        return [(Artist.objects.get(pk=pk), list(concerts[pk])) for pk,count in c.most_common()]
+        collaborators =  [(Artist.objects.get(pk=pk), list(concerts[pk]), bootlegs[pk]) for pk, count in c.most_common()]
+        collaborators = sorted(collaborators, key=lambda c: (len(c[1])+c[2], len(c[1])), reverse=True)
+        return collaborators
 
-    def concerts(self, raagas=[], taalas=[]):
+    def recordings(self, with_bootlegs=False):
+        return Recording.objects.with_bootlegs(with_bootlegs).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
+
+    def concerts(self, raagas=[], taalas=[], with_bootlegs=False):
         """ Get all the concerts that this artist performs in
         If `raagas` or `taalas` is set, only show concerts where
         these raagas or taalas were performed.
+        By default don't show concerts with a bootleg flag set,
+        but if `show_bootlegs` is True then show them.
         """
         ret = []
-        concerts = self.primary_concerts
+        concerts = self.primary_concerts.with_bootlegs(with_bootlegs)
         if raagas:
-            concerts = concerts.filter(tracks__work__raaga__in=raagas)
+            concerts = concerts.filter(recordings__work__raaga__in=raagas)
         if taalas:
-            concerts = concerts.filter(tracks__work__taala__in=taalas)
+            concerts = concerts.filter(recordings__work__taala__in=taalas)
         ret.extend(concerts.all())
         for a in self.groups.all():
             ret.extend([c for c in a.concerts(raagas, taalas) if c not in ret])
@@ -143,12 +149,37 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
 
+    def performances(self, raagas=[], taalas=[]):
+        ReleaseClass = self.get_object_map("release")
+        IPClass = self.get_object_map("performance")
+        concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
+        if raagas:
+            concerts = concerts.filter(recordings__work__raaga__in=raagas)
+        if taalas:
+            concerts = concerts.filter(recordings__work__taala__in=taalas)
+        concerts = concerts.distinct()
+        ret = []
+        for c in concerts:
+            # If the relation is on the track, we'll have lots of performances,
+            # restrict the list to just one instance
+            # TODO: If more than one person plays the same instrument this won't work well
+            performances = IPClass.objects.filter(artist=self, recording__concert=c).distinct()
+            # Unique the instrument list
+            instruments = []
+            theperf = []
+            for p in performances:
+                if p.instrument not in instruments:
+                    theperf.append(p)
+                    instruments.append(p.instrument)
+            ret.append((c, theperf))
+        return ret
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-artist-search'),
                "name": "Artist",
                "data": [filters.School().object, filters.Region().object, filters.Generation().object]
-              }
+               }
         return ret
 
 class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
@@ -176,37 +207,61 @@ class Sabbah(CarnaticStyle, models.Model):
     city = models.CharField(max_length=100)
 
 class ConcertRecording(models.Model):
-    """ Links a concert to a recording with an implicit ordering """
+    """ Links a concert to a recording with an explicit ordering """
     concert = models.ForeignKey('Concert')
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
+
+    class Meta:
+        ordering = ("track", )
 
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.concert)
 
 class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
-    tracks = models.ManyToManyField('Recording', through="ConcertRecording")
-    performance = models.ManyToManyField('Artist', through="InstrumentConcertPerformance", related_name='accompanying_concerts')
+    recordings = models.ManyToManyField('Recording', through="ConcertRecording")
+
+    bootleg = models.BooleanField(default=False)
+
+    # Regular objects show bootlegs
+    objects = managers.BootlegConcertManager()
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
         return reverse(viewname, args=[self.mbid, slugify(self.title)])
+
+    def tracklist(self):
+        """Return an ordered list of recordings in this concert"""
+        return self.recordings.order_by('concertrecording')
+
+    def instruments_for_artist(self, artist):
+        """ Returns a list of instruments that this
+        artist performs on this release."""
+        return Instrument.objects.filter(instrumentperformance__artist=artist).distinct()
+
+    def performers(self):
+        """ The performers on a release are those who are in the performance
+        relations, and the lead artist of the release (listed first)
+        """
+        ret = self.artists.all()
+        artists = Artist.objects.filter(instrumentperformance__recording__concert=self).exclude(id__in=ret).distinct()
+        return list(ret) + list(artists)
 
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-concert-search'),
                "name": "Concert",
                "data": [filters.Venue().object, filters.Instrument().object]
-              }
+               }
         return ret
 
     def get_similar(self):
 
         artists = set(self.artists.all())
         for p in self.performers():
-            artists.add(p.performer)
+            artists.add(p)
         works = Work.objects.filter(recording__concert=self)
         raagas = Raaga.objects.filter(work__recording__concert=self)
         taalas = Taala.objects.filter(work__recording__concert=self)
@@ -220,7 +275,7 @@ class Concert(CarnaticStyle, data.models.Release):
         try:
             similar = search.get_similar_concerts(wid, rid, tid, aid)
             similar = sorted(similar, reverse=True,
-                    key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
+                             key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
 
             similar = similar[:10]
             for s, v in similar:
@@ -233,7 +288,10 @@ class Concert(CarnaticStyle, data.models.Release):
                 taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
                 artists = [Artist.objects.get(pk=a) for a in v["artists"]]
                 ret.append((concert,
-                    {"works": works, "raagas": raagas, "taalas": taalas, "artists": artists}))
+                           {"works": works,
+                            "raagas": raagas,
+                            "taalas": taalas,
+                            "artists": artists}))
         except pysolr.SolrError:
             # TODO: Should show an error message
             pass
@@ -274,7 +332,7 @@ class Raaga(data.models.BaseModel):
     missing_image = "raaga.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -287,11 +345,11 @@ class Raaga(data.models.BaseModel):
         ret = {"url": reverse('carnatic-raaga-search'),
                "name": "Raaga",
                "data": [filters.Text().object]
-              }
+               }
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.transliteration)])
+        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.common_name)])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -302,7 +360,7 @@ class Raaga(data.models.BaseModel):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__tracks__work__raaga=self).filter(main_instrument__in=[1,2])
+        artists = Artist.objects.filter(primary_concerts__recordings__work__raaga=self).filter(main_instrument__in=[1, 2])
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -344,13 +402,14 @@ class TaalaAlias(models.Model):
 # similarity matrix. key: a taala id, val: an ordered list of similarities (taala ids)
 # We fill in 'above' and 'below' the diagonal - e.g. 1: 2,3 / 2: 1
 taala_similar = {1: [5], 3: [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
-        7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4], 10: [7, 3], 11: [7, 3]}
+                 7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4],
+                 10: [7, 3], 11: [7, 3]}
 
 class Taala(data.models.BaseModel):
     missing_image = "taala.jpg"
 
     name = models.CharField(max_length=50)
-    transliteration = models.CharField(max_length=50)
+    common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
 
     objects = managers.CarnaticTaalaManager()
@@ -358,6 +417,9 @@ class Taala(data.models.BaseModel):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('carnatic-taala', args=[str(self.id), slugify(self.common_name)])
 
     def get_similar(self):
         if self.pk in taala_similar:
@@ -370,11 +432,8 @@ class Taala(data.models.BaseModel):
         ret = {"url": reverse('carnatic-taala-search'),
                "name": "Taala",
                "data": [filters.Text().object]
-              }
+               }
         return ret
-
-    def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id), slugify(self.transliteration)])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -383,16 +442,11 @@ class Taala(data.models.BaseModel):
         return Composer.objects.filter(works__taala=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__tracks__work__taala=self).distinct()
+        return Artist.objects.filter(primary_concerts__recordings__work__taala=self).distinct()
 
     def percussion_artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(Q(instrumentconcertperformance__concert__tracks__work__taala=self) & Q(instrumentconcertperformance__instrument__percussion=True))
-        for a in artists:
-            artistcounter[a.pk] += 1
-            if a.pk not in artistmap:
-                artistmap[a.pk] = a
         artists = Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True))
         for a in artists:
             artistcounter[a.pk] += 1
@@ -415,13 +469,28 @@ class Work(CarnaticStyle, data.models.Work):
     form = models.ForeignKey('Form', blank=True, null=True)
     language = models.ForeignKey('Language', blank=True, null=True)
 
+    @property
+    def single_raaga(self):
+        if self.raaga.count():
+            return self.raaga.first()
+        return None
+
+    @property
+    def single_taala(self):
+        if self.taala.count():
+            return self.taala.first()
+        return None
+
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-work-search'),
                "name": "Composition",
                "data": [filters.Form().object, filters.Language().object, filters.WorkDate().object]
-              }
+               }
         return ret
+
+    def recordings(self, with_bootlegs):
+        return self.recording_set.with_bootlegs(with_bootlegs).all()
 
 class WorkRaaga(models.Model):
     work = models.ForeignKey('Work')
@@ -440,7 +509,16 @@ class WorkTaala(models.Model):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 class Recording(CarnaticStyle, data.models.Recording):
+
     work = models.ForeignKey('Work', blank=True, null=True)
+
+    objects = managers.BootlegRecordingManager()
+
+    def is_bootleg(self):
+        for rel in self.concert_set.all():
+            if rel.bootleg:
+                return True
+        return False
 
     def raaga(self):
         if self.work:
@@ -458,19 +536,14 @@ class Recording(CarnaticStyle, data.models.Recording):
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
-        primary_artists = ArtistClass.objects.filter(primary_concerts__tracks=self)
+        primary_artists = ArtistClass.objects.filter(primary_concerts__recordings=self)
 
         IPClass = self.get_object_map("performance")
-        IRPClass = self.get_object_map("releaseperformance")
         recperfs = IPClass.objects.filter(recording=self)
-        rec_artists = [r.performer for r in recperfs]
-        releaseperfs = IRPClass.objects.filter(concert__tracks=self)
-        release_artists = [r.performer for r in releaseperfs]
+        rec_artists = [r.artist for r in recperfs]
 
-        all_as = set(primary_artists) | set(rec_artists) | set(release_artists)
+        all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
-
-
 
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
@@ -485,8 +558,8 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 
     def ordered_performers(self):
         perfs, counts = self.performers()
-        perfs = sorted(perfs, key=lambda p: counts[p.performer], reverse=True)
-        return perfs
+        perfs = sorted(perfs, key=lambda p: counts[p.artist], reverse=True)
+        return [p.artist for p in perfs]
 
     def performers(self):
         IPClass = self.get_object_map("performance")
@@ -496,19 +569,10 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         # Sort how many performances this artist makes
         artistcount = collections.Counter()
         for p in performances:
-            artistcount[p.performer] += 1
-            if p.performer not in artists:
+            artistcount[p.artist] += 1
+            if p.artist not in artists:
                 ret.append(p)
-                artists.append(p.performer)
-
-        # TODO: This might be slow getting 2 sets of performances and doing tests
-        ICPClass = self.get_object_map("releaseperformance")
-        performances = ICPClass.objects.filter(instrument=self).distinct()
-        for p in performances:
-            artistcount[p.performer] += 1
-            if p.performer not in artists:
-                ret.append(p)
-                artists.append(p.performer)
+                artists.append(p.artist)
 
         return ret, artistcount
 
@@ -527,24 +591,15 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         ret = {"url": reverse('carnatic-instrument-search'),
                "name": "Instrument",
                "data": [filters.Text().object]
-              }
+               }
         return ret
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
 
-class InstrumentConcertPerformance(models.Model):
-    # TODO: This should be 'release' over all music types
-    concert = models.ForeignKey('Concert')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
-    lead = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return u"%s playing %s in %s" % (self.performer, self.instrument, self.concert)
-
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+
     def raagas(self):
         return Raaga.objects.filter(work__composer=self).all()
 

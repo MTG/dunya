@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load badges %}
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -122,7 +121,6 @@
         <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
         </div>
 
-
 		<div id="aboutdialog" title="Dunya">
             <p>Dunya is a research prototype being developed in CompMusic, a research project that studies 
             several world music traditions from an information technologies point of view. It has been 
@@ -139,22 +137,24 @@
         <div class="header-container">
             <header>
             <div id="logo">
-                <a href="/carnatic">
+                <a href="{{style_root}}">
                 <img src="{% static 'carnatic/img/logoDunya.png' %}">
             </a>
             </div>
                 <div id="globalsearch">
-                    <form method="get" action="/carnatic">
+                    <form method="get" action="{{style_root}}">
                         <input id="searchbox" type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
                     <button type="submit" class="button"/>
                 </form>
             </div>
                 <div id="globalMusic" class="upperMenu">
                     <label>Exploring music style</label>
-                    <span id="gmSelected">Carnatic</span>
+                    <span id="gmSelected">{{style_name}}</span>
                     <ul id="gmDropDown">
-                        <li>Carnatic</li>
+
+                        <li><a href="{% url 'carnatic-main' %}">Carnatic</a></li>
                         <li><a href="{% url 'hindustani-main' %}">Hindustani</a></li>
+                        <li><a href="{% url 'makam-main' %}">Makam</a></li>
                     </ul>
                 </div>
                 <nav id="mainmenu">
@@ -191,27 +191,6 @@
         <!-- //////  HEADER BLOCK end ////// -->
 
         <div class="main-container">
-            {% comment %}
-            <div id="breadcrumb">
-                 <div id="navigationhistory">
-                    <div class="inner">
-                        {% for type, item in carnatic_navigation_history %}
-                            {% if type == "concert" %}
-                                {% badge_micro_concert item %}
-                            {% elif type == "artist" %}
-                                {% badge_micro_artist item %}
-                            {% elif type == "instrument" %}
-                                {% badge_micro_instrument item %}
-                            {% elif type == "raaga" %}
-                                {% badge_micro_raaga item %}
-                            {% elif type == "taala" %}
-                                {% badge_micro_taala item %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                 </div>
-            </div>
-            {% endcomment %}
         {% block wrap %}
         {% endblock %}
         </div>
@@ -237,7 +216,6 @@
         </div>
         <![endif]-->
 
-        </div>
         <div id="footage">
 
             <!-- //////////////// -->

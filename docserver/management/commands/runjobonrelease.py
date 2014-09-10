@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -26,11 +26,11 @@ class Command(BaseCommand):
     args = '<moduleid> <mbid>'
     option_list = BaseCommand.option_list + (
         make_option('--delete',
-            action='store_true',
-            dest='delete',
-            default=False,
-            help='Delete data for this job first'),
-        )
+                    action='store_true',
+                    dest='delete',
+                    default=False,
+                    help='Delete data for this job first'),
+    )
 
     def handle(self, *args, **options):
         if len(args) < 2:
@@ -57,9 +57,9 @@ class Command(BaseCommand):
             module = docserver.models.Module.objects.get(pk=moduleid)
             version = module.get_latest_version()
             d = docserver.models.DerivedFile.objects.filter(
-                    document__sourcefiles__file_type=module.source_type,
-                    document__external_identifier__in=recids,
-                    module_version=version)
+                document__sourcefiles__file_type=module.source_type,
+                document__external_identifier__in=recids,
+                module_version=version)
             d.delete()
 
         jobs.run_module_on_recordings(moduleid, recids)

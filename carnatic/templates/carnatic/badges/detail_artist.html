@@ -1,0 +1,22 @@
+{% load carnatic.inline %}
+
+  <div class="artist item">
+        <div class="disc pict">
+            <a href="{{artist.get_absolute_url}}"><img src="{{artist.get_image_url}}"></a>
+    </div>
+        <div class="desc"><div class="plus"></div>
+            {% inline_artist artist %}
+        <p>{{artist.begin}}</p>
+        <p>Primary instrument: {% inline_instrument artist.main_instrument %}
+    </div>
+        
+        <div class="lists similar">
+            <div  class="left">
+            
+            </div>
+            <div class="right">
+            </div>
+        </div> 
+      </div>
+
+

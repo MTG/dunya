@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -24,22 +24,21 @@ def get_comments(users_id, start_period, end_period):
     comment_list = []
     #We first filter by user and then by timestamp
     comments = Comment.objects.filter(user_id__in=users_id).filter(submit_date__range=[start_period, end_period]).order_by("-submit_date")
-    
+
     #comments = Comment.objects.filter(user_id__in=users_id).order_by("-submit_date")
-    
+
     for comment in comments:
         #if comment.submit_date < datetime.now()-timedelta(days=10):
         #   break
         micomment = {"type": "comment",
                      "id": comment.id,
-                    "value": comment.comment,
-                    "content_type": comment.content_type.model,
-                    "content_id": comment.object_pk,
-                    "user_id": comment.user_id,
-                    "submit_date": comment.submit_date}
-        print "MODEL-->", comment.content_type
+                     "value": comment.comment,
+                     "content_type": comment.content_type.model,
+                     "content_id": comment.object_pk,
+                     "user_id": comment.user_id,
+                     "submit_date": comment.submit_date}
         micomment["username"] = User.objects.get(pk=micomment["user_id"]).username
-        print micomment["username"] 
+        print micomment["username"]
         if micomment['content_type'] == "artist":
             print "aqui"
             micomment["content_name"] = Artist.objects.get(pk=micomment['content_id']).name
@@ -50,7 +49,7 @@ def get_comments(users_id, start_period, end_period):
             micomment["content_name"] = Work.objects.get(pk=micomment['content_id']).title
         elif micomment['content_type'] == "recording":
             micomment["content_name"] = Recording.objects.get(pk=micomment['content_id']).title
-            
+
         comment_list.append(micomment)
     return comment_list
 
@@ -75,7 +74,7 @@ def get_tags(users_id, start_period, end_period):
                     "content_id": tag.entity_id,
                     "user_id": tag.user_id,
                     "submit_date": tag.timestamp}
-        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username        
+        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username
         mitag["value"] = Tag.objects.get(pk=mitag['tag_id']).name
         entity = __get_entity_name(tag.entity_type, tag.entity_id)
         mitag["content_name"] = ""
@@ -95,10 +94,10 @@ def get_artist_tags(users_id, start_period, end_period):
                     "content_id": artisttag.artist_id,
                     "user_id": artisttag.user_id,
                     "submit_date": artisttag.timestamp}
-        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username        
+        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username
         mitag["value"] = Tag.objects.get(pk=mitag['tag_id']).name
         mitag["content_name"] = Artist.objects.get(pk=mitag['content_id']).name
-            
+
         tag_list.append(mitag)
     return tag_list
 
@@ -112,10 +111,10 @@ def get_concert_tags(users_id, start_period, end_period):
                     "content_id": concerttag.concert_id,
                     "user_id": concerttag.user_id,
                     "submit_date": concerttag.timestamp}
-        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username        
+        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username
         mitag["value"] = Tag.objects.get(pk=mitag['tag_id']).name
         mitag["content_name"] = Concert.objects.get(pk=mitag['content_id']).title
-            
+
         tag_list.append(mitag)
     return tag_list
 
@@ -130,10 +129,10 @@ def get_work_tags(users_id, start_period, end_period):
                     "content_id": worktag.work_id,
                     "user_id": worktag.user_id,
                     "submit_date": worktag.timestamp}
-        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username        
+        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username
         mitag["value"] = Tag.objects.get(pk=mitag['tag_id']).name
         mitag["content_name"] = Work.objects.get(pk=mitag['content_id']).title
-            
+
         tag_list.append(mitag)
     return tag_list
 
@@ -147,17 +146,17 @@ def get_recording_tags(users_id, start_period, end_period):
                     "content_id": recordingtag.recording_id,
                     "user_id": recordingtag.user_id,
                     "submit_date": recordingtag.timestamp}
-        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username        
+        mitag["username"] = User.objects.get(pk=mitag["user_id"]).username
         mitag["value"] = Tag.objects.get(pk=mitag['tag_id']).name
         mitag["content_name"] = Recording.objects.get(pk=mitag['content_id']).title
-            
-        tag_list.append(mitag)    
+
+        tag_list.append(mitag)
     return tag_list
 """
 
 def timeline(users_id):
-    
-    
+
+
     #date = datetime.date.today()
     #start_week = date - datetime.timedelta(date.weekday())
     #end_week = start_week + datetime.timedelta(7)
@@ -165,9 +164,9 @@ def timeline(users_id):
     date = datetime.now()
     end_period = date
     start_period = date - timedelta(days=30)
-    
+
     comment_list = get_comments(users_id, start_period, end_period)
-    
+
     tag_list = get_tags(users_id, start_period, end_period)
     """
     tag_list += get_artist_tags(users_id, start_period, end_period)
@@ -176,8 +175,5 @@ def timeline(users_id):
     tag_list += get_recording_tags(users_id, start_period, end_period)
     """
     final_list = comment_list + tag_list
-    
+
     return sorted(final_list, key=lambda x: x['submit_date'], reverse=True)
-
-
-

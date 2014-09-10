@@ -1,13 +1,13 @@
 {% load staticfiles %}
-{% load hindustaniinline %}
-{% load hindustanibadges %}
+{% load hindustani.inline %}
+{% load hindustani.badges %}
 
 <div class="raaga item">
   <div class="disc pict" style="text-align: center">
   <a href="{{raag.get_absolute_url}}"><img src="{{raag.get_image_url}}" style="vertical-align: middle; width:190px !important;"></a>
 </div>
   <div class="desc">
-      <a href="{{raag.get_absolute_url}}" class="title" title="{{raag.transliteration.title}}"><b>Raag {{raag.name|title}}</b></a>
+      <a href="{{raag.get_absolute_url}}" class="title" title="{{raag.common_name.title}}"><b>Raag {{raag.name|title}}</b></a>
 </div>
 {% comment %}
   <div class="descOpen">
