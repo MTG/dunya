@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^api/carnatic/', include('carnatic.api_urls')),
     url(r'^api/hindustani/', include('hindustani.api_urls')),
     url(r'^api/makam/', include('makam.api_urls')),
+    url(r'^api/andalusian/', include('andalusian.api_urls')),
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^motifdiscovery/', include('motifdiscovery.urls')),
     url(r'^hindustani/', include('hindustani.urls')),
