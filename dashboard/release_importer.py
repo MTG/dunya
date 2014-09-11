@@ -88,7 +88,7 @@ class ReleaseImporter(object):
         for a in rel["artist-credit"]:
             if isinstance(a, dict):
                 artistid = a["artist"]["id"]
-                artist = self.add_and_get_artist(artistid)
+                artist = self.add_and_get_release_artist(artistid)
                 logger.info("  artist: %s" % artist)
                 if not release.artists.filter(pk=artist.pk).exists():
                     logger.info("  - adding to artist list")
@@ -131,7 +131,7 @@ class ReleaseImporter(object):
 
         return release
 
-    def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, composer=False):
+    def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, alias_ref="artist"):
         artistid = mbartist["id"]
 
         artist, created = ArtistKlass.objects.get_or_create(
@@ -172,20 +172,14 @@ class ReleaseImporter(object):
                 # TODO Deleting these each time we overwrite means we churn the
                 # alias ids. This may or may not be a good idea
                 args = {}
-                if composer:
-                    args["composer"] = artist
-                else:
-                    args["artist"] = artist
+                args[alias_ref] = artist
                 AliasKlass.objects.filter(**args).delete()
             for alias in mbartist.get("alias-list", []):
                 a = alias["alias"]
                 primary = alias.get("primary")
                 locale = alias.get("locale")
-                args = {"alias": a}
-                if composer:
-                    args["composer"] = artist
-                else:
-                    args["artist"] = artist
+                args = {"name": a}
+                args[alias_ref] = artist
                 aob, created = AliasKlass.objects.get_or_create(**args)
                 if primary:
                     aob.primary = True
@@ -195,6 +189,9 @@ class ReleaseImporter(object):
 
             external_data.import_artist_wikipedia(artist, self.overwrite)
         return artist
+
+    def add_and_get_release_artist(self, artistid):
+        return self.add_and_get_artist(artistid)
 
     def add_and_get_artist(self, artistid):
         if artistid in self.imported_artists:
@@ -221,7 +218,7 @@ class ReleaseImporter(object):
             return self._ComposerClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
-        composer = self._create_artist_object(self._ComposerClass, self._ComposerAliasClass, mbartist, composer=True)
+        composer = self._create_artist_object(self._ComposerClass, self._ComposerAliasClass, mbartist, alias_ref="composer")
         self.imported_composers.append(artistid)
         return composer
 
@@ -283,12 +280,16 @@ class ReleaseImporter(object):
             self._apply_tags(rec, works, tags)
 
             if self.overwrite:
-                rec.performance.clear()
+                IPClass = rec.get_object_map("performance")
+                IPClass.objects.filter(recording=rec).delete()
             for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
                 artistid, instrument, is_lead = perf
                 self._add_recording_performance(recordingid, artistid, instrument, is_lead)
 
         return rec
+
+    def _clear_work_composers(self, work):
+        pass
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
@@ -303,10 +304,8 @@ class ReleaseImporter(object):
             work.save()
 
         # TODO: Work attributes
-
-        if self.overwrite:
-            work.composers.clear()
-            work.lyricists.clear()
+        self._clear_work_composers(work)
+        
         for artist in mbwork.get("artist-relation-list", []):
             if artist["type-id"] == RELATION_COMPOSER:
                 composer = self.add_and_get_composer(artist["target"])

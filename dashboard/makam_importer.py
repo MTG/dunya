@@ -198,3 +198,8 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                    recording=rec, instrument=instrument, artist=artist).exists():
                     perf = makam.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
                     perf.save()
+
+    def _clear_work_composers(self, work):
+        if self.overwrite:
+            work.composers.clear()
+            work.lyricists.clear()
