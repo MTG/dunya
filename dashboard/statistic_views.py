@@ -510,7 +510,43 @@ def makam_stats(request):
 @user_passes_test(views.is_staff)
 def makam_tags(request):
     collectionid = compmusic.MAKAM_COLLECTION
-    ret = {}
+    makamchecker = "dashboard.completeness.MakamTags"
+
+    dashfiles = models.CollectionFile.objects.filter(directory__collection__id=collectionid)
+
+    # Not in our database
+    missing_m = []
+    missing_f = []
+    missing_u = []
+
+    # Not in musicbrainz
+    nomakams = []
+    noforms = []
+    nousuls = []
+
+    for f in dashfiles:
+        checks = f.collectionfileresult_set.filter(checker__module=makamchecker)
+        if checks.exists():
+            r = checks[0]
+            data = json.loads(r.data) if r.data else {}
+
+            if "missingm" in data:
+                missing_m.append({"makams": ", ".join(data["missingm"]), "file": r.collectionfile})
+            if "missingf" in data:
+                missing_f.append({"forms": ", ".join(data["missingf"]), "file": r.collectionfile})
+            if "missingu" in data:
+                missing_u.append({"usuls": ", ".join(data["missingu"]), "file": r.collectionfile})
+
+            if len(data.get("makams", [])) == 0:
+                nomakams.append(r.collectionfile)
+            if len(data.get("forms", [])) == 0:
+                noforms.append(r.collectionfile)
+            if len(data.get("usuls", [])) == 0:
+                nousuls.append(r.collectionfile)
+
+    ret = {"missingu": missing_u, "missingm": missing_m,
+            "missingf": missing_f, "nomakams": nomakams,
+            "noforms": noforms, "nousuls": nousuls}
     return render(request, 'stats/makam_tags.html', ret)
 
 @user_passes_test(views.is_staff)
@@ -518,14 +554,56 @@ def makam_recordings(request):
 
     collectionid = compmusic.MAKAM_COLLECTION
     makamchecker = "dashboard.completeness.MakamTags"
-    usuls = set()
-    makams = set()
+
+    moreonetag = []
+    unmatchingtag = []
+
+    dashfiles = models.CollectionFile.objects.filter(directory__collection__id=collectionid)
+
+    for f in dashfiles:
+        checks = f.collectionfileresult_set.filter(checker__module=makamchecker)
+        if checks.exists():
+            r = checks[0]
+
+            data = json.loads(r.data) if r.data else {}
+            utags = data.get("usuls", [])
+            ftags = data.get("forms", [])
+            mtags = data.get("makams", [])
+            if len(utags) > 1 or len(ftags) > 1 or len(mtags) > 1:
+                moreonetag.append(data.get("recordingid"))
+            elif len(utags) != len(ftags) or \
+                    len(utags) != len(mtags) or\
+                    len(ftags) != len(mtags):
+                unmatchingtag.append(data.get("recordingid"))
+
+    recordings = makam.models.Recording.objects
+    works_counted = recordings.annotate(Count('works'))
+    nowork = [r for r in works_counted if r.works__count == 0]
+    moreonework = [r for r in works_counted if r.works__count > 1]
+
+    # Look at the recordings with no work and remove those that
+    # are form=taksim or form=gazel
+    newnowork = []
+
     results = models.CollectionFileResult.objects.filter(
         collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
         checker__module=makamchecker)
-    for r in results.all():
-        data = json.loads(r.data) if r.data else {}
-    ret = {}
+    for r in nowork:
+        # ordered by date descending, get the first one
+        reses = results.filter(collectionfile__recordingid=r.mbid)
+        if reses.exists():
+            res = reses[0]
+            data = json.loads(res.data) if res.data else {}
+            f = data.get("forms", [])
+            if not ("taksim" in f or "gazel" in f):
+                newnowork.append(r)
+
+    ret = {
+        "moreonetag": makam.models.Recording.objects.filter(mbid__in=moreonetag),
+        "unmatchingtag": makam.models.Recording.objects.filter(mbid__in=unmatchingtag),
+        "moreonework": moreonework,
+        "nowork": newnowork}
+
     return render(request, 'stats/makam_recordings.html', ret)
 
 @user_passes_test(views.is_staff)
