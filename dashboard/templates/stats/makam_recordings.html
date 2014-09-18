@@ -1,0 +1,26 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Makam recordings{% endblock %}
+
+{% block wrap %}
+
+<h1>Makam Recordings</h1>
+
+<a href="#notags">Recordings with no tags</a><br>
+<a href="#moretags">Recordings with more than 1 tag of the same time</a><br>
+<a href="#moreworks">Recordings with more than 1 work</a><br>
+<a href="#badtags">Recordings with unmatching number of tags</a><br>
+
+<a name="notags"></a>
+<h2>Recordings with no tags</h2>
+
+<a name="moretags"></a>
+<h2>Recordings with more than 1 tag of the same time</h2>
+
+<a name="moreworks"></a>
+<h2>Recordings with more than 1 work</h2>
+
+<a name="badtags"></a>
+<h2>Recordings with unmatching number of tags</h2>
+
+
+{% endblock %}

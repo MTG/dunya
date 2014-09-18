@@ -1,0 +1,27 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Makam works{% endblock %}
+
+{% block wrap %}
+
+<h1>Makam Works</h1>
+
+<a href="#nocomposer">Works with no composers</a> ({{nocomposer|length}})<br>
+<a href="#all">All works</a> ({{all.count}})<br>
+
+<a name="nocomposer"></a>
+<h2>Works with no composers ({{nocomposer|length}})</h2>
+<ul>
+{% for w in nocomposer %}
+<li><a href="{{w.get_musicbrainz_url}}">{{w.title}}</a>
+{% endfor %}
+</ul>
+
+<a name="all"></a>
+<h2>All works ({{all.count}})</h2>
+<ul>
+{% for w in all %}
+<li><a href="{{w.get_musicbrainz_url}}">{{w.title}}</a>
+{% endfor %}
+</ul>
+
+{% endblock %}

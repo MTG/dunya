@@ -22,6 +22,7 @@ from dashboard import models
 from dashboard import views
 import carnatic
 import hindustani
+import makam
 
 import json
 import collections
@@ -169,28 +170,24 @@ def carnatic_recordings(request):
         c.missing_rel_artists = False
         got_works = True
         got_track_perf = True
-        got_perf = True
-        for t in c.tracks.all():
+        for t in c.recordings.all():
             if not t.work:
                 got_works = False
             if t.performance.count() == 0:
                 got_track_perf = False
-        if c.performance.count() == 0:
-            got_perf = False
         c.got_track_perf = got_track_perf
         c.got_works = got_works
-        c.got_perf = got_perf and got_track_perf
 
         # Artists who are the primary artist of a release, but are not listed
         # as a relationship on the release or any tracks.
         # Note that this will incorrectly select groups where group members are listed
         artists = c.artists.all()
         tperf = carnatic.models.InstrumentPerformance.objects.filter(
-            recording__concert=c, performer__in=artists)
+            recording__concert=c, artist__in=artists)
         if not tperf.exists():
             c.missing_rel_artists = True
 
-        if not c.got_works or not c.got_perf or c.missing_rel_artists:
+        if not c.got_works or c.missing_rel_artists:
             badconcerts.append(c)
 
     ret = {"concerts": badconcerts,
@@ -354,7 +351,7 @@ def hindustani_recordings(request):
     for r in releases:
         got_works = True
         got_track_perf = True
-        for t in r.tracks.all():
+        for t in r.recordings.all():
             if not t.works.exists():
                 got_works = False
             if t.performance.count() == 0:
@@ -367,7 +364,7 @@ def hindustani_recordings(request):
         # Note that this will incorrectly select groups where group members are listed
         artists = r.artists.all()
         tperf = hindustani.models.InstrumentPerformance.objects.filter(
-            recording__release=r, performer__in=artists)
+            recording__release=r, artist__in=artists)
         r.missing_rel_artists = False
         if not tperf.exists():
             r.missing_rel_artists = True
@@ -509,6 +506,42 @@ def makam_stats(request):
 
     # Duration
     return render(request, 'stats/makam.html', ret)
+
+@user_passes_test(views.is_staff)
+def makam_tags(request):
+    collectionid = compmusic.MAKAM_COLLECTION
+    ret = {}
+    return render(request, 'stats/makam_tags.html', ret)
+
+@user_passes_test(views.is_staff)
+def makam_recordings(request):
+
+    collectionid = compmusic.MAKAM_COLLECTION
+    makamchecker = "dashboard.completeness.MakamTags"
+    usuls = set()
+    makams = set()
+    results = models.CollectionFileResult.objects.filter(
+        collectionfile__directory__musicbrainzrelease__collection__id=collectionid).filter(
+        checker__module=makamchecker)
+    for r in results.all():
+        data = json.loads(r.data) if r.data else {}
+    ret = {}
+    return render(request, 'stats/makam_recordings.html', ret)
+
+@user_passes_test(views.is_staff)
+def makam_works(request):
+
+    works = makam.models.Work.objects
+    composer_counted = works.annotate(Count('composers'))
+    nocomposer = [w for w in composer_counted if w.composers__count == 0]
+    ret = {"nocomposer": nocomposer,
+           "all": works.order_by('title').all()}
+    return render(request, 'stats/makam_works.html', ret)
+
+@user_passes_test(views.is_staff)
+def makam_artists(request):
+    ret = {"all": makam.models.Artist.objects.order_by('name').all()}
+    return render(request, 'stats/makam_artists.html', ret)
 
 @user_passes_test(views.is_staff)
 def beijing_stats(request):

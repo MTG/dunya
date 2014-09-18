@@ -1,0 +1,15 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Makam Artists{% endblock %}
+
+{% block wrap %}
+
+<h1>Makam Artists</h1>
+<a name="all"></a>
+<h2>All Artists ({{all.count}})</h2>
+<ul>
+{% for a in all %}
+<li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
+{% endfor %}
+</ul>
+
+{% endblock %}

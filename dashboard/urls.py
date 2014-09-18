@@ -65,6 +65,11 @@ urlpatterns = [
     url(r'makam/data/forms', views.makam_forms, name='dashboard-makam-forms'),
     url(r'makam/data/instruments', views.makam_instruments, name='dashboard-makam-instruments'),
 
+    url(r'makam/tags', statistic_views.makam_tags, name='dashboard-makam-tags'),
+    url(r'makam/recordings', statistic_views.makam_recordings, name='dashboard-makam-recordings'),
+    url(r'makam/works', statistic_views.makam_works, name='dashboard-makam-works'),
+    url(r'makam/artists', statistic_views.makam_artists, name='dashboard-makam-artists'),
+
     url(r'makam/', statistic_views.makam_stats, name='dashboard-makam-stats'),
     url(r'beijing/', statistic_views.beijing_stats, name='dashboard-beijing-stats'),
     url(r'arabandalusian/', statistic_views.andalusian_stats, name='dashboard-andalusian-stats'),
