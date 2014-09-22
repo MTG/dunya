@@ -166,10 +166,12 @@ Show details for a single work
     {
         "mbid": "419e17f2-890b-4151-9cd3-0307869c0a39",
         "title": "Mayatita Swaroopini",
-        "composer": {
-            "mbid": "5d7336f5-cb04-46eb-bdfc-64d8fe976931",
-            "name": "Ponnayya Bhagavathar"
-        },
+        "composers": [
+            {
+                "mbid": "5d7336f5-cb04-46eb-bdfc-64d8fe976931",
+                "name": "Ponnayya Bhagavathar"
+            }
+        ],
         "raagas": [
             {
                 "id": 72,
