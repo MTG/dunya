@@ -26,7 +26,7 @@ class Command(BaseCommand):
     help = 'Load data in the database to solr'
     solr = pysolr.Solr(settings.SOLR_URL)
 
-    def make_search_data(self, module, data, etype, namefield, alias=False, common_name=False):
+    def make_search_data(self, module, data, etype, namefield):
         insert = []
         for i in data:
             doc = {"id": "%s_%s" % (etype, i.pk),
@@ -36,11 +36,17 @@ class Command(BaseCommand):
                    "title_t": getattr(i, namefield),
                    "doctype_s": "search"
                    }
-            if alias:
-                aliases = [a.name for a in i.aliases.all()]
-                if common_name:
+            if hasattr(i, "aliases"):
+                aliases = []
+                for a in i.aliases.all():
+                    if hasattr(a, "name"):
+                        aliases.append(a.name)
+                if hasattr(i, "common_name"):
                     aliases.append(i.common_name)
-                doc.update({"alias_txt": aliases})
+                if aliases:
+                    doc["alias_txt"] = aliases
+            if hasattr(i, "bootleg"):
+                doc["bootleg_s"] = i.bootleg
             insert.append(doc)
         return insert
 
@@ -60,8 +66,8 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data("carnatic", composers, "composer", "name")
         insertwork = self.make_search_data("carnatic", works, "work", "title")
         insertconcert = self.make_search_data("carnatic", concerts, "concert", "title")
-        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "name", alias=True, common_name=True)
-        inserttaala = self.make_search_data("carnatic", taalas, "taala", "name", alias=True, common_name=True)
+        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "name")
+        inserttaala = self.make_search_data("carnatic", taalas, "taala", "name")
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)
@@ -90,10 +96,10 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data("hindustani", composers, "composer", "name")
         insertwork = self.make_search_data("hindustani", works, "work", "title")
         insertrelease = self.make_search_data("hindustani", releases, "release", "title")
-        insertraag = self.make_search_data("hindustani", raags, "raag", "common_name", alias=True, common_name=True)
-        inserttaal = self.make_search_data("hindustani", taals, "taal", "common_name", alias=True, common_name=True)
-        insertform = self.make_search_data("hindustani", forms, "form", "common_name", alias=True, common_name=True)
-        insertlaya = self.make_search_data("hindustani", layas, "laya", "common_name", alias=True, common_name=True)
+        insertraag = self.make_search_data("hindustani", raags, "raag", "common_name")
+        inserttaal = self.make_search_data("hindustani", taals, "taal", "common_name")
+        insertform = self.make_search_data("hindustani", forms, "form", "common_name")
+        insertlaya = self.make_search_data("hindustani", layas, "laya", "common_name")
 
         self.solr.add(insertinstr)
         self.solr.add(insertartist)
@@ -117,9 +123,9 @@ class Command(BaseCommand):
             artists = []
             for a in c.artists.all():
                 artists.append(a.id)
-            for p in c.performers():
-                artists.append(p.performer.id)
-            for t in c.tracks.all():
+            for a in c.performers():
+                artists.append(a.id)
+            for t in c.recordings.all():
                 if t.work:
                     works.append(t.work.id)
                     for ra in t.work.raaga.all():
@@ -154,9 +160,9 @@ class Command(BaseCommand):
             for a in r.artists.all():
                 artists.append(a.id)
             for p in r.performers():
-                artists.append(p.performer.id)
+                artists.append(p.id)
             artists = list(set(artists))
-            for t in r.tracks.all():
+            for t in r.recordings.all():
                 for w in t.works.all():
                     works.append(w.id)
 

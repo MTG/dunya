@@ -22,9 +22,11 @@ import json
 import carnatic
 
 solr = pysolr.Solr(settings.SOLR_URL)
-def search(name):
+def search(name, with_bootlegs=False):
     name = name.lower()
     query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
+    if not with_bootlegs:
+        query += " AND bootleg_s:false"
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
     for d in results.docs:
@@ -95,7 +97,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
         ret.append((concertid, {"works": commonw, "raagas": commonr, "taalas": commont, "artists": commona}))
     return ret
 
-def similar_recordings(mbid):
+def similar_recordings(mbid, with_bootlegs=False):
     query = "module_s:carnatic AND doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
     results = solr.search(query)
     docs = results.docs

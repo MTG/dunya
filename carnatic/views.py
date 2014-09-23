@@ -21,6 +21,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.conf import settings
+from django.templatetags.static import static
 
 from social import tagging
 from carnatic.models import *
@@ -100,6 +101,8 @@ def main(request):
     querybrowse = False
     searcherror = False
 
+    show_bootlegs = request.show_bootlegs
+
     if qartist:
         # TODO: If instrument set, only show artists who perform this instrument
         querybrowse = True
@@ -128,7 +131,7 @@ def main(request):
                 displayres.append(("raaga", ra))
             for ta in tlist:
                 displayres.append(("taala", ta))
-            for c in art.concerts(raagas=rlist, taalas=tlist):
+            for c in art.concerts(raagas=rlist, taalas=tlist, with_bootlegs=show_bootlegs):
                 displayres.append(("concert", c))
         else:
             # Otherwise if more than one artist is selected,
@@ -139,7 +142,7 @@ def main(request):
                 displayres.append(("artist", art))
                 if art.main_instrument:
                     displayres.append(("instrument", art.main_instrument))
-                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist))
+                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist, with_bootlegs=show_bootlegs))
                 allconcerts.append(thisconcerts)
             combinedconcerts = reduce(lambda x, y: x & y, allconcerts)
 
@@ -202,7 +205,7 @@ def main(request):
                 # if instrument, only people who play that?
     elif query:
         try:
-            results = search.search(query)
+            results = search.search(query, with_bootlegs=show_bootlegs)
         except pysolr.SolrError:
             searcherror = True
             results = {}
@@ -395,10 +398,13 @@ def composer(request, uuid, name=None):
     return render(request, "carnatic/composer.html", ret)
 
 def concertsearch(request):
-    concerts = Concert.objects.all().order_by('title')
+    concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
     ret = []
     for c in concerts:
-        ret.append({"id": c.id, "title": "%s<br>%s" % (c.title, c.artistcredit)})
+        title = "%s<br>%s" % (c.title, c.artistcredit)
+        if c.bootleg:
+            title = '<img src="%s" title="bootleg concert" /> %s' % (static('carnatic/img/cassette.png'), title)
+        ret.append({"id": c.id, "title": title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def concertbyid(request, concertid, title=None):

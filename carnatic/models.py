@@ -257,7 +257,7 @@ class Concert(CarnaticStyle, data.models.Release):
                }
         return ret
 
-    def get_similar(self):
+    def get_similar(self, show_bootlegs=False):
 
         artists = set(self.artists.all())
         for p in self.performers():
@@ -283,6 +283,9 @@ class Concert(CarnaticStyle, data.models.Release):
                 if s == self.id:
                     continue
                 concert = Concert.objects.get(pk=s)
+                # Don't show bootlegs
+                if concert.bootleg and not show_bootlegs:
+                    continue
                 works = [Work.objects.get(pk=w) for w in v["works"]]
                 raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
                 taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
