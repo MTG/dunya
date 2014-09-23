@@ -29,7 +29,7 @@ class UserProfile(models.Model):
     affiliation = models.CharField(max_length=200, blank=True)
 
     def __unicode__(self):
-        return self.user
+        return unicode(self.user)
 
 def user_post_save(sender, instance, created, **kwargs):
     """Create a user profile when a new user account is created"""
