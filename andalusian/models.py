@@ -362,17 +362,17 @@ class FormAlias(models.Model):
 class Section(AndalusianStyle, data.models.BaseModel):
     recording = models.ForeignKey('Recording')
     # order_number may not be necessary if start_time and end_time are known
-    order_number = models.IntegerField(blank=True, null=True)
-    start_time = models.CharField(max_length=8, blank=True, null=True)
-    end_time = models.CharField(max_length=8, blank=True, null=True)
+    #order_number = models.IntegerField(blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     tab = models.ForeignKey('Tab', blank=True, null=True)
     nawba = models.ForeignKey('Nawba', blank=True, null=True)
     mizan = models.ForeignKey('Mizan', blank=True, null=True)
     form = models.ForeignKey('Form', blank=True, null=True)
 
     def __unicode__(self):
-        return u"Section %s of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
-               (self.order_number, self.recording, self.start_time, self.end_time,
+        return u"Section of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
+               (self.recording, self.start_time, self.end_time,
                 self.form, self.mizan, self.tab, self.nawba)
 
 
