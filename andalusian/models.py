@@ -383,8 +383,8 @@ class InstrumentSectionPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return u"%s playing %s on section %s of recording %s" % \
-               (self.performer, self.instrument, self.section.order_number, self.section.recording)
+        return u"%s playing %s on section (%s, %s) of recording %s" % \
+               (self.performer, self.instrument, self.section.start_time, self.section.end_time, self.section.recording)
 
 
 class Sanaa(data.models.BaseModel):
