@@ -17,6 +17,7 @@
 from django import forms
 
 from docserver import models
+from docserver import jobs
 
 class EssentiaVersionForm(forms.ModelForm):
     class Meta:
@@ -40,6 +41,15 @@ class ModuleForm(forms.Form):
             choices.append((checker.pk, checker.name))
 
         self.fields['collections'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=choices)
+
+    def clean_module(self):
+        modulepath = self.cleaned_data.get('module')
+        instance = jobs._get_module_instance_by_path(modulepath)
+        if not instance:
+            raise forms.ValidationError("The specified module doesn't exist")
+        if models.Module.objects.filter(slug=instance.__slug__).exists():
+            raise forms.ValidationError("A module with this slug (%s) already exists" % instance.__slug__)
+
 
     class Meta:
         fields = []

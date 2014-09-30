@@ -74,10 +74,13 @@ def _get_module_instance_by_path(modulepath):
         args = {"redis_host": redis_host}
     except AttributeError:
         pass
-    mod, clsname = modulepath.rsplit(".", 1)
-    package = importlib.import_module(mod)
-    cls = getattr(package, clsname)
-    return cls(**args)
+    try:
+        mod, clsname = modulepath.rsplit(".", 1)
+        package = importlib.import_module(mod)
+        cls = getattr(package, clsname)
+        return cls(**args)
+    except ImportError:
+        return None
 
 def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)
@@ -85,6 +88,8 @@ def create_module(modulepath, collections):
         sourcetype = models.SourceFileType.objects.get(extension=instance.__sourcetype__)
     except models.SourceFileType.DoesNotExist as e:
         raise Exception("Cannot find source file type '%s'" % instance.__sourcetype__, e)
+    if models.Module.objects.filter(slug=instance.__slug__).exists():
+        raise Exception("A module with this slug (%s) already exists" % instance.__slug__)
 
     module = models.Module.objects.create(
         name=modulepath.rsplit(".", 1)[1],
