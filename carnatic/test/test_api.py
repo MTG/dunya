@@ -235,6 +235,9 @@ class ConcertTest(TestCase):
         self.cnormal = models.Concert.objects.create(title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
         self.cbootleg = models.Concert.objects.create(title="bootleg concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734", bootleg=True)
 
+        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1)
+
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.staffuser = auth.models.User.objects.create_user("staffuser")
         self.staffuser.is_staff = True
@@ -248,6 +251,7 @@ class ConcertTest(TestCase):
         s = api.ConcertDetailSerializer(self.cnormal)
         fields = ['artists', 'concert_artists', 'mbid', 'recordings', 'title']
         self.assertEqual(fields, sorted(s.data.keys()))
+        self.assertTrue(False, "We should list artists' instruments")
 
     def test_concert_list_bootleg(self):
         """ Staff members will see bootleg concerts in
