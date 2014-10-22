@@ -138,7 +138,8 @@ INSTALLED_APPS = (
     'dunya',
     'hindustani',
     'motifdiscovery',
-    'andalusian'
+    'andalusian',
+    'jingju'
 )
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'

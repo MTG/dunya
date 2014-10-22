@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^motifdiscovery/', include('motifdiscovery.urls')),
     url(r'^hindustani/', include('hindustani.urls')),
     url(r'^makam/', include('makam.urls')),
-    url(r'^han/', include('han.urls')),
+    url(r'^jingju/', include('jingju.urls')),
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.urls')),
