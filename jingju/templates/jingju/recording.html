@@ -15,24 +15,26 @@
     {% endif %}
 {% endblock %}
 
-{% block title %}{{recording.title}} - {% endblock %}
 
 {% block script %}
 <script>
-    var pitchtrackurl = "http://dunya.compmusic.upf.edu{{pitchtrackurl|safe}}";
-    var histogramurl = "http://dunya.compmusic.upf.edu{{histogramurl|safe}}";
-    var rhythmurl = "http://dunya.compmusic.upf.edu{{rhythmurl|safe}}";
-    var aksharaurl = "http://dunya.compmusic.upf.edu{{aksharaurl|safe}}";
+    var pitchtrackurl = "/static/jingju/data/{{mbid}}-pitch.dat";
+    var histogramurl = "/static/jingju/data/{{mbid}}-histogram.json";
+    var banshiurl = "/static/jingju/data/{{mbid}}-banshi.json";
+    var luoguurl = "/static/jingju/data/{{mbid}}-luogu.json";
+    var lyricsurl = "/static/jingju/data/{{mbid}}-lyrics.json";
     var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
     var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
+    var smallurl = "{{smallimage|safe}}";
     var secondsPerView = 32;
     var pitchtrackdata = null;
     var histogramdata = null;
-    var rhythmdata = null;
-    var aksharadata = null;
+    var luogudata = null;
+    var banshidata = null;
+    var lyricsdata = null;
     var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
-    var recordinglengthfmt = "{{recording.length_format}}";
-    var recordinglengthseconds = "{{recording.length_seconds}}";
+    var recordinglengthfmt = "{{length_format}}";
+    var recordinglengthseconds = "{{length}}";
 
     {% if user.is_authenticated %}
     function playrecord(){
@@ -53,7 +55,7 @@
     widthOfChildren('.metaContainer');
 
 </script>
-<script src="{% static 'carnatic/js/recording.js' %}"></script>
+<script src="{% static 'jingju/js/recording.js' %}"></script>
 {% endblock %}
 
 {% block wrap %}
@@ -73,10 +75,8 @@
      	   <div id="scrollrec">
          <div id="summary">
      			<div id="innerSummary">
-	     			<span>
-		     			<h1>{{recording.title}}</h1>
-		     			<h2> by {% inline_artist_list recording.concert_set.get.artistnames %}</h2>
-	     			</span>
+                    {% block recordingtitle %}
+                    {% endblock %}
      			</div>
      			<div id="summaryBack"></div>
      		</div>
@@ -85,41 +85,8 @@
 					<div class="metaMask">
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
-								<span class="list">
-                                    {% if concert %}
-									<label>From album</label><b>{% inline_concert concert %}</b>
-                                    {% endif %}
-                                    {% if recording.work %}
-									<label>Performing</label><b>{% inline_work recording.work %}</b>
-                                    {% if recording.work.composer %}
-                                    <label>Composer</label><b>
-                                        {% inline_composer recording.work.composer %}</b>
-                                    {% endif %}
-									{% if recording.work.taala %}
-									<label>Taala</label><b>
-										{% for t in recording.work.taala.all %}
-										    {% inline_taala t %}
-		    							{% endfor %}
-		    						</b>
-									{% endif %}
-
-									{% if recording.work.raaga %}
-									<label>Raaga</label><b>
-					     				{% for r in recording.work.raaga.all %}
-											{% inline_raaga r %}
-		    							{% endfor %}
-									</b>
-									{% endif %}
-
-                                {% endif %}
-									{% if tonic %}
-                                    <label>Tonic</label><b>{{tonicname}} ({{tonic}} Hz)</b>
-									{% endif %}
-									{% if akshara %}
-                                    <label>Akshara period</label><b>{{akshara}} ms </b>
-									{% endif %}
-
-								</span>
+                                {% block metadata %}
+                                {% endblock %}
 							</div>
 				 		</div>
 					</div>
@@ -150,9 +117,9 @@
 	 	<div class="alldata">
 	 	    <div class="container">
 	     	<div class="thedata">
-	     		<div id="rendersMask">
+	     		<div id="rendersMask" style="height:640px;">
 	     			<div id="renders">
-	     				<div id="capcal"></div>
+	     				<div id="capcal" style="height:640px;"></div>
 		     			<div id="bigWave">
                             <canvas id="rhythmcanvas" style="width:900px; height:256px;"></canvas>
                             <!--<img src="{{waveform}}">-->
@@ -167,16 +134,18 @@
 		     			   <div id="capcalTotal"></div>
 		     			   <div id="timepoint"></div>
 		     			   <div id="miniviewHighlight"></div>
-                           <img src="{{smallimage}}">
+                           <canvas id="smallcanvas"></canvas>
               </div>
 		     			<div id="bigPitch" style="height:286px;">
                             <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
-                            <!--<img src="{{spectrogram}}">-->
 		     			 <div id="zooms" style="bottom: 34px;">
                   <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
                   <a class="zoom zoom2" data-length="16" href="#">x2</a>
                   <a class="zoom zoom3" data-length="8" href="#">x3</a>
                   <a class="zoom zoom3" data-length="4" href="#">x4</a>
+                </div>
+                <div id="lyrics">
+
                 </div>
                     <div id="timecodes">
                     <span class="timecode1"></span>
@@ -191,12 +160,6 @@
 	     		<div class="container2">
 	     		  <div class="waveLabel">
 	     		    <h1>rhythm</h1>
-                    <div>Showing automatically<br>extracted akshara pulse<br>between
-                        <span id="pulseFrom">00:00</span> and <span id="pulseTo">00:00</span>
-                    </div>
-                    <div>
-                        <input type="checkbox" checked id="showRhythm"><label for="showRhythm"> Show beats</label>
-                    </div>
                   <span class="tempoup"></span>
                   <span class="tempodown"></span>
 	     		  </div>
@@ -206,30 +169,12 @@
             </div>
             <div class="pitchLabel">
               <h1>melody</h1>
-              <span class="sao">Ṡ</span>
-              <span class="sa">S</span>
             </div>
 	     		</div>
 	     	</div>
 	     	</div>
 		 	<div class="clearfix"></div>
 	 	</div>
-            <div class="thedata">
-                <div class="leftdata">
-                    <h3>Similar recordings</h3>
-                </div>
-
-                <div class="rightdata">
-	     			<div class="innerrightdata scrolldata nopad">
-	                    <div class="tracklist">
-                        {% for s in similar %}
-                            {% badge_similar_recording s %}
-                        {% endfor %}
-	                    </div>
-                        <div class="clearfix"></div>
-	     			</div>
-                </div>
-            </div>
 
 	 	<div class="clearfix"></div>
 </div>

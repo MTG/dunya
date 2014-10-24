@@ -8,7 +8,7 @@ $(document).ready(function() {
      capcalTotal = $('#capcalTotal');
      renderTotal = $('#renderTotal');
      zoomFactor = "";
-     waveform = $('#renderTotal img');
+     waveform = $('#renderTotal canvas');
      plButton = $("#control .plButton");
      timecode = $("#timecode");
      zooms = $(".zoom");
@@ -78,17 +78,10 @@ $(document).ready(function() {
 });
 
 function plotsa(context) {
-    // Sa and sa+1 line.
     context.beginPath();
-    // sa+1, dotted
-    context.moveTo(0, 128);
-    for (var i = 0; i < 900; i+=10) {
-        context.moveTo(i, 128.5);
-        context.lineTo(i+5, 128.5);
-    }
-    // sa, solid
-    context.moveTo(0, 192.5);
-    context.lineTo(900, 192.5);
+    // tonic (first degree)
+    context.moveTo(0, 170.5);
+    context.lineTo(900, 170.5);
     context.strokeStyle = "#eee";
     context.lineWidth = 1;
     context.stroke();
@@ -107,11 +100,11 @@ function spectrogram(context, view) {
     // Number of pixels we draw
     var end = Math.min(900+start, start+(view.length-start)/skip);
     var remaining = view.length-start;
-    console.debug("length " + view.length);
-    console.debug(remaining + " samples remaining");
-    console.debug("with skip, " + (remaining/skip) + " rem");
-    console.debug("skip " + skip);
-    console.debug("draw from " + start + " to " + end);
+    //console.debug("length " + view.length);
+    //console.debug(remaining + " samples remaining");
+    //console.debug("with skip, " + (remaining/skip) + " rem");
+    //console.debug("skip " + skip);
+    //console.debug("draw from " + start + " to " + end);
     context.beginPath();
     for (var i = start; i < end; i++) {
         // Find our point
@@ -224,63 +217,58 @@ function plotticks(context) {
     // Plot the beginning and ending of banshi and lougu
     // If it's started, show the name of it at the top
 
-    for (var i = 0; i < banshidata.length; i++) {
-        var d = banshidata[i];
-        var name = d[0];
-        var start = d[1];
-        var end = d[2];
-        var viewstart = beginningOfView;
-        var viewend = viewstart + secondsPerView;
-        if (start > viewstart && start < viewend) {
-            console.debug("banshi starts here at " + start);
-            // Starting line + name in this view
-            context.beginPath();
-            var position = (start-beginningOfView) / secondsPerView * 900;
-            position = Math.floor(position) + 0.5;
-            //console.debug("drawing at " + position);
-            context.moveTo(position, 0);
-            context.lineTo(position, 255);
-            context.lineWidth = 1;
-            context.strokeStyle = "#eee";
-            context.stroke();
-            context.fillStyle = "#eee";
-            context.font = "bold 25px Arial";
-            context.fillText(name, position + 20, 40);
-            context.closePath();
-
-        } else if (start < viewstart && end > viewstart) {
-            context.fillStyle = "#eee";
-            context.font = "bold 25px Arial";
-            context.fillText(name, 20, 40);
-            // Name, at the beginning of this view
-        } else if (end > viewstart && end < viewend) {
-            // End line in this view
-
-        }
-    }
-        /*
+    var loopData = function(data) {
         context.beginPath();
-        console.debug("draw ticks");
         for (var i = 0; i < data.length; i++) {
-            var val = data[i];
-            var endVal = beginningOfView+secondsPerView;
-            if (val > beginningOfView && val < endVal) {
-                //console.debug("got a tick at " + val);
-                // We draw it.
-                var position = (val-beginningOfView) / secondsPerView * 900;
+            var d = data[i];
+            var name = d[0];
+            var start = d[1];
+            var end = d[2];
+            var viewstart = beginningOfView;
+            var viewend = viewstart + secondsPerView;
+            if (start > viewstart && start < viewend) {
+                //console.debug("data starts here at " + start);
+                // Starting line + name in this view
+                var position = (start-beginningOfView) / secondsPerView * 900;
                 position = Math.floor(position) + 0.5;
-                //console.debug("drawing at " + position);
+
                 context.moveTo(position, 0);
                 context.lineTo(position, 255);
+                context.lineWidth = 1;
+                context.strokeStyle = "#eee";
+                context.stroke();
+
+                context.fillStyle = "#eee";
+                context.font = "bold 25px Arial";
+                context.fillText(name, position + 20, 40);
+
+            } else if (start < viewstart && end > viewstart) {
+                // Name, at the beginning of this view
+                context.fillStyle = "#eee";
+                context.font = "bold 25px Arial";
+                context.fillText(name, 20, 40);
+            } else if (end > viewstart && end < viewend) {
+                // End line in this view
+                var position = (start-beginningOfView) / secondsPerView * 900;
+                position = Math.floor(position) + 0.5;
+
+                context.moveTo(position, 0);
+                context.lineTo(position, 255);
+                context.moveTo(position, 0);
+                for (var i = 0; i < 255; i+=10) {
+                    context.moveTo(position, 0);
+                    context.lineTo(position, i+0.5);
+                }
+                context.lineWidth = 1;
+                context.strokeStyle = "#eee";
+                context.stroke();
             }
-        context.lineWidth = 1;
-        //context.strokeStyle = "#e71d25";
-        context.strokeStyle = "#eee";
-        context.stroke();
         }
         context.closePath();
-    }
-    */
+    };
+
+    loopData(banshidata);
+    loopData(luogudata);
 }
 
 
@@ -312,33 +300,60 @@ function loaddata() {
     }});
 
     luoguDone = false;
-    console.debug(luoguurl);
     $.ajax(luoguurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-            console.debug("got luogu");
             luogudata = data;
             luoguDone = true;
             dodraw();
     }});
 
     banshiDone = false;
-    console.debug(banshiurl);
     $.ajax(banshiurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-            console.debug("got banshi");
             banshidata = data;
             banshiDone = true;
             dodraw();
     }});
 
+    lyricsDone = false;
+    $.ajax(lyricsurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            lyricsdata = data;
+            lyricsDone = true;
+            dodraw();
+    }});
+
     function dodraw() {
-        if (pitchDone && histogramDone && banshiDone && luoguDone) {
+        if (pitchDone && histogramDone && banshiDone &&
+                luoguDone && lyricsDone) {
             drawdata();
         }
     }
 }
 
 function plotsmall() {
+    var pxpersec = 900.0/recordinglengthseconds;
+    var smallLines = function(data, colour) {
+        context.beginPath();
+        for (var i = 0; i < data.length; i++) {
+            var d = data[i];
+            var s = d[1];
+            var e = d[2];
+            var spos = s * pxpersec;
+            var epos = e * pxpersec;
+            context.moveTo(spos, 0);
+            context.lineTo(spos, 64);
+            context.moveTo(epos, 0);
+            for (var j = 0; j < 64; j+=10) {
+                context.moveTo(epos, j);
+                context.lineTo(epos, j+5);
+            }
+        }
+        context.lineWidth = 2;
+        context.strokeStyle = colour;
+        context.stroke();
+        context.closePath();
+    };
     var small = new Image();
     small.src = smallurl;
     var canvas = $("#smallcanvas")[0];
@@ -346,28 +361,27 @@ function plotsmall() {
     canvas.height = 64;
     var context = canvas.getContext("2d");
     small.onload = function() {
-        context.drawImage(small, 0, 0);
-        console.debug("recording length " + recordinglengthseconds);
-        var pxpersec = 900.0/recordinglengthseconds;
-        for (var i = 0; i < banshidata.length; i++) {
-            var d = banshidata[i];
-            var s = d[1];
-            var e = d[2];
-            console.debug("banshi " + i + " from " + s + " to " + e);
-            var spos = s * pxpersec;
-            var epos = e * pxpersec;
-            console.debug("   " + spos + "," + epos);
-            context.moveTo(spos, 0);
-            context.lineTo(spos, 64);
-            context.moveTo(epos, 0);
-            context.lineTo(epos, 64);
-        }
-        context.lineWidth = 2;
-        //context.strokeStyle = "#e71d25";
-        context.strokeStyle = "#eee";
-        context.stroke();
-        for (var i = 0; i < banshidata.length; i++) {
+        context.drawImage(small, 0, 0, 900, 64, 0, 0, 900, 64);
+        smallLines(banshidata, "#eee");
+        smallLines(luogudata, "#f00");
+    }
+}
 
+function drawlyrics() {
+    var viewStart = beginningOfView;
+    var viewEnd = beginningOfView + secondsPerView;
+    $("#lyrics .lyric").remove();
+    for (var i = 0; i < lyricsdata.length; i++) {
+        var l = lyricsdata[i];
+        var word = l[0];
+        var s = l[1];
+        if (s > viewStart && s < viewEnd) {
+            var position = (s-beginningOfView) / secondsPerView * 900;
+
+            $("<div>", {
+                text: word,
+                class: "lyric"
+            }).css("left", position+"px").appendTo("#lyrics")
         }
     }
 }
@@ -377,6 +391,7 @@ function drawdata() {
     plotpitch();
     plothistogram();
     plotsmall();
+    drawlyrics();
     var start = beginningOfView;
     var skip = secondsPerView / 4;
     $(".timecode1").html(formatseconds(start));

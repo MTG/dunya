@@ -27,11 +27,11 @@
                         padding:10px;
                         h1 { font-size: 16px; }
                         h2 { margin-top:0px; font-size: 12px; }
-                    }    
+                    }
                 }
             }
-            #meta { 
-                float:none; 
+            #meta {
+                float:none;
                 width: 100%;
                 height: auto;
                 .metaBlock {
@@ -43,8 +43,8 @@
                             .metaDetails {
                                 height: auto;
                                 width: 100%;
-                                span { 
-                                    width: 100%;                
+                                span {
+                                    width: 100%;
                                     label { width: 34% !important; }
                                     b { width: 64% !important; }
                                 }
@@ -62,7 +62,7 @@
             #control {
                 position: relative;
                 padding-left: 30px;
-                .revButton { 
+                .revButton {
                     position: relative;
                     float: left;
                     width:48px;
@@ -70,26 +70,26 @@
                     background: url("../img/revButton.png") 0 0 repeat-y;
                     margin-top: 7px;
                     &:hover {
-                        background: url("../img/revButton_hover.png") 0 0 repeat-y;    
+                        background: url("../img/revButton_hover.png") 0 0 repeat-y;
                     }
                 }
-                .plButton { 
+                .plButton {
                     position: relative;
                     float: left;
                     width:64px;
                     height: 66px;
                     background: url("../img/plButton.png") 0 0 no-repeat;
                     &:hover {
-                        background: url("../img/plButton_hover.png") 0 0 no-repeat;    
+                        background: url("../img/plButton_hover.png") 0 0 no-repeat;
                     }
                     &.stop {
-                        background: url("../img/stopButton.png") 0 0 no-repeat;    
+                        background: url("../img/stopButton.png") 0 0 no-repeat;
                         &:hover {
-                            background: url("../img/stopButton_hover.png") 0 0 no-repeat;    
+                            background: url("../img/stopButton_hover.png") 0 0 no-repeat;
                         }
                     }
                 }
-                .folButton { 
+                .folButton {
                     position: relative;
                     float: left;
                     width:48px;
@@ -97,7 +97,7 @@
                     background: url("../img/folButton.png") 0 0 repeat-y;
                     margin-top: 7px;
                     &:hover {
-                        background: url("../img/folButton_hover.png") 0 0 repeat-y;    
+                        background: url("../img/folButton_hover.png") 0 0 repeat-y;
                     }
                 }
             }
@@ -110,7 +110,7 @@
         }
     }
 
-    .alldata { 
+    .alldata {
         float:left;
         width:100%;
         margin-left: -220px;
@@ -135,10 +135,10 @@
                             background: url("../img/capcal.png") 0 0 repeat-y;
                             z-index: 1
                         }
-                        #bigWave, #bigPitch { 
+                        #bigWave, #bigPitch {
                             position: relative;
                             height: 256px;
-                            width:100%; 
+                            width:100%;
                             canvas {
                                 height: 256px;
                                 border: 0;
@@ -167,6 +167,14 @@
                                         background: rgba(255, 255, 255, 0.8);
                                         color:#333 !important;
                                     }
+                                }
+                            }
+                            div#lyrics {
+                                position: relative;
+                                height: 30px;
+                                .lyric {
+                                    position: absolute;
+                                    margin: 2px;
                                 }
                             }
                             div#timecodes {
@@ -209,12 +217,10 @@
                 #renderTotal {
                     position: relative;
                     width:901px;
-                    img {
+                    img, #smallcanvas {
                         width:901px;
                         height: 64px;
                         opacity: 0.5;
-                        border-top:1px solid #fff;
-                        border-bottom:1px solid #fff;
                         z-index: 2;
                     }
                     #capcalTotal {
@@ -257,7 +263,7 @@
                         background: url("../img/controlBackground.jpg") 0 0 repeat;
                         #timecode {
                             position: relative;
-                            margin: 0;            
+                            margin: 0;
                             padding: 8px;
                             display: block;
                             text-align: center;
@@ -285,8 +291,8 @@
                         margin-left: 901px;
                         height: 256px;
                         width: 100%;
-                        h1 { 
-                            margin: 0px; 
+                        h1 {
+                            margin: 0px;
                             font-weight: normal;
                             padding: 10px;
                         }
@@ -311,8 +317,8 @@
                         margin-left: 901px;
                         height: 256px;
                         width: 100%;
-                        h1 { 
-                            margin: 0px; 
+                        h1 {
+                            margin: 0px;
                             font-weight: normal;
                             padding: 10px;
                         }

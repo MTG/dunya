@@ -80,14 +80,17 @@ def recording(request, mbid, length):
     return render(request, "jingju/%s.html" % mbid, ret)
 
 def rec_0b5dd02b(request):
-    length = 602
+    length = 236
     return recording(request, "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d", length)
 
 def rec_3dcae41a(request):
-    return recording(request, "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d")
+    length = 392
+    return recording(request, "3dcae41a-795c-4b7d-979b-1b52aa42dd3a", length)
 
 def rec_415d9fcc(request):
-    return recording(request, "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d")
+    length = 602
+    return recording(request, "415d9fcc-bad8-45db-adec-01ffd04b9cec", length)
 
 def rec_87b5c1b2(request):
-    return recording(request, "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d")
+    length = 368
+    return recording(request, "87b5c1b2-e718-4ae7-8662-dc4ae3efd3b1", length)

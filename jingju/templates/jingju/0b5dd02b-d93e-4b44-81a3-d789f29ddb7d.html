@@ -1,198 +1,32 @@
-{% extends "carnatic/base.html" %}
-{% load carnatic.inline %}
-{% load comments %}
-{% load carnatic.badges %}
-{% load staticfiles %}
-{% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/recording.less' %}" />
-    {% else %}
-    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/recording.css' %}" />
-    {% endif %}
+{% extends "jingju/recording.html" %}
+
+{% block title %}珠帘寨【西皮导板、原板、流水】 - {% endblock %}
+
+{% block recordingtitle %}
+<span>
+    <h1 title="Zhū lián zhài [xī pí dǎo bǎn, yuán bǎn, liú shuǐ">珠帘寨【西皮导板、原板、流水】</h1>
+    <h2 title="Qeng Qichang">耿其昌</h2>
+</span>
 {% endblock %}
 
-{% block title %}{{recording.title}} - {% endblock %}
+{% block metadata %}
+<span class="list">
+    <label title="Album">专辑</label>
+    <b title="Gěng Qí chāng jīng jù chàng duàn xuǎn">耿其昌京剧唱段选</b>
 
-{% block script %}
-<script>
-    var pitchtrackurl = "/static/jingju/data/{{mbid}}-pitch.dat";
-    var histogramurl = "/static/jingju/data/{{mbid}}-histogram.json";
-    var banshiurl = "/static/jingju/data/{{mbid}}-banshi.json";
-    var luoguurl = "/static/jingju/data/{{mbid}}-luogu.json";
-    var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
-    var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
-    var smallurl = "{{smallimage|safe}}";
-    var secondsPerView = 32;
-    var pitchtrackdata = null;
-    var histogramdata = null;
-    var luogudata = null;
-    var banshidata = null;
-    var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
-    var recordinglengthfmt = "{{length_format}}";
-    var recordinglengthseconds = "{{length}}";
+    <label title="Aria">唱段</label>
+    <b label='Zhū lián zhài. "Xī rì yǒu gè sān dà xián" (Li Keyong)'>“昔日有个三大贤”——《珠帘寨》(李克用)</b>
 
-    {% if user.is_authenticated %}
-    function playrecord(){
-        if(plButton.hasClass("stop")){
-            pause();
-            plButton.removeClass("stop");
-        }else{
-            play();
-            plButton.addClass("stop");
-        }
-    }
-    {% else %}
-    function playrecord(){
-        $( "#playback_dialog" ).dialog( "open" );
-    }
-    {% endif %}
+    <label title="shengqiang">声腔</label>
+    <b title="xipi">西皮</b>
 
-    widthOfChildren('.metaContainer');
+    <label title="role type">行当</label>
+    <b title="laosheng">老生</b>
 
-</script>
-<script src="{% static 'jingju/js/recording.js' %}"></script>
+    <label title="school">流派</label>
+    <b title="Yu">余派</b>
+    <label title="first degree">主音</label><b>E4 (334)</b>
+
+</span>
 {% endblock %}
 
-{% block wrap %}
-{% if bootleg %}
-    <div id="bootleg-bar">
-       <div style="float:left">
-           <p>This is a bootleg recording only visible to CompMusic researchers.
-           <br>Do not share.</p>
-       </div>
-       <div style="float:right; margin-top:10px;margin-right:10px;">
-           <button onclick='$("#bootleg-bar").hide()'>Ok</button>
-       </div>
-    </div>
-{% endif %}
-<div id="detail" class="recording">
-     	<div id="header">
-     	   <div id="scrollrec">
-         <div id="summary">
-     			<div id="innerSummary">
-	     			<span>
-		     			<h1 title="Zhuō fàng cáo ­ Sù diàn [èr huáng màn bǎn, yuán bǎn]">捉放曹 ∙ 宿店【二黄慢板、原板】</h1>
-		     			<h2 title="Geng Qichang">耿其昌</h2>
-	     			</span>
-     			</div>
-     			<div id="summaryBack"></div>
-     		</div>
-         <div id="meta">
-	     		<div class="metaBlock">
-					<div class="metaMask">
-				 		<div class="metaContainer">
-							<div id="excerpt" class="metaDetails recordingDetails">
-								<span class="list">
-                                    <label title="Album">专辑</label>
-                                    <b title="Gěng Qí chāng jīng jù chàng duàn xuǎn">耿其昌京剧唱段选</b>
-
-                                    <label title="Aria">唱段</label>
-                                    <b label='Zhuō fàng Cáo. "Yī lún míng yuè zhào chuāng xià" (Chen Gong)'>“一轮明月照窗下”——《捉放曹》(陈宫)</b>
-
-                                    <label title="shengqiang">声腔</label>
-                                    <b title="erhuang">二黄</b>
-
-                                    <label title="role type">行当</label>
-                                    <b title="laosheng">老生</b>
-
-                                    <label title="school">流派</label>
-                                    <b title="Yu">余派</b>
-                                    <label title="first degree">主音</label><b>F#4 (362.28)</b>
-
-								</span>
-							</div>
-				 		</div>
-					</div>
-	     		</div>
-     		</div>
-     	   </div>
-         <div id="totalcontrol">
-          <div id="control">
-              {% if prevrecording %}
-                  <a href="{{prevrecording.get_absolute_url}}"><div class="revButton active"></div></a>
-              {% else %}
-                  <div class="revButton"></div>
-              {% endif %}
-              <div class="plButton" onclick="playrecord();"></div>
-              {% if nextrecording %}
-                  <a href="{{nextrecording.get_absolute_url}}"><div class="folButton active"></div></a>
-              {% else %}
-                  <div class="folButton"></div>
-              {% endif %}
-          </div>
-         </div>
-         <div class="graph">
-             <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
-         </div>
-	     	<div class="clearfix"></div>
-     	</div><!-- HEADER END -->
-
-	 	<div class="alldata">
-	 	    <div class="container">
-	     	<div class="thedata">
-	     		<div id="rendersMask">
-	     			<div id="renders">
-	     				<div id="capcal"></div>
-		     			<div id="bigWave">
-                            <canvas id="rhythmcanvas" style="width:900px; height:256px;"></canvas>
-                            <!--<img src="{{waveform}}">-->
-		     			   <div id="zooms">
-                  <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
-                  <a class="zoom zoom2" data-length="16" href="#">x2</a>
-                  <a class="zoom zoom3" data-length="8" href="#">x3</a>
-                  <a class="zoom zoom4" data-length="4" href="#">x4</a>
-                </div>
-              </div>
-		     			<div id="renderTotal">
-		     			   <div id="capcalTotal"></div>
-		     			   <div id="timepoint"></div>
-		     			   <div id="miniviewHighlight"></div>
-                           <canvas id="smallcanvas" style="width:900px; height:64px;"></canvas>
-                           <!--<img src="{{smallimage}}">-->
-              </div>
-		     			<div id="bigPitch" style="height:286px;">
-                            <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
-                            <!--<img src="{{spectrogram}}">-->
-		     			 <div id="zooms" style="bottom: 34px;">
-                  <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
-                  <a class="zoom zoom2" data-length="16" href="#">x2</a>
-                  <a class="zoom zoom3" data-length="8" href="#">x3</a>
-                  <a class="zoom zoom3" data-length="4" href="#">x4</a>
-                </div>
-                    <div id="timecodes">
-                    <span class="timecode1"></span>
-                    <span class="timecode2"></span>
-                    <span class="timecode3"></span>
-                    <span class="timecode4"></span>
-                    <span class="timecode5"></span>
-                </div>
-		     			</div>
-	     			</div>
-	     		</div>
-	     		<div class="container2">
-	     		  <div class="waveLabel">
-	     		    <h1>rhythm</h1>
-                  <span class="tempoup"></span>
-                  <span class="tempodown"></span>
-	     		  </div>
-	     		  <div id="totalcontrol2">
-                      <div id="timecode">00:00<span>{{recording.length_format}}</span></div>
-
-            </div>
-            <div class="pitchLabel">
-              <h1>melody</h1>
-            </div>
-	     		</div>
-	     	</div>
-	     	</div>
-		 	<div class="clearfix"></div>
-	 	</div>
-
-	 	<div class="clearfix"></div>
-</div>
-
-{% endblock %}
