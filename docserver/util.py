@@ -157,7 +157,11 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
             # If the file has many parts and ?part is not set then it's an error
             parts = derived.parts
             if part:
-                parts = parts.filter(part_order=int(part))
+                try:
+                    part = int(part)
+                    parts = parts.filter(part_order=part)
+                except ValueError:
+                    raise NoFileException("Invalid part")
             else:
                 parts = parts.all()
             if parts.count() > 1:
