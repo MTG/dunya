@@ -23,6 +23,7 @@ flup==1.0.3.dev-20110405
 # unsigned and remote-hosted
 #eyeD3==0.7.4
 functools32==3.2.3-1
+intonation==0.1
 ipdb==0.8
 ipython==2.1.0
 kombu==3.0.5
