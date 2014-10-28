@@ -182,6 +182,7 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
     try:
         os.makedirs(fdir)
     except OSError:
+        print "Error making directory", fdir
         pass
     fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
 
