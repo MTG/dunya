@@ -251,7 +251,6 @@ class ConcertTest(TestCase):
         s = api.ConcertDetailSerializer(self.cnormal)
         fields = ['artists', 'concert_artists', 'mbid', 'recordings', 'title']
         self.assertEqual(fields, sorted(s.data.keys()))
-        self.assertTrue(False, "We should list artists' instruments")
 
     def test_concert_list_bootleg(self):
         """ Staff members will see bootleg concerts in

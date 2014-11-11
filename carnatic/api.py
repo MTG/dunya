@@ -244,12 +244,22 @@ class ConcertList(generics.ListAPIView, WithBootlegAPIView):
 
 class ConcertDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(source='tracklist', many=True)
-    artists = ArtistInnerSerializer(source='performers')
+    artists = serializers.SerializerMethodField('get_artists_and_instruments')
     concert_artists = ArtistInnerSerializer(source='artists')
 
     class Meta:
         model = models.Concert
         fields = ['mbid', 'title', 'recordings', 'artists', 'concert_artists']
+
+    def get_artists_and_instruments(self, ob):
+        artists = ob.performers()
+        data = []
+        for a in artists:
+            inner = ArtistInnerSerializer(a).data
+            instrument = ob.instruments_for_artist(a)
+            inner["instruments"] = InstrumentInnerSerializer(instrument).data
+            data.append(inner)
+        return data
 
 class ConcertDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
