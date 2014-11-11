@@ -374,7 +374,11 @@ class Composer(BaseModel):
             cname = unidecode.unidecode(self.name)
         else:
             cname = self.name
-        return reverse(viewname, args=[self.mbid, slugify(unicode(cname))])
+        args = [self.mbid]
+        slug = slugify(unicode(cname))
+        if slug:
+            args.append(slug)
+        return reverse(viewname, args=args)
 
 class ComposerAlias(models.Model):
     class Meta:
