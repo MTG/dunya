@@ -105,17 +105,26 @@ def get_latest_module_version(themod_id=None):
         updated.
         If no argument is given, update all modules. """
     if themod_id:
-        modules = [models.Module.objects.get(pk=themod_id)]
+        modules = models.Module.objects.filter(pk=themod_id)
     else:
-        modules = models.Module.objects.all()
+        modules = models.Module.objects.filter(disabled=False)
     for m in modules:
+        print "module", m
         instance = _get_module_instance_by_path(m.module)
-        version = instance.__version__
-        v = "%s" % version
+        print "instance", instance
+        if instance:
+            if m.disabled: # if we were disabled and exist again, reenable.
+                m.disabled = False
+                m.save()
+            version = instance.__version__
+            v = "%s" % version
 
-        versions = m.versions.filter(version=version)
-        if not len(versions):
-            models.ModuleVersion.objects.create(module=m, version=v)
+            versions = m.versions.filter(version=version)
+            if not len(versions):
+                models.ModuleVersion.objects.create(module=m, version=v)
+        else:
+            m.disabled = True
+            m.save()
 
 @app.task
 def delete_moduleversion(vid):

@@ -10,6 +10,9 @@
     width: 100% !important;
     padding: 1em !important;
 }
+input[disabled] {
+    color: grey;
+}
 </style>
 {% endblock %}
 
@@ -90,8 +93,9 @@
 {% if modules %}
 <table class="table table-condensed "><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr>
     {% for m in modules %}
-    <tr>
-        <td><a href="{{m.get_absolute_url}}">{{m.name}}</a> ({{m.module}})<br>
+    <tr {% if m.disabled %}class="warning"{% endif %}>
+        <td><a href="{{m.get_absolute_url}}">{{m.name}}</a> ({{m.module}})
+            {% if m.disabled %}<br><b>Disabled due to error</b>{% endif %}<br>
            {% for c in m.collections.all %}
            <li>{{c}}
            {% endfor %}</td>
@@ -106,7 +110,7 @@
             <form method="post" action="">
                 {% csrf_token %}
                 <input type="hidden" name="run" value="{{m.pk}}">
-                <input type="submit" value="Process files">
+                <input type="submit" {% if m.disabled %}disabled="disabled" {% endif %}value="Process files">
             </form>
         </td>
     </tr>

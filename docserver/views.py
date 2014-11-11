@@ -140,7 +140,7 @@ def manager(request):
             jobs.run_module(int(run))
             return redirect('docserver-manager')
 
-    modules = models.Module.objects.all()
+    modules = models.Module.objects.all().order_by('name')
     collections = models.Collection.objects.all()
 
     inspect = app.control.inspect()

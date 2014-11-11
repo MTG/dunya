@@ -321,6 +321,7 @@ class Module(models.Model):
     depends = models.CharField(max_length=100, blank=True, null=True)
     module = models.CharField(max_length=200)
     source_type = models.ForeignKey(SourceFileType)
+    disabled = models.BooleanField(default=False)
 
     collections = models.ManyToManyField(Collection)
 

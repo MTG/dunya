@@ -10,6 +10,12 @@
 
 <h2>Module {{module.name}}</h2>
 
+{% if module.disabled %}
+<div class="alert alert-warning">Module is disabled due to an error loading.
+    Check that the class exists and can be imported on the server.
+    Click <i>Scan for new versions</i> below to update</div>
+{% endif %}
+
 {% if confirmversion %}
 Are you sure you want to delete this module version? ({{module.name}}, v{{versions.0.version}})
 <form method="post" action="">
