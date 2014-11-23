@@ -25,8 +25,6 @@ solr = pysolr.Solr(settings.SOLR_URL)
 def search(name, with_bootlegs=False):
     name = name.lower()
     query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
-    if not with_bootlegs:
-        query += " AND bootleg_s:false"
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
     for d in results.docs:
@@ -36,8 +34,12 @@ def search(name, with_bootlegs=False):
         klass = get_klassmap().get(type)
         if klass:
             instance = klass.objects.get(pk=id)
-            ret[type].append(instance)
-    return ret
+            if type == "concert":
+                if with_bootlegs or not (with_bootlegs or instance.bootleg):
+                    ret[type].append(instance)
+            elif type != "concert":
+                ret[type].append(instance)
+    return dict(ret)
 
 def autocomplete(term):
     params = {}
