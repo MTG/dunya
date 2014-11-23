@@ -77,14 +77,14 @@ def badge_work(work):
 #### Badges for comparing an item to other things of the same type
 
 @register.inclusion_tag("carnatic/badges/similar_artist.html")
-def badge_similar_artist(artist, concerts=None, bootlegs=None, guru=None):
+def badge_similar_artist(artist, concerts=None, bootlegs=None, guru=None, description=False):
     if not isinstance(artist, models.Artist):
         artist = models.Artist.objects.get(pk=artist)
-    print "similar artist badge"
-    print " artist  ", artist
-    print " concerts", concerts
-    print " bootlegs", bootlegs
-    return {"artist": artist, "concerts": concerts, "guru": guru, "bootlegs": bootlegs}
+    return {"artist": artist,
+            "concerts": concerts,
+            "guru": guru,
+            "bootlegs": bootlegs,
+            "description": description}
 
 @register.inclusion_tag("carnatic/badges/similar_concert.html")
 def badge_similar_concert(concert, similarity):

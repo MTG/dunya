@@ -26,5 +26,8 @@
         {% elif bootlegs and not concerts %}
             These artists collaborate on {{bootlegs}} concert{{bootlegs|pluralize}}
         {% endif %}
+        {% if description %}
+            {{artist.description.description|safe}}
+        {% endif %}
     </div>
 </div>
