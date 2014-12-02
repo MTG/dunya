@@ -359,13 +359,13 @@ def register_host(hostname):
 def git_update_and_compile_essentia():
     subprocess.call("git checkout deploy", cwd=ESSENTIA_DIR, shell=True)
     subprocess.call("git fetch --all", cwd=ESSENTIA_DIR, shell=True)
-    subprocess.call("git merge --hard origin/deploy", cwd=ESSENTIA_DIR, shell=True)
+    subprocess.call("git reset --hard origin/deploy", cwd=ESSENTIA_DIR, shell=True)
     subprocess.call("./waf -v", cwd=ESSENTIA_DIR, shell=True)
     subprocess.call("./waf install", cwd=ESSENTIA_DIR, shell=True)
 
 def git_update_pycompmusic():
     subprocess.call("git fetch --all", cwd=COMPMUSIC_DIR, shell=True)
-    subprocess.call("git merge --hard origin/master", cwd=COMPMUSIC_DIR, shell=True)
+    subprocess.call("git reset --hard origin/master", cwd=COMPMUSIC_DIR, shell=True)
 
 @app.task
 def update_essentia(hostname):
