@@ -155,6 +155,7 @@ class DunyaRouter(object):
         return {"queue": "celery"}
 
 CELERY_ROUTES = (DunyaRouter(), )
+CELERYD_CONCURRENCY = 3
 
 # Sendfile
 SENDFILE_BACKEND = 'sendfile.backends.nginx'
