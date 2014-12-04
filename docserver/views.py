@@ -22,6 +22,7 @@ import imp
 
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
@@ -284,13 +285,16 @@ def worker(request, hostname):
     processed_files = log.get_processed_files(hostname)
     recent = []
     for p in processed_files:
-        collection = models.Collection.objects.get(collectionid=p["collection"])
-        document = collection.documents.get(external_identifier=p["recording"])
-        modver = models.ModuleVersion.objects.get(pk=p["moduleversion"])
-        recent.append({"document": document,
-                       "collection": collection,
-                       "modulever": modver,
-                       "date": p["date"]})
+        try:
+            collection = models.Collection.objects.get(collectionid=p["collection"])
+            document = collection.documents.get(external_identifier=p["recording"])
+            modver = models.ModuleVersion.objects.get(pk=p["moduleversion"])
+            recent.append({"document": document,
+                           "collection": collection,
+                           "modulever": modver,
+                           "date": p["date"]})
+        except ObjectDoesNotExist:
+            pass
 
     actions = log.get_worker_actions(hostname)
     workerlog = []
