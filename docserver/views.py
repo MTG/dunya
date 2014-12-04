@@ -18,6 +18,7 @@ import json
 import datetime
 import inspect
 import pkgutil
+import imp
 
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
@@ -307,18 +308,31 @@ def update_all_workers(request):
     jobs.update_all_workers()
     return redirect('docserver-manager')
 
+def get_module_source(modulename):
+    """ Given a module dotted path (string), see how it can be
+    imported (.py or .pyc)
+    returns imp.PY_SOURCE, imp.PY_COMPILED, or imp.C_EXTENSION"""
+    pkgname, modname = modulename.rsplit(".", 1)
+    # easiest way to get the path of the module
+    package = __import__(pkgname, fromlist="dummy")
+    print "package path", package.__path__
+    moddata = imp.find_module(modname, package.__path__)
+    desc = moddata[2]
+    return desc[2]
+
 def extractor_modules():
     ret = []
     modules = models.Module.objects
-    for importer, modname, ispkg in pkgutil.iter_modules(extractors.__path__):
+    for importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "compmusic.extractors."):
         if not ispkg:
-            modname = "compmusic.extractors.%s" % modname
-            module = __import__(modname, fromlist="dummy")
-            for name, ftype in inspect.getmembers(module, inspect.isclass):
-                if issubclass(ftype, extractors.ExtractorModule):
-                    classname = "%s.%s" % (modname, name)
-                    if not modules.filter(module=classname).exists():
-                        ret.append(classname)
+            stype = get_module_source(modname)
+            if stype == imp.PY_SOURCE:
+                module = __import__(modname, fromlist="dummy")
+                for name, ftype in inspect.getmembers(module, inspect.isclass):
+                    if issubclass(ftype, extractors.ExtractorModule):
+                        classname = "%s.%s" % (modname, name)
+                        if not modules.filter(module=classname).exists():
+                            ret.append(classname)
     return ret
 
 @user_passes_test(is_staff)
