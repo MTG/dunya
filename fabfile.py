@@ -25,6 +25,7 @@ def cleantest(module=None):
 @roles("web")
 def updateweb():
     """Update the webserver"""
+    env.user = "mtg_dunya"
     with cd("/srv/dunya"):
         run("git pull", pty=False)
         # compile and compress less
@@ -49,10 +50,11 @@ def essentia(branch=None):
     with cd("/srv/essentia"):
         run("git pull", pty=False)
         run("./waf -j4")
-        run("sudo ./waf install")
+        run("./waf install")
 
 @roles("workers")
 def updatecelery():
+    env.user = "mtg_dunya"
     """Update the code for celery on all workers and restart"""
     with cd("/srv/dunya"):
         run("git pull", pty=False)
