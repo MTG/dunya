@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
 
 import carnatic
 from motifdiscovery import models
 from sendfile import sendfile
 import os
+import json
 
 def main(request):
     return render(request, "motifdiscovery/index.html")
@@ -55,3 +57,36 @@ def servesegment(request, segmentid):
     fname = os.path.join("/serve", seg.segment_path)
     response = sendfile(request, fname, mimetype="audio/mpeg")
     return response
+
+def recinformation(request, uuid):
+
+    ret = []
+    matches = models.Match.objects.using('motif')\
+        .filter(source__file__mbid=uuid).filter(version=-1)\
+        .filter(distance__lt=1150000)\
+        .order_by('distance')\
+        .prefetch_related('source__segment')\
+        .prefetch_related('source__file')\
+        .prefetch_related('target__file')\
+        .prefetch_related('target__segment')
+
+
+    for m in matches[:100]:
+
+        matches = models.Match.objects.using('motif')\
+                .filter(source=m.source, version=1, distance__lt=4000)\
+                .order_by('distance')\
+                .prefetch_related('source')\
+                .prefetch_related('target')\
+                .prefetch_related('target__file')\
+                .prefetch_related('target__segment')
+
+        matches_local = matches.filter(target__file__mbid=uuid)[:100]
+        matches_other = matches.exclude(target__file__mbid=uuid)[:100]
+        ret.append(((m.source.start_time, m.source.end_time),
+                [(l.target.start_time, l.target.end_time) for l in matches_local],
+                [(l.target.file.mbid, l.target.start_time, l.target.end_time) for l in matches_other]
+                ))
+
+
+    return HttpResponse(json.dumps(ret), content_type="application/json")

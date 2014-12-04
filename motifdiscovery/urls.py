@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^artist/%s$' % uuid_match, views.artist, name='motif-artist'),
     url(r'^release/%s$' % uuid_match, views.release, name='motif-release'),
     url(r'^seeds/%s$' % uuid_match, views.seeds, name='motif-seeds'),
+    url(r'^recording/%s$' % uuid_match, views.recinformation, name='motif-recinfo'),
     url(r'^results/%s/(?P<seedid>[0-9]+)$' % uuid_match, views.results, name='motif-results'),
     url(r'^segment/(?P<segmentid>[0-9]+).mp3$', views.servesegment, name='motif-segment'),
 ]
