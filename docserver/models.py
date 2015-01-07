@@ -403,3 +403,6 @@ class DocumentLogMessage(models.Model):
     level = models.CharField(max_length=20)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
+
+    def __unicode__(self):
+        return u"%s: %s" % (self.datetime, self.message)

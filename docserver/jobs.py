@@ -42,7 +42,7 @@ class DatabaseLogHandler(logging.Handler):
         modv = None
         if modulename and moduleversion:
             try:
-                mod = models.Module.objects.get(module=modulename)
+                mod = models.Module.objects.get(slug=modulename)
                 modv = mod.versions.get(version=moduleversion)
             except (models.Module.DoesNotExist, models.ModuleVersion.DoesNotExist):
                 pass
