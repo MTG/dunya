@@ -6,7 +6,9 @@
 <ul class="breadcrumbs">
     <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
     <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
+    {% if modulever %}
     <li>Module {{modulever.module.name}} {{modulever.version}}</li>
+    {% endif %}
     <li>{{document.title}}</li>
 </ul>
 
@@ -53,7 +55,7 @@
 
     <div class="topbox">
         <div class="topheader">Logs</div>
-    <table class="table table-condensed"> 
+    <table class="table table-condensed">
         <tr>
             <th style="width:150px;">Date</th>
             <th style="width:150px;">Module</th>
