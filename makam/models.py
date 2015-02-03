@@ -78,7 +78,8 @@ class Release(MakamStyle, data.models.Release):
     def instruments_for_artist(self, artist):
         """ Returns a list of instruments that this
         artist performs on this release."""
-        return Instrument.objects.filter(instrumentperformance__artist=artist).distinct()
+        return Instrument.objects.filter(instrumentperformance__artist=artist,
+                instrumentperformance__recording__release=self).distinct()
 
     def performers(self):
         """ The performers on a release are those who are in the performance

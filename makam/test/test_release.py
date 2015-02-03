@@ -7,10 +7,16 @@ class ReleaseTest(TestCase):
 
     def setUp(self):
         self.release = models.Release.objects.create(title="rel")
-        self.recording1 = models.Recording.objects.create(title="rec")
-        self.recording2 = models.Recording.objects.create(title="rec")
+        self.recording1 = models.Recording.objects.create(title="rec1")
+        self.recording2 = models.Recording.objects.create(title="rec2")
+        self.recording3 = models.Recording.objects.create(title="rec3")
         models.ReleaseRecording.objects.create(release=self.release, recording=self.recording1, track=1)
         models.ReleaseRecording.objects.create(release=self.release, recording=self.recording2, track=2)
+
+        # any performance relationships here for an artist shouldn't show up
+        # when we ask for relationships on self.release
+        self.releaseother = models.Release.objects.create(title="other release")
+        models.ReleaseRecording.objects.create(release=self.releaseother, recording=self.recording3, track=1)
 
         self.a1 = models.Artist.objects.create(name="a1")
         self.a2 = models.Artist.objects.create(name="a2")
@@ -20,6 +26,7 @@ class ReleaseTest(TestCase):
         self.i1 = models.Instrument.objects.all()[0]
         self.i2 = models.Instrument.objects.all()[1]
         self.i3 = models.Instrument.objects.all()[2]
+        self.i4 = models.Instrument.objects.all()[3]
 
         self.release.artists.add(self.a1)
         models.InstrumentPerformance.objects.create(recording=self.recording1, artist=self.a1, instrument=self.i1)
@@ -28,6 +35,8 @@ class ReleaseTest(TestCase):
         models.InstrumentPerformance.objects.create(recording=self.recording2, artist=self.a3, instrument=self.i2)
         models.InstrumentPerformance.objects.create(recording=self.recording2, artist=self.a3, instrument=self.i1)
 
+
+        models.InstrumentPerformance.objects.create(recording=self.recording3, artist=self.a2, instrument=self.i4)
 
     def test_get_performers(self):
         perfs = self.release.performers()
