@@ -18,6 +18,9 @@
 <div id="detail">
     <h1>Release {{release.title}}</h1>
 
+    <h3>External</h3>
+    Musicbrainz: <a href="http://musicbrainz.org/release/{{release.mbid}}">http://musicbrainz.org/release/{{release.mbid}}</a>
+
     <h3>Tracks:</h3>
     <ul>
     {% for r in release.tracklist %}
