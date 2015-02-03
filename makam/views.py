@@ -48,10 +48,20 @@ def artist(request, uuid, name=None):
 
     collaborating_artists = artist.collaborating_artists()
 
+    main_release_d = {}
+    for r in main_releases:
+        instruments = r.instruments_for_artist(artist)
+        main_release_d[r] = instruments
+
+    other_release_d = {}
+    for r in other_releases:
+        instruments = r.instruments_for_artist(artist)
+        other_release_d[r] = instruments
+
     ret = {"artist": artist,
            "instruments": instruments,
-           "main_releases": main_releases,
-           "other_releases": other_releases,
+           "main_releases": main_release_d,
+           "other_releases": other_release_d,
            "collaborating_artists": collaborating_artists
            }
     return render(request, "makam/artist.html", ret)

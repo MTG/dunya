@@ -34,15 +34,15 @@
 
 <h3>Main releases</h3>
 <ul>
-    {% for r in main_releases %}
-    <li>{% inline_release r %}</li>
+    {% for r, insts in main_releases.items %}
+    <li>{% inline_release r %} ({% for i in insts %} {% inline_instrument i %} {% endfor %})</li>
     {% endfor %}
 </ul>
 
     <h3>Accompanying releases</h3>
 <ul>
-    {% for r in other_releases %}
-    <li>{% inline_release r %}</li>
+    {% for r, insts in other_releases.items %}
+    <li>{% inline_release r %} ({% for i in insts %} {% inline_instrument i %} {% endfor %})</li>
     {% endfor %}
 </ul>
 
