@@ -541,7 +541,7 @@ def instrumentsearch(request):
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def instrument(request, instrumentid, name=None):
-    instrument = get_object_or_404(models.Instrument, pk=instrumentid)
+    instrument = get_object_or_404(models.Instrument, pk=instrumentid, hidden=False)
 
     sample = None
     # Look for a release by an artist who plays this instrument and take
