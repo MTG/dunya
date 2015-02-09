@@ -1,4 +1,5 @@
 {% load hindustani.inline %}
+{% load firstof from future %}
 
   <div class="artist item">
         <div class="disc pict">
@@ -9,7 +10,7 @@
             <p>{% firstof artist.begin '' %}</p>
         <p>Primary instrument: {% inline_instrument artist.main_instrument %}
     </div>
-        
+
   <div class="descOpen">
     {% if artist.description.description %}
     {{artist.description.description|safe}}

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load firstof from future %}
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -167,7 +168,7 @@
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
                         <a href="{% url 'social-user-profile' %}">View profile</a>
-                        <a href="{% url 'social-auth-logout' %}?next={% firstof request.path '/' %}">Logout</a>
+                        <a href="{% url 'social-auth-logout' %}?next={% firstof request.path|safe '/' %}">Logout</a>
                         <a href="{% url 'social-user-changepw' %}">Change password</a>
                     </div>
 
@@ -176,7 +177,7 @@
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi! what do you want to do?</h3>
-                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path '/' %}">Login</a>
+                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path|safe '/' %}">Login</a>
                         <a href="{% url 'social-auth-register' %}">Register</a>
                     </div>
             {% endif %}
