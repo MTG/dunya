@@ -16,6 +16,8 @@ def test(module=None, reusedb=1):
     command = "python manage.py test --settings=dunya.test_settings --noinput"
     if module:
         command += " %s" % module
+    if reusedb:
+        print "Reusing DB (if available), run cleantest to recreate schema"
     with shell_env(REUSE_DB=str(reusedb)):
         local(command)
 
