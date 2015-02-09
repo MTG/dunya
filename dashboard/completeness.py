@@ -92,7 +92,7 @@ class MakamTags(CompletenessBase):
         m = meta["meta"]
         recordingid = m["recordingid"]
         if not recordingid:
-            thefile.add_log_message("This file has no recording id tag", self)
+            thefile.add_log_message("This file has no recording id tag")
         mbrec = compmusic.mb.get_recording_by_id(
             recordingid,
             includes=["tags", "work-rels"])["recording"]
@@ -193,7 +193,7 @@ class HindustaniRaagTaal(CompletenessBase):
         m = meta["meta"]
         recordingid = m["recordingid"]
         if not recordingid:
-            thefile.add_log_message("This file has no recording id tag", self)
+            thefile.add_log_message("This file has no recording id tag")
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
         mbrec = mbrec["recording"]
         tags = mbrec.get("tag-list", [])
@@ -251,7 +251,7 @@ class RaagaTaalaFile(CompletenessBase):
         m = meta["meta"]
         recordingid = m["recordingid"]
         if not recordingid:
-            thefile.add_log_message("This file has no recording id tag", self)
+            thefile.add_log_message("This file has no recording id tag")
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
         mbrec = mbrec["recording"]
         tags = mbrec.get("tag-list", [])
@@ -370,7 +370,7 @@ class ReleaseRelationships(object):
         """
         logging.info("Recordingid %s" % recordingid)
         if not recordingid:
-            thefile.add_log_message("This file has no recording id tag", self)
+            thefile.add_log_message("This file has no recording id tag")
         recording = compmusic.mb.get_recording_by_id(recordingid, includes=["work-rels", "artist-rels"])
         recording = recording["recording"]
 
