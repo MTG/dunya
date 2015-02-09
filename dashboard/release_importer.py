@@ -240,6 +240,8 @@ class ReleaseImporter(object):
                         perf["attribute-list"].remove("additional")
                     if "solo" in perf.get("attribute-list", []):
                         perf["attribute-list"].remove("solo")
+                    if "guest" in perf.get("attribute-list", []):
+                        perf["attribute-list"].remove("guest")
                     insts = perf.get("attribute-list", [])
                     # TODO: If someone performed more than 1 instrument
                     # we won't catch it
@@ -305,7 +307,7 @@ class ReleaseImporter(object):
 
         # TODO: Work attributes
         self._clear_work_composers(work)
-        
+
         for artist in mbwork.get("artist-relation-list", []):
             if artist["type-id"] == RELATION_COMPOSER:
                 composer = self.add_and_get_composer(artist["target"])
