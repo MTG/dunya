@@ -119,7 +119,7 @@ def form(request, formid, name=None):
     return render(request, "makam/form.html", ret)
 
 def instrument(request, instrumentid, name=None):
-    instrument = get_object_or_404(models.Instrument, pk=instrumentid)
+    instrument = get_object_or_404(models.Instrument, pk=instrumentid, hidden=False)
 
     ret = {"instrument": instrument
            }
