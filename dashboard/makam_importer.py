@@ -171,6 +171,13 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         # Some relations were added to musicbrainz incorrectly.
         if instname == "nai":
             instname = "ney"
+        # vocals are credited in mb as "vocals", but we want
+        # to call the instrument 'voice'
+        if instname.startswith("vocal"):
+            instname = "voice"
+        # make shorter (hacky)
+        if instname == "double bass / contrabass / acoustic upright bass":
+            instname = "double bass"
         try:
             return makam.models.Instrument.objects.get(name__iexact=instname)
         except makam.models.Instrument.DoesNotExist:
