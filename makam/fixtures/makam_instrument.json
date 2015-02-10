@@ -6,9 +6,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "8d050ded-8749-4a6c-849f-2ec332b91b73", 
         "references": [], 
+        "name_tr": "Vokal", 
         "images": [], 
-        "name": "Accordion"
+        "hidden": false, 
+        "name": "Voice"
     }
 },
 {
@@ -18,9 +21,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "160bb4a7-2ac5-4795-80fa-f506b174caaf", 
         "references": [], 
+        "name_tr": "Akordeon", 
         "images": [], 
-        "name": "Additional"
+        "hidden": false, 
+        "name": "Accordion"
     }
 },
 {
@@ -30,8 +36,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "d592a835-d13e-4101-8feb-8704417685b0", 
         "references": [], 
+        "name_tr": "Ba\u011flama", 
         "images": [], 
+        "hidden": false, 
         "name": "Baglama"
     }
 },
@@ -42,8 +51,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "19381986-d262-4c52-ae04-fb56001e9703", 
         "references": [], 
+        "name_tr": "Bas gitar", 
         "images": [], 
+        "hidden": false, 
         "name": "Bass guitar"
     }
 },
@@ -52,10 +64,13 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "99f1aa5a-59a9-48e5-b83b-eb36264cd6da", 
         "references": [], 
+        "name_tr": "Zil", 
         "images": [], 
+        "hidden": false, 
         "name": "Bells"
     }
 },
@@ -66,8 +81,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "c6105993-e39b-47db-ae4a-c8e3233bf0e7", 
         "references": [], 
+        "name_tr": "Bendir", 
         "images": [], 
+        "hidden": false, 
         "name": "Bendir"
     }
 },
@@ -78,8 +96,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "2ed71df0-944e-49c2-8c1c-30b10001020b", 
         "references": [], 
+        "name_tr": "Borazan", 
         "images": [], 
+        "hidden": false, 
         "name": "Bugle"
     }
 },
@@ -90,8 +111,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "bfab53c5-781b-46ef-aa7f-7ea7e5c8b1df", 
         "references": [], 
+        "name_tr": "\u00c7ello", 
         "images": [], 
+        "hidden": false, 
         "name": "Cello"
     }
 },
@@ -102,8 +126,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "c8fb4d09-0319-4459-975f-eb2b1b6f7c2a", 
         "references": [], 
+        "name_tr": "Klarnet", 
         "images": [], 
+        "hidden": false, 
         "name": "Clarinet"
     }
 },
@@ -114,8 +141,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "bcaeae04-f63f-42ba-8215-83e4e6bc2f24", 
         "references": [], 
+        "name_tr": "Klasik kemen\u00e7e", 
         "images": [], 
+        "hidden": false, 
         "name": "Classical kemen\u00e7e"
     }
 },
@@ -126,8 +156,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "8bee445e-282c-4260-afea-d2a64c7f20be", 
         "references": [], 
+        "name_tr": "Cornamuse", 
         "images": [], 
+        "hidden": false, 
         "name": "Cornamuse"
     }
 },
@@ -136,10 +169,13 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "e6cf73d1-8c8b-4aa1-9b86-aed99fb52b53", 
         "references": [], 
+        "name_tr": "Tef", 
         "images": [], 
+        "hidden": false, 
         "name": "Daf"
     }
 },
@@ -148,10 +184,13 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "a9ee3e5f-fd8f-4e85-9ef4-942f6ec4505d", 
         "references": [], 
+        "name_tr": "Daire", 
         "images": [], 
+        "hidden": false, 
         "name": "Daire"
     }
 },
@@ -160,10 +199,13 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "5bcab1c3-6b44-4818-a7a3-bf90dcfb6f31", 
         "references": [], 
+        "name_tr": "Darbuka", 
         "images": [], 
+        "hidden": false, 
         "name": "Darbuka"
     }
 },
@@ -174,8 +216,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "94c8e1b7-3588-4f1b-aa65-53a0ac48be69", 
         "references": [], 
+        "name_tr": "Kontrbas", 
         "images": [], 
+        "hidden": false, 
         "name": "Double bass / contrabass / acoustic upright bass"
     }
 },
@@ -184,10 +229,13 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "ea0afc24-6168-493c-95c9-93f939e369f6", 
         "references": [], 
+        "name_tr": "Davul", 
         "images": [], 
+        "hidden": false, 
         "name": "Drums"
     }
 },
@@ -198,8 +246,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "8859fe12-69e7-4dd6-8a05-d3c2b4cea231", 
         "references": [], 
+        "name_tr": "Duduk", 
         "images": [], 
+        "hidden": false, 
         "name": "Duduk"
     }
 },
@@ -210,9 +261,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "47cee5ad-3613-452b-9dc6-9eea458d0703", 
         "references": [], 
+        "name_tr": "Gitar", 
         "images": [], 
-        "name": "Guest"
+        "hidden": false, 
+        "name": "Guitar"
     }
 },
 {
@@ -222,9 +276,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "b4385a05-82c5-4a8b-a9c5-bdccac5cde7d", 
         "references": [], 
+        "name_tr": "Klavsen", 
         "images": [], 
-        "name": "Guitar"
+        "hidden": false, 
+        "name": "Harpsichord"
     }
 },
 {
@@ -234,9 +291,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "f178815e-4364-4364-bbdc-95b90ccbf017", 
         "references": [], 
+        "name_tr": "Kanun", 
         "images": [], 
-        "name": "Guitars"
+        "hidden": false, 
+        "name": "Kanun"
     }
 },
 {
@@ -246,9 +306,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "17d6a2d1-ca2d-49a6-a5ee-bcd83db57352", 
         "references": [], 
+        "name_tr": "Kemen\u00e7e", 
         "images": [], 
-        "name": "Harpsichord"
+        "hidden": false, 
+        "name": "Kemenche"
     }
 },
 {
@@ -258,9 +321,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "77002ba9-5191-4d5c-90d4-a0c0f65968d6", 
         "references": [], 
+        "name_tr": "Synthesizer", 
         "images": [], 
-        "name": "Kanun"
+        "hidden": false, 
+        "name": "Keyboard"
     }
 },
 {
@@ -268,11 +334,14 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "dd8d1746-4a64-429f-af56-303ca233a64a", 
         "references": [], 
+        "name_tr": "Kud\u00fcm", 
         "images": [], 
-        "name": "Kemenche"
+        "hidden": false, 
+        "name": "Kud\u00fcm"
     }
 },
 {
@@ -282,9 +351,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "6351742a-4f4d-4170-903c-02926b87962c", 
         "references": [], 
+        "name_tr": "L\u00fct", 
         "images": [], 
-        "name": "Keyboard"
+        "hidden": false, 
+        "name": "Lute"
     }
 },
 {
@@ -294,9 +366,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "c04f6d19-79a4-4c97-a086-0197cd075f3e", 
         "references": [], 
+        "name_tr": "Ney", 
         "images": [], 
-        "name": "Kud\u00fcm"
+        "hidden": false, 
+        "name": "Ney"
     }
 },
 {
@@ -304,11 +379,14 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "4a894f8b-6c7a-4667-bc2f-8e4adb8ecf4e", 
         "references": [], 
+        "name_tr": "Di\u011fer davullar", 
         "images": [], 
-        "name": "Lute"
+        "hidden": true, 
+        "name": "Other drums"
     }
 },
 {
@@ -318,9 +396,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "6463d58f-0c2b-4447-bbdd-ad27a5daef16", 
         "references": [], 
+        "name_tr": "Di\u011fer enstr\u00fcmanlar", 
         "images": [], 
-        "name": "Nai"
+        "hidden": true, 
+        "name": "Other instruments"
     }
 },
 {
@@ -328,11 +409,14 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "7c33a50e-4dbe-4342-a8ba-f2be9a65d233", 
         "references": [], 
+        "name_tr": "Di\u011fer perk\u00fcsyonlar", 
         "images": [], 
-        "name": "Ney"
+        "hidden": true, 
+        "name": "Other percussion"
     }
 },
 {
@@ -342,9 +426,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "0837b5b0-69d6-4c1c-b7b2-628cadeb164b", 
         "references": [], 
+        "name_tr": "Ud", 
         "images": [], 
-        "name": "Other drums"
+        "hidden": false, 
+        "name": "Oud"
     }
 },
 {
@@ -354,9 +441,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "55c442da-805f-42a3-aaaa-9063a7dfbcb0", 
         "references": [], 
+        "name_tr": "Pan fl\u00fct", 
         "images": [], 
-        "name": "Other instruments"
+        "hidden": false, 
+        "name": "Pan flute"
     }
 },
 {
@@ -364,11 +454,14 @@
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
-        "percussion": false, 
+        "percussion": true, 
         "source": null, 
+        "mbid": "45d2ab13-bdd3-4475-b3bf-397946b53602", 
         "references": [], 
+        "name_tr": "Perk\u00fcsyon", 
         "images": [], 
-        "name": "Other percussion"
+        "hidden": false, 
+        "name": "Percussion"
     }
 },
 {
@@ -378,9 +471,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "feeb4f29-9b63-4500-bca4-7d4fa258c72a", 
         "references": [], 
+        "name_tr": "Piyano", 
         "images": [], 
-        "name": "Oud"
+        "hidden": false, 
+        "name": "Piano"
     }
 },
 {
@@ -390,9 +486,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "1cca0228-d5b5-4dba-8669-fbe887d476a8", 
         "references": [], 
+        "name_tr": "Rebab", 
         "images": [], 
-        "name": "Pan flute"
+        "hidden": false, 
+        "name": "Rebab"
     }
 },
 {
@@ -402,9 +501,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "2b44adad-218c-45b2-ac4f-2e4cc974ad6f", 
         "references": [], 
+        "name_tr": "Saz", 
         "images": [], 
-        "name": "Percussion"
+        "hidden": false, 
+        "name": "Saz"
     }
 },
 {
@@ -414,9 +516,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "7e530e7f-cf5a-41af-8fb8-89f3a4ecc160", 
         "references": [], 
+        "name_tr": "Yayl\u0131lar", 
         "images": [], 
-        "name": "Piano"
+        "hidden": true, 
+        "name": "Strings"
     }
 },
 {
@@ -426,9 +531,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "262b62e7-43a6-4b12-b00b-f30f8e561c6a", 
         "references": [], 
+        "name_tr": "Viyola", 
         "images": [], 
-        "name": "Rebab"
+        "hidden": false, 
+        "name": "Viola"
     }
 },
 {
@@ -438,9 +546,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "9c1df84c-fd6f-49b7-9b74-ef7d52a89cb9", 
         "references": [], 
+        "name_tr": "Viyola d'amore", 
         "images": [], 
-        "name": "Saz"
+        "hidden": false, 
+        "name": "Viola d'amore"
     }
 },
 {
@@ -450,9 +561,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "38295540-4c13-4093-b858-00a29fdc7832", 
         "references": [], 
+        "name_tr": "Viyola de gamba", 
         "images": [], 
-        "name": "Solo"
+        "hidden": false, 
+        "name": "Viola da gamba"
     }
 },
 {
@@ -462,9 +576,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "35250e9b-2166-4da9-99e1-96862ccf9601", 
         "references": [], 
+        "name_tr": "Virginal", 
         "images": [], 
-        "name": "Strings"
+        "hidden": false, 
+        "name": "Virginal"
     }
 },
 {
@@ -474,9 +591,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": null, 
         "references": [], 
+        "name_tr": "", 
         "images": [], 
-        "name": "Viola"
+        "hidden": false, 
+        "name": "Woodwind"
     }
 },
 {
@@ -486,9 +606,12 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "fa9a72c1-d679-4206-bd93-79b6b0d4c9f1", 
         "references": [], 
+        "name_tr": "Yayl\u0131 tanbur", 
         "images": [], 
-        "name": "Viola d'amore"
+        "hidden": false, 
+        "name": "Yayl\u0131 tanbur"
     }
 },
 {
@@ -498,56 +621,11 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
+        "mbid": "470c8174-a445-431b-accd-62bc2b482daf", 
         "references": [], 
+        "name_tr": "Zurna", 
         "images": [], 
-        "name": "Viola da gamba"
-    }
-},
-{
-    "pk": 43, 
-    "model": "makam.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "references": [], 
-        "images": [], 
-        "name": "Virginal"
-    }
-},
-{
-    "pk": 44, 
-    "model": "makam.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "references": [], 
-        "images": [], 
-        "name": "Woodwind"
-    }
-},
-{
-    "pk": 45, 
-    "model": "makam.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "references": [], 
-        "images": [], 
-        "name": "Yayl\u0131 tanbur"
-    }
-},
-{
-    "pk": 46, 
-    "model": "makam.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "references": [], 
-        "images": [], 
+        "hidden": false, 
         "name": "Zurna"
     }
 }
