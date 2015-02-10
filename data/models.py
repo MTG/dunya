@@ -320,6 +320,12 @@ class Instrument(BaseModel):
 
     percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
+    # Instruments have mbids too
+    mbid = UUIDField(blank=True, null=True)
+
+    # Some instruments exist because they have relationships, but we
+    # don't want to show them
+    hidden = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name

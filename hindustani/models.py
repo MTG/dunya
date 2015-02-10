@@ -43,10 +43,6 @@ class HindustaniStyle(object):
 class Instrument(HindustaniStyle, data.models.Instrument):
     objects = managers.HindustaniInstrumentManager()
 
-    # Some instruments exist because they have relationships, but we
-    # don't want to show them
-    hidden = models.BooleanField(default=False)
-
     def performers(self):
         artistcount = collections.Counter()
         for p in InstrumentPerformance.objects.filter(instrument=self):

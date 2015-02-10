@@ -150,7 +150,8 @@ class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
 
 class Instrument(MakamStyle, data.models.Instrument):
-    pass
+    # Name in Turkish
+    name_tr = models.CharField(max_length=50)
 
 class UnaccentManager(models.Manager):
     """ A manager to use postgres' unaccent module to get items
