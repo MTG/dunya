@@ -75,7 +75,10 @@ def inline_instrument(instrument):
     ret = []
     for i in instrument:
         if i:
-            ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
+            if i.hidden:
+                ret.append(i.name)
+            else:
+                ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
     return ", ".join(ret)
 
 @register.simple_tag
