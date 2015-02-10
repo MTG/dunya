@@ -221,7 +221,7 @@
         "name_tr": "Kontrbas", 
         "images": [], 
         "hidden": false, 
-        "name": "Double bass / contrabass / acoustic upright bass"
+        "name": "Double bass"
     }
 },
 {
@@ -591,21 +591,6 @@
         "description": null, 
         "percussion": false, 
         "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "name_tr": "", 
-        "images": [], 
-        "hidden": false, 
-        "name": "Woodwind"
-    }
-},
-{
-    "pk": 41, 
-    "model": "makam.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
         "mbid": "fa9a72c1-d679-4206-bd93-79b6b0d4c9f1", 
         "references": [], 
         "name_tr": "Yayl\u0131 tanbur", 
@@ -615,7 +600,7 @@
     }
 },
 {
-    "pk": 42, 
+    "pk": 41, 
     "model": "makam.instrument", 
     "fields": {
         "description": null, 
