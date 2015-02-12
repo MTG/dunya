@@ -178,7 +178,7 @@ class ReleaseImporter(object):
                 a = alias["alias"]
                 primary = alias.get("primary")
                 locale = alias.get("locale")
-                args = {"name": a}
+                args = {"alias": a}
                 args[alias_ref] = artist
                 aob, created = AliasKlass.objects.get_or_create(**args)
                 if primary:
