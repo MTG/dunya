@@ -462,28 +462,30 @@ class ReleaseRelationships(object):
         # We test instruments in the 'release' test, not a separate 'recording'
         # test because sometimes instrument rels are on the release.
         # ["instrumentname", ]
-        missinginstruments = set()
+        checkinstruments = []
         for r in relartists:
             if r["type"] == "instrument" and r.get("attribute-list"):
-                instrumentname = r["attribute-list"][0]
-                if not self.check_instrument(instrumentname):
-                    missinginstruments.add(instrumentname)
+                checkinstruments.extend(r.get("attribute-list"))
         for r in relleadartists:
             if r["type"] == "instrument" and r.get("attribute-list"):
-                instrumentname = r["attribute-list"][0]
-                if not self.check_instrument(instrumentname):
-                    missinginstruments.add(instrumentname)
+                checkinstruments.extend(r.get("attribute-list"))
         for rec in recordings:
             for r in rec["artists"]:
                 if r["type"] == "instrument" and r.get("attribute-list"):
-                    instrumentname = r["attribute-list"][0]
-                    if not self.check_instrument(instrumentname):
-                        missinginstruments.add(instrumentname)
+                    checkinstruments.extend(r.get("attribute-list"))
             for r in rec["leadartists"]:
                 if r["type"] == "instrument" and r.get("attribute-list"):
-                    instrumentname = r["attribute-list"][0]
-                    if not self.check_instrument(instrumentname):
-                        missinginstruments.add(instrumentname)
+                    checkinstruments.extend(r.get("attribute-list"))
+
+        missinginstruments = set()
+        attrs = ["solo", "additional", "guest", "background"]
+        for inst in list(set(checkinstruments)):
+            # attributes and instruments are stored in
+            # the same list. get rid of attrs
+            if inst in attrs:
+                continue
+            if not self.check_instrument(inst):
+                missinginstruments.add(inst)
 
         ret = {"missingworks": missingworks,
                "missingcomposers": missingcomposers,
@@ -525,7 +527,7 @@ class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):
 
     def check_instrument(self, instrname):
         try:
-            makam.models.Instrument.objects.get(name=instrname)
+            makam.models.Instrument.objects.get(name__iexact=instrname)
             return True
         except makam.models.Instrument.DoesNotExist:
             pass
