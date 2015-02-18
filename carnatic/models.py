@@ -282,7 +282,10 @@ class Concert(CarnaticStyle, data.models.Release):
                 # Don't show this concert as similar
                 if s == self.id:
                     continue
-                concert = Concert.objects.get(pk=s)
+                try:
+                    concert = Concert.objects.get(pk=s)
+                except Concert.DoesNotExist:
+                    continue
                 # Don't show bootlegs
                 if concert.bootleg and not show_bootlegs:
                     continue
