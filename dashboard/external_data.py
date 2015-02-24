@@ -98,6 +98,7 @@ def import_release_image(release, directories=[], overwrite=False):
         # for it.
         try:
             existingimg = release.images.get(image__contains="%s" % release.mbid)
+            haveimage = True
             if not os.path.exists(existingimg.image.path):
                 existingimg.delete()
             elif existingimg.image.size != len(i) or overwrite:
@@ -105,9 +106,14 @@ def import_release_image(release, directories=[], overwrite=False):
                 os.unlink(existingimg.image.path)
                 existingimg.delete()
         except data.models.Image.DoesNotExist:
-            pass
+            haveimage = False
 
-        release.images.add(im)
-        release.save()
+        # If we have an image and overwrite is false, don't add it
+        if haveimage and not overwrite:
+            pass
+        else:
+            # Otherwise overwrite is true, or we didn't have an image
+            release.images.add(im)
+            release.save()
     else:
         print "Can't find an image for %s" % release.mbid
