@@ -149,9 +149,35 @@ class Recording(MakamStyle, data.models.Recording):
 class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
 
+class InstrumentManager(models.Manager):
+    """ A manager that has a hacky "alias" system - if the requested name is
+    a known alias, change it """
+    def alias_get(self, name):
+        name = name.lower()
+        # Some relations were added to musicbrainz incorrectly.
+        if name == "nai":
+            name = "ney"
+        # vocals are credited in mb as "vocals", but we want
+        # to call the instrument 'voice'
+        if name.startswith("vocal"):
+            name = "voice"
+        # make shorter (hacky)
+        if name == "double bass / contrabass / acoustic upright bass":
+            name = "double bass"
+        if name == "spanish acoustic guitar":
+            name = "guitar"
+        if name == "folk harp":
+            name = "harp"
+        if name == "goblet drum":
+            name = "darbuka"
+
+        return super(InstrumentManager, self).get(name__iexact=name)
+
 class Instrument(MakamStyle, data.models.Instrument):
     # Name in Turkish
     name_tr = models.CharField(max_length=50)
+
+    objects = InstrumentManager()
 
 class UnaccentManager(models.Manager):
     """ A manager to use postgres' unaccent module to get items
