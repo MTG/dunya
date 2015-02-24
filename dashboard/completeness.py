@@ -19,6 +19,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 from dashboard import models
+from dashboard import makam_importer
 
 import carnatic
 import hindustani
@@ -26,6 +27,8 @@ import makam
 import compmusic
 from musicbrainzngs import caa
 import musicbrainzngs
+
+makam_release_importer = makam_importer.MakamReleaseImporter()
 
 class CompletenessBase(object):
     """ Base class for a task that checks something is correct """
@@ -62,6 +65,8 @@ class CompletenessBase(object):
                 rs.data = json.dumps(data)
                 rs.save()
         return result
+
+
 
 class MakamTags(CompletenessBase):
     """ Check that the makam and usul tags on this file's
@@ -148,19 +153,16 @@ class MakamTags(CompletenessBase):
         missingu = []
         missingf = []
         for m in res["makams"]:
-            try:
-                makam.models.Makam.objects.unaccent_get(m)
-            except makam.models.Makam.DoesNotExist:
+            themakam = makam_release_importer._get_makam(m)
+            if themakam is None:
                 missingm.append(m)
         for u in res["usuls"]:
-            try:
-                makam.models.Usul.objects.unaccent_get(u)
-            except makam.models.Usul.DoesNotExist:
+            theusul = makam_release_importer._get_usul(u)
+            if theusul is None:
                 missingu.append(u)
         for f in res["forms"]:
-            try:
-                makam.models.Form.objects.unaccent_get(f)
-            except makam.models.Form.DoesNotExist:
+            theform = makam_release_importer._get_form(f)
+            if theform is None:
                 missingf.append(f)
 
         if missingm:
@@ -527,7 +529,7 @@ class MakamReleaseRelationships(ReleaseRelationships, CompletenessBase):
 
     def check_instrument(self, instrname):
         try:
-            makam.models.Instrument.objects.get(name__iexact=instrname)
+            makam.models.Instrument.objects.alias_get(instrname)
             return True
         except makam.models.Instrument.DoesNotExist:
             pass

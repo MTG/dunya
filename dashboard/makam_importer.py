@@ -51,19 +51,31 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         try:
             return makam.models.Makam.objects.unaccent_get(makamname)
         except makam.models.Makam.DoesNotExist:
-            return None
+            try:
+                malias = makam.models.MakamAlias.objects.unaccent_get(makamname)
+                return malias.makam
+            except makam.models.MakamAlias.DoesNotExist:
+                return None
 
     def _get_usul(self, usul):
         try:
             return makam.models.Usul.objects.unaccent_get(usul)
         except makam.models.Usul.DoesNotExist:
-            return None
+            try:
+                ualias = makam.models.UsulAlias.objects.unaccent_get(usul)
+                return ualias.usul
+            except makam.models.UsulAlias.DoesNotExist:
+                return None
 
     def _get_form(self, form):
         try:
             return makam.models.Form.objects.unaccent_get(form)
         except makam.models.Form.DoesNotExist:
-            return None
+            try:
+                falias = makam.models.FormAlias.objects.unaccent_get(form)
+                return falias.form
+            except makam.models.FormAlias.DoesNotExist:
+                return None
 
     def _get_makam_tags(self, taglist):
         ret = []
