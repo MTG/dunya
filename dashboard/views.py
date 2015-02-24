@@ -48,8 +48,6 @@ def editcollection(request, uuid):
                 'do_import': request.POST.get("do_import"),
                 'checkers': request.POST.getlist("checkers")
                 }
-        print data
-        print request.POST
         form = forms.EditCollectionForm(uuid, data)
         if form.is_valid():
             coll_id = form.cleaned_data['collectionid']
@@ -123,7 +121,6 @@ def index(request):
 @user_passes_test(is_staff)
 def accounts(request):
     UserFormSet = modelformset_factory(User, forms.InactiveUserForm, extra=0)
-    print User.objects.filter(is_active=False).all()
     if request.method == 'POST':
         formset = UserFormSet(request.POST, queryset=User.objects.filter(is_active=False))
         if formset.is_valid():
