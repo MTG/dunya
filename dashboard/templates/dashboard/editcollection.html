@@ -1,0 +1,29 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Edit collection{% endblock %}
+
+{% block wrap %}
+
+<h2>Edit collection</h2>
+<form method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <p>{{ form.path.errors }}
+    {{ form.path.label_tag }}
+    {{ form.path }}
+
+    <p>{{ form.do_import.errors }}
+    {{ form.do_import.label_tag }}
+    {{ form.do_import }}
+
+    <p>{{ form.bootleg.errors }}
+    {{ form.bootleg.label_tag }}
+    {{ form.bootleg }}
+
+    <p>{{ form.checkers.errors }}
+    {{ form.checkers.label_tag }}
+    {{ form.checkers }}
+
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

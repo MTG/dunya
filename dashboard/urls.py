@@ -24,6 +24,7 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 urlpatterns = [
     url(r'^$', views.index, name='dashboard-home'),
     url(r'^collection/%s$' % (uuid_match, ), views.collection, name='dashboard-collection'),
+    url(r'^collection/%s/edit$' % (uuid_match, ), views.editcollection, name='dashboard-editcollection'),
     url(r'^delete_collection/%s$' % (uuid_match, ), views.delete_collection, name='dashboard-delete-collection'),
     url(r'addcollection$', views.addcollection, name='dashboard-addcollection'),
     url(r'release/(?P<releaseid>\d+)$', views.release, name='dashboard-release'),

@@ -40,6 +40,53 @@ def is_staff(user):
     return user.is_staff
 
 @user_passes_test(is_staff)
+def editcollection(request, uuid):
+    collection = get_object_or_404(models.Collection, pk=uuid)
+    if request.method == 'POST':
+        data = {'collectionid': uuid,
+                'path': request.POST.get("path"),
+                'do_import': request.POST.get("do_import"),
+                'checkers': request.POST.getlist("checkers")
+                }
+        print data
+        print request.POST
+        form = forms.EditCollectionForm(uuid, data)
+        if form.is_valid():
+            coll_id = form.cleaned_data['collectionid']
+            path = form.cleaned_data['path']
+            coll_name = form.cleaned_data['collectionname']
+            do_import = form.cleaned_data['do_import']
+            checkers = []
+            for i in form.cleaned_data['checkers']:
+                checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
+
+            if coll_name and coll_name != collection.name:
+                collection.name = coll_name
+            collection.do_import = do_import
+            collection.root_directory = path
+            collection.save()
+
+            collection.checkers.clear()
+            collection.checkers.add(*checkers)
+
+            doccoll = docserver.models.Collection.objects.get(collectionid=coll_id)
+            if coll_name and coll_name != doccoll.name:
+                doccoll.name = coll_name
+            doccoll.root_directory = path
+            doccoll.save()
+            return redirect('dashboard-collection', uuid)
+    else:
+        checkers = [str(c.pk) for c in collection.checkers.all()]
+        data = {'collectionid': uuid,
+                'path': collection.root_directory,
+                'do_import': collection.do_import,
+                'checkers': checkers,
+                }
+        form = forms.EditCollectionForm(uuid, data)
+    ret = {'form': form}
+    return render(request, 'dashboard/editcollection.html', ret)
+
+@user_passes_test(is_staff)
 def addcollection(request):
     if request.method == 'POST':
         form = forms.AddCollectionForm(request.POST)

@@ -20,7 +20,7 @@
 
 
 <ol class="breadcrumbs">Collection
-    <li>{{collection.name}}</li>
+    <li>{{collection.name}} <small>(<a href="{% url 'dashboard-editcollection' collection.id %}">edit</a>)</small></li>
 </ol>
 
 <h3>Releases</h3>
@@ -69,14 +69,14 @@
             {{r.title}}</a>
         {% if r.ignore %}(ignored){% endif %}
     </td>
-        
+
             <td>
                 {% for p in r.matched_paths %}
                 {{p}}
                 {% if not forloop.last %}, {% endif %}
-                {% endfor %} 
+                {% endfor %}
         </td>
-        <td>{{r.get_current_state.state_name}} ({{r.get_current_state.state_date|timesince}} ago)</td> 
+        <td>{{r.get_current_state.state_name}} ({{r.get_current_state.state_date|timesince}} ago)</td>
     </tr>
 {% endfor %}
 </table>
