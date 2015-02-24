@@ -189,12 +189,16 @@ def import_release(releasepk, ri):
 def get_release_importer(name, force=False):
     name = name.lower()
     ri = None
+    if "bootleg" in name:
+        bootleg = True
+    else:
+        bootleg = False
     if "hindustani" in name:
-        ri = hindustani_importer.HindustaniReleaseImporter(force)
+        ri = hindustani_importer.HindustaniReleaseImporter(overwrite=force, is_bootleg=bootleg)
     elif "carnatic" in name:
-        ri = carnatic_importer.CarnaticReleaseImporter(force)
+        ri = carnatic_importer.CarnaticReleaseImporter(overwrite=force, is_bootleg=bootleg)
     elif "makam" in name:
-        ri = makam_importer.MakamReleaseImporter(force)
+        ri = makam_importer.MakamReleaseImporter(overwrite=force, is_bootleg=bootleg)
     return ri
 
 @app.task(base=CollectionDunyaTask)
