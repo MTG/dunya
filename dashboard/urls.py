@@ -70,6 +70,7 @@ urlpatterns = [
     url(r'makam/recordings', statistic_views.makam_recordings, name='dashboard-makam-recordings'),
     url(r'makam/works', statistic_views.makam_works, name='dashboard-makam-works'),
     url(r'makam/artists', statistic_views.makam_artists, name='dashboard-makam-artists'),
+    url(r'makam/instruments', statistic_views.makam_missing_instruments, name='dashboard-makam-missing-instruments'),
 
     url(r'makam/', statistic_views.makam_stats, name='dashboard-makam-stats'),
     url(r'beijing/', statistic_views.beijing_stats, name='dashboard-beijing-stats'),

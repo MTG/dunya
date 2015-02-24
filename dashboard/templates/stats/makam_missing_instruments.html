@@ -1,0 +1,27 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Makam instruments{% endblock %}
+
+{% block wrap %}
+
+<h1>Makam instruments</h1>
+
+<a href="#noinstrument">Instruments not in the database</a>
+
+<a name="noinstrument"></a>
+<h2>Instruments not in the database</h2>
+<h3>All</h3>
+<ul>
+    {% for u in uniquemissing %}
+    <li>{{u}}
+    {% endfor %}
+</ul>
+
+<h3>By release</h3>
+<ul>
+{% for r, insts in noinstrument.items %}
+<li><a href="{{r.get_absolute_url}}">{{r}}</a>
+<ul>{% for i in insts %}<li>{{i}}{% endfor %}</ul>
+{% endfor %}
+</ul>
+
+{% endblock %}

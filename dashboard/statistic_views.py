@@ -608,13 +608,37 @@ def makam_recordings(request):
 
 @user_passes_test(views.is_staff)
 def makam_works(request):
-
     works = makam.models.Work.objects
     composer_counted = works.annotate(Count('composers'))
     nocomposer = [w for w in composer_counted if w.composers__count == 0]
     ret = {"nocomposer": nocomposer,
            "all": works.order_by('title').all()}
     return render(request, 'stats/makam_works.html', ret)
+
+@user_passes_test(views.is_staff)
+def makam_missing_instruments(request):
+    collectionid = compmusic.MAKAM_COLLECTION
+    makamchecker = "dashboard.completeness.MakamReleaseRelationships"
+
+    dashrels = models.MusicbrainzRelease.objects.filter(collection__id=collectionid)
+
+    noinstrument = {}
+    uniquemissing = set()
+    for rel in dashrels:
+        checks = rel.musicbrainzreleaseresult_set.filter(checker__module=makamchecker)
+        if checks.exists():
+            r = checks[0]
+
+            data = json.loads(r.data) if r.data else {}
+            instruments = data.get("missinginstruments", [])
+            if instruments:
+                noinstrument[rel] = instruments
+                for i in instruments:
+                    uniquemissing.add(i)
+
+    ret = {"noinstrument": noinstrument, "uniquemissing": list(uniquemissing)}
+
+    return render(request, 'stats/makam_missing_instruments.html', ret)
 
 @user_passes_test(views.is_staff)
 def makam_artists(request):
