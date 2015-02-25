@@ -45,7 +45,7 @@
 <div class="topbox">
     <div class="topheader">Current State</div>
     {{collection.get_current_state.state_name}} ({{collection.get_current_state.state_date|timesince}} ago)<br>
-    Number of releases matched to audio: {{nummatched}}/{{numtotal}}
+    Number of releases matched to audio: {{nummatched}}/{{numtotal}}<br>
     Number of releases imported: {{numfinished}}/{{nummatched}}
     {% if collection.has_previous_state %}
     <div id="morestate">
