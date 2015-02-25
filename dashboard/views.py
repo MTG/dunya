@@ -205,14 +205,20 @@ def collection(request, uuid):
             pass
     releases = sorted(releases, key=sortkey, reverse=True)
 
-    numfinished = sum(1 for _ in (r for r in releases if r.get_current_state().state == 'f'))
-    numtotal = sum(1 for _ in (r for r in releases if len(r.all_files())))
+    numtotal = len(releases)
+    numfinished = 0
+    nummatched = 0
+    for r in releases:
+        if r.all_files():
+            nummatched += 1
+            if r.get_current_state().state == 'f':
+                numfinished += 1
 
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
     log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
     ret = {"collection": c, "log_messages": log, "releases": releases,
            "folders": folders,
-           "numtotal": numtotal, "numfinished": numfinished}
+           "numtotal": numtotal, "numfinished": numfinished, "nummatched": nummatched}
     return render(request, 'dashboard/collection.html', ret)
 
 @user_passes_test(is_staff)
