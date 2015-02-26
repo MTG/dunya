@@ -524,6 +524,11 @@ def makam_tags(request):
     noforms = []
     nousuls = []
 
+    # List of all tags not in our db
+    single_missing_m = []
+    single_missing_f = []
+    single_missing_u = []
+
     for f in dashfiles:
         checks = f.collectionfileresult_set.filter(checker__module=makamchecker)
         if checks.exists():
@@ -532,10 +537,13 @@ def makam_tags(request):
 
             if "missingm" in data:
                 missing_m.append({"makams": ", ".join(data["missingm"]), "file": r.collectionfile})
+                single_missing_m.extend(data["missingm"])
             if "missingf" in data:
                 missing_f.append({"forms": ", ".join(data["missingf"]), "file": r.collectionfile})
+                single_missing_f.extend(data["missingf"])
             if "missingu" in data:
                 missing_u.append({"usuls": ", ".join(data["missingu"]), "file": r.collectionfile})
+                single_missing_u.extend(data["missingu"])
 
             if len(data.get("makams", [])) == 0:
                 nomakams.append(r.collectionfile)
@@ -546,7 +554,11 @@ def makam_tags(request):
 
     ret = {"missingu": missing_u, "missingm": missing_m,
             "missingf": missing_f, "nomakams": nomakams,
-            "noforms": noforms, "nousuls": nousuls}
+            "noforms": noforms, "nousuls": nousuls,
+            "single_missing_m": list(set(single_missing_m)),
+            "single_missing_f": list(set(single_missing_f)),
+            "single_missing_u": list(set(single_missing_u))
+            }
     return render(request, 'stats/makam_tags.html', ret)
 
 @user_passes_test(views.is_staff)

@@ -13,17 +13,32 @@
 <h2>Makam/form/usul tags not in our database</h2>
 <h3>Makam</h3>
 <ul>
+    {% for m in single_missing_m %}
+    <li>{{m}}
+    {% endfor %}
+</ul>
+<ul>
     {% for m in missingm %}
     <li> <a href="{{m.file.get_absolute_url}}">{{m.file.name}}</a> ({{m.makams}})
     {% endfor %}
 </ul>
 <h3>Form</h3>
 <ul>
+    {% for f in single_missing_f %}
+    <li>{{f}}
+    {% endfor %}
+</ul>
+<ul>
     {% for f in missingf %}
     <li> <a href="{{f.file.get_absolute_url}}">{{f.file.name}}</a> ({{f.forms}})
     {% endfor %}
 </ul>
 <h3>Usul</h3>
+<ul>
+    {% for u in single_missing_u %}
+    <li>{{u}}
+    {% endfor %}
+</ul>
 <ul>
     {% for u in missingu %}
     <li> <a href="{{u.file.get_absolute_url}}">{{u.file.name}}</a> ({{u.usuls}})
