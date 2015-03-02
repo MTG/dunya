@@ -83,6 +83,7 @@ Show details for a single concert
     {
         "mbid": "54ab1640-8479-4b7e-bb35-b40c30176501",
         "title": "Carnatic Vocal (1910 - 1965)",
+        "year": 1994,
         "recordings": [
             {
                 "mbid": "b9c77de4-0618-4106-8930-b01b9c602294",

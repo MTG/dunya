@@ -282,7 +282,7 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'recordings', 'artists', 'release_artists']
+        fields = ['mbid', 'title', 'year', 'recordings', 'artists', 'release_artists']
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'

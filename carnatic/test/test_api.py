@@ -249,7 +249,7 @@ class ConcertTest(TestCase):
 
     def test_render_concert_detail(self):
         s = api.ConcertDetailSerializer(self.cnormal)
-        fields = ['artists', 'concert_artists', 'mbid', 'recordings', 'title']
+        fields = ['artists', 'concert_artists', 'mbid', 'recordings', 'title', 'year']
         self.assertEqual(fields, sorted(s.data.keys()))
 
     def test_concert_list_bootleg(self):

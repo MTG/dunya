@@ -31,7 +31,7 @@ class ReleaseTest(TestCase):
     def test_render_release_detail(self):
         r = models.Release.objects.create(title="Rel", mbid="805a3604-92e6-482f-a0e3-6620c4523d7a")
         s = api.ReleaseDetailSerializer(r)
-        self.assertEquals(["artists", "mbid", "recordings", "release_artists", "title"], sorted(s.data.keys()))
+        self.assertEquals(["artists", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
 
     def test_render_release_list(self):
         r = models.Release(title="Rel", mbid="805a3604-92e6-482f-a0e3-6620c4523d7a")
