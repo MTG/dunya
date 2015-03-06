@@ -31,9 +31,8 @@ class CollectionForm(forms.Form):
     do_import = forms.BooleanField(required=False)
     bootleg = forms.BooleanField(required=False)
 
-    def __init__(self, collectionid, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
-        self.collectionid = collectionid
 
         choices = []
         for checker in models.CompletenessChecker.objects.all():
@@ -45,48 +44,47 @@ class CollectionForm(forms.Form):
 
     def clean_path(self):
         pth = self.cleaned_data.get('path')
-        if pth:
-            if not os.path.exists(pth):
-                raise forms.ValidationError("This path doesn't exist")
+        if pth and not os.path.exists(pth):
+            raise forms.ValidationError("This path doesn't exist")
         return pth
 
 
 class AddCollectionForm(CollectionForm):
-    def clean(self):
-        cleaned_data = super(AddCollectionForm, self).clean()
-        collectionid = cleaned_data['collectionid']
-
-        if models.Collection.objects.filter(id=collectionid).count() > 0:
-            raise forms.ValidationError("A collection with this ID already exists")
-
-        return cleaned_data
 
     def clean_collectionid(self):
+        """ Check that the collectionid doesn't already exist in the DB """
         cid = self.cleaned_data.get('collectionid')
         if cid:
             if not re.match(uuid_match, cid):
                 raise forms.ValidationError("Collection ID needs to be a UUID")
+
+            if models.Collection.objects.filter(id=cid).exists():
+                raise forms.ValidationError("A collection with this ID already exists")
         return cid
 
     def clean(self):
-        """ Check that the collectionid doesn't already exist in the DB """
-        cleaned_data = super(CollectionForm, self).clean()
-        collectionid = cleaned_data['collectionid']
-        try:
-            coll_name = compmusic.musicbrainz.get_collection_name(collectionid)
-            cleaned_data['collectionname'] = coll_name
-        except compmusic.musicbrainz.urllib2.HTTPError as e:
-            if e.code == 503:
-                raise forms.ValidationError("Error connecting to MusicBrainz, try again shortly")
-            raise
-        except IOError:  # Probably an http 500
-            raise forms.ValidationError("Cannot find this collection on MusicBrainz")
+        cleaned_data = super(AddCollectionForm, self).clean()
+        collectionid = cleaned_data.get('collectionid')
+
+        if collectionid:
+
+            try:
+                coll_name = compmusic.musicbrainz.get_collection_name(collectionid)
+                cleaned_data['collectionname'] = coll_name
+            except compmusic.musicbrainz.urllib2.HTTPError as e:
+                if e.code == 503:
+                    raise forms.ValidationError("Error connecting to MusicBrainz, try again shortly")
+                elif e.code == 404:
+                    raise forms.ValidationError("Cannot find this collection on MusicBrainz")
+                else:
+                    raise forms.ValidationError("Unknown error connecting to MusicBrainz")
 
         return cleaned_data
 
 class EditCollectionForm(CollectionForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, collectionid, *args, **kwargs):
         super(EditCollectionForm, self).__init__(*args, **kwargs)
+        self.collectionid = collectionid
         self.fields['collectionid'].widget.attrs['readonly'] = True
 
     def clean(self):

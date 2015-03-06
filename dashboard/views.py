@@ -87,6 +87,7 @@ def editcollection(request, uuid):
 @user_passes_test(is_staff)
 def addcollection(request):
     if request.method == 'POST':
+        print request.POST
         form = forms.AddCollectionForm(request.POST)
         if form.is_valid():
             # Import collection id
