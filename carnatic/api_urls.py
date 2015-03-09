@@ -19,29 +19,29 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 import carnatic.api
 
-mbid_match = r'(?P<mbid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
 urlpatterns = [
     url(r'^raaga$', carnatic.api.RaagaList.as_view(), name='api-carnatic-raaga-list'),
-    url(r'^raaga/(?P<pk>\d+)$', carnatic.api.RaagaDetail.as_view(), name='api-carnatic-raaga-detail'),
+    url(r'^raaga/%s$' % (uuid_match, ), carnatic.api.RaagaDetail.as_view(), name='api-carnatic-raaga-detail'),
 
     url(r'^taala$', carnatic.api.TaalaList.as_view(), name='api-carnatic-taala-list'),
-    url(r'^taala/(?P<pk>\d+)$', carnatic.api.TaalaDetail.as_view(), name='api-carnatic-taala-detail'),
+    url(r'^taala/%s$' % (uuid_match, ), carnatic.api.TaalaDetail.as_view(), name='api-carnatic-taala-detail'),
 
     url(r'^instrument$', carnatic.api.InstrumentList.as_view(), name='api-carnatic-instrument-list'),
     url(r'^instrument/(?P<pk>\d+)$', carnatic.api.InstrumentDetail.as_view(), name='api-carnatic-instrument-detail'),
 
     url(r'^work$', carnatic.api.WorkList.as_view(), name='api-carnatic-work-list'),
-    url(r'^work/%s$' % mbid_match, carnatic.api.WorkDetail.as_view(), name='api-carnatic-work-detail'),
+    url(r'^work/%s$' % uuid_match, carnatic.api.WorkDetail.as_view(), name='api-carnatic-work-detail'),
 
     url(r'^recording$', carnatic.api.RecordingList.as_view(), name='api-carnatic-recording-list'),
-    url(r'^recording/%s$' % mbid_match, carnatic.api.RecordingDetail.as_view(), name='api-carnatic-recording-detail'),
+    url(r'^recording/%s$' % uuid_match, carnatic.api.RecordingDetail.as_view(), name='api-carnatic-recording-detail'),
 
     url(r'^artist$', carnatic.api.ArtistList.as_view(), name='api-carnatic-artist-list'),
-    url(r'^artist/%s$' % mbid_match, carnatic.api.ArtistDetail.as_view(), name='api-carnatic-artist-detail'),
+    url(r'^artist/%s$' % uuid_match, carnatic.api.ArtistDetail.as_view(), name='api-carnatic-artist-detail'),
 
     url(r'^concert$', carnatic.api.ConcertList.as_view(), name='api-carnatic-concert-list'),
-    url(r'^concert/%s$' % mbid_match, carnatic.api.ConcertDetail.as_view(), name='api-carnatic-concert-detail')
+    url(r'^concert/%s$' % uuid_match, carnatic.api.ConcertDetail.as_view(), name='api-carnatic-concert-detail')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

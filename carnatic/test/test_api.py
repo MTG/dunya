@@ -5,6 +5,8 @@ from rest_framework.test import APIClient
 from carnatic import models
 from carnatic import api
 
+import uuid
+
 class ArtistTest(TestCase):
 
     def setUp(self):
@@ -210,11 +212,16 @@ class RaagaTest(TestCase):
 
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
-        self.assertEqual(["id", "name"], sorted(s.data.keys()))
+        self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
+
+        try:
+            uuid.UUID(s.data["uuid"])
+        except ValueError:
+            self.fail("uuid is not correct/present")
 
     def test_render_raaga_detail(self):
         s = api.RaagaDetailSerializer(self.raaga)
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'id', 'name', 'works']
+        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
         self.assertEqual(fields, sorted(s.data.keys()))
 
 class TaalaTest(TestCase):
@@ -223,11 +230,16 @@ class TaalaTest(TestCase):
 
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)
-        self.assertEqual(["id", "name"], sorted(s.data.keys()))
+        self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
+
+        try:
+            uuid.UUID(s.data["uuid"])
+        except ValueError:
+            self.fail("uuid is not correct/present")
 
     def test_render_taala_detail(self):
         s = api.TaalaDetailSerializer(self.taala)
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'id', 'name', 'works']
+        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
         self.assertEqual(fields, sorted(s.data.keys()))
 
 class ConcertTest(TestCase):

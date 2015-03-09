@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
@@ -467,6 +468,7 @@ class Raaga(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
+    uuid = UUIDField(db_index=True, auto=True)
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -483,7 +485,7 @@ class Raaga(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.id), slugify(self.common_name)])
+        return reverse('carnatic-raaga', args=[str(self.uuid), slugify(self.common_name)])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -545,6 +547,7 @@ class Taala(data.models.BaseModel):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
+    uuid = UUIDField(db_index=True, auto=True)
 
     objects = managers.CarnaticTaalaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -553,7 +556,7 @@ class Taala(data.models.BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.id), slugify(self.common_name)])
+        return reverse('carnatic-taala', args=[str(self.uuid), slugify(self.common_name)])
 
     def get_similar(self):
         if self.pk in taala_similar:

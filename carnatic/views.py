@@ -610,8 +610,12 @@ def taalasearch(request):
         ret.append({"id": t.id, "name": str(t)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def taala(request, taalaid, name=None):
+def taalabyid(request, taalaid, name=None):
     taala = get_object_or_404(Taala, pk=taalaid)
+    return redirect(taala.get_absolute_url(), permanent=True)
+
+def taala(request, uuid, name=None):
+    taala = get_object_or_404(Taala, uuid=uuid)
 
     similar = taala.get_similar()
     recordings = taala.recordings(10)
@@ -632,8 +636,12 @@ def raagasearch(request):
         ret.append({"id": r.id, "name": str(r)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def raaga(request, raagaid, name=None):
+def raagabyid(request, raagaid, name=None):
     raaga = get_object_or_404(Raaga, pk=raagaid)
+    return redirect(raaga.get_absolute_url(), permanent=True)
+
+def raaga(request, uuid, name=None):
+    raaga = get_object_or_404(Raaga, uuid=uuid)
     similar = raaga.get_similar()
     recordings = raaga.recordings(10)
     sample = None

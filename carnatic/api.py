@@ -42,12 +42,12 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
 class RaagaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Raaga
-        fields = ['id', 'name']
+        fields = ['uuid', 'name']
 
 class TaalaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taala
-        fields = ['id', 'name']
+        fields = ['uuid', 'name']
 
 class ConcertInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,7 +85,7 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Taala
-        fields = ['id', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class TaalaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -105,10 +105,10 @@ class RaagaDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Raaga
-        fields = ['id', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class RaagaDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Raaga.objects.all()
     serializer_class = RaagaDetailSerializer
 
@@ -156,6 +156,7 @@ class NoBootlegWorkDetailSerializer(WorkDetailSerializer):
 
 class WorkDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Work.objects.all()
 
     def get_serializer_class(self):
@@ -185,6 +186,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
 
 class RecordingDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Recording.objects.all()
     serializer_class = RecordingDetailSerializer
 
@@ -226,6 +228,7 @@ class NoBootlegArtistDetailSerializer(ArtistDetailSerializer):
 
 class ArtistDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Artist.objects.all()
 
     def get_serializer_class(self):
@@ -263,6 +266,7 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
 
 class ConcertDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     serializer_class = ConcertDetailSerializer
 
     def get_queryset(self):

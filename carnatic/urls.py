@@ -44,10 +44,12 @@ urlpatterns = [
     url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='carnatic-work'),
     url(r'^work/search$', views.worksearch, name='carnatic-work-search'),
 
-    url(r'^raaga/(?P<raagaid>\d+)%s$' % (name_match), views.raaga, name='carnatic-raaga'),
+    url(r'^raaga/(?P<raagaid>\d+)%s$' % (name_match, ), views.raagabyid, name='carnatic-raagabyid'),
+    url(r'^raaga/%s%s$' % (uuid_match, name_match), views.raaga, name='carnatic-raaga'),
     url(r'^raaga/search$', views.raagasearch, name='carnatic-raaga-search'),
 
-    url(r'^taala/(?P<taalaid>\d+)%s$' % (name_match, ), views.taala, name='carnatic-taala'),
+    url(r'^taala/(?P<taalaid>\d+)%s$' % (name_match, ), views.taalabyid, name='carnatic-taalabyid'),
+    url(r'^taala/%s%s$' % (uuid_match, name_match), views.taala, name='carnatic-taala'),
     url(r'^taala/search$', views.taalasearch, name='carnatic-taala-search'),
 
     url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrument, name='carnatic-instrument'),
