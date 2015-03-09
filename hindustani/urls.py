@@ -32,14 +32,23 @@ urlpatterns = [
     url(r'^release/search$', views.releasesearch, name='hindustani-release-search'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='hindustani-recording'),
     url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='hindustani-work'),
-    url(r'^raag/(?P<raagid>\d+)%s$' % (name_match, ), views.raag, name='hindustani-raag'),
+
+    url(r'^raag/(?P<raagid>\d+)%s$' % (name_match, ), views.raagbyid, name='hindustani-raagbyid'),
+    url(r'^raag/%s%s$' % (uuid_match, name_match), views.raag, name='hindustani-raag'),
     url(r'^raag/search$', views.raagsearch, name='hindustani-raag-search'),
-    url(r'^taal/(?P<taalid>\d+)%s$' % (name_match, ), views.taal, name='hindustani-taal'),
+
+    url(r'^taal/(?P<taalid>\d+)%s$' % (name_match, ), views.taalbyid, name='hindustani-taalbyid'),
+    url(r'^taal/%s%s$' % (uuid_match, name_match), views.taal, name='hindustani-taal'),
     url(r'^taal/search$', views.taalsearch, name='hindustani-taal-search'),
-    url(r'^laya/(?P<layaid>\d+)/(?P<laya_name>[a-z0-9\-]+)?$', views.laya, name='hindustani-laya'),
+
+    url(r'^laya/(?P<layaid>\d+)%s$' % (name_match, ), views.layabyid, name='hindustani-layabyid'),
+    url(r'^laya/%s%s$' % (uuid_match, name_match), views.laya, name='hindustani-laya'),
     url(r'^laya/search$', views.layasearch, name='hindustani-laya-search'),
-    url(r'^form/(?P<formid>\d+)%s$' % (name_match, ), views.form, name='hindustani-form'),
+
+    url(r'^form/(?P<formid>\d+)%s$' % (name_match, ), views.formbyid, name='hindustani-formbyid'),
+    url(r'^form/%s%s$' % (uuid_match, name_match), views.form, name='hindustani-form'),
     url(r'^form/search$', views.formsearch, name='hindustani-form-search'),
+
     url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrument, name='hindustani-instrument'),
     url(r'^instrument/search$', views.instrumentsearch, name='hindustani-instrument-search'),
 ]

@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
@@ -391,12 +392,13 @@ class Raag(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
+    uuid = UUIDField(db_index=True, auto=True)
 
     def __unicode__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-raag', args=[str(self.id), slugify(self.common_name)])
+        return reverse('hindustani-raag', args=[str(self.uuid), slugify(self.common_name)])
 
     def works(self):
         return Work.objects.filter(recording__raags=self).distinct()
@@ -476,12 +478,13 @@ class Taal(data.models.BaseModel):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     num_maatras = models.IntegerField(null=True)
+    uuid = UUIDField(db_index=True, auto=True)
 
     def __unicode__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-taal', args=[str(self.id), slugify(self.common_name)])
+        return reverse('hindustani-taal', args=[str(self.uuid), slugify(self.common_name)])
 
     def percussion_artists(self):
         artistmap = {}
@@ -559,12 +562,13 @@ class Laya(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
+    uuid = UUIDField(db_index=True, auto=True)
 
     def __unicode__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-laya', args=[str(self.id), slugify(self.common_name)])
+        return reverse('hindustani-laya', args=[str(self.uuid), slugify(self.common_name)])
 
     def recordings(self):
         return self.recording_set.all()
@@ -606,6 +610,7 @@ class Form(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
+    uuid = UUIDField(db_index=True, auto=True)
 
     def artists(self):
         """ Artists who are the lead artist of a release and
@@ -626,7 +631,7 @@ class Form(data.models.BaseModel):
         return self.name.capitalize()
 
     def get_absolute_url(self):
-        return reverse('hindustani-form', args=[str(self.id), slugify(self.common_name)])
+        return reverse('hindustani-form', args=[str(self.uuid), slugify(self.common_name)])
 
     def recordings(self):
         return self.recording_set.all()

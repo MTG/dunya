@@ -3,8 +3,9 @@
     "pk": 1, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "7dc1f8ef-0973-4ac8-a2cc-9ba42579b26a", 
         "images": [], 
+        "description": null, 
         "name": "\u0100dh\u0101/ja\u1e6d", 
         "source": null, 
         "references": [], 
@@ -16,8 +17,9 @@
     "pk": 2, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "2298fb12-5988-438a-b759-709b4d24e019", 
         "images": [], 
+        "description": null, 
         "name": "\u0100dh\u0101 caut\u0101l", 
         "source": null, 
         "references": [], 
@@ -29,8 +31,9 @@
     "pk": 3, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "64b91d2e-7b2b-4098-9529-ae079a7ee958", 
         "images": [], 
+        "description": null, 
         "name": "\u0100dh\u0101", 
         "source": null, 
         "references": [], 
@@ -42,8 +45,9 @@
     "pk": 5, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "a6d2e431-37ff-4480-b5b1-ce244ad0e2b4", 
         "images": [], 
+        "description": null, 
         "name": "\u0100di", 
         "source": null, 
         "references": [], 
@@ -55,8 +59,9 @@
     "pk": 7, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "99fdfcbd-15c2-4045-8d23-81fdb36349e3", 
         "images": [], 
+        "description": null, 
         "name": "C\u0101r t\u0101l", 
         "source": null, 
         "references": [], 
@@ -68,8 +73,9 @@
     "pk": 8, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "64606e39-82b8-4185-beb9-81848eab9822", 
         "images": [], 
+        "description": null, 
         "name": "C\u0101rt\u0101l k\u012b sav\u0101r\u012b", 
         "source": null, 
         "references": [], 
@@ -81,8 +87,9 @@
     "pk": 9, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "3dfa3651-c6e3-4bf5-8cab-8d863038266a", 
         "images": [], 
+        "description": null, 
         "name": "Caut\u0101l", 
         "source": null, 
         "references": [], 
@@ -94,8 +101,9 @@
     "pk": 10, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "5a1ea73c-e9e3-4810-b6f8-fb366f8679f4", 
         "images": [], 
+        "description": null, 
         "name": "D\u0101dr\u0101", 
         "source": null, 
         "references": [], 
@@ -107,8 +115,9 @@
     "pk": 11, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "31c91eac-6322-4c7c-8aab-9da104271283", 
         "images": [], 
+        "description": null, 
         "name": "D\u012bpaca\u1e47\u1e0d\u012b", 
         "source": null, 
         "references": [], 
@@ -120,8 +129,9 @@
     "pk": 12, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "0663c080-476e-42f7-a605-620bac1e9935", 
         "images": [], 
+        "description": null, 
         "name": "Dhamar", 
         "source": null, 
         "references": [], 
@@ -133,10 +143,11 @@
     "pk": 13, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "7cb20903-5f64-4f15-8713-2fb4fcca2b5b", 
         "images": [
             4317
         ], 
+        "description": null, 
         "name": "\u0113kt\u0101l", 
         "source": null, 
         "references": [], 
@@ -148,8 +159,9 @@
     "pk": 14, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "2af2c54e-bd09-47b4-9122-7bd3ade158b4", 
         "images": [], 
+        "description": null, 
         "name": "Ja\u1e6d", 
         "source": null, 
         "references": [], 
@@ -161,10 +173,11 @@
     "pk": 15, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "74c68999-a018-427b-973d-11bf49b6bd71", 
         "images": [
             4318
         ], 
+        "description": null, 
         "name": "Jhapt\u0101l", 
         "source": null, 
         "references": [], 
@@ -176,8 +189,9 @@
     "pk": 16, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "939c7d35-7acc-4ab6-855f-4b70000805a4", 
         "images": [], 
+        "description": null, 
         "name": "Jh\u016bmr\u0101", 
         "source": null, 
         "references": [], 
@@ -189,8 +203,9 @@
     "pk": 17, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "b1f2c28f-bf10-4d0d-87a3-286f9d491584", 
         "images": [], 
+        "description": null, 
         "name": "K\u0113harv\u0101", 
         "source": null, 
         "references": [], 
@@ -202,8 +217,9 @@
     "pk": 18, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "bda2e516-5539-4622-b7da-b949bff4abb7", 
         "images": [], 
+        "description": null, 
         "name": "Kh\u0113mt\u0101l", 
         "source": null, 
         "references": [], 
@@ -215,8 +231,9 @@
     "pk": 19, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "3c7a48f2-fced-4b90-8198-180d7c101ec9", 
         "images": [], 
+        "description": null, 
         "name": "Ma\u1e6d\u1e6d\u0101", 
         "source": null, 
         "references": [], 
@@ -228,8 +245,9 @@
     "pk": 20, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "7e296e2e-2b8e-4ab6-8039-34ed06c03d18", 
         "images": [], 
+        "description": null, 
         "name": "Pan\u0304cam sav\u0101r\u012b", 
         "source": null, 
         "references": [], 
@@ -241,8 +259,9 @@
     "pk": 21, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "29da24cc-9f46-49f9-b4eb-ad25297516a5", 
         "images": [], 
+        "description": null, 
         "name": "Pan\u0304j\u0101b\u012b ", 
         "source": null, 
         "references": [], 
@@ -254,10 +273,11 @@
     "pk": 22, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "a0b78215-e99c-41e0-bf26-92e723e29cd2", 
         "images": [
             4320
         ], 
+        "description": null, 
         "name": "R\u016bpak", 
         "source": null, 
         "references": [], 
@@ -269,8 +289,9 @@
     "pk": 25, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "68f2e853-c730-4ea0-bd10-b61d657d183a", 
         "images": [], 
+        "description": null, 
         "name": "\u015bikhar", 
         "source": null, 
         "references": [], 
@@ -282,8 +303,9 @@
     "pk": 26, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "84c7bb74-a6ee-4619-b1b7-9798791dc51c", 
         "images": [], 
+        "description": null, 
         "name": "Sit\u0101rkh\u0101n\u012b", 
         "source": null, 
         "references": [], 
@@ -295,8 +317,9 @@
     "pk": 28, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "12fb49bd-543a-4a0d-818b-1307c88f1f2a", 
         "images": [], 
+        "description": null, 
         "name": "S\u016blt\u0101l", 
         "source": null, 
         "references": [], 
@@ -308,10 +331,11 @@
     "pk": 29, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "1ec9a7ab-8575-4cbe-b775-fac17e633f35", 
         "images": [
             4321
         ], 
+        "description": null, 
         "name": "T\u012bnt\u0101l", 
         "source": null, 
         "references": [], 
@@ -323,8 +347,9 @@
     "pk": 30, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "37a11297-d538-4bc0-9c9e-ae9780e1db7e", 
         "images": [], 
+        "description": null, 
         "name": "T\u012bnt\u0101l-sit\u0101rkh\u0101n\u012b", 
         "source": null, 
         "references": [], 
@@ -336,8 +361,9 @@
     "pk": 31, 
     "model": "hindustani.taal", 
     "fields": {
-        "description": null, 
+        "uuid": "738e07c4-538e-461a-b0bb-962f2e4c5baf", 
         "images": [], 
+        "description": null, 
         "name": "Tilav\u0101\u1e0d\u0101", 
         "source": null, 
         "references": [], 

@@ -42,22 +42,22 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
 class RaagInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Raag
-        fields = ['id', 'name']
+        fields = ['uuid', 'common_name', 'name']
 
 class TaalInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taal
-        fields = ['id', 'name']
+        fields = ['uuid', 'common_name', 'name']
 
 class LayaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taal
-        fields = ['id', 'name']
+        fields = ['uuid', 'common_name', 'name']
 
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taal
-        fields = ['id', 'name']
+        fields = ['uuid', 'common_name', 'name']
 
 class ReleaseInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,61 +69,48 @@ class InstrumentInnerSerializer(serializers.ModelSerializer):
         model = models.Instrument
         fields = ['id', 'name']
 
-class TaalListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Taal
-        fields = ['id', 'name']
-
 class TaalList(generics.ListAPIView):
     queryset = models.Taal.objects.all()
-    serializer_class = TaalListSerializer
+    serializer_class = TaalInnerSerializer
 
 class TaalDetailSerializer(serializers.ModelSerializer):
-    recordings = RecordingInnerSerializer(source='recordings')
+    #recordings = RecordingInnerSerializer(source='recordings')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
 
     class Meta:
         model = models.Taal
-        fields = ['id', 'name', 'aliases', 'recordings', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'composers']
 
 class TaalDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Taal.objects.all()
     serializer_class = TaalDetailSerializer
 
-class RaagListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Raag
-        fields = ['id', 'name']
-
 class RaagList(generics.ListAPIView):
     queryset = models.Raag.objects.all()
-    serializer_class = RaagListSerializer
+    serializer_class = RaagInnerSerializer
 
 class RaagDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
-    recordings = WorkInnerSerializer(source='recordings')
+    #recordings = WorkInnerSerializer(source='recordings')
     composers = ComposerInnerSerializer(source='composers')
     aliases = serializers.RelatedField(many=True, source='aliases.all')
 
     class Meta:
         model = models.Raag
-        fields = ['id', 'name', 'aliases', 'artists', 'recordings', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'composers']
 
 class RaagDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Raag.objects.all()
     serializer_class = RaagDetailSerializer
 
-class LayaListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Laya
-        fields = ['id', 'name']
-
 class LayaList(generics.ListAPIView):
     queryset = models.Laya.objects.all()
-    serializer_class = LayaListSerializer
+    serializer_class = LayaInnerSerializer
 
 class LayaDetailSerializer(serializers.ModelSerializer):
     recordings = WorkInnerSerializer(source='recordings')
@@ -131,21 +118,17 @@ class LayaDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Laya
-        fields = ['id', 'name', 'recordings', 'aliases', ]
+        fields = ['uuid', 'name', 'common_name', 'recordings', 'aliases']
 
 class LayaDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Laya.objects.all()
     serializer_class = LayaDetailSerializer
 
-class FormListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Form
-        fields = ['id', 'name']
-
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
-    serializer_class = FormListSerializer
+    serializer_class = FormInnerSerializer
 
 class FormDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
@@ -154,10 +137,11 @@ class FormDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Form
-        fields = ['id', 'name', 'aliases', 'artists', 'recordings']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'recordings']
 
 class FormDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
@@ -201,18 +185,13 @@ class WorkDetailSerializer(serializers.ModelSerializer):
 
 class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Work.objects.all()
     serializer_class = WorkDetailSerializer
 
-
-class RecordingListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Recording
-        fields = ['mbid', 'title']
-
 class RecordingList(generics.ListAPIView):
     queryset = models.Recording.objects.all()
-    serializer_class = RecordingListSerializer
+    serializer_class = RecordingInnerSerializer
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     release = ReleaseInnerSerializer(source='release_set.get')
@@ -229,6 +208,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Recording.objects.all()
     serializer_class = RecordingDetailSerializer
 
@@ -253,6 +233,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
 
 class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Artist.objects.all()
     serializer_class = ArtistDetailSerializer
 

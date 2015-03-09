@@ -3,36 +3,39 @@
     "pk": 1, 
     "model": "hindustani.laya", 
     "fields": {
-        "description": null, 
+        "uuid": "b555d8f2-994a-4c37-9954-9c6766a599e9", 
         "images": [], 
+        "name": "Dhr\u0325t", 
         "source": null, 
         "references": [], 
         "common_name": "Dhrut", 
-        "name": "Dhr\u0325t"
+        "description": null
     }
 },
 {
     "pk": 2, 
     "model": "hindustani.laya", 
     "fields": {
-        "description": null, 
+        "uuid": "c1673b5e-09d8-412f-9256-6c7271e968fa", 
         "images": [], 
+        "name": "Madhya", 
         "source": null, 
         "references": [], 
         "common_name": "Madhya", 
-        "name": "Madhya"
+        "description": null
     }
 },
 {
     "pk": 3, 
     "model": "hindustani.laya", 
     "fields": {
-        "description": null, 
+        "uuid": "ee58d24a-60aa-4b16-bfcf-edd105118738", 
         "images": [], 
+        "name": "Vila\u1e41bit", 
         "source": null, 
         "references": [], 
         "common_name": "Vilambit", 
-        "name": "Vila\u1e41bit"
+        "description": null
     }
 },
 {

@@ -3,3100 +3,3323 @@
     "pk": 1, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d9c603fa-875f-4b84-b851-c6a345427898", 
         "images": [
             4981
         ], 
+        "name": "\u0100bh\u014dg\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Abhogi", 
-        "name": "\u0100bh\u014dg\u012b"
+        "description": null
     }
 },
 {
     "pk": 2, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "fccd4e35-165d-4c57-9e52-73b370f548dd", 
         "images": [
             4982
         ], 
+        "name": "\u0100bh\u014dg\u012b k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Abhogi kanada", 
-        "name": "\u0100bh\u014dg\u012b k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 3, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "40ebda55-a01a-4e03-be12-26e7e8239f8d", 
         "images": [
             4983
         ], 
+        "name": "Ad\u0101n\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Adana", 
-        "name": "Ad\u0101n\u0101"
+        "description": null
     }
 },
 {
     "pk": 4, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "34709b07-06bf-4135-aaae-8bf8b6efd7e8", 
         "images": [], 
+        "name": "Ad\u0101n\u0101 malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Adana malhar", 
-        "name": "Ad\u0101n\u0101 malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 5, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f6432fec-e9c2-4b09-9e73-c46086cbd8ea", 
         "images": [
             4984
         ], 
+        "name": "Ahira bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Ahir bhairav", 
-        "name": "Ahira bhairav"
+        "description": null
     }
 },
 {
     "pk": 6, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c74945a4-bc4a-4c34-92f5-8888e5ed3519", 
         "images": [
             4985
         ], 
+        "name": "Ahir lalit", 
         "source": null, 
         "references": [], 
         "common_name": "Ahir lalat", 
-        "name": "Ahir lalit"
+        "description": null
     }
 },
 {
     "pk": 7, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "030012bd-275b-465a-88b9-dc9553fd14d2", 
         "images": [
             4986
         ], 
+        "name": "Ahiri t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Ahiri todi", 
-        "name": "Ahiri t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 8, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "2ed9379f-14c9-49af-8e4d-f9b63e96801f", 
         "images": [
             4987
         ], 
+        "name": "Alahaiy\u0101 bil\u0101val", 
         "source": null, 
         "references": [], 
         "common_name": "Alahiya bilawal", 
-        "name": "Alahaiy\u0101 bil\u0101val"
+        "description": null
     }
 },
 {
     "pk": 9, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "91bde85b-5ebd-44b3-8ffb-fd1acc8a14f6", 
         "images": [
             4988
         ], 
+        "name": "Ambik\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Ambika", 
-        "name": "Ambik\u0101"
+        "description": null
     }
 },
 {
     "pk": 10, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a20bf6cd-baa6-407a-a276-89ff3a2e4472", 
         "images": [
             4989
         ], 
+        "name": "Amr\u0325t var\u1e63i\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "Amrit varshini", 
-        "name": "Amr\u0325t var\u1e63i\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 11, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6df8b8ad-3f60-4f08-9663-b7efb3dd7fb6", 
         "images": [], 
+        "name": "\u0100nand malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Anand malhar", 
-        "name": "\u0100nand malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 12, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e6ba5bbe-43b7-4a60-ba46-9f605ad19820", 
         "images": [
             4990
         ], 
+        "name": "\u0100rabhi", 
         "source": null, 
         "references": [], 
         "common_name": "Arabhi", 
-        "name": "\u0100rabhi"
+        "description": null
     }
 },
 {
     "pk": 13, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f3a102a6-7403-4e1c-a628-2c9944aff276", 
         "images": [
             4991
         ], 
+        "name": "As\u0101 m\u0101\u1e47\u1e0d", 
         "source": null, 
         "references": [], 
         "common_name": "Asa mand", 
-        "name": "As\u0101 m\u0101\u1e47\u1e0d"
+        "description": null
     }
 },
 {
     "pk": 14, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ef934f51-574a-4062-8cba-3741c50e27cc", 
         "images": [
             4992
         ], 
+        "name": "A\u1e63\u1e6da r\u0101g m\u0101lik\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Ashta raga malika", 
-        "name": "A\u1e63\u1e6da r\u0101g m\u0101lik\u0101"
+        "description": null
     }
 },
 {
     "pk": 15, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7591faad-e68a-4550-b675-8082842c6056", 
         "images": [
             4993
         ], 
+        "name": "B\u0101g\u0113\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Bageshree", 
-        "name": "B\u0101g\u0113\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 16, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "164c7ead-32a7-4184-85d3-a26a71c6b9b9", 
         "images": [
             4994
         ], 
+        "name": "Bah\u0101dur\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Bahaduri todi", 
-        "name": "Bah\u0101dur\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 17, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "5688eac9-1196-4baf-ba57-c96bab414022", 
         "images": [
             4995
         ], 
+        "name": "Bah\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Bahar", 
-        "name": "Bah\u0101r"
+        "description": null
     }
 },
 {
     "pk": 18, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "b143adaa-f1a6-4de4-8985-a5bd35e96279", 
         "images": [
             4996
         ], 
+        "name": "Bair\u0101gi", 
         "source": null, 
         "references": [], 
         "common_name": "Bairagi", 
-        "name": "Bair\u0101gi"
+        "description": null
     }
 },
 {
     "pk": 19, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "346401a4-1c4b-4f40-a855-55390ba2d39e", 
         "images": [
             4997
         ], 
+        "name": "Bair\u0101g\u012b bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Bairagi bhairav", 
-        "name": "Bair\u0101g\u012b bhairav"
+        "description": null
     }
 },
 {
     "pk": 20, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ecd04ceb-b46c-47fc-9045-84ac9160e527", 
         "images": [
             4998
         ], 
+        "name": "Basant", 
         "source": null, 
         "references": [], 
         "common_name": "Basant", 
-        "name": "Basant"
+        "description": null
     }
 },
 {
     "pk": 21, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "26e43b26-86b2-49e5-b6fe-9c45112493c5", 
         "images": [
             4999
         ], 
+        "name": "Basant bah\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Basant bahar", 
-        "name": "Basant bah\u0101r"
+        "description": null
     }
 },
 {
     "pk": 22, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "996d8e0a-50bd-432b-af7a-29d718f2db45", 
         "images": [
             5000
         ], 
+        "name": "Basant mukh\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "Basant mukhari", 
-        "name": "Basant mukh\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 23, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "91cae195-e93a-4c6f-9b34-e898d0444d9e", 
         "images": [
             5001
         ], 
+        "name": "Basant\u012b k\u0113d\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Basanti kedar", 
-        "name": "Basant\u012b k\u0113d\u0101r"
+        "description": null
     }
 },
 {
     "pk": 24, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "bc3aa05b-078e-43f7-b54f-0a6b56729225", 
         "images": [
             5002
         ], 
+        "name": "B\u012bh\u0101d bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Beehad bairav", 
-        "name": "B\u012bh\u0101d bhairav"
+        "description": null
     }
 },
 {
     "pk": 25, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "5220eb97-d929-4769-b4bb-be85e85ab767", 
         "images": [
             5003
         ], 
+        "name": "B\u0101g\u0113\u015br\u012b k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Bhageshree kanada", 
-        "name": "B\u0101g\u0113\u015br\u012b k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 26, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e6710c21-4b6c-413d-abb5-2146bad52b9d", 
         "images": [
             5004
         ], 
+        "name": "Bhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "Bhairabi", 
-        "name": "Bhairavi"
+        "description": null
     }
 },
 {
     "pk": 27, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "1e7de02f-e77f-405a-a033-f31117aaf955", 
         "images": [
             5005
         ], 
+        "name": "Bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Bhairav", 
-        "name": "Bhairav"
+        "description": null
     }
 },
 {
     "pk": 28, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7b2e0d10-2d64-435b-9624-3990a81aa9a8", 
         "images": [
             5006
         ], 
+        "name": "Bhairav bah\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Bhairav bahar", 
-        "name": "Bhairav bah\u0101r"
+        "description": null
     }
 },
 {
     "pk": 29, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ca8bc1d6-b90d-444c-9cf9-c3e4aec5109b", 
         "images": [
             5007
         ], 
+        "name": "Bhairavi dhun", 
         "source": null, 
         "references": [], 
         "common_name": "Bhairavi dhun", 
-        "name": "Bhairavi dhun"
+        "description": null
     }
 },
 {
     "pk": 30, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "95dad5c5-8d27-4be8-a37d-86ddd0ccb2af", 
         "images": [
             5008
         ], 
+        "name": "Bh\u0101\u1e6diy\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Bhatiyar", 
-        "name": "Bh\u0101\u1e6diy\u0101r"
+        "description": null
     }
 },
 {
     "pk": 31, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "fcb1a1f9-70ae-4524-a64a-dad41a0f6d53", 
         "images": [
             5009
         ], 
+        "name": "Bhavamat bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Bhavmat bhairav", 
-        "name": "Bhavamat bhairav"
+        "description": null
     }
 },
 {
     "pk": 32, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "b30ae272-b01a-40af-970c-8f42a6232f97", 
         "images": [
             5010
         ], 
+        "name": "Bh\u012bm", 
         "source": null, 
         "references": [], 
         "common_name": "Bheem", 
-        "name": "Bh\u012bm"
+        "description": null
     }
 },
 {
     "pk": 33, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "24a85738-02e8-4b0e-9098-926f57c19a50", 
         "images": [
             5011
         ], 
+        "name": "Bhimapal\u0101s", 
         "source": null, 
         "references": [], 
         "common_name": "Bhimpalas", 
-        "name": "Bhimapal\u0101s"
+        "description": null
     }
 },
 {
     "pk": 34, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e771a74d-545d-41d5-816b-43403a818b0c", 
         "images": [
             5012
         ], 
+        "name": "Bh\u016bp", 
         "source": null, 
         "references": [], 
         "common_name": "Bhoop", 
-        "name": "Bh\u016bp"
+        "description": null
     }
 },
 {
     "pk": 35, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "78f439fa-88ba-480e-be87-4d65311df381", 
         "images": [
             5013
         ], 
+        "name": "Bh\u014dp\u0101li", 
         "source": null, 
         "references": [], 
         "common_name": "Bhopali", 
-        "name": "Bh\u014dp\u0101li"
+        "description": null
     }
 },
 {
     "pk": 36, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ba55fe89-1369-4966-8645-e29cf1eb3f43", 
         "images": [
             5014
         ], 
+        "name": "Bh\u014dp\u0101l\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Bhupal todi", 
-        "name": "Bh\u014dp\u0101l\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 37, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "179a85b3-ab72-4316-96e5-4e9e408639d7", 
         "images": [
             5015
         ], 
+        "name": "Bibh\u0101s", 
         "source": null, 
         "references": [], 
         "common_name": "Bibhas", 
-        "name": "Bibh\u0101s"
+        "description": null
     }
 },
 {
     "pk": 38, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a7d98897-e2fe-4d75-b9dc-e5b4dc88e1c6", 
         "images": [
             5016
         ], 
+        "name": "Bih\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "Bihag", 
-        "name": "Bih\u0101g"
+        "description": null
     }
 },
 {
     "pk": 39, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "83b41231-5d8d-45ae-8d54-bdbd262666f1", 
         "images": [
             5017
         ], 
+        "name": "Bih\u0101gd\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Bihagda", 
-        "name": "Bih\u0101gd\u0101"
+        "description": null
     }
 },
 {
     "pk": 40, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "5ea3c0a4-e582-4a88-aaa4-7ab08faf1a15", 
         "images": [
             5018
         ], 
+        "name": "Bil\u0101sakh\u0101ni", 
         "source": null, 
         "references": [], 
         "common_name": "Bilaskhani", 
-        "name": "Bil\u0101sakh\u0101ni"
+        "description": null
     }
 },
 {
     "pk": 41, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "dd59147d-8775-44ff-a36b-0d9f15b31319", 
         "images": [
             5019
         ], 
+        "name": "Bil\u0101sakh\u0101n\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Bilaskhani todi", 
-        "name": "Bil\u0101sakh\u0101n\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 42, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "debe84d7-557f-4e7a-8983-85108e26f48c", 
         "images": [
             5020
         ], 
+        "name": "Bhinna \u1e63a\u1e0dja", 
         "source": null, 
         "references": [], 
         "common_name": "Binna shadja", 
-        "name": "Bhinna \u1e63a\u1e0dja"
+        "description": null
     }
 },
 {
     "pk": 43, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "886b43c6-3fdd-4f92-bf5a-2e1303308ee5", 
         "images": [
             5021
         ], 
+        "name": "Br\u0325nd\u0101van\u012b s\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Brindavani sarang", 
-        "name": "Br\u0325nd\u0101van\u012b s\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 44, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "fa21ea3e-f901-4386-b6f2-2a16ecbdd22d", 
         "images": [
             5022
         ], 
+        "name": "Cait\u012b bh\u016bp", 
         "source": null, 
         "references": [], 
         "common_name": "Chaiti bhoop", 
-        "name": "Cait\u012b bh\u016bp"
+        "description": null
     }
 },
 {
     "pk": 45, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "42ef0bb4-bd24-43c6-8bab-0cb2300f67d9", 
         "images": [
             5023
         ], 
+        "name": "Campak", 
         "source": null, 
         "references": [], 
         "common_name": "Champak", 
-        "name": "Campak"
+        "description": null
     }
 },
 {
     "pk": 46, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0d1a30a9-6424-417a-a153-75a1a8264f02", 
         "images": [
             5024
         ], 
+        "name": "Camp\u0101kali", 
         "source": null, 
         "references": [], 
         "common_name": "Champakali", 
-        "name": "Camp\u0101kali"
+        "description": null
     }
 },
 {
     "pk": 47, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "cdf0fb50-f069-42ac-baf9-32c574e3a2c6", 
         "images": [
             5025
         ], 
+        "name": "C\u0101ndan\u012b k\u0113d\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Chandani kedar", 
-        "name": "C\u0101ndan\u012b k\u0113d\u0101r"
+        "description": null
     }
 },
 {
     "pk": 48, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "4c2fc9cf-7f02-4afb-a60e-cf9f7c12f2ae", 
         "images": [
             5026
         ], 
+        "name": "Candrakauns", 
         "source": null, 
         "references": [], 
         "common_name": "Chandrakauns", 
-        "name": "Candrakauns"
+        "description": null
     }
 },
 {
     "pk": 49, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6fd780c4-75e8-4223-8c1a-8d39ee977e0a", 
         "images": [
             5027
         ], 
+        "name": "Candramauli", 
         "source": null, 
         "references": [], 
         "common_name": "Chandramauli", 
-        "name": "Candramauli"
+        "description": null
     }
 },
 {
     "pk": 50, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d64fc96b-3eee-4706-9813-3c990991bd89", 
         "images": [
             5028
         ], 
+        "name": "C\u0101ruk\u0113\u015bi", 
         "source": null, 
         "references": [], 
         "common_name": "Charukeshi", 
-        "name": "C\u0101ruk\u0113\u015bi"
+        "description": null
     }
 },
 {
     "pk": 51, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "5a59b63a-153a-4da9-9f34-9e233062726e", 
         "images": [
             5029
         ], 
+        "name": "Ch\u0101y\u0101 malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Chaya malhar", 
-        "name": "Ch\u0101y\u0101 malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 52, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "671e87a1-d6f5-4b3d-867f-af7117a4068e", 
         "images": [
             5030
         ], 
+        "name": "Ch\u0101y\u0101n\u0101t", 
         "source": null, 
         "references": [], 
         "common_name": "Chhaya nat", 
-        "name": "Ch\u0101y\u0101n\u0101t"
+        "description": null
     }
 },
 {
     "pk": 53, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "118401e7-8de8-4d81-9d8e-8070889e3fa8", 
         "images": [
             5031
         ], 
+        "name": "Darb\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "Darbari", 
-        "name": "Darb\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 54, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6a23794c-c36c-46a5-90a6-46e85451d3cf", 
         "images": [
             5032
         ], 
+        "name": "Darb\u0101r\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Darbari todi", 
-        "name": "Darb\u0101r\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 55, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6d085bff-124f-46cb-8a4b-a3151a6d35b4", 
         "images": [
             5033
         ], 
+        "name": "D\u012bp\u0101vali", 
         "source": null, 
         "references": [], 
         "common_name": "Deepawali", 
-        "name": "D\u012bp\u0101vali"
+        "description": null
     }
 },
 {
     "pk": 56, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "62b79291-73b0-4c77-a353-0f8bc6ed8362", 
         "images": [
             5034
         ], 
+        "name": "D\u0113\u015b", 
         "source": null, 
         "references": [], 
         "common_name": "Des", 
-        "name": "D\u0113\u015b"
+        "description": null
     }
 },
 {
     "pk": 57, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "005e1459-ca7e-464a-99d6-3b98b7f393fb", 
         "images": [
             5035
         ], 
+        "name": "D\u0113\u015b malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Desh malhar", 
-        "name": "D\u0113\u015b malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 58, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c8d5b1ed-3c68-4fb8-8d25-075e9ada76ba", 
         "images": [
             5036
         ], 
+        "name": "D\u0113\u015bak\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Deshkar", 
-        "name": "D\u0113\u015bak\u0101r"
+        "description": null
     }
 },
 {
     "pk": 59, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "96ef352a-9baf-4ba9-a628-9cabb59b2175", 
         "images": [
             5037
         ], 
+        "name": "D\u0113si", 
         "source": null, 
         "references": [], 
         "common_name": "Desi", 
-        "name": "D\u0113si"
+        "description": null
     }
 },
 {
     "pk": 60, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e3c31149-2d13-4ed6-87b4-5b09629d060a", 
         "images": [
             5038
         ], 
+        "name": "D\u0113s\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Desi todi", 
-        "name": "D\u0113s\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 61, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "48713f7f-e653-42a0-9e5f-8278ba71662d", 
         "images": [
             5039
         ], 
+        "name": "D\u0113v g\u0101ndh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Dev gandhar", 
-        "name": "D\u0113v g\u0101ndh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 62, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6aa9fb11-23f9-4a53-9e0c-302fdfc82bd3", 
         "images": [
             5040
         ], 
+        "name": "D\u0113vgir\u012b bil\u0101val", 
         "source": null, 
         "references": [], 
         "common_name": "Devgiri bilawal", 
-        "name": "D\u0113vgir\u012b bil\u0101val"
+        "description": null
     }
 },
 {
     "pk": 63, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "127b87c3-aa50-4a1a-a403-638f7a61cc1c", 
         "images": [
             5041
         ], 
+        "name": "Dhana\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Dhanashree", 
-        "name": "Dhana\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 64, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "23511a96-eb43-4d9c-ad70-491d356071b6", 
         "images": [
             5042
         ], 
+        "name": "Dhan\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Dhani", 
-        "name": "Dhan\u012b"
+        "description": null
     }
 },
 {
     "pk": 65, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "2af4fcd2-386f-415b-909c-6587f97f455b", 
         "images": [
             5043
         ], 
+        "name": "Din k\u012b puriy\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Din ki puriya", 
-        "name": "Din k\u012b puriy\u0101"
+        "description": null
     }
 },
 {
     "pk": 66, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "186f8cad-2fa7-4e94-ad95-a9495abf011e", 
         "images": [
             5044
         ], 
+        "name": "Durg\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Durga", 
-        "name": "Durg\u0101"
+        "description": null
     }
 },
 {
     "pk": 67, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "44c41615-af55-4b3d-8582-6374222c1b24", 
         "images": [
             5045
         ], 
+        "name": "\u0112k ni\u1e63\u0101d bih\u0101g\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Ek nishad bihagda", 
-        "name": "\u0112k ni\u1e63\u0101d bih\u0101g\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 68, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6517808a-a211-45cb-b802-f49341ea2b1a", 
         "images": [
             5046
         ], 
+        "name": "G\u0101ndh\u012b malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Gandhi malhar", 
-        "name": "G\u0101ndh\u012b malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 69, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ba3242d0-8d40-4d93-865e-d2e2497ea2a8", 
         "images": [
             5047
         ], 
+        "name": "Gau\u1e0d malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Gaud malhar", 
-        "name": "Gau\u1e0d malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 70, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "45f64000-9441-4a09-b4c0-34eb18534e87", 
         "images": [
             5048
         ], 
+        "name": "Gau\u1e0d s\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Gaud sarang", 
-        "name": "Gau\u1e0d s\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 71, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0e170dd7-1006-40ea-b8ce-18f406a09b58", 
         "images": [
             5049
         ], 
+        "name": "Gaur\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Gauri", 
-        "name": "Gaur\u012b"
+        "description": null
     }
 },
 {
     "pk": 72, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c10c2182-18a2-4172-9172-e5767b42bee5", 
         "images": [
             5050
         ], 
+        "name": "Gaur\u012b basant", 
         "source": null, 
         "references": [], 
         "common_name": "Gauri basant", 
-        "name": "Gaur\u012b basant"
+        "description": null
     }
 },
 {
     "pk": 73, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d683a48e-aa43-4784-bf1b-a30bc0b59344", 
         "images": [
             5051
         ], 
+        "name": "G\u014dr\u0101kh kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Gorakh kalyan", 
-        "name": "G\u014dr\u0101kh kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 74, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "30577ddb-8916-45b0-b789-2bc8dcd201a0", 
         "images": [
             5052
         ], 
+        "name": "Gu\u1e47ak\u0101r\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Gunakri", 
-        "name": "Gu\u1e47ak\u0101r\u012b"
+        "description": null
     }
 },
 {
     "pk": 75, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "dd85de6c-330a-490a-a5af-a0ecd7893671", 
         "images": [
             5053
         ], 
+        "name": "Gurjar\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Gurjari todi", 
-        "name": "Gurjar\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 76, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0e57e441-ccee-4df2-9874-949a653714ef", 
         "images": [
             5054
         ], 
+        "name": "Ham\u012br", 
         "source": null, 
         "references": [], 
         "common_name": "Hameer", 
-        "name": "Ham\u012br"
+        "description": null
     }
 },
 {
     "pk": 77, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "595de771-fcc2-414c-9df6-ae4ffd898549", 
         "images": [
             5055
         ], 
+        "name": "Hamsadhv\u0101ni", 
         "source": null, 
         "references": [], 
         "common_name": "Hamsadhvani", 
-        "name": "Hamsadhv\u0101ni"
+        "description": null
     }
 },
 {
     "pk": 78, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a66a01dc-d4a3-4c93-bd44-b64aa85a8d8e", 
         "images": [
             5056
         ], 
+        "name": "Hamsan\u0101r\u0101ya\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "Hansnarayini", 
-        "name": "Hamsan\u0101r\u0101ya\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 79, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ad3dde0a-cab6-4e15-a9e8-582cf8e080e6", 
         "images": [
             5057
         ], 
+        "name": "H\u0113m bih\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "Hem bihag", 
-        "name": "H\u0113m bih\u0101g"
+        "description": null
     }
 },
 {
     "pk": 80, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "43ee8727-a0d3-43f0-aac5-1be1cb772378", 
         "images": [
             5058
         ], 
+        "name": "H\u0113m lalit", 
         "source": null, 
         "references": [], 
         "common_name": "Hem lalit", 
-        "name": "H\u0113m lalit"
+        "description": null
     }
 },
 {
     "pk": 81, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "8a5c3fca-dbc5-4af5-a3db-08d206e16a4a", 
         "images": [
             5059
         ], 
+        "name": "H\u0113m\u0101v\u0101nti", 
         "source": null, 
         "references": [], 
         "common_name": "Hemavanti", 
-        "name": "H\u0113m\u0101v\u0101nti"
+        "description": null
     }
 },
 {
     "pk": 82, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "b5e5b83c-42b1-4b84-9238-248cde42c77d", 
         "images": [
             5060
         ], 
+        "name": "Hind\u014dl", 
         "source": null, 
         "references": [], 
         "common_name": "Hindol", 
-        "name": "Hind\u014dl"
+        "description": null
     }
 },
 {
     "pk": 83, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f2d50f2b-75be-4c52-a2c9-2532650f106b", 
         "images": [
             5061
         ], 
+        "name": "Husaini", 
         "source": null, 
         "references": [], 
         "common_name": "Husseini kanada", 
-        "name": "Husaini"
+        "description": null
     }
 },
 {
     "pk": 84, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3ab135e0-a5e9-4313-9a11-f7dcc6b48a9f", 
         "images": [
             5062
         ], 
+        "name": "Jaijaivanti", 
         "source": null, 
         "references": [], 
         "common_name": "Jaijaivanti", 
-        "name": "Jaijaivanti"
+        "description": null
     }
 },
 {
     "pk": 85, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "80f3ec4b-d9db-4bc3-8186-9e6b0581f31a", 
         "images": [
             5063
         ], 
+        "name": "Jaunpuri", 
         "source": null, 
         "references": [], 
         "common_name": "Jaunpuri", 
-        "name": "Jaunpuri"
+        "description": null
     }
 },
 {
     "pk": 86, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "868bcf93-4178-4778-a559-c3f443649054", 
         "images": [
             5064
         ], 
+        "name": "Jayavant\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Jayawanti todi", 
-        "name": "Jayavant\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 87, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6bd3a50c-4f46-4117-9959-30ff7796e95a", 
         "images": [
             5065
         ], 
+        "name": "Jhinjha\u1e6d m\u0101n\u0304j", 
         "source": null, 
         "references": [], 
         "common_name": "Jhinjhat manj", 
-        "name": "Jhinjha\u1e6d m\u0101n\u0304j"
+        "description": null
     }
 },
 {
     "pk": 88, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6bb47138-6448-4828-bf5f-7a466d94484e", 
         "images": [
             5066
         ], 
+        "name": "Jhinjh\u014d\u1e6di", 
         "source": null, 
         "references": [], 
         "common_name": "Jhinjhoti", 
-        "name": "Jhinjh\u014d\u1e6di"
+        "description": null
     }
 },
 {
     "pk": 89, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "063ea5a0-23b1-4bb5-8537-3d924fe8ebb3", 
         "images": [
             5067
         ], 
+        "name": "J\u014dg", 
         "source": null, 
         "references": [], 
         "common_name": "Jog", 
-        "name": "J\u014dg"
+        "description": null
     }
 },
 {
     "pk": 90, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "747969d2-97d9-4acf-82cb-8811171ddef9", 
         "images": [
             5068
         ], 
+        "name": "J\u014dgiy\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Jogia", 
-        "name": "J\u014dgiy\u0101"
+        "description": null
     }
 },
 {
     "pk": 91, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "2db7495a-98a8-459f-8d53-0e475dbfe597", 
         "images": [
             5069
         ], 
+        "name": "J\u014dgiy\u0101 asav\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "Jogia asawari", 
-        "name": "J\u014dgiy\u0101 asav\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 92, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0f0d242d-3c2c-4e06-b3a4-6ff8001d1c22", 
         "images": [
             5070
         ], 
+        "name": "J\u014dgkauns", 
         "source": null, 
         "references": [], 
         "common_name": "Jogkauns", 
-        "name": "J\u014dgkauns"
+        "description": null
     }
 },
 {
     "pk": 93, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "440a66d3-b236-4eb4-9e5e-3b53bc0c5402", 
         "images": [
             5071
         ], 
+        "name": "K\u0101ph\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Kafi", 
-        "name": "K\u0101ph\u012b"
+        "description": null
     }
 },
 {
     "pk": 94, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3574f1f9-890e-43a1-aa33-82839ff893ec", 
         "images": [
             5072
         ], 
+        "name": "K\u0101ph\u012b k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Kafi kanada", 
-        "name": "K\u0101ph\u012b k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 95, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "759ea167-f45c-4960-b2c2-2ca41824c9f6", 
         "images": [
             5073
         ], 
+        "name": "K\u0101ph\u012b \u1e6dapp\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Kafi tappa", 
-        "name": "K\u0101ph\u012b \u1e6dapp\u0101"
+        "description": null
     }
 },
 {
     "pk": 96, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "51ee2513-1a2c-4ae8-abc5-8cff72c2e4a1", 
         "images": [
             5074
         ], 
+        "name": "Kal\u0101\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Kalashree", 
-        "name": "Kal\u0101\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 97, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7c9ab484-a912-4b8e-b421-5751f9b1e104", 
         "images": [
             5075
         ], 
+        "name": "Kal\u0101vati", 
         "source": null, 
         "references": [], 
         "common_name": "Kalavati", 
-        "name": "Kal\u0101vati"
+        "description": null
     }
 },
 {
     "pk": 98, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "fd01b618-a48a-4a29-9a2d-8d494cdc3350", 
         "images": [
             5076
         ], 
+        "name": "Kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Kalyan", 
-        "name": "Kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 99, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c344b820-ba4e-4db7-ba28-33d2e7f1d376", 
         "images": [], 
+        "name": "Kaly\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "Kalyani", 
-        "name": "Kaly\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 100, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "88965a41-957a-42d3-a8da-80a27e797c09", 
         "images": [
             5077
         ], 
+        "name": "K\u0101mbh\u014dji", 
         "source": null, 
         "references": [], 
         "common_name": "Kambhoji", 
-        "name": "K\u0101mbh\u014dji"
+        "description": null
     }
 },
 {
     "pk": 101, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "1170fa33-ee31-4ce7-9c73-aa6ae4b034c2", 
         "images": [
             5078
         ], 
+        "name": "K\u0101m\u014ddvanti", 
         "source": null, 
         "references": [], 
         "common_name": "Kamodvanti", 
-        "name": "K\u0101m\u014ddvanti"
+        "description": null
     }
 },
 {
     "pk": 102, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f011a874-2785-4873-b194-e1a29115bc58", 
         "images": [
             5079
         ], 
+        "name": "K\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Kanada", 
-        "name": "K\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 103, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "2fe9f79c-7955-4dcd-939a-e0a73173c07f", 
         "images": [
             5080
         ], 
+        "name": "Kauns\u012b k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Kaunsi kanara", 
-        "name": "Kauns\u012b k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 104, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c2de0c9b-8bd5-4090-b248-100d5c98c4b8", 
         "images": [
             5081
         ], 
+        "name": "Kau\u015bik dhvani", 
         "source": null, 
         "references": [], 
         "common_name": "Kaushi dhwani", 
-        "name": "Kau\u015bik dhvani"
+        "description": null
     }
 },
 {
     "pk": 105, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a9ee554f-f146-43e9-b2d0-9bb31fd4b57d", 
         "images": [
             5082
         ], 
+        "name": "K\u0113d\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Kedar", 
-        "name": "K\u0113d\u0101r"
+        "description": null
     }
 },
 {
     "pk": 106, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "93c73081-bdf8-4eca-b325-d736b71e9b4b", 
         "images": [
             5083
         ], 
+        "name": "Kham\u0101j", 
         "source": null, 
         "references": [], 
         "common_name": "Khamaj", 
-        "name": "Kham\u0101j"
+        "description": null
     }
 },
 {
     "pk": 107, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3c91af88-efc9-45c6-8768-d5c05567315e", 
         "images": [
             5084
         ], 
+        "name": "Kham\u0101j bah\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Khamaj bahar", 
-        "name": "Kham\u0101j bah\u0101r"
+        "description": null
     }
 },
 {
     "pk": 108, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "914ea213-6fec-49fc-826f-b9351b3452cd", 
         "images": [
             5085
         ], 
+        "name": "Khamb\u0101vati", 
         "source": null, 
         "references": [], 
         "common_name": "Khambawati", 
-        "name": "Khamb\u0101vati"
+        "description": null
     }
 },
 {
     "pk": 109, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a8903336-4768-4633-9957-1a2517b2c7a7", 
         "images": [], 
+        "name": "Kha\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "Khat", 
-        "name": "Kha\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 110, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "aad22288-2d33-4afd-be76-1690b42dc9e2", 
         "images": [
             5086
         ], 
+        "name": "K\u012brav\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "Kirwani", 
-        "name": "K\u012brav\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 111, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "410c8cc9-4432-4576-a5b6-f9830575a0e3", 
         "images": [
             5087
         ], 
+        "name": "K\u014dmal ri\u1e63abh as\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "Komal rishabh asavari", 
-        "name": "K\u014dmal ri\u1e63abh as\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 112, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "2714f13a-83c0-4c5e-80b4-c9901ece96d5", 
         "images": [
             5088
         ], 
+        "name": "K\u014dmal ri\u1e63abh as\u0101v\u0113r\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Komal rishabh asavari todi", 
-        "name": "K\u014dmal ri\u1e63abh as\u0101v\u0113r\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 113, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "77463b6c-34c5-4401-bb4f-46d4766d55f3", 
         "images": [], 
+        "name": "Kuntavar\u0101li", 
         "source": null, 
         "references": [], 
         "common_name": "Kuntanavarali", 
-        "name": "Kuntavar\u0101li"
+        "description": null
     }
 },
 {
     "pk": 114, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a99e07d5-20a0-467b-8dcd-aa5a095177fd", 
         "images": [
             5089
         ], 
+        "name": "Lalit", 
         "source": null, 
         "references": [], 
         "common_name": "Lalat", 
-        "name": "Lalit"
+        "description": null
     }
 },
 {
     "pk": 115, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "b6d8ec87-66be-4c91-98a2-ebb3ea840d55", 
         "images": [
             5090
         ], 
+        "name": "Lalit bha\u1e6diy\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Lalit bhatiyar", 
-        "name": "Lalit bha\u1e6diy\u0101r"
+        "description": null
     }
 },
 {
     "pk": 116, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7a2f147b-5914-44bf-afb4-745631f1fe11", 
         "images": [
             5091
         ], 
+        "name": "Lalit pa\u00f1cam", 
         "source": null, 
         "references": [], 
         "common_name": "Lalit pancham", 
-        "name": "Lalit pa\u00f1cam"
+        "description": null
     }
 },
 {
     "pk": 117, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "06981972-c459-4ff1-9cf4-53bda6c7fefa", 
         "images": [
             5092
         ], 
+        "name": "Lalit bibh\u0101s", 
         "source": null, 
         "references": [], 
         "common_name": "Lalit vibhas", 
-        "name": "Lalit bibh\u0101s"
+        "description": null
     }
 },
 {
     "pk": 118, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "01e7523a-08d1-439a-ac48-b1987f8c2bc0", 
         "images": [
             5093
         ], 
+        "name": "La\u1e45k\u0113\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Lankeshri", 
-        "name": "La\u1e45k\u0113\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 119, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c498ccc8-1f4a-4ac2-a96f-3b06b1f583b2", 
         "images": [
             5094
         ], 
+        "name": "M\u0101jh kham\u0101j", 
         "source": null, 
         "references": [], 
         "common_name": "Maajh khamaj", 
-        "name": "M\u0101jh kham\u0101j"
+        "description": null
     }
 },
 {
     "pk": 120, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d5a2c271-f142-4d0c-a958-66678e5bc624", 
         "images": [
             5095
         ], 
+        "name": "Madhmad s\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Madhmad sarang", 
-        "name": "Madhmad s\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 121, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0b3bbf97-0ec3-41da-add4-722d87329ec3", 
         "images": [
             5096
         ], 
+        "name": "Madhukauns", 
         "source": null, 
         "references": [], 
         "common_name": "Madhukauns", 
-        "name": "Madhukauns"
+        "description": null
     }
 },
 {
     "pk": 122, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "290674e0-d94c-41c1-ad99-f65fa22a1447", 
         "images": [
             5097
         ], 
+        "name": "Madhuvanti", 
         "source": null, 
         "references": [], 
         "common_name": "Madhuvanti", 
-        "name": "Madhuvanti"
+        "description": null
     }
 },
 {
     "pk": 123, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "60f33739-a3ef-421e-ad8a-fc8cea259a7b", 
         "images": [
             5098
         ], 
+        "name": "M\u0101lava", 
         "source": null, 
         "references": [], 
         "common_name": "Malav", 
-        "name": "M\u0101lava"
+        "description": null
     }
 },
 {
     "pk": 124, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "efa2476e-40ad-43eb-a746-07918af7c567", 
         "images": [
             5099
         ], 
+        "name": "M\u0101l\u0101vati", 
         "source": null, 
         "references": [], 
         "common_name": "Malavati", 
-        "name": "M\u0101l\u0101vati"
+        "description": null
     }
 },
 {
     "pk": 125, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "64e5fb9e-5569-4e80-8e6c-f543af9469c7", 
         "images": [
             5100
         ], 
+        "name": "M\u0101lkauns", 
         "source": null, 
         "references": [], 
         "common_name": "Malkauns", 
-        "name": "M\u0101lkauns"
+        "description": null
     }
 },
 {
     "pk": 126, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7e9ac165-68bd-4e6d-b1c0-b8d2f18ce3c3", 
         "images": [
             5101
         ], 
+        "name": "Ma\u1e45gal bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Mangal bhairav", 
-        "name": "Ma\u1e45gal bhairav"
+        "description": null
     }
 },
 {
     "pk": 127, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "54c4214c-05b9-4acc-8f77-6d5786e43a2e", 
         "images": [
             5102
         ], 
+        "name": "M\u0101r\u016bbih\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "Marubihag", 
-        "name": "M\u0101r\u016bbih\u0101g"
+        "description": null
     }
 },
 {
     "pk": 128, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3eb7ba30-4b94-432e-9618-875ee57e01ab", 
         "images": [
             5103
         ], 
+        "name": "M\u0101rv\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Marwa", 
-        "name": "M\u0101rv\u0101"
+        "description": null
     }
 },
 {
     "pk": 129, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0437cc3e-6e02-491f-aa9b-5b4e1fec8993", 
         "images": [
             5104
         ], 
+        "name": "M\u0101rv\u0101\u015br\u012b m\u0101rv\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Marwashri marwa", 
-        "name": "M\u0101rv\u0101\u015br\u012b m\u0101rv\u0101"
+        "description": null
     }
 },
 {
     "pk": 130, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "86599528-c95a-441d-82dc-eb3ec5657045", 
         "images": [], 
+        "name": "M\u012br\u0101 malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Meera malhar", 
-        "name": "M\u012br\u0101 malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 131, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "cd0f0430-a499-4f38-8d50-adf3435cf1e3", 
         "images": [
             5105
         ], 
+        "name": "M\u0113gh", 
         "source": null, 
         "references": [], 
         "common_name": "Megh", 
-        "name": "M\u0113gh"
+        "description": null
     }
 },
 {
     "pk": 132, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7acd42d8-e5ad-4cff-9a1f-61157eafb10b", 
         "images": [
             5106
         ], 
+        "name": "M\u0113gh malah\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Megh malhar", 
-        "name": "M\u0113gh malah\u0101r"
+        "description": null
     }
 },
 {
     "pk": 133, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "72ce29d8-2fa7-42aa-9a3f-2f2795bc34ca", 
         "images": [
             5107
         ], 
+        "name": "M\u0113gh malah\u0101r s\u0101dr\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Megh malhar sadra", 
-        "name": "M\u0113gh malah\u0101r s\u0101dr\u0101"
+        "description": null
     }
 },
 {
     "pk": 134, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e72d392c-7b0d-4511-9cf4-50936c31d412", 
         "images": [
             5108
         ], 
+        "name": "Mi\u015bra bhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra bhairavi", 
-        "name": "Mi\u015bra bhairavi"
+        "description": null
     }
 },
 {
     "pk": 135, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "cb7f31a1-08d1-4660-8a0a-8ab870034957", 
         "images": [
             5109
         ], 
+        "name": "Mi\u015bra d\u0113\u015b", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra desh", 
-        "name": "Mi\u015bra d\u0113\u015b"
+        "description": null
     }
 },
 {
     "pk": 136, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d205eaa9-079e-4e0f-8ae4-8db8ae231c12", 
         "images": [
             5110
         ], 
+        "name": "Mi\u015bra g\u0101r\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra gaara", 
-        "name": "Mi\u015bra g\u0101r\u0101"
+        "description": null
     }
 },
 {
     "pk": 137, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "eab16d2c-1b7a-487a-91da-a843865f9f24", 
         "images": [
             5111
         ], 
+        "name": "Mi\u015bra k\u0101phi", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra kafi", 
-        "name": "Mi\u015bra k\u0101phi"
+        "description": null
     }
 },
 {
     "pk": 138, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "97af40c5-8537-4128-a18f-fe10d8aebdf0", 
         "images": [
             5112
         ], 
+        "name": "Mi\u015bra kali\u1e45ga\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra kalingada", 
-        "name": "Mi\u015bra kali\u1e45ga\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 139, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e9ede446-bb21-4aa6-85e2-c2fb80727cbf", 
         "images": [
             5113
         ], 
+        "name": "Mi\u015bra kham\u0101j", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra khamaj", 
-        "name": "Mi\u015bra kham\u0101j"
+        "description": null
     }
 },
 {
     "pk": 140, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ed43f833-88eb-4b13-9889-1e022c984142", 
         "images": [
             5114
         ], 
+        "name": "Mi\u015bra k\u012brv\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra kirwani", 
-        "name": "Mi\u015bra k\u012brv\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 141, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "1ec5f9ec-7320-4beb-9469-18bf69655645", 
         "images": [
             5115
         ], 
+        "name": "Mi\u015bra m\u0101\u1e47\u1e0d", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra maand", 
-        "name": "Mi\u015bra m\u0101\u1e47\u1e0d"
+        "description": null
     }
 },
 {
     "pk": 142, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "8bf77fa7-16ab-4937-b43e-ad7af2cc3eaa", 
         "images": [
             5116
         ], 
+        "name": "Mi\u015bra pah\u0101\u1e0di", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra pahadi", 
-        "name": "Mi\u015bra pah\u0101\u1e0di"
+        "description": null
     }
 },
 {
     "pk": 143, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "eedc8258-2270-4da4-b7a6-388c842ae77a", 
         "images": [
             5117
         ], 
+        "name": "Mi\u015bra p\u012bl\u016b", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra piloo", 
-        "name": "Mi\u015bra p\u012bl\u016b"
+        "description": null
     }
 },
 {
     "pk": 144, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "8a788204-1aae-41c8-a98c-5eba49697893", 
         "images": [
             5118
         ], 
+        "name": "Mi\u015bra \u015bivaran\u0304jani", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra shivranjani", 
-        "name": "Mi\u015bra \u015bivaran\u0304jani"
+        "description": null
     }
 },
 {
     "pk": 145, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "016b7171-4d9d-468d-983d-361548bf7cd3", 
         "images": [
             5119
         ], 
+        "name": "Mi\u015bra tilak k\u0101m\u014dd", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra tilak kamod", 
-        "name": "Mi\u015bra tilak k\u0101m\u014dd"
+        "description": null
     }
 },
 {
     "pk": 146, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "55ae6165-fd05-4fa3-8762-3c99fcca66e3", 
         "images": [
             5120
         ], 
+        "name": "Mi\u015bra til\u0101\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Mishra tilang", 
-        "name": "Mi\u015bra til\u0101\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 147, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "1b05a564-059f-445b-b325-cf26318367e3", 
         "images": [
             5121
         ], 
+        "name": "Miy\u0101m\u0310 malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Miya malhar", 
-        "name": "Miy\u0101m\u0310 malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 148, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0bfd3d74-10b9-4b15-96e9-f751c7907244", 
         "images": [
             5122
         ], 
+        "name": "Miy\u0101m\u0310 k\u012b s\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Miyan ki sarang", 
-        "name": "Miy\u0101m\u0310 k\u012b s\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 149, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "47e46401-c944-4d50-85ba-2783bd587f6e", 
         "images": [
             5123
         ], 
+        "name": "Miy\u0101m\u0310 k\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Miyan ki todi", 
-        "name": "Miy\u0101m\u0310 k\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 150, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d3be1a2a-ad82-495b-b738-b5e3dd664a0c", 
         "images": [
             5124
         ], 
+        "name": "Mult\u0101ni", 
         "source": null, 
         "references": [], 
         "common_name": "Multani", 
-        "name": "Mult\u0101ni"
+        "description": null
     }
 },
 {
     "pk": 151, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3a1f7310-4842-46cc-a254-6075be15f3c0", 
         "images": [
             5125
         ], 
+        "name": "Naga\u1e0d", 
         "source": null, 
         "references": [], 
         "common_name": "Nagad", 
-        "name": "Naga\u1e0d"
+        "description": null
     }
 },
 {
     "pk": 152, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "975ad6a0-cf15-4109-9289-c88d07b9429b", 
         "images": [
             5126
         ], 
+        "name": "N\u0101yak\u012b k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Naiki kanada", 
-        "name": "N\u0101yak\u012b k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 153, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a3f2513c-37ac-4148-b3b8-712d45c74b79", 
         "images": [
             5127
         ], 
+        "name": "Nan\u0101d", 
         "source": null, 
         "references": [], 
         "common_name": "Nanad", 
-        "name": "Nan\u0101d"
+        "description": null
     }
 },
 {
     "pk": 154, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "9571385f-2743-41a1-9c6d-3db0545a6773", 
         "images": [
             5128
         ], 
+        "name": "Na\u1e6d bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Nat bhairav", 
-        "name": "Na\u1e6d bhairav"
+        "description": null
     }
 },
 {
     "pk": 155, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3b32032b-1548-4e87-9541-4ad13c5ccdb5", 
         "images": [
             5129
         ], 
+        "name": "Na\u1e6d bih\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "Nat bihag", 
-        "name": "Na\u1e6d bih\u0101g"
+        "description": null
     }
 },
 {
     "pk": 156, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "9590981c-79ce-4499-bd03-ea88621dbd6e", 
         "images": [
             5130
         ], 
+        "name": "Na\u1e6d malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Nat malhar", 
-        "name": "Na\u1e6d malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 157, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a919c7ac-fec2-4102-ab29-01d212ba8a3e", 
         "images": [
             5131
         ], 
+        "name": "Na\u1e6d n\u0101r\u0101ya\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Nat narayan", 
-        "name": "Na\u1e6d n\u0101r\u0101ya\u1e47"
+        "description": null
     }
 },
 {
     "pk": 158, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "9c75535f-452c-44de-a543-beeb7aefcc2c", 
         "images": [
             5132
         ], 
+        "name": "N\u0101yak\u012b k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Nayaki kanada", 
-        "name": "N\u0101yak\u012b k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 159, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e49d53cb-3378-4074-bdc5-0c17b672f5e1", 
         "images": [
             5133
         ], 
+        "name": "N\u012bl\u0101mbari", 
         "source": null, 
         "references": [], 
         "common_name": "Nilambari", 
-        "name": "N\u012bl\u0101mbari"
+        "description": null
     }
 },
 {
     "pk": 160, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "bafb1d3a-0fff-4fba-bc2e-f9ba766b2e33", 
         "images": [
             5134
         ], 
+        "name": "Pah\u0101\u1e0di", 
         "source": null, 
         "references": [], 
         "common_name": "Pahadi", 
-        "name": "Pah\u0101\u1e0di"
+        "description": null
     }
 },
 {
     "pk": 161, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "109d438b-8400-4246-bc0f-d02f280dd526", 
         "images": [
             5135
         ], 
+        "name": "Pa\u00f1cam", 
         "source": null, 
         "references": [], 
         "common_name": "Pancham", 
-        "name": "Pa\u00f1cam"
+        "description": null
     }
 },
 {
     "pk": 162, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d0edf94d-8c79-4bb9-b947-04fd37c0bdbe", 
         "images": [
             5136
         ], 
+        "name": "Paraj", 
         "source": null, 
         "references": [], 
         "common_name": "Paraj", 
-        "name": "Paraj"
+        "description": null
     }
 },
 {
     "pk": 163, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ac5c462b-78d4-4187-a512-6d8f3501b3db", 
         "images": [
             5137
         ], 
+        "name": "Pa\u1e6dd\u012bp", 
         "source": null, 
         "references": [], 
         "common_name": "Patdeep", 
-        "name": "Pa\u1e6dd\u012bp"
+        "description": null
     }
 },
 {
     "pk": 164, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "84488ca3-b7ff-454f-90dc-5d720c0ce7ea", 
         "images": [
             5138
         ], 
+        "name": "Pa\u1e6daman\u0304jari", 
         "source": null, 
         "references": [], 
         "common_name": "Patmanjari", 
-        "name": "Pa\u1e6daman\u0304jari"
+        "description": null
     }
 },
 {
     "pk": 165, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "25863b58-18c1-4897-81eb-d6f9cf6b5037", 
         "images": [
             5139
         ], 
+        "name": "P\u012bl\u016b", 
         "source": null, 
         "references": [], 
         "common_name": "Piloo", 
-        "name": "P\u012bl\u016b"
+        "description": null
     }
 },
 {
     "pk": 166, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "809b91a2-a923-4983-a85f-5eed6293b68f", 
         "images": [
             5140
         ], 
+        "name": "P\u016brvi", 
         "source": null, 
         "references": [], 
         "common_name": "Poorvi", 
-        "name": "P\u016brvi"
+        "description": null
     }
 },
 {
     "pk": 167, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "18eaa693-173b-4cb4-9560-a1aa2844e346", 
         "images": [
             5141
         ], 
+        "name": "Prat\u0101pavar\u0101li", 
         "source": null, 
         "references": [], 
         "common_name": "Pratapvarali", 
-        "name": "Prat\u0101pavar\u0101li"
+        "description": null
     }
 },
 {
     "pk": 168, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "774ae631-eb8d-4b8e-9edd-5285e919821f", 
         "images": [
             5142
         ], 
+        "name": "Puriy\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Puriya", 
-        "name": "Puriy\u0101"
+        "description": null
     }
 },
 {
     "pk": 169, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "fa28470c-d413-44c7-94da-181f530cbfdd", 
         "images": [
             5143
         ], 
+        "name": "Puriy\u0101 dhana\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Puriya dhanashree", 
-        "name": "Puriy\u0101 dhana\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 170, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ff4e1817-44b2-4cac-ac98-189b280881e7", 
         "images": [
             5144
         ], 
+        "name": "Puriy\u0101 kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Puriya kalyan", 
-        "name": "Puriy\u0101 kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 171, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f7fddfc0-8c1d-4dd2-90d5-5d51a99d61f8", 
         "images": [
             5145
         ], 
+        "name": "R\u0101g\u0113\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Rageshri", 
-        "name": "R\u0101g\u0113\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 172, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "eb2571c8-f67e-4686-b6d5-70cf2a14a8f6", 
         "images": [
             5146
         ], 
+        "name": "R\u0101j kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Raj kalyan", 
-        "name": "R\u0101j kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 173, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "91d1601a-bffc-44ce-b862-e8e5cb7ba8db", 
         "images": [
             5147
         ], 
+        "name": "R\u0101md\u0101s\u012b malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Ramdasi malhar", 
-        "name": "R\u0101md\u0101s\u012b malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 174, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "b1bbc0f0-7377-463b-b309-524ee8d4f37d", 
         "images": [
             5148
         ], 
+        "name": "R\u0101makali", 
         "source": null, 
         "references": [], 
         "common_name": "Ramkali", 
-        "name": "R\u0101makali"
+        "description": null
     }
 },
 {
     "pk": 175, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "05901cff-7b10-4551-9b3a-f59fb4a9ef46", 
         "images": [
             5149
         ], 
+        "name": "S\u0101van\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Saavani", 
-        "name": "S\u0101van\u012b"
+        "description": null
     }
 },
 {
     "pk": 176, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "277d7cbf-a23d-40a5-a454-34fe6abbe78c", 
         "images": [
             5150
         ], 
+        "name": "Sah\u0113l\u012b t\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Saheli todi", 
-        "name": "Sah\u0113l\u012b t\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 177, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "c0a00a39-71a7-4517-8dce-4ace474d487a", 
         "images": [
             5151
         ], 
+        "name": "Samp\u016br\u1e47a m\u0101lkauns", 
         "source": null, 
         "references": [], 
         "common_name": "Sampurna malkauns", 
-        "name": "Samp\u016br\u1e47a m\u0101lkauns"
+        "description": null
     }
 },
 {
     "pk": 178, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "532d0f11-4c6f-4e39-b240-632b118d04e5", 
         "images": [], 
+        "name": "San\u0304jari", 
         "source": null, 
         "references": [], 
         "common_name": "Sanjari", 
-        "name": "San\u0304jari"
+        "description": null
     }
 },
 {
     "pk": 179, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "76d78166-b165-4035-9379-41b2535bc632", 
         "images": [
             5152
         ], 
+        "name": "S\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Sarang", 
-        "name": "S\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 180, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "81b63c29-8e30-4de6-b929-a4ba060a1cf6", 
         "images": [
             5153
         ], 
+        "name": "Sarasvati", 
         "source": null, 
         "references": [], 
         "common_name": "Saraswati", 
-        "name": "Sarasvati"
+        "description": null
     }
 },
 {
     "pk": 181, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "abbbc4eb-1079-4471-960a-c5a65ff3c151", 
         "images": [
             5154
         ], 
+        "name": "S\u0101van\u012b bih\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "Savani bihag", 
-        "name": "S\u0101van\u012b bih\u0101g"
+        "description": null
     }
 },
 {
     "pk": 182, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ff344e58-85dd-4776-bf5f-5f751f4d588d", 
         "images": [
             5155
         ], 
+        "name": "Sahan\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Shahana", 
-        "name": "Sahan\u0101"
+        "description": null
     }
 },
 {
     "pk": 183, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "e3bd27ba-d2a1-4e5b-abda-800dcc0bb4b8", 
         "images": [
             5156
         ], 
+        "name": "Sahan\u0101 k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Shahana kanada", 
-        "name": "Sahan\u0101 k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 184, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "66238fd5-3d04-4303-b865-b3d038dd293a", 
         "images": [
             5157
         ], 
+        "name": "\u015aa\u1e45kara", 
         "source": null, 
         "references": [], 
         "common_name": "Shankara", 
-        "name": "\u015aa\u1e45kara"
+        "description": null
     }
 },
 {
     "pk": 185, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "560949b9-92bf-4e30-883d-c8f94834debb", 
         "images": [
             5158
         ], 
+        "name": "Simh\u0113ndra madhyama\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "Shimhendra madhyamam", 
-        "name": "Simh\u0113ndra madhyama\u1e41"
+        "description": null
     }
 },
 {
     "pk": 186, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "1ec2b0a8-fdbd-43b2-8cab-c3199a644dfb", 
         "images": [], 
+        "name": "\u015aivaran\u0304jani", 
         "source": null, 
         "references": [], 
         "common_name": "Shivaranjani", 
-        "name": "\u015aivaran\u0304jani"
+        "description": null
     }
 },
 {
     "pk": 187, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "b8cdde9e-a31e-4537-a0fe-cccd76cfb9ce", 
         "images": [
             5159
         ], 
+        "name": "\u015aivamat bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "Shivmat bhairav", 
-        "name": "\u015aivamat bhairav"
+        "description": null
     }
 },
 {
     "pk": 188, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "46997b02-f09c-4969-8138-4e1861f61967", 
         "images": [
             5160
         ], 
+        "name": "\u015ar\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Shree", 
-        "name": "\u015ar\u012b"
+        "description": null
     }
 },
 {
     "pk": 189, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "40dbe1db-858f-4366-bef8-9076eb67340d", 
         "images": [
             5161
         ], 
+        "name": "\u015auddh s\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Shuddh sarang", 
-        "name": "\u015auddh s\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 190, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "fc39cd87-6396-44e5-be57-7d25f6144589", 
         "images": [
             5162
         ], 
+        "name": "\u015auddh kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Shuddha kalyan", 
-        "name": "\u015auddh kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 191, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "9d20fe47-eeb4-4361-bcf2-35bab1b52a67", 
         "images": [
             5163
         ], 
+        "name": "\u015auddh na\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "Shuddha nat", 
-        "name": "\u015auddh na\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 192, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "ea5e88cb-3c3c-49b6-a2d3-3801ce2cdabc", 
         "images": [], 
+        "name": "\u015auddh baradi", 
         "source": null, 
         "references": [], 
         "common_name": "Shudh baradi", 
-        "name": "\u015auddh baradi"
+        "description": null
     }
 },
 {
     "pk": 193, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "007a5094-e226-41d0-b626-0f938f7e67e0", 
         "images": [
             5164
         ], 
+        "name": "\u015auddh m\u0101r\u016b", 
         "source": null, 
         "references": [], 
         "common_name": "Shudh maaru", 
-        "name": "\u015auddh m\u0101r\u016b"
+        "description": null
     }
 },
 {
     "pk": 194, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f95072ad-729d-49b7-8ec0-c5be64337395", 
         "images": [
             5165
         ], 
+        "name": "\u015auddh basant", 
         "source": null, 
         "references": [], 
         "common_name": "Shudha basant", 
-        "name": "\u015auddh basant"
+        "description": null
     }
 },
 {
     "pk": 195, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "1ebcd930-a543-47dd-a423-3a95531a1df3", 
         "images": [
             5166
         ], 
+        "name": "\u015auddh k\u0113d\u0101ra", 
         "source": null, 
         "references": [], 
         "common_name": "Shudha kedar", 
-        "name": "\u015auddh k\u0113d\u0101ra"
+        "description": null
     }
 },
 {
     "pk": 196, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "cadee83a-6aaa-404c-8a68-1250dc62d320", 
         "images": [
             5167
         ], 
+        "name": "\u015ay\u0101m kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Shyam kalyan", 
-        "name": "\u015ay\u0101m kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 197, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7fad8e4e-8ba2-402d-9d01-6586acc5b458", 
         "images": [
             5168
         ], 
+        "name": "Sindhu bhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "Sindhu bhairavi", 
-        "name": "Sindhu bhairavi"
+        "description": null
     }
 },
 {
     "pk": 198, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7e1db214-c0f2-4e68-b748-35ea464c1b39", 
         "images": [
             5169
         ], 
+        "name": "Sindh\u016bra", 
         "source": null, 
         "references": [], 
         "common_name": "Sindhura", 
-        "name": "Sindh\u016bra"
+        "description": null
     }
 },
 {
     "pk": 199, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3b18e6fe-5ea0-4326-8d3d-c1fbcbe1cc9e", 
         "images": [
             5170
         ], 
+        "name": "S\u014dhin\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Sohini", 
-        "name": "S\u014dhin\u012b"
+        "description": null
     }
 },
 {
     "pk": 200, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "7f8cd8d5-6dba-40f9-8f26-0c9fff6da3e2", 
         "images": [
             5171
         ], 
+        "name": "S\u014dhin\u012b bah\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Sohini bahar", 
-        "name": "S\u014dhin\u012b bah\u0101r"
+        "description": null
     }
 },
 {
     "pk": 201, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6600d85b-de2c-4fcc-80ad-0b5aa88f6305", 
         "images": [
             5172
         ], 
+        "name": "S\u014dh\u014dn\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Sohoni", 
-        "name": "S\u014dh\u014dn\u012b"
+        "description": null
     }
 },
 {
     "pk": 202, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "76497571-61e8-4f5a-9e26-b52715be9fd1", 
         "images": [
             5173
         ], 
+        "name": "S\u014dh\u014dn\u012b bha\u1e6diy\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Sohoni bhatiyar", 
-        "name": "S\u014dh\u014dn\u012b bha\u1e6diy\u0101r"
+        "description": null
     }
 },
 {
     "pk": 203, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "72420351-7aa7-4118-9fc1-ed60de170172", 
         "images": [
             5174
         ], 
+        "name": "S\u014drath", 
         "source": null, 
         "references": [], 
         "common_name": "Sorath", 
-        "name": "S\u014drath"
+        "description": null
     }
 },
 {
     "pk": 204, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "f132c2f3-90f9-4dd3-bcb2-b6f95fd234b8", 
         "images": [], 
+        "name": "\u015aubhalak\u1e63mi", 
         "source": null, 
         "references": [], 
         "common_name": "Subhalakshmi", 
-        "name": "\u015aubhalak\u1e63mi"
+        "description": null
     }
 },
 {
     "pk": 205, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "3800077c-9fd5-46e8-ab7b-d86955a864f1", 
         "images": [
             5175
         ], 
+        "name": "Sughara\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Sughrai", 
-        "name": "Sughara\u012b"
+        "description": null
     }
 },
 {
     "pk": 206, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "faa182a5-687f-4c12-8ef7-616c537e10b0", 
         "images": [
             5176
         ], 
+        "name": "Suh\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Suha", 
-        "name": "Suh\u0101"
+        "description": null
     }
 },
 {
     "pk": 207, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "067203bb-77aa-4966-83da-e47f98384291", 
         "images": [
             5177
         ], 
+        "name": "Suh\u0101 k\u0101na\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Suha kanada", 
-        "name": "Suh\u0101 k\u0101na\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 208, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "9b52c54c-2269-4125-8cce-563aca0fe7be", 
         "images": [
             5178
         ], 
+        "name": "Suh\u0101 kanna\u1e0d\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "Suha kannada", 
-        "name": "Suh\u0101 kanna\u1e0d\u0101"
+        "description": null
     }
 },
 {
     "pk": 209, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "17a7b583-71b9-4d75-a881-7dd5d2627b37", 
         "images": [
             5179
         ], 
+        "name": "Sur sugharai", 
         "source": null, 
         "references": [], 
         "common_name": "Suha sugharai", 
-        "name": "Sur sugharai"
+        "description": null
     }
 },
 {
     "pk": 210, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6bb4b24a-deb0-4a47-b99a-094ca9605d45", 
         "images": [
             5180
         ], 
+        "name": "Sur malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "Surmalhar", 
-        "name": "Sur malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 211, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d7ebeced-2c40-4188-9556-907392a9df9b", 
         "images": [], 
+        "name": "Saur\u0101\u1e63\u1e6dram", 
         "source": null, 
         "references": [], 
         "common_name": "Swarashtram", 
-        "name": "Saur\u0101\u1e63\u1e6dram"
+        "description": null
     }
 },
 {
     "pk": 212, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "214aa9c2-b69b-4431-aaa4-1ad935e54334", 
         "images": [
             5181
         ], 
+        "name": "Tank\u0113\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Tankeshri", 
-        "name": "Tank\u0113\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 213, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "45528063-4723-4522-8a8c-e5b1da747112", 
         "images": [
             5182
         ], 
+        "name": "Tilak bih\u0101r\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Tilak bihari", 
-        "name": "Tilak bih\u0101r\u012b"
+        "description": null
     }
 },
 {
     "pk": 214, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "d2af8f3e-85ee-40c3-9db3-6cf417d50515", 
         "images": [
             5183
         ], 
+        "name": "Tilak k\u0101m\u014dd", 
         "source": null, 
         "references": [], 
         "common_name": "Tilak kamod", 
-        "name": "Tilak k\u0101m\u014dd"
+        "description": null
     }
 },
 {
     "pk": 215, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "8ea56aaa-576b-4c33-ab0a-a4699877d1a6", 
         "images": [
             5184
         ], 
+        "name": "Tilak na\u1e6d", 
         "source": null, 
         "references": [], 
         "common_name": "Tilak nat", 
-        "name": "Tilak na\u1e6d"
+        "description": null
     }
 },
 {
     "pk": 216, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "a4e2a9c3-2a9d-420e-8619-d6e6419fa882", 
         "images": [
             5185
         ], 
+        "name": "Til\u0101\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Tilang", 
-        "name": "Til\u0101\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 217, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "6f13484e-6fdd-402d-baf3-3835835454d0", 
         "images": [
             5186
         ], 
+        "name": "T\u014d\u1e0d\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "Todi", 
-        "name": "T\u014d\u1e0d\u012b"
+        "description": null
     }
 },
 {
     "pk": 218, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "27b5ec64-1c40-41f6-8324-023bc54fd90d", 
         "images": [
             5187
         ], 
+        "name": "Triv\u0113\u1e47\u012b gauri", 
         "source": null, 
         "references": [], 
         "common_name": "Triveni gauri", 
-        "name": "Triv\u0113\u1e47\u012b gauri"
+        "description": null
     }
 },
 {
     "pk": 219, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "0481235e-b295-451c-94d0-099633c0e471", 
         "images": [
             5188
         ], 
+        "name": "V\u0101caspati", 
         "source": null, 
         "references": [], 
         "common_name": "Vachaspati", 
-        "name": "V\u0101caspati"
+        "description": null
     }
 },
 {
     "pk": 220, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "82a57826-17dc-482b-aef2-acc4278e8b9d", 
         "images": [
             5189
         ], 
+        "name": "Vr\u0325nd\u0101van\u012b s\u0101ra\u1e45g", 
         "source": null, 
         "references": [], 
         "common_name": "Vrindavani sarang", 
-        "name": "Vr\u0325nd\u0101van\u012b s\u0101ra\u1e45g"
+        "description": null
     }
 },
 {
     "pk": 221, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "48b37bed-e847-4882-8a01-5c721e07f07d", 
         "images": [
             5190
         ], 
+        "name": "Yaman kaly\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "Yaman kalyan", 
-        "name": "Yaman kaly\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 222, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "32d510d4-4c36-4d56-a3d2-21b1ce290560", 
         "images": [
             5191
         ], 
+        "name": "Yaman\u012b bil\u0101val", 
         "source": null, 
         "references": [], 
         "common_name": "Yamani bilawal", 
-        "name": "Yaman\u012b bil\u0101val"
+        "description": null
     }
 },
 {
     "pk": 223, 
     "model": "hindustani.raag", 
     "fields": {
-        "description": null, 
+        "uuid": "df80e38a-e8db-407d-b1b0-f4d36d193350", 
         "images": [
             5192
         ], 
+        "name": "Zil\u0101ph", 
         "source": null, 
         "references": [], 
         "common_name": "Zilaf", 
-        "name": "Zil\u0101ph"
+        "description": null
     }
 },
 {

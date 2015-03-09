@@ -456,8 +456,12 @@ def layasearch(request):
         ret.append({"id": l.id, "name": str(l)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def laya(request, layaid, name=None):
+def layabyid(request, layaid, name=None):
     laya = get_object_or_404(models.Laya, pk=layaid)
+    return redirect(laya.get_absolute_url(), permanent=True)
+
+def laya(request, uuid, name=None):
+    laya = get_object_or_404(models.Laya, uuid=uuid)
 
     ret = {"laya": laya
            }
@@ -470,8 +474,12 @@ def raagsearch(request):
         ret.append({"id": r.id, "name": str(r)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def raag(request, raagid, name=None):
+def raagbyid(request, raagid, name=None):
     raag = get_object_or_404(models.Raag, pk=raagid)
+    return redirect(raag.get_absolute_url(), permanent=True)
+
+def raag(request, uuid, name=None):
+    raag = get_object_or_404(models.Raag, uuid=uuid)
     recordings = raag.recording_set.all()
     sample = None
     if recordings.exists():
@@ -489,8 +497,12 @@ def taalsearch(request):
         ret.append({"id": t.id, "name": str(t)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def taal(request, taalid, name=None):
+def taalbyid(request, taalid, name=None):
     taal = get_object_or_404(models.Taal, pk=taalid)
+    return redirect(taal.get_absolute_url(), permanent=True)
+
+def taal(request, uuid, name=None):
+    taal = get_object_or_404(models.Taal, uuid=uuid)
 
     """
     We display all the recordings of a taal and group them by
@@ -526,8 +538,12 @@ def formsearch(request):
         ret.append({"id": l.id, "name": str(l)})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def form(request, formid, name=None):
+def formbyid(request, formid, name=None):
     form = get_object_or_404(models.Form, pk=formid)
+    return redirect(form.get_absolute_url(), permanent=True)
+
+def form(request, uuid, name=None):
+    form = get_object_or_404(models.Form, uuid=uuid)
 
     ret = {"form": form
            }

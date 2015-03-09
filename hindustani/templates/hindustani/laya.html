@@ -1,0 +1,41 @@
+{% extends "carnatic/base.html" %}
+{% load hindustani.inline %}
+{% load hindustani.badges %}
+{% load staticfiles %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+
+
+	$("#filterMask").toggleClass('querybar');
+    //parseAllFilters({{ filter_items|safe }});
+    widthOfChildren('.metaContainer');
+});
+</script>
+{% endblock %}
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+{% endblock %}
+
+{% block title %}{{laya.name}} - {% endblock %}
+
+{% block wrap %}
+
+ <div id="detail" class="laya">
+			<div class="missingdata">
+				<h2>Sorry</h2>
+				<p>
+					We are still missing some information about this laya.<br/> Our team is working on it. <br/> We are very sorry for the inconvenience.
+				</p>
+			</div>
+     		<div class="clearfix"></div>
+     </div>
+
+{% endblock %}
