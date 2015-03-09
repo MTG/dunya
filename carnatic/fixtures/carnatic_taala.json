@@ -3,268 +3,286 @@
     "pk": 1, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "c788c38a-b53a-48cb-b7bf-d11769260c4d", 
         "images": [
             4298
         ], 
+        "name": "\u0100di", 
         "source": null, 
         "num_aksharas": 32, 
         "references": [], 
         "common_name": "adi", 
-        "name": "\u0100di"
+        "description": null
     }
 },
 {
     "pk": 2, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "8c6c26db-e01a-4eef-ae0b-9f7e31a926e8", 
         "images": [
             4299
         ], 
+        "name": "R\u016bpaka", 
         "source": null, 
         "num_aksharas": 12, 
         "references": [], 
         "common_name": "rupaka", 
-        "name": "R\u016bpaka"
+        "description": null
     }
 },
 {
     "pk": 3, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "7eb02ed9-2dcb-471f-9a8a-a09aa5cea633", 
         "images": [
             4300
         ], 
+        "name": "Mi\u015bra ch\u0101pu", 
         "source": null, 
         "num_aksharas": 14, 
         "references": [], 
         "common_name": "mishra chapu", 
-        "name": "Mi\u015bra ch\u0101pu"
+        "description": null
     }
 },
 {
     "pk": 4, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "e22c4e94-47f5-4190-88a3-d1f31ef3a84f", 
         "images": [
             4301
         ], 
+        "name": "Kha\u1e47\u1e0da ch\u0101pu", 
         "source": null, 
         "num_aksharas": 10, 
         "references": [], 
         "common_name": "khanda chapu", 
-        "name": "Kha\u1e47\u1e0da ch\u0101pu"
+        "description": null
     }
 },
 {
     "pk": 5, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "e16a12c9-c383-4824-b5e0-1799d71799a6", 
         "images": [
             4302
         ], 
+        "name": "\u0112ka", 
         "source": null, 
         "num_aksharas": 16, 
         "references": [], 
         "common_name": "eka", 
-        "name": "\u0112ka"
+        "description": null
     }
 },
 {
     "pk": 6, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "d498f683-5a26-414f-8f00-2319a1fcdae3", 
         "images": [], 
+        "name": "Ti\u015bra-j\u0101ti \u0113ka", 
         "source": null, 
         "num_aksharas": 12, 
         "references": [], 
         "common_name": "tishra eka", 
-        "name": "Ti\u015bra-j\u0101ti \u0113ka"
+        "description": null
     }
 },
 {
     "pk": 7, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "5b14bb0e-ecde-448a-90ca-db77650adec4", 
         "images": [
             4303
         ], 
+        "name": "Dhr\u0325va", 
         "source": null, 
         "num_aksharas": 56, 
         "references": [], 
         "common_name": "dhruva", 
-        "name": "Dhr\u0325va"
+        "description": null
     }
 },
 {
     "pk": 8, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "d25505fb-6ae1-4194-b04c-e03bf7b3c30b", 
         "images": [
             4304
         ], 
+        "name": "Ma\u1e6dhya", 
         "source": null, 
         "num_aksharas": 40, 
         "references": [], 
         "common_name": "matya", 
-        "name": "Ma\u1e6dhya"
+        "description": null
     }
 },
 {
     "pk": 9, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "776e5549-0457-46e6-806b-358066e9db1c", 
         "images": [
             4305
         ], 
+        "name": "Mi\u015bra-j\u0101ti jha\u1e41pe", 
         "source": null, 
         "num_aksharas": 40, 
         "references": [], 
         "common_name": "mishra jhampe", 
-        "name": "Mi\u015bra-j\u0101ti jha\u1e41pe"
+        "description": null
     }
 },
 {
     "pk": 10, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "6e790441-bc9b-4bd4-850a-eee3927324b4", 
         "images": [
             4306
         ], 
+        "name": "Ti\u015bra-j\u0101ti tripu\u1e6da ", 
         "source": null, 
         "num_aksharas": 28, 
         "references": [], 
         "common_name": "tishra triputa", 
-        "name": "Ti\u015bra-j\u0101ti tripu\u1e6da "
+        "description": null
     }
 },
 {
     "pk": 11, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "8cbfe57d-06ad-4409-bd8f-18c37595bf8a", 
         "images": [
             4307
         ], 
+        "name": "A\u1e6d\u1e6da", 
         "source": null, 
         "num_aksharas": 56, 
         "references": [], 
         "common_name": "atta", 
-        "name": "A\u1e6d\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 13, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "445602bb-c654-40db-b5f6-0e525dedd0bc", 
         "images": [
             4308
         ], 
+        "name": "Catura\u015bra-j\u0101ti jha\u1e41pe", 
         "source": null, 
         "num_aksharas": 28, 
         "references": [], 
         "common_name": "chaturashra-jaati jhampe", 
-        "name": "Catura\u015bra-j\u0101ti jha\u1e41pe"
+        "description": null
     }
 },
 {
     "pk": 14, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "d162ee46-ce69-4c0a-8975-2d4fd82f991d", 
         "images": [
             4309
         ], 
+        "name": "D\u0113\u015b\u0101di", 
         "source": null, 
         "num_aksharas": 16, 
         "references": [], 
         "common_name": "deshaadi", 
-        "name": "D\u0113\u015b\u0101di"
+        "description": null
     }
 },
 {
     "pk": 15, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "b4653eac-74e2-4a15-9e92-824862138686", 
         "images": [
             4310
         ], 
+        "name": "Kha\u1e47\u1e0da-j\u0101ti tripu\u1e6da ", 
         "source": null, 
         "num_aksharas": 36, 
         "references": [], 
         "common_name": "khanda-jaati triputa", 
-        "name": "Kha\u1e47\u1e0da-j\u0101ti tripu\u1e6da "
+        "description": null
     }
 },
 {
     "pk": 16, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "d9b897ca-ce43-4b6c-823f-c0110bcaffc2", 
         "images": [
             4311
         ], 
+        "name": "Kha\u1e47\u1e0da-j\u0101ti \u0113ka", 
         "source": null, 
         "num_aksharas": 20, 
         "references": [], 
         "common_name": "khanda-jaati eka", 
-        "name": "Kha\u1e47\u1e0da-j\u0101ti \u0113ka"
+        "description": null
     }
 },
 {
     "pk": 17, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "f0e02b48-d38b-49e9-a23c-6c9a0e310e4f", 
         "images": [
             4312
         ], 
+        "name": "Madhy\u0101di ", 
         "source": null, 
         "num_aksharas": 16, 
         "references": [], 
         "common_name": "madhyaadi", 
-        "name": "Madhy\u0101di "
+        "description": null
     }
 },
 {
     "pk": 18, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "6471d972-00c7-4eb0-b595-58c477d597f9", 
         "images": [
             4313
         ], 
+        "name": "Mah\u0101lak\u1e63mi ", 
         "source": null, 
         "num_aksharas": 76, 
         "references": [], 
         "common_name": "mahaalakshmi", 
-        "name": "Mah\u0101lak\u1e63mi "
+        "description": null
     }
 },
 {
     "pk": 19, 
     "model": "carnatic.taala", 
     "fields": {
-        "description": null, 
+        "uuid": "1bda75bc-ef9d-40fe-80c2-8530d07ee99e", 
         "images": [
             4314
         ], 
+        "name": "Mi\u015bra-j\u0101ti r\u016bpaka", 
         "source": null, 
         "num_aksharas": 36, 
         "references": [], 
         "common_name": "mishra-jaati rupaka", 
-        "name": "Mi\u015bra-j\u0101ti r\u016bpaka"
+        "description": null
     }
 },
 {
@@ -569,6 +587,14 @@
     "fields": {
         "name": "tisra nadai", 
         "taala": 1
+    }
+},
+{
+    "pk": 44, 
+    "model": "carnatic.taalaalias", 
+    "fields": {
+        "name": "rupakam", 
+        "taala": 2
     }
 },
 {

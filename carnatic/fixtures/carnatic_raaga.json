@@ -3,3346 +3,3592 @@
     "pk": 1, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8275beb8-c976-441e-8483-32b72455d559", 
         "images": [
             4803
         ], 
+        "name": "\u0100bh\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "abheri", 
-        "name": "\u0100bh\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 2, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "59761d51-b251-4d9d-b0be-5faddf7c17fe", 
         "images": [
             4804
         ], 
+        "name": "\u0100bh\u014dgi", 
         "source": null, 
         "references": [], 
         "common_name": "abhogi", 
-        "name": "\u0100bh\u014dgi"
+        "description": null
     }
 },
 {
     "pk": 4, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c16d6988-7edb-4768-b3bd-0191718b3ba5", 
         "images": [
             4805
         ], 
+        "name": "\u0100rabhi", 
         "source": null, 
         "references": [], 
         "common_name": "arabhi", 
-        "name": "\u0100rabhi"
+        "description": null
     }
 },
 {
     "pk": 5, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "150133e0-0d4f-457f-9420-7c4bb05d8672", 
         "images": [
             4806
         ], 
+        "name": "As\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "asaveri", 
-        "name": "As\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 6, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "6345e8fe-7061-4bdc-842c-dcfd4a379820", 
         "images": [
             4807
         ], 
+        "name": "A\u1e6d\u0101na", 
         "source": null, 
         "references": [], 
         "common_name": "atana", 
-        "name": "A\u1e6d\u0101na"
+        "description": null
     }
 },
 {
     "pk": 7, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "184c1f41-c755-4d25-8482-7f2de267ec22", 
         "images": [
             4808
         ], 
+        "name": "Bahud\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "bahudari", 
-        "name": "Bahud\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 8, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "aa5f376f-06cd-4a69-9cc9-b1077104e0b0", 
         "images": [
             4809
         ], 
+        "name": "B\u0113ga\u1e0da", 
         "source": null, 
         "references": [], 
         "common_name": "begada", 
-        "name": "B\u0113ga\u1e0da"
+        "description": null
     }
 },
 {
     "pk": 9, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "700e1d92-7094-4c21-8a3b-d7b60c550edf", 
         "images": [
             4810
         ], 
+        "name": "Beh\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "behag", 
-        "name": "Beh\u0101g"
+        "description": null
     }
 },
 {
     "pk": 10, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "123b09bd-9901-4e64-a65a-10b02c9e0597", 
         "images": [
             4811
         ], 
+        "name": "Bhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "bhairavi", 
-        "name": "Bhairavi"
+        "description": null
     }
 },
 {
     "pk": 11, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "2165542c-45da-4301-af82-c2e7ddbe4768", 
         "images": [
             4812
         ], 
+        "name": "Bilahari", 
         "source": null, 
         "references": [], 
         "common_name": "bilahari", 
-        "name": "Bilahari"
+        "description": null
     }
 },
 {
     "pk": 13, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d5285bf4-c3c5-454e-a659-fec30075990b", 
         "images": [
             4813
         ], 
+        "name": "Darb\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "darbar", 
-        "name": "Darb\u0101r"
+        "description": null
     }
 },
 {
     "pk": 14, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "defad4cc-48aa-4372-a31a-c43624930713", 
         "images": [
             4814
         ], 
+        "name": "D\u0113vag\u0101ndh\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "devagandhari", 
-        "name": "D\u0113vag\u0101ndh\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 15, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "407a085c-e064-445b-a8cc-c296c058eea1", 
         "images": [
             4815
         ], 
+        "name": "D\u0113vaman\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "devamanohari", 
-        "name": "D\u0113vaman\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 16, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b9305177-f26c-48a9-8477-0fe6267f4e23", 
         "images": [
             4816
         ], 
+        "name": "Dhana\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "dhanashri", 
-        "name": "Dhana\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 17, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "5ce23030-f71d-4f5d-9d76-f91c2c182392", 
         "images": [
             4817
         ], 
+        "name": "Dhany\u0101si", 
         "source": null, 
         "references": [], 
         "common_name": "dhanyasi", 
-        "name": "Dhany\u0101si"
+        "description": null
     }
 },
 {
     "pk": 20, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "77bc3583-d798-4077-85a3-bd08bc177881", 
         "images": [
             4818
         ], 
+        "name": "Hamsadhvani", 
         "source": null, 
         "references": [], 
         "common_name": "hamsadhvani", 
-        "name": "Hamsadhvani"
+        "description": null
     }
 },
 {
     "pk": 21, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9db55ebf-99f1-4610-b4c3-572c6cf32603", 
         "images": [
             4819
         ], 
+        "name": "Ha\u1e41s\u0101nandi", 
         "source": null, 
         "references": [], 
         "common_name": "hamsanandi", 
-        "name": "Ha\u1e41s\u0101nandi"
+        "description": null
     }
 },
 {
     "pk": 23, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "26553105-ee8c-4c90-aabf-18f16e37d603", 
         "images": [
             4820
         ], 
+        "name": "Hind\u014d\u1e37a\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "hindolam", 
-        "name": "Hind\u014d\u1e37a\u1e41"
+        "description": null
     }
 },
 {
     "pk": 24, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "446a669b-9f9a-436e-9796-869ea5a03412", 
         "images": [
             4821
         ], 
+        "name": "Jaganm\u014dhini", 
         "source": null, 
         "references": [], 
         "common_name": "jaganmohini", 
-        "name": "Jaganm\u014dhini"
+        "description": null
     }
 },
 {
     "pk": 25, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3f200a6c-240e-4538-8908-0c56245aabc0", 
         "images": [
             4822
         ], 
+        "name": "J\u014dnpuri", 
         "source": null, 
         "references": [], 
         "common_name": "jaunpuri", 
-        "name": "J\u014dnpuri"
+        "description": null
     }
 },
 {
     "pk": 27, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bf4662d4-25c3-4cad-9249-4de2dc513c06", 
         "images": [
             4823
         ], 
+        "name": "Kaly\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "kalyani", 
-        "name": "Kaly\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 28, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a4ec6633-1050-4207-8313-b017194c8fa0", 
         "images": [
             4824
         ], 
+        "name": "Kam\u0101s", 
         "source": null, 
         "references": [], 
         "common_name": "kamas", 
-        "name": "Kam\u0101s"
+        "description": null
     }
 },
 {
     "pk": 30, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9a071e54-3eed-48b2-83a3-1a3fd683b8e0", 
         "images": [
             4825
         ], 
+        "name": "K\u0101na\u1e0da", 
         "source": null, 
         "references": [], 
         "common_name": "kanada", 
-        "name": "K\u0101na\u1e0da"
+        "description": null
     }
 },
 {
     "pk": 31, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "f972db4d-5d16-4f9a-9841-f313e1601aaa", 
         "images": [
             4826
         ], 
+        "name": "Karaharapriya", 
         "source": null, 
         "references": [], 
         "common_name": "karaharapriya", 
-        "name": "Karaharapriya"
+        "description": null
     }
 },
 {
     "pk": 32, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "df85a0a5-b1a8-42f1-a87b-3d7c7ee33fb4", 
         "images": [
             4827
         ], 
+        "name": "K\u0113d\u0101ragau\u1e37a", 
         "source": null, 
         "references": [], 
         "common_name": "kedaragaula", 
-        "name": "K\u0113d\u0101ragau\u1e37a"
+        "description": null
     }
 },
 {
     "pk": 33, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8a24e253-7be5-48d2-a2af-cdba3be187c6", 
         "images": [
             4828
         ], 
+        "name": "Kuntalavar\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "kuntalavarali", 
-        "name": "Kuntalavar\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 35, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "698b0206-a72a-4190-a74f-b5bed3c82b4a", 
         "images": [
             4829
         ], 
+        "name": "Ma\u1e47irangu", 
         "source": null, 
         "references": [], 
         "common_name": "manirangu", 
-        "name": "Ma\u1e47irangu"
+        "description": null
     }
 },
 {
     "pk": 36, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "5a47dbec-a4da-4862-add0-dde61821a893", 
         "images": [
             4830
         ], 
+        "name": "M\u0101nji", 
         "source": null, 
         "references": [], 
         "common_name": "manji", 
-        "name": "M\u0101nji"
+        "description": null
     }
 },
 {
     "pk": 37, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "39821826-3327-41d7-9cd5-e22fe7b08360", 
         "images": [
             4831
         ], 
+        "name": "M\u014dhana\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "mohanam", 
-        "name": "M\u014dhana\u1e41"
+        "description": null
     }
 },
 {
     "pk": 38, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "978f4c3c-6a12-43fd-8427-c414ee17b252", 
         "images": [
             4832
         ], 
+        "name": "Mukh\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "mukhari", 
-        "name": "Mukh\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 40, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "cda9cbe9-c1aa-42bb-8b4c-e9dfc8af133c", 
         "images": [
             4833
         ], 
+        "name": "N\u0101\u1e6dakurinji", 
         "source": null, 
         "references": [], 
         "common_name": "natakurinji", 
-        "name": "N\u0101\u1e6dakurinji"
+        "description": null
     }
 },
 {
     "pk": 44, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "116a5ddd-7716-4685-a997-73c92754d9cd", 
         "images": [
             4834
         ], 
+        "name": "Ranjani", 
         "source": null, 
         "references": [], 
         "common_name": "ranjani", 
-        "name": "Ranjani"
+        "description": null
     }
 },
 {
     "pk": 46, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "993d6cf6-dc89-4d23-9a9f-8eeed1524872", 
         "images": [
             4835
         ], 
+        "name": "Sah\u0101n\u0101", 
         "source": null, 
         "references": [], 
         "common_name": "sahana", 
-        "name": "Sah\u0101n\u0101"
+        "description": null
     }
 },
 {
     "pk": 47, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bc5ac554-59cf-4206-af78-f37aed66ac13", 
         "images": [
             4836
         ], 
+        "name": "Saur\u0101\u1e63tra\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "saurashtram", 
-        "name": "Saur\u0101\u1e63tra\u1e41"
+        "description": null
     }
 },
 {
     "pk": 48, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3af5a361-923a-465d-864d-9c7ba0c04a47", 
         "images": [
             4837
         ], 
+        "name": "Sencuru\u1e6d\u1e6di", 
         "source": null, 
         "references": [], 
         "common_name": "senchurutti", 
-        "name": "Sencuru\u1e6d\u1e6di"
+        "description": null
     }
 },
 {
     "pk": 49, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "0277eae5-3411-4b22-9fa8-1b347e7528d1", 
         "images": [
             4838
         ], 
+        "name": "\u1e62anmukhapriya", 
         "source": null, 
         "references": [], 
         "common_name": "shanmukhapriya", 
-        "name": "\u1e62anmukhapriya"
+        "description": null
     }
 },
 {
     "pk": 52, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e931896a-50eb-4296-8c64-6cf63ed4900e", 
         "images": [
             4839
         ], 
+        "name": "\u015audda s\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "shuddha saveri", 
-        "name": "\u015audda s\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 54, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "839bb6b4-1577-4a78-9e5d-4906c6453274", 
         "images": [
             4840
         ], 
+        "name": "Sura\u1e6di", 
         "source": null, 
         "references": [], 
         "common_name": "surati", 
-        "name": "Sura\u1e6di"
+        "description": null
     }
 },
 {
     "pk": 55, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a9413dff-91d1-4e29-ad92-c04019dce5b8", 
         "images": [
             4841
         ], 
+        "name": "T\u014d\u1e0di", 
         "source": null, 
         "references": [], 
         "common_name": "thodi", 
-        "name": "T\u014d\u1e0di"
+        "description": null
     }
 },
 {
     "pk": 56, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3f777cd6-df83-43ad-8e32-949a4b3fc5ad", 
         "images": [
             4842
         ], 
+        "name": "V\u0101caspati", 
         "source": null, 
         "references": [], 
         "common_name": "vachaspati", 
-        "name": "V\u0101caspati"
+        "description": null
     }
 },
 {
     "pk": 57, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e8a0bf54-13c6-4a09-922a-bfc744ddf38a", 
         "images": [
             4843
         ], 
+        "name": "Var\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "varali", 
-        "name": "Var\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 58, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ac1eb394-661f-4081-8756-d6ed88402660", 
         "images": [
             4844
         ], 
+        "name": "Vasanta", 
         "source": null, 
         "references": [], 
         "common_name": "vasanta", 
-        "name": "Vasanta"
+        "description": null
     }
 },
 {
     "pk": 59, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ddff55ae-20f6-4d7d-ba9e-a6c10eeebd41", 
         "images": [
             4845
         ], 
+        "name": "Yadukula k\u0101\u1e41b\u014dji", 
         "source": null, 
         "references": [], 
         "common_name": "yadukula kambhoji", 
-        "name": "Yadukula k\u0101\u1e41b\u014dji"
+        "description": null
     }
 },
 {
     "pk": 60, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "50bd048f-4482-4c5b-850c-9ad5e5ec46f1", 
         "images": [
             4846
         ], 
+        "name": "Huss\u0113n\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "huseni", 
-        "name": "Huss\u0113n\u012b"
+        "description": null
     }
 },
 {
     "pk": 61, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "dc031ade-4147-41b9-b13e-4cb24b1355c3", 
         "images": [
             4847
         ], 
+        "name": "P\u016br\u1e47a \u1e63a\u1e0dja\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "purna shadjam", 
-        "name": "P\u016br\u1e47a \u1e63a\u1e0dja\u1e41"
+        "description": null
     }
 },
 {
     "pk": 62, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e2f5b40b-eb84-4f0a-86a7-c97f31ccab0f", 
         "images": [], 
+        "name": "Carturda\u015ba r\u0101gam\u0101lika", 
         "source": null, 
         "references": [], 
         "common_name": "Chaturdasha ragamalika", 
-        "name": "Carturda\u015ba r\u0101gam\u0101lika"
+        "description": null
     }
 },
 {
     "pk": 63, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "91e06724-9986-429d-919f-878bae12ebe3", 
         "images": [
             4848
         ], 
+        "name": "Vijayasarasvati", 
         "source": null, 
         "references": [], 
         "common_name": "vijayasaraswati", 
-        "name": "Vijayasarasvati"
+        "description": null
     }
 },
 {
     "pk": 64, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "43a65c07-78fc-4b0f-8c4c-bfec2a205221", 
         "images": [
             4849
         ], 
+        "name": "Navar\u0101gam\u0101lika", 
         "source": null, 
         "references": [], 
         "common_name": "navaragamalika", 
-        "name": "Navar\u0101gam\u0101lika"
+        "description": null
     }
 },
 {
     "pk": 65, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8f31d931-93a2-4f62-8c3a-ed94058946f0", 
         "images": [
             4850
         ], 
+        "name": "B\u1e5bnd\u0101vani", 
         "source": null, 
         "references": [], 
         "common_name": "brindavani", 
-        "name": "B\u1e5bnd\u0101vani"
+        "description": null
     }
 },
 {
     "pk": 66, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "33eae464-0152-4e38-b9e4-b096d1798815", 
         "images": [
             4851
         ], 
+        "name": "Dvij\u0101vanti", 
         "source": null, 
         "references": [], 
         "common_name": "dvijavanti", 
-        "name": "Dvij\u0101vanti"
+        "description": null
     }
 },
 {
     "pk": 68, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3e44458a-eb0a-4c89-885b-334a71e0aef1", 
         "images": [
             4852
         ], 
+        "name": "K\u014dkilapriya", 
         "source": null, 
         "references": [], 
         "common_name": "kokilapriya", 
-        "name": "K\u014dkilapriya"
+        "description": null
     }
 },
 {
     "pk": 69, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "5a209316-8247-41c5-b900-00b0651435dc", 
         "images": [
             4853
         ], 
+        "name": "K\u012bra\u1e47\u0101va\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "kiranavali", 
-        "name": "K\u012bra\u1e47\u0101va\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 70, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "4ce0b18d-f4df-41cf-9b40-9166199506b4", 
         "images": [
             4854
         ], 
+        "name": "R\u012btigau\u1e37a", 
         "source": null, 
         "references": [], 
         "common_name": "riti gaula", 
-        "name": "R\u012btigau\u1e37a"
+        "description": null
     }
 },
 {
     "pk": 71, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9e9d8820-ecc5-44b3-8131-60dbd40a0436", 
         "images": [
             4855
         ], 
+        "name": "Mand\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "mandhari", 
-        "name": "Mand\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 72, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9cedca68-4a9d-4170-bec3-0d1db1ff730e", 
         "images": [
             4856
         ], 
+        "name": "M\u0101y\u0101m\u0101\u1e37avagau\u1e37a", 
         "source": null, 
         "references": [], 
         "common_name": "mayamalava gaula", 
-        "name": "M\u0101y\u0101m\u0101\u1e37avagau\u1e37a"
+        "description": null
     }
 },
 {
     "pk": 73, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "2642bb6f-10bc-4451-9b3f-e3cec8afb98b", 
         "images": [
             4857
         ], 
+        "name": "Pu\u1e47\u1e47\u0101gavar\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "punnaga varali", 
-        "name": "Pu\u1e47\u1e47\u0101gavar\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 74, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1744fe2f-15b0-4578-a655-5c498a849bd9", 
         "images": [
             3428
         ], 
+        "name": "Bhav\u0101ni", 
         "source": null, 
         "references": [], 
         "common_name": "bhavani", 
-        "name": "Bhav\u0101ni"
+        "description": null
     }
 },
 {
     "pk": 75, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "92fb8824-515c-458a-883f-24ca6bfe034c", 
         "images": [
             4858
         ], 
+        "name": "Vandanadh\u0101ri\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "vandanatarini", 
-        "name": "Vandanadh\u0101ri\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 76, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "f7791511-f1f4-4886-bd19-1004dfec4b30", 
         "images": [
             4859
         ], 
+        "name": "Bh\u012bmpal\u0101si", 
         "source": null, 
         "references": [], 
         "common_name": "bhimpalasi", 
-        "name": "Bh\u012bmpal\u0101si"
+        "description": null
     }
 },
 {
     "pk": 77, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "0b898852-971c-4f6f-8148-a5f1ed2e3d31", 
         "images": [
             4860
         ], 
+        "name": "Paras", 
         "source": null, 
         "references": [], 
         "common_name": "paras", 
-        "name": "Paras"
+        "description": null
     }
 },
 {
     "pk": 78, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "fe582585-d4cc-4348-a121-2cdf7ff13446", 
         "images": [
             4861
         ], 
+        "name": "Dev\u0101m\u1e5btavar\u1e63i\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "devamruta varshini", 
-        "name": "Dev\u0101m\u1e5btavar\u1e63i\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 79, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b9d84a3e-0cdd-48db-9f7b-1c462419e012", 
         "images": [
             4862
         ], 
+        "name": "Sindhumand\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "sindhumandari", 
-        "name": "Sindhumand\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 80, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "11fda035-8741-484e-9ed1-785e1927ba83", 
         "images": [
             3431
         ], 
+        "name": "N\u0101dan\u0101makriya", 
         "source": null, 
         "references": [], 
         "common_name": "nadanamakriya", 
-        "name": "N\u0101dan\u0101makriya"
+        "description": null
     }
 },
 {
     "pk": 81, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d2e62f9d-0b14-454e-a770-a05080d52730", 
         "images": [
             4863
         ], 
+        "name": "Simh\u0113ndra madhyama\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "simhendra madhyamam", 
-        "name": "Simh\u0113ndra madhyama\u1e41"
+        "description": null
     }
 },
 {
     "pk": 82, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ad9199d8-9d36-47e5-9e0f-806419825dd4", 
         "images": [
             4864
         ], 
+        "name": "Mi\u015bra kham\u0101j", 
         "source": null, 
         "references": [], 
         "common_name": "misra khamaj", 
-        "name": "Mi\u015bra kham\u0101j"
+        "description": null
     }
 },
 {
     "pk": 83, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b9cffe7d-3e19-4a49-9562-d6865e9f9b31", 
         "images": [
             4865
         ], 
+        "name": "Yamuna kaly\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "yamuna kalyani", 
-        "name": "Yamuna kaly\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 85, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a62c01ba-a4be-4951-831d-0153f8faf4db", 
         "images": [
             4866
         ], 
+        "name": "R\u0101mapriya", 
         "source": null, 
         "references": [], 
         "common_name": "ramapriya", 
-        "name": "R\u0101mapriya"
+        "description": null
     }
 },
 {
     "pk": 86, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "0d9e6511-ad1e-457d-b0e0-fb024a971f65", 
         "images": [
             4867
         ], 
+        "name": "Var\u1e47ar\u016bpini", 
         "source": null, 
         "references": [], 
         "common_name": "varnarupini", 
-        "name": "Var\u1e47ar\u016bpini"
+        "description": null
     }
 },
 {
     "pk": 87, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "00d3fad7-116f-477b-918e-7fea8960fe8b", 
         "images": [
             3435
         ], 
+        "name": "Gurj\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "gurjari", 
-        "name": "Gurj\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 89, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "071cdfab-89e5-4084-8c86-134c825ac37c", 
         "images": [], 
+        "name": "Man\u014dranjani", 
         "source": null, 
         "references": [], 
         "common_name": "manoranjani", 
-        "name": "Man\u014dranjani"
+        "description": null
     }
 },
 {
     "pk": 90, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "661ff13c-bbc3-458c-9890-2e5992f0f5c3", 
         "images": [
             4868
         ], 
+        "name": "Navr\u014dj", 
         "source": null, 
         "references": [], 
         "common_name": "navroj", 
-        "name": "Navr\u014dj"
+        "description": null
     }
 },
 {
     "pk": 91, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "459f01cd-aebc-4942-a5d5-681fd03e03cf", 
         "images": [
             4869
         ], 
+        "name": "D\u0113\u015b", 
         "source": null, 
         "references": [], 
         "common_name": "desh", 
-        "name": "D\u0113\u015b"
+        "description": null
     }
 },
 {
     "pk": 92, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e8b0199a-7f52-4175-b8a5-160135413198", 
         "images": [
             4870
         ], 
+        "name": "Kar\u1e47\u0101\u1e6daka d\u0113vag\u0101ndh\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "karnataka devagandhari", 
-        "name": "Kar\u1e47\u0101\u1e6daka d\u0113vag\u0101ndh\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 93, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "dca97a7a-eef7-4e6b-ab32-935be8482c7a", 
         "images": [
             3447
         ], 
+        "name": "Simhav\u0101hini", 
         "source": null, 
         "references": [], 
         "common_name": "simhavahini", 
-        "name": "Simhav\u0101hini"
+        "description": null
     }
 },
 {
     "pk": 94, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "7f00e559-cc74-4cdc-a8b2-6263e548c1c3", 
         "images": [
             4871
         ], 
+        "name": "Cakrav\u0101ka\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "chakravakam", 
-        "name": "Cakrav\u0101ka\u1e41"
+        "description": null
     }
 },
 {
     "pk": 95, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b912dae7-265a-4170-8dfa-e757987e10f7", 
         "images": [
             4872
         ], 
+        "name": "Kal\u0101vati", 
         "source": null, 
         "references": [], 
         "common_name": "kalavathi", 
-        "name": "Kal\u0101vati"
+        "description": null
     }
 },
 {
     "pk": 96, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ea7f610a-06f4-4461-ba8b-e115f238375c", 
         "images": [
             4873
         ], 
+        "name": "R\u0101gam\u0101lika", 
         "source": null, 
         "references": [], 
         "common_name": "ragamalika", 
-        "name": "R\u0101gam\u0101lika"
+        "description": null
     }
 },
 {
     "pk": 97, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "71bda563-9bc4-425d-86f0-9fa2df4870f4", 
         "images": [], 
+        "name": "G\u0101ng\u0113yabh\u016b\u1e63a\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "gangeyabhushani", 
-        "name": "G\u0101ng\u0113yabh\u016b\u1e63a\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 98, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "42dd0ccb-f92a-4622-ae5d-a3be571b4939", 
         "images": [
             4874
         ], 
+        "name": "\u015ar\u012branjani", 
         "source": null, 
         "references": [], 
         "common_name": "shri ranjani", 
-        "name": "\u015ar\u012branjani"
+        "description": null
     }
 },
 {
     "pk": 99, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "857b3dfd-1931-47d8-bc9c-e2c8ba011cab", 
         "images": [
             4875
         ], 
+        "name": "Kathanakut\u016bhala\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "kadanakutuhulam", 
-        "name": "Kathanakut\u016bhala\u1e41"
+        "description": null
     }
 },
 {
     "pk": 100, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "396fdd35-4e23-4cba-b327-35f86af8bea1", 
         "images": [
             4876
         ], 
+        "name": "Mi\u015bra \u015bivaranjani", 
         "source": null, 
         "references": [], 
         "common_name": "misra shivaranjani", 
-        "name": "Mi\u015bra \u015bivaranjani"
+        "description": null
     }
 },
 {
     "pk": 101, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9d221807-bc21-47b3-9842-fc70ec8e7715", 
         "images": [
             4877
         ], 
+        "name": "V\u012bra vasanta\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "veera vasantam", 
-        "name": "V\u012bra vasanta\u1e41"
+        "description": null
     }
 },
 {
     "pk": 102, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "269ee011-233e-409a-a657-63d15eca5243", 
         "images": [
             4878
         ], 
+        "name": "B\u0101g\u0113\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "bageshri", 
-        "name": "B\u0101g\u0113\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 104, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9deee790-6210-41fe-8d0a-beef3a880ac6", 
         "images": [
             4879
         ], 
+        "name": "Cint\u0101ma\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "chintamani", 
-        "name": "Cint\u0101ma\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 105, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "06e091bf-ee17-424c-8ef9-370626bfac44", 
         "images": [
             4880
         ], 
+        "name": "Meghamalhar", 
         "source": null, 
         "references": [], 
         "common_name": "meghmalhar", 
-        "name": "Meghamalhar"
+        "description": null
     }
 },
 {
     "pk": 106, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "71602b84-0817-46fd-a189-b127f77bed69", 
         "images": [
             4881
         ], 
+        "name": "Ga\u1e41bh\u012bra n\u0101\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "gambhira nata", 
-        "name": "Ga\u1e41bh\u012bra n\u0101\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 107, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d99b1d3c-36d0-41d2-8303-59ede6da7b78", 
         "images": [
             4882
         ], 
+        "name": "Ha\u1e41san\u0101da\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "hamsanadam", 
-        "name": "Ha\u1e41san\u0101da\u1e41"
+        "description": null
     }
 },
 {
     "pk": 108, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "db7e6830-c26f-43ab-8d60-e5f6691a33cb", 
         "images": [
             4883
         ], 
+        "name": "Jhank\u0101radhvani", 
         "source": null, 
         "references": [], 
         "common_name": "jhankaradhwani", 
-        "name": "Jhank\u0101radhvani"
+        "description": null
     }
 },
 {
     "pk": 110, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8db18e63-1de0-474e-b194-05dc99699285", 
         "images": [
             4884
         ], 
+        "name": "Bau\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "bauli", 
-        "name": "Bau\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 111, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "54bee7b6-2d11-46f1-a3fc-32bb27964f88", 
         "images": [
             4885
         ], 
+        "name": "Am\u1e5btavar\u1e63i\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "amritavarshini", 
-        "name": "Am\u1e5btavar\u1e63i\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 112, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "45dc49e1-6a86-4f89-ad1e-b14453805b81", 
         "images": [
             4886
         ], 
+        "name": "Sarasvati", 
         "source": null, 
         "references": [], 
         "common_name": "saraswati", 
-        "name": "Sarasvati"
+        "description": null
     }
 },
 {
     "pk": 113, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3bd9ddee-8ba2-460c-8bef-821d8152766d", 
         "images": [
             4887
         ], 
+        "name": "Kurinji", 
         "source": null, 
         "references": [], 
         "common_name": "kurinji", 
-        "name": "Kurinji"
+        "description": null
     }
 },
 {
     "pk": 114, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "85fb4923-c44d-41a5-9dd1-c85c1b0c4583", 
         "images": [
             3451
         ], 
+        "name": "Ghan\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "ghanta", 
-        "name": "Ghan\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 115, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1f12126a-d562-4f61-9132-6fea80834240", 
         "images": [], 
+        "name": "Cencu k\u0101mbh\u014dji", 
         "source": null, 
         "references": [], 
         "common_name": "chenchu kambhoji", 
-        "name": "Cencu k\u0101mbh\u014dji"
+        "description": null
     }
 },
 {
     "pk": 116, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "70349fc3-4b4e-4656-9372-7fe557e1166e", 
         "images": [], 
+        "name": "Garu\u1e0dadhvani", 
         "source": null, 
         "references": [], 
         "common_name": "garudadvani", 
-        "name": "Garu\u1e0dadhvani"
+        "description": null
     }
 },
 {
     "pk": 117, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "94fda214-69af-4004-ba58-14a2bad549a4", 
         "images": [
             4888
         ], 
+        "name": "Vijaya\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "vijayashri", 
-        "name": "Vijaya\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 118, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "084dc5a5-9594-410b-97ec-4723cc0286ea", 
         "images": [
             4889
         ], 
+        "name": "R\u0113vagupti", 
         "source": null, 
         "references": [], 
         "common_name": "revagupti", 
-        "name": "R\u0113vagupti"
+        "description": null
     }
 },
 {
     "pk": 119, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3684d967-55c6-4a78-84fd-1f82b6253d65", 
         "images": [
             4890
         ], 
+        "name": "Vijayanagari", 
         "source": null, 
         "references": [], 
         "common_name": "vijayanagari", 
-        "name": "Vijayanagari"
+        "description": null
     }
 },
 {
     "pk": 120, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "2a851793-8ccc-448a-9f82-42940d5d84b7", 
         "images": [
             4891
         ], 
+        "name": "K\u012brav\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "kiravani", 
-        "name": "K\u012brav\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 121, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "719bb6eb-e167-4b1a-bae3-33c530b1916b", 
         "images": [
             4892
         ], 
+        "name": "Sarasvat\u012b man\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "saraswati manohari", 
-        "name": "Sarasvat\u012b man\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 122, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bef21623-d55b-44f2-b9ee-8ba9e32ed2d1", 
         "images": [
             4893
         ], 
+        "name": "V\u0113l\u0101vali", 
         "source": null, 
         "references": [], 
         "common_name": "velavali", 
-        "name": "V\u0113l\u0101vali"
+        "description": null
     }
 },
 {
     "pk": 124, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "15206704-c035-4edf-850f-10ccc107ce79", 
         "images": [
             4894
         ], 
+        "name": "Rudrapriya", 
         "source": null, 
         "references": [], 
         "common_name": "rudrapriya", 
-        "name": "Rudrapriya"
+        "description": null
     }
 },
 {
     "pk": 125, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "2440dffb-6d24-4d9c-a4cd-572bcb9a2605", 
         "images": [
             4895
         ], 
+        "name": "Ka\u1e37\u0101nidhi", 
         "source": null, 
         "references": [], 
         "common_name": "kalanidhi", 
-        "name": "Ka\u1e37\u0101nidhi"
+        "description": null
     }
 },
 {
     "pk": 126, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "0f6a2156-8c40-4eb8-b752-f7ceb6aadaa5", 
         "images": [
             4896
         ], 
+        "name": "Maduvanti", 
         "source": null, 
         "references": [], 
         "common_name": "madhuvanti", 
-        "name": "Maduvanti"
+        "description": null
     }
 },
 {
     "pk": 127, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "6ed82032-8afe-4e57-9e43-ba49730d504b", 
         "images": [
             4897
         ], 
+        "name": "G\u014dpik\u0101vasanta\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "gopika vasantham", 
-        "name": "G\u014dpik\u0101vasanta\u1e41"
+        "description": null
     }
 },
 {
     "pk": 128, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "4b4bf3d7-dc40-4c7a-b3a8-f96d145d3bb9", 
         "images": [
             3453
         ], 
+        "name": "P\u0101lamanjari", 
         "source": null, 
         "references": [], 
         "common_name": "palamanjari", 
-        "name": "P\u0101lamanjari"
+        "description": null
     }
 },
 {
     "pk": 129, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b9f89b19-3a53-4266-851b-3d50c2e0fe1f", 
         "images": [
             4898
         ], 
+        "name": "G\u0101nam\u016brti", 
         "source": null, 
         "references": [], 
         "common_name": "ganamurti", 
-        "name": "G\u0101nam\u016brti"
+        "description": null
     }
 },
 {
     "pk": 131, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9ac1f24c-a3d6-402e-b1c7-e00543ceb953", 
         "images": [
             4899
         ], 
+        "name": "P\u0101\u1e0di", 
         "source": null, 
         "references": [], 
         "common_name": "padi", 
-        "name": "P\u0101\u1e0di"
+        "description": null
     }
 },
 {
     "pk": 132, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "405a6aac-a782-4e9e-a7c1-5f080c5c22d1", 
         "images": [
             4900
         ], 
+        "name": "C\u0101y\u0101tarangi\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "chayatarangini", 
-        "name": "C\u0101y\u0101tarangi\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 133, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "61b91861-d839-4472-99e3-b6aa435884e4", 
         "images": [
             4901
         ], 
+        "name": "H\u0113mavati", 
         "source": null, 
         "references": [], 
         "common_name": "hemavati", 
-        "name": "H\u0113mavati"
+        "description": null
     }
 },
 {
     "pk": 134, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "6dce5b9e-98d2-475a-9664-32f4d316c26d", 
         "images": [
             4902
         ], 
+        "name": "\u0100hiri", 
         "source": null, 
         "references": [], 
         "common_name": "ahiri", 
-        "name": "\u0100hiri"
+        "description": null
     }
 },
 {
     "pk": 135, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1c9d32b8-81e7-4f48-b7f5-1b5e41c35248", 
         "images": [
             4903
         ], 
+        "name": "K\u0101pi n\u0101r\u0101ya\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "kapi narayani", 
-        "name": "K\u0101pi n\u0101r\u0101ya\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 136, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "98d46d9e-5100-4f24-bcd4-d0f95966c7cb", 
         "images": [
             4904
         ], 
+        "name": "Sindhubhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "sindhubhairavi", 
-        "name": "Sindhubhairavi"
+        "description": null
     }
 },
 {
     "pk": 137, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "85ccf631-4cdf-4f6c-a841-0edfcf4255d1", 
         "images": [
             4905
         ], 
+        "name": "K\u0101mavardani/Pantuvar\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "kamavardani", 
-        "name": "K\u0101mavardani/Pantuvar\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 138, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bee48230-2473-4e0c-98d8-b3ac5cc47d76", 
         "images": [
             4906
         ], 
+        "name": "Lalita", 
         "source": null, 
         "references": [], 
         "common_name": "lalitha", 
-        "name": "Lalita"
+        "description": null
     }
 },
 {
     "pk": 139, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "85583e4c-02a2-4fd3-9d0b-4e13086fd6a2", 
         "images": [
             3461
         ], 
+        "name": "M\u0101navati", 
         "source": null, 
         "references": [], 
         "common_name": "manavati", 
-        "name": "M\u0101navati"
+        "description": null
     }
 },
 {
     "pk": 140, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "928f0afd-6d50-4a3d-8246-04d02d443b90", 
         "images": [
             4907
         ], 
+        "name": "Pu\u1e63palatika", 
         "source": null, 
         "references": [], 
         "common_name": "pushpalatika", 
-        "name": "Pu\u1e63palatika"
+        "description": null
     }
 },
 {
     "pk": 141, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e18fcaa7-1f9c-4f09-b627-0687481f4ec7", 
         "images": [
             4908
         ], 
+        "name": "\u0100nandabhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "ananda bhairavi", 
-        "name": "\u0100nandabhairavi"
+        "description": null
     }
 },
 {
     "pk": 142, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "4b1df9b3-371b-45d2-92fc-c2c9b5254324", 
         "images": [
             4909
         ], 
+        "name": "V\u0113gav\u0101hi\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "vegavahini", 
-        "name": "V\u0113gav\u0101hi\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 144, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "f6e2bf2f-f9ee-421c-bf49-e584c4e1c66c", 
         "images": [
             4910
         ], 
+        "name": "jog - sarastram", 
         "source": null, 
         "references": [], 
         "common_name": "", 
-        "name": "jog - sarastram"
+        "description": null
     }
 },
 {
     "pk": 145, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8e94b762-5805-4816-9aa0-9a61819c683e", 
         "images": [
             4911
         ], 
+        "name": "Valaji", 
         "source": null, 
         "references": [], 
         "common_name": "valaji", 
-        "name": "Valaji"
+        "description": null
     }
 },
 {
     "pk": 146, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ae52e8e0-d755-411c-aecb-1b6e20a3c8a3", 
         "images": [
             4912
         ], 
+        "name": "Ravicandrika", 
         "source": null, 
         "references": [], 
         "common_name": "ravi chandrika", 
-        "name": "Ravicandrika"
+        "description": null
     }
 },
 {
     "pk": 148, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ce70da4e-0264-45ce-a031-fdd091f07906", 
         "images": [
             4913
         ], 
+        "name": "\u0100nd\u014d\u1e37ika", 
         "source": null, 
         "references": [], 
         "common_name": "andolika", 
-        "name": "\u0100nd\u014d\u1e37ika"
+        "description": null
     }
 },
 {
     "pk": 149, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d5f3448e-3665-4721-ac85-5b1cdea1d92b", 
         "images": [
             4914
         ], 
+        "name": "P\u016br\u1e47acandrika", 
         "source": null, 
         "references": [], 
         "common_name": "purna chandrika", 
-        "name": "P\u016br\u1e47acandrika"
+        "description": null
     }
 },
 {
     "pk": 151, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1f68d460-2481-4baf-bee0-a232212db255", 
         "images": [], 
+        "name": "Na\u1e6dan\u0101r\u0101ya\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "natanarayani", 
-        "name": "Na\u1e6dan\u0101r\u0101ya\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 152, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8e026984-ebcb-4da2-ba1f-79c29150fb38", 
         "images": [
             3467
         ], 
+        "name": "D\u012bpaka\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "deepakam", 
-        "name": "D\u012bpaka\u1e41"
+        "description": null
     }
 },
 {
     "pk": 153, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ef391ddc-0783-4953-bd5d-8568f3b5f3be", 
         "images": [
             4915
         ], 
+        "name": "Kar\u1e47\u0101\u1e6daka beh\u0101g", 
         "source": null, 
         "references": [], 
         "common_name": "karnataka behag", 
-        "name": "Kar\u1e47\u0101\u1e6daka beh\u0101g"
+        "description": null
     }
 },
 {
     "pk": 154, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bdd80890-44f1-4a93-8d93-06a418781f97", 
         "images": [
             4916
         ], 
+        "name": "\u015ar\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "shri", 
-        "name": "\u015ar\u012b"
+        "description": null
     }
 },
 {
     "pk": 156, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ad8fbcac-1a59-4436-89e9-175200d26ad7", 
         "images": [
             4917
         ], 
+        "name": "Kar\u1e47\u0101\u1e6daka k\u0101pi", 
         "source": null, 
         "references": [], 
         "common_name": "karnataka kapi", 
-        "name": "Kar\u1e47\u0101\u1e6daka k\u0101pi"
+        "description": null
     }
 },
 {
     "pk": 157, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b7bcda0d-9f56-4e8d-992e-e8638ca4dfd9", 
         "images": [
             3471
         ], 
+        "name": "Dharm\u0101vati", 
         "source": null, 
         "references": [], 
         "common_name": "dharmavati", 
-        "name": "Dharm\u0101vati"
+        "description": null
     }
 },
 {
     "pk": 158, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "08b59d62-1189-4dcb-9e4a-41ee1b6a184a", 
         "images": [
             4918
         ], 
+        "name": "Jingala", 
         "source": null, 
         "references": [], 
         "common_name": "jingala", 
-        "name": "Jingala"
+        "description": null
     }
 },
 {
     "pk": 159, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "09c179f3-8b19-4792-a852-e9fa0090e409", 
         "images": [
             4919
         ], 
+        "name": "K\u0101pi", 
         "source": null, 
         "references": [], 
         "common_name": "kapi", 
-        "name": "K\u0101pi"
+        "description": null
     }
 },
 {
     "pk": 160, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8b19cbca-f096-4e13-9568-8927b22127bb", 
         "images": [
             4920
         ], 
+        "name": "Navarasa kanna\u1e0da", 
         "source": null, 
         "references": [], 
         "common_name": "navarasa kannada", 
-        "name": "Navarasa kanna\u1e0da"
+        "description": null
     }
 },
 {
     "pk": 161, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ac92b0fc-fb9c-40b1-8662-4664d3fde0f2", 
         "images": [], 
+        "name": "Ka\u1e37\u0101 s\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "kala saveri", 
-        "name": "Ka\u1e37\u0101 s\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 162, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ff409b74-92d8-4e5d-834c-4dfa05b1f187", 
         "images": [
             4921
         ], 
+        "name": "Jayanta\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "jayantasri", 
-        "name": "Jayanta\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 163, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a5b58000-e984-46d2-ae8c-f29b6ac01d9e", 
         "images": [
             4922
         ], 
+        "name": "N\u0101r\u0101ya\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "narayani", 
-        "name": "N\u0101r\u0101ya\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 164, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "112efe55-29b9-490f-a0b5-6c7bce8ac3fe", 
         "images": [
             3473
         ], 
+        "name": "G\u0101nav\u0101ridhi", 
         "source": null, 
         "references": [], 
         "common_name": "ganavaridhi", 
-        "name": "G\u0101nav\u0101ridhi"
+        "description": null
     }
 },
 {
     "pk": 165, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "6cc419d4-cfdc-4d91-bd3e-9c6d609db2a1", 
         "images": [
             4923
         ], 
+        "name": "K\u0101maranjani", 
         "source": null, 
         "references": [], 
         "common_name": "kamaranjani", 
-        "name": "K\u0101maranjani"
+        "description": null
     }
 },
 {
     "pk": 166, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b4cd8c41-994c-4c03-af33-8a5b2c227c9c", 
         "images": [
             4924
         ], 
+        "name": "N\u012bl\u0101\u1e41bari", 
         "source": null, 
         "references": [], 
         "common_name": "nilambari", 
-        "name": "N\u012bl\u0101\u1e41bari"
+        "description": null
     }
 },
 {
     "pk": 167, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d675ee9c-e9d8-46f8-9475-6063ae7b187d", 
         "images": [
             4925
         ], 
+        "name": "N\u0101yaki", 
         "source": null, 
         "references": [], 
         "common_name": "nayaki", 
-        "name": "N\u0101yaki"
+        "description": null
     }
 },
 {
     "pk": 168, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "5f1d7032-9f84-46ce-be22-846aac47fcba", 
         "images": [
             4926
         ], 
+        "name": "Ka\u1e37y\u0101\u1e47a vasanta\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "kalyana vasantham", 
-        "name": "Ka\u1e37y\u0101\u1e47a vasanta\u1e41"
+        "description": null
     }
 },
 {
     "pk": 169, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "6e64197a-87d1-4258-b114-d219cb1230cd", 
         "images": [
             3475
         ], 
+        "name": "Sucaritra", 
         "source": null, 
         "references": [], 
         "common_name": "sucharitra", 
-        "name": "Sucaritra"
+        "description": null
     }
 },
 {
     "pk": 170, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "53cdd85c-b664-4008-b7fd-bc92200fa926", 
         "images": [], 
+        "name": "May\u016bra s\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "mayura saveri", 
-        "name": "May\u016bra s\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 171, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1b84ffc3-22ab-4b7a-bdea-99ee5bd32b5a", 
         "images": [
             4927
         ], 
+        "name": "V\u0101gad\u012b\u015bvari", 
         "source": null, 
         "references": [], 
         "common_name": "vagadeeswari", 
-        "name": "V\u0101gad\u012b\u015bvari"
+        "description": null
     }
 },
 {
     "pk": 172, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3d9f7091-f81b-4333-88f2-32dbec7b473d", 
         "images": [], 
+        "name": "Hind\u014d\u1e37a vasanta\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "hindola vasantam", 
-        "name": "Hind\u014d\u1e37a vasanta\u1e41"
+        "description": null
     }
 },
 {
     "pk": 173, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "0462888b-cebe-473b-af4f-c03697f007c0", 
         "images": [
             4928
         ], 
+        "name": "\u015a\u016b\u1e37i\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "shulini", 
-        "name": "\u015a\u016b\u1e37i\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 174, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "638623d0-55d5-4a4f-99cb-eb978de55e13", 
         "images": [
             4929
         ], 
+        "name": "P\u016brvi", 
         "source": null, 
         "references": [], 
         "common_name": "purvi", 
-        "name": "P\u016brvi"
+        "description": null
     }
 },
 {
     "pk": 175, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c3d4e7f7-1f96-49f1-98c0-8dacf263588f", 
         "images": [
             4930
         ], 
+        "name": "M\u0101n\u1e0du", 
         "source": null, 
         "references": [], 
         "common_name": "maund", 
-        "name": "M\u0101n\u1e0du"
+        "description": null
     }
 },
 {
     "pk": 176, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ba09eb6e-078a-457c-b040-132fe27792a5", 
         "images": [
             4931
         ], 
+        "name": "Kanna\u1e0da gaula", 
         "source": null, 
         "references": [], 
         "common_name": "Kannada gaula", 
-        "name": "Kanna\u1e0da gaula"
+        "description": null
     }
 },
 {
     "pk": 177, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "eead7372-dde3-4673-a929-1d23f57a9b29", 
         "images": [
             3477
         ], 
+        "name": "D\u0113vakriya", 
         "source": null, 
         "references": [], 
         "common_name": "devakriya", 
-        "name": "D\u0113vakriya"
+        "description": null
     }
 },
 {
     "pk": 178, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "7c4ca2b4-5a95-4de8-a9d3-d24c3b6e0b0a", 
         "images": [], 
+        "name": "Bh\u014dga s\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "bhoga saveri", 
-        "name": "Bh\u014dga s\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 179, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "71ddf35b-55c6-4328-893f-1b6b32d18a71", 
         "images": [
             3478
         ], 
+        "name": "D\u012bp\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "deepali", 
-        "name": "D\u012bp\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 180, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1bb0ef95-4e67-43e7-b562-f588466eee3c", 
         "images": [], 
+        "name": "Nir\u014d\u1e63ita", 
         "source": null, 
         "references": [], 
         "common_name": "niroshtha", 
-        "name": "Nir\u014d\u1e63ita"
+        "description": null
     }
 },
 {
     "pk": 181, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "6c7bc45a-8a55-4c43-8e55-a2916f736ed7", 
         "images": [
             4932
         ], 
+        "name": "Jayantas\u0113na", 
         "source": null, 
         "references": [], 
         "common_name": "jayantasena", 
-        "name": "Jayantas\u0113na"
+        "description": null
     }
 },
 {
     "pk": 182, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "4a5912ee-72a7-4caa-bf83-25d75d25f42d", 
         "images": [
             4933
         ], 
+        "name": "Gau\u1e37ipantu", 
         "source": null, 
         "references": [], 
         "common_name": "gaulipantu", 
-        "name": "Gau\u1e37ipantu"
+        "description": null
     }
 },
 {
     "pk": 183, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "4298a0ca-bba5-4b48-beb2-1868bbb8023b", 
         "images": [
             4934
         ], 
+        "name": "Candrakauns", 
         "source": null, 
         "references": [], 
         "common_name": "chandrakauns", 
-        "name": "Candrakauns"
+        "description": null
     }
 },
 {
     "pk": 184, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b08475a2-1049-433a-be8f-105bf14718fb", 
         "images": [
             4935
         ], 
+        "name": "Harik\u0101mbh\u014dji", 
         "source": null, 
         "references": [], 
         "common_name": "harikambhoji", 
-        "name": "Harik\u0101mbh\u014dji"
+        "description": null
     }
 },
 {
     "pk": 185, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b7b3d6ce-5ce1-4f00-9cde-063cfd58246b", 
         "images": [
             4936
         ], 
+        "name": "B\u1e5bnd\u0101vana s\u0101ranga", 
         "source": null, 
         "references": [], 
         "common_name": "brindavana saranga", 
-        "name": "B\u1e5bnd\u0101vana s\u0101ranga"
+        "description": null
     }
 },
 {
     "pk": 186, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "78928ab0-1533-4f7d-a891-182d9bb3a400", 
         "images": [
             4937
         ], 
+        "name": "Mi\u015bra pah\u0101\u1e0di", 
         "source": null, 
         "references": [], 
         "common_name": "misra pahadi", 
-        "name": "Mi\u015bra pah\u0101\u1e0di"
+        "description": null
     }
 },
 {
     "pk": 187, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "448af845-877d-4c60-8b45-23d95917a90a", 
         "images": [
             4938
         ], 
+        "name": "R\u0113vati", 
         "source": null, 
         "references": [], 
         "common_name": "revati", 
-        "name": "R\u0113vati"
+        "description": null
     }
 },
 {
     "pk": 188, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "69f024ff-d012-4ddd-914f-1a3da9ae955d", 
         "images": [
             4939
         ], 
+        "name": "Sun\u0101davin\u014ddini", 
         "source": null, 
         "references": [], 
         "common_name": "sunadavinodini", 
-        "name": "Sun\u0101davin\u014ddini"
+        "description": null
     }
 },
 {
     "pk": 189, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8af13c3e-3cbf-4e15-b098-67827a5d0853", 
         "images": [
             3484
         ], 
+        "name": "Bh\u016b\u1e63\u0101va\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "bhushavali", 
-        "name": "Bh\u016b\u1e63\u0101va\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 190, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a5c2359a-a347-4a84-aef3-7ca228f391f6", 
         "images": [
             4940
         ], 
+        "name": "Kamal\u0101man\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "kamalamanohari", 
-        "name": "Kamal\u0101man\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 193, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e5c4d94a-b34a-42ef-acd7-f235612350e4", 
         "images": [
             4941
         ], 
+        "name": "Gau\u1e37a", 
         "source": null, 
         "references": [], 
         "common_name": "gaula", 
-        "name": "Gau\u1e37a"
+        "description": null
     }
 },
 {
     "pk": 194, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "eaaec039-5524-47fa-b23d-35d057462b84", 
         "images": [
             4942
         ], 
+        "name": "\u015aubhapantuvar\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "subhapantuvarali", 
-        "name": "\u015aubhapantuvar\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 195, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d5763169-fbec-4d11-b295-cc0db252a142", 
         "images": [
             4943
         ], 
+        "name": "Udaya ravicandrika", 
         "source": null, 
         "references": [], 
         "common_name": "udaya ravichandrika", 
-        "name": "Udaya ravicandrika"
+        "description": null
     }
 },
 {
     "pk": 196, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d77d5f57-c5f0-4ad3-9efa-591192872441", 
         "images": [], 
+        "name": "R\u0101ma man\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "rama manohari", 
-        "name": "R\u0101ma man\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 197, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "50d9b542-3ebd-4b02-b9c8-5d780255de20", 
         "images": [
             4944
         ], 
+        "name": "N\u0101ga g\u0101ndh\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "naga gandhari", 
-        "name": "N\u0101ga g\u0101ndh\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 198, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9822bfa9-e086-44ec-b1c7-3f049110ec22", 
         "images": [], 
+        "name": "Vasanta var\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "Vasanta varali", 
-        "name": "Vasanta var\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 199, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bfbd32ac-0ad2-43df-9b63-64d7535ffe43", 
         "images": [
             4945
         ], 
+        "name": "\u0100hir bhairav", 
         "source": null, 
         "references": [], 
         "common_name": "ahir bhairavi", 
-        "name": "\u0100hir bhairav"
+        "description": null
     }
 },
 {
     "pk": 200, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ef3c1ba1-b52f-4ea5-86c7-800134e7e5e1", 
         "images": [], 
+        "name": "Kar\u1e47\u0101\u1e6daka \u015budda s\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "karnataka shuddha saveri", 
-        "name": "Kar\u1e47\u0101\u1e6daka \u015budda s\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 201, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "2638339c-a867-47d0-b9c6-1995e8fbd044", 
         "images": [
             4946
         ], 
+        "name": "S\u0101ranga", 
         "source": null, 
         "references": [], 
         "common_name": "saranga", 
-        "name": "S\u0101ranga"
+        "description": null
     }
 },
 {
     "pk": 202, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a7a53f4c-c7af-4ff2-a26e-48a79a0ec8a2", 
         "images": [
             4947
         ], 
+        "name": "\u015auddas\u012bmantini", 
         "source": null, 
         "references": [], 
         "common_name": "shuddhaseemantini", 
-        "name": "\u015auddas\u012bmantini"
+        "description": null
     }
 },
 {
     "pk": 203, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ffb34126-adef-41c2-a9ad-4c592bf2aa49", 
         "images": [
             4948
         ], 
+        "name": "Janaranjani", 
         "source": null, 
         "references": [], 
         "common_name": "janaranjani", 
-        "name": "Janaranjani"
+        "description": null
     }
 },
 {
     "pk": 204, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3eac045e-8ca2-41b8-b3e2-fa96b5ad0402", 
         "images": [
             4949
         ], 
+        "name": "M\u0101rgahind\u014d\u1e37a\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "margahindolam", 
-        "name": "M\u0101rgahind\u014d\u1e37a\u1e41"
+        "description": null
     }
 },
 {
     "pk": 205, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "4d7b3f93-5eb3-4a2d-bc76-7a5d89aaeb25", 
         "images": [
             3493
         ], 
+        "name": "Pa\u1e6dd\u012bp", 
         "source": null, 
         "references": [], 
         "common_name": "patdeep", 
-        "name": "Pa\u1e6dd\u012bp"
+        "description": null
     }
 },
 {
     "pk": 206, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "761ebea6-1c4c-4a35-8acb-7fbae19e021d", 
         "images": [
             4950
         ], 
+        "name": "Gau\u1e0da malh\u0101r", 
         "source": null, 
         "references": [], 
         "common_name": "gauda malhar", 
-        "name": "Gau\u1e0da malh\u0101r"
+        "description": null
     }
 },
 {
     "pk": 207, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "55134e48-3ad4-4a52-9fa0-6d01e4a1a0bc", 
         "images": [
             3494
         ], 
+        "name": "Jaya man\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "jayamanohari", 
-        "name": "Jaya man\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 208, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "62426742-1ae8-4119-8ae8-730a0ada315f", 
         "images": [
             4951
         ], 
+        "name": "Ham\u012br ka\u1e37ya\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "hameer kalyani", 
-        "name": "Ham\u012br ka\u1e37ya\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 209, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "77662d73-9da0-415f-810b-79e4302a1a5a", 
         "images": [
             4952
         ], 
+        "name": "Malayam\u0101ruta\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "malayamarutam", 
-        "name": "Malayam\u0101ruta\u1e41"
+        "description": null
     }
 },
 {
     "pk": 210, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "f0866e71-33b2-47db-ab75-0808c41f2401", 
         "images": [
             4953
         ], 
+        "name": "K\u0101\u1e41bh\u014dji", 
         "source": null, 
         "references": [], 
         "common_name": "kamboji", 
-        "name": "K\u0101\u1e41bh\u014dji"
+        "description": null
     }
 },
 {
     "pk": 211, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "24cde2bd-2774-476e-9e2b-6da7c6af4a2a", 
         "images": [
             3496
         ], 
+        "name": "Kalga\u1e0da", 
         "source": null, 
         "references": [], 
         "common_name": "kalgada", 
-        "name": "Kalga\u1e0da"
+        "description": null
     }
 },
 {
     "pk": 213, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c114eff2-6f60-492f-9a22-82e4f6af9f19", 
         "images": [
             3497
         ], 
+        "name": "Balaha\u1e41sa", 
         "source": null, 
         "references": [], 
         "common_name": "balahamsa", 
-        "name": "Balaha\u1e41sa"
+        "description": null
     }
 },
 {
     "pk": 214, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "134473d4-2bbb-4b78-9600-a137ac577d3d", 
         "images": [], 
+        "name": "Jy\u014dti svar\u016bpi\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "jyoti swarupini", 
-        "name": "Jy\u014dti svar\u016bpi\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 216, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a6606174-0ef2-4966-bdc0-41e47ceac7cd", 
         "images": [
             4954
         ], 
+        "name": "Dh\u0113nuka", 
         "source": null, 
         "references": [], 
         "common_name": "dhenuka", 
-        "name": "Dh\u0113nuka"
+        "description": null
     }
 },
 {
     "pk": 218, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b04d5978-49cb-4a3e-a148-a42cbec432e5", 
         "images": [
             4955
         ], 
+        "name": "J\u014dgiya", 
         "source": null, 
         "references": [], 
         "common_name": "jogiya", 
-        "name": "J\u014dgiya"
+        "description": null
     }
 },
 {
     "pk": 219, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "72e32039-3fe2-458e-9435-78c372e343dc", 
         "images": [
             4956
         ], 
+        "name": "Durga", 
         "source": null, 
         "references": [], 
         "common_name": "durga", 
-        "name": "Durga"
+        "description": null
     }
 },
 {
     "pk": 220, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3d9d50f0-e5ea-42cf-8040-a8441a238d80", 
         "images": [
             4957
         ], 
+        "name": "M\u014dhan ka\u1e37y\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "mohana kalyani", 
-        "name": "M\u014dhan ka\u1e37y\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 221, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1f4e3b71-9dbd-472b-8554-3e1f7234cac3", 
         "images": [
             4958
         ], 
+        "name": "Darb\u0101r\u012b k\u0101na\u1e0da", 
         "source": null, 
         "references": [], 
         "common_name": "darbari kanada", 
-        "name": "Darb\u0101r\u012b k\u0101na\u1e0da"
+        "description": null
     }
 },
 {
     "pk": 222, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "baf9a24f-3b92-4a3d-9499-d5467fbeb31f", 
         "images": [
             4959
         ], 
+        "name": "Candrajy\u014dti", 
         "source": null, 
         "references": [], 
         "common_name": "chandrajyothi", 
-        "name": "Candrajy\u014dti"
+        "description": null
     }
 },
 {
     "pk": 223, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "f040991c-9950-4742-815f-4ff00eb51629", 
         "images": [
             4960
         ], 
+        "name": "Cittaranjani", 
         "source": null, 
         "references": [], 
         "common_name": "chittaranjani", 
-        "name": "Cittaranjani"
+        "description": null
     }
 },
 {
     "pk": 224, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c7b94157-0577-4246-95d1-3e1ed513ae9f", 
         "images": [
             4961
         ], 
+        "name": "Ked\u0101ra\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "kedaram", 
-        "name": "Ked\u0101ra\u1e41"
+        "description": null
     }
 },
 {
     "pk": 225, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1aca2106-7b2f-4292-8937-be015e47fb9e", 
         "images": [
             4962
         ], 
+        "name": "Lat\u0101ngi", 
         "source": null, 
         "references": [], 
         "common_name": "latangi", 
-        "name": "Lat\u0101ngi"
+        "description": null
     }
 },
 {
     "pk": 226, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "7f8c7c79-2d4e-4a01-901f-5ccc31b6d016", 
         "images": [
             4963
         ], 
+        "name": "Vaku\u1e37\u0101bhara\u1e47a\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "vakulabharanam", 
-        "name": "Vaku\u1e37\u0101bhara\u1e47a\u1e41"
+        "description": null
     }
 },
 {
     "pk": 227, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b5601e32-2166-4a30-adb9-05d56ac39b3c", 
         "images": [
             4964
         ], 
+        "name": "Lalita pancama\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "lalitha panchamam", 
-        "name": "Lalita pancama\u1e41"
+        "description": null
     }
 },
 {
     "pk": 229, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1ac3f9d7-b3b8-4172-a81d-a5f54d85af08", 
         "images": [], 
+        "name": "K\u014dkiladhvani", 
         "source": null, 
         "references": [], 
         "common_name": "kokiladvani", 
-        "name": "K\u014dkiladhvani"
+        "description": null
     }
 },
 {
     "pk": 231, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c18f4888-bd82-4132-b01e-7e2d0e999295", 
         "images": [
             4965
         ], 
+        "name": "Suman\u0113\u015baranjani", 
         "source": null, 
         "references": [], 
         "common_name": "sumanesaranjani", 
-        "name": "Suman\u0113\u015baranjani"
+        "description": null
     }
 },
 {
     "pk": 232, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "3911e7a5-a76d-4dcb-867a-a24a05017f2a", 
         "images": [
             4966
         ], 
+        "name": "C\u0101ruk\u0113\u015bi", 
         "source": null, 
         "references": [], 
         "common_name": "charukesi", 
-        "name": "C\u0101ruk\u0113\u015bi"
+        "description": null
     }
 },
 {
     "pk": 233, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8f9cf36c-1672-45f3-8cee-f7bb9718e2ef", 
         "images": [
             4967
         ], 
+        "name": "N\u0101sikabh\u016b\u1e63a\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "nasikabhushani", 
-        "name": "N\u0101sikabh\u016b\u1e63a\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 236, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b7bf0022-52f8-48c9-9b1d-0463c635a5dd", 
         "images": [
             4968
         ], 
+        "name": "Ratipati priya", 
         "source": null, 
         "references": [], 
         "common_name": "ratipati priya", 
-        "name": "Ratipati priya"
+        "description": null
     }
 },
 {
     "pk": 237, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e8fc7d13-642a-4981-9af4-42135e8f26ef", 
         "images": [], 
+        "name": "Hindust\u0101n g\u0101ndh\u0101ri", 
         "source": null, 
         "references": [], 
         "common_name": "hindustan gandhari", 
-        "name": "Hindust\u0101n g\u0101ndh\u0101ri"
+        "description": null
     }
 },
 {
     "pk": 238, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "02bb5f80-bd77-4320-a72b-59d8aed7b73c", 
         "images": [
             4969
         ], 
+        "name": "Na\u1e37inak\u0101nti", 
         "source": null, 
         "references": [], 
         "common_name": "nalinakanti", 
-        "name": "Na\u1e37inak\u0101nti"
+        "description": null
     }
 },
 {
     "pk": 239, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d90c8641-41c5-4570-9904-d5429297d810", 
         "images": [], 
+        "name": "K\u0101va\u1e0dicindu", 
         "source": null, 
         "references": [], 
         "common_name": "kavadi chindu", 
-        "name": "K\u0101va\u1e0dicindu"
+        "description": null
     }
 },
 {
     "pk": 240, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "80836153-6123-4da2-8a7d-b7de0c1b33da", 
         "images": [
             4970
         ], 
+        "name": "Tanar\u016bpi", 
         "source": null, 
         "references": [], 
         "common_name": "tanarupi", 
-        "name": "Tanar\u016bpi"
+        "description": null
     }
 },
 {
     "pk": 241, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e320dc32-5c9c-4331-a45e-6ca4a7a588f7", 
         "images": [
             4971
         ], 
+        "name": "Till\u0101ng", 
         "source": null, 
         "references": [], 
         "common_name": "thilang", 
-        "name": "Till\u0101ng"
+        "description": null
     }
 },
 {
     "pk": 242, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a2f9f182-0ceb-4531-b286-b840b47a54b8", 
         "images": [
             4972
         ], 
+        "name": "\u015aankar\u0101bhara\u1e47a\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "sankarabharanam", 
-        "name": "\u015aankar\u0101bhara\u1e47a\u1e41"
+        "description": null
     }
 },
 {
     "pk": 244, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "271205f0-986c-49d6-a146-318baa6bb59e", 
         "images": [
             4973
         ], 
+        "name": "S\u0101laga bhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "salaga bhairavi", 
-        "name": "S\u0101laga bhairavi"
+        "description": null
     }
 },
 {
     "pk": 245, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9ec38bd0-b8d1-4fae-99dc-bf6e98ce9f12", 
         "images": [
             4974
         ], 
+        "name": "Bh\u016bp\u0101\u1e37a\u1e41", 
         "source": null, 
         "references": [], 
         "common_name": "bhupalam", 
-        "name": "Bh\u016bp\u0101\u1e37a\u1e41"
+        "description": null
     }
 },
 {
     "pk": 246, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "77dd3ff7-02d3-4a3f-b60b-80f68deee744", 
         "images": [], 
+        "name": "M\u0101\u1e37avi", 
         "source": null, 
         "references": [], 
         "common_name": "malavi", 
-        "name": "M\u0101\u1e37avi"
+        "description": null
     }
 },
 {
     "pk": 247, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c6b5f8d9-ebb4-46af-a020-6646fce2c77d", 
         "images": [
             4975
         ], 
+        "name": "S\u0101ma", 
         "source": null, 
         "references": [], 
         "common_name": "sama", 
-        "name": "S\u0101ma"
+        "description": null
     }
 },
 {
     "pk": 248, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "5221dd51-f9c0-4eda-bb00-285387994c8e", 
         "images": [], 
+        "name": "Gaur\u012bman\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "gaurimanohari", 
-        "name": "Gaur\u012bman\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 249, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "eb662c1f-cc8c-40ec-a94c-166fa258b051", 
         "images": [
             4976
         ], 
+        "name": "\u015auddadhany\u0101si", 
         "source": null, 
         "references": [], 
         "common_name": "shuddhadhanyasi", 
-        "name": "\u015auddadhany\u0101si"
+        "description": null
     }
 },
 {
     "pk": 251, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "65899a79-7614-4188-b4b1-5304f41d710c", 
         "images": [], 
+        "name": "Am\u1e5btav\u0101hi\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "amritavahini", 
-        "name": "Am\u1e5btav\u0101hi\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 252, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a9b0d1c1-e0ae-4c96-89a9-aaa0817b356a", 
         "images": [], 
+        "name": "Bh\u0101vapriya", 
         "source": null, 
         "references": [], 
         "common_name": "bhavapriya", 
-        "name": "Bh\u0101vapriya"
+        "description": null
     }
 },
 {
     "pk": 253, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d4cd4d3e-3391-416b-aa3f-ef0bc1966867", 
         "images": [], 
+        "name": "Budaman\u014dhari", 
         "source": null, 
         "references": [], 
         "common_name": "budamanohari", 
-        "name": "Budaman\u014dhari"
+        "description": null
     }
 },
 {
     "pk": 254, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "db085e26-665d-4f4c-a2a5-95251c22b69e", 
         "images": [
             4977
         ], 
+        "name": "Gamakakriya/P\u016brv\u012bka\u1e37y\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "gamakakriya", 
-        "name": "Gamakakriya/P\u016brv\u012bka\u1e37y\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 255, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "8d808dec-c32f-46c0-a275-a0ab32d1e06e", 
         "images": [], 
+        "name": "Ga\u1e41bh\u012bra v\u0101\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "gambhira vaani", 
-        "name": "Ga\u1e41bh\u012bra v\u0101\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 256, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "743265fa-ee84-4af0-999d-b9e02d43dfa2", 
         "images": [], 
+        "name": "Hamsavin\u014ddini", 
         "source": null, 
         "references": [], 
         "common_name": "hamsavinodini", 
-        "name": "Hamsavin\u014ddini"
+        "description": null
     }
 },
 {
     "pk": 257, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "b1e696b1-cafa-4d7c-ad26-5001e359a816", 
         "images": [], 
+        "name": "J\u014dg", 
         "source": null, 
         "references": [], 
         "common_name": "jog", 
-        "name": "J\u014dg"
+        "description": null
     }
 },
 {
     "pk": 258, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d8fd0d8b-29df-4d80-9f12-4902999e0ea3", 
         "images": [], 
+        "name": "K\u0101nt\u0101ma\u1e47i", 
         "source": null, 
         "references": [], 
         "common_name": "kantamani", 
-        "name": "K\u0101nt\u0101ma\u1e47i"
+        "description": null
     }
 },
 {
     "pk": 259, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "1c7f9e26-4dec-49b0-a1cf-10f3b8f3b8d3", 
         "images": [], 
+        "name": "Kar\u1e47aranjani", 
         "source": null, 
         "references": [], 
         "common_name": "karnaranjani", 
-        "name": "Kar\u1e47aranjani"
+        "description": null
     }
 },
 {
     "pk": 260, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "769f90eb-5707-4836-a9ea-8292bc9df1a0", 
         "images": [], 
+        "name": "Lav\u0101ngi", 
         "source": null, 
         "references": [], 
         "common_name": "lavangi", 
-        "name": "Lav\u0101ngi"
+        "description": null
     }
 },
 {
     "pk": 261, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "92cac0cc-1dbd-44e4-a287-0ddc6f4f7957", 
         "images": [], 
+        "name": "Madhyam\u0101 var\u0101\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "madhyama varali", 
-        "name": "Madhyam\u0101 var\u0101\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 262, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "18b1acb9-dff6-47ec-873a-b2086c8d268d", 
         "images": [
             4978
         ], 
+        "name": "Madhyam\u0101vati", 
         "source": null, 
         "references": [], 
         "common_name": "madyamavati", 
-        "name": "Madhyam\u0101vati"
+        "description": null
     }
 },
 {
     "pk": 263, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "96f7f23b-0e49-42a8-a3be-3d494049e510", 
         "images": [], 
+        "name": "Malahari", 
         "source": null, 
         "references": [], 
         "common_name": "malahari", 
-        "name": "Malahari"
+        "description": null
     }
 },
 {
     "pk": 264, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ab22be5f-1f86-4292-b0ec-7d73e2b2cebe", 
         "images": [], 
+        "name": "Mi\u015bra yaman", 
         "source": null, 
         "references": [], 
         "common_name": "misra yaman", 
-        "name": "Mi\u015bra yaman"
+        "description": null
     }
 },
 {
     "pk": 265, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "bf22d4c6-d774-4cc3-866e-34e014f0933f", 
         "images": [
             4979
         ], 
+        "name": "N\u0101gasvar\u0101va\u1e37i", 
         "source": null, 
         "references": [], 
         "common_name": "nagasvaravali", 
-        "name": "N\u0101gasvar\u0101va\u1e37i"
+        "description": null
     }
 },
 {
     "pk": 266, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "9ebeb536-30a7-403f-8042-f7c1445c4b87", 
         "images": [
             4980
         ], 
+        "name": "N\u0101\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "nata", 
-        "name": "N\u0101\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 267, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "fc69cc1d-c7f1-4ad9-a61a-56bbd5bb5d96", 
         "images": [], 
+        "name": "Na\u1e6dabhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "natabhairavi", 
-        "name": "Na\u1e6dabhairavi"
+        "description": null
     }
 },
 {
     "pk": 268, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "307630ce-768a-495c-a280-0b715f8904fd", 
         "images": [], 
+        "name": "N\u0101\u1e6dakapriya", 
         "source": null, 
         "references": [], 
         "common_name": "natakapriya", 
-        "name": "N\u0101\u1e6dakapriya"
+        "description": null
     }
 },
 {
     "pk": 269, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "f115aef7-3491-4e43-8d78-a8c3fc4efe6b", 
         "images": [], 
+        "name": "R\u0101gavin\u014ddini", 
         "source": null, 
         "references": [], 
         "common_name": "ragavinodini", 
-        "name": "R\u0101gavin\u014ddini"
+        "description": null
     }
 },
 {
     "pk": 270, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e126681d-b3c0-43ce-b93c-9adddbff4036", 
         "images": [], 
+        "name": "R\u0101g\u0113\u015br\u012b", 
         "source": null, 
         "references": [], 
         "common_name": "rageshri", 
-        "name": "R\u0101g\u0113\u015br\u012b"
+        "description": null
     }
 },
 {
     "pk": 271, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "50c1a0d7-0468-4d0e-b37e-c65f462f83e5", 
         "images": [], 
+        "name": "Rasikapriya", 
         "source": null, 
         "references": [], 
         "common_name": "rasikapriya", 
-        "name": "Rasikapriya"
+        "description": null
     }
 },
 {
     "pk": 272, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "d242961b-65cc-4721-aa80-7695b4b35d75", 
         "images": [], 
+        "name": "S\u0101r\u0101mati", 
         "source": null, 
         "references": [], 
         "common_name": "saramathi", 
-        "name": "S\u0101r\u0101mati"
+        "description": null
     }
 },
 {
     "pk": 273, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ead415f7-2dc1-44c9-ae23-6baf05526e9c", 
         "images": [], 
+        "name": "Saras\u0101ngi", 
         "source": null, 
         "references": [], 
         "common_name": "sarasangi", 
-        "name": "Saras\u0101ngi"
+        "description": null
     }
 },
 {
     "pk": 274, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a47e9d22-847a-46e8-b589-2a3537789f5f", 
         "images": [
             3418
         ], 
+        "name": "S\u0101v\u0113ri", 
         "source": null, 
         "references": [], 
         "common_name": "saveri", 
-        "name": "S\u0101v\u0113ri"
+        "description": null
     }
 },
 {
     "pk": 275, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "df6d7748-5599-47ce-aaae-496719ca67fa", 
         "images": [], 
+        "name": "\u015aivaranjani", 
         "source": null, 
         "references": [], 
         "common_name": "shivaranjani", 
-        "name": "\u015aivaranjani"
+        "description": null
     }
 },
 {
     "pk": 276, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e5a9b370-656c-4003-9f01-b3084b9097ad", 
         "images": [], 
+        "name": "\u015audda s\u0101rang", 
         "source": null, 
         "references": [], 
         "common_name": "shuddhasarang", 
-        "name": "\u015audda s\u0101rang"
+        "description": null
     }
 },
 {
     "pk": 277, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "ccc2de0c-b290-478c-85a3-1f08aa6aee1f", 
         "images": [], 
+        "name": "Svararanjani", 
         "source": null, 
         "references": [], 
         "common_name": "swararanjani", 
-        "name": "Svararanjani"
+        "description": null
     }
 },
 {
     "pk": 278, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "0ad2c103-8c06-4871-9d4f-bfe035af634d", 
         "images": [], 
+        "name": "\u015ay\u0101\u1e41 ka\u1e37y\u0101\u1e47", 
         "source": null, 
         "references": [], 
         "common_name": "shyam kalyan", 
-        "name": "\u015ay\u0101\u1e41 ka\u1e37y\u0101\u1e47"
+        "description": null
     }
 },
 {
     "pk": 279, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "a9232b55-8be9-412f-b0ed-1c895196f1c5", 
         "images": [], 
+        "name": "Varamu", 
         "source": null, 
         "references": [], 
         "common_name": "varamu", 
-        "name": "Varamu"
+        "description": null
     }
 },
 {
     "pk": 280, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "77f70165-3ffb-4cd6-af62-ef697700e0cc", 
         "images": [], 
+        "name": "Vasantabhairavi", 
         "source": null, 
         "references": [], 
         "common_name": "vasanta bhairavi", 
-        "name": "Vasantabhairavi"
+        "description": null
     }
 },
 {
     "pk": 281, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "e29f83c4-63a6-4615-a736-1c3d62c46ec8", 
         "images": [], 
+        "name": "V\u0101santi", 
         "source": null, 
         "references": [], 
         "common_name": "vaasanthi", 
-        "name": "V\u0101santi"
+        "description": null
     }
 },
 {
     "pk": 283, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "505187d3-1d73-4ef5-9b4a-7be2dea8b223", 
         "images": [], 
+        "name": "Kanna\u1e0da", 
         "source": null, 
         "references": [], 
         "common_name": "kannada", 
-        "name": "Kanna\u1e0da"
+        "description": null
     }
 },
 {
     "pk": 284, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "972d1c47-edff-420b-802d-78b14069b103", 
         "images": [], 
+        "name": "C\u0101l\u0101n\u0101\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "chalanata", 
-        "name": "C\u0101l\u0101n\u0101\u1e6da"
+        "description": null
     }
 },
 {
     "pk": 285, 
     "model": "carnatic.raaga", 
     "fields": {
-        "description": null, 
+        "uuid": "c3582273-ea84-4b76-b816-01fad478eb28", 
         "images": [], 
+        "name": "C\u0101y\u0101n\u0101\u1e6da", 
         "source": null, 
         "references": [], 
         "common_name": "chayanata", 
-        "name": "C\u0101y\u0101n\u0101\u1e6da"
+        "description": null
     }
 },
 {
@@ -5375,6 +5621,38 @@
     "fields": {
         "name": "ragashree", 
         "raaga": 154
+    }
+},
+{
+    "pk": 321, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "mechakalyani", 
+        "raaga": 27
+    }
+},
+{
+    "pk": 322, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "hanumathodi", 
+        "raaga": 55
+    }
+},
+{
+    "pk": 323, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "dhirashankarabharanam", 
+        "raaga": 242
+    }
+},
+{
+    "pk": 324, 
+    "model": "carnatic.raagaalias", 
+    "fields": {
+        "name": "dharbaru", 
+        "raaga": 13
     }
 },
 {
