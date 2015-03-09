@@ -59,7 +59,7 @@ class Document(models.Model):
     objects = DocumentManager()
 
     collection = models.ForeignKey(Collection, related_name='documents')
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=500)
     """If the file is known in a different database, the identifier
        for the item."""
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
