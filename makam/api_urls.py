@@ -19,35 +19,35 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 import makam.api
 
-mbid_match = r'(?P<mbid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
 urlpatterns = [
     url(r'^form$', makam.api.FormList.as_view(), name='api-makam-form-list'),
-    url(r'^form/(?P<pk>\d+)$', makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
+    url(r'^form/%s$' % uuid_match, makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
 
     url(r'^makam$', makam.api.MakamList.as_view(), name='api-makam-makam-list'),
-    url(r'^makam/(?P<pk>\d+)$', makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
+    url(r'^makam/%s$' % uuid_match, makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
 
     url(r'^usul$', makam.api.UsulList.as_view(), name='api-makam-usul-list'),
-    url(r'^usul/(?P<pk>\d+)$', makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
+    url(r'^usul/%s$' % uuid_match, makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
 
     url(r'^instrument$', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),
     url(r'^instrument/(?P<pk>\d+)$', makam.api.InstrumentDetail.as_view(), name='api-makam-instrument-detail'),
 
     url(r'^work$', makam.api.WorkList.as_view(), name='api-makam-work-list'),
-    url(r'^work/%s$' % mbid_match, makam.api.WorkDetail.as_view(), name='api-makam-work-detail'),
+    url(r'^work/%s$' % uuid_match, makam.api.WorkDetail.as_view(), name='api-makam-work-detail'),
 
     url(r'^recording$', makam.api.RecordingList.as_view(), name='api-makam-recording-list'),
-    url(r'^recording/%s$' % mbid_match, makam.api.RecordingDetail.as_view(), name='api-makam-recording-detail'),
+    url(r'^recording/%s$' % uuid_match, makam.api.RecordingDetail.as_view(), name='api-makam-recording-detail'),
 
     url(r'^artist$', makam.api.ArtistList.as_view(), name='api-makam-artist-list'),
-    url(r'^artist/%s$' % mbid_match, makam.api.ArtistDetail.as_view(), name='api-makam-artist-detail'),
+    url(r'^artist/%s$' % uuid_match, makam.api.ArtistDetail.as_view(), name='api-makam-artist-detail'),
 
     url(r'^composer$', makam.api.ComposerList.as_view(), name='api-makam-composer-list'),
-    url(r'^composer/%s$' % mbid_match, makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
+    url(r'^composer/%s$' % uuid_match, makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
 
     url(r'^release$', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
-    url(r'^release/%s$' % mbid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail')
+    url(r'^release/%s$' % uuid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

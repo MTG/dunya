@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from makam import models
 
@@ -97,22 +97,34 @@ def work(request, uuid, title=None):
            }
     return render(request, "makam/work.html", ret)
 
-def makam(request, makamid, name=None):
+def makambyid(request, makamid, name=None):
     makam = get_object_or_404(models.Makam, pk=makamid)
+    return redirect(makam.get_absolute_url(), permanent=True)
+
+def makam(request, uuid, name=None):
+    makam = get_object_or_404(models.Makam, uuid=uuid)
 
     ret = {"makam": makam
            }
     return render(request, "makam/makam.html", ret)
 
-def usul(request, usulid, name=None):
+def usulbyid(request, usulid, name=None):
     usul = get_object_or_404(models.Usul, pk=usulid)
+    return redirect(usul.get_absolute_url(), permanent=True)
+
+def usul(request, uuid, name=None):
+    usul = get_object_or_404(models.Usul, uuid=uuid)
 
     ret = {"usul": usul
            }
     return render(request, "makam/usul.html", ret)
 
-def form(request, formid, name=None):
+def formbyid(request, formid, name=None):
     form = get_object_or_404(models.Form, pk=formid)
+    return redirect(form.get_absolute_url(), permanent=True)
+
+def form(request, uuid, name=None):
+    form = get_object_or_404(models.Form, uuid=uuid)
 
     ret = {"form": form
            }

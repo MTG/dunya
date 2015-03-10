@@ -29,8 +29,13 @@ urlpatterns = [
     url(r'^release/%s%s$' % (uuid_match, title_match), views.release, name='makam-release'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
     url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='makam-work'),
-    url(r'^makam/(?P<makamid>\d+)%s$' % (name_match, ), views.makam, name='makam-makam'),
-    url(r'^usul/(?P<usulid>\d+)%s$' % (name_match, ), views.usul, name='makam-usul'),
-    url(r'^form/(?P<formid>\d+)%s$' % (name_match, ), views.form, name='makam-form'),
+
+    url(r'^makam/(?P<makamid>\d+)%s$' % (name_match, ), views.makambyid, name='makam-makambyid'),
+    url(r'^makam/%s%s$' % (uuid_match, name_match, ), views.makam, name='makam-makam'),
+    url(r'^form/(?P<formid>\d+)%s$' % (name_match, ), views.formbyid, name='makam-formbyid'),
+    url(r'^form/%s%s$' % (uuid_match, name_match, ), views.form, name='makam-form'),
+    url(r'^usul/(?P<usulid>\d+)%s$' % (name_match, ), views.usulbyid, name='makam-usulbyid'),
+    url(r'^usul/%s%s$' % (uuid_match, name_match, ), views.usul, name='makam-usul'),
+
     url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrument, name='makam-instrument'),
 ]

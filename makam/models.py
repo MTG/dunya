@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
@@ -196,6 +197,7 @@ class MakamAlias(models.Model):
 
 class Makam(models.Model):
     name = models.CharField(max_length=100)
+    uuid = UUIDField(db_index=True, auto=True)
 
     objects = UnaccentManager()
 
@@ -207,7 +209,7 @@ class Makam(models.Model):
             mname = unidecode.unidecode(self.name)
         else:
             mname = self.name
-        return reverse('makam-makam', args=[str(self.id), slugify(unicode(mname))])
+        return reverse('makam-makam', args=[str(self.uuid), slugify(unicode(mname))])
 
     def worklist(self):
         return self.work_set.all()
@@ -229,6 +231,7 @@ class UsulAlias(models.Model):
 
 class Usul(models.Model):
     name = models.CharField(max_length=100)
+    uuid = UUIDField(db_index=True, auto=True)
 
     objects = UnaccentManager()
 
@@ -240,7 +243,7 @@ class Usul(models.Model):
             uname = unidecode.unidecode(self.name)
         else:
             uname = self.name
-        return reverse('makam-usul', args=[str(self.id), slugify(unicode(uname))])
+        return reverse('makam-usul', args=[str(self.uuid), slugify(unicode(uname))])
 
     def worklist(self):
         return self.work_set.all()
@@ -266,6 +269,7 @@ class FormAlias(models.Model):
 
 class Form(models.Model):
     name = models.CharField(max_length=100)
+    uuid = UUIDField(db_index=True, auto=True)
 
     objects = UnaccentManager()
 
@@ -277,7 +281,7 @@ class Form(models.Model):
             fname = unidecode.unidecode(self.name)
         else:
             fname = self.name
-        return reverse('makam-form', args=[str(self.id), slugify(unicode(fname))])
+        return reverse('makam-form', args=[str(self.uuid), slugify(unicode(fname))])
 
     def worklist(self):
         return self.work_set.all()
@@ -306,3 +310,13 @@ class Work(MakamStyle, data.models.Work):
 
     def lyricistlist(self):
         return self.lyricists.all()
+"""
+class SymbTr(models.Model):
+    name = models.CharField(max_length=200)
+    # We use a uuid directly instead of a link to an existing model
+    # because this could be a workid (most common), or a recordingid (sometimes)
+    uuid = UUIDField(db_index=True)
+
+    def __unicode__(self):
+        return u"%s -> %s" % (self.uuid, self.name)
+"""

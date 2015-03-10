@@ -85,7 +85,7 @@ class MakamDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'works', 'taksims', 'gazels']
 
 class MakamDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Makam.objects.all()
     serializer_class = MakamDetailSerializer
 
@@ -101,7 +101,7 @@ class FormDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'works']
 
 class FormDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
@@ -120,7 +120,7 @@ class UsulDetailSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'works', 'taksims', 'gazels']
 
 class UsulDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Usul.objects.all()
     serializer_class = UsulDetailSerializer
 
@@ -170,6 +170,7 @@ class WorkDetailSerializer(serializers.ModelSerializer):
 
 class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Work.objects.all()
     serializer_class = WorkDetailSerializer
 
@@ -203,6 +204,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Recording.objects.all()
     serializer_class = RecordingDetailSerializer
 
@@ -227,6 +229,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
 
 class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Artist.objects.all()
     serializer_class = ArtistDetailSerializer
 
@@ -250,6 +253,7 @@ class ComposerDetailSerializer(serializers.ModelSerializer):
 
 class ComposerDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Composer.objects.all()
     serializer_class = ComposerDetailSerializer
 
@@ -281,6 +285,7 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Release.objects.all()
     serializer_class = ReleaseDetailSerializer
 
