@@ -12,7 +12,7 @@ class ReleaseTest(TestCase):
         pass
 
 class ReleaseViewsTest(TestCase):
-    fixtures = ['initial_data', ]
+    fixtures = ['sources', ]
 
     def setUp(self):
         self.user1 = auth.models.User.objects.create_user("user1", "", "pass1")
