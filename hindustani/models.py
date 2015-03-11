@@ -170,11 +170,11 @@ class Artist(HindustaniStyle, data.models.Artist):
         releases = collections.defaultdict(set)
         for release in self.releases():
             for p in release.performers():
-                if p != self.id:
+                if p != self:
                     releases[p].add(release)
                     c[p] += 1
 
-        return [(Artist.objects.get(pk=pk), list(releases[pk])) for pk, count in c.most_common()]
+        return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
     def recordings(self):
         IPClass = self.get_object_map("performance")

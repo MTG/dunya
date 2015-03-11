@@ -323,12 +323,6 @@ def artist(request, uuid, name=None):
     w = data.models.SourceName.objects.get(name="Wikipedia")
     kutcheris = None
     wikipedia = None
-    kr = artist.references.filter(carnatic_artist_source_set=k)
-    if kr.count():
-        kutcheris = kr[0].uri
-    wr = artist.references.filter(carnatic_artist_source_set=w)
-    if wr.count():
-        wikipedia = wr[0].uri
     desc = artist.description
     if desc and desc.source.source_name == k:
         kutcheris = artist.description.source.uri

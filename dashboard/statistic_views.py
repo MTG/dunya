@@ -120,7 +120,7 @@ def carnatic_releases(request):
 
 @user_passes_test(views.is_staff)
 def carnatic_coverart(request):
-    releases = carnatic.models.Concert.objects.select_related('artists')
+    releases = carnatic.models.Concert.objects.all()
     counted = releases.annotate(Count('images'))
     noimages = [r for r in counted.all() if r.images__count == 0]
     dashcoll = models.Collection.objects.get(id=compmusic.CARNATIC_COLLECTION)
