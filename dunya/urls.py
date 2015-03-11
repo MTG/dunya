@@ -2,20 +2,18 @@ from django.conf.urls import include, url, static
 from django.conf import settings
 from django.contrib import admin
 from django.views.generic.base import RedirectView
+import django.contrib.auth.views
 
-admin.autodiscover()
-
-js_info_dict = {
-    'packages': ('django.conf',),
-}
+import dunya.views
+import makam
 
 urlpatterns = [
     # Examples:
-    url(r'^$', RedirectView.as_view(pattern_name="carnatic-main"), name="main"),
-    url(r'^/', RedirectView.as_view(pattern_name="carnatic-main")),
-    url(r'^about/terms', 'dunya.views.terms', name="terms"),
-    url(r'^about/cookies', 'dunya.views.cookies', name="cookies"),
-    url(r'^about/contact', 'dunya.views.contact', name="contact"),
+    url(r'^$', RedirectView.as_view(pattern_name="carnatic-main", permanent=True), name="main"),
+    url(r'^/', RedirectView.as_view(pattern_name="carnatic-main", permanent=True)),
+    url(r'^about/terms', dunya.views.terms, name="terms"),
+    url(r'^about/cookies', dunya.views.cookies, name="cookies"),
+    url(r'^about/contact', dunya.views.contact, name="contact"),
     url(r'^api/carnatic/', include('carnatic.api_urls')),
     url(r'^api/hindustani/', include('hindustani.api_urls')),
     url(r'^api/makam/', include('makam.api_urls')),
@@ -28,12 +26,10 @@ urlpatterns = [
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.urls')),
-    url(r'^inplaceeditform/', include('inplaceeditform.urls')),
-    url(r'^jsi18n$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^dashboard/', include('dashboard.urls')),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^makamplayer/$', 'makam.views.makamplayer'),
+    url(r'^accounts/login/$', django.contrib.auth.views.login),
+    url(r'^accounts/logout/$', django.contrib.auth.views.logout),
+    url(r'^makamplayer/$', makam.views.makamplayer),
 ]
 
 if settings.DEBUG:
