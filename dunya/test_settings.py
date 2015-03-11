@@ -1,15 +1,10 @@
 from settings import *
 
-INSTALLED_APPS = INSTALLED_APPS + ('django_nose', )
 if "motif" in DATABASES:
     del DATABASES["motif"]
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-SOUTH_TESTS_MIGRATE = False
+TEST_RUNNER = "xmlrunner.extra.djangotestrunner.XMLTestRunner"
+TEST_OUTPUT_VERBOSE = True
+TEST_OUTPUT_DESCRIPTIONS = True
+TEST_OUTPUT_DIR = "xmlrunner"
 
-NOSE_ARGS = [
-    '--with-xcoverage',
-    '--cover-package=carnatic,dashboard,docserver,hindustani,makam',
-    '--with-xunit',
-    '--cover-erase'
-]
