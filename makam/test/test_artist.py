@@ -27,6 +27,7 @@ class ArtistTest(TestCase):
 
         coll = a2.collaborating_artists()
         self.assertEqual(2, len(coll))
+        coll = sorted(coll, key=lambda a: a.name)
         self.assertEqual([a1, a3], coll)
 
         coll = a3.collaborating_artists()

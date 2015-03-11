@@ -42,7 +42,6 @@ class ReleaseTest(TestCase):
         perfs = self.release.performers()
         self.assertEqual(3, len(perfs))
         perfs = sorted(perfs, key=lambda p: p.name)
-        print perfs
         self.assertEqual(self.a1, perfs[0])
         self.assertEqual(self.a2, perfs[1])
         self.assertEqual(self.a3, perfs[2])
