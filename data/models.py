@@ -75,7 +75,7 @@ class BaseModel(models.Model):
         abstract = True
 
     source = models.ForeignKey(Source, blank=True, null=True, related_name="%(app_label)s_%(class)s_source_set")
-    references = models.ManyToManyField(Source, blank=True, null=True, related_name="%(app_label)s_%(class)s_reference_set")
+    references = models.ManyToManyField(Source, blank=True, related_name="%(app_label)s_%(class)s_reference_set")
     description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
     images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
 
@@ -143,7 +143,7 @@ class Artist(BaseModel):
     end = models.CharField(max_length=10, blank=True, null=True)
     artist_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='P')
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
-    group_members = models.ManyToManyField('Artist', blank=True, null=True, related_name='groups')
+    group_members = models.ManyToManyField('Artist', blank=True, related_name='groups')
     dummy = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
@@ -218,8 +218,8 @@ class Work(BaseModel):
         abstract = True
     title = models.CharField(max_length=100)
     mbid = UUIDField(blank=True, null=True)
-    composers = models.ManyToManyField('Composer', blank=True, null=True, related_name="works")
-    lyricists = models.ManyToManyField('Composer', blank=True, null=True, related_name="lyric_works")
+    composers = models.ManyToManyField('Composer', blank=True, related_name="works")
+    lyricists = models.ManyToManyField('Composer', blank=True, related_name="lyric_works")
 
     def __unicode__(self):
         return self.title

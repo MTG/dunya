@@ -81,7 +81,7 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
     works = WorkInnerSerializer(source='works')
     composers = ComposerInnerSerializer(source='composers')
-    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    aliases = serializers.RelatedField(many=True, source='aliases.all', read_only=True)
 
     class Meta:
         model = models.Taala
@@ -101,7 +101,7 @@ class RaagaDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(source='artists')
     works = WorkInnerSerializer(source='works')
     composers = ComposerInnerSerializer(source='composers')
-    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    aliases = serializers.RelatedField(many=True, source='aliases.all', read_only=True)
 
     class Meta:
         model = models.Raaga

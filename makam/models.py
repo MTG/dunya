@@ -123,7 +123,7 @@ class Recording(MakamStyle, data.models.Recording):
     # If either of these flags is set, we don't have a work to store
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
-    makam = models.ManyToManyField("Makam", blank=True, null=True)
+    makam = models.ManyToManyField("Makam", blank=True)
 
     def makamlist(self):
         return self.makam.all()
@@ -289,9 +289,9 @@ class Form(models.Model):
 class Work(MakamStyle, data.models.Work):
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
-    makam = models.ManyToManyField(Makam, blank=True, null=True)
-    usul = models.ManyToManyField(Usul, blank=True, null=True)
-    form = models.ManyToManyField(Form, blank=True, null=True)
+    makam = models.ManyToManyField(Makam, blank=True)
+    usul = models.ManyToManyField(Usul, blank=True)
+    form = models.ManyToManyField(Form, blank=True)
 
     def recordinglist(self):
         return self.recording_set.all()

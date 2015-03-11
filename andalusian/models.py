@@ -39,24 +39,24 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
 	name = models.CharField(max_length=255)
 	transliterated_name = models.CharField(max_length=255, blank=True)
 	school = models.ForeignKey(MusicalSchool, blank=True, null=True)
-	group_members = models.ManyToManyField('Artist', blank=True, null=True, related_name='groups', through="OrchestraPerformer")
-	
+	group_members = models.ManyToManyField('Artist', blank=True, related_name='groups', through="OrchestraPerformer")
+
 	def __unicode__(self):
 		return self.name
-	
+
 	def get_absolute_url(self):
 		viewname = "%s-orchestra" % (self.get_style(), )
 		return reverse(viewname, args=[self.mbid])
-	
+
 	def get_musicbrainz_url(self):
 		return "http://musicbrainz.org/artist/%s" % self.mbid
-	
+
 	def performers(self):
 		IPClass = self.get_object_map("orchestraperformer")
 		performances = IPClass.objects.filter(orchestra=self)
 		perfs = [p.performer for p in performances]
 		return perfs
-	
+
 	def recordings(self):
 		return self.recording_set.all()
 
@@ -71,7 +71,7 @@ class OrchestraAlias(models.Model):
 
 class Artist(AndalusianStyle, data.models.BaseModel):
 	missing_image = "artist.jpg"
-	
+
 	GENDER_CHOICES = (
 		('M', 'Male'),
 		('F', 'Female')
@@ -82,26 +82,26 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
 	begin = models.CharField(max_length=10, blank=True, null=True)
 	end = models.CharField(max_length=10, blank=True, null=True)
-	
+
 	def __unicode__(self):
 		return self.name
-	
+
 	def get_absolute_url(self):
 		viewname = "%s-artist" % (self.get_style(), )
 		return reverse(viewname, args=[self.mbid])
-	
+
 	def get_musicbrainz_url(self):
 		return "http://musicbrainz.org/artist/%s" % self.mbid
-	
+
 	def recordings(self):
 		IPClass = self.get_object_map("performance")
 		performances = IPClass.objects.filter(performer=self)
 		recs = [p.recording for p in performances]
 		return recs
-	
+
 	def performances(self, tab=[], nawba=[], mizan=[]):
 		pass
-	
+
 	def instruments(self):
 		insts = []
 		for perf in self.instrumentperformance_set.all():
@@ -110,10 +110,10 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 		if len(insts) > 0:
 			return insts[0]
 		return None
-	
+
 	def similar_artists(self):
 		pass
-	
+
 	def collaborating_artists(self):
 		# Get all recordings
 		# For each artist on the recordings (both types), add a counter
@@ -125,9 +125,9 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 				if p.id != self.id:
 					recordings[p.id].add(recording)
 					c[p.id] += 1
-	
+
 		return [(Artist.objects.get(pk=pk), list(recordings[pk])) for pk, count in c.most_common()]
-	
+
 	@classmethod
 	def get_filter_criteria(cls):
 		ret = {"url": reverse('andalusian-artist-search'),
@@ -166,7 +166,7 @@ class AlbumRecording(models.Model):
 
 class Album(AndalusianStyle, data.models.BaseModel):
 	missing_image = "album.jpg"
-	
+
 	mbid = UUIDField(blank=True, null=True)
 	title = models.CharField(max_length=255)
 	transliterated_title = models.CharField(max_length=255, blank=True)
@@ -174,14 +174,14 @@ class Album(AndalusianStyle, data.models.BaseModel):
 	artists = models.ManyToManyField('Orchestra')
 	recordings = models.ManyToManyField('Recording', through="AlbumRecording")
 	director = models.ForeignKey('Artist', null=True)
-	
+
 	def __unicode__(self):
 		return self.title
-	
+
 	def get_absolute_url(self):
 		viewname = "%s-album" % (self.get_style(), )
 		return reverse(viewname, args=[self.mbid])
-	
+
 	def get_musicbrainz_url(self):
 		return "http://musicbrainz.org/release/%s" % self.mbid
 
@@ -200,7 +200,7 @@ class Work(AndalusianStyle, data.models.BaseModel):
 	transliterated_title = models.CharField(max_length=255, blank=True)
 	def __unicode__(self):
 		return self.title
-	
+
 
 class Genre(AndalusianStyle, data.models.BaseModel):
 	name = models.CharField(max_length=100, blank=True)
@@ -212,10 +212,10 @@ class RecordingWork(models.Model):
 	work = models.ForeignKey('Work')
 	recording = models.ForeignKey('Recording')
 	sequence = models.IntegerField()
-	
+
 	class Meta:
 		ordering = ("sequence", )
-	
+
 	def __unicode__(self):
 		return u"%s: %s" % (self.sequence, self.work.title)
 
@@ -228,11 +228,11 @@ class Recording(AndalusianStyle, data.models.BaseModel):
 	length = models.IntegerField(blank=True, null=True)
 	year = models.IntegerField(blank=True, null=True)
 	genre = models.ForeignKey('Genre', null=True)
-	
+
 	def __unicode__(self):
 		#ret = u", ".join([unicode(a) for a in self.performers()])
 		return u"%s" % self.title
-	
+
 	def performers(self):
 		return self.artists.all()
 
@@ -278,7 +278,7 @@ class OrchestraPerformer(models.Model):
 	director = models.BooleanField(default=False)
 	begin = models.CharField(max_length=10, blank=True, null=True)
 	end = models.CharField(max_length=10, blank=True, null=True)
-	
+
 	def __unicode__(self):
 		ret = u"%s played %s on %s" % (self.performer, u", ".join([unicode(i) for i in self.instruments.all()]), self.orchestra)
 		if self.director:
@@ -300,7 +300,7 @@ class Tab(data.models.BaseModel):
 class TabAlias(models.Model):
 	name = models.CharField(max_length=50)
 	tab = models.ForeignKey("Tab", related_name="aliases")
-	
+
 	def __unicode__(self):
 		return self.name
 '''
@@ -346,7 +346,7 @@ class Form(data.models.BaseModel):
 	name = models.CharField(max_length=50)
 	transliterated_name = models.CharField(max_length=50, blank=True)
 	form_type = models.ForeignKey(FormType, blank=True, null=True)
-	
+
 	def __unicode__(self):
 		return self.name
 
@@ -415,7 +415,7 @@ class Poem(data.models.BaseModel):
 	type = models.ForeignKey(PoemType, blank=True, null=True)
 	text = models.TextField()
 	transliterated_text = models.TextField(blank=True)
-	
+
 	def __unicode__(self):
 		return self.identifier
 
