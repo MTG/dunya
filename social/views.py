@@ -32,7 +32,6 @@ from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import get_current_site
 
 import json
-import social.timeline as timeline
 from django.core.mail import send_mail
 
 def main_page(request):
@@ -119,44 +118,6 @@ def users_list(request):
            "users": users,
            }
     return render(request, "social/users_list.html", ret)
-
-def user_page(request, username):
-    other_user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(UserProfile, user_id=other_user.id)
-
-    user = request.user
-    if len(UserFollowsUser.objects.filter(user_follower_id=user, user_followed_id=other_user)) == 0:
-        follow = False
-    else:
-        follow = True
-
-    users_id = []
-    users_id.append(other_user.id)
-    timelines = timeline.timeline(users_id)
-
-    ret = {"other_user": other_user,
-           "profile": profile,
-           "timeline": timelines,
-           "follow": follow
-           }
-
-    return render(request, "social/user_page.html", ret)
-
-def timeline_page(request):
-    follower = request.user
-    users_followed = UserFollowsUser.objects.filter(user_follower=follower).values('user_followed_id')
-    users_id = []
-    users_id.append(request.user.id)
-
-    for user in users_followed:
-        users_id.append(user['user_followed_id'])
-
-    timelines = timeline.timeline(users_id)
-
-    ret = {
-        'timeline': timelines
-    }
-    return render(request, 'social/timeline-page.html', ret)
 
 @csrf_protect
 def user_follow(request):

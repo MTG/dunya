@@ -17,7 +17,6 @@ urlpatterns = [
 
     url(r'^user/follow$', views.user_follow, name='social-user-follow'),
     url(r'^user/unfollow$', views.user_unfollow, name='social-user-unfollow'),
-    url(r'^user/(\w+)/$', views.user_page, name='social-auth-user'),
 
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^delete/$', views.delete_account, name='social-delete-account'),
@@ -26,9 +25,6 @@ urlpatterns = [
     url(r'^register/$', views.register_page, name='social-auth-register'),
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
     url(r'^tag/$', views.tag_save_page, name='tag-form'),
-
-    url(r'^timeline/$', views.timeline_page, name='social-timeline-page'),
-    url(r'^users/(?P<username>\w+)$', views.user_page, name='social-user-page'),
 
     url(r'^users/$', views.users_list, name='social-users-list'),
     # Ajax

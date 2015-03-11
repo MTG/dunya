@@ -28,7 +28,6 @@ urlpatterns = [
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('social.urls')),
-    url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^inplaceeditform/', include('inplaceeditform.urls')),
     url(r'^jsi18n$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^dashboard/', include('dashboard.urls')),
