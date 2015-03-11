@@ -23,15 +23,19 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 
 urlpatterns = [
     url(r'^raag$', hindustani.api.RaagList.as_view(), name='api-hindustani-raag-list'),
+    url(r'^raag/(?P<pk>\d+)$', hindustani.api.raagbyid, name='api-hindustani-raag-detailbyid'),
     url(r'^raag/%s$' % (uuid_match, ), hindustani.api.RaagDetail.as_view(), name='api-hindustani-raag-detail'),
 
     url(r'^taal$', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
+    url(r'^taal/(?P<pk>\d+)$', hindustani.api.taalbyid, name='api-hindustani-taal-detailbyid'),
     url(r'^taal/%s$' % (uuid_match, ), hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
 
     url(r'^laya$', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
+    url(r'^laya/(?P<pk>\d+)$', hindustani.api.layabyid, name='api-hindustani-laya-detailbyid'),
     url(r'^laya/%s$' % (uuid_match, ), hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
 
     url(r'^form$', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
+    url(r'^form/(?P<pk>\d+)$', hindustani.api.formbyid, name='api-hindustani-form-detailbyid'),
     url(r'^form/%s$' % (uuid_match, ), hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
 
     url(r'^instrument$', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),
