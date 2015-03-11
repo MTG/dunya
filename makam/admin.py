@@ -49,7 +49,6 @@ class ComposerAdmin(admin.ModelAdmin):
     exclude = ('source', 'references', 'images', 'description')
 
 class ReleaseAdmin(admin.ModelAdmin):
-    inlines = (RecordingWorkInline, )
     exclude = ('source', 'references', 'images', 'description')
 
 class RecordingAdmin(admin.ModelAdmin):

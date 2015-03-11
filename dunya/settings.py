@@ -87,6 +87,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'dunya.urls'
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'dunya.wsgi.application'
 
@@ -121,12 +123,10 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
     'rest_framework',
     'rest_framework.authtoken',
     'django_extensions',
     'django.contrib.admin',
-    'django.contrib.comments',
     'inplaceeditform',
     'djcelery',
     'data',

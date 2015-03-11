@@ -5,10 +5,6 @@ from django.views.generic import TemplateView
 from social import views
 
 
-site_media = os.path.join(
-    os.path.dirname(__file__), 'site_media'
-)
-
 urlpatterns = [
     url(r'^$', views.main_page, name='social-main'),
     # Change password

@@ -109,7 +109,7 @@ def dumpfixture(modname):
 
 def dumpdata(fname="dunya_data.json"):
     with hide('running', 'status'):
-        modules = ["carnatic", "data", "docserver", "social", "comments", "auth", "dashboard"]
+        modules = ["carnatic", "data", "docserver", "social", "auth", "dashboard"]
         local("python manage.py dumpdata --indent=4 %s > %s" % (" ".join(modules), fname))
         print "dumped data to %s" % fname
 
