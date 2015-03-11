@@ -12,17 +12,18 @@ def up(port="8001"):
 def celery():
     local("celery worker --app=dunya -l info")
 
-def test(module=None, reusedb=1):
+def test(module=None, keepdb=True):
     command = "python manage.py test --settings=dunya.test_settings --noinput"
+    if keepdb:
+        command += " --keepdb"
     if module:
         command += " %s" % module
-    if reusedb:
-        print "Reusing DB (if available), run cleantest to recreate schema"
-    with shell_env(REUSE_DB=str(reusedb)):
-        local(command)
+    if keepdb:
+        print "Keeping DB (if available), run cleantest to recreate schema"
+    local(command)
 
 def cleantest(module=None):
-    test(module, 0)
+    test(module, False)
 
 @roles("web")
 def updateweb():
