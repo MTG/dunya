@@ -17,8 +17,8 @@
 from django.db import models
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
-from django.db.models.loading import get_model
 import django.utils.timezone
+from django.apps import apps
 
 import os
 import importlib
@@ -34,7 +34,8 @@ class StateCarryingManager(models.Manager):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
         if isinstance(self.stateclass, basestring):
-            cls = get_model("dashboard", self.stateclass)
+            db = apps.get_app_config("dashboard")
+            cls = db.get_model(self.stateclass)
         else:
             cls = self.stateclass
         if not cls:
@@ -48,7 +49,8 @@ class StateCarryingManager(models.Manager):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
         if isinstance(self.stateclass, basestring):
-            cls = get_model("dashboard", self.stateclass)
+            db = apps.get_app_config("dashboard")
+            cls = db.get_model(self.stateclass)
         else:
             cls = self.stateclass
         if not cls:
