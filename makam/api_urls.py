@@ -23,12 +23,15 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 
 urlpatterns = [
     url(r'^form$', makam.api.FormList.as_view(), name='api-makam-form-list'),
+    url(r'^form/(?P<pk>\d+)$', makam.api.formbyid, name='api-makam-form-detailbyid'),
     url(r'^form/%s$' % uuid_match, makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
 
     url(r'^makam$', makam.api.MakamList.as_view(), name='api-makam-makam-list'),
+    url(r'^makam/(?P<pk>\d+)$', makam.api.makambyid, name='api-makam-makam-detailbyid'),
     url(r'^makam/%s$' % uuid_match, makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
 
     url(r'^usul$', makam.api.UsulList.as_view(), name='api-makam-usul-list'),
+    url(r'^usul/(?P<pk>\d+)$', makam.api.usulbyid, name='api-makam-usul-detailbyid'),
     url(r'^usul/%s$' % uuid_match, makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
 
     url(r'^instrument$', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),

@@ -18,6 +18,7 @@ from makam import models
 
 from rest_framework import generics
 from rest_framework import serializers
+from django.shortcuts import redirect
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,8 +36,8 @@ class WorkInnerSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title']
 
 class ReleaseRecordingInnerSerializer(serializers.ModelSerializer):
-    mbid = serializers.Field(source='recording.mbid')
-    title = serializers.Field(source='recording.title')
+    mbid = serializers.ReadOnlyField(source='recording.mbid')
+    title = serializers.ReadOnlyField(source='recording.title')
     class Meta:
         model = models.ReleaseRecording
         fields = ['mbid', 'title', 'track']
@@ -89,6 +90,10 @@ class MakamDetail(generics.RetrieveAPIView):
     queryset = models.Makam.objects.all()
     serializer_class = MakamDetailSerializer
 
+def makambyid(request, pk):
+    makam = models.Makam.objects.get(pk=pk)
+    return redirect('api-makam-makam-detail', makam.uuid, permanent=True)
+
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
     serializer_class = FormInnerSerializer
@@ -105,6 +110,9 @@ class FormDetail(generics.RetrieveAPIView):
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
+def formbyid(request, pk):
+    form = models.Form.objects.get(pk=pk)
+    return redirect('api-makam-form-detail', form.uuid, permanent=True)
 
 class UsulList(generics.ListAPIView):
     queryset = models.Usul.objects.all()
@@ -124,6 +132,9 @@ class UsulDetail(generics.RetrieveAPIView):
     queryset = models.Usul.objects.all()
     serializer_class = UsulDetailSerializer
 
+def usulbyid(request, pk):
+    usul = models.Usul.objects.get(pk=pk)
+    return redirect('api-makam-usul-detail', usul.uuid, permanent=True)
 
 class InstrumentListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -185,9 +196,9 @@ class RecordingList(generics.ListAPIView):
     serializer_class = RecordingListSerializer
 
 class InstrumentPerformanceSerializer(serializers.ModelSerializer):
-    instrument = InstrumentInnerSerializer(source='instrument')
-    mbid = serializers.Field(source='artist.mbid')
-    name = serializers.Field(source='artist.name')
+    instrument = InstrumentInnerSerializer()
+    mbid = serializers.ReadOnlyField(source='artist.mbid')
+    name = serializers.ReadOnlyField(source='artist.name')
 
     class Meta:
         model = models.InstrumentPerformance
@@ -266,20 +277,13 @@ class ReleaseList(generics.ListAPIView):
     queryset = models.Release.objects.all()
     serializer_class = ReleaseListSerializer
 
-class ReleaseArtistSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Artist
-        fields = ['mbid', 'name']
-
 class ReleaseDetailSerializer(serializers.ModelSerializer):
     recordings  = ReleaseRecordingInnerSerializer(many=True, source='releaserecording_set')
-    artists = ReleaseArtistSerializer(source='performers', many=True)
+    artists = ArtistInnerSerializer(source='performers', many=True)
     release_artists = ArtistInnerSerializer(source='artists', many=True)
 
     class Meta:
         model = models.Release
-        # fields = ['mbid', 'title', 'recordings', 'artists', 'release_artists']
         fields = ['mbid', 'title', 'year', 'artists', 'release_artists', 'recordings']
 
 class ReleaseDetail(generics.RetrieveAPIView):
