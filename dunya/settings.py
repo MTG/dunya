@@ -64,11 +64,26 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '_11by(qyct6gy7d0$8t%(#s2l(#w13d+48pc%wchv4v8hn^$+0'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'dunya.context_processors.style_context',
+            ],
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -92,29 +107,12 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'dunya.wsgi.application'
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
 ADMINS = (
     # The email address of the first person in this list will be used in the
     # reply field of the emails sent by Dunya
     # ('YOUR NAME', 'EMAIL ADDRESS'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages",
-    # "dunya.context_processors.navigation_header",
-    # Add metadata to the context about what style we are in
-    'dunya.context_processors.style_context',
-)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
