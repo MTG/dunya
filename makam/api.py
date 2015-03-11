@@ -135,7 +135,7 @@ class InstrumentList(generics.ListAPIView):
     serializer_class = InstrumentListSerializer
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
+    artists = ArtistInnerSerializer(many=True)
 
     class Meta:
         model = models.Instrument
@@ -194,8 +194,8 @@ class InstrumentPerformanceSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'name', 'instrument']
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
-    releases = ReleaseInnerSerializer(source='releaselist')
-    performers = InstrumentPerformanceSerializer(source='instrumentperformance_set')
+    releases = ReleaseInnerSerializer(source='releaselist', many=True)
+    performers = InstrumentPerformanceSerializer(source='instrumentperformance_set', many=True)
     works = WorkInnerSerializer(source='worklist', many=True)
 
     class Meta:
@@ -219,9 +219,8 @@ class ArtistList(generics.ListAPIView):
     serializer_class = ArtistListSerializer
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
-    releases = ReleaseInnerSerializer(source='main_releases')
-    instruments = InstrumentInnerSerializer(source='instruments')
-    recordings = RecordingInnerSerializer(source='recordings')
+    releases = ReleaseInnerSerializer(source='main_releases', many=True)
+    instruments = InstrumentInnerSerializer(many=True)
 
     class Meta:
         model = models.Artist
@@ -244,8 +243,8 @@ class ComposerList(generics.ListAPIView):
     serializer_class = ComposerListSerializer
 
 class ComposerDetailSerializer(serializers.ModelSerializer):
-    works = WorkInnerSerializer(source='worklist')
-    lyric_works = WorkInnerSerializer(source='lyricworklist')
+    works = WorkInnerSerializer(source='worklist', many=True)
+    lyric_works = WorkInnerSerializer(source='lyricworklist', many=True)
 
     class Meta:
         model = models.Composer
@@ -275,8 +274,8 @@ class ReleaseArtistSerializer(serializers.ModelSerializer):
 
 class ReleaseDetailSerializer(serializers.ModelSerializer):
     recordings  = ReleaseRecordingInnerSerializer(many=True, source='releaserecording_set')
-    artists = ReleaseArtistSerializer(source='performers')
-    release_artists = ArtistInnerSerializer(source='artists')
+    artists = ReleaseArtistSerializer(source='performers', many=True)
+    release_artists = ArtistInnerSerializer(source='artists', many=True)
 
     class Meta:
         model = models.Release

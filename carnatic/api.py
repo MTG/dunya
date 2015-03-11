@@ -78,10 +78,10 @@ class TaalaList(generics.ListAPIView):
     serializer_class = TaalaInnerSerializer
 
 class TaalaDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
-    works = WorkInnerSerializer(source='works')
-    composers = ComposerInnerSerializer(source='composers')
-    aliases = serializers.RelatedField(many=True, source='aliases.all', read_only=True)
+    artists = ArtistInnerSerializer(many=True)
+    works = WorkInnerSerializer(many=True)
+    composers = ComposerInnerSerializer(many=True)
+    aliases = serializers.RelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Taala
@@ -98,9 +98,9 @@ class RaagaList(generics.ListAPIView):
     serializer_class = RaagaInnerSerializer
 
 class RaagaDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
-    works = WorkInnerSerializer(source='works')
-    composers = ComposerInnerSerializer(source='composers')
+    artists = ArtistInnerSerializer(many=True)
+    works = WorkInnerSerializer(many=True)
+    composers = ComposerInnerSerializer(many=True)
     aliases = serializers.RelatedField(many=True, source='aliases.all', read_only=True)
 
     class Meta:
@@ -118,7 +118,7 @@ class InstrumentList(generics.ListAPIView):
     serializer_class = InstrumentInnerSerializer
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
+    artists = ArtistInnerSerializer(many=True)
 
     class Meta:
         model = models.Instrument
@@ -135,7 +135,7 @@ class WorkList(generics.ListAPIView):
     serializer_class = WorkInnerSerializer
 
 class WorkDetailSerializer(serializers.ModelSerializer):
-    composers = ComposerInnerSerializer(source='composers', many=True)
+    composers = ComposerInnerSerializer()
     raagas = RaagaInnerSerializer(source='raaga', many=True)
     taalas = TaalaInnerSerializer(source='taala', many=True)
     recordings = serializers.SerializerMethodField('recording_list')
@@ -175,10 +175,10 @@ class RecordingList(generics.ListAPIView, WithBootlegAPIView):
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     concert = ConcertInnerSerializer(source='concert_set.get')
-    artists = ArtistInnerSerializer(source='all_artists')
-    raaga = RaagaInnerSerializer(source='raaga')
-    taala = TaalaInnerSerializer(source='taala')
-    work = RecordingInnerSerializer(source='work')
+    artists = ArtistInnerSerializer(source='all_artists', many=True)
+    raaga = RaagaInnerSerializer()
+    taala = TaalaInnerSerializer()
+    work = WorkInnerSerializer()
 
     class Meta:
         model = models.Recording
@@ -203,7 +203,7 @@ class ArtistList(generics.ListAPIView):
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
     concerts = serializers.SerializerMethodField('concert_list')
-    instruments = InstrumentInnerSerializer(source='instruments')
+    instruments = InstrumentInnerSerializer(many=True)
     recordings = serializers.SerializerMethodField('recording_list')
 
     class Meta:

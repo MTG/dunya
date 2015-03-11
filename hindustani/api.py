@@ -75,8 +75,8 @@ class TaalList(generics.ListAPIView):
 
 class TaalDetailSerializer(serializers.ModelSerializer):
     #recordings = RecordingInnerSerializer(source='recordings')
-    composers = ComposerInnerSerializer(source='composers')
-    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    composers = ComposerInnerSerializer(many=True)
+    aliases = serializers.RelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Taal
@@ -93,10 +93,10 @@ class RaagList(generics.ListAPIView):
     serializer_class = RaagInnerSerializer
 
 class RaagDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
+    artists = ArtistInnerSerializer(many=True)
     #recordings = WorkInnerSerializer(source='recordings')
-    composers = ComposerInnerSerializer(source='composers')
-    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    composers = ComposerInnerSerializer(many=True)
+    aliases = serializers.RelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Raag
@@ -113,8 +113,8 @@ class LayaList(generics.ListAPIView):
     serializer_class = LayaInnerSerializer
 
 class LayaDetailSerializer(serializers.ModelSerializer):
-    recordings = WorkInnerSerializer(source='recordings')
-    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    recordings = RecordingInnerSerializer(many=True)
+    aliases = serializers.RelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Laya
@@ -131,9 +131,9 @@ class FormList(generics.ListAPIView):
     serializer_class = FormInnerSerializer
 
 class FormDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
-    recordings = WorkInnerSerializer(source='recordings')
-    aliases = serializers.RelatedField(many=True, source='aliases.all')
+    artists = ArtistInnerSerializer(many=True)
+    recordings = RecordingInnerSerializer(many=True)
+    aliases = serializers.RelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Form
@@ -155,7 +155,7 @@ class InstrumentList(generics.ListAPIView):
     serializer_class = InstrumentListSerializer
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer(source='artists')
+    artists = ArtistInnerSerializer(many=True)
 
     class Meta:
         model = models.Instrument
@@ -177,7 +177,7 @@ class WorkList(generics.ListAPIView):
     serializer_class = WorkListSerializer
 
 class WorkDetailSerializer(serializers.ModelSerializer):
-    recordings = RecordingInnerSerializer(source='recording_set')
+    recordings = RecordingInnerSerializer(source='recording_set', many=True)
 
     class Meta:
         model = models.Work
@@ -195,12 +195,12 @@ class RecordingList(generics.ListAPIView):
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     release = ReleaseInnerSerializer(source='release_set.get')
-    artists = ArtistInnerSerializer(source='all_artists')
-    raags = RaagInnerSerializer(source='raags')
-    taals = TaalInnerSerializer(source='taals')
-    layas = LayaInnerSerializer(source='layas')
-    forms = FormInnerSerializer(source='forms')
-    works = WorkInnerSerializer(source='works')
+    artists = ArtistInnerSerializer(source='all_artists', many=True)
+    raags = RaagInnerSerializer(many=True)
+    taals = TaalInnerSerializer(many=True)
+    layas = LayaInnerSerializer(many=True)
+    forms = FormInnerSerializer(many=True)
+    works = WorkInnerSerializer(many=True)
 
     class Meta:
         model = models.Recording
@@ -223,9 +223,9 @@ class ArtistList(generics.ListAPIView):
     serializer_class = ArtistListSerializer
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
-    releases = ReleaseInnerSerializer(source='releases')
-    instruments = InstrumentInnerSerializer(source='instruments')
-    recordings = RecordingInnerSerializer(source='recordings')
+    releases = ReleaseInnerSerializer(many=True)
+    instruments = InstrumentInnerSerializer(many=True)
+    recordings = RecordingInnerSerializer(many=True)
 
     class Meta:
         model = models.Artist
@@ -258,8 +258,8 @@ class ReleaseArtistSerializer(serializers.ModelSerializer):
 
 class ReleaseDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(many=True)
-    artists = ReleaseArtistSerializer(source='performers')
-    release_artists = ArtistInnerSerializer(source='artists')
+    artists = ReleaseArtistSerializer(source='performers', many=True)
+    release_artists = ArtistInnerSerializer(source='artists', many=True)
 
     class Meta:
         model = models.Release
