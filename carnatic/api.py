@@ -18,6 +18,7 @@ from carnatic import models
 
 from rest_framework import generics
 from rest_framework import serializers
+from django.shortcuts import redirect
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,17 +82,20 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(many=True)
     works = WorkInnerSerializer(many=True)
     composers = ComposerInnerSerializer(many=True)
-    aliases = serializers.RelatedField(many=True, read_only=True)
+    aliases = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Taala
         fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
 
 class TaalaDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Taala.objects.all()
     serializer_class = TaalaDetailSerializer
 
+def taalabyid(request, pk):
+    taala = models.Taala.objects.get(pk=pk)
+    return redirect('api-carnatic-taala-detail', taala.uuid, permanent=True)
 
 class RaagaList(generics.ListAPIView):
     queryset = models.Raaga.objects.all()
@@ -101,7 +105,7 @@ class RaagaDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(many=True)
     works = WorkInnerSerializer(many=True)
     composers = ComposerInnerSerializer(many=True)
-    aliases = serializers.RelatedField(many=True, source='aliases.all', read_only=True)
+    aliases = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Raaga
@@ -112,6 +116,9 @@ class RaagaDetail(generics.RetrieveAPIView):
     queryset = models.Raaga.objects.all()
     serializer_class = RaagaDetailSerializer
 
+def raagabyid(request, pk):
+    raaga = models.Raaga.objects.get(pk=pk)
+    return redirect('api-carnatic-raaga-detail', raaga.uuid, permanent=True)
 
 class InstrumentList(generics.ListAPIView):
     queryset = models.Instrument.objects.all()
@@ -260,7 +267,7 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
         for a in artists:
             inner = ArtistInnerSerializer(a).data
             instrument = ob.instruments_for_artist(a)
-            inner["instruments"] = InstrumentInnerSerializer(instrument).data
+            inner["instruments"] = InstrumentInnerSerializer(instrument, many=True).data
             data.append(inner)
         return data
 

@@ -23,9 +23,11 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 
 urlpatterns = [
     url(r'^raaga$', carnatic.api.RaagaList.as_view(), name='api-carnatic-raaga-list'),
+    url(r'^raaga/(?P<pk>\d+)$', carnatic.api.raagabyid, name='api-carnatic-raaga-detailid'),
     url(r'^raaga/%s$' % (uuid_match, ), carnatic.api.RaagaDetail.as_view(), name='api-carnatic-raaga-detail'),
 
     url(r'^taala$', carnatic.api.TaalaList.as_view(), name='api-carnatic-taala-list'),
+    url(r'^taala/(?P<pk>\d+)$', carnatic.api.taalabyid, name='api-carnatic-taala-detailid'),
     url(r'^taala/%s$' % (uuid_match, ), carnatic.api.TaalaDetail.as_view(), name='api-carnatic-taala-detail'),
 
     url(r'^instrument$', carnatic.api.InstrumentList.as_view(), name='api-carnatic-instrument-list'),
