@@ -149,8 +149,38 @@ class LayaTest(ApiTestCase):
         self.assertEqual(200, resp.status_code)
 
 class ReleaseTest(ApiTestCase):
-    pass
+    def setUp(self):
+        super(ReleaseTest, self).setUp()
+        self.r = models.Release.objects.create(title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
+
+    def test_render_release_inner(self):
+        s = api.ReleaseInnerSerializer(self.r)
+        self.assertEqual(['mbid', 'title'], sorted(s.data.keys()))
+
+    def test_render_release_detail(self):
+        s = api.ReleaseDetailSerializer(self.r)
+        expected = ['artists', 'mbid', 'recordings', 'release_artists', 'title', 'year']
+        self.assertEqual(expected, sorted(s.data.keys()))
+
+    def test_laya_detail_url(self):
+        resp = self.apiclient.get("/api/hindustani/release/c8296944-74f6-4277-94c9-9481d7a8ba81")
+        self.assertEqual(200, resp.status_code)
 
 class InstrumentTest(ApiTestCase):
-    pass
+    def setUp(self):
+        super(InstrumentTest, self).setUp()
+        self.i = models.Instrument.objects.create(name="inst", id=9)
+
+    def test_render_instrument_inner(self):
+        s = api.InstrumentInnerSerializer(self.i)
+        self.assertEqual(['id', 'name'], sorted(s.data.keys()))
+
+    def test_render_instrument_detail(self):
+        s = api.InstrumentDetailSerializer(self.i)
+        expected = ['artists', 'id', 'name']
+        self.assertEqual(expected, sorted(s.data.keys()))
+
+    def test_laya_detail_url(self):
+        resp = self.apiclient.get("/api/hindustani/instrument/9")
+        self.assertEqual(200, resp.status_code)
 

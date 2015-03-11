@@ -267,5 +267,6 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
+    lookup_url_kwarg = 'uuid'
     queryset = models.Release.objects.all()
     serializer_class = ReleaseDetailSerializer
