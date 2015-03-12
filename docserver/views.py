@@ -147,7 +147,10 @@ def manager(request):
 
     inspect = app.control.inspect()
     # TODO: Load the task data via ajax, so the page loads quickly
-    hosts = inspect.active()
+    try:
+        hosts = inspect.active()
+    except:
+        hosts = None
     workerobs = models.Worker.objects.all()
     workerkeys = ["celery@%s" % w.hostname for w in workerobs]
     if hosts:
@@ -418,6 +421,30 @@ def delete_collection(request, slug):
     return render(request, 'docserver/delete_collection.html', ret)
 
 @user_passes_test(is_staff)
+def addcollection(request):
+    if request.method == 'POST':
+        form = forms.CollectionForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect('/thanks/')
+    else:
+        form = forms.CollectionForm()
+    ret = {"form": form, "mode": "add"}
+    return render(request, 'docserver/addcollection.html', ret)
+
+@user_passes_test(is_staff)
+def editcollection(request, slug):
+    coll = get_object_or_404(models.Collection, slug=slug)
+    if request.method == 'POST':
+        form = forms.CollectionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(coll.get_absolute_url())
+    else:
+        form = forms.CollectionForm(instance=coll)
+    ret = {"collection": coll, "mode": "edit"}
+    return render(request, 'docserver/addcollection.html', ret)
+
+@user_passes_test(is_staff)
 def collection(request, slug):
     collection = get_object_or_404(models.Collection, slug=slug)
 
@@ -473,3 +500,40 @@ def file(request, slug, uuid, version=None):
            "outputs": outputs,
            "modulederived": modulederived}
     return render(request, 'docserver/file.html', ret)
+
+@user_passes_test(is_staff)
+def addfiletype(request):
+    if request.method == 'POST':
+        form = forms.SourceFileTypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('docserver-filetypes')
+    else:
+        form = forms.SourceFileTypeForm()
+    ret = {"form": form, "mode": "add"}
+    return render(request, 'docserver/addfiletype.html', ret)
+
+@user_passes_test(is_staff)
+def filetypes(request):
+    filetypes = models.SourceFileType.objects.all()
+    ret = {"filetypes": filetypes}
+    return render(request, 'docserver/filetypes.html', ret)
+
+@user_passes_test(is_staff)
+def filetype(request, slug):
+    ft = get_object_or_404(models.SourceFileType, slug=slug)
+    ret = {"filetype": ft}
+    return render(request, 'docserver/filetype.html', ret)
+
+@user_passes_test(is_staff)
+def editfiletype(request, slug):
+    ft = get_object_or_404(models.SourceFileType, slug=slug)
+    if request.method == 'POST':
+        form = forms.SourceFileTypeForm(request.POST, instance=ft)
+        if form.is_valid():
+            form.save()
+            return redirect('docserver-filetypes')
+    else:
+        form = forms.SourceFileTypeForm(instance=ft)
+    ret = {"form": form, "mode": "edit"}
+    return render(request, 'docserver/addfiletype.html', ret)

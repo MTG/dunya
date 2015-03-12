@@ -1,0 +1,22 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Filetype {{filetype.slug}}{% endblock %}
+
+{% block wrap %}
+
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{% url 'docserver-filetypes' %}">Filetypes</a></li>
+    <li>{{filetype.slug}}</li>
+</ul>
+
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span></button>
+      {{message}}
+    </div>
+{% endfor %}
+
+{% endblock %}
+
+

@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Filetypes{% endblock %}
+
+{% block wrap %}
+
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>Filetypes</li>
+</ul>
+
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span></button>
+      {{message}}
+    </div>
+{% endfor %}
+
+<p><a href="{% url 'docserver-addfiletype' %}">Add filetype</a></p>
+
+<h2>Filetypes</h2>
+{% if filetypes %}
+<table class="table table-condensed"><tr><th>Filetype</th></tr>
+    {% for f in filetypes %}
+    <tr><td><a href="{{f.get_absolute_url}}">{{f.slug}}</a>
+            [<a href="{% url 'docserver-editfiletype' f.slug %}">edit</a>]</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
+

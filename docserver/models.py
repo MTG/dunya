@@ -132,11 +132,16 @@ class FileTypeManager(models.Manager):
 class SourceFileType(models.Model):
     objects = FileTypeManager()
 
+    slug = models.SlugField(db_index=True)
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
+    mimetype = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("docserver-filetype", args=[self.slug])
 
 class SourceFile(models.Model):
     """An actual file. References a document"""

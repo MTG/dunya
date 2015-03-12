@@ -1,0 +1,27 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{mode|capfirst}} collection{% endblock %}
+
+{% block wrap %}
+
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>{{mode|capfirst}} collection</li>
+</ul>
+
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span></button>
+      {{message}}
+    </div>
+{% endfor %}
+
+<h2>{{mode|capfirst}} collection</h2>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}
+
+

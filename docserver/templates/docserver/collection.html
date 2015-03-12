@@ -13,6 +13,7 @@
 
 <div class="topbox">
     <div class="topheader">Actions</div>
+    <li><a href="{% url 'docserver-editcollection' collection.slug %}">Edit collection</a>
     <li><a href="{% url 'docserver-delete-collection' collection.slug %}">Delete collection and all files</a>
 </div>
 

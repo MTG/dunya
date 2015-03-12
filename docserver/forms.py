@@ -19,10 +19,23 @@ from django import forms
 from docserver import models
 from docserver import jobs
 
-class EssentiaVersionForm(forms.ModelForm):
+class CollectionForm(forms.ModelForm):
     class Meta:
-        model = models.EssentiaVersion
-        fields = ["version", "sha1", "date_added"]
+        model = models.Collection
+        fields = ["name", "slug", "description", "root_directory"]
+
+class SourceFileTypeForm(forms.ModelForm):
+    class Meta:
+        model = models.SourceFileType
+        fields = ["slug", "extension", "name", "mimetype"]
+
+    def clean_slug(self):
+        slug = self.cleaned_data["slug"]
+        if (self.instance and self.instance.slug != slug) or not self.instance:
+            # new form, or existing and we've changed the slug
+            if models.SourceFileType.objects.filter(slug=slug).exists():
+                raise forms.ValidationError("Slug already exists")
+        return slug
 
 class ModuleEditForm(forms.ModelForm):
     class Meta:
@@ -50,7 +63,6 @@ class ModuleForm(forms.Form):
         if models.Module.objects.filter(slug=instance.__slug__).exists():
             raise forms.ValidationError("A module with this slug (%s) already exists" % instance.__slug__)
         return modulepath
-
 
     class Meta:
         fields = []

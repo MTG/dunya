@@ -121,6 +121,10 @@ input[disabled] {
 {% endif %}
 <p><a href="{% url 'docserver-addmodule' %}">Add new module</a><br>
 
+<h2>Filetypes</h2>
+<p><a href="{% url 'docserver-addfiletype' %}">Add filetype</a></p>
+<p><a href="{% url 'docserver-filetypes' %}">List Filetypes</a><br>
+
 <h2>Collection files</h2>
 {% if collections %}
 <table class="table table-condensed"><tr><th>Collection</th></tr>
