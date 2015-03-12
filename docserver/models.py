@@ -31,6 +31,8 @@ class Collection(models.Model):
     description = models.CharField(max_length=200)
     root_directory = models.CharField(max_length=200)
 
+    permissions = models.ManyToManyField("SourceFileType", through="CollectionFileTypePermissions")
+
     def __unicode__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
         if self.description:
@@ -44,6 +46,11 @@ class Collection(models.Model):
 
     def get_absolute_url(self):
         return reverse("docserver-collection", args=[self.slug])
+
+class CollectionFileTypePermission(models.Model):
+    collection = models.ForeignKey(Collection)
+    sourcefiletype = models.ForeignKey("SourceFileType")
+    restricted = models.BoolField()
 
 
 class DocumentManager(models.Manager):
