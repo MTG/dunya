@@ -69,10 +69,8 @@ def setupdb():
     """ Run this when you are setting up a new installation
         or have deleted your database
     """
-    local("python manage.py syncdb --noinput")
     local("python manage.py migrate")
     local("python manage.py mkdunyadata")
-    local("python manage.py mkfiletypes")
 
 def updatedb():
     """ Run this when someone has committed some changes to the
