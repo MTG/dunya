@@ -435,13 +435,13 @@ def addcollection(request):
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
     if request.method == 'POST':
-        form = forms.CollectionForm(request.POST)
+        form = forms.CollectionForm(request.POST, instance=coll)
         if form.is_valid():
             form.save()
             return redirect(coll.get_absolute_url())
     else:
         form = forms.CollectionForm(instance=coll)
-    ret = {"collection": coll, "mode": "edit"}
+    ret = {"form": form, "mode": "edit"}
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)
