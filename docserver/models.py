@@ -25,13 +25,17 @@ import os
 
 class Collection(models.Model):
     """A set of related documents"""
+
+    class Meta:
+        permissions = (('read_restricted', "Can read files in restricted collections"), )
+
     collectionid = UUIDField()
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.CharField(max_length=200)
     root_directory = models.CharField(max_length=200)
 
-    permissions = models.ManyToManyField("SourceFileType", through="CollectionFileTypePermissions")
+    restricted = models.BooleanField(default=False)
 
     def __unicode__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
@@ -46,12 +50,6 @@ class Collection(models.Model):
 
     def get_absolute_url(self):
         return reverse("docserver-collection", args=[self.slug])
-
-class CollectionFileTypePermission(models.Model):
-    collection = models.ForeignKey(Collection)
-    sourcefiletype = models.ForeignKey("SourceFileType")
-    restricted = models.BoolField()
-
 
 class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
@@ -334,6 +332,7 @@ class Module(models.Model):
     module = models.CharField(max_length=200)
     source_type = models.ForeignKey(SourceFileType)
     disabled = models.BooleanField(default=False)
+    restricted = models.BooleanField(default=False)
 
     collections = models.ManyToManyField(Collection)
 
