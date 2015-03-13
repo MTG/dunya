@@ -1,0 +1,41 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{document.title}}{% endblock %}
+
+{% block wrap %}
+
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{{collection.get_absolute_url}}">{{collection.name}}</a></li>
+    <li>All files</li>
+</ul>
+
+<h3>All files in {{collection.name}}</h3>
+
+<ul>
+{% for doc in documents %}
+    <li><a href="{% url 'docserver-file' collection.slug doc.external_identifier %}">{{doc}}</a></li>
+{% endfor %}
+</ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if documents.has_previous %}
+            <a href="?page={{ documents.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ documents.number }} of {{ documents.paginator.num_pages }}.
+        </span>
+
+        {% if documents.has_next %}
+            <a href="?page={{ documents.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+{% for f in processedfiles %}
+{% endfor %}
+
+{% endblock %}
+
+

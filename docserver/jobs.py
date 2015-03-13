@@ -297,6 +297,7 @@ def run_module_on_recordings(moduleid, recids):
             print "  docid", d.pk
             process_document.delay(d.pk, version.pk)
 
+@app.task
 def run_module_on_collection(collectionid, moduleid, versionid=None):
     collection = models.Collection.objects.get(pk=collectionid)
     module = models.Module.objects.get(pk=moduleid)

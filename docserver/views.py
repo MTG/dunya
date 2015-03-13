@@ -26,6 +26,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from docserver import models
 from docserver import forms
@@ -452,9 +453,30 @@ def collection(request, slug):
         delete = request.POST.get("delete")
         if delete is not None:
             jobs.delete_collection.delay(collection.pk)
+        run = request.POST.get("run")
+        if run is not None:
+            jobs.run_module_on_collection.delay(collection.pk, int(run))
 
     ret = {"collection": collection}
     return render(request, 'docserver/collection.html', ret)
+
+@user_passes_test(is_staff)
+def collectionfiles(request, slug):
+    collection = get_object_or_404(models.Collection, slug=slug)
+
+    documents = collection.documents.all()
+    paginator = Paginator(documents, 50)
+
+    page = request.GET.get('page')
+    try:
+        documents = paginator.page(page)
+    except PageNotAnInteger:
+        documents = paginator.page(1)
+    except EmptyPage:
+        documents = paginator.page(paginator.num_pages)
+
+    ret = {"collection": collection, "documents": documents}
+    return render(request, 'docserver/collectionfiles.html', ret)
 
 @user_passes_test(is_staff)
 def collectionversion(request, slug, version, type):
@@ -486,9 +508,11 @@ def file(request, slug, uuid, version=None):
     doc = collection.documents.get_by_external_id(uuid)
 
     derived = doc.derivedfiles.all()
+    showderived = False
     if version:
         version = get_object_or_404(models.ModuleVersion, pk=version)
         modulederived = derived.filter(module_version=version)
+        showderived = True
     else:
         modulederived = []
 
@@ -498,7 +522,8 @@ def file(request, slug, uuid, version=None):
            "collection": collection,
            "modulever": version,
            "outputs": outputs,
-           "modulederived": modulederived}
+           "modulederived": modulederived,
+           "showderived": showderived}
     return render(request, 'docserver/file.html', ret)
 
 @user_passes_test(is_staff)

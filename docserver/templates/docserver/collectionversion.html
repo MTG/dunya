@@ -13,8 +13,8 @@
 <h3>{{type|title}} files</h3>
 
 <ul>
-{% for f in unprocessedfiles %} 
-<li>{{f}} (<a href="?run={{f.external_identifier}}">Process</a>)</li>
+{% for f in unprocessedfiles %}
+<li><a href="{% url 'docserver-file' collection.slug f.external_identifier modulever.pk %}">{{f}}</a> (<a href="?run={{f.external_identifier}}">Process</a>)</li>
   <ul>
 {% for sf in f.sourcefiles.all %}
 <li>{{sf.fullpath}}</li>

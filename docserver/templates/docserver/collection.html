@@ -17,11 +17,23 @@
     <li><a href="{% url 'docserver-delete-collection' collection.slug %}">Delete collection and all files</a>
 </div>
 
+<h3>Files</h3>
+<p><a href="{% url 'docserver-collectionfiles' collection.slug %}">View all source files in this collection</a></p>
+
+<h3>Extractors</h3>
 
 <table class="table">
-    <tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th></tr>
+    <tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Process</th></tr>
     {% for m in collection.module_set.all %}
-    <tr><td colspan="4">{{m}}</td></tr>
+    <tr><td colspan="4">{{m}}</td>
+        <td>
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="run" value="{{m.pk}}">
+                <input type="submit" {% if m.disabled %}disabled="disabled" {% endif %}value="Run this extractor">
+            </form>
+        </td>
+    </tr>
     {% for v in m.versions.all %}
     <tr>
         <td></td>
