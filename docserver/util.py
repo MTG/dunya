@@ -30,7 +30,7 @@ class TooManyFilesException(Exception):
 
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
-    mp3type = models.SourceFileType.objects.get_by_extension("mp3")
+    mp3type = models.SourceFileType.objects.get_by_slug("mp3")
     title = meta["meta"].get("title")
 
     try:
@@ -40,6 +40,10 @@ def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
         docserver_add_document(collectionid, mp3type, title, fpath, recordingid)
 
 def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
+    """ Add a document.
+        Arguments:
+          filetype: a SourceFileType
+    """
     collection = models.Collection.objects.get(collectionid=collection_id)
     document = models.Document.objects.create(collection=collection, title=title)
     if alt_id:
@@ -113,7 +117,7 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
     except models.Document.DoesNotExist:
         raise NoFileException("Cannot find a document with id %s" % documentid)
     try:
-        sourcetype = models.SourceFileType.objects.get_by_extension(slug)
+        sourcetype = models.SourceFileType.objects.get_by_slug(slug)
     except models.SourceFileType.DoesNotExist:
         sourcetype = None
     if doc and sourcetype:

@@ -130,9 +130,9 @@ class Document(models.Model):
 
 
 class FileTypeManager(models.Manager):
-    def get_by_extension(self, extension):
-        extension = extension.lower()
-        return self.get_queryset().get(extension=extension)
+    def get_by_slug(self, slug):
+        slug = slug.lower()
+        return self.get_queryset().get(slug=slug)
 
 class SourceFileType(models.Model):
     objects = FileTypeManager()
