@@ -485,7 +485,11 @@ class Raaga(data.models.BaseModel):
         return ret
 
     def get_absolute_url(self):
-        return reverse('carnatic-raaga', args=[str(self.uuid), slugify(self.common_name)])
+        if self.common_name:
+            slug = slugify(self.common_name)
+        else:
+            slug = slugify(self.name)
+        return reverse('carnatic-raaga', args=[str(self.uuid), slug])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -556,7 +560,11 @@ class Taala(data.models.BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('carnatic-taala', args=[str(self.uuid), slugify(self.common_name)])
+        if self.common_name:
+            slug = slugify(self.common_name)
+        else:
+            slug = slugify(self.name)
+        return reverse('carnatic-taala', args=[str(self.uuid), slug])
 
     def get_similar(self):
         if self.pk in taala_similar:
