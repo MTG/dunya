@@ -209,7 +209,6 @@ LOGGING = {
 }
 
 # Social part_PROFILE
-AUTH_PROFILE_MODULE = "social.UserProfile"
 AUTH_USER_MODULE = "django.contrib.auth.models.User"
 
 # Navigation Header settings

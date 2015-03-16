@@ -97,7 +97,7 @@ def delete_account(request):
 
 @login_required
 def user_profile(request):
-    user_profile = request.user.get_profile()
+    user_profile = request.user.userprofile
 
     users_id = []
     users_id.append(request.user.id)
