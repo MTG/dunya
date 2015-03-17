@@ -210,6 +210,8 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
         print "Error writing to file %s" % fullname
         print "Probably a permissions error"
         return None, None, None
+    if not isinstance(data, basestring):
+        data = str(data)
     return fullname, fullrelname, len(data)
 
 @app.task
