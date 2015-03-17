@@ -315,7 +315,6 @@ def artist(request, uuid, name=None):
     else:
         raagas = []
 
-    tags = tagging.tag_cloud(artist.id, "artist")
     musicbrainz = artist.get_musicbrainz_url()
     k = data.models.SourceName.objects.get(name="kutcheris.com")
     w = data.models.SourceName.objects.get(name="Wikipedia")
@@ -343,10 +342,8 @@ def artist(request, uuid, name=None):
 
     ret = {"filter_items": json.dumps(get_filter_items()),
            "artist": artist,
-           "form": TagSaveForm(),
            "objecttype": "artist",
            "objectid": artist.id,
-           "tags": tags,
            "similar_artists": similar_artists,
            "raagas": raagas,
            "taalas": taalas,
@@ -422,18 +419,14 @@ def concert(request, uuid, title=None):
     if recordings:
         sample = recordings[:1]
 
-    tags = tagging.tag_cloud(concert.id, "concert")
-
     # Other similar concerts
     similar = concert.get_similar()
 
     # Raaga in
     ret = {"filter_items": json.dumps(get_filter_items()),
            "concert": concert,
-           "form": TagSaveForm(),
            "objecttype": "concert",
            "objectid": concert.id,
-           "tags": tags,
            "image": image,
            "sample": sample,
            "similar_concerts": similar,
@@ -455,8 +448,6 @@ def recording(request, uuid, title=None):
         bootleg = True
     elif recording.is_bootleg() and not request.show_bootlegs:
         raise Http404
-
-    tags = tagging.tag_cloud(recording.id, "recording")
 
     try:
         wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
@@ -539,10 +530,8 @@ def recording(request, uuid, title=None):
 
     ret = {"filter_items": json.dumps(get_filter_items()),
            "recording": recording,
-           "form": TagSaveForm(),
            "objecttype": "recording",
            "objectid": recording.id,
-           "tags": tags,
            "waveform": wave,
            "spectrogram": spec,
            "smallimage": small,
@@ -578,7 +567,6 @@ def workbyid(request, workid, title=None):
 def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
 
-    tags = tagging.tag_cloud(work.id, "work")
     recordings = work.recording_set.all()
     if len(recordings):
         sample = random.sample(recordings, 1)
@@ -587,11 +575,9 @@ def work(request, uuid, title=None):
 
     ret = {"filter_items": json.dumps(get_filter_items()),
            "work": work,
-           "form": TagSaveForm(),
            "objecttype": "work",
            "objectid": work.id,
            "sample": sample,
-           "tags": tags,
            }
     return render(request, "carnatic/work.html", ret)
 
