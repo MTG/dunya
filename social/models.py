@@ -20,12 +20,8 @@ from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
 
 
-################ SOCIAL PART #########################
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
-    birthday = models.DateField(null=True, blank=True)
-    avatar = models.ImageField(upload_to='gallery', blank=True)
     affiliation = models.CharField(max_length=200, blank=True)
 
     def __unicode__(self):
@@ -41,32 +37,3 @@ def user_post_save(sender, instance, created, **kwargs):
 
 post_save.connect(user_post_save, sender=User)
 
-class Tag(models.Model):
-    name = models.CharField(max_length=128, unique=True)
-
-    def __unicode__(self):
-        return self.name
-
-class Annotation(models.Model):
-    user = models.ForeignKey(User)
-    tag = models.ForeignKey(Tag)
-    entity_id = models.IntegerField()
-    entity_type = models.CharField(max_length=20)
-    timestamp = models.DateTimeField(auto_now_add=True, blank=True)
-
-    class Meta:
-        unique_together = (("user", "tag", "entity_id", "entity_type"),)
-
-    def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.entity_type, self.tag, self.user)
-
-class UserFollowsUser(models.Model):
-    user_follower = models.ForeignKey(User, related_name='follow_set')
-    user_followed = models.ForeignKey(User, related_name='to_follow_set')
-    timestamp = models.DateTimeField('date follow')
-
-    class Meta:
-        unique_together = (("user_follower", "user_followed"),)
-
-    def __unicode__(self):
-        return u"('%s','%s','%s')" % (self.user_follower.username, self.user_followed.username, self.timestamp)

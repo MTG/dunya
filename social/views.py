@@ -16,26 +16,18 @@
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from social.forms import *
-from social.models import *
-from datetime import datetime
-from django.db.models import Count
-from django.shortcuts import render, get_object_or_404
-from django.utils.http import urlunquote_plus
+from social import forms
+from django.shortcuts import render
 from django.conf import settings
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import get_current_site
 
 import json
 from django.core.mail import send_mail
-
-def main_page(request):
-    return render(request, "social/main_page.html")
 
 def logout_page(request):
     logout(request)
@@ -45,7 +37,7 @@ def logout_page(request):
 
 def register_page(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = forms.RegistrationForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
@@ -70,7 +62,7 @@ def register_page(request):
 
             return HttpResponseRedirect(reverse('social-auth-register-success'))
     else:
-        form = RegistrationForm()
+        form = forms.RegistrationForm()
 
     ret = {
         'form': form
@@ -80,7 +72,7 @@ def register_page(request):
 @login_required
 def delete_account(request):
     if request.method == 'POST':
-        form = DeleteAccountForm(request.POST)
+        form = forms.DeleteAccountForm(request.POST)
         if form.is_valid():
             delete = form.cleaned_data['delete']
             if delete:
@@ -89,7 +81,7 @@ def delete_account(request):
                 u.delete()
                 return render(request, 'registration/deleted.html')
     else:
-        form = DeleteAccountForm()
+        form = forms.DeleteAccountForm()
 
     ret = {"form": form}
     return render(request, 'registration/delete.html', ret)
@@ -97,107 +89,29 @@ def delete_account(request):
 
 @login_required
 def user_profile(request):
-    user_profile = request.user.userprofile
-
-    users_id = []
-    users_id.append(request.user.id)
-
+    user = request.user
+    profile = user.userprofile
     token = Token.objects.get(user=request.user)
+    initial = {"email": user.email, "first_name": user.first_name,
+            "last_name": user.last_name, "affiliation": profile.affiliation}
+
+    if request.method == "POST":
+        form = forms.UserEditForm(request.POST, initial=initial)
+        if form.is_valid() and form.has_changed():
+            print form.cleaned_data
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.email = form.cleaned_data["email"]
+            user.save()
+            profile.affiliation = form.cleaned_data["affiliation"]
+            profile.save()
+    else:
+        form = forms.UserEditForm(initial=initial)
 
     ret = {
         'user_profile': user_profile,
-        'token': token.key
-    }
-    return render(request, 'social/user-profile.html', ret)
-
-def users_list(request):
-    numusers = User.objects.count()
-    users = User.objects.all()
-
-    ret = {"numusers": numusers,
-           "users": users,
-           }
-    return render(request, "social/users_list.html", ret)
-
-@csrf_protect
-def user_follow(request):
-    to_follow = get_object_or_404(User, username=request.POST['username'])
-    follower = request.user
-    user_follows_user, _ = UserFollowsUser.objects.get_or_create(user_follower=follower, user_followed=to_follow, timestamp=datetime.now())
-    ret = {"status": "OK"}
-    return HttpResponse(json.dumps(ret), content_type="application/json")
-
-@csrf_protect
-def user_unfollow(request):
-    to_unfollow = get_object_or_404(User, username=request.POST['username'])
-    follower = request.user
-    print follower, to_unfollow
-    user_follows_user = UserFollowsUser.objects.filter(user_follower=follower, user_followed=to_unfollow)
-    if len(user_follows_user) == 0:
-        ret = {"status": "FAIL"}
-    else:
-        user_follows_user.delete()
-        ret = {"status": "OK"}
-    return HttpResponse(json.dumps(ret), content_type="application/json")
-
-##### TAG ####
-
-def tag_save_page(request):
-    if request.method == 'POST':
-        form = TagSaveForm(request.POST)
-        if form.is_valid():
-            # Create new tag list.
-            objectid = int(form.cleaned_data['objectid'])
-            objecttype = form.cleaned_data['objecttype'].lower()
-            tag_names = form.cleaned_data['tags'].split(",")
-            for tag_name in tag_names:
-                if len(tag_name) > 0:
-                    tag, _ = Tag.objects.get_or_create(name=tag_name.lower().strip())
-                    if len(Annotation.objects.filter(tag=tag, user=request.user, entity_type=objecttype, entity_id=objectid)) == 0:
-                        object_tag, _ = Annotation.objects.get_or_create(tag=tag, user=request.user, entity_type=objecttype, entity_id=objectid)
-
-            return HttpResponseRedirect('/carnatic/%s/%s' % (objecttype, objectid))
-    else:
-        form = TagSaveForm()
-
-    ret = {
+        'token': token.key,
         'form': form
     }
-    return render(request, 'social/form-tag.html', ret)
+    return render(request, 'social/user_profile.html', ret)
 
-
-def ajax_tag_autocomplete(request):
-    q = request.GET['term']
-    tags = Tag.objects.filter(name__istartswith=q)[:10]
-    results = []
-    for tag in tags:
-        tag_dict = {'id': tag.id, 'label': tag.name, 'value': tag.name}
-        results.append(tag_dict)
-    return HttpResponse(json.dumps(results), mimetype='application/json')
-
-
-def __get_entity(entity_type, entity_id):
-    if entity_type == "artist":
-        return Artist.objects.get(pk=entity_id)
-    elif entity_type == "concert":
-        return Concert.objects.get(pk=entity_id)
-    elif entity_type == "recording":
-        return Recording.objects.get(pk=entity_id)
-    elif entity_type == "work":
-        return Work.objects.get(pk=entity_id)
-    return None
-
-def tag_page(request, tagname, modeltype="concert"):
-    tagname = urlunquote_plus(tagname)
-
-    lists = Annotation.objects.filter(tag__name=tagname, entity_type=modeltype).values('entity_type', 'entity_id', 'tag').annotate(freq=Count('entity_type'))
-    objects = []
-    for lista in lists:
-        objects.append([__get_entity(modeltype, lista['entity_id']), lista['freq']])
-
-    ret = {
-        'objects': objects,
-        'tag_name': tagname,
-        'modeltype': modeltype,
-    }
-    return render(request, 'social/tag_page.html', ret)

@@ -53,15 +53,11 @@ class RegistrationForm(forms.Form):
             return username
         raise forms.ValidationError('Username is already taken.')
 
-class TagSaveForm(forms.Form):
-    tags = forms.CharField(label=u'Tags', required=True, widget=forms.TextInput(attrs={'size': '128'}))
-    objectid = forms.IntegerField(widget=forms.HiddenInput())
-    objecttype = forms.CharField(widget=forms.HiddenInput(), max_length=30)
-
 class DeleteAccountForm(forms.Form):
     delete = forms.BooleanField(required=False, label="Yes, delete my account")
 
-class UserProfileForm(forms.Form):
+class UserEditForm(forms.Form):
+    email = forms.CharField(label=u'Email address', max_length=200)
     first_name = forms.CharField(label=u'First Name', max_length=50)
     last_name = forms.CharField(label=u'Last Name', max_length=100)
-    birthdate = forms.DateField(label=u'Birthdate', required=False)
+    affiliation = forms.CharField(label=u'Affiliation', max_length=100)

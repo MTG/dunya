@@ -1,21 +1,15 @@
 {% extends "carnatic/base.html" %}
 
-{% block extra_head %}
-    {% load inplace_edit %}
-    {% inplace_static %}
-{% endblock %}
-
-
 {% block wrap %}
 <div id="profile">
 
-
+    <form method="post">{% csrf_token %}
 <ul class="user-profile">
 <li><b>Username:</b> {{ user.username }}</li>
-<li><b>Email:</b> {% inplace_edit "user.email" %} </li>
-<li><b>First Name:</b> {% inplace_edit "user.first_name|safe" %} </li>
-<li><b>Last Name:</b> {% inplace_edit "user.last_name|safe" %}</li>
+{{form.as_ul}}
 </ul>
+<input type="submit" value="Update details">
+</form>
 
 <h2>API Access</h2>
 <p><b>API token:</b> {{token}}</p>
