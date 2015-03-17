@@ -23,10 +23,8 @@ from django.db.models import Q
 from django.conf import settings
 from django.templatetags.static import static
 
-from social import tagging
 from carnatic.models import *
 from carnatic import search
-from social.forms import TagSaveForm
 import json
 import docserver
 import collections
