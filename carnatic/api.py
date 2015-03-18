@@ -255,7 +255,7 @@ class ConcertList(generics.ListAPIView, WithBootlegAPIView):
 class ConcertDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(source='tracklist', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
-    concert_artists = ArtistInnerSerializer(source='artists')
+    concert_artists = ArtistInnerSerializer(source='artists', many=True)
 
     class Meta:
         model = models.Concert
