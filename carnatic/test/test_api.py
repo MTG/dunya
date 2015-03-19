@@ -20,8 +20,8 @@ class ArtistTest(TestCase):
         self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
         self.rbootleg = models.Recording.objects.create(title="bootleg recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
 
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1)
-        models.ConcertRecording.objects.create(concert=self.cbootleg, recording=self.rbootleg, track=1)
+        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
+        models.ConcertRecording.objects.create(concert=self.cbootleg, recording=self.rbootleg, track=1, disc=1, disctrack=1)
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.staffuser = auth.models.User.objects.create_user("staffuser")
@@ -74,8 +74,9 @@ class ArtistTest(TestCase):
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
         self.assertEqual("cbe1ba35-8758-4a7d-9811-70bc48f41734", data["concerts"][1]["mbid"])
         self.assertEqual(2, len(data["recordings"]))
-        self.assertEqual("dcf14452-e13e-450f-82c2-8ae705a58971", data["recordings"][0]["mbid"])
-        self.assertEqual("34275e18-0aef-4fa5-9618-b5938cb73a24", data["recordings"][1]["mbid"])
+        recordings = sorted(data["recordings"], key=lambda x: x["mbid"])
+        self.assertEqual("34275e18-0aef-4fa5-9618-b5938cb73a24", recordings[0]["mbid"])
+        self.assertEqual("dcf14452-e13e-450f-82c2-8ae705a58971", recordings[1]["mbid"])
 
 class ComposerTest(TestCase):
     def test_render_composer_inner(self):
@@ -91,8 +92,8 @@ class RecordingTest(TestCase):
         self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
         self.rbootleg = models.Recording.objects.create(title="bootleg recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
 
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1)
-        models.ConcertRecording.objects.create(concert=self.cbootleg, recording=self.rbootleg, track=1)
+        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
+        models.ConcertRecording.objects.create(concert=self.cbootleg, recording=self.rbootleg, track=1, disc=1, disctrack=1)
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.staffuser = auth.models.User.objects.create_user("staffuser")
@@ -155,8 +156,8 @@ class WorkTest(TestCase):
         self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971", work=self.wnormal)
         self.rbootleg = models.Recording.objects.create(title="bootleg recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24", work=self.wbootleg)
 
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1)
-        models.ConcertRecording.objects.create(concert=self.cbootleg, recording=self.rbootleg, track=1)
+        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
+        models.ConcertRecording.objects.create(concert=self.cbootleg, recording=self.rbootleg, track=1, disc=1, disctrack=1)
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.staffuser = auth.models.User.objects.create_user("staffuser")
@@ -248,7 +249,7 @@ class ConcertTest(TestCase):
         self.cbootleg = models.Concert.objects.create(title="bootleg concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734", bootleg=True)
 
         self.rnormal = models.Recording.objects.create(title="normal recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1)
+        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.staffuser = auth.models.User.objects.create_user("staffuser")
@@ -263,6 +264,12 @@ class ConcertTest(TestCase):
         s = api.ConcertDetailSerializer(self.cnormal)
         fields = ['artists', 'concert_artists', 'mbid', 'recordings', 'title', 'year']
         self.assertEqual(fields, sorted(s.data.keys()))
+
+        recordings = s.data["recordings"]
+        self.assertEqual(1, len(recordings))
+        r = recordings[0]
+        expected = {"title": "normal recording", "mbid": "34275e18-0aef-4fa5-9618-b5938cb73a24", "disc": 1, "track": 1, "disctrack": 1}
+        self.assertEqual(expected, r)
 
     def test_concert_list_bootleg(self):
         """ Staff members will see bootleg concerts in

@@ -252,8 +252,16 @@ class ConcertList(generics.ListAPIView, WithBootlegAPIView):
     def get_queryset(self):
         return models.Concert.objects.with_bootlegs(self.with_bootlegs)
 
+class ConcertRecordingSerializer(serializers.ModelSerializer):
+    mbid = serializers.ReadOnlyField(source='recording.mbid')
+    title = serializers.ReadOnlyField(source='recording.title')
+
+    class Meta:
+        model = models.ConcertRecording
+        fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
+
 class ConcertDetailSerializer(serializers.ModelSerializer):
-    recordings = RecordingInnerSerializer(source='tracklist', many=True)
+    recordings = ConcertRecordingSerializer(source='concertrecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     concert_artists = ArtistInnerSerializer(source='artists', many=True)
 

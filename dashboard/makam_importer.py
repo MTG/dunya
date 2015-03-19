@@ -31,7 +31,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     _InstrumentClass = makam.models.Instrument
     _WorkClass = makam.models.Work
 
-    def _link_release_recording(self, release, recording, trackorder):
+    def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
             makam.models.ReleaseRecording.objects.create(
                 release=release, recording=recording, track=trackorder)

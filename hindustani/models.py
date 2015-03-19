@@ -200,6 +200,10 @@ class ReleaseRecording(models.Model):
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
+    # The disc number. 1-n
+    disc = models.IntegerField()
+    # The track number within this disc. 1-n
+    disctrack = models.IntegerField()
 
     class Meta:
         ordering = ("track", )

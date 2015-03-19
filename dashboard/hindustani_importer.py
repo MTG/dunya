@@ -30,10 +30,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _InstrumentClass = hindustani.models.Instrument
     _WorkClass = hindustani.models.Work
 
-    def _link_release_recording(self, release, recording, trackorder):
+    def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
             hindustani.models.ReleaseRecording.objects.create(
-                release=release, recording=recording, track=trackorder)
+                release=release, recording=recording, track=trackorder, disc=mnum, disctrack=tnum)
 
     def _join_recording_and_works(self, recording, works):
         # A hindustani recording can have many works

@@ -95,15 +95,15 @@ class ReleaseImporter(object):
                     release.artists.add(artist)
 
         recordings = []
-        for medium in rel["medium-list"]:
-            for track in medium["track-list"]:
-                recordings.append(track["recording"]["id"])
+        for mnum, medium in enumerate(rel["medium-list"], 1):
+            for tnum, track in enumerate(medium["track-list"], 1):
+                recordings.append( (track["recording"]["id"], mnum, tnum))
         if self.overwrite:
             release.recordings.clear()
         trackorder = 1
-        for recid in recordings:
+        for recid, mnum, tnum in recordings:
             recob = self.add_and_get_recording(recid)
-            self._link_release_recording(release, recob, trackorder)
+            self._link_release_recording(release, recob, trackorder, mnum, tnum)
             trackorder += 1
 
         for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):

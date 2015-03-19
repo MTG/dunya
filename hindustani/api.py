@@ -264,9 +264,16 @@ class ReleaseList(generics.ListAPIView):
     queryset = models.Release.objects.all()
     serializer_class = ReleaseListSerializer
 
+class ReleaseRecordingSerializer(serializers.ModelSerializer):
+    mbid = serializers.ReadOnlyField(source='recording.mbid')
+    title = serializers.ReadOnlyField(source='recording.title')
+
+    class Meta:
+        model = models.ReleaseRecording
+        fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
+
 class ReleaseDetailSerializer(serializers.ModelSerializer):
-    recordings = RecordingInnerSerializer(many=True)
-    #artists = ArtistInnerSerializer(source='performers', many=True)
+    recordings = ReleaseRecordingSerializer(source='releaserecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     release_artists = ArtistInnerSerializer(source='artists', many=True)
 

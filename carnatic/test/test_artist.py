@@ -16,7 +16,7 @@ class ArtistCountTest(TestCase):
 
         self.c1 = models.Concert.objects.create(title="Concert1")
         self.r1 = models.Recording.objects.create(title="Recording1")
-        models.ConcertRecording.objects.create(concert=self.c1, recording=self.r1, track=1)
+        models.ConcertRecording.objects.create(concert=self.c1, recording=self.r1, track=1, disc=1, disctrack=1)
         # artist 1 on concert
         self.c1.artists.add(self.a1)
         # artist 2, 3 on recording rel
@@ -26,8 +26,8 @@ class ArtistCountTest(TestCase):
         self.c2 = models.Concert.objects.create(title="Concert2")
         self.r2 = models.Recording.objects.create(title="Recording2")
         self.r3 = models.Recording.objects.create(title="Recording3")
-        models.ConcertRecording.objects.create(concert=self.c2, recording=self.r2, track=1)
-        models.ConcertRecording.objects.create(concert=self.c2, recording=self.r3, track=2)
+        models.ConcertRecording.objects.create(concert=self.c2, recording=self.r2, track=1, disc=1, disctrack=1)
+        models.ConcertRecording.objects.create(concert=self.c2, recording=self.r3, track=2, disc=1, disctrack=2)
         # artist 2 on concert
         self.c2.artists.add(self.a2)
         # artist 1 & 3 on r2, but only a1 on r3
@@ -38,7 +38,7 @@ class ArtistCountTest(TestCase):
         # A bootleg concert, with a2
         self.c3 = models.Concert.objects.create(title="Concert3", bootleg=True)
         self.r4 = models.Recording.objects.create(title="Recording4")
-        models.ConcertRecording.objects.create(concert=self.c3, recording=self.r4, track=1)
+        models.ConcertRecording.objects.create(concert=self.c3, recording=self.r4, track=1, disc=1, disctrack=1)
         self.c3.artists.add(self.a2)
 
 

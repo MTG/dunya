@@ -34,7 +34,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
     _RecordingClass = andalusian.models.Recording
     _InstrumentClass = andalusian.models.Instrument
     _WorkClass = andalusian.models.Work
-    
+
     def __init__(self, overwrite=False, is_bootleg=False):
         """Create a release importer.
         Arguments:
@@ -45,7 +45,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         super(AndalusianReleaseImporter, self).__init__(overwrite, is_bootleg)
         self.imported_orchestras = []
 
-    def _link_release_recording(self, release, recording, trackorder):
+    def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
             andalusian.models.AlbumRecording.objects.create(
                 album=release, recording=recording, track=trackorder)
@@ -92,10 +92,10 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
                    recording=rec, instrument=instrument, performer=artist).exists():
                     perf = andalusian.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)
                     perf.save()
-    
+
     def _apply_tags(self, recording, works, tags):
         pass
-    
+
     def _get_orchestra_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
@@ -134,6 +134,6 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
                 for instrument in instruments:
                     inst = self._get_instrument(instrument)
                     op.instruments.add(inst)
-        
+
         self.imported_orchestras.append(orchestraid)
         return orchestra

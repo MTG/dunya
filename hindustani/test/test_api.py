@@ -45,7 +45,7 @@ class RecordingTest(ApiTestCase):
         super(RecordingTest, self).setUp()
         self.rel = models.Release.objects.create(title="rel", mbid="0bf4c615-2e15-4ea2-8a65-22b5ec0a9304")
         self.r = models.Recording.objects.create(title="recording", mbid="63ddd257-a92e-4c0c-b639-ce59e1e57a4a")
-        models.ReleaseRecording.objects.create(release=self.rel, recording=self.r, track=1)
+        models.ReleaseRecording.objects.create(release=self.rel, recording=self.r, track=1, disc=1, disctrack=1)
 
     def test_render_recording_inner(self):
         s = api.RecordingInnerSerializer(self.r)

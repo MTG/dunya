@@ -121,7 +121,7 @@ class Artist(CarnaticStyle, data.models.Artist):
                         concerts[p.id].add(concert)
                     c[p.id] += 1
 
-        collaborators =  [(Artist.objects.get(pk=pk), list(concerts[pk]), bootlegs[pk]) for pk, count in c.most_common()]
+        collaborators =  [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), bootlegs[pk]) for pk, count in c.most_common()]
         collaborators = sorted(collaborators, key=lambda c: (len(c[1])+c[2], len(c[1])), reverse=True)
         return collaborators
 
@@ -213,6 +213,10 @@ class ConcertRecording(models.Model):
     recording = models.ForeignKey('Recording')
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
+    # The disc number. 1-n
+    disc = models.IntegerField()
+    # The track number within this disc. 1-n
+    disctrack = models.IntegerField()
 
     class Meta:
         ordering = ("track", )
