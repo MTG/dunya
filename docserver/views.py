@@ -59,10 +59,15 @@ class CollectionDetail(generics.RetrieveAPIView):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionDetailSerializer
 
-class DocumentDetailExternal(generics.RetrieveAPIView):
+class DocumentDetailExternal(generics.CreateAPIView, generics.RetrieveAPIView):
     lookup_field = 'external_identifier'
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
+
+class SourceFile(generics.CreateAPIView, generics.RetrieveAPIView):
+    lookup_field = 'file_type'
+    queryset = models.SourceFile.objects.all()
+    serializer_class = serializers.SourceFileSerializer
 
 class DocumentDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -426,7 +431,8 @@ def addcollection(request):
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('/thanks/')
+            form.save()
+            return redirect('docserver-manager')
     else:
         form = forms.CollectionForm()
     ret = {"form": form, "mode": "add"}

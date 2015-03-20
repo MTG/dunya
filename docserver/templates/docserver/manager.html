@@ -126,6 +126,7 @@ input[disabled] {
 <p><a href="{% url 'docserver-filetypes' %}">List Filetypes</a><br>
 
 <h2>Collection files</h2>
+<p><a href="{% url 'docserver-addcollection' %}">Add collection</a></p>
 {% if collections %}
 <table class="table table-condensed"><tr><th>Collection</th></tr>
     {% for c in collections %}
