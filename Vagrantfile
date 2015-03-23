@@ -5,7 +5,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
-  config.vm.hostname = “dunya-server"
+  config.vm.hostname = "dunya-server"
 
   config.vm.provider "virtualbox" do |v|
     # Need more memory to be able to compile Essentia with related libs
