@@ -247,8 +247,8 @@ def carnatic_workraagataala(request):
 
 def _raagas_for_thillana(recording):
     checker = "dashboard.completeness.RaagaTaalaFile"
-    try:
-        results = models.CollectionFile.objects.get(recordingid=recording.mbid)
+    files = models.CollectionFile.objects.filter(recordingid=recording.mbid)
+    for results in files:
         checks = results.collectionfileresult_set.filter(checker__module=checker).order_by('-datetime')
         if checks:
             c = checks[0]
@@ -262,8 +262,7 @@ def _raagas_for_thillana(recording):
                     realraagas.append(r)
             return (recording, realraagas)
         return (recording, None)
-    except models.CollectionFile.DoesNotExist:
-        return (recording, None)
+    return (recording, None)
 
 @user_passes_test(views.is_staff)
 def carnatic_thillanas(request):
