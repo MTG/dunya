@@ -24,6 +24,9 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
     url(r'^$', views.main, name='carnatic-main'),
+
+    url(r'^formedit/%s$' % (uuid_match, ), views.formconcert, name='carnatic-formconcert'),
+    url(r'^formedit$', views.formedit, name='carnatic-formedit'),
     url(r'^searchcomplete$', views.searchcomplete, name='carnatic-searchcomplete'),
 
     url(r'^composer/(?P<composerid>\d+)%s$' % (name_match, ), views.composerbyid, name='carnatic-composerbyid'),
@@ -52,6 +55,7 @@ urlpatterns = [
     url(r'^taala/%s%s$' % (uuid_match, name_match), views.taala, name='carnatic-taala'),
     url(r'^taala/search$', views.taalasearch, name='carnatic-taala-search'),
 
-    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrument, name='carnatic-instrument'),
+    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='carnatic-instrumentbyid'),
+    url(r'^instrument/%s%s$' % (uuid_match, name_match, ), views.instrument, name='carnatic-instrument'),
     url(r'^instrument/search$', views.instrumentsearch, name='carnatic-instrument-search'),
 ]

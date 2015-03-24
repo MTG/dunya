@@ -1,0 +1,26 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Edit forms for concert{% endblock %}
+
+{% block wrap %}
+
+<p><a href="{% url 'carnatic-formedit' %}">Return to list</a></p>
+<h2>Edit forms for concert {{concert.title}}</h2>
+
+<p><a href="{{concert.get_musicbrainz_url}}">Concert on musicbrainz</a></p>
+
+<form method="POST">
+    {% csrf_token %}
+<table>
+    <tr><th>Recording</th><th>Work</th><th>Form</th></tr>
+
+    {% for r in tracks %}
+    <tr>
+        <td><a href="{{r.0.get_musicbrainz_url}}">{{r.0.title}}</a></td><td>{{r.1.title}}</td><td>{% if r.1 %}{{r.2.form}}{% endif %}</td></tr>
+    {% endfor %}
+
+</table>
+<input type="submit" value="Update forms">
+</form>
+
+{% endblock %}
+

@@ -639,8 +639,12 @@ def instrumentsearch(request):
         ret.append({"id": i.id, "name": i.name})
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def instrument(request, instrumentid, name=None):
+def instrumentbyid(request, instrumentid, name=None):
     instrument = get_object_or_404(Instrument, pk=instrumentid)
+    return redirect(instrument.get_absolute_url(), permanent=True)
+
+def instrument(request, uuid, name=None):
+    instrument = get_object_or_404(Instrument, uuid=uuid)
     samples = instrument.samples(10)
     sample = None
     if samples:
@@ -651,3 +655,31 @@ def instrument(request, instrumentid, name=None):
            }
 
     return render(request, "carnatic/instrument.html", ret)
+
+def formedit(request):
+    concerts = Concert.objects.all()
+    ret = {"concerts": concerts}
+    return render(request, "carnatic/formedit.html", ret)
+
+from django import forms
+from django.forms.models import modelform_factory
+
+def formconcert(request, uuid):
+    concert = get_object_or_404(Concert, mbid=uuid)
+    WorkForm = modelform_factory(Work, fields=('form', ))
+
+    if request.method == "POST":
+        for i, t in enumerate(concert.tracklist()):
+            w = t.work
+            form = WorkForm(request.POST, instance=w, prefix="tr%s" % i)
+            if form.is_valid():
+                form.save()
+
+
+    tracks = []
+    for i, t in enumerate(concert.tracklist()):
+        w = t.work
+        form = WorkForm(instance=w, prefix="tr%s" % i)
+        tracks.append((t, w, form))
+    ret = {"concert": concert, "tracks": tracks}
+    return render(request, "carnatic/formconcert.html", ret)
