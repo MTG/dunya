@@ -38,6 +38,8 @@ urlpatterns = [
     url(r'carnatic/recordings/', statistic_views.carnatic_recordings, name='dashboard-carnatic-recordings'),
     url(r'carnatic/raagataala/', statistic_views.carnatic_raagataala, name='dashboard-carnatic-raagataala'),
     url(r'carnatic/works/', statistic_views.carnatic_works, name='dashboard-carnatic-works'),
+    url(r'carnatic/thillana/', statistic_views.carnatic_thillanas, name='dashboard-carnatic-thillanas'),
+    url(r'carnatic/workraagataala/', statistic_views.carnatic_workraagataala, name='dashboard-carnatic-workraagataala'),
 
     url(r'carnatic/data/raagas', views.carnatic_raagas, name='dashboard-carnatic-raagas'),
     url(r'carnatic/data/taalas', views.carnatic_taalas, name='dashboard-carnatic-taalas'),

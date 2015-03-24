@@ -235,6 +235,58 @@ def carnatic_works(request):
            "all": works.order_by('title').all()}
     return render(request, 'stats/carnatic_works.html', ret)
 
+@user_passes_test(views.is_staff)
+def carnatic_workraagataala(request):
+    works = carnatic.models.Work.objects
+    raaga_counted = works.annotate(Count('raaga'))
+    manyraaga = [w for w in raaga_counted if w.raaga__count > 1]
+    taala_counted = works.annotate(Count('taala'))
+    manytaala = [w for w in taala_counted if w.taala__count > 1]
+    ret = {"manyraaga": manyraaga, "manytaala": manytaala}
+    return render(request, 'stats/carnatic_workraagataala.html', ret)
+
+def _raagas_for_thillana(recording):
+    checker = "dashboard.completeness.RaagaTaalaFile"
+    try:
+        results = models.CollectionFile.objects.get(recordingid=recording.mbid)
+        checks = results.collectionfileresult_set.filter(checker__module=checker).order_by('-datetime')
+        if checks:
+            c = checks[0]
+            data = json.loads(c.data)
+            raagas = data.get("raaga", [])
+            realraagas = []
+            for r in raagas:
+                try:
+                    realraagas.append(carnatic.models.Raaga.objects.fuzzy(r))
+                except carnatic.models.Raaga.DoesNotExist:
+                    realraagas.append(r)
+            return (recording, realraagas)
+        return (recording, None)
+    except models.CollectionFile.DoesNotExist:
+        return (recording, None)
+
+@user_passes_test(views.is_staff)
+def carnatic_thillanas(request):
+    thillana = carnatic.models.Work.objects.get(mbid="11b9f0b3-bd8c-4b4b-8de7-f6f78240718d")
+
+    workrecs = []
+    for recording in thillana.recordings(True):
+        workrecs.append(_raagas_for_thillana(recording))
+
+    tillanas = carnatic.models.Recording.objects.filter(title__icontains="tillana", work=None)
+    noworktil = []
+    for recording in tillanas:
+        print recording
+        noworktil.append(_raagas_for_thillana(recording))
+
+    thillanas = carnatic.models.Recording.objects.filter(title__icontains="thillana", work=None)
+    noworkthil = []
+    for recording in thillanas:
+        print recording
+        noworkthil.append(_raagas_for_thillana(recording))
+    ret = {"thillanarecs": workrecs, "thillanas": noworkthil, "tillanas": noworktil}
+    return render(request, 'stats/carnatic_thillana.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def hindustani_stats(request):

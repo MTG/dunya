@@ -1,0 +1,38 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Carnatic Works with more than one raaga or taala{% endblock %}
+
+{% block wrap %}
+
+<h1>Carnatic Works with more than one raaga or taala</h1>
+
+<a href="#raaga">Works with more than one raaga</a><br>
+<a href="#taala">Works with more than one taala</a><br>
+
+<a name="missing"></a>
+<h2>Works with more than one raaga</h2>
+<ul>
+{% for w in manyraaga %}
+    <li><a href="{{w.get_musicbrainz_url}}">{{w}}</a>
+    <ul>
+        {% for r in w.recording_set.all %}
+        <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>
+        {% endfor %}
+    </ul>
+{% endfor %}
+</ul>
+
+<h2>Works with more than one taala</h2>
+<ul>
+{% for w in manytaala %}
+    <li><a href="{{w.get_musicbrainz_url}}">{{w}}</a>
+    <ul>
+        {% for r in w.recording_set.all %}
+        <li><a href="{{r.get_musicbrainz_url}}">{{r}}</a>
+        {% endfor %}
+    </ul>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+

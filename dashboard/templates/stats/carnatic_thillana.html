@@ -1,0 +1,57 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Carnatic recordings of Thillana work{% endblock %}
+
+{% block wrap %}
+
+<h1>Carnatic recordings of Thillana work</h1>
+
+<p>Not shown here: other recordings of thillana not linked to the single work:
+<a href="http://musicbrainz.org/work/11b9f0b3-bd8c-4b4b-8de7-f6f78240718d">http://musicbrainz.org/work/11b9f0b3-bd8c-4b4b-8de7-f6f78240718d</a></p>
+
+<p><a href="#thillanawork">Recordings of thillana work</a><br>
+<p><a href="#thillanas">No work, named tillana</a><br>
+<p><a href="#thillanas">No work, named thillana</a><br>
+
+<a name="thillanawork"></a>
+<h2>Recordings of thillana work</h2>
+{% for r, raagas in thillanarecs %}
+<h3><a href="{{r.get_musicbrainz_url}}">{{r}}</a></h3>
+<p>From concert <a href="{{r.concert_set.get.get_musicbrainz_url}}">{{r.concert_set.get}}</a></p>
+<p>Raagas:
+<ul>
+{% for rg in raagas %}
+<li><a href="{{rg.get_absolute_url}}">{{rg}}</a>
+{% endfor %}
+    </ul>
+{% endfor %}
+
+<a name="tillana"></a>
+<h2>No work, recordings named tillana</h2>
+{% for r, raagas in tillanas %}
+<h3><a href="{{r.get_musicbrainz_url}}">{{r}}</a></h3>
+<p>From concert <a href="{{r.concert_set.get.get_musicbrainz_url}}">{{r.concert_set.get}}</a></p>
+<p>Raagas:
+<ul>
+{% for rg in raagas %}
+<li><a href="{{rg.get_absolute_url}}">{{rg}}</a>
+{% endfor %}
+    </ul>
+{% endfor %}
+
+<a name="thillana"></a>
+<h2>No work, recordings named thillana</h2>
+{% for r, raagas in thillanas %}
+<h3><a href="{{r.get_musicbrainz_url}}">{{r}}</a></h3>
+<p>From concert <a href="{{r.concert_set.get.get_musicbrainz_url}}">{{r.concert_set.get}}</a></p>
+<p>Raagas:
+<ul>
+{% for rg in raagas %}
+<li><a href="{{rg.get_absolute_url}}">{{rg}}</a>
+{% endfor %}
+    </ul>
+{% endfor %}
+
+
+{% endblock %}
+
+
