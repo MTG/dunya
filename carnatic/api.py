@@ -264,10 +264,13 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
     recordings = ConcertRecordingSerializer(source='concertrecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     concert_artists = ArtistInnerSerializer(source='artists', many=True)
+    image = serializers.ReadOnlyField(source='get_image_url')
 
     class Meta:
         model = models.Concert
-        fields = ['mbid', 'title', 'year', 'recordings', 'artists', 'concert_artists']
+        fields = ['mbid', 'title', 'year', 'image', 'recordings', 'artists', 'concert_artists']
+
+
 
     def get_artists_and_instruments(self, ob):
         artists = ob.performers()
