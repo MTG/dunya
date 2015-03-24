@@ -270,8 +270,6 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
         model = models.Concert
         fields = ['mbid', 'title', 'year', 'image', 'recordings', 'artists', 'concert_artists']
 
-
-
     def get_artists_and_instruments(self, ob):
         artists = ob.performers()
         data = []
