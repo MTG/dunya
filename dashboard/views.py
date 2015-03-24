@@ -453,6 +453,18 @@ def carnatic_instruments(request):
 
     return _edit_attributedata(request, data)
 
+@user_passes_test(is_staff)
+def carnatic_forms(request):
+    data = {"stylename": "Carnatic",
+            "entityname": "Form",
+            "entityurl": "dashboard-carnatic-forms",
+            "klass": carnatic.models.Form,
+            "aliasklass": carnatic.models.FormAlias,
+            "template": "dashboard/styletag.html",
+            }
+
+    return _edit_attributedata(request, data)
+
 
 @user_passes_test(is_staff)
 def hindustani_raags(request):

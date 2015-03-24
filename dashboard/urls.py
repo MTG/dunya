@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'carnatic/data/raagas', views.carnatic_raagas, name='dashboard-carnatic-raagas'),
     url(r'carnatic/data/taalas', views.carnatic_taalas, name='dashboard-carnatic-taalas'),
     url(r'carnatic/data/instruments', views.carnatic_instruments, name='dashboard-carnatic-instruments'),
+    url(r'carnatic/data/forms', views.carnatic_forms, name='dashboard-carnatic-forms'),
 
     url(r'carnatic/', statistic_views.carnatic_stats, name='dashboard-carnatic-stats'),
 
