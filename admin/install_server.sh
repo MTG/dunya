@@ -12,6 +12,7 @@ apt-get install -y python-virtualenv python-dev pxz git
 apt-get install -y python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev postgresql-server-dev-all libxml2-dev libxslt1-dev
 apt-get install -y build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev
 
+apt-get install -y node-less
 
 echo "---------------------------------------------"
 echo "Installing PostgreSQL"
@@ -50,7 +51,17 @@ pip install -r requirements
 echo "---------------------------------------------"
 echo "Create database and tables "
 echo "---------------------------------------------"
+sudo adduser \
+   --system \
+   --shell /bin/bash \
+   --gecos 'User for managing of git version control' \
+   --group \
+   --disabled-password \
+   --home /home/dunya \
+   dunya
 sudo -u postgres psql -c "CREATE USER dunya SUPERUSER;"
 sudo -u postgres psql -c "create database \"dunya\""
 sudo -u postgres psql -c "create extension unaccent;"
-fab setupdb
+
+# If you want to create an empty database, uncomment this line: 
+#fab setupdb
