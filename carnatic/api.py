@@ -19,6 +19,7 @@ from carnatic import models
 from rest_framework import generics
 from rest_framework import serializers
 from django.shortcuts import redirect
+from django.contrib.sites.models import Site
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -264,7 +265,7 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
     recordings = ConcertRecordingSerializer(source='concertrecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     concert_artists = ArtistInnerSerializer(source='artists', many=True)
-    image = serializers.ReadOnlyField(source='get_image_url')
+    image = serializers.SerializerMethodField('get_image_abs_url')
 
     class Meta:
         model = models.Concert
@@ -279,6 +280,14 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
             inner["instruments"] = InstrumentInnerSerializer(instrument, many=True).data
             data.append(inner)
         return data
+    
+    def get_image_abs_url(self, ob):
+        str_ret = 'http://'
+        request = self.context.get('request', None)
+        if request and request.is_secure():
+            str_ret = 'https://'
+        current_site = Site.objects.get_current()
+        return str_ret + current_site.domain + ob.get_image_url()
 
 class ConcertDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'

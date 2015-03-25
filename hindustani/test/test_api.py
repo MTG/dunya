@@ -161,7 +161,7 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        expected = ['artists', 'mbid', 'recordings', 'release_artists', 'title', 'year']
+        expected = ['artists', 'image', 'mbid', 'recordings', 'release_artists', 'title', 'year']
         self.assertEqual(expected, sorted(s.data.keys()))
 
     def test_laya_detail_url(self):

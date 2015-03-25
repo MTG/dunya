@@ -67,7 +67,7 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        self.assertEquals(["artists", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
+        self.assertEquals(["artists", "image", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
 
     def test_render_release_list(self):
         s = api.ReleaseInnerSerializer(self.r)

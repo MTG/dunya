@@ -19,6 +19,7 @@ from makam import models
 from rest_framework import generics
 from rest_framework import serializers
 from django.shortcuts import redirect
+from django.contrib.sites.models import Site
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -281,10 +282,18 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
     recordings  = ReleaseRecordingInnerSerializer(many=True, source='releaserecording_set')
     artists = ArtistInnerSerializer(source='performers', many=True)
     release_artists = ArtistInnerSerializer(source='artists', many=True)
+    image = serializers.SerializerMethodField('get_image_abs_url')
 
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'year', 'artists', 'release_artists', 'recordings']
+        fields = ['mbid', 'title', 'year', 'image', 'artists', 'release_artists', 'recordings']
+    def get_image_abs_url(self, ob):
+        str_ret = 'http://'
+        request = self.context.get('request', None)
+        if request and request.is_secure():
+            str_ret = 'https://'
+        current_site = Site.objects.get_current()
+        return str_ret + current_site.domain + ob.get_image_url()
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
