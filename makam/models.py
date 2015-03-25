@@ -310,7 +310,7 @@ class Work(MakamStyle, data.models.Work):
 
     def lyricistlist(self):
         return self.lyricists.all()
-"""
+
 class SymbTr(models.Model):
     name = models.CharField(max_length=200)
     # We use a uuid directly instead of a link to an existing model
@@ -319,4 +319,3 @@ class SymbTr(models.Model):
 
     def __unicode__(self):
         return u"%s -> %s" % (self.uuid, self.name)
-"""

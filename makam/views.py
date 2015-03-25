@@ -19,6 +19,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from makam import models
+import docserver
 
 # Simple player for Georgi/Istanbul musicians
 def makamplayer(request):
@@ -136,3 +137,16 @@ def instrument(request, instrumentid, name=None):
     ret = {"instrument": instrument
            }
     return render(request, "makam/instrument.html", ret)
+
+def symbtr(request, uuid):
+    """ The symbtr view returns the data of this item from
+    the docserver, except sets a download hint for the browser
+    and sets the filename to be the symbtr name """
+
+    sym = get_object_or_404(models.SymbTr, uuid=uuid)
+    filetype = get_object_or_404(docserver.models.SourceFileType, slug="symbtrtxt")
+    filename = "%s.%s" % (sym.name, filetype.extension)
+    response = docserver.views.download_external(request, uuid, "symbtrtxt")
+    response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+
+    return response
