@@ -38,5 +38,6 @@ urlpatterns = [
     url(r'^usul/(?P<usulid>\d+)%s$' % (name_match, ), views.usulbyid, name='makam-usulbyid'),
     url(r'^usul/%s%s$' % (uuid_match, name_match, ), views.usul, name='makam-usul'),
 
-    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrument, name='makam-instrument'),
+    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='makam-instrumentbyid'),
+    url(r'^instrument/%s%s$' % (uuid_match, name_match), views.instrument, name='makam-instrument'),
 ]

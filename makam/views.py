@@ -131,8 +131,12 @@ def form(request, uuid, name=None):
            }
     return render(request, "makam/form.html", ret)
 
-def instrument(request, instrumentid, name=None):
-    instrument = get_object_or_404(models.Instrument, pk=instrumentid, hidden=False)
+def instrumentbyid(request, instrumentid, name=None):
+    instrument = get_object_or_404(models.Instrument, pk=instrumentid)
+    return redirect(instrument.get_absolute_url(), permanent=True)
+
+def instrument(request, uuid, name=None):
+    instrument = get_object_or_404(models.Instrument, mbid=uuid, hidden=False)
 
     ret = {"instrument": instrument
            }

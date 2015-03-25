@@ -644,7 +644,7 @@ def instrumentbyid(request, instrumentid, name=None):
     return redirect(instrument.get_absolute_url(), permanent=True)
 
 def instrument(request, uuid, name=None):
-    instrument = get_object_or_404(Instrument, uuid=uuid)
+    instrument = get_object_or_404(Instrument, mbid=uuid)
     samples = instrument.samples(10)
     sample = None
     if samples:

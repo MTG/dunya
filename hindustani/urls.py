@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^form/%s%s$' % (uuid_match, name_match), views.form, name='hindustani-form'),
     url(r'^form/search$', views.formsearch, name='hindustani-form-search'),
 
-    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrument, name='hindustani-instrument'),
+    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='hindustani-instrumentbyid'),
+    url(r'^instrument/%s%s$' % (uuid_match, name_match), views.instrument, name='hindustani-instrument'),
     url(r'^instrument/search$', views.instrumentsearch, name='hindustani-instrument-search'),
 ]

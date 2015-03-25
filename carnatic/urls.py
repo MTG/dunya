@@ -55,7 +55,7 @@ urlpatterns = [
     url(r'^taala/%s%s$' % (uuid_match, name_match), views.taala, name='carnatic-taala'),
     url(r'^taala/search$', views.taalasearch, name='carnatic-taala-search'),
 
-    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='carnatic-instrument'),
-    #url(r'^instrument/%s%s$' % (uuid_match, name_match, ), views.instrument, name='carnatic-instrument'),
+    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='carnatic-instrumentbyid'),
+    url(r'^instrument/%s%s$' % (uuid_match, name_match, ), views.instrument, name='carnatic-instrument'),
     url(r'^instrument/search$', views.instrumentsearch, name='carnatic-instrument-search'),
 ]
