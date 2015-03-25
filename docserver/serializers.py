@@ -17,23 +17,17 @@
 from docserver import models
 from rest_framework import serializers
 from rest_framework import fields
+from django.shortcuts import get_object_or_404
 
 class CollectionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Collection
         fields = ['name', 'description', 'slug', 'root_directory', 'id']
 
-class SourceFileSerializer(serializers.ModelSerializer):
-    path = serializers.Field()
-    file_type = serializers.Field()
-
-    class Meta:
-        model = models.SourceFile
-        fields = ['document', 'path', 'file_type', 'size']
 
 class DocumentSerializer(serializers.ModelSerializer):
     # The extension field isn't part of a SourceFile, but we get it from the filetype
-    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='extension', read_only=True)
+    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
     derivedfiles = fields.ReadOnlyField(source='derivedmap', read_only=True)
     collection = serializers.CharField(max_length=100, source='collection.slug')
 
@@ -43,7 +37,7 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         slug = validated_data.pop('collection')
-        collection = models.Collection.objects.get(**slug)
+        collection = get_object_or_404(models.Collection, **slug)
         document = models.Document.objects.create(collection=collection, **validated_data)
         return document
 

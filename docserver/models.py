@@ -26,6 +26,9 @@ import os
 class Collection(models.Model):
     """A set of related documents"""
 
+    AUDIO_DIR = "audio"
+    DATA_DIR = "data"
+
     class Meta:
         permissions = (('read_restricted', "Can read files in restricted collections"), )
 
@@ -163,6 +166,10 @@ class SourceFile(models.Model):
     def extension(self):
         return self.file_type.extension
 
+    @property
+    def slug(self):
+        return self.file_type.slug
+
     def get_absolute_url(self, url_slug='ds-download-external'):
         return reverse(
             url_slug,
@@ -174,8 +181,7 @@ class SourceFile(models.Model):
 
     @property
     def mimetype(self):
-        # TODO: For now all source files are mp3, but this won't be for long
-        return "audio/mpeg"
+        return self.file_type.mimetype
 
     def __unicode__(self):
         return u"%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)

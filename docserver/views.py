@@ -19,8 +19,9 @@ import datetime
 import inspect
 import pkgutil
 import imp
+import os
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
@@ -42,6 +43,9 @@ from compmusic import extractors
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework import generics
+from rest_framework import parsers
+from rest_framework import response
+from rest_framework import status
 
 from sendfile import sendfile
 
@@ -64,10 +68,53 @@ class DocumentDetailExternal(generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
 
-class SourceFile(generics.CreateAPIView, generics.RetrieveAPIView):
-    lookup_field = 'file_type'
-    queryset = models.SourceFile.objects.all()
-    serializer_class = serializers.SourceFileSerializer
+class SourceFile(generics.CreateAPIView):
+    parser_classes = (parsers.MultiPartParser,)
+
+    def create(self, request, external_identifier, file_type):
+        try:
+            document = models.Document.objects.get(external_identifier=external_identifier)
+        except models.Document.DoesNotExist:
+            data = {'detail': 'No document with this id'}
+            return response.Response(data, status=status.HTTP_404_NOT_FOUND)
+        try:
+            sft = models.SourceFileType.objects.get(slug=file_type)
+        except models.SourceFileType.DoesNotExist:
+            data = {'detail': 'No filetype with this slug'}
+            return response.Response(data, status=status.HTTP_404_NOT_FOUND)
+
+        file = request.data.get("file")
+        if not file:
+            data = {'detail': 'Need exactly one file called "file"'}
+            return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
+        collection = document.collection
+        root = collection.root_directory
+
+        mbid = external_identifier
+        mb = mbid[:2]
+        slug = sft.slug
+        ext = sft.extension
+        filedir = os.path.join(mb, mbid, slug)
+        datadir = os.path.join(root, models.Collection.DATA_DIR, filedir)
+
+        try:
+            os.makedirs(datadir)
+        except OSError:
+            print "Error making directory", datadir
+            pass
+
+        filename = "%s-%s.%s" % (mbid, slug, ext)
+        size = 0
+        with open(os.path.join(datadir, filename), 'wb') as dest:
+            for chunk in file.chunks():
+                size += len(chunk)
+                dest.write(chunk)
+
+        filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
+        models.SourceFile.objects.create(document=document, file_type=sft, path=filepath, size=size)
+        data = {'detail': 'ok'}
+        return response.Response(data, status=status.HTTP_200_OK)
+
 
 class DocumentDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
