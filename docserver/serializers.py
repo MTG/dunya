@@ -38,9 +38,9 @@ class DocumentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         args = self.context["view"].kwargs
         slug = validated_data.pop('collection')
-        validated_data.update(args)
         collection = get_object_or_404(models.Collection, **slug)
-        document = models.Document.objects.create(collection=collection, **validated_data)
+        external = args["external_identifier"]
+        document, created = models.Document.objects.get_or_create(collection=collection, external_identifier=external, defaults=validated_data)
         return document
 
 class DocumentIdSerializer(serializers.ModelSerializer):

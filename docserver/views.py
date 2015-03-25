@@ -124,7 +124,7 @@ class SourceFile(generics.CreateAPIView):
                 dest.write(chunk)
 
         filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
-        models.SourceFile.objects.create(document=document, file_type=sft, path=filepath, size=size)
+        models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
         data = {'detail': 'ok'}
         return response.Response(data, status=status.HTTP_200_OK)
 
