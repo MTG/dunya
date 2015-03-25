@@ -46,6 +46,7 @@ from rest_framework import generics
 from rest_framework import parsers
 from rest_framework import response
 from rest_framework import status
+from rest_framework import permissions
 
 from sendfile import sendfile
 
@@ -63,13 +64,25 @@ class CollectionDetail(generics.RetrieveAPIView):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionDetailSerializer
 
+class StaffWritePermission(permissions.IsAuthenticated):
+    """ An extension of the IsAuthenticated permission which only lets
+        staff members perform POST methods """
+    def has_permission(self, request, view):
+        perm = super(StaffWritePermission, self).has_permission(request, view)
+        if request.method == "POST":
+            return perm and request.user.is_staff
+        else:
+            return perm
+
 class DocumentDetailExternal(generics.CreateAPIView, generics.RetrieveAPIView):
     lookup_field = 'external_identifier'
     queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
+    permission_classes = (StaffWritePermission, )
 
 class SourceFile(generics.CreateAPIView):
     parser_classes = (parsers.MultiPartParser,)
+    permission_classes = (StaffWritePermission, )
 
     def create(self, request, external_identifier, file_type):
         try:

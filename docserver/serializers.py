@@ -26,7 +26,7 @@ class CollectionListSerializer(serializers.ModelSerializer):
 
 
 class DocumentSerializer(serializers.ModelSerializer):
-    # The extension field isn't part of a SourceFile, but we get it from the filetype
+    # The slug field isn't part of a SourceFile, but we get it from the filetype
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
     derivedfiles = fields.ReadOnlyField(source='derivedmap', read_only=True)
     collection = serializers.CharField(max_length=100, source='collection.slug')
@@ -36,7 +36,9 @@ class DocumentSerializer(serializers.ModelSerializer):
         fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
 
     def create(self, validated_data):
+        args = self.context["view"].kwargs
         slug = validated_data.pop('collection')
+        validated_data.update(args)
         collection = get_object_or_404(models.Collection, **slug)
         document = models.Document.objects.create(collection=collection, **validated_data)
         return document
