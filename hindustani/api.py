@@ -15,11 +15,11 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from hindustani import models
+from data.models import WithImageMixin
 
 from rest_framework import generics
 from rest_framework import serializers
 from django.shortcuts import redirect
-from django.contrib.sites.models import Site
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -273,7 +273,7 @@ class ReleaseRecordingSerializer(serializers.ModelSerializer):
         model = models.ReleaseRecording
         fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
 
-class ReleaseDetailSerializer(serializers.ModelSerializer):
+class ReleaseDetailSerializer(serializers.ModelSerializer, WithImageMixin):
     recordings = ReleaseRecordingSerializer(source='releaserecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     release_artists = ArtistInnerSerializer(source='artists', many=True)
@@ -282,14 +282,6 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Release
         fields = ['mbid', 'title', 'year', 'image', 'recordings', 'artists', 'release_artists']
-
-    def get_image_abs_url(self, ob):
-        str_ret = 'http://'
-        request = self.context.get('request', None)
-        if request and request.is_secure():
-            str_ret = 'https://'
-        current_site = Site.objects.get_current()
-        return str_ret + current_site.domain + ob.get_image_url()
 
     def get_artists_and_instruments(self, ob):
         artists = ob.performers()
