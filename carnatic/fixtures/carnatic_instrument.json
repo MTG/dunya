@@ -1,468 +1,323 @@
 [
 {
-    "pk": 1, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [], 
-        "hidden": false, 
-        "name": "Vocal"
-    }
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "d92884b7-ee0c-46d5-96f3-918196ba8c5b",
+        "references": [],
+        "images": [],
+        "hidden": false,
+        "name": "Voice"
+    },
+    "model": "carnatic.instrument",
+    "pk": 1
 },
 {
-    "pk": 2, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "089f123c-0f7d-4105-a64e-49de81ca8fa4",
+        "references": [],
         "images": [
             3520
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Violin"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 2
 },
 {
-    "pk": 3, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": true,
+        "source": null,
+        "mbid": "f689271c-37bc-4c49-92a3-a14b15ee5d0e",
+        "references": [],
         "images": [
             611
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Mridangam"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 3
 },
 {
-    "pk": 4, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "b9362496-01a3-4298-b369-84313cec5ee1",
+        "references": [],
         "images": [
             612
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Tambura"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 4
 },
 {
-    "pk": 5, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [
-            613
-        ], 
-        "hidden": false, 
-        "name": "Veena"
-    }
-},
-{
-    "pk": 6, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "540280f1-d6cf-46bf-968b-695e99e216d7",
+        "references": [],
         "images": [
             614
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Flute"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 6
 },
 {
-    "pk": 7, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "37fa9bb5-d5d7-4b0f-aa4d-531339ba9c32",
+        "references": [],
         "images": [
             615
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Mandolin"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 7
 },
 {
-    "pk": 8, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "a9ed16cd-b8cb-4256-9c41-93f5f0458c49",
+        "references": [],
         "images": [
             616
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Saxophone"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 8
 },
 {
-    "pk": 9, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": true,
+        "source": null,
+        "mbid": "c5aa7d98-c14d-4ff1-8afb-f8743c62496c",
+        "references": [],
         "images": [
             617
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Ghatam"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 9
 },
 {
-    "pk": 10, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": true,
+        "source": null,
+        "mbid": "f7306552-f9fc-44f0-8d62-0b48f4c4c278",
+        "references": [],
         "images": [
             618
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Khanjira"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 10
 },
 {
-    "pk": 11, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": true,
+        "source": null,
+        "mbid": "e2f0cdf4-3651-4bb9-9153-0cdb16ce65ea",
+        "references": [],
         "images": [
             607
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Morsing"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 11
 },
 {
-    "pk": 12, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [], 
-        "hidden": false, 
-        "name": "Konnakol"
-    }
-},
-{
-    "pk": 13, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [
-            608
-        ], 
-        "hidden": false, 
-        "name": "Gettuvadyam"
-    }
-},
-{
-    "pk": 14, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [
-            609
-        ], 
-        "hidden": false, 
-        "name": "Jalatarang"
-    }
-},
-{
-    "pk": 15, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [
-            610
-        ], 
-        "hidden": false, 
-        "name": "Chitraveena"
-    }
-},
-{
-    "pk": 18, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [
-            697
-        ], 
-        "hidden": false, 
-        "name": "Talam"
-    }
-},
-{
-    "pk": 19, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
-        "images": [], 
-        "hidden": false, 
-        "name": "Electronic tambura"
-    }
-},
-{
-    "pk": 20, 
-    "model": "carnatic.instrument", 
-    "fields": {
-        "description": null, 
-        "percussion": false, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "41761936-5dbc-433f-b558-a7ef14fe9b08",
+        "references": [],
         "images": [
             595
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Saraswati veena"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 20
 },
 {
-    "pk": 21, 
-    "model": "carnatic.instrument", 
     "fields": {
-        "description": null, 
-        "percussion": true, 
-        "source": null, 
-        "mbid": null, 
-        "references": [], 
+        "description": null,
+        "percussion": true,
+        "source": null,
+        "mbid": "f8cbf484-c96d-4261-a06d-5a097a403956",
+        "references": [],
         "images": [
             647
-        ], 
-        "hidden": false, 
+        ],
+        "hidden": false,
         "name": "Thavil"
-    }
+    },
+    "model": "carnatic.instrument",
+    "pk": 21
 },
 {
-    "pk": 1, 
-    "model": "carnatic.instrumentalias", 
     "fields": {
-        "instrument": 1, 
+        "instrument": 1,
         "name": "lead vocal"
-    }
+    },
+    "model": "carnatic.instrumentalias",
+    "pk": 1
 },
 {
-    "pk": 2, 
-    "model": "carnatic.instrumentalias", 
     "fields": {
-        "instrument": 1, 
+        "instrument": 1,
         "name": "other vocal"
-    }
+    },
+    "model": "carnatic.instrumentalias",
+    "pk": 2
 },
 {
-    "pk": 3, 
-    "model": "carnatic.instrumentalias", 
     "fields": {
-        "instrument": 1, 
+        "instrument": 1,
         "name": "background vocal"
-    }
+    },
+    "model": "carnatic.instrumentalias",
+    "pk": 3
 },
 {
-    "pk": 3520, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Violin.jpg", 
-        "small_image": ""
-    }
+        "instrument": 10,
+        "name": "kanjira"
+    },
+    "model": "carnatic.instrumentalias",
+    "pk": 4
 },
 {
-    "pk": 611, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Mridangam_4.jpg", 
+        "source": null,
+        "image": "images/Violin.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 3520
 },
 {
-    "pk": 612, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Tambura_3.jpg", 
+        "source": null,
+        "image": "images/Mridangam_4.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 611
 },
 {
-    "pk": 613, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Veena_3.jpg", 
+        "source": null,
+        "image": "images/Tambura_3.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 612
 },
 {
-    "pk": 614, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Flute_1.jpg", 
+        "source": null,
+        "image": "images/Flute_1.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 614
 },
 {
-    "pk": 615, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Mandolin_1.jpg", 
+        "source": null,
+        "image": "images/Mandolin_1.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 615
 },
 {
-    "pk": 616, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Saxophone_1.jpg", 
+        "source": null,
+        "image": "images/Saxophone_1.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 616
 },
 {
-    "pk": 617, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Ghatam_1.jpg", 
+        "source": null,
+        "image": "images/Ghatam_1.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 617
 },
 {
-    "pk": 618, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Khanjira_1.jpg", 
+        "source": null,
+        "image": "images/Khanjira_1.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 618
 },
 {
-    "pk": 607, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Morsing.jpg", 
+        "source": null,
+        "image": "images/Morsing.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 607
 },
 {
-    "pk": 608, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Gettuvadyam.jpg", 
+        "source": null,
+        "image": "images/Veena.jpg",
         "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 595
 },
 {
-    "pk": 609, 
-    "model": "data.image", 
     "fields": {
-        "source": null, 
-        "image": "images/Jalatarang_1.jpg", 
+        "source": null,
+        "image": "images/Thavil.jpg",
         "small_image": ""
-    }
-},
-{
-    "pk": 610, 
-    "model": "data.image", 
-    "fields": {
-        "source": null, 
-        "image": "images/Chitraveena.jpg", 
-        "small_image": ""
-    }
-},
-{
-    "pk": 697, 
-    "model": "data.image", 
-    "fields": {
-        "source": null, 
-        "image": "images/Talam_1.jpg", 
-        "small_image": ""
-    }
-},
-{
-    "pk": 595, 
-    "model": "data.image", 
-    "fields": {
-        "source": null, 
-        "image": "images/Veena.jpg", 
-        "small_image": ""
-    }
-},
-{
-    "pk": 647, 
-    "model": "data.image", 
-    "fields": {
-        "source": null, 
-        "image": "images/Thavil.jpg", 
-        "small_image": ""
-    }
+    },
+    "model": "data.image",
+    "pk": 647
 }
 ]
