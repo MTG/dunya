@@ -17,6 +17,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseBadRequest
 
 from makam import models
 import docserver
@@ -148,9 +149,15 @@ def symbtr(request, uuid):
     and sets the filename to be the symbtr name """
 
     sym = get_object_or_404(models.SymbTr, uuid=uuid)
-    filetype = get_object_or_404(docserver.models.SourceFileType, slug="symbtrtxt")
+    types = ("txt", "midi", "pdf", "xml", "mu2")
+    fmt = request.GET.get("format", "txt")
+    if fmt not in types:
+        return HttpResponseBadRequest("Unknown format parameter")
+
+    slug = "symbtr%s" % fmt
+    filetype = get_object_or_404(docserver.models.SourceFileType, slug=slug)
     filename = "%s.%s" % (sym.name, filetype.extension)
-    response = docserver.views.download_external(request, uuid, "symbtrtxt")
+    response = docserver.views.download_external(request, uuid, slug)
     response['Content-Disposition'] = 'attachment; filename="%s"' % filename
 
     return response
