@@ -7,11 +7,11 @@ class InstrumentTest(TestCase):
     def test_hidden_instrument(self):
 
         # Not hidden
-        resp = self.client.get("/hindustani/instrument/4")
+        resp = self.client.get("/hindustani/instrument/1ebfe130-b68c-452a-8ee3-81b430d13ca3")
         self.assertEqual(resp.status_code, 200)
 
         # hidden
-        resp = self.client.get("/hindustani/instrument/5")
+        resp = self.client.get("/hindustani/instrument/0fe1a768-45ba-49e4-8363-14db8e73ca85")
         self.assertEqual(resp.status_code, 404)
 
 class RaagTest(TestCase):
