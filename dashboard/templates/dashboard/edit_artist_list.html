@@ -1,0 +1,19 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Edit Artist{% endblock %}
+
+{% block wrap %}
+
+<h1>Edit Artist Description</h1>
+<p>Select the Artist to change current description.</p>
+
+<table style="width:auto" class="table">
+    <th>Artist</th>
+    {% for r in artists %}
+    <tr><td>
+            <a href="{%url entityurl r.id %}">{{r.name}}</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

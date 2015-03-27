@@ -35,6 +35,7 @@ import os
 import carnatic
 import hindustani
 import makam
+import data
 
 def is_staff(user):
     return user.is_staff
@@ -453,6 +454,18 @@ def carnatic_instruments(request):
 
     return _edit_attributedata(request, data)
 
+@user_passes_test(is_staff)
+def carnatic_artists_list(request):
+    data = {"artists": carnatic.models.Artist.objects.order_by('name').all(),
+            "entityurl": "dashboard-carnatic-artist",
+            "template": "dashboard/edit_artist_list.html",
+           }
+    return _edit_artists_list(request, data)
+
+@user_passes_test(is_staff)
+def carnatic_artist_desc(request, artistid):
+    artist = get_object_or_404(carnatic.models.Artist, id = artistid)
+    return _edit_artist_desc(request, artist, entityurl= "dashboard-carnatic-artist")
 
 @user_passes_test(is_staff)
 def hindustani_raags(request):
@@ -519,6 +532,19 @@ def hindustani_instruments(request):
     return _edit_attributedata(request, data)
 
 @user_passes_test(is_staff)
+def hindustani_artists_list(request):
+    data = {"artists": hindustani.models.Artist.objects.order_by('name').all(),
+            "entityurl": "dashboard-hindustani-artist",
+            "template": "dashboard/edit_artist_list.html",
+           }
+    return _edit_artists_list(request, data)
+
+@user_passes_test(is_staff)
+def hindustani_artist_desc(request, artistid):
+    artist = get_object_or_404(hindustani.models.Artist, id = artistid)
+    return _edit_artist_desc(request, artist, entityurl="dashboard-hindustani-artist")
+
+@user_passes_test(is_staff)
 def makam_makams(request):
     data = {"stylename": "Makam",
             "entityname": "Makam",
@@ -565,3 +591,44 @@ def makam_instruments(request):
             }
 
     return _edit_attributedata(request, data)
+
+def _edit_artists_list(request, data):
+    """ Generic view to display list of data.Artist """
+    params = {"artists": data["artists"],
+              "entityurl": data["entityurl"],
+             }
+    return render(request, data["template"], params)
+
+def _edit_artist_desc(request, artist, entityurl):
+    """ Generic view for editing a data.Artist """
+
+    resp_msg = ""
+    desc = None
+    if artist.description is not None:
+        desc = artist.description.description
+
+    if request.method == 'POST':
+        # Save description
+        param_desc = request.POST.get("description", None)
+        if param_desc is not None:
+            # create the "Manual entry" data source if not created
+            sn, created = data.models.SourceName.objects.get_or_create(name="Manual entry")
+            source, created = data.models.Source.objects.get_or_create(source_name=sn, title="Manual entry", uri="")
+            if created:
+                source.save()
+            if artist.description is None:
+                description = data.models.Description(source=source, description=param_desc)
+                description.save()
+                artist.description = description
+            else:
+                artist.description.source = source
+                artist.description.description = param_desc
+                artist.description.save()
+            artist.description_edited = True
+            artist.save()
+            resp_msg = "Description successfully edited"
+            desc = param_desc
+
+    params = {"artist": artist, "description": desc, "resp_msg": resp_msg, "entityurl": entityurl}
+    return render(request, "dashboard/artist_edit.html", params)
+ 
