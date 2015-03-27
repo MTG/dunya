@@ -118,15 +118,20 @@ class SourceFile(generics.CreateAPIView):
 
         filename = "%s-%s.%s" % (mbid, slug, ext)
         size = 0
-        with open(os.path.join(datadir, filename), 'wb') as dest:
-            for chunk in file.chunks():
-                size += len(chunk)
-                dest.write(chunk)
+        try:
+            with open(os.path.join(datadir, filename), 'wb') as dest:
+                for chunk in file.chunks():
+                    size += len(chunk)
+                    dest.write(chunk)
 
-        filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
-        models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
-        data = {'detail': 'ok'}
-        return response.Response(data, status=status.HTTP_200_OK)
+            filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
+            models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
+            data = {'detail': 'ok'}
+            return response.Response(data, status=status.HTTP_200_OK)
+        except IOError e:
+            data = {'detail': 'Cannot write file'}
+            return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 class DocumentDetail(generics.RetrieveAPIView):
