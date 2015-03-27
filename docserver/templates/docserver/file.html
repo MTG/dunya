@@ -6,16 +6,16 @@
 <ul class="breadcrumbs">
     <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
     <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
+    <li>{{document.title}}</li>
     {% if modulever %}
     <li>Module {{modulever.module.name}} {{modulever.version}}</li>
     {% endif %}
-    <li>{{document.title}}</li>
 </ul>
 
     {% if document.sourcefiles.all %}
         <h3>Source files</h3>
         {% for f in document.sourcefiles.all %}
-        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.file_type.extension}})</a>
+        <li><a href="{{f.get_absolute_url}}">{{f.document.title}} ({{f.file_type.slug}})</a>
         {% endfor %}
     {% endif %}
 

@@ -173,7 +173,7 @@ class SourceFile(models.Model):
     def get_absolute_url(self, url_slug='ds-download-external'):
         return reverse(
             url_slug,
-            args=[self.document.external_identifier, self.file_type.extension])
+            args=[self.document.external_identifier, self.file_type.slug])
 
     @property
     def fullpath(self):
