@@ -6,14 +6,23 @@
 <h1>Edit Artist Description</h1>
 <p>Select the Artist to change current description.</p>
 
-<table style="width:auto" class="table">
-    <th>Artist</th>
-    {% for r in artists %}
-    <tr><td>
-            <a href="{%url entityurl r.id %}">{{r.name}}</a>
-        </td>
-    </tr>
+{% regroup artists by name|slice:":1" as letter_list %}
+{% for letter in letter_list %}
+    <a href="#anchor-{{ letter.grouper }}">{{ letter.grouper }}</a>
+{% endfor %}
+
+
+<h2>Artist</h2>
+<div class="row">
+    {% for letter in letter_list %}
+        <div class="col-md-6"> 
+            <a name="anchor-{{ letter.grouper }}"></a>
+            <h3>{{ letter.grouper }}</h3>    
+            {% for item in letter.list %}
+                <li><a href="{%url entityurl item.id %}">{{item.name}}</a></li>
+            {% endfor %}
+        </div>
     {% endfor %}
-</table>
+</div>
 
 {% endblock %}
