@@ -88,7 +88,6 @@ def editcollection(request, uuid):
 @user_passes_test(is_staff)
 def addcollection(request):
     if request.method == 'POST':
-        print request.POST
         form = forms.AddCollectionForm(request.POST)
         if form.is_valid():
             # Import collection id
@@ -99,9 +98,10 @@ def addcollection(request):
             checkers = []
             for i in form.cleaned_data['checkers']:
                 checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
+            dashboard_root = os.path.join(path, docserver.models.Collection.AUDIO_DIR)
             new_collection = models.Collection.objects.create(
                 id=coll_id, name=coll_name,
-                root_directory=path, do_import=do_import)
+                root_directory=dashboard_root, do_import=do_import)
             new_collection.checkers.add(*checkers)
             docserver.models.Collection.objects.get_or_create(
                 collectionid=coll_id,
