@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('makam', '0001_initial'),
+        ('makam', '0002_symbtr'),
     ]
 
     operations = [
