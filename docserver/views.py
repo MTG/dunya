@@ -128,7 +128,7 @@ class SourceFile(generics.CreateAPIView):
             models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
             data = {'detail': 'ok'}
             return response.Response(data, status=status.HTTP_200_OK)
-        except IOError e:
+        except IOError as e:
             data = {'detail': 'Cannot write file'}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -143,17 +143,21 @@ def download_external(request, uuid, ftype):
     # Test authentication. We support a rest-framework token
     # or a logged-in user
 
-    loggedin = request.user.is_authenticated()
-    is_staff = request.user.is_staff
+    user = request.user
+    loggedin = user.is_authenticated()
     try:
         t = auther.authenticate(request)
         if t:
             is_staff = t[0].is_staff
+            user = t[0]
             token = True
         else:
             token = False
     except exceptions.AuthenticationFailed:
         token = False
+        user = request.user
+
+    is_staff = user.is_staff
 
     referrer = request.META.get("HTTP_REFERER")
     good_referrer = False
@@ -169,6 +173,17 @@ def download_external(request, uuid, ftype):
         subtype = request.GET.get("subtype")
         part = request.GET.get("part")
         filepart = util._docserver_get_part(uuid, ftype, subtype, part, version)
+
+        collection = filepart.collection
+        limit_stream = collection.streamable and not good_referrer
+        restricted = collection.restricted
+
+        if collection.streamable and good_referrer:
+            pass
+        elif not restricted:
+            pass
+        elif restricted and user.has_perm('docserver.read_restricted'):
+            pass
 
         fname = filepart.fullpath
         mimetype = filepart.mimetype
