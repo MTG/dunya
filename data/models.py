@@ -147,6 +147,7 @@ class Artist(BaseModel):
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups')
     dummy = models.BooleanField(default=False, db_index=True)
+    description_edited = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
