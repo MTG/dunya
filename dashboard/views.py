@@ -467,7 +467,7 @@ def carnatic_forms(request):
     return _edit_attributedata(request, data)
 
 def carnatic_artists_list(request):
-    data = {"artists": carnatic.models.Artist.objects.order_by('name').all(),
+    data = {"artists": carnatic.models.Artist.objects.order_by('name').filter(dummy=False),
             "entityurl": "dashboard-carnatic-artist",
             "template": "dashboard/edit_artist_list.html",
            }

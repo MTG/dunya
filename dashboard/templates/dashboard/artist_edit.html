@@ -4,7 +4,9 @@
 {% block wrap %}
 {% if resp_msg %}<div class="topbox"><li>{{ resp_msg }}</li></div>{% endif %}
 <h1>Edit Artist {{ artist.name }} Description</h1>
-<p>Once the description is edited, it will be marked and it won't be automatically edited.</p>
+
+<p><a href="{{artist.get_musicbrainz_url}}">Musicbrainz</a><br>
+Once the description is edited, it won't be automatically updated on import.</p>
 
 <form method="post" action="{% url entityurl artist.id%}">
 {% csrf_token %}
