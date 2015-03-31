@@ -128,7 +128,7 @@ class SourceFile(generics.CreateAPIView):
             models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
             data = {'detail': 'ok'}
             return response.Response(data, status=status.HTTP_200_OK)
-        except IOError e:
+        except IOError as e:
             data = {'detail': 'Cannot write file'}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
