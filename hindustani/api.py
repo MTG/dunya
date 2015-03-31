@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from hindustani import models
+from data.models import WithImageMixin
 
 from rest_framework import generics
 from rest_framework import serializers
@@ -272,14 +273,15 @@ class ReleaseRecordingSerializer(serializers.ModelSerializer):
         model = models.ReleaseRecording
         fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
 
-class ReleaseDetailSerializer(serializers.ModelSerializer):
+class ReleaseDetailSerializer(serializers.ModelSerializer, WithImageMixin):
     recordings = ReleaseRecordingSerializer(source='releaserecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     release_artists = ArtistInnerSerializer(source='artists', many=True)
+    image = serializers.SerializerMethodField('get_image_abs_url')
 
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'year', 'recordings', 'artists', 'release_artists']
+        fields = ['mbid', 'title', 'year', 'image', 'recordings', 'artists', 'release_artists']
 
     def get_artists_and_instruments(self, ob):
         artists = ob.performers()
