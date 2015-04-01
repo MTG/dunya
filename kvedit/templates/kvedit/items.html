@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Edit Item{% endblock %}
+
+{% block wrap %}
+
+{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+
+<h3>Edit Item for {{category.name}}</h3>
+
+<div class="row">
+    {% for item in items %}
+        <div class="col-md-6"> 
+          <li><a href="{%url "kvedit-edit-item" item.ref %}">{{ item.ref }} {{item.fields.all.0.key}}:{{item.fields.all.0.value|truncatechars:30}}</a></li>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+

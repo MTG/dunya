@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Edit Items - Select category{% endblock %}
+
+{% block wrap %}
+
+{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+
+<h3>Edit Items</h3>
+<p> Select a Category</p>
+<div class="row">
+    {% for cat in categories %}
+        <div class="col-md-6"> 
+          <li><a href="{%url "kvedit-items" cat.id %}">{{cat.name}}</a></li>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+

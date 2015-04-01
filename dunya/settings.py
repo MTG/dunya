@@ -137,7 +137,8 @@ INSTALLED_APPS = (
     'hindustani',
     'motifdiscovery',
     'andalusian',
-    'jingju'
+    'jingju',
+    'kvedit'
 )
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
@@ -208,6 +209,9 @@ LOGGING = {
         },
     }
 }
+
+# K/V json file max size
+MAX_UPLOAD_SIZE = 1024 * 1024 * 50
 
 # Social part_PROFILE
 AUTH_USER_MODULE = "django.contrib.auth.models.User"

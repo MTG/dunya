@@ -1,0 +1,44 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Edit Item{% endblock %}
+
+{% block wrap %}
+
+{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+
+<h3>Edit Item</h3>
+
+<form method="post" action="{% url "kvedit-edit-item" item.ref %}" enctype="multipart/form-data">
+    {{form.management_form}}    
+    {{ form.non_form_errors.as_ul }}
+    <table class="collection-list table">
+        {% for form in form.forms %}
+            {% if forloop.first %}
+                <tr>
+                    {% for field in form.visible_fields %}
+                        <th>{{ field.label|capfirst }}</th>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+            <tr class="{% cycle row1,row2 %}">
+                {% for field in form.visible_fields %}
+                    <td>
+                        {# Include the hidden fields in the form #}
+                        {% if forloop.first %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                        {% endif %}
+                        {{ field.errors.as_ul }}
+                        {{ field }}
+                    </td>
+                {% endfor %}
+           </tr>
+        {% endfor %}
+        {% csrf_token %}
+    </table>
+    <input type="submit" value="Save">
+</form>
+{% endblock %}
+
+
