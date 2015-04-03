@@ -27,19 +27,6 @@ def is_staff(user):
     return user.is_staff
 
 @user_passes_test(is_staff)
-def upload_json(request):
-    message = ""
-    if request.method == 'POST':
-        form = JsonForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            message = "Json file successfully uploaded"
-            #return HttpResponseRedirect('/success/url/')
-    else:
-        form = JsonForm()
-    return render(request, 'kvedit/upload.html', {'form': form, 'message': message})
-
-@user_passes_test(is_staff)
 def edit_item(request, item_id):
     message = ""
     item = Item.objects.get(ref=item_id)
@@ -64,4 +51,14 @@ def items(request, cat_id):
 @user_passes_test(is_staff)
 def categories(request):
     categories = Category.objects.order_by("-name").all()
-    return render(request, "kvedit/categories.html", {"categories": categories})
+    message = ""
+    success_cat = None
+    if request.method == 'POST':
+        form = JsonForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            success_cat = Category.objects.get(name=form.cleaned_data['category'])
+            message = "Json file successfully uploaded"
+    else:
+        form = JsonForm()
+    return render(request, 'kvedit/categories.html', {'success_cat': success_cat, 'form': form, 'message': message, "categories": categories})

@@ -4,17 +4,24 @@
 
 {% block wrap %}
 
+<ol class="breadcrumbs">Categories
+    <li><a href="{% url "kvedit-categories" %}">List</a></li>
+</ol>
+
 {% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
 
 <h3>Edit Item for {{category.name}}</h3>
 
-<div class="row">
-    {% for item in items %}
-        <div class="col-md-6"> 
-          <li><a href="{%url "kvedit-edit-item" item.ref %}">{{ item.ref }} {{item.fields.all.0.key}}:{{item.fields.all.0.value|truncatechars:30}}</a></li>
-        </div>
-    {% endfor %}
-</div>
+<table class="collection-list table"><tr>
+        <th>Items</th>
+    </tr>
+{% for item in items %}
+<tr>
+    <td>
+          <li><a href="{%url "kvedit-edit-item" item.ref %}">Id: {{ item.ref }} <br /> {{item.fields.all.0.key}}: {{item.fields.all.0.value|truncatechars:30}}</a></li>
+    </td>
+</tr>
+{% endfor%}
 {% endblock %}
 
 

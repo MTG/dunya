@@ -4,6 +4,12 @@
 
 {% block wrap %}
 
+<ol class="breadcrumbs">Categories
+    <li><a href="{% url "kvedit-categories" %}">List</a></li>
+    <li><a href="{% url "kvedit-items" item.category.id %}">{{item.category.name}}</a></li>
+</ol>
+
+
 {% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
 
 <h3>Edit Item</h3>

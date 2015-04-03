@@ -19,10 +19,11 @@ from django import forms
 from django.conf import settings
 
 from kvedit.models import Field, Item, Category 
-
+from kvedit import utils
+ 
 class JsonForm(forms.Form):
     json_file = forms.FileField()
-    category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label=None)
+    category = forms.CharField()
 
     def clean_json_file(self):
         # Validate that is a json file and size is less than the specified
@@ -55,27 +56,7 @@ class JsonForm(forms.Form):
             self.new_items_dic = new_items_dic
 
     def save(self, commit=True):
-        # Select the items with the same id
-        existent_items = Item.objects.filter(ref__in=self.new_items_dic.keys(), category=self.cleaned_data['category'])
-        for item in existent_items:
-            for field in self.new_items_dic[item.ref]:
-                old_field = item.fields.filter(key=field.key)
-                # If the old Fields have the same key, override the value unless they have been already modified
-                if len(old_field) == 1 and old_field[0].value != field.value and not old_field[0].modified:
-                    old_field[0].value = field.value
-                    old_filed[0].save()
-                elif len(old_field) == 0:
-                    field.item = item
-                    field.save()
-            del self.new_items_dic[item.ref]
-        # Save the new Fields and Items
-        for ref, fields in self.new_items_dic.iteritems():
-            item = Item(ref=ref)
-            item.category = self.cleaned_data['category']
-            item.save()
-            for field in fields:
-                field.item = item
-                field.save()
+        utils.upload_kvdata(self.cleaned_data['category'], self.new_items_dic)
 
 class FieldForm(forms.ModelForm):
     class Meta:
@@ -88,7 +69,3 @@ class FieldForm(forms.ModelForm):
             self.fields['key'].widget.attrs['readonly'] = True
             self.fields['value'].widget.attrs['rows'] = 4
             self.fields['value'].widget.attrs['cols'] = 75
-    
-    def save(self, commit=True):
-        self.instance.modified = True
-        return super(FieldForm, self).save(commit)

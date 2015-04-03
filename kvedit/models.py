@@ -32,3 +32,8 @@ class Field(models.Model):
     value = models.TextField()
     modified = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        ''' On save, update modified value '''
+        if self.id:
+            self.modified = True
+        return super(Field, self).save(*args, **kwargs)
