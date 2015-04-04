@@ -18,7 +18,7 @@
 {% for item in items %}
 <tr>
     <td>
-          <li><a href="{%url "kvedit-edit-item" item.ref %}">Id: {{ item.ref }} <br /> {{item.fields.all.0.key}}: {{item.fields.all.0.value|truncatechars:30}}</a></li>
+          <li><a href="{%url "kvedit-edit-item" category.id  item.ref %}">Id: {{ item.ref }} <br /> {{item.fields.all.0.key}}: {{item.fields.all.0.value|truncatechars:30}}</a></li>
     </td>
 </tr>
 {% endfor%}

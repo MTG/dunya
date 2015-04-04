@@ -20,7 +20,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from kvedit import views
 
 urlpatterns = [
-    url(r'edit/(?P<item_id>\w+)$', views.edit_item, name='kvedit-edit-item'),
     url(r'categories$', views.categories, name='kvedit-categories'),
     url(r'category/(?P<cat_id>\d+)$', views.items, name='kvedit-items'),
+    url(r'category/(?P<cat_id>\d+)/edit/(?P<item_id>\w+)$', views.edit_item, name='kvedit-edit-item'),
 ] 

@@ -27,13 +27,12 @@ def is_staff(user):
     return user.is_staff
 
 @user_passes_test(is_staff)
-def edit_item(request, item_id):
+def edit_item(request, item_id, cat_id):
     message = ""
-    item = Item.objects.get(ref=item_id)
+    item = Item.objects.get(ref=item_id, category__id=cat_id)
     FieldSet = inlineformset_factory(Item, Field, form=FieldForm, fields=('key','value','modified'), can_delete=False, extra=0)
     if request.method == 'POST':
         form = FieldSet(request.POST, instance = item)
-        print item.modified
         if form.is_valid():
             form.save()
             message = "Item successfully saved"
