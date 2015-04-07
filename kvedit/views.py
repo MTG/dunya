@@ -32,12 +32,16 @@ def edit_item(request, item_id, cat_id):
     item = Item.objects.get(ref=item_id, category__id=cat_id)
     FieldSet = inlineformset_factory(Item, Field, form=FieldForm, fields=('key','value','modified'), can_delete=False, extra=0)
     if request.method == 'POST':
-        form = FieldSet(request.POST, instance = item)
+        form = FieldSet(request.POST, instance=item)
         if form.is_valid():
             form.save()
+            # Re-make the form with the item from the database so
+            # that `modified` is set if it was changed
+            item = Item.objects.get(ref=item_id, category__id=cat_id)
+            form = FieldSet(instance=item)
             message = "Item successfully saved"
     else:
-        form = FieldSet(instance = item)
+        form = FieldSet(instance=item)
     return render(request, 'kvedit/edit.html', {'form': form, 'item': item, "message": message})
 
 @user_passes_test(is_staff)
