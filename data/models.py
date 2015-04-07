@@ -405,7 +405,7 @@ class VisitLog(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)
     # ipv4 only!
     ip = models.CharField(max_length=16)
-    path = models.CharField(max_length=256)
+    path = models.CharField(max_length=500)
 
     def __unicode__(self):
         return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
