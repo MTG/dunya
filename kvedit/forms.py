@@ -18,9 +18,9 @@ import json
 from django import forms
 from django.conf import settings
 
-from kvedit.models import Field, Item, Category 
+from kvedit.models import Field, Item, Category
 from kvedit import utils
- 
+
 class JsonForm(forms.Form):
     json_file = forms.FileField()
     category = forms.CharField()
@@ -28,31 +28,27 @@ class JsonForm(forms.Form):
     def clean_json_file(self):
         # Validate that is a json file and size is less than the specified
         content = self.cleaned_data['json_file']
-        content_type = content.content_type.split('/')[1]
-        if content_type in ["json"]:
-            if content._size > settings.MAX_UPLOAD_SIZE:
-                raise forms.ValidationError('Please keep filesize under %s. Current filesize %s' % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
-        else:
-            raise forms.ValidationError('File type is not supported')
+        if content._size > settings.MAX_UPLOAD_SIZE:
+            raise forms.ValidationError('Please keep filesize under %s. Current filesize %s' % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(content._size)))
         return content
-        
+
     def clean(self):
         cleaned_data = super(JsonForm, self).clean()
         if 'json_file' in cleaned_data:
             new_items = json.load(cleaned_data['json_file'])
             if not isinstance(new_items, list):
-                raise forms.ValidationError('The Json file must contain a list of elements') 
-        
+                raise forms.ValidationError('The Json file must contain a list of elements')
+
             new_items_dic = {}
             for i in new_items:
                 if "id" not in i.keys():
                     raise forms.ValidationError('All the elements must contain an "id" key, error at: %s ...' % str(i)[:45] )
-                #Fill map with the id as the key and the values as the Field objects   
+                #Fill map with the id as the key and the values as the Field objects
                 for k,v in i.iteritems():
                     if k != "id":
                         if i['id'] not in new_items_dic:
                             new_items_dic[i['id']] = []
-                        new_items_dic[i['id']].append(Field(key=k, value=v)) 
+                        new_items_dic[i['id']].append(Field(key=k, value=v))
             self.new_items_dic = new_items_dic
 
     def save(self, commit=True):
@@ -61,7 +57,7 @@ class JsonForm(forms.Form):
 class FieldForm(forms.ModelForm):
     class Meta:
         model = Field
-        exclude = ['item'] 
+        exclude = ['item']
 
     def __init__(self, *args, **kwargs):
         super(FieldForm, self).__init__(*args, **kwargs)
