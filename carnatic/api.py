@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from carnatic import models
+from data.models import WithImageMixin 
 
 from rest_framework import generics
 from rest_framework import serializers
@@ -260,11 +261,11 @@ class ConcertRecordingSerializer(serializers.ModelSerializer):
         model = models.ConcertRecording
         fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
 
-class ConcertDetailSerializer(serializers.ModelSerializer):
+class ConcertDetailSerializer(serializers.ModelSerializer, WithImageMixin):
     recordings = ConcertRecordingSerializer(source='concertrecording_set', many=True)
     artists = serializers.SerializerMethodField('get_artists_and_instruments')
     concert_artists = ArtistInnerSerializer(source='artists', many=True)
-    image = serializers.ReadOnlyField(source='get_image_url')
+    image = serializers.SerializerMethodField('get_image_abs_url')
 
     class Meta:
         model = models.Concert
@@ -279,6 +280,7 @@ class ConcertDetailSerializer(serializers.ModelSerializer):
             inner["instruments"] = InstrumentInnerSerializer(instrument, many=True).data
             data.append(inner)
         return data
+
 
 class ConcertDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'

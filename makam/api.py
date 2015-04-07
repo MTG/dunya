@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from makam import models
+from data.models import WithImageMixin
 
 from rest_framework import generics
 from rest_framework import serializers
@@ -277,14 +278,15 @@ class ReleaseList(generics.ListAPIView):
     queryset = models.Release.objects.all()
     serializer_class = ReleaseListSerializer
 
-class ReleaseDetailSerializer(serializers.ModelSerializer):
+class ReleaseDetailSerializer(serializers.ModelSerializer, WithImageMixin):
     recordings  = ReleaseRecordingInnerSerializer(many=True, source='releaserecording_set')
     artists = ArtistInnerSerializer(source='performers', many=True)
     release_artists = ArtistInnerSerializer(source='artists', many=True)
+    image = serializers.SerializerMethodField('get_image_abs_url')
 
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'year', 'artists', 'release_artists', 'recordings']
+        fields = ['mbid', 'title', 'year', 'image', 'artists', 'release_artists', 'recordings']
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'

@@ -6,16 +6,24 @@
 <p><a href="{% url 'carnatic-formedit' %}">Return to list</a></p>
 <h2>Edit forms for concert {{concert.title}}</h2>
 
-<p><a href="{{concert.get_musicbrainz_url}}">Concert on musicbrainz</a></p>
+<p><a href="{{concert.get_musicbrainz_url}}">Concert on musicbrainz</a><br>
+<a href="{% url 'carnatic-concert' concert.mbid %}">Concert on dunya</a><br>
+<a href="{{dashrelease.get_absolute_url}}">Concert on dashboard</a></p>
 
 <form method="POST">
     {% csrf_token %}
-<table>
+<table width="100%">
     <tr><th>Recording</th><th>Work</th><th>Form</th></tr>
 
     {% for r in tracks %}
     <tr>
-        <td><a href="{{r.0.get_musicbrainz_url}}">{{r.0.title}}</a></td><td>{{r.1.title}}</td><td>{% if r.1 %}{{r.2.form}}{% endif %}</td></tr>
+        <td>{{r.0.title}} /
+            <a href="{{r.0.get_musicbrainz_url}}">mb</a> /
+            <a href="{% url 'carnatic-recording' r.0.mbid %}">dunya</a>
+        </td>
+
+        <td>{{r.1.title}}</td>
+        <td>{% if r.1 %}{{r.2.form}}{% endif %}</td></tr>
     {% endfor %}
 
 </table>

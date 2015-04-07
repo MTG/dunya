@@ -18,6 +18,7 @@
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.conf import settings
@@ -27,6 +28,7 @@ from carnatic.models import *
 from carnatic import search
 import json
 import docserver
+import dashboard.views
 import collections
 import math
 import random
@@ -656,6 +658,7 @@ def instrument(request, uuid, name=None):
 
     return render(request, "carnatic/instrument.html", ret)
 
+@user_passes_test(dashboard.views.is_staff)
 def formedit(request):
     concerts = Concert.objects.all()
     ret = {"concerts": concerts}
@@ -664,9 +667,12 @@ def formedit(request):
 from django import forms
 from django.forms.models import modelform_factory
 
+@user_passes_test(dashboard.views.is_staff)
 def formconcert(request, uuid):
     concert = get_object_or_404(Concert, mbid=uuid)
     WorkForm = modelform_factory(Work, fields=('form', ))
+
+    dashrelease = dashboard.models.MusicbrainzRelease.objects.get(mbid=concert.mbid)
 
     if request.method == "POST":
         for i, t in enumerate(concert.tracklist()):
@@ -681,5 +687,5 @@ def formconcert(request, uuid):
         w = t.work
         form = WorkForm(instance=w, prefix="tr%s" % i)
         tracks.append((t, w, form))
-    ret = {"concert": concert, "tracks": tracks}
+    ret = {"concert": concert, "tracks": tracks, "dashrelease": dashrelease}
     return render(request, "carnatic/formconcert.html", ret)

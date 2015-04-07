@@ -19,6 +19,8 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.text import slugify
+from django.contrib.sites.models import Site
+
 
 import docserver
 
@@ -145,6 +147,7 @@ class Artist(BaseModel):
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups')
     dummy = models.BooleanField(default=False, db_index=True)
+    description_edited = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
@@ -402,7 +405,18 @@ class VisitLog(models.Model):
     user = models.CharField(max_length=100, blank=True, null=True)
     # ipv4 only!
     ip = models.CharField(max_length=16)
-    path = models.CharField(max_length=256)
+    path = models.CharField(max_length=500)
 
     def __unicode__(self):
         return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
+
+# This mixin needs to be used with ModelSerializable
+# to generate the image absolute url
+class WithImageMixin(object):
+    def get_image_abs_url(self, ob):
+        str_ret = 'http://'
+        request = self.context.get('request', None)
+        if request and request.is_secure():
+            str_ret = 'https://'
+        current_site = Site.objects.get_current()
+        return str_ret + current_site.domain + ob.get_image_url()

@@ -26,5 +26,12 @@
     "fields": {
         "name": "Cover Art Archive"
     }
+},
+{
+    "pk": 5, 
+    "model": "data.sourcename", 
+    "fields": {
+        "name": "Manual entry"
+    }
 }
 ]

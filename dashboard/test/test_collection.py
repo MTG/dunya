@@ -1,24 +1,30 @@
 from django.test import TestCase
 from django.http import QueryDict
+from django.contrib import auth
 
-from mock import Mock
+import mock
 import StringIO
 
 from dashboard import forms
 from dashboard import models
+import docserver
 
 
 class CollectionTest(TestCase):
     def setUp(self):
+        self.user1 = auth.models.User.objects.create_user("user1", "", "pass1")
+        self.user1.is_staff = True
+        self.user1.save()
+
         models.CompletenessChecker.objects.create(pk=1, name="Completeness-1")
         models.CompletenessChecker.objects.create(pk=2, name="Completeness-1")
 
-        self.mockname = Mock(return_value="My collection")
+        self.mockname = mock.Mock(return_value="My collection")
         forms.compmusic.musicbrainz.get_collection_name = self.mockname
-        self.pathmock = Mock(return_value=True)
+        self.pathmock = mock.Mock(return_value=True)
         forms.os.path.exists = self.pathmock
 
-    def test_add_collection(self):
+    def test_valid_form(self):
         formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath&checkers=1&checkers=2"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
@@ -26,10 +32,11 @@ class CollectionTest(TestCase):
         self.assertTrue(f.is_valid())
         self.assertEquals("My collection", f.cleaned_data["collectionname"])
         self.mockname.assert_called_once_with("55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d")
-        self.pathmock.assert_called_once_with("/some/path")
+        calls = [mock.call("/some/path"), mock.call("/some/path/audio")]
+        self.pathmock.assert_has_calls(calls)
 
     def test_no_path(self):
-        pathmock = Mock(return_value=False)
+        pathmock = mock.Mock(return_value=False)
         forms.os.path.exists = pathmock
 
         formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath&checkers=1&checkers=2"
@@ -39,6 +46,20 @@ class CollectionTest(TestCase):
         self.assertFalse(f.is_valid())
         self.assertTrue("path" in f.errors)
         errormsg = "This path doesn't exist"
+        self.assertEqual(errormsg, f.errors["path"][0])
+
+
+        # Now the first path exists but the second doesn't
+
+        pathmock = mock.Mock(side_effect=[True, False])
+        forms.os.path.exists = pathmock
+
+        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath&checkers=1&checkers=2"
+        data = QueryDict(formdata)
+        f = forms.AddCollectionForm(data)
+
+        self.assertFalse(f.is_valid())
+        errormsg = "Path doesn't contain inner 'audio'"
         self.assertEqual(errormsg, f.errors["path"][0])
 
     def test_collection_bad_uuid(self):
@@ -73,7 +94,7 @@ class CollectionTest(TestCase):
         msg = "Not found"
         hdrs = {}
         fp = StringIO.StringIO()
-        mockerror = Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
+        mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
         forms.compmusic.musicbrainz.get_collection_name = mockerror
 
         self.assertFalse(f.is_valid())
@@ -82,11 +103,29 @@ class CollectionTest(TestCase):
         self.assertEqual(errormsg, f.errors["__all__"][0])
 
         code = 503
-        mockerror = Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
+        mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
         forms.compmusic.musicbrainz.get_collection_name = mockerror
         f = forms.AddCollectionForm(data)
         self.assertFalse(f.is_valid())
         self.assertTrue("__all__" in f.errors)
         errormsg = "Error connecting to MusicBrainz, try again shortly"
         self.assertEqual(errormsg, f.errors["__all__"][0])
+
+    def test_view(self):
+        """ test the actual creation of the collection objects """
+        self.client.login(username="user1", password="pass1")
+
+        collid = "55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d"
+        data = {"collectionid": collid, "path": "/incoming/carnatic", "checkers": ["1", "2"]}
+
+        resp = self.client.post('/dashboard/addcollection', data)
+
+        # dashboard collection
+        dashc = models.Collection.objects.get(pk=collid)
+        self.assertEqual(2, len(dashc.checkers.all()))
+        self.assertEqual("/incoming/carnatic/audio", dashc.root_directory)
+
+        # docserver collection
+        docc = docserver.models.Collection.objects.get(collectionid=collid)
+        self.assertEqual("/incoming/carnatic", docc.root_directory)
 

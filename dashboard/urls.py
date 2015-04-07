@@ -40,6 +40,8 @@ urlpatterns = [
     url(r'carnatic/works/', statistic_views.carnatic_works, name='dashboard-carnatic-works'),
     url(r'carnatic/thillana/', statistic_views.carnatic_thillanas, name='dashboard-carnatic-thillanas'),
     url(r'carnatic/workraagataala/', statistic_views.carnatic_workraagataala, name='dashboard-carnatic-workraagataala'),
+    url(r'carnatic/artists-list/', views.carnatic_artists_list, name='dashboard-carnatic-artists'),
+    url(r'carnatic/artist/(?P<artistid>\d+)$', views.carnatic_artist_desc, name='dashboard-carnatic-artist'),
 
     url(r'carnatic/data/raagas', views.carnatic_raagas, name='dashboard-carnatic-raagas'),
     url(r'carnatic/data/taalas', views.carnatic_taalas, name='dashboard-carnatic-taalas'),
@@ -55,6 +57,8 @@ urlpatterns = [
     url(r'hindustani/recordings/', statistic_views.hindustani_recordings, name='dashboard-hindustani-recordings'),
     url(r'hindustani/raagataala/', statistic_views.hindustani_raagtaal, name='dashboard-hindustani-raagtaal'),
     url(r'hindustani/works/', statistic_views.hindustani_works, name='dashboard-hindustani-works'),
+    url(r'hindustani/artists-list/', views.hindustani_artists_list, name='dashboard-hindustani-artists'),
+    url(r'hindustani/artist/(?P<artistid>\d+)$', views.hindustani_artist_desc, name='dashboard-hindustani-artist'),
 
     url(r'hindustani/data/raags', views.hindustani_raags, name='dashboard-hindustani-raags'),
     url(r'hindustani/data/taals', views.hindustani_taals, name='dashboard-hindustani-taals'),
