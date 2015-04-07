@@ -18,6 +18,7 @@ from django.db import models
 from django.conf import settings
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
+from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
 import django.utils.timezone
 import collections
@@ -140,7 +141,7 @@ class FileTypeManager(models.Manager):
 class SourceFileType(models.Model):
     objects = FileTypeManager()
 
-    slug = models.SlugField(db_index=True)
+    slug = models.SlugField(db_index=True, validators=[RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")])
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
