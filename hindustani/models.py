@@ -213,6 +213,7 @@ class ReleaseRecording(models.Model):
 
 class Release(HindustaniStyle, data.models.Release):
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases")
 
     def tracklist(self):
         """Return an ordered list of recordings in this release"""

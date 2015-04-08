@@ -28,6 +28,19 @@ class BootlegConcertManager(models.Manager):
             qs = qs.filter(bootleg=False)
         return qs
 
+    def with_user_permission(self, ids=None, is_staff=False, is_restricted=False):
+        qs = self.get_queryset()
+        if ids == None:
+            return qs.none()
+        else:
+            ids = ids.split(",")
+        permission = ["U"]
+        if is_staff:
+            permission = ["S", "R", "U"]
+        elif is_restricted:
+            permission = ["R", "U"]
+        return qs.filter(collection__in=ids, collection__permission__in=permission)
+
 class BootlegRecordingManager(models.Manager):
     use_for_related_fields = True
 

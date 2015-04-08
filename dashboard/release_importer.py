@@ -68,7 +68,7 @@ class ReleaseImporter(object):
             source.save()
         return source
 
-    def import_release(self, releaseid, directories):
+    def import_release(self, releaseid, directories, collection):
         if releaseid in self.imported_releases:
             print "Release already updated in this import. Not doing it again"
             return self._ReleaseClass.objects.get(mbid=releaseid)
@@ -79,7 +79,7 @@ class ReleaseImporter(object):
         mbid = rel["id"]
         logger.info("Adding release %s" % mbid)
 
-        release = self._create_release_object(rel)
+        release = self._create_release_object(rel, collection)
 
         # Create release primary artists
         if self.overwrite:
@@ -114,7 +114,7 @@ class ReleaseImporter(object):
         self.imported_releases.append(releaseid)
         return release
 
-    def _create_release_object(self, mbrelease):
+    def _create_release_object(self, mbrelease, collection):
         release, created = self._ReleaseClass.objects.get_or_create(
             mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
         if created or self.overwrite:
@@ -127,6 +127,7 @@ class ReleaseImporter(object):
             release.source = source
             if self.is_bootleg:
                 release.bootleg = True
+            release.collection = collection
             release.save()
 
         return release

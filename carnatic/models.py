@@ -232,6 +232,7 @@ class Concert(CarnaticStyle, data.models.Release):
 
     # Regular objects show bootlegs
     objects = managers.BootlegConcertManager()
+    collection = models.ForeignKey('data.Collection', blank=True, null=True)
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )

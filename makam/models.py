@@ -71,6 +71,7 @@ class Composer(MakamStyle, data.models.Composer):
 class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases")
 
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
