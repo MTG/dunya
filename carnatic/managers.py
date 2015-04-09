@@ -33,13 +33,13 @@ class BootlegConcertManager(models.Manager):
         if ids == None:
             return qs.none()
         else:
-            ids = ids.split(",")
+            ids = ids.replace(' ','').split(",")
         permission = ["U"]
         if is_staff:
             permission = ["S", "R", "U"]
         elif is_restricted:
             permission = ["R", "U"]
-        return qs.filter(collection__in=ids, collection__permission__in=permission)
+        return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
 
 class BootlegRecordingManager(models.Manager):
     use_for_related_fields = True
