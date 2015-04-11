@@ -15,7 +15,8 @@
 <h3>Edit Item</h3>
 
 <form method="post" action="{% url "kvedit-edit-item" item.category.id item.ref %}" enctype="multipart/form-data">
-    {{form.management_form}}    
+    {{ item_form.as_table }}
+    {{ form.management_form}}    
     {{ form.non_form_errors.as_ul }}
     <table class="collection-list table">
         {% for form in form.forms %}

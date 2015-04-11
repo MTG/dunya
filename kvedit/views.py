@@ -20,8 +20,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.forms.models import inlineformset_factory
 
-from forms import JsonForm, FieldForm
+from forms import JsonForm, FieldForm, ItemForm
 from kvedit.models import Category, Field, Item
+from docserver.util import docserver_add_sourcefile
 
 def is_staff(user):
     return user.is_staff
@@ -32,13 +33,18 @@ def edit_item(request, item_id, cat_id):
     item = Item.objects.get(ref=item_id, category__id=cat_id)
     FieldSet = inlineformset_factory(Item, Field, form=FieldForm, fields=('key','value','modified'), can_delete=False, extra=0)
     if request.method == 'POST':
+        item_form = ItemForm(request.POST, instance=item)
         form = FieldSet(request.POST, instance = item)
-        if form.is_valid():
+        if item_form.is_valid() and form.is_valid():
+            item_form.save()
             form.save()
+            if item.verified and item.category.source_file_type:
+                docserver_add_sourcefile(item.ref, item.category.source_file_type, "")
             message = "Item successfully saved"
     else:
+        item_form = ItemForm(instance=item)
         form = FieldSet(instance = item)
-    return render(request, 'kvedit/edit.html', {'form': form, 'item': item, "message": message})
+    return render(request, 'kvedit/edit.html', {'item_form':item_form, 'form': form, 'item': item, "message": message})
 
 @user_passes_test(is_staff)
 def items(request, cat_id):

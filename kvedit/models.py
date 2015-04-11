@@ -18,13 +18,14 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
-
+    source_file_type = models.ForeignKey("docserver.SourceFileType", blank=True, null=True)
     def __str__(self):
         return ('%s' % self.name)
 
 class Item(models.Model):
     category = models.ForeignKey(Category, related_name="items") 
-    ref = models.CharField(max_length=200)
+    ref = models.CharField(max_length=200) 
+    verified = models.BooleanField(default=False)
 
 class Field(models.Model):
     item = models.ForeignKey(Item, related_name="fields")  
