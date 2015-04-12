@@ -64,7 +64,7 @@ class JsonForm(forms.Form):
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        exclude = ['category', 'ref'] 
+        exclude = ['category', 'ref', 'reverify'] 
 
 class FieldForm(forms.ModelForm):
     class Meta:

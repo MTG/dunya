@@ -9,7 +9,7 @@ def upload_kvdata(cat_name, source_file_type, items_dic):
         for field in items_dic[item.ref]:
             old_field = item.fields.filter(key=field.key)
             existing_keys.append(field.key)
-            # If the old Fields have the same key, override the value unless they have been already modified
+            # If the old Fields has the same key, override the value unless they hass already been modified
             if len(old_field) == 1 and old_field[0].value != field.value and not old_field[0].modified:
                 old_field[0].value = field.value
                 old_field[0].save()
@@ -17,6 +17,8 @@ def upload_kvdata(cat_name, source_file_type, items_dic):
                 field.item = item
                 field.save()
         item.fields.exclude(key__in=existing_keys, modified=False).delete()
+        item.reverify = True
+        item.save()
         items_dic[item.ref]
         
         del items_dic[item.ref]

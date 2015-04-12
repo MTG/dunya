@@ -26,6 +26,7 @@ class Item(models.Model):
     category = models.ForeignKey(Category, related_name="items") 
     ref = models.CharField(max_length=200) 
     verified = models.BooleanField(default=False)
+    reverify = models.BooleanField(default=False)
 
 class Field(models.Model):
     item = models.ForeignKey(Item, related_name="fields")  
