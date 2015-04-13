@@ -204,7 +204,7 @@ class ReleaseRecording(models.Model):
     disc = models.IntegerField()
     # The track number within this disc. 1-n
     disctrack = models.IntegerField()
-
+    
     class Meta:
         ordering = ("track", )
 
@@ -214,7 +214,9 @@ class ReleaseRecording(models.Model):
 class Release(HindustaniStyle, data.models.Release):
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases")
-
+    
+    objects = managers.HindustaniReleaseManager()
+    
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
         return self.recordings.order_by('releaserecording')

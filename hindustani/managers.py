@@ -69,3 +69,17 @@ class HindustaniInstrumentManager(models.Manager):
             return hindustani.models.Instrument.objects.get(name__iexact=name)
         except hindustani.models.Instrument.DoesNotExist as e:
             raise e
+
+class HindustaniReleaseManager(models.Manager):
+    def with_user_permission(self, ids=None, is_staff=False, is_restricted=False):
+        qs = self.get_queryset()
+        if ids == None:
+            return qs.none()
+        else:
+            ids = ids.replace(' ','').split(",")
+        permission = ["U"]
+        if is_staff:
+            permission = ["S", "R", "U"]
+        elif is_restricted:
+            permission = ["R", "U"]
+        return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
