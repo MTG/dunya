@@ -389,7 +389,9 @@ def composer(request, uuid, name=None):
     return render(request, "carnatic/composer.html", ret)
 
 def concertsearch(request):
-    concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
+    concerts = Concert.objects.with_user_permission(is_staff=request.user.is_staff,
+            is_restricted=request.user.has_perm("access_restricted")).order_by('title')
+    #concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
     ret = []
     for c in concerts:
         title = "%s<br>%s" % (c.title, c.artistcredit)
