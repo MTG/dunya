@@ -180,7 +180,8 @@ def main(request):
     elif qrelease:
         for r in qrelease:
             try:
-                release = models.Release.objects.get(pk=r)
+                release = models.Release.objects.with_user_permission(is_staff=request.user.is_staff,
+                        is_restricted=request.user.has_perm('access_restricted')).get(pk=r)
                 displayres.extend(release.related_items())
             except models.Release.DoesNotExist:
                 pass
@@ -207,7 +208,6 @@ def main(request):
         forms = results.get("form", [])
         layas = results.get("laya", [])
 
-        displayres = []
         for a in artists:
             displayres.append(("artist", a))
         for i in instruments:
@@ -240,7 +240,7 @@ def main(request):
         numinstruments = len([i for i in displayres if i[0] == "instrument"])
         numforms = len([i for i in displayres if i[0] == "form"])
         numlayas = len([i for i in displayres if i[0] == "laya"])
-
+    
     print displayres
 
     ret = {"numartists": numartists,
@@ -330,7 +330,8 @@ def artist(request, uuid, name=None):
     return render(request, "hindustani/artist.html", ret)
 
 def releasesearch(request):
-    releases = models.Release.objects.order_by('title')
+    releases = models.Release.objects.with_user_permission(is_staff=request.user.is_staff,
+            is_restricted=request.user.has_perm('access_restricted')).order_by('title')
     ret = []
     for r in releases:
         ret.append({"id": r.id, "title": r.title})

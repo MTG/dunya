@@ -197,12 +197,16 @@ def main(request):
         querybrowse = True
         # concert, people
         for cid in qconcert:
-            con = Concert.objects.get(pk=cid)
-            displayres.append(("concert", con))
-            artists = con.performers()
-            for a in artists:
-                displayres.append(("artist", a))
-                # if instrument, only people who play that?
+            try:
+                con = Concert.objects.with_user_permission(is_staff=request.user.is_staff,
+                        is_restricted=request.user.has_perm('access_restricted')).get(pk=cid)
+                displayres.append(("concert", con))
+                artists = con.performers()
+                for a in artists:
+                    displayres.append(("artist", a))
+                    # if instrument, only people who play that?
+            except Concert.DoesNotExist:
+                pass
     elif query:
         try:
             results = search.search(query, with_bootlegs=show_bootlegs)
