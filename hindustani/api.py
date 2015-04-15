@@ -267,9 +267,7 @@ class ReleaseList(generics.ListAPIView):
     
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
-        user = self.request.user
-        return models.Release.objects.with_user_permission(ids=collection_ids, 
-                is_staff=user.is_staff, is_restricted=user.has_perm("access_restricted"))
+        return models.Release.objects.get_from_collections(collection_ids, self.request.user)
 
 
 class ReleaseRecordingSerializer(serializers.ModelSerializer):

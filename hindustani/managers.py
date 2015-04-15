@@ -71,17 +71,17 @@ class HindustaniInstrumentManager(models.Manager):
             raise e
 
 class HindustaniReleaseManager(models.Manager):
-    def with_user_permission(self, ids, is_staff=False, is_restricted=False):
+    def get_from_collections(self, ids, user):
         qs = self.get_queryset()
         if ids == None:
             return qs.none()
         else:
             ids = ids.replace(' ','').split(",")
-        permission = self._get_permissions(is_staff, is_restricted)
+        permission = self._get_permissions(user.is_staff, user.has_perm('access_restricted'))
         return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
     
-    def with_user_permission(self, is_staff=False, is_restricted=False):     
-        permission = self._get_permissions(is_staff, is_restricted)
+    def with_user_access(self, user): 
+        permission = self._get_permissions(user.is_staff, user.has_perm('access_restricted'))
         return self.get_queryset().filter(collection__permission__in=permission)
 
     def _get_permissions(self, is_staff, is_restricted):

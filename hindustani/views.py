@@ -180,8 +180,7 @@ def main(request):
     elif qrelease:
         for r in qrelease:
             try:
-                release = models.Release.objects.with_user_permission(is_staff=request.user.is_staff,
-                        is_restricted=request.user.has_perm('access_restricted')).get(pk=r)
+                release = models.Release.objects.with_user_access(request.user).get(pk=r)
                 displayres.extend(release.related_items())
             except models.Release.DoesNotExist:
                 pass
@@ -330,8 +329,7 @@ def artist(request, uuid, name=None):
     return render(request, "hindustani/artist.html", ret)
 
 def releasesearch(request):
-    releases = models.Release.objects.with_user_permission(is_staff=request.user.is_staff,
-            is_restricted=request.user.has_perm('access_restricted')).order_by('title')
+    releases = models.Release.objects.with_user_access(request.user).order_by('title')
     ret = []
     for r in releases:
         ret.append({"id": r.id, "title": r.title})

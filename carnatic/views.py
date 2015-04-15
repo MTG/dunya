@@ -198,8 +198,7 @@ def main(request):
         # concert, people
         for cid in qconcert:
             try:
-                con = Concert.objects.with_user_permission(is_staff=request.user.is_staff,
-                        is_restricted=request.user.has_perm('access_restricted')).get(pk=cid)
+                con = Concert.objects.with_user_access(request.user).get(pk=cid)
                 displayres.append(("concert", con))
                 artists = con.performers()
                 for a in artists:
@@ -393,8 +392,7 @@ def composer(request, uuid, name=None):
     return render(request, "carnatic/composer.html", ret)
 
 def concertsearch(request):
-    concerts = Concert.objects.with_user_permission(is_staff=request.user.is_staff,
-            is_restricted=request.user.has_perm("access_restricted")).order_by('title')
+    concerts = Concert.objects.with_user_access(request.user).order_by('title')
     #concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
     ret = []
     for c in concerts:

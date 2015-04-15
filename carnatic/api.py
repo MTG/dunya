@@ -253,9 +253,7 @@ class ConcertList(generics.ListAPIView, WithBootlegAPIView):
     def get_queryset(self):
         #ret = models.Concert.objects.with_bootlegs(self.with_bootlegs)
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
-        user = self.request.user
-        return models.Concert.objects.with_user_permission(ids=collection_ids, 
-                is_staff=user.is_staff, is_restricted=user.has_perm("access_restricted"))
+        return models.Concert.objects.get_from_collections(collection_ids, self.request.user)
 
 class ConcertRecordingSerializer(serializers.ModelSerializer):
     mbid = serializers.ReadOnlyField(source='recording.mbid')
