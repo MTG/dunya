@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib import auth
 from rest_framework.test import APIClient
 
+import data
 from hindustani import models
 from hindustani import api
 
@@ -43,7 +44,9 @@ class ComposerTest(ApiTestCase):
 class RecordingTest(ApiTestCase):
     def setUp(self):
         super(RecordingTest, self).setUp()
-        self.rel = models.Release.objects.create(title="rel", mbid="0bf4c615-2e15-4ea2-8a65-22b5ec0a9304")
+        
+        self.col1 = data.models.Collection.objects.create(name="collection 1", permission="U") 
+        self.rel = models.Release.objects.create(collection = self.col1, title="rel", mbid="0bf4c615-2e15-4ea2-8a65-22b5ec0a9304")
         self.r = models.Recording.objects.create(title="recording", mbid="63ddd257-a92e-4c0c-b639-ce59e1e57a4a")
         models.ReleaseRecording.objects.create(release=self.rel, recording=self.r, track=1, disc=1, disctrack=1)
 
@@ -153,7 +156,9 @@ class LayaTest(ApiTestCase):
 class ReleaseTest(ApiTestCase):
     def setUp(self):
         super(ReleaseTest, self).setUp()
-        self.r = models.Release.objects.create(title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
+
+        self.col1 = data.models.Collection.objects.create(name="collection 1", permission="U") 
+        self.r = models.Release.objects.create(collection=self.col1, title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
 
     def test_render_release_inner(self):
         s = api.ReleaseInnerSerializer(self.r)
