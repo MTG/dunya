@@ -24,6 +24,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.templatetags.static import static
 
+from data import utils
 from carnatic.models import *
 from carnatic import search
 import json
@@ -198,7 +199,8 @@ def main(request):
         # concert, people
         for cid in qconcert:
             try:
-                con = Concert.objects.with_user_access(request.user).get(pk=cid)
+                permission = utils.get_user_permissions(request.user)
+                con = Concert.objects.with_permissions(permission).get(pk=cid)
                 displayres.append(("concert", con))
                 artists = con.performers()
                 for a in artists:
@@ -392,7 +394,8 @@ def composer(request, uuid, name=None):
     return render(request, "carnatic/composer.html", ret)
 
 def concertsearch(request):
-    concerts = Concert.objects.with_user_access(request.user).order_by('title')
+    permissions = utils.get_user_permissions(request.user)
+    concerts = Concert.objects.with_permissions(permissions).order_by('title')
     #concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
     ret = []
     for c in concerts:

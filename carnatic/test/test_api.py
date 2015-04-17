@@ -1,7 +1,9 @@
 from django.test import TestCase
 from django.contrib import auth
 from rest_framework.test import APIClient
+from django.contrib.auth.models import Permission
 
+import data
 from carnatic import models
 from carnatic import api
 
@@ -10,9 +12,13 @@ import uuid
 class ArtistTest(TestCase):
 
     def setUp(self):
+        permission = Permission.objects.get(codename='access_restricted')     
         self.a = models.Artist.objects.create(name="Foo", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85")
 
+        self.col1 = data.models.Collection.objects.create(name="collection 1", permission="U") 
+        self.col1.save()
         self.cnormal = models.Concert.objects.create(title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
+        self.cnormal.collection = self.col1
         self.cbootleg = models.Concert.objects.create(title="bootleg concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734", bootleg=True)
         self.cnormal.artists.add(self.a)
         self.cbootleg.artists.add(self.a)
@@ -245,9 +251,17 @@ class TaalaTest(TestCase):
 
 class ConcertTest(TestCase):
     def setUp(self):
+        permission = Permission.objects.get(codename='access_restricted')     
+        self.col1 = data.models.Collection.objects.create(name="collection 1", mbid="afd2", permission="U") 
+        self.col1.save()
         self.cnormal = models.Concert.objects.create(title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
+        self.cnormal.collection = self.col1
+        self.cnormal.save()
+        self.col2 = data.models.Collection.objects.create(mbid="afd3", name="collection 2", permission="S") 
+        self.col2.save()
         self.cbootleg = models.Concert.objects.create(title="bootleg concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734", bootleg=True)
-
+        self.cbootleg.collection = self.col2
+        self.cbootleg.save()
         self.rnormal = models.Recording.objects.create(title="normal recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
         models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
 
@@ -277,19 +291,21 @@ class ConcertTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/carnatic/concert")
+        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2'})
+
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
-        response = client.get("/api/carnatic/concert?with_bootlegs=True")
+        response = client.get("/api/carnatic/concert?with_bootlegs=True", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
         data = response.data
+        
         self.assertEqual(2, len(data["results"]))
 
 
         # A normal user using with_bootlegs=True will still only
         # get 1 concert
         client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/concert?with_bootlegs=True")
+        response = client.get("/api/carnatic/concert?with_bootlegs=True", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 

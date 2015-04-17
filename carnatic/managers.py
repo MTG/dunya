@@ -28,27 +28,16 @@ class BootlegConcertManager(models.Manager):
             qs = qs.filter(bootleg=False)
         return qs
 
-    def get_from_collections(self, ids, user):
+    def get_from_collections(self, ids, permission):
         qs = self.get_queryset()
         if ids == None:
             return qs.none()
         else:
             ids = ids.replace(' ','').split(",")
-        permission = self._get_permissions(user.is_staff, user.has_perm('access_restricted'))
         return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
 
-    def with_user_access(self, user):
-        permission = self._get_permissions(user.is_staff, user.has_perm('access_restricted'))
+    def with_permissions(self, permission):
         return self.get_queryset().filter(collection__permission__in=permission)
-
-    def _get_permissions(self, is_staff, is_restricted):
-        permission = ["U"]
-        if is_staff:
-            permission = ["S", "R", "U"]
-        elif is_restricted:
-            permission = ["R", "U"]
-        return permission
-
 
 class BootlegRecordingManager(models.Manager):
     use_for_related_fields = True

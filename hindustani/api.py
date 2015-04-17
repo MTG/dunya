@@ -15,7 +15,8 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from hindustani import models
-from data.models import WithImageMixin
+from data import utils
+from data.models import WithImageMixin 
 
 from rest_framework import generics
 from rest_framework import serializers
@@ -267,7 +268,8 @@ class ReleaseList(generics.ListAPIView):
     
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
-        return models.Release.objects.get_from_collections(collection_ids, self.request.user)
+        permission = utils.get_user_permissions(self.request.user)
+        return models.Release.objects.get_from_collections(collection_ids, permission)
 
 
 class ReleaseRecordingSerializer(serializers.ModelSerializer):
