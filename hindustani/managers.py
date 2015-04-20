@@ -81,3 +81,15 @@ class HindustaniReleaseManager(models.Manager):
     
     def with_permissions(self, permission): 
         return self.get_queryset().filter(collection__permission__in=permission)
+
+class HindustaniRecordingManager(models.Manager):
+    def get_from_collections(self, ids, permission):
+        qs = self.get_queryset()
+        if ids == None:
+            return qs.none()
+        else:
+            ids = ids.replace(' ','').split(",")
+        return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
+    
+    def with_permissions(self, permission): 
+        return self.get_queryset().filter(collection__permission__in=permission)

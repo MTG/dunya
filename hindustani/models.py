@@ -152,12 +152,18 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return ret
 
-    def releases(self):
+    def releases(self, collection_ids=False, permission=False):
+        rcollections=[]
+        if collection_ids:
+            rcollections = collection_ids.replace(' ','').split(",")
+        if not permission:
+            permission = ["U"]
+        
         # Releases in which we were the primary artist
         ret = []
-        ret.extend([r for r in self.primary_concerts.all()])
+        ret.extend([r for r in self.primary_concerts.get_from_collections(collection_ids, permission).all()])
         # Releases in which we performed
-        ret.extend([r for r in Release.objects.filter(recordings__instrumentperformance__artist=self).distinct()])
+        ret.extend([r for r in Release.objects.get_from_collections(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -176,12 +182,8 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
-    def recordings(self):
-        IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(artist=self)
-        performance_recs = [p.recording for p in performances]
-
-        return list(set(performance_recs))
+    def recordings(self, collection_ids=False, permission=False):
+        return Recording.objects.get_from_collections(collection_ids, permission).filter(instrumentperformance__artist=self).distinct()
 
     @classmethod
     def get_filter_criteria(cls):
@@ -352,7 +354,8 @@ class Recording(HindustaniStyle, data.models.Recording):
     sections = models.ManyToManyField("Section", through="RecordingSection")
     forms = models.ManyToManyField("Form", through="RecordingForm")
     works = models.ManyToManyField("Work", through="WorkTime")
-
+    
+    objects = managers.HindustaniRecordingManager()
 class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
     pass
 

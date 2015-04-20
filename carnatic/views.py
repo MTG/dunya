@@ -102,6 +102,7 @@ def main(request):
     querybrowse = False
     searcherror = False
 
+    permission = utils.get_user_permissions(request.user)
     show_bootlegs = request.show_bootlegs
 
     if qartist:
@@ -132,7 +133,7 @@ def main(request):
                 displayres.append(("raaga", ra))
             for ta in tlist:
                 displayres.append(("taala", ta))
-            for c in art.concerts(raagas=rlist, taalas=tlist, with_bootlegs=show_bootlegs):
+            for c in art.concerts(raagas=rlist, taalas=tlist, collection_ids=False, permission=permission):
                 displayres.append(("concert", c))
         else:
             # Otherwise if more than one artist is selected,
@@ -143,7 +144,7 @@ def main(request):
                 displayres.append(("artist", art))
                 if art.main_instrument:
                     displayres.append(("instrument", art.main_instrument))
-                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist, with_bootlegs=show_bootlegs))
+                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist, collection_ids=False, permission=permission))
                 allconcerts.append(thisconcerts)
             combinedconcerts = reduce(lambda x, y: x & y, allconcerts)
 
@@ -339,8 +340,9 @@ def artist(request, uuid, name=None):
     if wr.count() and not wikipedia:
         wikipedia = wr[0].uri
 
-    # Sample is the first recording of any of their concerts (Vignesh, Dec 9)
-    concerts = artist.concerts()
+    # Sample is the first recording of any of their concerts (Vignesh, Dec 9) 
+    permission = utils.get_user_permissions(request.user)
+    concerts = artist.concerts(permission)
     sample = None
     if concerts:
         recordings = concerts[0].recordings.all()
@@ -396,7 +398,6 @@ def composer(request, uuid, name=None):
 def concertsearch(request):
     permissions = utils.get_user_permissions(request.user)
     concerts = Concert.objects.with_permissions(permissions).order_by('title')
-    #concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
     ret = []
     for c in concerts:
         title = "%s<br>%s" % (c.title, c.artistcredit)
@@ -522,7 +523,8 @@ def recording(request, uuid, title=None):
     similar = similar[:10]
 
     try:
-        concert = recording.concert_set.get()
+        permission = utils.get_user_permissions(request.user)
+        concert = recording.concert_set.with_user_permissions(permission=permission).get()
         recordings = list(concert.recordings.all())
         recordingpos = recordings.index(recording)
     except Concert.DoesNotExist:
@@ -575,8 +577,9 @@ def workbyid(request, workid, title=None):
 
 def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
-
-    recordings = work.recording_set.all()
+    
+    permission = utils.get_user_permissions(request.user)
+    recordings = work.recording_set.with_user_permissions(permission).all()
     if len(recordings):
         sample = random.sample(recordings, 1)
     else:

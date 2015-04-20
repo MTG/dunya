@@ -55,9 +55,9 @@ class RecordingTest(ApiTestCase):
         self.assertEqual(['mbid', 'title'], sorted(s.data.keys()))
 
     def test_render_recording_detail(self):
-        s = api.RecordingDetailSerializer(self.r)
+        resp = self.apiclient.get("/api/hindustani/recording/63ddd257-a92e-4c0c-b639-ce59e1e57a4a")
         expected = ['artists', 'forms', 'layas', 'mbid', 'raags', 'release', 'taals', 'title', 'works']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(resp.data.keys()))
 
     def test_recording_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/recording/63ddd257-a92e-4c0c-b639-ce59e1e57a4a")
@@ -74,8 +74,8 @@ class WorkTest(ApiTestCase):
         self.assertEqual(['mbid', 'title'], sorted(s.data.keys()))
 
     def test_render_work_detail(self):
-        s = api.WorkDetailSerializer(self.w)
-        self.assertEqual(['mbid', 'recordings', 'title'], sorted(s.data.keys()))
+        resp = self.apiclient.get("/api/hindustani/work/7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
+        self.assertEqual(['mbid', 'recordings', 'title'], sorted(resp.data.keys()))
 
     def test_work_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/work/7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
@@ -156,9 +156,39 @@ class LayaTest(ApiTestCase):
 class ReleaseTest(ApiTestCase):
     def setUp(self):
         super(ReleaseTest, self).setUp()
-
-        self.col1 = data.models.Collection.objects.create(name="collection 1", permission="U") 
+        
+        self.col1 = data.models.Collection.objects.create(mbid="afd2", name="collection 1", permission="U") 
         self.r = models.Release.objects.create(collection=self.col1, title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
+       
+        self.normaluser = auth.models.User.objects.create_user("normaluser")
+        
+        self.col2 = data.models.Collection.objects.create(mbid="afd3", name="collection 2", permission="S") 
+        self.r = models.Release.objects.create(collection=self.col2, title="somerelease2", mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e")
+
+    def test_release_list(self):
+        """ Staff members will see all the releases, but 
+            regular users only see those associated to 
+            unrestricted collections"""
+        client = APIClient()
+        client.force_authenticate(user=self.staffuser)
+
+        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION':'afd2'})
+
+        data = response.data
+        self.assertEqual(1, len(data["results"]))
+
+        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
+        data = response.data
+        
+        self.assertEqual(2, len(data["results"]))
+
+
+        # A normal user using passing a restricted collection will still only
+        # get 1 release
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
+        data = response.data
+        self.assertEqual(1, len(data["results"]))
 
     def test_render_release_inner(self):
         s = api.ReleaseInnerSerializer(self.r)

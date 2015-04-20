@@ -154,7 +154,9 @@ class WorkDetailSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'composers', 'raagas', 'taalas', 'recordings']
 
     def recording_list(self, ob):
-        recordings = ob.recording_set.with_bootlegs(self.with_bootlegs)
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        recordings = ob.recording_set.get_from_collections(collection_ids, permission)
         return RecordingInnerSerializer(recordings, many=True).data
 
 class BootlegWorkDetailSerializer(WorkDetailSerializer):
@@ -183,7 +185,7 @@ class RecordingList(generics.ListAPIView, WithBootlegAPIView):
 
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
-    concert = ConcertInnerSerializer(source='concert_set.get')
+    concert = serializers.SerializerMethodField('concert_list')
     artists = ArtistInnerSerializer(source='all_artists', many=True)
     raaga = RaagaInnerSerializer()
     taala = TaalaInnerSerializer()
@@ -192,6 +194,14 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'artists', 'raaga', 'taala', 'work', 'concert']
+
+    def concert_list(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        concerts = ob.concert_set.get_from_collections(collection_ids, permission)
+        cs = ConcertInnerSerializer(concerts, many=True)
+        return cs.data
+
 
 class RecordingDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
@@ -220,12 +230,16 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'name', 'concerts', 'instruments', 'recordings']
 
     def concert_list(self, ob):
-        concerts = ob.concerts(with_bootlegs=self.with_bootlegs)
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        concerts = ob.concerts(collection_ids=collection_ids, permission=permission)
         cs = ConcertInnerSerializer(concerts, many=True)
         return cs.data
 
     def recording_list(self, ob):
-        recordings = ob.recordings(with_bootlegs=self.with_bootlegs)
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        recordings = ob.recordings(collection_ids, permission)
         rs = RecordingInnerSerializer(recordings, many=True)
         return rs.data
 
@@ -252,7 +266,6 @@ class ConcertList(generics.ListAPIView, WithBootlegAPIView):
     serializer_class = ConcertInnerSerializer
 
     def get_queryset(self):
-        #ret = models.Concert.objects.with_bootlegs(self.with_bootlegs)
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.request.user)
         return models.Concert.objects.get_from_collections(collection_ids, permission)
@@ -292,7 +305,8 @@ class ConcertDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     serializer_class = ConcertDetailSerializer
 
     def get_queryset(self):
-        # We only check if the user is staff here - you do not
-        # need to add ?with_bootlegs if you specify the mbid
-        # of a bootleg concert
-        return models.Concert.objects.with_bootlegs(self.is_staff)
+        # We only check if the user has access here - you do not
+        # need to add the collection_id header if you specify the mbid
+        # of a concert
+        permission = utils.get_user_permissions(self.request.user)
+        return models.Concert.objects.with_permissions(permission)
