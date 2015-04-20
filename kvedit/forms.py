@@ -18,12 +18,14 @@ import json
 from django import forms
 from django.conf import settings
 
+from docserver.models import SourceFileType
 from kvedit.models import Field, Item, Category
 from kvedit import utils
 
 class JsonForm(forms.Form):
     json_file = forms.FileField()
     category = forms.CharField()
+    source_file_type = forms.ModelChoiceField(queryset=SourceFileType.objects.all(), empty_label="")
 
     def clean_json_file(self):
         # Validate that is a json file and size is less than the specified
@@ -52,7 +54,13 @@ class JsonForm(forms.Form):
             self.new_items_dic = new_items_dic
 
     def save(self, commit=True):
-        utils.upload_kvdata(self.cleaned_data['category'], self.new_items_dic)
+        utils.upload_kvdata(self.cleaned_data['category'], self.cleaned_data['source_file_type'], self.new_items_dic)
+
+
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        exclude = ['category', 'ref', 'reverify']
 
 class FieldForm(forms.ModelForm):
     class Meta:
