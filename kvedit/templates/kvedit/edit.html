@@ -4,9 +4,10 @@
 
 {% block wrap %}
 
-<ol class="breadcrumbs">Categories
-    <li><a href="{% url "kvedit-categories" %}">List</a></li>
+<ol class="breadcrumbs">
+    <li><a href="{% url "kvedit-categories" %}">Categories</a></li>
     <li><a href="{% url "kvedit-items" item.category.id %}">{{item.category.name}}</a></li>
+    <li>{{item.id}}</li>
 </ol>
 
 
@@ -16,7 +17,7 @@
 
 <form method="post" action="{% url "kvedit-edit-item" item.category.id item.ref %}" enctype="multipart/form-data">
     {{ item_form.as_table }}
-    {{ form.management_form}}    
+    {{ form.management_form}}
     {{ form.non_form_errors.as_ul }}
     <table class="collection-list table">
         {% for form in form.forms %}
