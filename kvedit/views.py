@@ -43,10 +43,10 @@ def edit_item(request, item_id, cat_id):
             item = Item.objects.get(ref=item_id, category__id=cat_id)
             form = FieldSet(instance=item)
             item_form = ItemForm(instance=item)
-            message = "Item successfully saved"
+            message = "Item successfully saved."
             if item.verified and item.category.source_file_type:
-                docserver_add_sourcefile(item.ref, item.category.source_file_type, "")
-            message = "Item successfully saved"
+                #docserver_add_sourcefile(item.ref, item.category.source_file_type, "")
+                message += " Sourcefile uploaded."
     else:
         item_form = ItemForm(instance=item)
         form = FieldSet(instance = item)
