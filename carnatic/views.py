@@ -201,7 +201,7 @@ def main(request):
         for cid in qconcert:
             try:
                 permission = utils.get_user_permissions(request.user)
-                con = Concert.objects.with_permissions(permission).get(pk=cid)
+                con = Concert.objects.with_permissions(False, permission).get(pk=cid)
                 displayres.append(("concert", con))
                 artists = con.performers()
                 for a in artists:

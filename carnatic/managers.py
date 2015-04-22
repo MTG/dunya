@@ -28,37 +28,22 @@ class BootlegConcertManager(models.Manager):
             qs = qs.filter(bootleg=False)
         return qs
 
-    def get_from_collections(self, ids, permission):
+    def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if ids == None:
-            return qs.none()
-        else:
+        if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-        return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
-
-    def with_permissions(self, permission):
-        return self.get_queryset().filter(collection__permission__in=permission)
+            qs = qs.filter(collection__mbid__in=ids)
+        return qs.filter(collection__permission__in=permission)
 
 class BootlegRecordingManager(models.Manager):
     use_for_related_fields = True
 
-    def with_bootlegs(self, show_bootlegs):
+    def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if not show_bootlegs:
-            qs = qs.filter(concert__bootleg=False)
-        return qs
-    
-    def get_from_collections(self, ids, permission):
-        qs = self.get_queryset()
-        if ids == None:
-            return qs.none()
-        else:
+        if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-        return qs.filter(concert__collection__mbid__in=ids, concert__collection__permission__in=permission)
-
-    def with_permissions(self, permission):
-        return self.get_queryset().filter(concert__collection__permission__in=permission)
-
+            qs = qs.filter(concert__collection__mbid__in=ids)
+        return qs.filter(concert__collection__permission__in=permission)
 
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):

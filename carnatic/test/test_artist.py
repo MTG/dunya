@@ -38,9 +38,9 @@ class ArtistCountTest(TestCase):
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a3, recording=self.r2)
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a1, recording=self.r3)
 
-        # A bootleg concert, with a2
+        # A concert from restricted collection, with a2
         self.col3 = data.models.Collection.objects.create(name="collection 3", mbid='f66f6f73', permission="S") 
-        self.c3 = models.Concert.objects.create(collection=self.col3, title="Concert3", bootleg=True)
+        self.c3 = models.Concert.objects.create(collection=self.col3, title="Concert3")
         self.r4 = models.Recording.objects.create(title="Recording4")
         models.ConcertRecording.objects.create(concert=self.c3, recording=self.r4, track=1, disc=1, disctrack=1)
         self.c3.artists.add(self.a2)
@@ -101,8 +101,8 @@ class ArtistCountTest(TestCase):
         c = art.concerts()
         self.assertEqual(1, len(c))
 
-    def test_artist_bootleg_concerts(self):
-        """ If you ask for bootlegs you get an extra concert"""
+    def test_artist_restr_collection_concerts(self):
+        """ If you ask for a restricted collection you get an extra concert"""
         c = self.a2.concerts(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
         self.assertEqual(3, len(c))
 
@@ -119,7 +119,7 @@ class ArtistCountTest(TestCase):
         recs = self.a3.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U'])
         self.assertEqual(2, len(recs))
 
-    def test_artist_bootleg_recordings(self):
+    def test_artist_collection_recordings(self):
         recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
         self.assertEqual(4, len(recs))
 
@@ -138,13 +138,13 @@ class CollaboratingArtistsTest(TestCase):
         self.c2 = models.Concert.objects.create(collection=self.col2, title="c2")
         self.c2.artists.add(self.a1, self.a2, self.a3)
         self.col3 = data.models.Collection.objects.create(name="collection 3", mbid='f33f3f73', permission="S") 
-        self.c3 = models.Concert.objects.create(collection=self.col3, title="c3", bootleg=True)
+        self.c3 = models.Concert.objects.create(collection=self.col3, title="c3")
         self.c3.artists.add(self.a1, self.a2, self.a3, self.a4)
         self.col4 = data.models.Collection.objects.create(name="collection 4", mbid='f44f4f73', permission="S") 
-        self.c4 = models.Concert.objects.create(collection=self.col4, title="c4", bootleg=True)
+        self.c4 = models.Concert.objects.create(collection=self.col4, title="c4")
         self.c4.artists.add(self.a1, self.a2, self.a4)
 
-    def test_show_bootlegs(self):
+    def test_show_collectionss(self):
         coll = self.a1.collaborating_artists(collection_ids='f11f1f73, f22f2f73, f33f3f73, f44f4f73', permission=['U','R','S'])
         self.assertEqual(4, len(coll))
         self.assertEqual( (self.a2, [self.c1, self.c2, self.c3, self.c4], 0), coll[0])
@@ -152,7 +152,7 @@ class CollaboratingArtistsTest(TestCase):
         self.assertEqual( (self.a4, [self.c3, self.c4], 0), coll[2])
         self.assertEqual( (self.a5, [self.c1], 0), coll[3])
 
-    def test_dont_show_bootlegs(self):
+    def test_dont_show_collections(self):
         coll = self.a1.collaborating_artists(collection_ids='f11f1f73, f22f2f73, f33f3f73, f44f4f73', permission=['U'])
         self.assertEqual(4, len(coll))
         self.assertEqual( (self.a2, [self.c1, self.c2], 2), coll[0])

@@ -71,25 +71,17 @@ class HindustaniInstrumentManager(models.Manager):
             raise e
 
 class HindustaniReleaseManager(models.Manager):
-    def get_from_collections(self, ids, permission):
+    def with_permissions(self, ids, permission): 
         qs = self.get_queryset()
-        if ids == None:
-            return qs.none()
-        else:
+        if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-        return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
+            qs = qs.filter(collection__mbid__in=ids)
+        return qs.filter(collection__permission__in=permission)
     
-    def with_permissions(self, permission): 
-        return self.get_queryset().filter(collection__permission__in=permission)
-
 class HindustaniRecordingManager(models.Manager):
-    def get_from_collections(self, ids, permission):
+    def with_permissions(self, ids, permission): 
         qs = self.get_queryset()
-        if ids == None:
-            return qs.none()
-        else:
+        if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-        return qs.filter(collection__mbid__in=ids, collection__permission__in=permission)
-    
-    def with_permissions(self, permission): 
-        return self.get_queryset().filter(collection__permission__in=permission)
+            qs = qs.filter(release__collection__mbid__in=ids)
+        return qs.filter(release__collection__permission__in=permission)

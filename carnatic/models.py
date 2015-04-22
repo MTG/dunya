@@ -130,7 +130,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         return collaborators
 
     def recordings(self, collection_ids=False, permission=False):
-        return Recording.objects.get_from_collections(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
+        return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
 
     def concerts(self, raagas=[], taalas=[], collection_ids=False, permission=False):
         """ Get all the concerts that this artist performs in
@@ -147,11 +147,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         if not permission:
             permission = ["U"]
         ret = []
-        concerts = self.primary_concerts
-        if collection_ids:
-            concerts = concerts.get_from_collections(collection_ids, permission)
-        else:
-            concerts = concerts.with_permissions(permission)
+        concerts = self.primary_concerts.with_permissions(collection_ids, permission)
         if raagas:
             concerts = concerts.filter(recordings__work__raaga__in=raagas)
         if taalas:

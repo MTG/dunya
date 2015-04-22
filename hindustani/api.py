@@ -205,7 +205,7 @@ class WorkDetailSerializer(serializers.ModelSerializer):
     def recording_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.context['request'].user)
-        recordings = ob.recording_set.get_from_collections(collection_ids, permission)
+        recordings = ob.recording_set.with_permissions(collection_ids, permission)
         return RecordingInnerSerializer(recordings, many=True).data
 
 class WorkDetail(generics.RetrieveAPIView):
@@ -234,7 +234,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     def release_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.context['request'].user)
-        releases = ob.release_set.get_from_collections(collection_ids, permission)
+        releases = ob.release_set.with_permissions(collection_ids, permission)
         rs = ReleaseInnerSerializer(releases, many=True)
         return rs.data
 
@@ -297,7 +297,7 @@ class ReleaseList(generics.ListAPIView):
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.request.user)
-        return models.Release.objects.get_from_collections(collection_ids, permission)
+        return models.Release.objects.with_permissions(collection_ids, permission)
 
 
 class ReleaseRecordingSerializer(serializers.ModelSerializer):

@@ -161,9 +161,9 @@ class Artist(HindustaniStyle, data.models.Artist):
         
         # Releases in which we were the primary artist
         ret = []
-        ret.extend([r for r in self.primary_concerts.get_from_collections(collection_ids, permission).all()])
+        ret.extend([r for r in self.primary_concerts.with_permissions(collection_ids, permission).all()])
         # Releases in which we performed
-        ret.extend([r for r in Release.objects.get_from_collections(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
+        ret.extend([r for r in Release.objects.with_permissions(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -183,7 +183,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
     def recordings(self, collection_ids=False, permission=False):
-        return Recording.objects.get_from_collections(collection_ids, permission).filter(instrumentperformance__artist=self).distinct()
+        return Recording.objects.with_permissions(collection_ids, permission).filter(instrumentperformance__artist=self).distinct()
 
     @classmethod
     def get_filter_criteria(cls):
