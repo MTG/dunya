@@ -25,7 +25,7 @@ class ArtistCountTest(TestCase):
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a2, recording=self.r1)
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a3, recording=self.r1)
 
-        self.col2 = data.models.Collection.objects.create(name="collection 2", mbid='f55f5f73', permission="U") 
+        self.col2 = data.models.Collection.objects.create(name="collection 2", mbid='f55f5f73', permission="R") 
         self.c2 = models.Concert.objects.create(collection=self.col2, title="Concert2")
         self.r2 = models.Recording.objects.create(title="Recording2")
         self.r3 = models.Recording.objects.create(title="Recording3")
@@ -76,17 +76,17 @@ class ArtistCountTest(TestCase):
     def test_artist_get_concerts(self):
         """ Concerts performed by an artist """
         c = self.a1.concerts()
-        self.assertEqual(2, len(c))
+        self.assertEqual(1, len(c))
         c = self.a2.concerts()
-        self.assertEqual(2, len(c))
+        self.assertEqual(1, len(c))
         c = self.a3.concerts()
-        self.assertEqual(2, len(c))
+        self.assertEqual(1, len(c))
 
         col = data.models.Collection.objects.create(name="collection 4", mbid='f77f7f73', permission="U") 
         concert = models.Concert.objects.create(collection=col, title="Other concert")
         concert.artists.add(self.a3)
         c = self.a3.concerts()
-        self.assertEqual(3, len(c))
+        self.assertEqual(2, len(c))
 
     def test_artist_group_get_concerts(self):
         """ If you're in a group, you performed in that group's concerts """
@@ -111,12 +111,12 @@ class ArtistCountTest(TestCase):
          - explicit recording relationships
          - Also if they're a concert primary artist or have a rel
         """
-        recs = self.a1.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U'])
+        recs = self.a1.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
         self.assertEqual(3, len(recs))
-        recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U'])
-        self.assertEqual(3, len(recs))
+        recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
+        self.assertEqual(4, len(recs))
         # A3 is not on recording3
-        recs = self.a3.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U'])
+        recs = self.a3.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
         self.assertEqual(2, len(recs))
 
     def test_artist_collection_recordings(self):
