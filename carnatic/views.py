@@ -397,7 +397,7 @@ def composer(request, uuid, name=None):
 
 def concertsearch(request):
     permissions = utils.get_user_permissions(request.user)
-    concerts = Concert.objects.with_permissions(permissions).order_by('title')
+    concerts = Concert.objects.with_permissions(False, permissions).order_by('title')
     ret = []
     for c in concerts:
         title = "%s<br>%s" % (c.title, c.artistcredit)
