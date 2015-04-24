@@ -15,10 +15,12 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import forms
+from django.contrib import admin
 from django.contrib.auth.models import User
 import re
 import os
 
+import data
 import compmusic
 
 from dashboard import models
@@ -117,3 +119,8 @@ class InactiveUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['is_active']
+
+class CollectionForm(forms.ModelForm):
+    class Meta:
+        model = data.models.Collection
+        exclude = ['name']

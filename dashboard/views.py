@@ -643,3 +643,22 @@ def _edit_artist_desc(request, artist, entityurl):
     params = {"artist": artist, "description": desc, "resp_msg": resp_msg, "entityurl": entityurl}
     return render(request, "dashboard/artist_edit.html", params)
 
+def list_access_collections(request):
+    """ List of data.Collection for edition """
+    params = {"collections": data.models.Collection.objects.all()}
+    return render(request, "dashboard/collections_list.html", params)
+
+def edit_access_collections(request, uuid):
+    message = ""
+    collection = get_object_or_404(data.models.Collection, mbid=uuid)
+    if request.method == 'POST':
+        form = forms.CollectionForm(request.POST, instance=collection)
+        if form.is_valid():
+            form.save()
+            message = "The collection has been successfully edited"
+    else:
+        form = forms.CollectionForm(instance=collection)
+    params = {"form": form, "collection": collection, "message": message}
+    return render(request, "dashboard/collections_edit.html", params)
+
+
