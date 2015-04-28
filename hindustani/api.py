@@ -217,6 +217,11 @@ class WorkDetail(generics.RetrieveAPIView):
 class RecordingList(generics.ListAPIView):
     queryset = models.Recording.objects.all()
     serializer_class = RecordingInnerSerializer
+    
+    def get_queryset(self):
+        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.request.user)
+        return models.Recording.objects.with_permissions(collection_ids, permission)
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     release = serializers.SerializerMethodField('release_list')

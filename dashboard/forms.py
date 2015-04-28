@@ -120,7 +120,7 @@ class InactiveUserForm(forms.ModelForm):
         model = User
         fields = ['is_active']
 
-class CollectionForm(forms.ModelForm):
+class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
         exclude = ['name']

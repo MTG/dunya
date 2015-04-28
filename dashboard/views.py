@@ -652,12 +652,12 @@ def edit_access_collections(request, uuid):
     message = ""
     collection = get_object_or_404(data.models.Collection, mbid=uuid)
     if request.method == 'POST':
-        form = forms.CollectionForm(request.POST, instance=collection)
+        form = forms.AccessCollectionForm(request.POST, instance=collection)
         if form.is_valid():
             form.save()
             message = "The collection has been successfully edited"
     else:
-        form = forms.CollectionForm(instance=collection)
+        form = forms.AccessCollectionForm(instance=collection)
     params = {"form": form, "collection": collection, "message": message}
     return render(request, "dashboard/collections_edit.html", params)
 
