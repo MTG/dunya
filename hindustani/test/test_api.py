@@ -112,6 +112,19 @@ class ArtistTest(ApiTestCase):
         rel.artists.add(self.a3)
         c = self.a3.releases()
         self.assertEqual(2, len(c))
+    
+    def test_artist_group_get_releases(self):
+        """ If you're in a group, you performed in that group's concerts """
+        grp = models.Artist.objects.create(name="Group")
+        art = models.Artist.objects.create(name="Artist")
+        grp.group_members.add(art)
+        col = data.models.Collection.objects.create(name="collection 4", mbid='f77f7f73', permission="U") 
+        rel = models.Release.objects.create(collection=col, title="Other concert")
+        c = art.releases()
+        self.assertEqual(0, len(c))
+        rel.artists.add(grp)
+        c = art.releases()
+        self.assertEqual(1, len(c))
 
     def test_artist_restr_collection_releases(self):
         """ If you ask for a restricted collection you get an extra release"""

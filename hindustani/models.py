@@ -162,6 +162,15 @@ class Artist(HindustaniStyle, data.models.Artist):
         # Releases in which we were the primary artist
         ret = []
         ret.extend([r for r in self.primary_concerts.with_permissions(collection_ids, permission).all()])
+
+        # Releases of my groups
+        for a in self.groups.all():
+            for c in a.releases():
+                if c not in ret and c.collection \
+                        and (collection_ids == False or c.collection.mbid in rcollections) \
+                        and c.collection.permission in permission:
+                    ret.append(c)
+     
         # Releases in which we performed
         ret.extend([r for r in Release.objects.with_permissions(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
