@@ -124,16 +124,16 @@ class ArtistTest(ApiTestCase):
          - Also if they're a release primary artist or have a rel
         """
         recs = self.a1.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
-        self.assertEqual(2, len(recs))
+        self.assertEqual(3, len(recs))
         recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
-        self.assertEqual(1, len(recs))
+        self.assertEqual(4, len(recs))
         # A3 is not on recording3
         recs = self.a3.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
         self.assertEqual(2, len(recs))
 
     def test_artist_collection_recordings(self):
         recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
-        self.assertEqual(1, len(recs))
+        self.assertEqual(4, len(recs))
 
 class ComposerTest(ApiTestCase):
     def setUp(self):

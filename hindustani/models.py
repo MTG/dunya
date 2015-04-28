@@ -183,7 +183,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
     def recordings(self, collection_ids=False, permission=False):
-        return Recording.objects.with_permissions(collection_ids, permission).filter(instrumentperformance__artist=self).distinct()
+        return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(release__artists=self)).distinct()
 
     @classmethod
     def get_filter_criteria(cls):
