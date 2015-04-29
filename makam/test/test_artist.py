@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+import data
 from makam import models
 
 class ArtistTest(TestCase):
@@ -10,9 +11,12 @@ class ArtistTest(TestCase):
         a2 = models.Artist.objects.create(name="a2")
         a3 = models.Artist.objects.create(name="a3")
 
-        r1 = models.Release.objects.create(title="r1")
-        r2 = models.Release.objects.create(title="r2")
-        r3 = models.Release.objects.create(title="r3")
+        c1 = data.models.Collection.objects.create(mbid="f11f1f73", name="collection 1", permission="U") 
+        c2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="U") 
+        c3 = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 3", permission="U") 
+        r1 = models.Release.objects.create(collection=c1, title="r1")
+        r2 = models.Release.objects.create(collection=c2, title="r2")
+        r3 = models.Release.objects.create(collection=c3, title="r3")
         t1 = models.Recording.objects.create(title="t1")
         models.ReleaseRecording.objects.create(release=r1, recording=t1, track=1)
         models.InstrumentPerformance.objects.create(artist=a3, recording=t1, instrument_id=1)
@@ -53,8 +57,10 @@ class ArtistTest(TestCase):
 class ArtistReleaseListTest(TestCase):
 
     def setUp(self):
-        self.rel1 = models.Release.objects.create(title="release1")
-        self.rel2 = models.Release.objects.create(title="release2")
+        c1 = data.models.Collection.objects.create(mbid="f11f1f73", name="collection 1", permission="U") 
+        c2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="U") 
+        self.rel1 = models.Release.objects.create(collection=c1, title="release1")
+        self.rel2 = models.Release.objects.create(collection=c2, title="release2")
         rec1 = models.Recording.objects.create(title="rec1")
         rec2 = models.Recording.objects.create(title="rec2")
         models.ReleaseRecording.objects.create(release=self.rel1, recording=rec1, track=1)

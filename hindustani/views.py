@@ -181,7 +181,7 @@ def main(request):
         for r in qrelease:
             try:
                 permission = data.utils.get_user_permissions(request.user)
-                release = models.Release.objects.with_permissions(permission).get(pk=r)
+                release = models.Release.objects.with_permissions(False, permission).get(pk=r)
                 displayres.extend(release.related_items())
             except models.Release.DoesNotExist:
                 pass
@@ -329,7 +329,7 @@ def artist(request, uuid, name=None):
 
 def releasesearch(request):
     permission = data.utils.get_user_permissions(request.user)
-    releases = models.Release.objects.with_permissions(permission).order_by('title')
+    releases = models.Release.objects.with_permissions(False, permission).order_by('title')
     ret = []
     for r in releases:
         ret.append({"id": r.id, "title": r.title})

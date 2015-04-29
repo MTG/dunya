@@ -24,6 +24,7 @@ import collections
 import unidecode
 
 import data.models
+import managers
 
 class MakamStyle(object):
     def get_style(self):
@@ -50,9 +51,12 @@ class Artist(MakamStyle, data.models.Artist):
         counts = collections.Counter(others)
         return [a for a, c in counts.most_common(10)]
 
-    def main_releases(self):
+    def main_releases(self, collection_ids=False, permission=False):
         """ Releases where this artist is named on the cover """
-        return self.primary_concerts.all()
+        if not permission:
+            permission = ["U"]
+        
+        return self.primary_concerts.with_permissions(collection_ids, permission).all()
 
     def accompanying_releases(self):
         """ Releases where this artist performs, but isn't named on the cover """
@@ -72,7 +76,8 @@ class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases")
-
+    
+    objects = managers.CollectionReleaseManager()
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
         return self.recordings.order_by('releaserecording')
@@ -125,7 +130,9 @@ class Recording(MakamStyle, data.models.Recording):
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True)
-
+    
+    objects = managers.CollectionRecordingManager()
+    
     def makamlist(self):
         return self.makam.all()
 
