@@ -8,7 +8,7 @@ from makam import api
 
 class ApiTestCase(TestCase):
     def setUp(self):
-        self.col = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 1", permission="S") 
+        self.col = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 1", permission="U") 
         self.r = models.Release.objects.create(collection=self.col, title="Rel", mbid="805a3604-92e6-482f-a0e3-6620c4523d7a")
 
         self.rec = models.Recording.objects.create(title="recording", mbid="2a599dee-db7d-48fd-9a34-fd4e1023cfcc")

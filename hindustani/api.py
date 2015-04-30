@@ -304,7 +304,6 @@ class ReleaseList(generics.ListAPIView):
         permission = utils.get_user_permissions(self.request.user)
         return models.Release.objects.with_permissions(collection_ids, permission)
 
-
 class ReleaseRecordingSerializer(serializers.ModelSerializer):
     mbid = serializers.ReadOnlyField(source='recording.mbid')
     title = serializers.ReadOnlyField(source='recording.title')

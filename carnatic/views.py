@@ -103,7 +103,7 @@ def main(request):
     searcherror = False
 
     permission = utils.get_user_permissions(request.user)
-    show_bootlegs = request.show_bootlegs
+    show_restricted = request.show_bootlegs
 
     if qartist:
         # TODO: If instrument set, only show artists who perform this instrument
@@ -211,7 +211,7 @@ def main(request):
                 pass
     elif query:
         try:
-            results = search.search(query, with_bootlegs=show_bootlegs)
+            results = search.search(query, with_restricted=show_restricted)
         except pysolr.SolrError:
             searcherror = True
             results = {}
@@ -401,7 +401,7 @@ def concertsearch(request):
     ret = []
     for c in concerts:
         title = "%s<br>%s" % (c.title, c.artistcredit)
-        if c.bootleg:
+        if c.collection and c.collection.permission == "S":
             title = '<img src="%s" title="bootleg concert" /> %s' % (static('carnatic/img/cassette.png'), title)
         ret.append({"id": c.id, "title": title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
@@ -413,10 +413,11 @@ def concertbyid(request, concertid, title=None):
 def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
 
-    bootleg = False
-    if concert.bootleg and request.show_bootlegs:
-        bootleg = True
-    elif concert.bootleg and not request.show_bootlegs:
+    show_restricted = False
+    is_restricted = concert.collection and concert.collection.permission == "S"
+    if is_restricted and request.show_bootlegs:
+        show_restricted = True
+    elif is_restricted and not request.show_bootlegs:
         raise Http404
 
     images = concert.images.all()
@@ -441,7 +442,7 @@ def concert(request, uuid, title=None):
            "sample": sample,
            "similar_concerts": similar,
            "recordings": recordings,
-           "bootleg": bootleg
+           "bootleg": show_restricted
            }
 
     return render(request, "carnatic/concert.html", ret)
@@ -453,10 +454,10 @@ def recordingbyid(request, recordingid, title=None):
 def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
 
-    bootleg = False
-    if recording.is_bootleg() and request.show_bootlegs:
-        bootleg = True
-    elif recording.is_bootleg() and not request.show_bootlegs:
+    show_restricted = False
+    if recording.is_restricted() and request.show_bootlegs:
+        show_restricted = True
+    elif recording.is_restricted() and not request.show_bootlegs:
         raise Http404
 
     try:
@@ -559,7 +560,7 @@ def recording(request, uuid, title=None):
            "aksharaurl": aksharaurl,
            "similar": similar,
            "concert": concert,
-           "bootleg": bootleg,
+           "bootleg": show_restricted,
            }
 
     return render(request, "carnatic/recording.html", ret)

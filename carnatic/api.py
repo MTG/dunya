@@ -62,20 +62,6 @@ class InstrumentInnerSerializer(serializers.ModelSerializer):
         model = models.Instrument
         fields = ['id', 'name']
 
-
-class WithBootlegAPIView(object):
-    @property
-    def with_bootlegs(self):
-        is_staff = self.request.user.is_staff
-        with_bootlegs = self.request.QUERY_PARAMS.get('with_bootlegs', None)
-        with_bootlegs = with_bootlegs is not None and is_staff
-        return with_bootlegs
-
-    @property
-    def is_staff(self):
-        return self.request.user.is_staff
-
-
 class TaalaList(generics.ListAPIView):
     queryset = models.Taala.objects.all()
     serializer_class = TaalaInnerSerializer
@@ -159,25 +145,15 @@ class WorkDetailSerializer(serializers.ModelSerializer):
         recordings = ob.recording_set.with_permissions(collection_ids, permission)
         return RecordingInnerSerializer(recordings, many=True).data
 
-class BootlegWorkDetailSerializer(WorkDetailSerializer):
-    with_bootlegs = True
-
-class NoBootlegWorkDetailSerializer(WorkDetailSerializer):
-    with_bootlegs = False
-
-class WorkDetail(generics.RetrieveAPIView, WithBootlegAPIView):
+class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Work.objects.all()
 
     def get_serializer_class(self):
-        if self.with_bootlegs:
-            return BootlegWorkDetailSerializer
-        else:
-            return NoBootlegWorkDetailSerializer
+        return WorkDetailSerializer
 
-
-class RecordingList(generics.ListAPIView, WithBootlegAPIView):
+class RecordingList(generics.ListAPIView):
     serializer_class = RecordingInnerSerializer
 
     def get_queryset(self):
@@ -205,7 +181,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
         return cs.data
 
 
-class RecordingDetail(generics.RetrieveAPIView, WithBootlegAPIView):
+class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Recording.objects.all()
@@ -244,25 +220,15 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
         rs = RecordingInnerSerializer(recordings, many=True)
         return rs.data
 
-class BootlegArtistDetailSerializer(ArtistDetailSerializer):
-    with_bootlegs = True
-
-class NoBootlegArtistDetailSerializer(ArtistDetailSerializer):
-    with_bootlegs = False
-
-class ArtistDetail(generics.RetrieveAPIView, WithBootlegAPIView):
+class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Artist.objects.all()
 
     def get_serializer_class(self):
-        if self.with_bootlegs:
-            return BootlegArtistDetailSerializer
-        else:
-            return NoBootlegArtistDetailSerializer
+        return ArtistDetailSerializer
 
-
-class ConcertList(generics.ListAPIView, WithBootlegAPIView):
+class ConcertList(generics.ListAPIView):
     queryset = models.Concert.objects.all()
     serializer_class = ConcertInnerSerializer
 
@@ -300,7 +266,7 @@ class ConcertDetailSerializer(serializers.ModelSerializer, WithImageMixin):
         return data
 
 
-class ConcertDetail(generics.RetrieveAPIView, WithBootlegAPIView):
+class ConcertDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
     serializer_class = ConcertDetailSerializer

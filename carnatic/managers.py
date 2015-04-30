@@ -19,14 +19,8 @@ from django.db.models import Q
 
 import carnatic
 
-class BootlegConcertManager(models.Manager):
+class CollectionConcertManager(models.Manager):
     use_for_related_fields = True
-
-    def with_bootlegs(self, show_bootlegs):
-        qs = self.get_queryset()
-        if not show_bootlegs:
-            qs = qs.filter(bootleg=False)
-        return qs
 
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
@@ -35,7 +29,7 @@ class BootlegConcertManager(models.Manager):
             qs = qs.filter(collection__mbid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
-class BootlegRecordingManager(models.Manager):
+class CollectionRecordingManager(models.Manager):
     use_for_related_fields = True
 
     def with_permissions(self, ids, permission):

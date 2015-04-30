@@ -99,8 +99,8 @@ class Artist(CarnaticStyle, data.models.Artist):
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
     def collaborating_artists(self, collection_ids=False, permission=False):
-        # Returns [ (collaborating artist, list of concerts, number of bootlegs) ]
-        #   - number of bootlegs corresponds to the number of concerts not in the given collections
+        # Returns [ (collaborating artist, list of concerts, number of restricted concerts) ]
+        #   - number of restricted concerts corresponds to the number of concerts not in the given collections
         # Get all concerts
         # For each artist on the concerts (both types), add a counter
         # top artist ids + the concerts they collaborate on
@@ -112,7 +112,7 @@ class Artist(CarnaticStyle, data.models.Artist):
        
         c = collections.Counter()
         concerts = collections.defaultdict(set)
-        bootlegs = collections.Counter()
+        restr_concerts = collections.Counter()
         for concert in self.concerts(collection_ids=False, permission=['U','R','S']):
             # We always use collections to see if an artist is similar
             # However, if the user can't see collections, we need to say
@@ -122,10 +122,10 @@ class Artist(CarnaticStyle, data.models.Artist):
                     if collection_ids and concert.collection and concert.collection.mbid in rcollections and concert.collection.permission in permission:
                         concerts[p.id].add(concert)
                     else:
-                        bootlegs[p.id] += 1
+                        restr_concerts[p.id] += 1
                     c[p.id] += 1
 
-        collaborators =  [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), bootlegs[pk]) for pk, count in c.most_common()]
+        collaborators =  [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), restr_concerts[pk]) for pk, count in c.most_common()]
         collaborators = sorted(collaborators, key=lambda c: (len(c[1])+c[2], len(c[1])), reverse=True)
         return collaborators
 
@@ -245,10 +245,7 @@ class Concert(CarnaticStyle, data.models.Release):
     sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     recordings = models.ManyToManyField('Recording', through="ConcertRecording")
 
-    bootleg = models.BooleanField(default=False)
-
-    # Regular objects show bootlegs
-    objects = managers.BootlegConcertManager()
+    objects = managers.CollectionConcertManager()
     collection = models.ForeignKey('data.Collection', blank=True, null=True)
 
     def get_absolute_url(self):
@@ -280,7 +277,7 @@ class Concert(CarnaticStyle, data.models.Release):
                }
         return ret
 
-    def get_similar(self, show_bootlegs=False):
+    def get_similar(self):
 
         artists = set(self.artists.all())
         for p in self.performers():
@@ -309,9 +306,7 @@ class Concert(CarnaticStyle, data.models.Release):
                     concert = Concert.objects.get(pk=s)
                 except Concert.DoesNotExist:
                     continue
-                # Don't show bootlegs
-                if concert.bootleg and not show_bootlegs:
-                    continue
+                
                 works = [Work.objects.get(pk=w) for w in v["works"]]
                 raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
                 taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
@@ -656,8 +651,8 @@ class Work(CarnaticStyle, data.models.Work):
                }
         return ret
 
-    def recordings(self, with_bootlegs):
-        return self.recording_set.with_bootlegs(with_bootlegs).all()
+    def recordings(self):
+        return self.recording_set.all()
 
 class WorkRaaga(models.Model):
     work = models.ForeignKey('Work')
@@ -679,13 +674,7 @@ class Recording(CarnaticStyle, data.models.Recording):
 
     work = models.ForeignKey('Work', blank=True, null=True)
 
-    objects = managers.BootlegRecordingManager()
-
-    def is_bootleg(self):
-        for rel in self.concert_set.all():
-            if rel.bootleg:
-                return True
-        return False
+    objects = managers.CollectionRecordingManager()
 
     def raaga(self):
         if self.work:
@@ -711,7 +700,11 @@ class Recording(CarnaticStyle, data.models.Recording):
 
         all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
-
+    
+    def is_restricted(self):
+        for rel in self.concert_set.filter(concert__collection__permission__in=["S"]).all():
+            return True
+        return False
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
