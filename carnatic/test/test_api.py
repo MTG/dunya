@@ -166,7 +166,7 @@ class RecordingTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd2'})
+        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd3'})
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/carnatic/recording")
@@ -175,9 +175,9 @@ class RecordingTest(TestCase):
         
         # A restricted user passing a restricted collection over the header parameter will 
         # get 1 recording
-        client.force_authenticate(user=self.staffuser)
+        client.force_authenticate(user=self.restricteduser)
 
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd3'})
+        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd2'})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -185,7 +185,7 @@ class RecordingTest(TestCase):
         # A normal user passing a collection over the header parameter will still only
         # get 1 recording
         client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/recording")
+        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd1'})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
