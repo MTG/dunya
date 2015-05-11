@@ -1,0 +1,446 @@
+{
+  "415d9fcc-bad8-45db-adec-01ffd04b9cec": {
+    "album": {
+      "enval": "G\u011bng Q\u00ed ch\u0101ng j\u012bng j\u00f9 ch\u00e0ng du\u00e0n xu\u01cen", 
+      "enkey": "Album", 
+      "val": "\u803f\u5176\u660c\u4eac\u5267\u5531\u6bb5\u9009", 
+      "key": "\u4e13\u8f91"
+    }, 
+    "roletype": {
+      "enval": "laosheng", 
+      "enkey": "Role-type", 
+      "val": "\u8001\u751f", 
+      "key": "\u884c\u5f53"
+    }, 
+    "aria": {
+      "enval": "Zhu\u014d f\u00e0ng C\u00e1o. \"Y\u012b l\u00fan m\u00edng yu\u00e8 zh\u00e0o chu\u0101ng xi\u00e0\" (Chen Gong)", 
+      "enkey": "Aria", 
+      "val": "\u201c\u4e00\u8f6e\u660e\u6708\u7167\u7a97\u4e0b\u201d\u2014\u2014\u300a\u6349\u653e\u66f9\u300b\uff08\u9648\u5bab\uff09", 
+      "key": "\u5531\u6bb5"
+    }, 
+    "octave": {
+      "enval": "", 
+      "enkey": "octave", 
+      "val": "no", 
+      "key": "octave"
+    }, 
+    "artist": {
+      "enval": "Geng Qichang", 
+      "enkey": "Artist", 
+      "val": "\u803f\u5176\u660c", 
+      "key": "Artist"
+    }, 
+    "title": {
+      "enval": "Zhu\u014d f\u00e0ng c\u00e1o - S\u00f9 di\u00e0n [\u00e8r hu\u00e1ng m\u00e0n b\u01cen, yu\u00e1n b\u01cen]", 
+      "enkey": "Title", 
+      "val": "\u6349\u653e\u66f9 \u2219 \u5bbf\u5e97\u3010\u4e8c\u9ec4\u6162\u677f\u3001\u539f\u677f\u3011", 
+      "key": "Title"
+    }, 
+    "recording": {
+      "enval": "", 
+      "enkey": "recording", 
+      "val": "415d9fcc-bad8-45db-adec-01ffd04b9cec", 
+      "key": "recording"
+    }, 
+    "school": {
+      "enval": "Yu pai", 
+      "enkey": "School", 
+      "val": "\u4f59\u6d3e", 
+      "key": "\u6d41\u6d3e"
+    }, 
+    "shengqiang": {
+      "enval": "erhuang", 
+      "enkey": "Shengqiang", 
+      "val": "\u4e8c\u9ec4", 
+      "key": "\u58f0\u8154"
+    }, 
+    "key": {
+      "enval": "", 
+      "enkey": "key", 
+      "val": "Laosheng1", 
+      "key": "key"
+    }, 
+    "release": {
+      "enval": "", 
+      "enkey": "release", 
+      "val": "d392f8fe-eb03-40d7-8313-6908e66af953", 
+      "key": "release"
+    }, 
+    "firstdegree": {
+      "enval": "362.275 \u8d6b\u5179 (F#4 - 36 \u97f3\u5206)", 
+      "enkey": "First degree", 
+      "val": "362.275 \u8d6b\u5179 \uff08F#4 - 36 \u97f3\u5206\uff09", 
+      "key": "\u4e3b\u97f3"
+    }
+  }, 
+  "067b8f25-888a-4a08-a495-cbc402846b10": {
+    "album": {
+      "enval": "L\u01d0 Sh\u00e8ng s\u00f9 M\u00e9i p\u00e0i ch\u00e0ng qi\u0101ng zhu\u0101n j\u00ed", 
+      "enkey": "Album", 
+      "val": "\u674e\u80dc\u7d20\u6885\u6d3e\u5531\u8154\u4e13\u8f91", 
+      "key": "\u4e13\u8f91"
+    }, 
+    "roletype": {
+      "enval": "dan", 
+      "enkey": "Role-type", 
+      "val": "\u65e6", 
+      "key": "\u884c\u5f53"
+    }, 
+    "aria": {
+      "enval": "N\u01da q\u01d0 ji\u00e8. \"Y\u00f9 t\u00e1ng ch\u016bn h\u00e1n b\u0113i l\u00e8i m\u00e1ng w\u01ceng qi\u00e1n j\u00ecn\" (Su San)", 
+      "enkey": "Aria", 
+      "val": "\u201c\u7389\u5802\u6625\u542b\u60b2\u6cea\u5fd9\u5f80\u524d\u8fdb\u201d\u2014\u2014\u300a\u5973\u8d77\u89e3\u300b\uff08\u82cf\u4e09\uff09", 
+      "key": "\u5531\u6bb5"
+    }, 
+    "octave": {
+      "enval": "", 
+      "enkey": "octave", 
+      "val": "yes", 
+      "key": "octave"
+    }, 
+    "artist": {
+      "enval": "Li Shengsu", 
+      "enkey": "Artist", 
+      "val": "\u674e\u80dc\u7d20", 
+      "key": "Artist"
+    }, 
+    "title": {
+      "enval": "\u300aN\u01da q\u01d0 ji\u00e8\u300b S\u016b S\u0101n \u201cY\u00f9 t\u00e1ng ch\u016bn h\u00e1n b\u0113i l\u00e8i m\u00e1ng w\u01ceng qi\u00e1n j\u00ecn\u201d", 
+      "enkey": "Title", 
+      "val": "\u300a\u5973\u8d77\u89e3\u300b \u82cf\u4e09 \u201c\u7389\u5802\u6625\u542b\u60b2\u6cea\u5fd9\u5f80\u524d\u8fdb\u201d", 
+      "key": "Title"
+    }, 
+    "recording": {
+      "enval": "", 
+      "enkey": "recording", 
+      "val": "067b8f25-888a-4a08-a495-cbc402846b10", 
+      "key": "recording"
+    }, 
+    "school": {
+      "enval": "Mei pai", 
+      "enkey": "School", 
+      "val": "\u6885\u6d3e", 
+      "key": "\u6d41\u6d3e"
+    }, 
+    "shengqiang": {
+      "enval": "xipi", 
+      "enkey": "Shengqiang", 
+      "val": "\u897f\u76ae", 
+      "key": "\u58f0\u8154"
+    }, 
+    "key": {
+      "enval": "", 
+      "enkey": "key", 
+      "val": "Dan1", 
+      "key": "key"
+    }, 
+    "release": {
+      "enval": "", 
+      "enkey": "release", 
+      "val": "01c556a9-cc06-4c08-aba3-074800c0af29", 
+      "key": "release"
+    }, 
+    "firstdegree": {
+      "enval": "339.56 Hz (F4 - 49 cents)", 
+      "enkey": "First degree", 
+      "val": "339.56 \u8d6b\u5179 \uff08F4 - 49 \u97f3\u5206\uff09", 
+      "key": "\u4e3b\u97f3"
+    }
+  }, 
+  "83d2fc7f-e1c1-4359-b417-ed9e519ecbb7": {
+    "album": {
+      "enval": "L\u01d0 Sh\u00e8ng s\u00f9 M\u00e9i p\u00e0i ch\u00e0ng qi\u0101ng zhu\u0101n j\u00ed", 
+      "enkey": "Album", 
+      "val": "\u674e\u80dc\u7d20\u6885\u6d3e\u5531\u8154\u4e13\u8f91", 
+      "key": "\u4e13\u8f91"
+    }, 
+    "roletype": {
+      "enval": "dan", 
+      "enkey": "Role-type", 
+      "val": "\u65e6", 
+      "key": "\u884c\u5f53"
+    }, 
+    "aria": {
+      "enval": "F\u00e8ng hu\u00e1n ch\u00e1o. \"B\u011bn y\u012bng d\u0101ng su\u00ed m\u01d4 q\u012bn g\u01ceo j\u012bng b\u00ec n\u00e0n\" (Cheng Xue'e)", 
+      "enkey": "Aria", 
+      "val": "\u201c\u672c\u5e94\u5f53\u968f\u6bcd\u4eb2\u9550\u4eac\u907f\u96be\u201d\u2014\u2014\u300a\u51e4\u8fd8\u5de2\u300b\uff08\u7a0b\u96ea\u5a25\uff09", 
+      "key": "\u5531\u6bb5"
+    }, 
+    "octave": {
+      "enval": "", 
+      "enkey": "octave", 
+      "val": "yes", 
+      "key": "octave"
+    }, 
+    "artist": {
+      "enval": "Li Shengsu", 
+      "enkey": "Artist", 
+      "val": "\u674e\u80dc\u7d20", 
+      "key": "Artist"
+    }, 
+    "title": {
+      "enval": "\u300aF\u00e8ng h\u00e1i ch\u00e1o\u300b Ch\u00e9ng Xu\u011b \u00e9 \u201cB\u011bn y\u012bng d\u0101ng su\u00ed m\u01d4 q\u012bn G\u01ceo j\u012bng b\u00ec n\u00e0n\u201d", 
+      "enkey": "Title", 
+      "val": "\u300a\u51e4\u8fd8\u5de2\u300b \u7a0b\u96ea\u5a25 \u201c\u672c\u5e94\u5f53\u968f\u6bcd\u4eb2\u9550\u4eac\u907f\u96be\u201d", 
+      "key": "Title"
+    }, 
+    "recording": {
+      "enval": "", 
+      "enkey": "recording", 
+      "val": "83d2fc7f-e1c1-4359-b417-ed9e519ecbb7", 
+      "key": "recording"
+    }, 
+    "school": {
+      "enval": "Mei pai", 
+      "enkey": "School", 
+      "val": "\u6885\u6d3e", 
+      "key": "\u6d41\u6d3e"
+    }, 
+    "shengqiang": {
+      "enval": "xipi", 
+      "enkey": "Shengqiang", 
+      "val": "\u897f\u76ae", 
+      "key": "\u58f0\u8154"
+    }, 
+    "key": {
+      "enval": "", 
+      "enkey": "key", 
+      "val": "Dan3", 
+      "key": "key"
+    }, 
+    "release": {
+      "enval": "", 
+      "enkey": "release", 
+      "val": "01c556a9-cc06-4c08-aba3-074800c0af29", 
+      "key": "release"
+    }, 
+    "firstdegree": {
+      "enval": "336.42 Hz (E4 + 35 cents)", 
+      "enkey": "First degree", 
+      "val": "336.42 \u8d6b\u5179 \uff08E4 + 35 \u97f3\u5206\uff09", 
+      "key": "\u4e3b\u97f3"
+    }
+  }, 
+  "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d": {
+    "album": {
+      "enval": "G\u011bng Q\u00ed ch\u0101ng j\u012bng j\u00f9 ch\u00e0ng du\u00e0n xu\u01cen", 
+      "enkey": "Album", 
+      "val": "\u803f\u5176\u660c\u4eac\u5267\u5531\u6bb5\u9009", 
+      "key": "\u4e13\u8f91"
+    }, 
+    "roletype": {
+      "enval": "laosheng", 
+      "enkey": "Role-type", 
+      "val": "\u8001\u751f", 
+      "key": "\u884c\u5f53"
+    }, 
+    "aria": {
+      "enval": "Zh\u016b li\u00e1n zh\u00e0i. \"X\u012b r\u00ec y\u01d2u g\u00e8 s\u0101n d\u00e0 xi\u00e1n\" (Li Keyong)", 
+      "enkey": "Aria", 
+      "val": "\u201c\u6614\u65e5\u6709\u4e2a\u4e09\u5927\u8d24\u201d\u2014\u2014\u300a\u73e0\u5e18\u5be8\u300b\uff08\u674e\u514b\u7528\uff09", 
+      "key": "\u5531\u6bb5"
+    }, 
+    "octave": {
+      "enval": "", 
+      "enkey": "octave", 
+      "val": "no", 
+      "key": "octave"
+    }, 
+    "artist": {
+      "enval": "Geng Qichang", 
+      "enkey": "Artist", 
+      "val": "\u803f\u5176\u660c", 
+      "key": "Artist"
+    }, 
+    "title": {
+      "enval": "Zh\u016b li\u00e1n zh\u00e0i [x\u012b p\u00ed d\u01ceo b\u01cen, yu\u00e1n b\u01cen, li\u00fa shu\u01d0]", 
+      "enkey": "Title", 
+      "val": "\u73e0\u5e18\u5be8\u3010\u897f\u76ae\u5bfc\u677f\u3001\u539f\u677f\u3001\u6d41\u6c34\u3011", 
+      "key": "Title"
+    }, 
+    "recording": {
+      "enval": "", 
+      "enkey": "recording", 
+      "val": "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d", 
+      "key": "recording"
+    }, 
+    "school": {
+      "enval": "Yu pai", 
+      "enkey": "School", 
+      "val": "\u4f59\u6d3e", 
+      "key": "\u6d41\u6d3e"
+    }, 
+    "shengqiang": {
+      "enval": "xipi", 
+      "enkey": "Shengqiang", 
+      "val": "\u897f\u76ae", 
+      "key": "\u58f0\u8154"
+    }, 
+    "key": {
+      "enval": "", 
+      "enkey": "key", 
+      "val": "Laosheng2", 
+      "key": "key"
+    }, 
+    "release": {
+      "enval": "", 
+      "enkey": "release", 
+      "val": "d392f8fe-eb03-40d7-8313-6908e66af953", 
+      "key": "release"
+    }, 
+    "firstdegree": {
+      "enval": "337.624 \u8d6b\u5179 (E4 + 41 \u97f3\u5206)", 
+      "enkey": "First degree", 
+      "val": "337.624 \u8d6b\u5179 \uff08E4 + 41 \u97f3\u5206\uff09", 
+      "key": "\u4e3b\u97f3"
+    }
+  }, 
+  "11a44af7-e29a-4c50-aa38-6139d37ca306": {
+    "album": {
+      "enval": "J\u012bng j\u00f9 zh\u012b x\u012bng: Ch\u00ed Xi\u01ceo qi\u016b zhu\u0101n j\u00ed", 
+      "enkey": "Album", 
+      "val": "\u4eac\u5267\u4e4b\u661f\uff1a\u8fdf\u5c0f\u79cb\u4e13\u8f91", 
+      "key": "\u4e13\u8f91"
+    }, 
+    "roletype": {
+      "enval": "dan", 
+      "enkey": "Role-type", 
+      "val": "\u65e6", 
+      "key": "\u884c\u5f53"
+    }, 
+    "aria": {
+      "enval": "Su\u01d2 l\u00edn n\u00e1ng. \"Ch\u016bn qi\u016b t\u00edng w\u00e0i f\u0113ng y\u01d4 b\u00e0o\" (Xue Xiangling)", 
+      "enkey": "Aria", 
+      "val": "\u201c\u6625\u79cb\u4ead\u5916\u98ce\u96e8\u66b4\u201d\u2014\u2014\u300a\u9501\u9e9f\u56ca\u300b\uff08\u859b\u6e58\u7075\uff09", 
+      "key": "\u5531\u6bb5"
+    }, 
+    "octave": {
+      "enval": "", 
+      "enkey": "octave", 
+      "val": "yes", 
+      "key": "octave"
+    }, 
+    "artist": {
+      "enval": "Chi Xiaoqiu", 
+      "enkey": "Artist", 
+      "val": "\u8fdf\u5c0f\u79cb", 
+      "key": "Artist"
+    }, 
+    "title": {
+      "enval": "Su\u01d2 l\u00edn n\u00e1ng: Ch\u016bn qi\u016b t\u00edng w\u00e0i f\u0113ng y\u01d4 b\u00e0o", 
+      "enkey": "Title", 
+      "val": "\u9501\u9e9f\u56ca\uff1a\u6625\u79cb\u4ead\u5916\u98ce\u96e8\u66b4", 
+      "key": "Title"
+    }, 
+    "recording": {
+      "enval": "", 
+      "enkey": "recording", 
+      "val": "11a44af7-e29a-4c50-aa38-6139d37ca306", 
+      "key": "recording"
+    }, 
+    "school": {
+      "enval": "Cheng pai", 
+      "enkey": "School", 
+      "val": "\u7a0b\u6d3e", 
+      "key": "\u6d41\u6d3e"
+    }, 
+    "shengqiang": {
+      "enval": "xipi", 
+      "enkey": "Shengqiang", 
+      "val": "\u897f\u76ae", 
+      "key": "\u58f0\u8154"
+    }, 
+    "key": {
+      "enval": "", 
+      "enkey": "key", 
+      "val": "Dan2", 
+      "key": "key"
+    }, 
+    "release": {
+      "enval": "", 
+      "enkey": "release", 
+      "val": "42b30d27-7602-450e-a4ee-4074bb98e04b", 
+      "key": "release"
+    }, 
+    "firstdegree": {
+      "enval": "329.14 Hz (E4 - 3 cents)", 
+      "enkey": "First degree", 
+      "val": "329.14 \u8d6b\u5179 \uff08E4 - 3 \u97f3\u5206\uff09", 
+      "key": "\u4e3b\u97f3"
+    }
+  }, 
+  "87b5c1b2-e718-4ae7-8662-dc4ae3efd3b1": {
+    "album": {
+      "enval": "J\u012bng j\u00f9 zh\u012b x\u012bng: \u0100n P\u00edng zhu\u0101n j\u00ed", 
+      "enkey": "Album", 
+      "val": "\u4eac\u5267\u4e4b\u661f\uff1a\u5b89\u5e73\u4e13\u8f91", 
+      "key": "\u4e13\u8f91"
+    }, 
+    "roletype": {
+      "enval": "jing", 
+      "enkey": "Role-type", 
+      "val": "\u51c0", 
+      "key": "\u884c\u5f53"
+    }, 
+    "aria": {
+      "enval": "D\u00e0o y\u00f9 m\u01ce. \"Ji\u0101ng ji\u01d4 y\u00e0n b\u01cei zh\u00ec z\u00e0i j\u00f9 y\u00ec t\u012bng sh\u00e0ng\" (Dou Erdun)", 
+      "enkey": "Aria", 
+      "val": "\u201c\u5c06\u9152\u5bb4\u6446\u81f3\u5728\u805a\u4e49\u5385\u4e0a\u201d\u2014\u2014\u300a\u76d7\u5fa1\u9a6c\u300b\uff08\u7aa6\u5c14\u6566\uff09", 
+      "key": "\u5531\u6bb5"
+    }, 
+    "octave": {
+      "enval": "", 
+      "enkey": "octave", 
+      "val": "no", 
+      "key": "octave"
+    }, 
+    "artist": {
+      "enval": "An Ping", 
+      "enkey": "Artist", 
+      "val": "\u5b89\u5e73", 
+      "key": "Artist"
+    }, 
+    "title": {
+      "enval": "D\u00e0o y\u00f9 m\u01ce: Ji\u0101ng ji\u01d4 y\u00e0n b\u01cei zh\u00ec z\u00e0i j\u00f9 y\u00ec t\u012bng sh\u00e0ng", 
+      "enkey": "Title", 
+      "val": "\u76d7\u5fa1\u9a6c\uff1a\u5c06\u9152\u5bb4\u6446\u81f3\u5728\u805a\u4e49\u5385\u4e0a", 
+      "key": "Title"
+    }, 
+    "recording": {
+      "enval": "", 
+      "enkey": "recording", 
+      "val": "87b5c1b2-e718-4ae7-8662-dc4ae3efd3b1", 
+      "key": "recording"
+    }, 
+    "school": {
+      "enval": "Qiu pai", 
+      "enkey": "School", 
+      "val": "\u88d8\u6d3e", 
+      "key": "\u6d41\u6d3e"
+    }, 
+    "shengqiang": {
+      "enval": "xipi", 
+      "enkey": "Shengqiang", 
+      "val": "\u897f\u76ae", 
+      "key": "\u58f0\u8154"
+    }, 
+    "key": {
+      "enval": "", 
+      "enkey": "key", 
+      "val": "jing1", 
+      "key": "key"
+    }, 
+    "release": {
+      "enval": "", 
+      "enkey": "release", 
+      "val": "2c2333f6-6406-4239-b00c-37970946f4ac", 
+      "key": "release"
+    }, 
+    "firstdegree": {
+      "enval": "391.52 \u8d6b\u5179 (G4 - 2 \u97f3\u5206)", 
+      "enkey": "First degree", 
+      "val": "391.52 \u8d6b\u5179 \uff08G4 - 2 \u97f3\u5206\uff09", 
+      "key": "\u4e3b\u97f3"
+    }
+  }
+}
