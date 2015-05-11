@@ -60,8 +60,9 @@ def recording(request, uuid):
         raise Http404()
 
     mbid = uuid
-    length = 100
-    #data = open()
+    drawoctave = 1 if recordings[uuid]["octave"]["val"] == "yes" else 0
+    length = int(recordings[uuid]["duration"]["val"])
+
     try:
         wave = docserver.util.docserver_get_url(mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
@@ -97,7 +98,8 @@ def recording(request, uuid):
            "histogramurl": histogramurl,
            "length": length,
            "length_format": length_format(length),
-           "meta": recordings[uuid]
+           "meta": recordings[uuid],
+           "drawoctave": drawoctave
            }
 
     return render(request, "jingju/recording.html", ret)
