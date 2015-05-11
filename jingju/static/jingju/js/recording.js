@@ -77,19 +77,27 @@ $(document).ready(function() {
      });
 });
 
-function plotsa(context) {
+function plottonic(context) {
     context.beginPath();
     // tonic (first degree)
     context.moveTo(0, 170.5);
     context.lineTo(900, 170.5);
+    if (drawoctave) {
+        // sa+1, dotted
+        context.moveTo(0, 128.5);
+        for (var i = 0; i < 900; i+=10) {
+            context.moveTo(i, 85.5);
+            context.lineTo(i+5, 85.5);
+        }
+    }
     context.strokeStyle = "#eee";
     context.lineWidth = 1;
     context.stroke();
-    context.closePath()
+    context.closePath();
 }
 
 function spectrogram(context, view) {
-    plotsa(context);
+    plottonic(context);
     var waszero = false;
     context.moveTo(0, 10);
     context.lineTo(10, 10);

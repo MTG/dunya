@@ -14,10 +14,11 @@
 
 {% block wrap %}
 <div id="detail" class="recording">
-    <h1><a href="recording/87b5c1b2-e718-4ae7-8662-dc4ae3efd3b1">盗御马:将酒宴摆至在聚义厅上</a></h1>
-    <h1><a href="recording/3dcae41a-795c-4b7d-979b-1b52aa42dd3a">锁麟囊:春秋亭外风雨暴</a></h1>
-    <h1><a href="recording/415d9fcc-bad8-45db-adec-01ffd04b9cec">捉放曹 ∙ 宿店【二黄慢板、原板】</a></h1>
-    <h1><a href="recording/0b5dd02b-d93e-4b44-81a3-d789f29ddb7d">珠帘寨【西皮导板、原板、流水】</a></h1>
+    {% for recording in recordings %}
+        <a href="recording/{{recording.recording}}">
+        <img width="250px" src="http://coverartarchive.org/release/{{recording.release}}/front-500">
+        <h1>{{recording.title}}</h1></a>
+    {% endfor %}
 	 	<div class="clearfix"></div>
 </div>
 

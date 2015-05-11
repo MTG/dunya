@@ -10,6 +10,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/recording.css' %}" />
     {% endif %}
+    <style type="text/css">
+        #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
+          width: 14% !important;
+        }
+        #detail.recording #header #scrollrec #summary #innerSummary span h1 {
+              font-size: 14px !important;
+        }
+    </style>
 {% endblock %}
 
 
@@ -32,6 +40,7 @@
     var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
     var recordinglengthfmt = "{{length_format}}";
     var recordinglengthseconds = "{{length}}";
+    var drawoctave = true;
 
     {% if user.is_authenticated %}
     function playrecord(){
@@ -55,25 +64,18 @@
 <script src="{% static 'jingju/js/recording.js' %}"></script>
 {% endblock %}
 
+{% block title %}{{meta.title.val}}{% endblock %}
+
 {% block wrap %}
-{% if bootleg %}
-    <div id="bootleg-bar">
-       <div style="float:left">
-           <p>This is a bootleg recording only visible to CompMusic researchers.
-           <br>Do not share.</p>
-       </div>
-       <div style="float:right; margin-top:10px;margin-right:10px;">
-           <button onclick='$("#bootleg-bar").hide()'>Ok</button>
-       </div>
-    </div>
-{% endif %}
 <div id="detail" class="recording">
      	<div id="header">
      	   <div id="scrollrec">
          <div id="summary">
      			<div id="innerSummary">
-                    {% block recordingtitle %}
-                    {% endblock %}
+                <span>
+                    <h1 title="{{meta.title.enval}}">{{meta.title.val}}</h1>
+                    <h2 title="{{meta.artist.enval}}">{{meta.artist.val}}</h2>
+                </span>
      			</div>
      			<div id="summaryBack"></div>
      		</div>
@@ -82,8 +84,26 @@
 					<div class="metaMask">
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
-                                {% block metadata %}
-                                {% endblock %}
+                            <span class="list">
+                                <label title="{{meta.album.enkey}}">{{meta.album.key}}</label>
+                                <b title="{{meta.album.enval}}">{{meta.album.val}}</b>
+
+                                <label title="{{meta.aria.enkey}}">{{meta.aria.key}}</label>
+                                <b label='{{meta.aria.enval}}'>{{meta.aria.val}}</b>
+
+                                <label title="{{meta.shengqiang.enkey}}">{{meta.shengqiang.key}}</label>
+                                <b title="{{meta.shengqiang.enval}}">{{meta.shengqiang.val}}</b>
+
+                                <label title="{{meta.roletype.enkey}}">{{meta.roletype.key}}</label>
+                                <b title="{{meta.roletype.enval}}">{{meta.roletype.val}}</b>
+
+                                <label title="{{meta.school.enkey}}">{{meta.school.key}}</label>
+                                <b title="{{meta.school.enval}}">{{meta.school.val}}</b>
+
+                                <label title="{{meta.firstdegree.enkey}}">{{meta.firstdegree.key}}</label>
+                                <b>{{meta.firstdegree.val}}</b>
+
+                            </span>
 							</div>
 				 		</div>
 					</div>
