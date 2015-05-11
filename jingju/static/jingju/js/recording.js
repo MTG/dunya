@@ -313,6 +313,11 @@ function loaddata() {
             luogudata = data;
             luoguDone = true;
             dodraw();
+    }, error: function(xhr, status, error) {
+        console.debug("no luogu, skipping");
+          luogudata = [];
+          luoguDone = true;
+          dodraw();
     }});
 
     banshiDone = false;
