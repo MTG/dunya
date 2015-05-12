@@ -98,6 +98,7 @@ function plottonic(context) {
 
 function spectrogram(context, view) {
     plottonic(context);
+    plotticks(context);
     var waszero = false;
     context.moveTo(0, 10);
     context.lineTo(10, 10);
@@ -165,9 +166,16 @@ function plothistogram(pitch) {
     }
     var factor = 150 / max;
     context.beginPath();
+    var numbers = {"113": "3", "99": "2", "85": "1", "134": "5", "63": "6."};
     for (var i = 0; i < data.length; i++) {
-        v = data[i] * factor;
-        context.lineTo(200-v, 256-i);
+        var v = Math.round(data[i] * factor)+0.5;
+        if (numbers[i]) {
+            //console.debug("at " + i + ", outputting num " + numbers[i+3] + " at pos " + v);
+            context.fillStyle = "#000";
+            context.font = "12px Arial";
+            context.fillText(numbers[i], 2, 256-i+5);
+        }
+        context.lineTo(v+15, 256-i);
     }
     context.lineWidth = 2;
     context.strokeStyle = "#e71d25";
@@ -204,19 +212,6 @@ function plotpitch() {
     }
 }
 
-function drawwaveform() {
-    var wave = new Image();
-    wave.src = waveformurl;
-    var canvas = $("#rhythmcanvas")[0];
-    canvas.width = 900;
-    canvas.height = 256;
-    var context = canvas.getContext("2d");
-    wave.onload = function() {
-        context.drawImage(wave, 0, 0);
-        plotticks(context);
-    }
-}
-
 function sortNumber(a,b) {
     return a - b;
 }
@@ -246,15 +241,15 @@ function plotticks(context) {
                 context.strokeStyle = "#eee";
                 context.stroke();
 
-                context.fillStyle = "#eee";
-                context.font = "bold 25px Arial";
-                context.fillText(name, position + 20, 40);
+                //context.fillStyle = "#eee";
+                //context.font = "bold 25px Arial";
+                //context.fillText(name, position + 20, 40);
 
             } else if (start < viewstart && end > viewstart) {
                 // Name, at the beginning of this view
-                context.fillStyle = "#eee";
-                context.font = "bold 25px Arial";
-                context.fillText(name, 20, 40);
+                //context.fillStyle = "#eee";
+                //context.font = "bold 25px Arial";
+                //context.fillText(name, 20, 40);
             } else if (end > viewstart && end < viewend) {
                 // End line in this view
                 var position = (start-beginningOfView) / secondsPerView * 900;
@@ -347,25 +342,15 @@ function loaddata() {
 function plotsmall() {
     var pxpersec = 900.0/recordinglengthseconds;
     var smallLines = function(data, colour) {
-        context.beginPath();
+        context.fillStyle = colour;
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
             var s = d[1];
             var e = d[2];
-            var spos = s * pxpersec;
-            var epos = e * pxpersec;
-            context.moveTo(spos, 0);
-            context.lineTo(spos, 64);
-            context.moveTo(epos, 0);
-            for (var j = 0; j < 64; j+=10) {
-                context.moveTo(epos, j);
-                context.lineTo(epos, j+5);
-            }
+            var spos = Math.round(s * pxpersec)+0.5;
+            var epos = Math.round(e * pxpersec)+0.5;
+            context.fillRect(spos, 0, epos-spos, 64);
         }
-        context.lineWidth = 2;
-        context.strokeStyle = colour;
-        context.stroke();
-        context.closePath();
     };
     var small = new Image();
     small.src = smallurl;
@@ -374,37 +359,54 @@ function plotsmall() {
     canvas.height = 64;
     var context = canvas.getContext("2d");
     small.onload = function() {
+        context.globalAlpha = 0.5;
         context.drawImage(small, 0, 0, 900, 64, 0, 0, 900, 64);
-        smallLines(banshidata, "#eee");
-        smallLines(luogudata, "#f00");
+        context.globalAlpha = 0.3;
+        smallLines(banshidata, "#f00");
+        smallLines(luogudata, "#0f0");
     }
 }
 
-function drawlyrics() {
+function drawtext() {
     var viewStart = beginningOfView;
     var viewEnd = beginningOfView + secondsPerView;
-    $("#lyrics .lyric").remove();
-    for (var i = 0; i < lyricsdata.length; i++) {
-        var l = lyricsdata[i];
-        var word = l[0];
-        var s = l[1];
-        if (s > viewStart && s < viewEnd) {
-            var position = (s-beginningOfView) / secondsPerView * 900;
 
-            $("<div>", {
-                text: word,
-                class: "lyric"
-            }).css("left", position+"px").appendTo("#lyrics")
+    function singletext(theid, theclass, data, showlast) {
+        $("#"+theid + " ."+theclass).remove();
+        for (var i = 0; i < data.length; i++) {
+            var d = data[i];
+            var word = d[0];
+            var s = d[1];
+            var e = d[2];
+            if (s >= viewStart && s < viewEnd) {
+                var position = (s-beginningOfView) / secondsPerView * 900;
+
+                $("<div>", {
+                    text: word,
+                    class: theclass
+                }).css("left", position+"px").appendTo("#"+theid)
+            } else if (s < viewStart && e > viewStart) {
+                //TODO: Make these texts separated somehow. Banshi should have
+                // a separate background colour for each different banshi (especially if it continues
+                // from the previous page)
+                $("<div>", {
+                    text: word,
+                    class: theclass
+                }).css("left", "0px").appendTo("#"+theid)
+            }
         }
     }
+
+    singletext("lyrics", "lyric", lyricsdata);
+    singletext("banshis", "banshi", banshidata);
+    singletext("percussions", "percussion", luogudata);
 }
 
 function drawdata() {
-    drawwaveform();
     plotpitch();
     plothistogram();
     plotsmall();
-    drawlyrics();
+    drawtext();
     var start = beginningOfView;
     var skip = secondsPerView / 4;
     $(".timecode1").html(formatseconds(start));
@@ -487,7 +489,6 @@ function formatseconds(seconds) {
 }
 
 function replacepart(pnum) {
-    waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
     specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
     drawdata();
 }

@@ -64,10 +64,6 @@ def recording(request, uuid):
     length = int(recordings[uuid]["duration"]["val"])
 
     try:
-        wave = docserver.util.docserver_get_url(mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
-        wave = None
-    try:
         spec = docserver.util.docserver_get_url(mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
     except docserver.util.NoFileException:
         spec = None
@@ -89,7 +85,6 @@ def recording(request, uuid):
 
     ret = {
            "recording": recording,
-           "waveform": wave,
            "spectrogram": spec,
            "smallimage": small,
            "audio": audio,

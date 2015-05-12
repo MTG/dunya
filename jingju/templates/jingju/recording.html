@@ -17,6 +17,78 @@
         #detail.recording #header #scrollrec #summary #innerSummary span h1 {
               font-size: 14px !important;
         }
+        #detail.recording .alldata .container .thedata #renderTotal #smallcanvas {
+          opacity: 1;
+        }
+
+#detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
+  background: none;
+  border: black thick solid;
+  height: 64px;
+  z-index: 4;
+}
+
+#histogramcanvas {
+    margin-left: 900px;
+}
+
+#lyrics {
+  position: relative;
+  height: 30px;
+  font-size: 20px;
+}
+#lyrics .lyric {
+  position: absolute;
+  height: 30px;
+  margin: 2px;
+}
+
+#banshis {
+  position: relative;
+  height: 25px;
+  font-size: 15px;
+}
+#banshis .banshi {
+  position: absolute;
+  height: 25px;
+  margin: 2px;
+}
+
+#percussions {
+  position: relative;
+  height: 25px;
+  font-size: 15px;
+}
+#percussions .percussion {
+  position: absolute;
+  height: 25px;
+  margin: 2px;
+}
+
+#timecodes {
+  position: relative;
+  height: 20px;
+}
+#timecodes span {
+  position: absolute;
+  height: 25px;
+  margin: 2px;
+}
+#timecodes .timecode1 {
+  left: 0px;
+}
+#timecodes .timecode2 {
+  left: 220px;
+}
+#timecodes .timecode3 {
+  left: 445px;
+}
+#timecodes .timecode4 {
+  left: 670px;
+}
+#timecodes .timecode5 {
+  right: 0px;
+}
     </style>
 {% endblock %}
 
@@ -28,9 +100,8 @@
     var banshiurl = "/static/jingju/data/{{mbid}}-banshi.json";
     var luoguurl = "/static/jingju/data/{{mbid}}-luogu.json";
     var lyricsurl = "/static/jingju/data/{{mbid}}-lyrics.json";
-    var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
     var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
-    var smallurl = "{{smallimage|safe}}";
+    var smallurl = "http://dunya.compmusic.upf.edu{{smallimage|safe}}";
     var secondsPerView = 32;
     var pitchtrackdata = null;
     var histogramdata = null;
@@ -125,9 +196,12 @@
               {% endif %}
           </div>
          </div>
-         <div class="graph">
-             <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
-         </div>
+    <div style="padding-top:6px; margin-right:1em;">
+         <div style="position:relative; height:20px; text-align:right;"></div>
+         <div style="position:relative; height:30px; text-align:right; vertical-align:bottom">歌词</div>
+         <div style="position:relative; height:25px; text-align:right; vertical-align:bottom">板式</div>
+         <div style="position:relative; height:25px; text-align:right; vertical-align:bottom">锣鼓经</div>
+</div>
 	     	<div class="clearfix"></div>
      	</div><!-- HEADER END -->
 
@@ -136,34 +210,26 @@
 	     	<div class="thedata">
 	     		<div id="rendersMask" style="height:640px;">
 	     			<div id="renders">
-	     				<div id="capcal" style="height:640px;"></div>
-		     			<div id="bigWave">
-                            <canvas id="rhythmcanvas" style="width:900px; height:256px;"></canvas>
-                            <!--<img src="{{waveform}}">-->
-		     			   <div id="zooms">
-                  <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
-                  <a class="zoom zoom2" data-length="16" href="#">x2</a>
-                  <a class="zoom zoom3" data-length="8" href="#">x3</a>
-                  <a class="zoom zoom4" data-length="4" href="#">x4</a>
-                </div>
-              </div>
-		     			<div id="renderTotal">
-		     			   <div id="capcalTotal"></div>
-		     			   <div id="timepoint"></div>
-		     			   <div id="miniviewHighlight"></div>
-                           <canvas id="smallcanvas"></canvas>
-              </div>
-		     			<div id="bigPitch" style="height:286px;">
-                            <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
+	     				<div id="capcal" style="height:320px;"></div>
+
+                 <div id="bigPitch">
+                         <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
 		     			 <div id="zooms" style="bottom: 34px;">
                   <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
                   <a class="zoom zoom2" data-length="16" href="#">x2</a>
                   <a class="zoom zoom3" data-length="8" href="#">x3</a>
                   <a class="zoom zoom3" data-length="4" href="#">x4</a>
                 </div>
-                <div id="lyrics">
+                        </div>
 
-                </div>
+
+		     	<div id="renderTotal">
+		     			   <div id="capcalTotal"></div>
+		     			   <div id="timepoint"></div>
+		     			   <div id="miniviewHighlight"></div>
+                           <canvas id="smallcanvas"></canvas>
+              </div>
+              <div>
                     <div id="timecodes">
                     <span class="timecode1"></span>
                     <span class="timecode2"></span>
@@ -171,21 +237,20 @@
                     <span class="timecode4"></span>
                     <span class="timecode5"></span>
                 </div>
+                <div id="lyrics">
+                </div>
+                <div id="banshis">
+                </div>
+                <div id="percussions">
+                </div>
 		     			</div>
 	     			</div>
 	     		</div>
 	     		<div class="container2">
-	     		  <div class="waveLabel">
-	     		    <h1>rhythm</h1>
-                  <span class="tempoup"></span>
-                  <span class="tempodown"></span>
-	     		  </div>
+                 <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
 	     		  <div id="totalcontrol2">
                       <div id="timecode">00:00<span>{{recording.length_format}}</span></div>
 
-            </div>
-            <div class="pitchLabel">
-              <h1>melody</h1>
             </div>
 	     		</div>
 	     	</div>
