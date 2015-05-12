@@ -143,7 +143,7 @@ class WorkList(generics.ListAPIView):
     serializer_class = WorkInnerSerializer
 
 class WorkDetailSerializer(serializers.ModelSerializer):
-    composers = ComposerInnerSerializer()
+    composers = ComposerInnerSerializer(many=True)
     raagas = RaagaInnerSerializer(source='raaga', many=True)
     taalas = TaalaInnerSerializer(source='taala', many=True)
     recordings = serializers.SerializerMethodField('recording_list')
