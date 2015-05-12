@@ -52,7 +52,9 @@ def import_artist_wikipedia(artist, overwrite):
         img, bio = wikipedia.get_artist_details(name)
         if bio:
             description = data.models.Description.objects.create(description=bio, source=source)
-            if not artist.description_edited and (overwrite or not artist.description):
+            # We call this with Composers too, which don't have `description_edited`
+            # If d_edited is set, never overwrite it.
+            if not getattr(artist, 'description_edited', False) and (overwrite or not artist.description):
                 artist.description = description
                 artist.save()
         if img:
