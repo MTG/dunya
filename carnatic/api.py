@@ -190,7 +190,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'artists', 'raaga', 'taala', 'work', 'concert']
+        fields = ['mbid', 'title', 'length', 'artists', 'raaga', 'taala', 'work', 'concert']
 
 class RecordingDetail(generics.RetrieveAPIView, WithBootlegAPIView):
     lookup_field = 'mbid'
