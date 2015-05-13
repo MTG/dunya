@@ -128,7 +128,7 @@ class RecordingTest(TestCase):
 
     def test_render_recording_detail(self):
         s = api.RecordingDetailSerializer(self.rnormal)
-        fields = ['artists', 'concert', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['artists', 'concert', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(s.data.keys()))
 
     def test_recording_detail_bootleg(self):
@@ -139,7 +139,7 @@ class RecordingTest(TestCase):
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
         self.assertEqual(200, response.status_code)
-        fields = ['artists', 'concert', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['artists', 'concert', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
         client.force_authenticate(user=self.normaluser)

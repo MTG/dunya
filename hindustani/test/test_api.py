@@ -53,7 +53,7 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_detail(self):
         s = api.RecordingDetailSerializer(self.r)
-        expected = ['artists', 'forms', 'layas', 'mbid', 'raags', 'release', 'taals', 'title', 'works']
+        expected = ['artists', 'forms', 'layas', 'length', 'mbid', 'raags', 'release', 'taals', 'title', 'works']
         self.assertEqual(expected, sorted(s.data.keys()))
 
     def test_recording_detail_url(self):
