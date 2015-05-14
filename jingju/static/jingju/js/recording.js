@@ -1,3 +1,19 @@
+allpeaks = {"11a44af7-e29a-4c50-aa38-6139d37ca306":
+    {"99": "2", "133": "5", "169": "1'", "112": "3", "148": "6", "86": "1", "183": "2'"},
+    "067b8f25-888a-4a08-a495-cbc402846b10": {"161": "7", "196": "3'", "133":
+        "5", "97": "2", "170": "1'", "110": "3", "147": "6", "86": "1", "118":
+            "4", "62": "6.", "182": "2'"},
+    "83d2fc7f-e1c1-4359-b417-ed9e519ecbb7": {"160": "7", "98": "2", "133": "5",
+        "170": "1'", "111": "3", "146": "6", "181": "2'", "86": "1"},
+    "415d9fcc-bad8-45db-adec-01ffd04b9cec": {"96": "2", "132": "5", "5":
+        "1.", "76": "7.", "45": "5.", "14": "2.", "110": "3", "119": "4",
+        "28": "3.", "61": "6.", "85": "1"},
+    "0b5dd02b-d93e-4b44-81a3-d789f29ddb7d": {"97": "2", "132": "5", "85":
+        "1", "110": "3", "63": "6."},
+    "87b5c1b2-e718-4ae7-8662-dc4ae3efd3b1": {"96": "2", "131": "5",
+            "84": "1", "62": "6.", "110": "3"}}
+
+
 $(document).ready(function() {
      hasfinished = false;
      pagesound = ""
@@ -166,16 +182,15 @@ function plothistogram(pitch) {
     }
     var factor = 150 / max;
     context.beginPath();
-    var numbers = {"113": "3", "99": "2", "85": "1", "134": "5", "63": "6."};
+    var numbers = allpeaks[mbid];
     for (var i = 0; i < data.length; i++) {
         var v = Math.round(data[i] * factor)+0.5;
         if (numbers[i]) {
-            //console.debug("at " + i + ", outputting num " + numbers[i+3] + " at pos " + v);
             context.fillStyle = "#000";
             context.font = "12px Arial";
-            context.fillText(numbers[i], 2, 256-i+5);
+            context.fillText(numbers[i], v+7, 256-i+3);
         }
-        context.lineTo(v+15, 256-i);
+        context.lineTo(v, 256-i);
     }
     context.lineWidth = 2;
     context.strokeStyle = "#e71d25";
