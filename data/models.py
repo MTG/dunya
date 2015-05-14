@@ -191,6 +191,8 @@ class Release(BaseModel):
     artistcredit = models.CharField(max_length=255)
     year = models.IntegerField(blank=True, null=True)
 
+    status = models.CharField(max_length=100, blank=True, null=True)
+    rel_type = models.CharField(max_length=100, blank=True, null=True)
     # These fields are specified on the concrete model classes because they might use
     # different spellings (Release/Concert)
     # Ordered tracks

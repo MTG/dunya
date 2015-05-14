@@ -73,7 +73,7 @@ class ReleaseImporter(object):
             print "Release already updated in this import. Not doing it again"
             return self._ReleaseClass.objects.get(mbid=releaseid)
 
-        rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels"])
+        rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels", "release-groups"])
         rel = rel["release"]
 
         mbid = rel["id"]
@@ -118,6 +118,11 @@ class ReleaseImporter(object):
         release, created = self._ReleaseClass.objects.get_or_create(
             mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
         if created or self.overwrite:
+            rel_type = mbrelease["release-group"]
+            if "release-group" in mbrelease and "primary-type" in mbrelease["release-group"]:
+                release.rel_type = mbrelease["release-group"]["primary-type"]
+            if "status" in mbrelease:
+                release.status = mbrelease["status"]
             release.title = mbrelease["title"]
             year = self._get_year_from_date(mbrelease.get("date"))
             release.year = year
