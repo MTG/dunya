@@ -332,7 +332,7 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=50)
     form = models.ForeignKey(Form, related_name="aliases")
 
-    fuzzymanager = managers.FuzzySearchManager()
+    objects = managers.FuzzySearchManager()
 
     def __unicode__(self):
         return self.name
