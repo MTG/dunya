@@ -13,6 +13,8 @@ allpeaks = {"11a44af7-e29a-4c50-aa38-6139d37ca306":
     "87b5c1b2-e718-4ae7-8662-dc4ae3efd3b1": {"96": "2", "131": "5",
             "84": "1", "62": "6.", "110": "3"}}
 
+banshipalette = ["rgba(149,32,11,0.5)", "rgba(187,57,34, 0.5)", "rgba(217,90,67, 0.7)", "rgba(247,130,109, 0.7)", "rgba(255,170,154, 0.7)"];
+var banshicolours = {}
 
 $(document).ready(function() {
      hasfinished = false;
@@ -324,7 +326,7 @@ function loaddata() {
             luoguDone = true;
             dodraw();
     }, error: function(xhr, status, error) {
-        console.debug("no luogu, skipping");
+        //console.debug("no luogu, skipping");
           luogudata = [];
           luoguDone = true;
           dodraw();
@@ -356,12 +358,21 @@ function loaddata() {
 
 function plotsmall() {
     var pxpersec = 900.0/recordinglengthseconds;
-    var smallLines = function(data, colour) {
+    var smallFill = function(data, colour) {
         context.fillStyle = colour;
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
+            var txt = d[0];
             var s = d[1];
             var e = d[2];
+            if($.type(colour) === "string") {
+                context.globalAlpha = 0.5;
+                context.fillStyle = colour;
+            } else {
+                var col = colour[txt];
+                context.globalAlpha = 1;
+                context.fillStyle = col;
+            }
             var spos = Math.round(s * pxpersec)+0.5;
             var epos = Math.round(e * pxpersec)+0.5;
             context.fillRect(spos, 0, epos-spos, 64);
@@ -374,11 +385,9 @@ function plotsmall() {
     canvas.height = 64;
     var context = canvas.getContext("2d");
     small.onload = function() {
-        context.globalAlpha = 0.5;
         context.drawImage(small, 0, 0, 900, 64, 0, 0, 900, 64);
-        context.globalAlpha = 0.3;
-        smallLines(banshidata, "#f00");
-        smallLines(luogudata, "#0f0");
+        smallFill(banshidata, banshicolours);
+        smallFill(luogudata, "#0f0");
     }
 }
 
@@ -386,38 +395,61 @@ function drawtext() {
     var viewStart = beginningOfView;
     var viewEnd = beginningOfView + secondsPerView;
 
-    function singletext(theid, theclass, data, showlast) {
+    function singletext(theid, theclass, data, colours) {
         $("#"+theid + " ."+theclass).remove();
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
             var word = d[0];
             var s = d[1];
             var e = d[2];
+            var col = colours[word];
             if (s >= viewStart && s < viewEnd) {
                 var position = (s-beginningOfView) / secondsPerView * 900;
+                if (e <= viewEnd) {
+                    var width = (e-beginningOfView) / secondsPerView * 900;
+                } else {
+                    // Until the end: 900 pixels wide, minus where we start from
+                    var width = 900 - position;
+                }
 
                 $("<div>", {
                     text: word,
-                    class: theclass
-                }).css("left", position+"px").appendTo("#"+theid)
+                    class: theclass,
+                }).css("left", position+"px").css("background-color", col).css("width", width).appendTo("#"+theid)
             } else if (s < viewStart && e > viewStart) {
-                //TODO: Make these texts separated somehow. Banshi should have
-                // a separate background colour for each different banshi (especially if it continues
-                // from the previous page)
+                var position = (s-beginningOfView) / secondsPerView * 900;
+                if (e <= viewEnd) {
+                    var width = (e-beginningOfView) / secondsPerView * 900;
+                } else {
+                    // Until the end: 900 pixels wide, minus where we start from
+                    var width = 900 - position;
+                }
                 $("<div>", {
                     text: word,
-                    class: theclass
-                }).css("left", "0px").appendTo("#"+theid)
+                    class: theclass,
+                }).css("left", "0px").css("background-color", col).css("width", width).appendTo("#"+theid)
             }
         }
     }
 
-    singletext("lyrics", "lyric", lyricsdata);
-    singletext("banshis", "banshi", banshidata);
-    singletext("percussions", "percussion", luogudata);
+    singletext("lyrics", "lyric", lyricsdata, {});
+    singletext("banshis", "banshi", banshidata, banshicolours);
+    singletext("percussions", "percussion", luogudata, {});
 }
 
 function drawdata() {
+    // Read the banshi data and make a map of banshiname -> unique colour:
+
+    var paletteind = 0;
+    for (var i = 0; i < banshidata.length; i++) {
+        var t = banshidata[i][0];
+        if (!banshicolours[t]) {
+            banshicolours[t] = banshipalette[paletteind];
+            paletteind += 1;
+        }
+    }
+    //console.debug(banshicolours);
+
     plotpitch();
     plothistogram();
     plotsmall();
@@ -538,14 +570,12 @@ function updateProgress() {
 
 function zoom(level){
     secondsPerView = level;
-    waveformurl = waveformurl.replace(/waveform[0-9]{1,2}/, "waveform"+level);
     specurl = specurl.replace(/spectrum[0-9]{1,2}/, "spectrum"+level);
     // When we go from a zoomed in to a zoomed out size,
     // we need to make sure that `beginningOfView` is on an
     // image boundary
     beginningOfView = Math.floor(beginningOfView / secondsPerView);
     pnum = Math.floor(beginningOfView / secondsPerView + 1);
-    waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
     specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
     drawdata();
 
