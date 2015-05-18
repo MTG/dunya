@@ -331,7 +331,7 @@ class RecordingForm(models.Model):
         ordering = ("sequence", )
 
     def __unicode__(self):
-        return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
+        return u"%s, seq %d %s" % (self.recording, self.sequence, self.form)
 
 class Form(models.Model):
     name = models.CharField(max_length=50)

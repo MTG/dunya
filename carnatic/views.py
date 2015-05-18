@@ -660,7 +660,8 @@ def instrument(request, uuid, name=None):
 
 @user_passes_test(dashboard.views.is_staff)
 def formedit(request):
-    concerts = Concert.objects.all()
+    concerts = Concert.objects.all().prefetch_related('artists')
+    concerts = sorted(concerts, key=lambda c:sum([r.forms.count() for r in c.recordings.all().prefetch_related('forms')]))
     ret = {"concerts": concerts}
     return render(request, "carnatic/formedit.html", ret)
 
@@ -675,8 +676,25 @@ def formconcert(request, uuid):
 
     if request.method == "POST":
         for i, t in enumerate(concert.tracklist()):
-            f = "form_%s" % i
-            print "rec", i, request.POST.get(f)
+            fname = "form_%s" % i
+            f = request.POST.get(fname)
+            try:
+                f = int(f)
+                if len(t.forms.all()):
+                    # If we already have a form, and it's different
+                    # to the submitted one, remove
+                    form = t.forms.get()
+                    if f != form.id:
+                        t.forms.clear()
+                if len(t.forms.all()) == 0:
+                    form = Form.objects.get(pk=f)
+                    RecordingForm.objects.create(recording=t, form=form, sequence=1)
+
+            except ValueError:
+                # Not set, if we had one, remove it
+                if len(t.forms.all()):
+                    t.forms.clear()
+                # Otherwise, do nothing
 
 
     tracks = []
