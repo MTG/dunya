@@ -661,7 +661,7 @@ def instrument(request, uuid, name=None):
 @user_passes_test(dashboard.views.is_staff)
 def formedit(request):
     concerts = Concert.objects.all().prefetch_related('artists')
-    concerts = sorted(concerts, key=lambda c:sum([r.forms.count() for r in c.recordings.all().prefetch_related('forms')]))
+    concerts = sorted(concerts, key=lambda c:sum([r.forms.count() for r in c.recordings.all().prefetch_related('forms')])*1.0/c.recordings.count())
     ret = {"concerts": concerts}
     return render(request, "carnatic/formedit.html", ret)
 
