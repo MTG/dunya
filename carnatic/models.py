@@ -319,6 +319,20 @@ class RaagaAlias(models.Model):
     def __unicode__(self):
         return self.name
 
+class RecordingForm(models.Model):
+    """ Links a Form and a Recording with a sequence (if there is more than
+        one form in the recording) """
+    recording = models.ForeignKey('Recording')
+    form = models.ForeignKey('Form')
+
+    sequence = models.IntegerField()
+
+    class Meta:
+        ordering = ("sequence", )
+
+    def __unicode__(self):
+        return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
+
 class Form(models.Model):
     name = models.CharField(max_length=50)
 
@@ -660,6 +674,7 @@ class WorkTaala(models.Model):
 class Recording(CarnaticStyle, data.models.Recording):
 
     work = models.ForeignKey('Work', blank=True, null=True)
+    forms = models.ManyToManyField('Form', through='RecordingForm')
 
     objects = managers.BootlegRecordingManager()
 

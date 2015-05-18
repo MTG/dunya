@@ -17,13 +17,22 @@
 
     {% for r in tracks %}
     <tr>
-        <td>{{r.0.title}} /
-            <a href="{{r.0.get_musicbrainz_url}}">mb</a> /
-            <a href="{% url 'carnatic-recording' r.0.mbid %}">dunya</a>
+        <td>{{r.1.title}} /
+            <a href="{{r.1.get_musicbrainz_url}}">mb</a> /
+            <a href="{% url 'carnatic-recording' r.1.mbid %}">dunya</a>
         </td>
 
-        <td>{{r.1.title}}</td>
-        <td>{% if r.1 %}{{r.2.form}}{% endif %}</td></tr>
+        <td>{{r.1.work.title}}</td>
+        <td><select name="form_{{r.0}}"><option>------</option>
+                {% for f in forms %}
+                   {% if f.id == r.1.forms.all.0.id %}
+                <option value="{{f.id}}" selected >{{f.name}}</option>
+                {% else %}
+                <option value="{{f.id}}">{{f.name}}</option>
+                {% endif %}
+                {% endfor %}
+            </option>
+    </td></tr>
     {% endfor %}
 
 </table>

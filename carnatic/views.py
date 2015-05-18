@@ -665,27 +665,23 @@ def formedit(request):
     return render(request, "carnatic/formedit.html", ret)
 
 from django import forms
-from django.forms.models import modelform_factory
 
 @user_passes_test(dashboard.views.is_staff)
 def formconcert(request, uuid):
     concert = get_object_or_404(Concert, mbid=uuid)
-    WorkForm = modelform_factory(Work, fields=('form', ))
+    forms = Form.objects.all()
 
     dashrelease = dashboard.models.MusicbrainzRelease.objects.get(mbid=concert.mbid)
 
     if request.method == "POST":
         for i, t in enumerate(concert.tracklist()):
-            w = t.work
-            form = WorkForm(request.POST, instance=w, prefix="tr%s" % i)
-            if form.is_valid():
-                form.save()
+            f = "form_%s" % i
+            print "rec", i, request.POST.get(f)
 
 
     tracks = []
     for i, t in enumerate(concert.tracklist()):
-        w = t.work
-        form = WorkForm(instance=w, prefix="tr%s" % i)
-        tracks.append((t, w, form))
-    ret = {"concert": concert, "tracks": tracks, "dashrelease": dashrelease}
+        tracks.append((i, t))
+    ret = {"concert": concert, "tracks": tracks,
+            "dashrelease": dashrelease, "forms": forms}
     return render(request, "carnatic/formconcert.html", ret)
