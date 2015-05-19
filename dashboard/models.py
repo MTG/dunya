@@ -386,6 +386,7 @@ class CollectionFile(models.Model):
     name = models.CharField(max_length=255)
     directory = models.ForeignKey(CollectionDirectory)
     recordingid = UUIDField(null=True, blank=True)
+    file_md5 = models.CharField(max_length=255, null=True, blank=True)
 
     @property
     def path(self):

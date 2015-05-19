@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import os
 import traceback
 import celery
+import hashlib
 
 from dashboard import models
 from dashboard import carnatic_importer
@@ -335,7 +336,13 @@ def _match_directory_to_release(collectionid, root):
                 meta = compmusic.file_metadata(os.path.join(root, f))
                 recordingid = meta["meta"].get("recordingid")
                 cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid)
-
+                if created:
+                   md5 = hashlib.md5()
+                   with open(os.path.join(root, f),'rb') as c: 
+                       for chunk in iter(lambda: c.read(8192), b''): 
+                           md5.update(chunk)
+                   cfile.file_md5 = md5.hexdigest()
+                   cfile.save()
         except models.MusicbrainzRelease.DoesNotExist:
             cd.add_log_message("Cannot find this directory's release (%s) in the imported releases" % (releaseid, ), None)
     elif len(rels) == 0:
