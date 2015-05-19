@@ -6,6 +6,7 @@ import mock
 import StringIO
 
 from dashboard import forms
+from dashboard import views
 from dashboard import models
 import docserver
 
@@ -118,12 +119,16 @@ class CollectionTest(TestCase):
         collid = "55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d"
         data = {"collectionid": collid, "path": "/incoming/carnatic", "checkers": ["1", "2"]}
 
+        mockimport = mock.Mock()
+        views.jobs.load_and_import_collection = mockimport
         resp = self.client.post('/dashboard/addcollection', data)
 
         # dashboard collection
         dashc = models.Collection.objects.get(pk=collid)
         self.assertEqual(2, len(dashc.checkers.all()))
         self.assertEqual("/incoming/carnatic/audio", dashc.root_directory)
+        mockimport.assert_called_once_with(dashc.id)
+
 
         # docserver collection
         docc = docserver.models.Collection.objects.get(collectionid=collid)
