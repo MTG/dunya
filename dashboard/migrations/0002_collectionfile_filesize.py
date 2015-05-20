@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='collectionfile',
-            name='file_md5',
-            field=models.CharField(max_length=255, null=True, blank=True),
+            name='filesize',
+            field=models.IntegerField(null=True, blank=True),
         ),
     ]

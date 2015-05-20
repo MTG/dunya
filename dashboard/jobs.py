@@ -19,7 +19,6 @@ from __future__ import absolute_import
 import os
 import traceback
 import celery
-import hashlib
 
 from dashboard import models
 from dashboard import carnatic_importer
@@ -233,7 +232,8 @@ def force_import_all_releases(collectionid):
 @app.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):
     """ Import releases in a collection.
-    This will not import releases that are ignored, or have a state of 'finished'
+    This will not import releases that are ignored, or have a state of 'finished' 
+    unless the file changed.
     It will also not import releases that are missing a matching directory.
     """
     collection = models.Collection.objects.get(pk=collectionid)
@@ -250,6 +250,17 @@ def import_all_releases(collectionid):
         # Only import if it's not finished and has a matched directory
         if r.get_current_state().state != 'f' and len(matched_paths):
             unstarted.append(r)
+        elif len(matched_paths):
+            added = False
+            for m in matched_paths:
+                for f in m.collectionfile_set.all():
+                    directory = os.path.join(collection.root_directory, f.path)
+                    if not f.filesize == os.path.getsize(directory):
+                        f.filesize = os.path.getsize(directory)
+                        f.save()
+                        if not added:
+                            unstarted.append(r)
+                            added = True
     for r in unstarted:
         import_release(r.id, ri)
     collection.set_state_finished()
@@ -335,14 +346,8 @@ def _match_directory_to_release(collectionid, root):
             for f in mp3files:
                 meta = compmusic.file_metadata(os.path.join(root, f))
                 recordingid = meta["meta"].get("recordingid")
-                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid)
-                if created:
-                   md5 = hashlib.md5()
-                   with open(os.path.join(root, f),'rb') as c: 
-                       for chunk in iter(lambda: c.read(8192), b''): 
-                           md5.update(chunk)
-                   cfile.file_md5 = md5.hexdigest()
-                   cfile.save()
+                size = os.path.getsize(os.path.join(root, f))
+                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid, defaults={'filesize': size})
         except models.MusicbrainzRelease.DoesNotExist:
             cd.add_log_message("Cannot find this directory's release (%s) in the imported releases" % (releaseid, ), None)
     elif len(rels) == 0:
