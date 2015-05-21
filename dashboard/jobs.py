@@ -254,9 +254,13 @@ def import_all_releases(collectionid):
             added = False
             for m in matched_paths:
                 for f in m.collectionfile_set.all():
-                    directory = os.path.join(collection.root_directory, f.path)
-                    if not f.filesize == os.path.getsize(directory):
-                        f.filesize = os.path.getsize(directory)
+                    afile = os.path.join(collection.root_directory, f.path)
+                    if not os.path.isfile(afile):
+                        f.delete()
+                        if (m.collectionfile_set.all()) ==0:
+                            m.delete()
+                    elif not f.filesize == os.path.getsize(afile):
+                        f.filesize = os.path.getsize(afile)
                         f.save()
                         if not added:
                             unstarted.append(r)
