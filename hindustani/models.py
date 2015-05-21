@@ -152,12 +152,27 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return ret
 
-    def releases(self):
+    def releases(self, collection_ids=False, permission=False):
+        rcollections=[]
+        if collection_ids:
+            rcollections = collection_ids.replace(' ','').split(",")
+        if not permission:
+            permission = ["U"]
+        
         # Releases in which we were the primary artist
         ret = []
-        ret.extend([r for r in self.primary_concerts.all()])
+        ret.extend([r for r in self.primary_concerts.with_permissions(collection_ids, permission).all()])
+
+        # Releases of my groups
+        for a in self.groups.all():
+            for c in a.releases():
+                if c not in ret and c.collection \
+                        and (collection_ids == False or c.collection.mbid in rcollections) \
+                        and c.collection.permission in permission:
+                    ret.append(c)
+     
         # Releases in which we performed
-        ret.extend([r for r in Release.objects.filter(recordings__instrumentperformance__artist=self).distinct()])
+        ret.extend([r for r in Release.objects.with_permissions(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -176,12 +191,8 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
-    def recordings(self):
-        IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(artist=self)
-        performance_recs = [p.recording for p in performances]
-
-        return list(set(performance_recs))
+    def recordings(self, collection_ids=False, permission=False):
+        return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(release__artists=self)).distinct()
 
     @classmethod
     def get_filter_criteria(cls):
@@ -204,7 +215,7 @@ class ReleaseRecording(models.Model):
     disc = models.IntegerField()
     # The track number within this disc. 1-n
     disctrack = models.IntegerField()
-
+    
     class Meta:
         ordering = ("track", )
 
@@ -213,7 +224,10 @@ class ReleaseRecording(models.Model):
 
 class Release(HindustaniStyle, data.models.Release):
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
-
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases")
+    
+    objects = managers.HindustaniReleaseManager()
+    
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
         return self.recordings.order_by('releaserecording')
@@ -349,7 +363,8 @@ class Recording(HindustaniStyle, data.models.Recording):
     sections = models.ManyToManyField("Section", through="RecordingSection")
     forms = models.ManyToManyField("Form", through="RecordingForm")
     works = models.ManyToManyField("Work", through="WorkTime")
-
+    
+    objects = managers.HindustaniRecordingManager()
 class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
     pass
 

@@ -19,23 +19,25 @@ from django.db.models import Q
 
 import carnatic
 
-class BootlegConcertManager(models.Manager):
+class CollectionConcertManager(models.Manager):
     use_for_related_fields = True
 
-    def with_bootlegs(self, show_bootlegs):
+    def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if not show_bootlegs:
-            qs = qs.filter(bootleg=False)
-        return qs
+        if ids and ids != "":
+            ids = ids.replace(' ','').split(",")
+            qs = qs.filter(collection__mbid__in=ids)
+        return qs.filter(collection__permission__in=permission)
 
-class BootlegRecordingManager(models.Manager):
+class CollectionRecordingManager(models.Manager):
     use_for_related_fields = True
 
-    def with_bootlegs(self, show_bootlegs):
+    def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if not show_bootlegs:
-            qs = qs.filter(concert__bootleg=False)
-        return qs
+        if ids and ids != "":
+            ids = ids.replace(' ','').split(",")
+            qs = qs.filter(concert__collection__mbid__in=ids)
+        return qs.filter(concert__collection__permission__in=permission)
 
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):

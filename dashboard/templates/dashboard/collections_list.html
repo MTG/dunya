@@ -1,0 +1,28 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Edit Collections Access{% endblock %}
+
+{% block wrap %}
+
+<h1>Edit Collections Access</h1>
+<p>Select the Collection to change user groups access.</p>
+
+{% regroup collections by name|slice:":1" as letter_list %}
+{% for letter in letter_list %}
+    <a href="#anchor-{{ letter.grouper }}">{{ letter.grouper }}</a>
+{% endfor %}
+
+
+<h2>Collections</h2>
+<div class="row">
+    {% for letter in letter_list %}
+        <div class="col-md-6"> 
+            <a name="anchor-{{ letter.grouper }}"></a>
+            <h3>{{ letter.grouper }}</h3>    
+            {% for item in letter.list %}
+                <li><a href="{% url 'dashboard-access-collections-edit' item.mbid %}">{{item.name}}</a></li>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -69,3 +69,19 @@ class HindustaniInstrumentManager(models.Manager):
             return hindustani.models.Instrument.objects.get(name__iexact=name)
         except hindustani.models.Instrument.DoesNotExist as e:
             raise e
+
+class HindustaniReleaseManager(models.Manager):
+    def with_permissions(self, ids, permission): 
+        qs = self.get_queryset()
+        if ids and ids != "":
+            ids = ids.replace(' ','').split(",")
+            qs = qs.filter(collection__mbid__in=ids)
+        return qs.filter(collection__permission__in=permission)
+    
+class HindustaniRecordingManager(models.Manager):
+    def with_permissions(self, ids, permission): 
+        qs = self.get_queryset()
+        if ids and ids != "":
+            ids = ids.replace(' ','').split(",")
+            qs = qs.filter(release__collection__mbid__in=ids)
+        return qs.filter(release__collection__permission__in=permission)

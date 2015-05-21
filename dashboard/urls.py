@@ -23,6 +23,8 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 
 urlpatterns = [
     url(r'^$', views.index, name='dashboard-home'),
+    url(r'^collection/%s/change$' % (uuid_match, ), views.edit_access_collections, name='dashboard-access-collections-edit'),
+    url(r'^collection/list$', views.list_access_collections, name='dashboard-access-collections-list'),
     url(r'^collection/%s$' % (uuid_match, ), views.collection, name='dashboard-collection'),
     url(r'^collection/%s/edit$' % (uuid_match, ), views.editcollection, name='dashboard-editcollection'),
     url(r'^delete_collection/%s$' % (uuid_match, ), views.delete_collection, name='dashboard-delete-collection'),
