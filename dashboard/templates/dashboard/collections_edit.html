@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Edit Collection{% endblock %}
+
+{% block wrap %}
+<ol class="breadcrumbs">
+    <li><a href="{% url "dashboard-access-collections-list" %}">Collections</a></li>
+</ol>
+{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+
+<h1>Edit Collection {{ collection.name }}</h1>
+
+
+<form method="post" action="{% url "dashboard-access-collections-edit" collection.mbid %}">
+{% csrf_token %}
+{{form}}
+<input type="submit" name="submit" value="Send edits"/>
+</form>
+
+
+{% endblock %}

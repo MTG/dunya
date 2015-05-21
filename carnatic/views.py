@@ -24,6 +24,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.templatetags.static import static
 
+from data import utils
 from carnatic.models import *
 from carnatic import search
 import json
@@ -101,7 +102,8 @@ def main(request):
     querybrowse = False
     searcherror = False
 
-    show_bootlegs = request.show_bootlegs
+    permission = utils.get_user_permissions(request.user)
+    show_restricted = request.show_bootlegs
 
     if qartist:
         # TODO: If instrument set, only show artists who perform this instrument
@@ -131,7 +133,7 @@ def main(request):
                 displayres.append(("raaga", ra))
             for ta in tlist:
                 displayres.append(("taala", ta))
-            for c in art.concerts(raagas=rlist, taalas=tlist, with_bootlegs=show_bootlegs):
+            for c in art.concerts(raagas=rlist, taalas=tlist, collection_ids=False, permission=permission):
                 displayres.append(("concert", c))
         else:
             # Otherwise if more than one artist is selected,
@@ -142,7 +144,7 @@ def main(request):
                 displayres.append(("artist", art))
                 if art.main_instrument:
                     displayres.append(("instrument", art.main_instrument))
-                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist, with_bootlegs=show_bootlegs))
+                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist, collection_ids=False, permission=permission))
                 allconcerts.append(thisconcerts)
             combinedconcerts = reduce(lambda x, y: x & y, allconcerts)
 
@@ -197,15 +199,19 @@ def main(request):
         querybrowse = True
         # concert, people
         for cid in qconcert:
-            con = Concert.objects.get(pk=cid)
-            displayres.append(("concert", con))
-            artists = con.performers()
-            for a in artists:
-                displayres.append(("artist", a))
-                # if instrument, only people who play that?
+            try:
+                permission = utils.get_user_permissions(request.user)
+                con = Concert.objects.with_permissions(False, permission).get(pk=cid)
+                displayres.append(("concert", con))
+                artists = con.performers()
+                for a in artists:
+                    displayres.append(("artist", a))
+                    # if instrument, only people who play that?
+            except Concert.DoesNotExist:
+                pass
     elif query:
         try:
-            results = search.search(query, with_bootlegs=show_bootlegs)
+            results = search.search(query, with_restricted=show_restricted)
         except pysolr.SolrError:
             searcherror = True
             results = {}
@@ -334,8 +340,9 @@ def artist(request, uuid, name=None):
     if wr.count() and not wikipedia:
         wikipedia = wr[0].uri
 
-    # Sample is the first recording of any of their concerts (Vignesh, Dec 9)
-    concerts = artist.concerts()
+    # Sample is the first recording of any of their concerts (Vignesh, Dec 9) 
+    permission = utils.get_user_permissions(request.user)
+    concerts = artist.concerts(permission)
     sample = None
     if concerts:
         recordings = concerts[0].recordings.all()
@@ -389,11 +396,12 @@ def composer(request, uuid, name=None):
     return render(request, "carnatic/composer.html", ret)
 
 def concertsearch(request):
-    concerts = Concert.objects.with_bootlegs(request.show_bootlegs).order_by('title')
+    permissions = utils.get_user_permissions(request.user)
+    concerts = Concert.objects.with_permissions(False, permissions).order_by('title')
     ret = []
     for c in concerts:
         title = "%s<br>%s" % (c.title, c.artistcredit)
-        if c.bootleg:
+        if c.collection and c.collection.permission == "S":
             title = '<img src="%s" title="bootleg concert" /> %s' % (static('carnatic/img/cassette.png'), title)
         ret.append({"id": c.id, "title": title})
     return HttpResponse(json.dumps(ret), content_type="application/json")
@@ -405,10 +413,11 @@ def concertbyid(request, concertid, title=None):
 def concert(request, uuid, title=None):
     concert = get_object_or_404(Concert, mbid=uuid)
 
-    bootleg = False
-    if concert.bootleg and request.show_bootlegs:
-        bootleg = True
-    elif concert.bootleg and not request.show_bootlegs:
+    show_restricted = False
+    is_restricted = concert.collection and concert.collection.permission == "S"
+    if is_restricted and request.show_bootlegs:
+        show_restricted = True
+    elif is_restricted and not request.show_bootlegs:
         raise Http404
 
     images = concert.images.all()
@@ -433,7 +442,7 @@ def concert(request, uuid, title=None):
            "sample": sample,
            "similar_concerts": similar,
            "recordings": recordings,
-           "bootleg": bootleg
+           "bootleg": show_restricted
            }
 
     return render(request, "carnatic/concert.html", ret)
@@ -445,10 +454,10 @@ def recordingbyid(request, recordingid, title=None):
 def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
 
-    bootleg = False
-    if recording.is_bootleg() and request.show_bootlegs:
-        bootleg = True
-    elif recording.is_bootleg() and not request.show_bootlegs:
+    show_restricted = False
+    if recording.is_restricted() and request.show_bootlegs:
+        show_restricted = True
+    elif recording.is_restricted() and not request.show_bootlegs:
         raise Http404
 
     try:
@@ -515,7 +524,8 @@ def recording(request, uuid, title=None):
     similar = similar[:10]
 
     try:
-        concert = recording.concert_set.get()
+        permission = utils.get_user_permissions(request.user)
+        concert = recording.concert_set.with_user_permissions(permission=permission).get()
         recordings = list(concert.recordings.all())
         recordingpos = recordings.index(recording)
     except Concert.DoesNotExist:
@@ -550,7 +560,7 @@ def recording(request, uuid, title=None):
            "aksharaurl": aksharaurl,
            "similar": similar,
            "concert": concert,
-           "bootleg": bootleg,
+           "bootleg": show_restricted,
            }
 
     return render(request, "carnatic/recording.html", ret)
@@ -568,8 +578,9 @@ def workbyid(request, workid, title=None):
 
 def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
-
-    recordings = work.recording_set.all()
+    
+    permission = utils.get_user_permissions(request.user)
+    recordings = work.recording_set.with_user_permissions(permission).all()
     if len(recordings):
         sample = random.sample(recordings, 1)
     else:

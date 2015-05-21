@@ -29,7 +29,7 @@ RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
 RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
 
 class ReleaseImporter(object):
-    def __init__(self, overwrite=False, is_bootleg=False):
+    def __init__(self, overwrite=False, is_bootleg=False, collection=None):
         """Create a release importer.
         Arguments:
           overwrite: If we replace everything in the database with new
@@ -39,6 +39,7 @@ class ReleaseImporter(object):
         self.overwrite = overwrite
         self.is_bootleg = is_bootleg
         self.date_import_started = django.utils.timezone.now()
+        self.collection = collection
 
         self.imported_artists = []
         self.imported_composers = []
@@ -132,6 +133,7 @@ class ReleaseImporter(object):
             release.source = source
             if self.is_bootleg:
                 release.bootleg = True
+            release.collection = self.collection
             release.save()
 
         return release

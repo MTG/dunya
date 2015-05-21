@@ -19,6 +19,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest
 
+import data
 from makam import models
 import docserver
 
@@ -29,7 +30,8 @@ def makamplayer(request):
 def main(request):
 
     artists = models.Artist.objects.all()
-    releases = models.Release.objects.all()
+    permission = data.utils.get_user_permissions(request.user)
+    releases = models.Release.objects.with_permissions(False, permission).all()
 
     ret = {"artists": artists, "releases": releases}
     return render(request, "makam/index.html", ret)
@@ -45,7 +47,8 @@ def artist(request, uuid, name=None):
     artist = get_object_or_404(models.Artist, mbid=uuid)
 
     instruments = artist.instruments()
-    main_releases = artist.primary_concerts.all()
+    permission = data.utils.get_user_permissions(request.user)
+    main_releases = artist.primary_concerts.with_permissions(False, permission).all()
     other_releases = artist.accompanying_releases()
 
     collaborating_artists = artist.collaborating_artists()

@@ -15,7 +15,8 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from hindustani import models
-from data.models import WithImageMixin
+from data import utils
+from data.models import WithImageMixin 
 
 from rest_framework import generics
 from rest_framework import serializers
@@ -195,11 +196,17 @@ class WorkList(generics.ListAPIView):
     serializer_class = WorkListSerializer
 
 class WorkDetailSerializer(serializers.ModelSerializer):
-    recordings = RecordingInnerSerializer(source='recording_set', many=True)
-
+    recordings = serializers.SerializerMethodField('recording_list')
+    
     class Meta:
         model = models.Work
         fields = ['mbid', 'title', 'recordings']
+    
+    def recording_list(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        recordings = ob.recording_set.with_permissions(collection_ids, permission)
+        return RecordingInnerSerializer(recordings, many=True).data
 
 class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -210,9 +217,14 @@ class WorkDetail(generics.RetrieveAPIView):
 class RecordingList(generics.ListAPIView):
     queryset = models.Recording.objects.all()
     serializer_class = RecordingInnerSerializer
+    
+    def get_queryset(self):
+        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.request.user)
+        return models.Recording.objects.with_permissions(collection_ids, permission)
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
-    release = ReleaseInnerSerializer(source='release_set.get')
+    release = serializers.SerializerMethodField('release_list')
     artists = ArtistInnerSerializer(source='all_artists', many=True)
     raags = RaagInnerSerializer(many=True)
     taals = TaalInnerSerializer(many=True)
@@ -223,6 +235,13 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'length', 'artists', 'raags', 'taals', 'layas', 'forms', 'works', 'release']
+
+    def release_list(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        releases = ob.release_set.with_permissions(collection_ids, permission)
+        rs = ReleaseInnerSerializer(releases, many=True)
+        return rs.data
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -241,13 +260,28 @@ class ArtistList(generics.ListAPIView):
     serializer_class = ArtistListSerializer
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
-    releases = ReleaseInnerSerializer(many=True)
+    releases = serializers.SerializerMethodField('release_list') 
     instruments = InstrumentInnerSerializer(many=True)
-    recordings = RecordingInnerSerializer(many=True)
+    recordings = serializers.SerializerMethodField('recording_list')
 
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name', 'releases', 'instruments', 'recordings']
+    
+    def release_list(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        releases = ob.releases(collection_ids=collection_ids, permission=permission)
+        cs = ReleaseInnerSerializer(releases, many=True)
+        return cs.data
+
+    def recording_list(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        recordings = ob.recordings(collection_ids=collection_ids, permission=permission)
+        rs = RecordingInnerSerializer(recordings, many=True)
+        return rs.data
+
 
 class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -264,6 +298,11 @@ class ReleaseListSerializer(serializers.ModelSerializer):
 class ReleaseList(generics.ListAPIView):
     queryset = models.Release.objects.all()
     serializer_class = ReleaseListSerializer
+    
+    def get_queryset(self):
+        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.request.user)
+        return models.Release.objects.with_permissions(collection_ids, permission)
 
 class ReleaseRecordingSerializer(serializers.ModelSerializer):
     mbid = serializers.ReadOnlyField(source='recording.mbid')

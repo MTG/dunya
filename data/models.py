@@ -218,6 +218,20 @@ class Release(BaseModel):
     def artistnames(self):
         return self.artists.all()
 
+class Collection(models.Model):
+    PERMISSIONS = (
+        ('S', 'Staff-only'),
+        ('R', 'Restricted'),
+        ('U', 'Unrestricted')
+    )
+
+    mbid = UUIDField(blank=True, null=True)
+    permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
+    name = models.CharField(max_length=100)
+    class Meta:
+        permissions = (
+            ("access_restricted", "Can see restricted collections"),
+        )
 class Work(BaseModel):
     class Meta:
         abstract = True
