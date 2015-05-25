@@ -109,7 +109,7 @@ class Artist(CarnaticStyle, data.models.Artist):
             rcollections = collection_ids.replace(' ','').split(",")
         if not permission:
             permission = ["U"]
-       
+
         c = collections.Counter()
         concerts = collections.defaultdict(set)
         restr_concerts = collections.Counter()
@@ -138,7 +138,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         these raagas or taalas were performed.
         If collections are received, the concerts are limited to
         that collections
-        By defaul permissions are restricted to universal 
+        By defaul permissions are restricted to universal
         accesible collections.
         """
         rcollections=[]
@@ -306,7 +306,7 @@ class Concert(CarnaticStyle, data.models.Release):
                     concert = Concert.objects.get(pk=s)
                 except Concert.DoesNotExist:
                     continue
-                
+
                 works = [Work.objects.get(pk=w) for w in v["works"]]
                 raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
                 taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
@@ -715,11 +715,12 @@ class Recording(CarnaticStyle, data.models.Recording):
 
         all_as = set(primary_artists) | set(rec_artists)
         return list(all_as)
-    
+
     def is_restricted(self):
-        for rel in self.concert_set.filter(concert__collection__permission__in=["S"]).all():
+        for rel in self.concert_set.filter(collection__permission__in=["S"]).all():
             return True
         return False
+
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
