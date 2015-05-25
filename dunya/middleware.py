@@ -19,7 +19,7 @@ class PageLoggerMiddleware(object):
 
 class ShowBootlegMiddleware(object):
     """ A middleware to say if the current user is able to see
-        retircted releases and recordings.
+        restricted releases and recordings.
     """
 
     def process_request(self, request):
