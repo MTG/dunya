@@ -340,9 +340,9 @@ def artist(request, uuid, name=None):
     if wr.count() and not wikipedia:
         wikipedia = wr[0].uri
 
-    # Sample is the first recording of any of their concerts (Vignesh, Dec 9) 
+    # Sample is the first recording of any of their concerts (Vignesh, Dec 9)
     permission = utils.get_user_permissions(request.user)
-    concerts = artist.concerts(permission)
+    concerts = artist.concerts(permission=permission)
     sample = None
     if concerts:
         recordings = concerts[0].recordings.all()
@@ -578,7 +578,7 @@ def workbyid(request, workid, title=None):
 
 def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
-    
+
     permission = utils.get_user_permissions(request.user)
     recordings = work.recording_set.with_user_permissions(permission).all()
     if len(recordings):
