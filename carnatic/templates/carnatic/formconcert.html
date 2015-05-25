@@ -1,6 +1,22 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Edit forms for concert{% endblock %}
 
+{% block js %}
+<script>
+$(function() {
+
+    $("#setkriti").click(function(e) {
+        e.preventDefault();
+        $(".formselect").each(function(index, item) {
+                if (item.value == "------") {
+                    $(item).val(4); // Kriti
+                }
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% block wrap %}
 
 <p><a href="{% url 'carnatic-formedit' %}">Return to list</a></p>
@@ -23,7 +39,7 @@
         </td>
 
         <td>{{r.1.work.title}}</td>
-        <td><select name="form_{{r.0}}"><option>------</option>
+        <td><select class="formselect" name="form_{{r.0}}"><option>------</option>
                 {% for f in forms %}
                    {% if f.id == r.1.forms.all.0.id %}
                 <option value="{{f.id}}" selected >{{f.name}}</option>
@@ -36,6 +52,7 @@
     {% endfor %}
 
 </table>
+<input type="submit" value="Set forms to Kriti" id="setkriti"><br>
 <input type="submit" value="Update forms">
 </form>
 
