@@ -201,7 +201,7 @@ def main(request):
         for cid in qconcert:
             try:
                 permission = utils.get_user_permissions(request.user)
-                con = Concert.objects.with_permissions(False, permission).get(pk=cid)
+                con = Concert.objects.with_permissions(None, permission).get(pk=cid)
                 displayres.append(("concert", con))
                 artists = con.performers()
                 for a in artists:
@@ -397,7 +397,7 @@ def composer(request, uuid, name=None):
 
 def concertsearch(request):
     permissions = utils.get_user_permissions(request.user)
-    concerts = Concert.objects.with_permissions(False, permissions).order_by('title')
+    concerts = Concert.objects.with_permissions(None, permissions).order_by('title')
     ret = []
     for c in concerts:
         title = "%s<br>%s" % (c.title, c.artistcredit)
@@ -525,7 +525,7 @@ def recording(request, uuid, title=None):
 
     try:
         permission = utils.get_user_permissions(request.user)
-        concert = recording.concert_set.with_user_permissions(permission=permission).get()
+        concert = recording.concert_set.with_permissions(None, permission=permission).get()
         recordings = list(concert.recordings.all())
         recordingpos = recordings.index(recording)
     except Concert.DoesNotExist:
@@ -580,7 +580,7 @@ def work(request, uuid, title=None):
     work = get_object_or_404(Work, mbid=uuid)
 
     permission = utils.get_user_permissions(request.user)
-    recordings = work.recording_set.with_user_permissions(permission).all()
+    recordings = work.recording_set.with_permissions(None, permission).all()
     if len(recordings):
         sample = random.sample(recordings, 1)
     else:
