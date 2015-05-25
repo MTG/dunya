@@ -640,6 +640,9 @@ class Taala(data.models.BaseModel):
         return recordings
 
 class Work(CarnaticStyle, data.models.Work):
+
+    # TODO: this must be changed to a single ForeignKey, keeping the same name
+    # (raaga, taala)
     raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
     taala = models.ManyToManyField('Taala', through="WorkTaala")
     form = models.ForeignKey('Form', blank=True, null=True)
@@ -668,6 +671,22 @@ class Work(CarnaticStyle, data.models.Work):
     def recordings(self):
         return self.recording_set.all()
 
+class RecordingRaaga(models.Model):
+    recording = models.ForeignKey('Recording')
+    raaga = models.ForeignKey('Raaga')
+    sequence = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s, seq %d %s" % (self.recording, self.sequence, self.raaga)
+
+class RecordingTaala(models.Model):
+    recording = models.ForeignKey('Recording')
+    taala = models.ForeignKey('Taala')
+    sequence = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s, seq %d %s" % (self.recording, self.sequence, self.taala)
+
 class WorkRaaga(models.Model):
     work = models.ForeignKey('Work')
     raaga = models.ForeignKey('Raaga')
@@ -684,26 +703,39 @@ class WorkTaala(models.Model):
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
-class Recording(CarnaticStyle, data.models.Recording):
+class RecordingWork(models.Model):
+    recording = models.ForeignKey('Recording')
+    work = models.ForeignKey('Work')
+    sequence = models.IntegerField(blank=True, null=True)
 
-    work = models.ForeignKey('Work', blank=True, null=True)
+    def __unicode__(self):
+        return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
+
+class Recording(CarnaticStyle, data.models.Recording):
+    # TODO: To remove
+    work = models.ForeignKey('Work', blank=True, null=True, related_name='single_work')
+
+    works = models.ManyToManyField('Work', through='RecordingWork')
     forms = models.ManyToManyField('Form', through='RecordingForm')
+
+    raagas = models.ManyToManyField('Raaga', through='RecordingRaaga')
+    taalas = models.ManyToManyField('Taala', through='RecordingTaala')
 
     objects = managers.CollectionRecordingManager()
 
-    def raaga(self):
-        if self.work:
-            rs = self.work.raaga.all()
-            if rs:
-                return rs[0]
-        return None
+    #def raaga(self):
+    #    if self.work:
+    #        rs = self.work.raaga.all()
+    #        if rs:
+    #            return rs[0]
+    #    return None
 
-    def taala(self):
-        if self.work:
-            ts = self.work.taala.all()
-            if ts:
-                return ts[0]
-        return None
+    #def taala(self):
+    #    if self.work:
+    #        ts = self.work.taala.all()
+    #        if ts:
+    #            return ts[0]
+    #    return None
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
