@@ -11,9 +11,9 @@ class ArtistTest(TestCase):
         a2 = models.Artist.objects.create(name="a2")
         a3 = models.Artist.objects.create(name="a3")
 
-        c1 = data.models.Collection.objects.create(mbid="f11f1f73", name="collection 1", permission="U") 
-        c2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="U") 
-        c3 = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 3", permission="U") 
+        c1 = data.models.Collection.objects.create(mbid="f11f1f73", name="collection 1", permission="U")
+        c2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="U")
+        c3 = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 3", permission="U")
         r1 = models.Release.objects.create(collection=c1, title="r1")
         r2 = models.Release.objects.create(collection=c2, title="r2")
         r3 = models.Release.objects.create(collection=c3, title="r3")
@@ -26,6 +26,7 @@ class ArtistTest(TestCase):
         r3.artists.add(a2)
 
         coll = a1.collaborating_artists()
+        coll = sorted(coll, key=lambda a: a.name)
         self.assertEqual(2, len(coll))
         self.assertEqual([a2, a3], coll)
 
@@ -57,8 +58,8 @@ class ArtistTest(TestCase):
 class ArtistReleaseListTest(TestCase):
 
     def setUp(self):
-        c1 = data.models.Collection.objects.create(mbid="f11f1f73", name="collection 1", permission="U") 
-        c2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="U") 
+        c1 = data.models.Collection.objects.create(mbid="f11f1f73", name="collection 1", permission="U")
+        c2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="U")
         self.rel1 = models.Release.objects.create(collection=c1, title="release1")
         self.rel2 = models.Release.objects.create(collection=c2, title="release2")
         rec1 = models.Recording.objects.create(title="rec1")
