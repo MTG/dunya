@@ -184,7 +184,7 @@ $(document).ready(function() {
                 </div>
                 <div class="rightdata">
                     <div class="innerrightdata scrolldata">
-                        {% artist_collaborating_artists_with_bootleg artist request.show_bootlegs as collaborating_artists %}
+                        {% artist_collaborating_artists_with_bootleg artist request.permission as collaborating_artists %}
                         {% if collaborating_artists %}
                         <div class="scrollblock inforight" style="height: 290px;">
                             {% for a in collaborating_artists %}

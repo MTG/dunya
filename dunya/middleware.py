@@ -1,5 +1,6 @@
 from django.conf import settings
 import data.models
+from data import utils
 
 class PageLoggerMiddleware(object):
 
@@ -18,10 +19,13 @@ class PageLoggerMiddleware(object):
 
 class ShowBootlegMiddleware(object):
     """ A middleware to say if the current user is able to see
-        bootleg releases and recordings. Currently this is only
-        if they are a staff member """
+        retircted releases and recordings.
+    """
 
     def process_request(self, request):
+        permission = utils.get_user_permissions(request.user)
+        request.permission = permission
+        # remove the following lines after refactor
         user = request.user
         if user.is_staff:
             show_bootlegs = True

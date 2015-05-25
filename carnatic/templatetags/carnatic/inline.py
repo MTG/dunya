@@ -38,8 +38,8 @@ def work_recordings_with_bootleg(work, with_bootlegs):
     return {"recordings": ret, "bootlegs": bootlegs}
 
 @register.assignment_tag
-def artist_collaborating_artists_with_bootleg(artist, with_bootlegs):
-    coll_artists = artist.collaborating_artists(with_bootlegs)
+def artist_collaborating_artists_with_bootleg(artist, permission):
+    coll_artists = artist.collaborating_artists(permission=permission)
     return [{"artist": a, "concerts": c, "bootlegs": b} for a, c, b in coll_artists]
 
 @register.simple_tag
