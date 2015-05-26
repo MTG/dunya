@@ -93,25 +93,23 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             if self.overwrite:
                 w.raaga.clear()
                 w.taala.clear()
+            if recording.form.attrfromrecording:
+                raagas = self._get_raaga_tags(tags)
+                taalas = self._get_taala_tags(tags)
 
-            raagas = self._get_raaga_tags(tags)
-            taalas = self._get_taala_tags(tags)
+                for seq, rname in raagas:
+                    r = self._get_raaga(rname)
+                    if r:
+                        carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=seq)
+                    else:
+                        logger.warn("Cannot find raaga: %s" % rname)
 
-            for seq, rname in raagas:
-                r = self._get_raaga(rname)
-                if r:
-                    carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=seq)
-                    carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=seq)
-                else:
-                    logger.warn("Cannot find raaga: %s" % rname)
-
-            for seq, tname in taalas:
-                t = self._get_taala(tname)
-                if t:
-                    carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=seq)
-                    carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=seq)
-                else:
-                    logger.warn("Cannot find taala: %s" % tname)
+                for seq, tname in taalas:
+                    t = self._get_taala(tname)
+                    if t:
+                        carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=seq)
+                    else:
+                        logger.warn("Cannot find taala: %s" % tname)
         else:
             # If we have no works, we don't need to do this
             return
