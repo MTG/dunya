@@ -348,6 +348,7 @@ class RecordingForm(models.Model):
 
 class Form(models.Model):
     name = models.CharField(max_length=50)
+    attrfromrecording = models.BooleanField(default=False)
 
     objects = managers.CarnaticFormManager()
     fuzzymanager = managers.FuzzySearchManager()
