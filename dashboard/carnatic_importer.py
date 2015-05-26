@@ -13,6 +13,8 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+import json
+import musicbrainzngs
 
 from dashboard.log import logger
 from dashboard import release_importer
@@ -84,35 +86,54 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _join_recording_and_works(self, recording, works):
         # A carnatic recording only has many works.
-        for w in works:
-            carnatic.models.RecordingWork.objects.create(work=w, recording=recording)
+        for i, w in list(enumerate(works)):
+            carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=i)
 
     def _apply_tags(self, recording, works, tags):
-        if len(works):
-            w = works[0]
+        for w in works:
             if self.overwrite:
                 w.raaga.clear()
                 w.taala.clear()
+            
             if recording.form.attrfromrecording:
                 raagas = self._get_raaga_tags(tags)
                 taalas = self._get_taala_tags(tags)
+            else:
+                raagas, taalas = self._get_raaga_and_taala_mb(w.mbid)
 
-                for seq, rname in raagas:
-                    r = self._get_raaga(rname)
-                    if r:
-                        carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=seq)
-                    else:
-                        logger.warn("Cannot find raaga: %s" % rname)
+            for seq, rname in raagas:
+                r = self._get_raaga(rname)
+                if r:
+                    carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=seq)
+                else:
+                    logger.warn("Cannot find raaga: %s" % rname)
 
-                for seq, tname in taalas:
-                    t = self._get_taala(tname)
-                    if t:
-                        carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=seq)
-                    else:
-                        logger.warn("Cannot find taala: %s" % tname)
+            for seq, tname in taalas:
+                t = self._get_taala(tname)
+                if t:
+                    carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=seq)
+                else:
+                    logger.warn("Cannot find taala: %s" % tname)
+                       
         else:
             # If we have no works, we don't need to do this
             return
+    
+    def _get_raaga_and_taala_mb(self, work_mbid):
+        ret_raaga = []
+        seq_raaga = 1
+        ret_taala = []
+        seq_taala = 1
+
+        mb_work = musicbrainzngs.get_work_by_id(work_mbid)
+        for a in mb_work['work']['attribute-list']:
+            if a['type'] == u'R\u0101ga (Carnatic)':
+                ret_raaga.append((seq_raaga, compmusic.tags.parse_raaga(a['attribute'])))
+                seq_raaga += 1
+            elif a['type'] == u'T\u0101la (Carnatic)':
+                ret_taala.append((seq_taala, compmusic.tags.parse_taala(a['attribute'])))
+                seq_taala += 1
+        return ret_raaga, ret_taala
 
     def _get_raaga_tags(self, taglist):
         ret = []
