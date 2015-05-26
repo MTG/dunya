@@ -83,11 +83,9 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 concert=concert, recording=recording, track=trackorder, disc=mnum, disctrack=tnum)
 
     def _join_recording_and_works(self, recording, works):
-        # A carnatic recording only has one work.
-        if len(works):
-            w = works[0]
-            recording.work = w
-            recording.save()
+        # A carnatic recording only has many works.
+        for w in works:
+            carnatic.models.RecordingWork.objects.create(work=w, recording=recording)
 
     def _apply_tags(self, recording, works, tags):
         if len(works):
@@ -102,14 +100,16 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             for seq, rname in raagas:
                 r = self._get_raaga(rname)
                 if r:
-                    carnatic.models.WorkRaaga.objects.create(work=w, raaga=r, sequence=seq)
+                    carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=seq)
+                    carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=seq)
                 else:
                     logger.warn("Cannot find raaga: %s" % rname)
 
             for seq, tname in taalas:
                 t = self._get_taala(tname)
                 if t:
-                    carnatic.models.WorkTaala.objects.create(work=w, taala=t, sequence=seq)
+                    carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=seq)
+                    carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=seq)
                 else:
                     logger.warn("Cannot find taala: %s" % tname)
         else:
