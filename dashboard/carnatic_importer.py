@@ -95,11 +95,27 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 w.raaga.clear()
                 w.taala.clear()
             
-            if recording.form.attrfromrecording:
+            if len(recording.forms.all()) > 1:
+                raise Exception()
+            form = recording.get_form()
+            if not form:
+                form = _get_form_from_tag(tags)
+                release.forms.append(form)
+            
+            if form.attrfromrecording:
                 raagas = self._get_raaga_tags(tags)
                 taalas = self._get_taala_tags(tags)
             else:
-                raagas, taalas = self._get_raaga_and_taala_mb(w.mbid)
+                mb_work = musicbrainzngs.get_work_by_id(w.mbid)
+                raaga = self._get_raaga_mb(w.mbid)
+                taala = self._get_taala_mb(w.mbid)
+            
+                if (raaga != None and raaga not in tags) or (taala != None and taala not in tags):
+                    raise Exception()
+                else:
+                    raagas = [(1, raaga)]
+                    taalas = [(1, taala)]
+
 
             for seq, rname in raagas:
                 r = self._get_raaga(rname)
@@ -119,21 +135,21 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             # If we have no works, we don't need to do this
             return
     
-    def _get_raaga_and_taala_mb(self, work_mbid):
-        ret_raaga = []
-        seq_raaga = 1
-        ret_taala = []
-        seq_taala = 1
+    def _get_form_from_tag(self, tags):
+        #TODO: not sure how o get Form
+        return None
 
-        mb_work = musicbrainzngs.get_work_by_id(work_mbid)
-        for a in mb_work['work']['attribute-list']:
-            if a['type'] == u'R\u0101ga (Carnatic)':
-                ret_raaga.append((seq_raaga, compmusic.tags.parse_raaga(a['attribute'])))
-                seq_raaga += 1
-            elif a['type'] == u'T\u0101la (Carnatic)':
-                ret_taala.append((seq_taala, compmusic.tags.parse_taala(a['attribute'])))
-                seq_taala += 1
-        return ret_raaga, ret_taala
+    def _get_raaga_mb(self, mb_work):
+        for a in mb_work['work'].get('attribute-list',[]):
+            if a['type'] == 'Rāga (Carnatic)':
+                return compmusic.tags.parse_raaga(a['attribute'])
+        return None
+
+    def _get_taala_mb(self, mb_work):
+        for a in mb_work['work'].get('attribute-list',[]):
+            if a['type'] == 'Tāla (Carnatic)':
+                return compmusic.tags.parse_taala(a['attribute'])
+        return None
 
     def _get_raaga_tags(self, taglist):
         ret = []
