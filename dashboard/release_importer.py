@@ -326,3 +326,6 @@ class ReleaseImporter(object):
                     work.lyricists.add(lyricist)
 
         return work
+
+class ImportFailedException(Exception):
+    pass

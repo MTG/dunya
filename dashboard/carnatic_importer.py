@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -95,92 +96,101 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 w.raaga.clear()
                 w.taala.clear()
             
-            if len(recording.forms.all()) > 1:
-                raise Exception()
-            form = recording.get_form()
-            if not form:
-                form = _get_form_from_tag(tags)
-                release.forms.append(form)
-            
-            if form.attrfromrecording:
-                raagas = self._get_raaga_tags(tags)
-                taalas = self._get_taala_tags(tags)
+            # Check that there is not more than one form
+            forms = recording.forms.all()
+            if len(forms) > 1:
+                raise release_importer.ImportFailedException('More than form for a recording')
+            elif len(forms) < 1:
+                form = self._get_form_tag(tags)
+                if form:
+                    recording.forms.append(form)
+                    recording.save()
+                else:
+                    raise release_importer.ImportFailedException("The recording doesn't have form")
             else:
-                mb_work = musicbrainzngs.get_work_by_id(w.mbid)
-                raaga = self._get_raaga_mb(w.mbid)
-                taala = self._get_taala_mb(w.mbid)
+                form = forms[0]
+
+            # Check release and work has the same raaga and taala
+            raaga_tag = self._get_raaga_tags(tags)
+            taala_tag = self._get_taala_tags(tags)
+            mb_work = musicbrainzngs.get_work_by_id(w.mbid)
+            raaga_work = self._get_raaga_mb(mb_work)
+            taala_work = self._get_taala_mb(mb_work)
+
+            if raaga_tag:
+                raaga_tag = self._get_raaga(raaga_tag)
+            if raaga_work:
+                raaga_work = self._get_raaga(raaga_work)
+
+            if taala_tag:
+                taala_tag = self._get_taala(taala_tag)
+            if taala_work:
+                taala_work = self._get_taala(taala_work)
             
-                if (raaga != None and raaga not in tags) or (taala != None and taala not in tags):
-                    raise Exception()
-                else:
-                    raagas = [(1, raaga)]
-                    taalas = [(1, taala)]
+            if (raaga_tag and raaga_work and raaga_tag != raaga_work) or (taala_tag and taala_work and taala_tag != taala_work):
+                raise release_importer.ImportFailedException('Inconsistency found at Musicbrainz between recording tag and work raaga or taala')
+            if form.attrfromrecording:
+               r = raaga_tag
+               t = taala_tag
+            else:
+               r = raaga_work
+               t = taala_work
 
-
-            for seq, rname in raagas:
-                r = self._get_raaga(rname)
-                if r:
-                    carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=seq)
-                else:
-                    logger.warn("Cannot find raaga: %s" % rname)
-
-            for seq, tname in taalas:
-                t = self._get_taala(tname)
-                if t:
-                    carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=seq)
-                else:
-                    logger.warn("Cannot find taala: %s" % tname)
-                       
+            # Create the relation with Raaga and Taala
+            if r:
+                carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=1)
+            if t:
+                carnatic.models.WorkTaala.objects.create(recording=recording, taala=t, sequence=1)
         else:
             # If we have no works, we don't need to do this
             return
     
-    def _get_form_from_tag(self, tags):
-        #TODO: not sure how o get Form
+    def _get_form_tag(self, tags):
+        for t in tags:
+            name = t["name"].lower()
+            if compmusic.tags.has_carnatic_form(name):
+                return compmusic.tags.parse_carnatic_form(name)
         return None
+
 
     def _get_raaga_mb(self, mb_work):
         for a in mb_work['work'].get('attribute-list',[]):
-            if a['type'] == 'Rāga (Carnatic)':
+            if a['type'] == u'Rāga (Carnatic)':
                 return compmusic.tags.parse_raaga(a['attribute'])
         return None
 
     def _get_taala_mb(self, mb_work):
         for a in mb_work['work'].get('attribute-list',[]):
-            if a['type'] == 'Tāla (Carnatic)':
+            if a['type'] == u'Tāla (Carnatic)':
                 return compmusic.tags.parse_taala(a['attribute'])
         return None
 
     def _get_raaga_tags(self, taglist):
-        ret = []
-        seq = 1
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_raaga(name):
-                ret.append((seq, compmusic.tags.parse_raaga(name)))
-                seq += 1
-        return ret
+                return compmusic.tags.parse_raaga(name)
+        return None
 
     def _get_taala_tags(self, taglist):
-        ret = []
-        seq = 1
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_taala(name):
-                ret.append((seq, compmusic.tags.parse_taala(name)))
-                seq += 1
-        return ret
+                return compmusic.tags.parse_taala(name)
+        return None
 
     def _get_raaga(self, raaganame):
         try:
             return carnatic.models.Raaga.objects.fuzzy(raaganame)
         except carnatic.models.Raaga.DoesNotExist:
+            logger.warn("Cannot find raaga: %s" % raaganame)
             return None
 
     def _get_taala(self, taalaname):
         try:
             return carnatic.models.Taala.objects.fuzzy(taalaname)
         except carnatic.models.Taala.DoesNotExist:
+            logger.warn("Cannot find taala: %s" % taalaname)
             return None
 
     def _get_instrument(self, instname):
