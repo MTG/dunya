@@ -642,10 +642,9 @@ class Taala(data.models.BaseModel):
 
 class Work(CarnaticStyle, data.models.Work):
 
-    # TODO: this must be changed to a single ForeignKey, keeping the same name
     # (raaga, taala)
-    raaga = models.ManyToManyField('Raaga', through="WorkRaaga")
-    taala = models.ManyToManyField('Taala', through="WorkTaala")
+    raaga = models.ForeignKeyField('Raaga')
+    taala = models.ForeignKeyField('Taala')
     form = models.ForeignKey('Form', blank=True, null=True)
     language = models.ForeignKey('Language', blank=True, null=True)
 
@@ -687,22 +686,6 @@ class RecordingTaala(models.Model):
 
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.taala)
-
-class WorkRaaga(models.Model):
-    work = models.ForeignKey('Work')
-    raaga = models.ForeignKey('Raaga')
-    sequence = models.IntegerField(blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s, seq %d %s" % (self.work, self.sequence, self.raaga)
-
-class WorkTaala(models.Model):
-    work = models.ForeignKey('Work')
-    taala = models.ForeignKey('Taala')
-    sequence = models.IntegerField(blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 class RecordingWork(models.Model):
     recording = models.ForeignKey('Recording')
