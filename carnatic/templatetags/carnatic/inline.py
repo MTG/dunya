@@ -22,20 +22,20 @@ import carnatic
 register = template.Library()
 
 @register.assignment_tag
-def work_recordings_with_bootleg(work, with_bootlegs):
-    all_recordings = work.recordings(with_bootlegs=True)
-    bootlegs = 0
+def work_recordings_with_restricted(work, with_restricted):
+    all_recordings = work.recordings()
+    restricted = 0
     ret = []
     for r in all_recordings:
-        is_b = r.is_bootleg()
-        if not with_bootlegs and is_b:
-            bootlegs += 1
-        elif with_bootlegs and is_b:
+        is_b = r.is_restricted()
+        if not with_restricted and is_b:
+            restricted += 1
+        elif with_restricted and is_b:
             ret.append(r)
         elif not is_b:
             ret.append(r)
 
-    return {"recordings": ret, "bootlegs": bootlegs}
+    return {"recordings": ret, "restricted": restricted}
 
 @register.assignment_tag
 def artist_collaborating_artists_with_bootleg(artist, permission):
