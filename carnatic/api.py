@@ -52,6 +52,11 @@ class TaalaInnerSerializer(serializers.ModelSerializer):
         model = models.Taala
         fields = ['uuid', 'name']
 
+class FormInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Form
+        fields = ['name']
+
 class ConcertInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Concert
@@ -165,13 +170,14 @@ class RecordingList(generics.ListAPIView):
 class RecordingDetailSerializer(serializers.ModelSerializer):
     concert = serializers.SerializerMethodField('concert_list')
     artists = ArtistInnerSerializer(source='all_artists', many=True)
-    raaga = RaagaInnerSerializer()
-    taala = TaalaInnerSerializer()
+    raaga = RaagaInnerSerializer(source='raagas', many=True)
+    taala = TaalaInnerSerializer(source='taalas', many=True)
+    form = FormInnerSerializer(source='forms', many=True)
     work = WorkInnerSerializer()
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'length', 'artists', 'raaga', 'taala', 'work', 'concert']
+        fields = ['mbid', 'title', 'length', 'artists', 'raaga', 'taala', 'form', 'work', 'concert']
 
     def concert_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)

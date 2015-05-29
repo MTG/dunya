@@ -138,10 +138,13 @@ class RecordingTest(TestCase):
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         self.wrestricted = models.Work.objects.create(title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
-        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971", work=self.wnormal)
-        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24", work=self.wrestricted)
+        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
+        models.RecordingWork.objects.create(recording=self.rnormal, work=self.wnormal, sequence=1)
+        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingWork.objects.create(recording=self.rrestricted, work=self.wrestricted, sequence=1)
         self.wstaff = models.Work.objects.create(title="staff work", mbid="91e8db80-e8e1-11e4-a224-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b", work=self.wstaff)
+        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        models.RecordingWork.objects.create(recording=self.rstaff, work=self.wstaff, sequence=1)
 
         models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
         models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1)
@@ -195,7 +198,7 @@ class RecordingTest(TestCase):
 
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
-        fields = ['artists', 'concert', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_detail_restr_collection(self):
@@ -206,7 +209,7 @@ class RecordingTest(TestCase):
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
         self.assertEqual(200, response.status_code)
-        fields = ['artists', 'concert', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
         # If we request another collection over the header parameter
@@ -228,10 +231,13 @@ class WorkTest(TestCase):
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         self.wrestricted = models.Work.objects.create(title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
-        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971", work=self.wnormal)
-        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24", work=self.wrestricted)
+        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
+        models.RecordingWork.objects.create(recording=self.rnormal, work=self.wnormal, sequence=1)
+        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingWork.objects.create(recording=self.rrestricted, work=self.wrestricted, sequence=1)
         self.wstaff = models.Work.objects.create(title="staff work", mbid="91e8db80-e8e1-11e4-a224-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b", work=self.wstaff)
+        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        models.RecordingWork.objects.create(recording=self.rstaff, work=self.wstaff, sequence=1)
 
         models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
         models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1)
