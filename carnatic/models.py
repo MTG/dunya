@@ -560,6 +560,12 @@ class Raaga(data.models.BaseModel):
             recordings = recordings[:limit]
         return recordings
 
+    def recordings_form(self, form=None):
+        ret = self.recording_set
+        if form:
+            ret = ret.filter(forms__name=form)
+        return ret.all()
+
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
     taala = models.ForeignKey("Taala", related_name="aliases")
