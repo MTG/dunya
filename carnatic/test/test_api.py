@@ -319,6 +319,12 @@ class RaagaTest(TestCase):
     def setUp(self):
         self.raaga = models.Raaga.objects.create(id=1, name="My Raaga", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
         self.normaluser = auth.models.User.objects.create_user("normaluser")
+        self.form = models.Form.objects.create(attrfromrecording=True, name='form')
+        
+        self.recording = models.Recording.objects.create(title="recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingRaaga.objects.create(raaga=self.raaga, recording=self.recording)
+        models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
+    
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
         self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
@@ -335,6 +341,14 @@ class RaagaTest(TestCase):
         data = response.data
         fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
         self.assertEqual(fields, sorted(data.keys()))
+
+    def test_recording_raaga(self):
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
+        
+        data = response.data
+        self.assertEqual(1, len(data["recordings"]))
 
 class TaalaTest(TestCase):
     def setUp(self):

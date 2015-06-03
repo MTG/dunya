@@ -728,21 +728,43 @@ class Recording(CarnaticStyle, data.models.Recording):
     taalas = models.ManyToManyField('Taala', through='RecordingTaala')
 
     objects = managers.CollectionRecordingManager()
+    
+    def get_raaga(self):
+        if len(forms.all) == 0:
+            return []
+        else:
+            from_rec = forms[0].attrfromrecording
 
-    #def raaga(self):
-    #    if self.work:
-    #        rs = self.work.raaga.all()
-    #        if rs:
-    #            return rs[0]
-    #    return None
+        if from_rec :
+            return self.raagas.all()
+        
+        if self.work:
+            rs = self.work.raaga.all()
+            if rs:
+                return rs
+            else:
+                raise Exception
+        else:
+            raise Exception()
+    
+    def get_taaga(self):
+        if len(forms.all) == 0:
+            return []
+        else:
+            from_rec = forms[0].attrfromrecording
 
-    #def taala(self):
-    #    if self.work:
-    #        ts = self.work.taala.all()
-    #        if ts:
-    #            return ts[0]
-    #    return None
-
+        if from_rec :
+            return self.taalas.all()
+        
+        if self.work:
+            rs = self.work.taala.all()
+            if rs:
+                return rs
+            else:
+                raise Exception
+        else:
+            raise Exception()
+    
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
         primary_artists = ArtistClass.objects.filter(primary_concerts__recordings=self)
