@@ -317,8 +317,8 @@ class WorkTest(TestCase):
 
 class RaagaTest(TestCase):
     def setUp(self):
-        self.raaga = models.Raaga.objects.create(id=1, name="My Raaga")
-
+        self.raaga = models.Raaga.objects.create(id=1, name="My Raaga", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
+        self.normaluser = auth.models.User.objects.create_user("normaluser")
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
         self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
@@ -329,9 +329,12 @@ class RaagaTest(TestCase):
             self.fail("uuid is not correct/present")
 
     def test_render_raaga_detail(self):
-        s = api.RaagaDetailSerializer(self.raaga)
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
-        self.assertEqual(fields, sorted(s.data.keys()))
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
+        data = response.data
+        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
+        self.assertEqual(fields, sorted(data.keys()))
 
 class TaalaTest(TestCase):
     def setUp(self):
