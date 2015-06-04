@@ -730,38 +730,28 @@ class Recording(CarnaticStyle, data.models.Recording):
     objects = managers.CollectionRecordingManager()
     
     def get_raaga(self):
-        if len(forms.all) == 0:
+        forms = self.forms.all()
+        if len(forms) == 0:
             return []
-        else:
-            from_rec = forms[0].attrfromrecording
 
-        if from_rec :
+        if forms[0].attrfromrecording:
             return self.raagas.all()
         
-        if self.work:
-            rs = self.work.raaga.all()
-            if rs:
-                return rs
-            else:
-                raise Exception
+        if self.work and self.work.raaga: 
+            return [self.work.raaga]
         else:
             raise Exception()
     
-    def get_taaga(self):
-        if len(forms.all) == 0:
+    def get_taala(self):
+        forms = self.forms.all()
+        if len(forms) == 0:
             return []
-        else:
-            from_rec = forms[0].attrfromrecording
 
-        if from_rec :
+        if forms[0].attrfromrecording:
             return self.taalas.all()
         
-        if self.work:
-            rs = self.work.taala.all()
-            if rs:
-                return rs
-            else:
-                raise Exception
+        if self.work and self.work.taala: 
+            return [self.work.taala]
         else:
             raise Exception()
     

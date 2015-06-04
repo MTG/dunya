@@ -325,6 +325,12 @@ class RaagaTest(TestCase):
         models.RecordingRaaga.objects.create(raaga=self.raaga, recording=self.recording)
         models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
     
+        self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
+        self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", raaga=self.raaga)
+        self.recording2 = models.Recording.objects.create(work=self.work, title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
+        models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
+    
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
         self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
@@ -349,11 +355,31 @@ class RaagaTest(TestCase):
         
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
+       
+        # Test get_raaga method from recording
+        data = self.recording.get_raaga()
+        self.assertEqual(1, len(data))
+        
+        data = self.recording2.get_raaga()
+        self.assertEqual(1, len(data))
 
 class TaalaTest(TestCase):
     def setUp(self):
-        self.taala = models.Taala.objects.create(id=1, name="My Taala")
+        self.taala = models.Taala.objects.create(id=1, name="My Taala", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
+        self.normaluser = auth.models.User.objects.create_user("normaluser")
+        self.form = models.Form.objects.create(attrfromrecording=True, name='form')
+        
+        self.recording = models.Recording.objects.create(title="recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingTaala.objects.create(taala=self.taala, recording=self.recording)
+        models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
+    
+        self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
+        self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", taala=self.taala)
+        self.recording2 = models.Recording.objects.create(work=self.work, title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
 
+        models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
+    
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)
         self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
@@ -367,6 +393,17 @@ class TaalaTest(TestCase):
         s = api.TaalaDetailSerializer(self.taala)
         fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
         self.assertEqual(fields, sorted(s.data.keys()))
+    
+    def test_recording_taala(self):
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+       
+        # Test get_taala method from recording
+        data = self.recording.get_taala()
+        self.assertEqual(1, len(data))
+        
+        data = self.recording2.get_taala()
+        self.assertEqual(1, len(data))
 
 class ConcertTest(TestCase):
     def setUp(self):
