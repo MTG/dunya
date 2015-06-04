@@ -76,10 +76,16 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
     works = WorkInnerSerializer(many=True)
     composers = ComposerInnerSerializer(many=True)
     aliases = serializers.StringRelatedField(many=True, read_only=True)
-
+    recordings = serializers.SerializerMethodField('recording_list')
+    
     class Meta:
         model = models.Taala
-        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers', 'recordings']
+
+    def recording_list(self, ob):
+        form = self.context['request'].GET.get('form', None)
+        recordings = ob.recordings_form(form)
+        return RecordingInnerSerializer(recordings, many=True).data
 
 class TaalaDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'

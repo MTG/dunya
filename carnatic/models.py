@@ -646,6 +646,12 @@ class Taala(data.models.BaseModel):
             recordings = recordings[:limit]
         return recordings
 
+    def recordings_form(self, form=None):
+        ret = self.recording_set
+        if form:
+            ret = ret.filter(forms__name=form)
+        return ret.all()
+
 class Work(CarnaticStyle, data.models.Work):
 
     # (raaga, taala)

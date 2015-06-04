@@ -390,13 +390,21 @@ class TaalaTest(TestCase):
             self.fail("uuid is not correct/present")
 
     def test_render_taala_detail(self):
-        s = api.TaalaDetailSerializer(self.taala)
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
-        self.assertEqual(fields, sorted(s.data.keys()))
-    
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
+        data = response.data
+        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
+        self.assertEqual(fields, sorted(data.keys()))
+
+   
     def test_recording_taala(self):
         client = APIClient()
         client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
+        
+        data = response.data
+        self.assertEqual(1, len(data["recordings"]))
        
         # Test get_taala method from recording
         data = self.recording.get_taala()
