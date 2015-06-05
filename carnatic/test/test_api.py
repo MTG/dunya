@@ -263,7 +263,7 @@ class WorkTest(TestCase):
 
         response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         data = response.data
-        fields = ['composers', 'mbid', 'raagas', 'recordings', 'taalas', 'title']
+        fields = ['composers', 'lyricists', 'mbid', 'raagas', 'recordings', 'taalas', 'title']
         self.assertEquals(fields, sorted(data.keys()))
 
     def test_work_collection_recordings_staff(self):

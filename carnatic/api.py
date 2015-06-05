@@ -151,10 +151,11 @@ class WorkDetailSerializer(serializers.ModelSerializer):
     raagas = RaagaInnerSerializer(source='raaga', many=True)
     taalas = TaalaInnerSerializer(source='taala', many=True)
     recordings = serializers.SerializerMethodField('recording_list')
-
+    lyricists = ComposerInnerSerializer(many=True)
+    
     class Meta:
         model = models.Work
-        fields = ['mbid', 'title', 'composers', 'raagas', 'taalas', 'recordings']
+        fields = ['mbid', 'title', 'composers', 'lyricists', 'raagas', 'taalas', 'recordings']
 
     def recording_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
