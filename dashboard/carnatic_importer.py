@@ -93,8 +93,9 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     def _apply_tags(self, recording, works, tags):
         for w in works:
             if self.overwrite:
-                w.raaga.clear()
-                w.taala.clear()
+                w.raaga = None
+                w.taala = None
+                w.save()
             
             # Check that there is not more than one form
             forms = recording.forms.all()
@@ -149,7 +150,10 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         for t in tags:
             name = t["name"].lower()
             if compmusic.tags.has_carnatic_form(name):
-                return compmusic.tags.parse_carnatic_form(name)
+                form_tag = compmusic.tags.parse_carnatic_form(name)
+                form = self._get_form(form_tag)
+                if form:
+                    return form
         return None
 
 
@@ -178,6 +182,14 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             if compmusic.tags.has_taala(name):
                 return compmusic.tags.parse_taala(name)
         return None
+
+    def _get_form(self, form):
+        try:
+            return carnatic.models.Form.objects.fuzzy(form)
+        except carnatic.models.Form.DoesNotExist:
+            logger.warn("Cannot find form: %s" % form)
+            return None
+
 
     def _get_raaga(self, raaganame):
         try:
