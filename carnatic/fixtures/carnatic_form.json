@@ -1,121 +1,186 @@
 [
 {
-    "pk": 1, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Alapana"
-    }
+        "name": "Alapana",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 1
 },
 {
-    "pk": 2, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Tanam"
-    }
+        "name": "Tanam",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 2
 },
 {
-    "pk": 3, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Pallavi"
-    }
+        "name": "Pallavi",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 3
 },
 {
-    "pk": 4, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Kriti"
-    }
+        "name": "Kriti",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 4
 },
 {
-    "pk": 5, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Keertana (Devara nama)"
-    }
+        "name": "Keertana (Devara nama)",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 5
 },
 {
-    "pk": 6, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Varnam - Tana Varnam"
-    }
+        "name": "Varnam - Tana Varnam",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 6
 },
 {
-    "pk": 7, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Varnam - Pada Varnam"
-    }
+        "name": "Varnam - Pada Varnam",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 7
 },
 {
-    "pk": 8, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Thillana"
-    }
+        "name": "Thillana",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 8
 },
 {
-    "pk": 9, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Padam"
-    }
+        "name": "Padam",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 9
 },
 {
-    "pk": 10, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Javali"
-    }
+        "name": "Javali",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 10
 },
 {
-    "pk": 11, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Geetham"
-    }
+        "name": "Geetham",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 11
 },
 {
-    "pk": 12, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Swarajati"
-    }
+        "name": "Swarajati",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 12
 },
 {
-    "pk": 13, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Jatiswaram"
-    }
+        "name": "Jatiswaram",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 13
 },
 {
-    "pk": 14, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Tani avartanam"
-    }
+        "name": "Tani avartanam",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 14
 },
 {
-    "pk": 15, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Mangalam"
-    }
+        "name": "Mangalam",
+        "attrfromrecording": false
+    },
+    "model": "carnatic.form",
+    "pk": 15
 },
 {
-    "pk": 16, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Bhajan"
-    }
+        "name": "Bhajan",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 16
 },
 {
-    "pk": 17, 
-    "model": "carnatic.form", 
     "fields": {
-        "name": "Thiruppugazh"
-    }
+        "name": "Thiruppugazh",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 17
+},
+{
+    "fields": {
+        "name": "Shloka",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 18
+},
+{
+    "fields": {
+        "name": "Viruttham",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 19
+},
+{
+    "fields": {
+        "name": "Thiruppavai",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 20
+},
+{
+    "fields": {
+        "name": "Pasuram",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 21
+},
+{
+    "fields": {
+        "name": "Thirukkural",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 22
+},
+{
+    "fields": {
+        "name": "Abhang",
+        "attrfromrecording": true
+    },
+    "model": "carnatic.form",
+    "pk": 23
 }
 ]
