@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -246,6 +247,33 @@ class RaagaTaalaFile(CompletenessBase):
     templatefile = 'raagataala.html'
     name = 'Carnatic Recording raaga and taala'
 
+    def check_attrs_and_tags(self, recording, raagas, taalas):
+        workraagas = []
+        worktaalas = []
+        for w in recording.get("work-relation-list", []):
+            wid = w["target"]
+            mbwork = compmusic.mb.get_work_by_id(wid)["work"]
+            for a in mbwork.get("attribute-list", []):
+                if a["type"] == u"Rāga (Carnatic)":
+                    workraagas.append(a["attribute"])
+                if a["type"] == u"Tāla (Carnatic)":
+                    worktaalas.append(a["attribute"])
+
+        # If we have at least 1 work attribute, and there are tags
+        # that exist on the recording but not in the works, show
+        # an error (we don't error on 0 work attributes / no works
+        # because this recording may not have any works).
+        ret = {}
+        if workraagas:
+            wrongr = set(raagas) - set(workraagas)
+            if wrongr:
+                ret["wrongraaga"] = {"recraagas": raagas, "workraagas": workraagas}
+        if worktaalas:
+            wrongt = set(taalas) - set(worktaalas)
+            if wrongt:
+                ret["wrongtaala"] = {"rectaalas": taalas, "worktaalas": worktaalas}
+        return ret
+
     def task(self, collectionfile_id):
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
         fpath = thefile.path
@@ -254,41 +282,73 @@ class RaagaTaalaFile(CompletenessBase):
         recordingid = m["recordingid"]
         if not recordingid:
             thefile.add_log_message("This file has no recording id tag")
-        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags"])
+    def task2(self, recordingid):
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels"])
         mbrec = mbrec["recording"]
         tags = mbrec.get("tag-list", [])
         res = {}
         raagas = []
         taalas = []
+        forms = []
         for t in tags:
             tag = t["name"]
             if compmusic.tags.has_raaga(tag):
                 raagas.append(compmusic.tags.parse_raaga(tag))
             if compmusic.tags.has_taala(tag):
                 taalas.append(compmusic.tags.parse_taala(tag))
+            if compmusic.tags.has_carnatic_form(tag):
+                forms.append(compmusic.tags.parse_carnatic_form(tag))
         res["recordingid"] = recordingid
         missingr = []
         missingt = []
+        missingf = []
+
+        # The names of the raaga and taala objects that exist
+        rnames = []
+        tnames = []
         for r in raagas:
             try:
-                carnatic.models.Raaga.objects.fuzzy(r)
+                rg = carnatic.models.Raaga.objects.fuzzy(r)
+                rnames.append(rg.name)
             except carnatic.models.Raaga.DoesNotExist:
                 missingr.append(r)
         if missingr:
             res["missingr"] = missingr
         for t in taalas:
             try:
-                carnatic.models.Taala.objects.fuzzy(t)
+                ta = carnatic.models.Taala.objects.fuzzy(t)
+                tnames.append(ta.name)
             except carnatic.models.Taala.DoesNotExist:
                 missingt.append(t)
         if missingt:
             res["missingt"] = missingt
 
+        for f in forms:
+            f = f[1]
+            try:
+                carnatic.models.Form.objects.fuzzy(f)
+            except carnatic.models.Form.DoesNotExist:
+                missingf.append(f)
+        if missingf:
+            res["missingf"] = missingf
+
+        # Check any linked work, and see that the work's attribute
+        # matches the raaga/taala tag we have
+        wrongrt = self.check_attrs_and_tags(mbrec, rnames, tnames)
+
+        res.update(wrongrt)
+
         res["gotraaga"] = len(raagas) > 0
         res["gottaala"] = len(taalas) > 0
+        res["gotform"] = len(forms) > 0
         res["raaga"] = raagas
         res["taala"] = taalas
-        if raagas and taalas and not missingt and not missingr:
+        res["form"] = forms
+        good_raaga = raagas and not missingr
+        good_taala = taalas and not missingt
+        good_form = forms and not missingf
+        good_attrs = "wrongtaala" not in res and "wrongraaga" not in res
+        if good_raaga and good_taala and good_form and good_attrs:
             return (True, res)
         else:
             return (False, res)

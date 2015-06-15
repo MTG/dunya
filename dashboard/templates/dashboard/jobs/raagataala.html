@@ -13,6 +13,12 @@ Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordin
 {% endfor %}
 {% endif %}
 
+{% if data.wrongraaga %}
+<h5>Unmatching recording tag and work attributes</h5>
+Recording: {{data.wrongraaga.recraagas|join:", "}}<br>
+Work: {{data.wrongraaga.workraagas|join:", "}}
+{% endif %}
+
 {% if data.gottaala %}
 <h4>Taala</h4>
 {% if data.gottaala %}Got taala tags: {{data.taala|join:", "}}{% else %}Missing taala tags{% endif %}
@@ -22,4 +28,15 @@ Musicbrainz recording: <a href="http://musicbrainz.org/recording/{{data.recordin
 {% for t in data.missingt %}
 <li><a href="{% url 'dashboard-carnatic-taalas' %}?newname={{t}}">{{t}}</a>
 {% endfor %}
+{% endif %}
+
+{% if data.wrongtaala %}
+<h5>Unmatching recording tag and work attributes</h5>
+Recording: {{data.wrongtaala.rectaalas|join:", "}}<br>
+Work: {{data.wrongtaala.worktaalas|join:", "}}
+{% endif %}
+
+{% if data.gotform  %}
+<h4>Form</h4>
+Got form tags: {{data.form|join:", "}}
 {% endif %}
