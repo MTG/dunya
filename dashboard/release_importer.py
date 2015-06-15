@@ -300,6 +300,9 @@ class ReleaseImporter(object):
     def _clear_work_composers(self, work):
         pass
 
+    def _add_work_attributes(self, work, mbwork, created):
+        pass
+
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
         work, created = self._WorkClass.objects.get_or_create(
@@ -312,8 +315,8 @@ class ReleaseImporter(object):
             work.title = mbwork["title"]
             work.save()
 
-        # TODO: Work attributes
         self._clear_work_composers(work)
+        self._add_work_attributes(work, mbwork, created)
 
         for artist in mbwork.get("artist-relation-list", []):
             if artist["type-id"] == RELATION_COMPOSER:
