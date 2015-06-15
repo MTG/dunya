@@ -282,7 +282,7 @@ class RaagaTaalaFile(CompletenessBase):
         recordingid = m["recordingid"]
         if not recordingid:
             thefile.add_log_message("This file has no recording id tag")
-    def task2(self, recordingid):
+
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels"])
         mbrec = mbrec["recording"]
         tags = mbrec.get("tag-list", [])
@@ -343,7 +343,7 @@ class RaagaTaalaFile(CompletenessBase):
         res["gotform"] = len(forms) > 0
         res["raaga"] = raagas
         res["taala"] = taalas
-        res["form"] = forms
+        res["form"] = [f[1] for f in forms]
         good_raaga = raagas and not missingr
         good_taala = taalas and not missingt
         good_form = forms and not missingf
