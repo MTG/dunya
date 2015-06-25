@@ -814,5 +814,165 @@
     },
     "model": "makam.form",
     "pk": 104
+},
+{
+    "fields": {
+        "name": "Kuran-\u0131kerim",
+        "form": 34
+    },
+    "model": "makam.formalias",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "Ayin-i\u015ferif",
+        "form": 6
+    },
+    "model": "makam.formalias",
+    "pk": 2
+},
+{
+    "fields": {
+        "name": "Rumelit\u00fcrk\u00fcs\u00fc",
+        "form": 56
+    },
+    "model": "makam.formalias",
+    "pk": 3
+},
+{
+    "fields": {
+        "name": "Mi'raciye",
+        "form": 45
+    },
+    "model": "makam.formalias",
+    "pk": 4
+},
+{
+    "fields": {
+        "name": "Hanendesemaisi",
+        "form": 82
+    },
+    "model": "makam.formalias",
+    "pk": 5
+},
+{
+    "fields": {
+        "name": "Tev\u015fih",
+        "form": 74
+    },
+    "model": "makam.formalias",
+    "pk": 6
+},
+{
+    "fields": {
+        "name": "Sazendesemaisi",
+        "form": 83
+    },
+    "model": "makam.formalias",
+    "pk": 7
+},
+{
+    "fields": {
+        "name": "N'at",
+        "form": 47
+    },
+    "model": "makam.formalias",
+    "pk": 8
+},
+{
+    "fields": {
+        "name": "Raksiye",
+        "form": 85
+    },
+    "model": "makam.formalias",
+    "pk": 9
+},
+{
+    "fields": {
+        "name": "Vals",
+        "form": 87
+    },
+    "model": "makam.formalias",
+    "pk": 11
+},
+{
+    "fields": {
+        "name": "G\u00fclbank",
+        "form": 89
+    },
+    "model": "makam.formalias",
+    "pk": 12
+},
+{
+    "fields": {
+        "name": "Kur'an-\u0131kerim",
+        "form": 34
+    },
+    "model": "makam.formalias",
+    "pk": 13
+},
+{
+    "fields": {
+        "name": "Kur`an-\u0131kerim",
+        "form": 34
+    },
+    "model": "makam.formalias",
+    "pk": 14
+},
+{
+    "fields": {
+        "name": "Sonat",
+        "form": 94
+    },
+    "model": "makam.formalias",
+    "pk": 15
+},
+{
+    "fields": {
+        "name": "Beste-murabba",
+        "form": 97
+    },
+    "model": "makam.formalias",
+    "pk": 16
+},
+{
+    "fields": {
+        "name": "kelime-itevhid",
+        "form": 98
+    },
+    "model": "makam.formalias",
+    "pk": 17
+},
+{
+    "fields": {
+        "name": "Varsa\u011f\u0131",
+        "form": 104
+    },
+    "model": "makam.formalias",
+    "pk": 19
+},
+{
+    "fields": {
+        "name": "nak\u0131\u015f-beste",
+        "form": 100
+    },
+    "model": "makam.formalias",
+    "pk": 20
+},
+{
+    "fields": {
+        "name": "Belirsiz",
+        "form": 2
+    },
+    "model": "makam.formalias",
+    "pk": 21
+},
+{
+    "fields": {
+        "name": "(Belirsiz)",
+        "form": 2
+    },
+    "model": "makam.formalias",
+    "pk": 22
 }
 ]

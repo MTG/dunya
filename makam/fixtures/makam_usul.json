@@ -822,5 +822,245 @@
     },
     "model": "makam.usul",
     "pk": 105
+},
+{
+    "fields": {
+        "usul": 38,
+        "name": "Devrikebir"
+    },
+    "model": "makam.usulalias",
+    "pk": 1
+},
+{
+    "fields": {
+        "usul": 10,
+        "name": "A\u011f\u0131r senginsemai"
+    },
+    "model": "makam.usulalias",
+    "pk": 2
+},
+{
+    "fields": {
+        "usul": 93,
+        "name": "T\u00fcrk aksa\u011f\u0131"
+    },
+    "model": "makam.usulalias",
+    "pk": 3
+},
+{
+    "fields": {
+        "usul": 87,
+        "name": "Free meter"
+    },
+    "model": "makam.usulalias",
+    "pk": 4
+},
+{
+    "fields": {
+        "usul": 3,
+        "name": "A\u011f\u0131raksaksemai"
+    },
+    "model": "makam.usulalias",
+    "pk": 5
+},
+{
+    "fields": {
+        "usul": 100,
+        "name": "Ortaaksak"
+    },
+    "model": "makam.usulalias",
+    "pk": 6
+},
+{
+    "fields": {
+        "usul": 52,
+        "name": "Freng-i fer"
+    },
+    "model": "makam.usulalias",
+    "pk": 7
+},
+{
+    "fields": {
+        "usul": 53,
+        "name": "Frenk\u00e7in"
+    },
+    "model": "makam.usulalias",
+    "pk": 8
+},
+{
+    "fields": {
+        "usul": 11,
+        "name": "Aksak (9/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 9
+},
+{
+    "fields": {
+        "usul": 37,
+        "name": "Devr-i Hind\u00ee (7/8)"
+    },
+    "model": "makam.usulalias",
+    "pk": 10
+},
+{
+    "fields": {
+        "usul": 102,
+        "name": "Devr-i Hind\u00ee II"
+    },
+    "model": "makam.usulalias",
+    "pk": 11
+},
+{
+    "fields": {
+        "usul": 102,
+        "name": "Devr-i Hind\u00ee 2"
+    },
+    "model": "makam.usulalias",
+    "pk": 12
+},
+{
+    "fields": {
+        "usul": 47,
+        "name": "D\u00fcyek (8/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 13
+},
+{
+    "fields": {
+        "usul": 103,
+        "name": "Fer'i Muhammes (16/8)"
+    },
+    "model": "makam.usulalias",
+    "pk": 14
+},
+{
+    "fields": {
+        "usul": 54,
+        "name": "Haf\u00eef (32/2)"
+    },
+    "model": "makam.usulalias",
+    "pk": 15
+},
+{
+    "fields": {
+        "usul": 60,
+        "name": "K. Curcuna"
+    },
+    "model": "makam.usulalias",
+    "pk": 16
+},
+{
+    "fields": {
+        "usul": 60,
+        "name": "K. Curcuna (10/16)"
+    },
+    "model": "makam.usulalias",
+    "pk": 17
+},
+{
+    "fields": {
+        "usul": 60,
+        "name": "Kapal\u0131 Curcuna (10/16)"
+    },
+    "model": "makam.usulalias",
+    "pk": 18
+},
+{
+    "fields": {
+        "usul": 85,
+        "name": "Sem\u00e2\u00ee (3/8)"
+    },
+    "model": "makam.usulalias",
+    "pk": 19
+},
+{
+    "fields": {
+        "usul": 86,
+        "name": "serginsemai"
+    },
+    "model": "makam.usulalias",
+    "pk": 20
+},
+{
+    "fields": {
+        "usul": 104,
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee II (6/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 21
+},
+{
+    "fields": {
+        "usul": 104,
+        "name": "Y\u00fcr\u00fcksemai II (6/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 22
+},
+{
+    "fields": {
+        "usul": 104,
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee II"
+    },
+    "model": "makam.usulalias",
+    "pk": 23
+},
+{
+    "fields": {
+        "usul": 94,
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee (6/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 24
+},
+{
+    "fields": {
+        "usul": 94,
+        "name": "Y\u00fcr\u00fcksemai (6/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 25
+},
+{
+    "fields": {
+        "usul": 93,
+        "name": "T\u00fcrkaksa\u011f\u0131 (5/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 26
+},
+{
+    "fields": {
+        "usul": 93,
+        "name": "T\u00fcrk aksa\u011f\u0131 (5/4)"
+    },
+    "model": "makam.usulalias",
+    "pk": 27
+},
+{
+    "fields": {
+        "usul": 104,
+        "name": "Y\u00fcr\u00fcksemai 2"
+    },
+    "model": "makam.usulalias",
+    "pk": 28
+},
+{
+    "fields": {
+        "usul": 105,
+        "name": "Sofyan 2"
+    },
+    "model": "makam.usulalias",
+    "pk": 29
+},
+{
+    "fields": {
+        "usul": 104,
+        "name": "Y\u00fcr\u00fcksem\u00e2\u00ee 2"
+    },
+    "model": "makam.usulalias",
+    "pk": 30
 }
 ]

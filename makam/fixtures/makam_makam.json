@@ -2430,5 +2430,349 @@
     },
     "model": "makam.makam",
     "pk": 315
+},
+{
+    "fields": {
+        "name": "\u015eevk'efza",
+        "makam": 262
+    },
+    "model": "makam.makamalias",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "Beyati-Araban",
+        "makam": 35
+    },
+    "model": "makam.makamalias",
+    "pk": 2
+},
+{
+    "fields": {
+        "name": "Hicaz-H\u00fcmayun",
+        "makam": 100
+    },
+    "model": "makam.makamalias",
+    "pk": 3
+},
+{
+    "fields": {
+        "name": "Zirg\u00fcleli Hicaz",
+        "makam": 112
+    },
+    "model": "makam.makamalias",
+    "pk": 4
+},
+{
+    "fields": {
+        "name": "Zirg\u00fcleli Suzinak",
+        "makam": 248
+    },
+    "model": "makam.makamalias",
+    "pk": 5
+},
+{
+    "fields": {
+        "name": "Tarz-\u0131-Nevin",
+        "makam": 279
+    },
+    "model": "makam.makamalias",
+    "pk": 6
+},
+{
+    "fields": {
+        "name": "nihavend",
+        "makam": 188
+    },
+    "model": "makam.makamalias",
+    "pk": 7
+},
+{
+    "fields": {
+        "name": "Sultan-\u0131-arak",
+        "makam": 237
+    },
+    "model": "makam.makamalias",
+    "pk": 8
+},
+{
+    "fields": {
+        "name": "G\u00fclzar",
+        "makam": 306
+    },
+    "model": "makam.makamalias",
+    "pk": 9
+},
+{
+    "fields": {
+        "name": "Muhayyers\u00fcnb\u00fcle",
+        "makam": 308
+    },
+    "model": "makam.makamalias",
+    "pk": 12
+},
+{
+    "fields": {
+        "name": "Buselik a\u015firan",
+        "makam": 41
+    },
+    "model": "makam.makamalias",
+    "pk": 13
+},
+{
+    "fields": {
+        "name": "Buselik-a\u015firan",
+        "makam": 41
+    },
+    "model": "makam.makamalias",
+    "pk": 14
+},
+{
+    "fields": {
+        "name": "Evi\u00e7-maye",
+        "makam": 67
+    },
+    "model": "makam.makamalias",
+    "pk": 15
+},
+{
+    "fields": {
+        "name": "",
+        "makam": 181
+    },
+    "model": "makam.makamalias",
+    "pk": 16
+},
+{
+    "fields": {
+        "name": "B\u00fcz\u00fcrg",
+        "makam": 42
+    },
+    "model": "makam.makamalias",
+    "pk": 17
+},
+{
+    "fields": {
+        "name": "H\u00fcseyni G\u00fclizar",
+        "makam": 309
+    },
+    "model": "makam.makamalias",
+    "pk": 18
+},
+{
+    "fields": {
+        "name": "Nihavend-i-kebir",
+        "makam": 186
+    },
+    "model": "makam.makamalias",
+    "pk": 19
+},
+{
+    "fields": {
+        "name": "Peyk-i-safa",
+        "makam": 201
+    },
+    "model": "makam.makamalias",
+    "pk": 20
+},
+{
+    "fields": {
+        "name": "Evi\u00e7-huzi",
+        "makam": 63
+    },
+    "model": "makam.makamalias",
+    "pk": 21
+},
+{
+    "fields": {
+        "name": "Besteisfahan",
+        "makam": 31
+    },
+    "model": "makam.makamalias",
+    "pk": 22
+},
+{
+    "fields": {
+        "name": "Eski-sipihr",
+        "makam": 59
+    },
+    "model": "makam.makamalias",
+    "pk": 23
+},
+{
+    "fields": {
+        "name": "Yeni-sipihr",
+        "makam": 235
+    },
+    "model": "makam.makamalias",
+    "pk": 24
+},
+{
+    "fields": {
+        "name": "Zevkutarab",
+        "makam": 311
+    },
+    "model": "makam.makamalias",
+    "pk": 25
+},
+{
+    "fields": {
+        "name": "Zeng\u00fclebuselik",
+        "makam": 313
+    },
+    "model": "makam.makamalias",
+    "pk": 26
+},
+{
+    "fields": {
+        "name": "Zeng\u00fcle K\u00fcrdi",
+        "makam": 314
+    },
+    "model": "makam.makamalias",
+    "pk": 27
+},
+{
+    "fields": {
+        "name": "Zeng\u00fclelik\u00fcrdi",
+        "makam": 314
+    },
+    "model": "makam.makamalias",
+    "pk": 28
+},
+{
+    "fields": {
+        "name": "Zeng\u00fclek\u00fcrdi",
+        "makam": 314
+    },
+    "model": "makam.makamalias",
+    "pk": 29
+},
+{
+    "fields": {
+        "name": "Vech-i-arazbar",
+        "makam": 288
+    },
+    "model": "makam.makamalias",
+    "pk": 30
+},
+{
+    "fields": {
+        "name": "Hicaz-uzzal",
+        "makam": 111
+    },
+    "model": "makam.makamalias",
+    "pk": 31
+},
+{
+    "fields": {
+        "name": "Ruy-i-neva",
+        "makam": 303
+    },
+    "model": "makam.makamalias",
+    "pk": 32
+},
+{
+    "fields": {
+        "name": "Hicaz-zirg\u00fcle",
+        "makam": 112
+    },
+    "model": "makam.makamalias",
+    "pk": 33
+},
+{
+    "fields": {
+        "name": "Saba-zemzeme",
+        "makam": 225
+    },
+    "model": "makam.makamalias",
+    "pk": 34
+},
+{
+    "fields": {
+        "name": "Belirsiz",
+        "makam": 1
+    },
+    "model": "makam.makamalias",
+    "pk": 35
+},
+{
+    "fields": {
+        "name": "S\u00fbzin\u00e2k-Zirg\u00fcle",
+        "makam": 248
+    },
+    "model": "makam.makamalias",
+    "pk": 36
+},
+{
+    "fields": {
+        "name": "\u015eevk`efza",
+        "makam": 262
+    },
+    "model": "makam.makamalias",
+    "pk": 37
+},
+{
+    "fields": {
+        "name": "Evi\u00e7-H\u00fbz\u00ee",
+        "makam": 63
+    },
+    "model": "makam.makamalias",
+    "pk": 38
+},
+{
+    "fields": {
+        "name": "Hicaz-Uzz\u00e2l",
+        "makam": 111
+    },
+    "model": "makam.makamalias",
+    "pk": 39
+},
+{
+    "fields": {
+        "name": "Hicaz-H\u00fcm\u00e2y\u00fbn",
+        "makam": 100
+    },
+    "model": "makam.makamalias",
+    "pk": 40
+},
+{
+    "fields": {
+        "name": "Hicaz-H\u00fcm\u00e2y\u00fbn",
+        "makam": 100
+    },
+    "model": "makam.makamalias",
+    "pk": 41
+},
+{
+    "fields": {
+        "name": "Seg\u00e2h-M\u00e2ye",
+        "makam": 232
+    },
+    "model": "makam.makamalias",
+    "pk": 42
+},
+{
+    "fields": {
+        "name": "Sab\u00e2-Zemzeme",
+        "makam": 225
+    },
+    "model": "makam.makamalias",
+    "pk": 43
+},
+{
+    "fields": {
+        "name": "Bey\u00e2t\u00ee-Arab\u00e2n",
+        "makam": 35
+    },
+    "model": "makam.makamalias",
+    "pk": 44
+},
+{
+    "fields": {
+        "name": "",
+        "makam": 63
+    },
+    "model": "makam.makamalias",
+    "pk": 45
 }
 ]
