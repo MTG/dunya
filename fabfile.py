@@ -98,9 +98,9 @@ def dumpfixture(modname):
                   "section": ["Section", "SectionAlias"]}
     elif modname == "makam":
         tablemap = {"instrument": ["Instrument"],
-                    "makam": ["Makam"],
-                    "form": ["Form"],
-                    "usul": ["Usul"]}
+                    "makam": ["Makam", "MakamAlias"],
+                    "form": ["Form", "FormAlias"],
+                    "usul": ["Usul", "UsulAlias"]}
     for filename, tables in tablemap.items():
         modellist = " ".join(["%s.%s[:]" % (modname, t) for t in tables])
         redir = redir_base % filename
