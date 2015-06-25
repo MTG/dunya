@@ -1,818 +1,818 @@
 [
 {
-    "pk": 1, 
-    "model": "makam.form", 
     "fields": {
-        "name": "No Form", 
+        "name": "No Form",
         "uuid": "1fc28b07-8836-4ac8-b7ca-3ef461c9045d"
-    }
+    },
+    "model": "makam.form",
+    "pk": 1
 },
 {
-    "pk": 2, 
-    "model": "makam.form", 
     "fields": {
-        "name": "ambiguous", 
+        "name": "ambiguous",
         "uuid": "4007f266-6a2c-4102-a699-5d030eb91c7b"
-    }
+    },
+    "model": "makam.form",
+    "pk": 2
 },
 {
-    "pk": 3, 
-    "model": "makam.form", 
     "fields": {
-        "name": "unknown", 
+        "name": "unknown",
         "uuid": "ba246a9e-f91d-4e2e-b2db-56ac99978ad4"
-    }
+    },
+    "model": "makam.form",
+    "pk": 3
 },
 {
-    "pk": 4, 
-    "model": "makam.form", 
     "fields": {
-        "name": "A\u011f\u0131rsemai", 
+        "name": "A\u011f\u0131rsemai",
         "uuid": "ea3044b1-ebf0-4aed-8ac3-d789aafacfd9"
-    }
+    },
+    "model": "makam.form",
+    "pk": 4
 },
 {
-    "pk": 5, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Arana\u011fme", 
+        "name": "Arana\u011fme",
         "uuid": "74fe3750-99db-4e13-974e-5cc0bed95861"
-    }
+    },
+    "model": "makam.form",
+    "pk": 5
 },
 {
-    "pk": 6, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Ayin-i \u015eerif", 
+        "name": "Ayin-i \u015eerif",
         "uuid": "bc79cde5-2df6-4a9e-8692-2462e76d5a4f"
-    }
+    },
+    "model": "makam.form",
+    "pk": 6
 },
 {
-    "pk": 7, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Beste", 
+        "name": "Beste",
         "uuid": "fc53e491-d5eb-443d-bbbe-ff8e2c457382"
-    }
+    },
+    "model": "makam.form",
+    "pk": 7
 },
 {
-    "pk": 8, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Bozlak", 
+        "name": "Bozlak",
         "uuid": "8f683cfa-c2a5-43c0-9d89-7a1dd7eae3d6"
-    }
+    },
+    "model": "makam.form",
+    "pk": 8
 },
 {
-    "pk": 9, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Cumhurilahi", 
+        "name": "Cumhurilahi",
         "uuid": "1e7ebde6-e809-481c-8697-57dae71cb1e6"
-    }
+    },
+    "model": "makam.form",
+    "pk": 9
 },
 {
-    "pk": 10, 
-    "model": "makam.form", 
     "fields": {
-        "name": "\u00c7ocuk \u015fark\u0131s\u0131", 
+        "name": "\u00c7ocuk \u015fark\u0131s\u0131",
         "uuid": "305ea485-15f0-4766-a4c3-91ee9d687eba"
-    }
+    },
+    "model": "makam.form",
+    "pk": 10
 },
 {
-    "pk": 11, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Destan", 
+        "name": "Destan",
         "uuid": "90f7d813-ca25-48de-a180-36ae85fb2e9a"
-    }
+    },
+    "model": "makam.form",
+    "pk": 11
 },
 {
-    "pk": 12, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Divan", 
+        "name": "Divan",
         "uuid": "ef53403e-89c7-4daa-a2a6-0d5e0c6f95aa"
-    }
+    },
+    "model": "makam.form",
+    "pk": 12
 },
 {
-    "pk": 13, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Durak", 
+        "name": "Durak",
         "uuid": "49cc57ff-9e5b-431d-92c6-c65a53a64a3d"
-    }
+    },
+    "model": "makam.form",
+    "pk": 13
 },
 {
-    "pk": 14, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Et\u00fcd", 
+        "name": "Et\u00fcd",
         "uuid": "bf4ea6e5-5d6e-4832-b272-e265231d621a"
-    }
+    },
+    "model": "makam.form",
+    "pk": 14
 },
 {
-    "pk": 15, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Ezan", 
+        "name": "Ezan",
         "uuid": "586fb1f3-5335-4374-8c05-51ea97da088b"
-    }
+    },
+    "model": "makam.form",
+    "pk": 15
 },
 {
-    "pk": 16, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Fantezi", 
+        "name": "Fantezi",
         "uuid": "3679724d-cabf-4192-8213-d579befcf254"
-    }
+    },
+    "model": "makam.form",
+    "pk": 16
 },
 {
-    "pk": 17, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Gazel", 
+        "name": "Gazel",
         "uuid": "a1d59289-ea72-4050-9253-01ca12bb5556"
-    }
+    },
+    "model": "makam.form",
+    "pk": 17
 },
 {
-    "pk": 18, 
-    "model": "makam.form", 
     "fields": {
-        "name": "G\u00fcvende", 
+        "name": "G\u00fcvende",
         "uuid": "023d722d-3fd7-4bb7-82d1-ef02a86ad6cd"
-    }
+    },
+    "model": "makam.form",
+    "pk": 18
 },
 {
-    "pk": 19, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Halk T\u00fcrk\u00fcs\u00fc", 
+        "name": "Halk T\u00fcrk\u00fcs\u00fc",
         "uuid": "f85a1474-ad5e-41a2-a0c4-cacb56babcf0"
-    }
+    },
+    "model": "makam.form",
+    "pk": 19
 },
 {
-    "pk": 20, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Hutbe", 
+        "name": "Hutbe",
         "uuid": "28cef7d6-448a-4c19-9c69-8b608fc4e325"
-    }
+    },
+    "model": "makam.form",
+    "pk": 20
 },
 {
-    "pk": 21, 
-    "model": "makam.form", 
     "fields": {
-        "name": "\u0130lahi", 
+        "name": "\u0130lahi",
         "uuid": "f9180472-14c8-4470-a8c0-af0a6b6e4510"
-    }
+    },
+    "model": "makam.form",
+    "pk": 21
 },
 {
-    "pk": 22, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kalenderi", 
+        "name": "Kalenderi",
         "uuid": "499a53fd-5387-4f5d-b86f-90a721ba68a6"
-    }
+    },
+    "model": "makam.form",
+    "pk": 22
 },
 {
-    "pk": 23, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kamet", 
+        "name": "Kamet",
         "uuid": "04f1b3b1-7dfc-4c31-98aa-0e5fd41871b1"
-    }
+    },
+    "model": "makam.form",
+    "pk": 23
 },
 {
-    "pk": 24, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kanto", 
+        "name": "Kanto",
         "uuid": "ee0a1bea-3eca-4051-baa1-fd038f12d572"
-    }
+    },
+    "model": "makam.form",
+    "pk": 24
 },
 {
-    "pk": 25, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kar", 
+        "name": "Kar",
         "uuid": "6d62a093-4d01-44e0-bee4-c465ab918909"
-    }
+    },
+    "model": "makam.form",
+    "pk": 25
 },
 {
-    "pk": 26, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kar\u00e7e", 
+        "name": "Kar\u00e7e",
         "uuid": "b4847fa2-e334-446d-aee7-30b0e0b82a82"
-    }
+    },
+    "model": "makam.form",
+    "pk": 26
 },
 {
-    "pk": 27, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kar-\u0131 Nat\u0131k", 
+        "name": "Kar-\u0131 Nat\u0131k",
         "uuid": "de7cd667-54fe-4ad9-9128-04b7f5f22c11"
-    }
+    },
+    "model": "makam.form",
+    "pk": 27
 },
 {
-    "pk": 28, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kar-\u0131 Nev", 
+        "name": "Kar-\u0131 Nev",
         "uuid": "35c548d5-92be-4b31-8d6b-dad3370d6260"
-    }
+    },
+    "model": "makam.form",
+    "pk": 28
 },
 {
-    "pk": 29, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kar\u015f\u0131lama", 
+        "name": "Kar\u015f\u0131lama",
         "uuid": "1f9fe17d-82ac-4741-99f5-4affcb1a9b23"
-    }
+    },
+    "model": "makam.form",
+    "pk": 29
 },
 {
-    "pk": 30, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kasaphavas\u0131", 
+        "name": "Kasaphavas\u0131",
         "uuid": "776294f3-4e3a-44a5-b3ac-c2492a90e632"
-    }
+    },
+    "model": "makam.form",
+    "pk": 30
 },
 {
-    "pk": 31, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Koda", 
+        "name": "Koda",
         "uuid": "353decc1-9af9-441f-972e-92ed77b9e7f7"
-    }
+    },
+    "model": "makam.form",
+    "pk": 31
 },
 {
-    "pk": 32, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Ko\u015fma", 
+        "name": "Ko\u015fma",
         "uuid": "3931901c-80af-4c3c-ab97-fcc7a6962eca"
-    }
+    },
+    "model": "makam.form",
+    "pk": 32
 },
 {
-    "pk": 33, 
-    "model": "makam.form", 
     "fields": {
-        "name": "K\u00f6\u00e7ek\u00e7e", 
+        "name": "K\u00f6\u00e7ek\u00e7e",
         "uuid": "4f0903a9-5e7e-44a3-827e-2b4cb50ff4a9"
-    }
+    },
+    "model": "makam.form",
+    "pk": 33
 },
 {
-    "pk": 34, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kur'an-\u0131 Kerim", 
+        "name": "Kur'an-\u0131 Kerim",
         "uuid": "f68c56af-7537-4881-b35b-21423b7f4dfd"
-    }
+    },
+    "model": "makam.form",
+    "pk": 34
 },
 {
-    "pk": 35, 
-    "model": "makam.form", 
     "fields": {
-        "name": "K\u00fcpe", 
+        "name": "K\u00fcpe",
         "uuid": "093c80bc-4baf-446b-a4ea-5be7c248adf3"
-    }
+    },
+    "model": "makam.form",
+    "pk": 35
 },
 {
-    "pk": 36, 
-    "model": "makam.form", 
     "fields": {
-        "name": "K\u00fcrthavas\u0131", 
+        "name": "K\u00fcrthavas\u0131",
         "uuid": "ce556e44-9c02-4956-ac61-90fee2af078d"
-    }
+    },
+    "model": "makam.form",
+    "pk": 36
 },
 {
-    "pk": 37, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Longa", 
+        "name": "Longa",
         "uuid": "01adb52a-dac0-4d0b-bdd0-9553044002eb"
-    }
+    },
+    "model": "makam.form",
+    "pk": 37
 },
 {
-    "pk": 38, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Mahfels\u00fcrmesi", 
+        "name": "Mahfels\u00fcrmesi",
         "uuid": "64069c1d-fbc3-48d9-8694-5dc376340fce"
-    }
+    },
+    "model": "makam.form",
+    "pk": 38
 },
 {
-    "pk": 39, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Mandra", 
+        "name": "Mandra",
         "uuid": "04d94660-f411-472d-9067-7881f29e0511"
-    }
+    },
+    "model": "makam.form",
+    "pk": 39
 },
 {
-    "pk": 40, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Mar\u015f", 
+        "name": "Mar\u015f",
         "uuid": "3b140f39-4ee6-410e-a487-9a57ad7485e3"
-    }
+    },
+    "model": "makam.form",
+    "pk": 40
 },
 {
-    "pk": 41, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Medhal", 
+        "name": "Medhal",
         "uuid": "ab11f70c-18e2-4739-a279-aef9421f2336"
-    }
+    },
+    "model": "makam.form",
+    "pk": 41
 },
 {
-    "pk": 42, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Mehter", 
+        "name": "Mehter",
         "uuid": "01104858-0727-4fdf-890e-eec8ca93f8a9"
-    }
+    },
+    "model": "makam.form",
+    "pk": 42
 },
 {
-    "pk": 43, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Mersiye", 
+        "name": "Mersiye",
         "uuid": "d9cc0fc6-7ca8-49e4-b2dd-3897c19ecdd5"
-    }
+    },
+    "model": "makam.form",
+    "pk": 43
 },
 {
-    "pk": 44, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Mevlidi\u015ferif", 
+        "name": "Mevlidi\u015ferif",
         "uuid": "9f427106-2bb0-44e2-b8b8-d64564f60827"
-    }
+    },
+    "model": "makam.form",
+    "pk": 44
 },
 {
-    "pk": 45, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Miraciye", 
+        "name": "Miraciye",
         "uuid": "b959434b-eebc-4827-81a2-be1497bb6d6a"
-    }
+    },
+    "model": "makam.form",
+    "pk": 45
 },
 {
-    "pk": 46, 
-    "model": "makam.form", 
     "fields": {
-        "name": "M\u00fcnacaat", 
+        "name": "M\u00fcnacaat",
         "uuid": "d7f70069-6113-48ac-be03-cac6903020b5"
-    }
+    },
+    "model": "makam.form",
+    "pk": 46
 },
 {
-    "pk": 47, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Naat", 
+        "name": "Naat",
         "uuid": "42569def-bb7f-44ff-b93e-cd841fa95887"
-    }
+    },
+    "model": "makam.form",
+    "pk": 47
 },
 {
-    "pk": 48, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Nak\u0131\u015f", 
+        "name": "Nak\u0131\u015f",
         "uuid": "dfdb4aad-dd4d-4c29-8971-5b78ae93cf41"
-    }
+    },
+    "model": "makam.form",
+    "pk": 48
 },
 {
-    "pk": 49, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Natipeygamberi", 
+        "name": "Natipeygamberi",
         "uuid": "554e6ba0-768c-44d4-8280-1abda1c99e58"
-    }
+    },
+    "model": "makam.form",
+    "pk": 49
 },
 {
-    "pk": 50, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Nefes", 
+        "name": "Nefes",
         "uuid": "885dfa98-13fd-4cad-b0aa-140c9ee59226"
-    }
+    },
+    "model": "makam.form",
+    "pk": 50
 },
 {
-    "pk": 51, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Ninni", 
+        "name": "Ninni",
         "uuid": "54b0a0e7-b471-44df-8ac7-1f99a6e4739d"
-    }
+    },
+    "model": "makam.form",
+    "pk": 51
 },
 {
-    "pk": 52, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Oyunhavas\u0131", 
+        "name": "Oyunhavas\u0131",
         "uuid": "663c1043-85dc-4981-b125-e071d7c4e442"
-    }
+    },
+    "model": "makam.form",
+    "pk": 52
 },
 {
-    "pk": 53, 
-    "model": "makam.form", 
     "fields": {
-        "name": "\u00d6rnek \u00d6z", 
+        "name": "\u00d6rnek \u00d6z",
         "uuid": "ac33e68a-7563-4f01-bb0b-feaa975859fc"
-    }
+    },
+    "model": "makam.form",
+    "pk": 53
 },
 {
-    "pk": 54, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Pe\u015frev", 
+        "name": "Pe\u015frev",
         "uuid": "4a4b7ded-7b8a-4577-91c2-a6115556b85f"
-    }
+    },
+    "model": "makam.form",
+    "pk": 54
 },
 {
-    "pk": 55, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Pop \u015fark\u0131s\u0131", 
+        "name": "Pop \u015fark\u0131s\u0131",
         "uuid": "4e6e2c4b-98ed-4f87-9536-0e4fe9a857c9"
-    }
+    },
+    "model": "makam.form",
+    "pk": 55
 },
 {
-    "pk": 56, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Rumeli T\u00fcrk\u00fcs\u00fc", 
+        "name": "Rumeli T\u00fcrk\u00fcs\u00fc",
         "uuid": "fe97b0f3-bda5-4486-bd78-f1be9a343ac6"
-    }
+    },
+    "model": "makam.form",
+    "pk": 56
 },
 {
-    "pk": 57, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Salat\u0131\u00fcmmiye", 
+        "name": "Salat\u0131\u00fcmmiye",
         "uuid": "6f157c58-965f-4bed-9b21-d0fa81ec704a"
-    }
+    },
+    "model": "makam.form",
+    "pk": 57
 },
 {
-    "pk": 58, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Salat\u00fcselam", 
+        "name": "Salat\u00fcselam",
         "uuid": "4712a993-1c2e-4da3-ae6e-89e91cc909b7"
-    }
+    },
+    "model": "makam.form",
+    "pk": 58
 },
 {
-    "pk": 59, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Savt", 
+        "name": "Savt",
         "uuid": "6d85eaef-6d0b-400c-83fb-42ec6275f4b1"
-    }
+    },
+    "model": "makam.form",
+    "pk": 59
 },
 {
-    "pk": 60, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Sazeseri", 
+        "name": "Sazeseri",
         "uuid": "841b6f5a-e684-4e40-851a-7e84091c43f4"
-    }
+    },
+    "model": "makam.form",
+    "pk": 60
 },
 {
-    "pk": 61, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Sazsemaisi", 
+        "name": "Sazsemaisi",
         "uuid": "9a33c7d6-7fe4-485d-aea6-0af3673e9ac1"
-    }
+    },
+    "model": "makam.form",
+    "pk": 61
 },
 {
-    "pk": 62, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Selam", 
+        "name": "Selam",
         "uuid": "16162f6e-01b3-42ad-9b3b-c8419d432ee2"
-    }
+    },
+    "model": "makam.form",
+    "pk": 62
 },
 {
-    "pk": 63, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Seyir", 
+        "name": "Seyir",
         "uuid": "b12e62fd-b244-4165-bc33-8d3464850cfc"
-    }
+    },
+    "model": "makam.form",
+    "pk": 63
 },
 {
-    "pk": 64, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Sirto", 
+        "name": "Sirto",
         "uuid": "b6fd9ae6-2114-42bd-a1f1-2f8dd31f0fb0"
-    }
+    },
+    "model": "makam.form",
+    "pk": 64
 },
 {
-    "pk": 65, 
-    "model": "makam.form", 
     "fields": {
-        "name": "\u015eark\u0131", 
+        "name": "\u015eark\u0131",
         "uuid": "20edad19-60a7-49cf-a349-266b80af7e8d"
-    }
+    },
+    "model": "makam.form",
+    "pk": 65
 },
 {
-    "pk": 66, 
-    "model": "makam.form", 
     "fields": {
-        "name": "\u015eu\u011ful", 
+        "name": "\u015eu\u011ful",
         "uuid": "32f88d10-4112-4cd1-896a-255a2613b516"
-    }
+    },
+    "model": "makam.form",
+    "pk": 66
 },
 {
-    "pk": 67, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Taksim", 
+        "name": "Taksim",
         "uuid": "b4658cef-f3cd-4ced-a534-1dd0a0d5b2de"
-    }
+    },
+    "model": "makam.form",
+    "pk": 67
 },
 {
-    "pk": 68, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tango", 
+        "name": "Tango",
         "uuid": "35db4236-42d2-44a5-a47f-eeb61484cdd6"
-    }
+    },
+    "model": "makam.form",
+    "pk": 68
 },
 {
-    "pk": 69, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tav\u015fanca", 
+        "name": "Tav\u015fanca",
         "uuid": "b241a4eb-da01-40cb-bec4-686ab103407e"
-    }
+    },
+    "model": "makam.form",
+    "pk": 69
 },
 {
-    "pk": 70, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tekbir", 
+        "name": "Tekbir",
         "uuid": "18f0ccef-8f7a-496d-b1ff-a293768e12a3"
-    }
+    },
+    "model": "makam.form",
+    "pk": 70
 },
 {
-    "pk": 71, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Temcidm\u00fcnacat\u0131", 
+        "name": "Temcidm\u00fcnacat\u0131",
         "uuid": "9bb2571b-56e8-43e1-a8fb-c0a23d022cc6"
-    }
+    },
+    "model": "makam.form",
+    "pk": 71
 },
 {
-    "pk": 72, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tesbih", 
+        "name": "Tesbih",
         "uuid": "c51871e3-de69-45fc-aefb-2beda3f51c13"
-    }
+    },
+    "model": "makam.form",
+    "pk": 72
 },
 {
-    "pk": 73, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tesbihilahi", 
+        "name": "Tesbihilahi",
         "uuid": "c54d8421-5139-48f9-9be8-24118dcd4b6f"
-    }
+    },
+    "model": "makam.form",
+    "pk": 73
 },
 {
-    "pk": 74, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tev\u015fihilahi", 
+        "name": "Tev\u015fihilahi",
         "uuid": "9b9ae076-2d3a-4c05-9d46-ca9971bd8c09"
-    }
+    },
+    "model": "makam.form",
+    "pk": 74
 },
 {
-    "pk": 75, 
-    "model": "makam.form", 
     "fields": {
-        "name": "T\u00fcrk\u00fc", 
+        "name": "T\u00fcrk\u00fc",
         "uuid": "25c2546e-96d4-4ce1-a8ef-96353499fecb"
-    }
+    },
+    "model": "makam.form",
+    "pk": 75
 },
 {
-    "pk": 76, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Uzunhava", 
+        "name": "Uzunhava",
         "uuid": "baaabf8e-b495-49f0-b080-f3700eee4def"
-    }
+    },
+    "model": "makam.form",
+    "pk": 76
 },
 {
-    "pk": 77, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Y\u00fcr\u00fcksemai", 
+        "name": "Y\u00fcr\u00fcksemai",
         "uuid": "98c3d99d-97de-4ca0-9aa8-1895e3a52293"
-    }
+    },
+    "model": "makam.form",
+    "pk": 77
 },
 {
-    "pk": 78, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Zeybek", 
+        "name": "Zeybek",
         "uuid": "3d4b411e-be36-42d6-9c75-ddf3a30c44db"
-    }
+    },
+    "model": "makam.form",
+    "pk": 78
 },
 {
-    "pk": 79, 
-    "model": "makam.form", 
     "fields": {
-        "name": "\u00c7iftetelli", 
+        "name": "\u00c7iftetelli",
         "uuid": "3081e6a7-a054-4622-bf30-7f64d2a16b6a"
-    }
+    },
+    "model": "makam.form",
+    "pk": 79
 },
 {
-    "pk": 80, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Tevhid", 
+        "name": "Tevhid",
         "uuid": "933d1a14-6f53-4074-90b2-cc2c92c03fcd"
-    }
+    },
+    "model": "makam.form",
+    "pk": 80
 },
 {
-    "pk": 81, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Murabba", 
+        "name": "Murabba",
         "uuid": "b6cbe90d-28ae-4caa-a447-c24496931c4d"
-    }
+    },
+    "model": "makam.form",
+    "pk": 81
 },
 {
-    "pk": 82, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Hanende Semaisi", 
+        "name": "Hanende Semaisi",
         "uuid": "330b0f3c-b3bc-42ff-afa0-9b712cf87008"
-    }
+    },
+    "model": "makam.form",
+    "pk": 82
 },
 {
-    "pk": 83, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Sazende Semaisi", 
+        "name": "Sazende Semaisi",
         "uuid": "42327732-1d4d-4e6e-9713-39d967a19ef1"
-    }
+    },
+    "model": "makam.form",
+    "pk": 83
 },
 {
-    "pk": 84, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kaside", 
+        "name": "Kaside",
         "uuid": "0f1f75b7-eea1-40ba-9f71-70be37754eb5"
-    }
+    },
+    "model": "makam.form",
+    "pk": 84
 },
 {
-    "pk": 85, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Raksiyye", 
+        "name": "Raksiyye",
         "uuid": "3154189b-41a2-41b7-8367-13aa1b838746"
-    }
+    },
+    "model": "makam.form",
+    "pk": 85
 },
 {
-    "pk": 87, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Waltz", 
+        "name": "Waltz",
         "uuid": "3412e93f-2608-406c-bbfa-8f779cdb8d5f"
-    }
+    },
+    "model": "makam.form",
+    "pk": 87
 },
 {
-    "pk": 88, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Maya", 
+        "name": "Maya",
         "uuid": "d9018ff9-a75e-4bf7-aacb-e44b98984649"
-    }
+    },
+    "model": "makam.form",
+    "pk": 88
 },
 {
-    "pk": 89, 
-    "model": "makam.form", 
     "fields": {
-        "name": "G\u00fclbang", 
+        "name": "G\u00fclbang",
         "uuid": "58a658cd-3428-4cb3-8a1e-5a608b1df922"
-    }
+    },
+    "model": "makam.form",
+    "pk": 89
 },
 {
-    "pk": 90, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Zikir", 
+        "name": "Zikir",
         "uuid": "d2424e8e-02f1-41e3-993f-9e26b3033fd9"
-    }
+    },
+    "model": "makam.form",
+    "pk": 90
 },
 {
-    "pk": 91, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Fihrist Taksim", 
+        "name": "Fihrist Taksim",
         "uuid": "285948da-7a74-4926-a47f-25fc945b2fa3"
-    }
+    },
+    "model": "makam.form",
+    "pk": 91
 },
 {
-    "pk": 92, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Ayin", 
+        "name": "Ayin",
         "uuid": "2ae5faa4-49de-421f-bdc3-b4a5b7336b63"
-    }
+    },
+    "model": "makam.form",
+    "pk": 92
 },
 {
-    "pk": 93, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Salat", 
+        "name": "Salat",
         "uuid": "be3ac2e5-e969-48e9-84a7-7209dc6bfe05"
-    }
+    },
+    "model": "makam.form",
+    "pk": 93
 },
 {
-    "pk": 94, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Sonata", 
+        "name": "Sonata",
         "uuid": "6ad160c0-21ac-4092-81e0-e036b1f211de"
-    }
+    },
+    "model": "makam.form",
+    "pk": 94
 },
 {
-    "pk": 95, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Telbiye", 
+        "name": "Telbiye",
         "uuid": "bfb16662-1532-4e0c-87a2-2bdf481d77f4"
-    }
+    },
+    "model": "makam.form",
+    "pk": 95
 },
 {
-    "pk": 96, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Y\u00fcr\u00fcksemai nak\u0131\u015f", 
+        "name": "Y\u00fcr\u00fcksemai nak\u0131\u015f",
         "uuid": "9b36e3b0-88fc-4dcb-8486-2cbfac0f89eb"
-    }
+    },
+    "model": "makam.form",
+    "pk": 96
 },
 {
-    "pk": 97, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Beste murabba", 
+        "name": "Beste murabba",
         "uuid": "e9a784e4-c622-44c6-80b0-e4a68f1a18d8"
-    }
+    },
+    "model": "makam.form",
+    "pk": 97
 },
 {
-    "pk": 98, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kelime-i tevhid", 
+        "name": "Kelime-i tevhid",
         "uuid": "1adb04b5-d8fa-410e-8d52-e2b45a4efd0f"
-    }
+    },
+    "model": "makam.form",
+    "pk": 98
 },
 {
-    "pk": 100, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Nak\u0131\u015f Beste", 
+        "name": "Nak\u0131\u015f Beste",
         "uuid": "24784dcd-3291-4e47-bbeb-7d971731bd13"
-    }
+    },
+    "model": "makam.form",
+    "pk": 100
 },
 {
-    "pk": 101, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Kar-\u0131 \u015fe\u015favaz", 
+        "name": "Kar-\u0131 \u015fe\u015favaz",
         "uuid": "8e88dfa3-5f91-45c8-b0a8-12d4647728cd"
-    }
+    },
+    "model": "makam.form",
+    "pk": 101
 },
 {
-    "pk": 102, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Terenn\u00fcm", 
+        "name": "Terenn\u00fcm",
         "uuid": "cb07f7d8-83fa-43ae-a7a3-1ba1a5200314"
-    }
+    },
+    "model": "makam.form",
+    "pk": 102
 },
 {
-    "pk": 103, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Methiye", 
+        "name": "Methiye",
         "uuid": "1c388dec-73ac-42ac-9423-2b3db94a0327"
-    }
+    },
+    "model": "makam.form",
+    "pk": 103
 },
 {
-    "pk": 104, 
-    "model": "makam.form", 
     "fields": {
-        "name": "Varsak", 
+        "name": "Varsak",
         "uuid": "270e8ac1-31c7-4888-bec9-7cecc840c6e4"
-    }
+    },
+    "model": "makam.form",
+    "pk": 104
 }
 ]
