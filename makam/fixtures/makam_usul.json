@@ -825,6 +825,38 @@
 },
 {
     "fields": {
+        "name": "3 3 3 4",
+        "uuid": "9e639989-41af-4fa4-86f9-b248981a8994"
+    },
+    "model": "makam.usul",
+    "pk": 106
+},
+{
+    "fields": {
+        "name": "A\u011f\u0131rsemai",
+        "uuid": "3831f042-0231-49bb-9d4f-d3517940fa17"
+    },
+    "model": "makam.usul",
+    "pk": 107
+},
+{
+    "fields": {
+        "name": "Devr-i Turan II",
+        "uuid": "174d5ff4-bc7f-4788-8c4f-22b2156957c5"
+    },
+    "model": "makam.usul",
+    "pk": 108
+},
+{
+    "fields": {
+        "name": "Y\u00fcr\u00fck Aksak",
+        "uuid": "81ac62c4-ad7e-4951-a47f-a4a450bf77b5"
+    },
+    "model": "makam.usul",
+    "pk": 109
+},
+{
+    "fields": {
         "usul": 38,
         "name": "Devrikebir"
     },
@@ -1062,5 +1094,165 @@
     },
     "model": "makam.usulalias",
     "pk": 30
+},
+{
+    "fields": {
+        "usul": 1,
+        "name": "(Belirsiz)"
+    },
+    "model": "makam.usulalias",
+    "pk": 31
+},
+{
+    "fields": {
+        "usul": 1,
+        "name": "Belirsiz"
+    },
+    "model": "makam.usulalias",
+    "pk": 32
+},
+{
+    "fields": {
+        "usul": 106,
+        "name": "3+3+3+4"
+    },
+    "model": "makam.usulalias",
+    "pk": 34
+},
+{
+    "fields": {
+        "usul": 92,
+        "name": "2 3 2 2 2 3"
+    },
+    "model": "makam.usulalias",
+    "pk": 35
+},
+{
+    "fields": {
+        "usul": 92,
+        "name": "2+3+2+2+2+3"
+    },
+    "model": "makam.usulalias",
+    "pk": 36
+},
+{
+    "fields": {
+        "usul": 6,
+        "name": "A\u011f\u0131r\u00e7enber (12/1)"
+    },
+    "model": "makam.usulalias",
+    "pk": 37
+},
+{
+    "fields": {
+        "usul": 107,
+        "name": "a\u011f\u0131rsemai"
+    },
+    "model": "makam.usulalias",
+    "pk": 38
+},
+{
+    "fields": {
+        "usul": 32,
+        "name": "darb-i fetih"
+    },
+    "model": "makam.usulalias",
+    "pk": 39
+},
+{
+    "fields": {
+        "usul": 54,
+        "name": "Haf\u00eef (32/8)"
+    },
+    "model": "makam.usulalias",
+    "pk": 40
+},
+{
+    "fields": {
+        "usul": 59,
+        "name": "ikizaksak"
+    },
+    "model": "makam.usulalias",
+    "pk": 41
+},
+{
+    "fields": {
+        "usul": 86,
+        "name": "sengin semai"
+    },
+    "model": "makam.usulalias",
+    "pk": 42
+},
+{
+    "fields": {
+        "usul": 109,
+        "name": "y\u00fcr\u00fckaksak"
+    },
+    "model": "makam.usulalias",
+    "pk": 43
+},
+{
+    "fields": {
+        "usul": 97,
+        "name": "Zincir"
+    },
+    "model": "makam.usulalias",
+    "pk": 44
+},
+{
+    "fields": {
+        "usul": 97,
+        "name": "zincir"
+    },
+    "model": "makam.usulalias",
+    "pk": 45
+},
+{
+    "fields": {
+        "usul": 3,
+        "name": "a\u011f\u0131r aksasemai"
+    },
+    "model": "makam.usulalias",
+    "pk": 46
+},
+{
+    "fields": {
+        "usul": 4,
+        "name": "a\u011f\u0131rkasak"
+    },
+    "model": "makam.usulalias",
+    "pk": 47
+},
+{
+    "fields": {
+        "usul": 11,
+        "name": "akska"
+    },
+    "model": "makam.usulalias",
+    "pk": 48
+},
+{
+    "fields": {
+        "usul": 32,
+        "name": "devr-i fetih"
+    },
+    "model": "makam.usulalias",
+    "pk": 49
+},
+{
+    "fields": {
+        "usul": 78,
+        "name": "nmsofyan"
+    },
+    "model": "makam.usulalias",
+    "pk": 50
+},
+{
+    "fields": {
+        "usul": 94,
+        "name": "y\u00fcr\u00fcksemi"
+    },
+    "model": "makam.usulalias",
+    "pk": 51
 }
 ]

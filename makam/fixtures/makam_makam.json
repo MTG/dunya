@@ -2737,14 +2737,6 @@
 },
 {
     "fields": {
-        "name": "Hicaz-H\u00fcm\u00e2y\u00fbn",
-        "makam": 100
-    },
-    "model": "makam.makamalias",
-    "pk": 41
-},
-{
-    "fields": {
         "name": "Seg\u00e2h-M\u00e2ye",
         "makam": 232
     },
@@ -2774,5 +2766,45 @@
     },
     "model": "makam.makamalias",
     "pk": 45
+},
+{
+    "fields": {
+        "name": "bayati",
+        "makam": 33
+    },
+    "model": "makam.makamalias",
+    "pk": 46
+},
+{
+    "fields": {
+        "name": "\u015eevk`efz\u00e2",
+        "makam": 262
+    },
+    "model": "makam.makamalias",
+    "pk": 47
+},
+{
+    "fields": {
+        "name": "\u015fevkefza",
+        "makam": 262
+    },
+    "model": "makam.makamalias",
+    "pk": 48
+},
+{
+    "fields": {
+        "name": "hicazlar",
+        "makam": 107
+    },
+    "model": "makam.makamalias",
+    "pk": 49
+},
+{
+    "fields": {
+        "name": "\u015fevkfeza",
+        "makam": 262
+    },
+    "model": "makam.makamalias",
+    "pk": 50
 }
 ]
