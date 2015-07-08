@@ -91,12 +91,14 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         if created or self.overwrite:
             raaga_attr = self._get_raaga_mb(mbwork)
             taala_attr = self._get_taala_mb(mbwork)
-            raaga = self._get_raaga(raaga_attr)
-            taala = self._get_taala(taala_attr)
-            if raaga:
-                work.raaga = raaga
-            if taala:
-                work.taala = taala
+            if raaga_attr:
+                raaga = self._get_raaga(raaga_attr)
+                if raaga:
+                    work.raaga = raaga
+            if taala_attr:
+                taala = self._get_taala(taala_attr)
+                if taala:
+                    work.taala = taala
             work.save()
 
     def _join_recording_and_works(self, recording, works):
@@ -134,11 +136,13 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
             if raaga_tag:
                 r = self._get_raaga(raaga_tag)
-                carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=1)
+                if r:
+                    carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=1)
 
             if taala_tag:
                 t = self._get_taala(taala_tag)
-                carnatic.models.RecordingTaala.objects.create(recording=recording, taala=t, sequence=1)
+                if t:
+                    carnatic.models.RecordingTaala.objects.create(recording=recording, taala=t, sequence=1)
         elif not form.attrfromrecording:
             # In this case, we read attributes from the work. If the work has no attributes
             # we should add these tags to the recording anyway.
