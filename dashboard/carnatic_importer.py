@@ -111,6 +111,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             recording.taalas.clear()
 
         # Check that there is not more than one form
+        noform = False
         forms = recording.forms.all()
         if len(forms) > 1:
             raise release_importer.ImportFailedException('TODO: Support more than one form per recording')
@@ -120,11 +121,12 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 # TODO: If there is more than one form, set sequence properly
                 carnatic.models.RecordingForm.objects.create(recording=recording, form=form, sequence=1)
             else:
-                raise release_importer.ImportFailedException("The recording doesn't have a form")
+                # If we have no form, we import anyway and put the tags on the recording
+                noform = True
         else:
             form = forms[0]
 
-        if form.attrfromrecording:
+        if noform or form.attrfromrecording:
             # Create the relation with Raaga and Taala
 
             raaga_tag = self._get_raaga_tags(tags)
@@ -137,6 +139,10 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             if taala_tag:
                 t = self._get_taala(taala_tag)
                 carnatic.models.RecordingTaala.objects.create(recording=recording, taala=t, sequence=1)
+        elif not form.attrfromrecording:
+            # In this case, we read attributes from the work. If the work has no attributes
+            # we should add these tags to the recording anyway.
+            pass
 
 
     def _get_form_tag(self, tags):
