@@ -15,7 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from carnatic import models
-from data.models import WithImageMixin 
+from data.models import WithImageMixin
 from data import utils
 
 from rest_framework import generics
@@ -77,7 +77,7 @@ class TaalaDetailSerializer(serializers.ModelSerializer):
     composers = ComposerInnerSerializer(many=True)
     aliases = serializers.StringRelatedField(many=True, read_only=True)
     recordings = serializers.SerializerMethodField('recording_list')
-    
+
     class Meta:
         model = models.Taala
         fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers', 'recordings']
@@ -110,7 +110,7 @@ class RaagaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Raaga
         fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'works', 'composers', 'recordings']
-    
+
     def recording_list(self, ob):
         form = self.context['request'].GET.get('form', None)
         recordings = ob.recordings_form(form)
@@ -152,7 +152,7 @@ class WorkDetailSerializer(serializers.ModelSerializer):
     taalas = TaalaInnerSerializer(source='taala', many=True)
     recordings = serializers.SerializerMethodField('recording_list')
     lyricists = ComposerInnerSerializer(many=True)
-    
+
     class Meta:
         model = models.Work
         fields = ['mbid', 'title', 'composers', 'lyricists', 'raagas', 'taalas', 'recordings']
@@ -183,8 +183,8 @@ class RecordingList(generics.ListAPIView):
 class RecordingDetailSerializer(serializers.ModelSerializer):
     concert = serializers.SerializerMethodField('concert_list')
     artists = ArtistInnerSerializer(source='all_artists', many=True)
-    raaga = RaagaInnerSerializer(source='raagas', many=True)
-    taala = TaalaInnerSerializer(source='taalas', many=True)
+    raaga = RaagaInnerSerializer(source='get_raaga', many=True)
+    taala = TaalaInnerSerializer(source='get_taala', many=True)
     form = FormInnerSerializer(source='forms', many=True)
     work = WorkInnerSerializer()
 
