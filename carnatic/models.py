@@ -743,8 +743,11 @@ class Recording(CarnaticStyle, data.models.Recording):
         if forms[0].attrfromrecording:
             return self.raagas.all()
 
-        if self.work and self.work.raaga:
-            return [self.work.raaga]
+        if len(self.works.all()):
+            ret = []
+            for w in self.works.all():
+                ret.append(w.raaga)
+            return ret
         else:
             return []
 
@@ -756,8 +759,11 @@ class Recording(CarnaticStyle, data.models.Recording):
         if forms[0].attrfromrecording:
             return self.taalas.all()
 
-        if self.work and self.work.taala:
-            return [self.work.taala]
+        if len(self.works.all()):
+            ret = []
+            for w in self.works.all():
+                ret.append(w.taala)
+            return ret
         else:
             return []
 
