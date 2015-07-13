@@ -25,7 +25,7 @@ functools32==3.2.3-1
 intonation==0.1
 ipdb==0.8
 ipython==2.1.0
-kombu==3.0.5
+kombu==3.0.26
 lxml==3.2.4
 mechanize==0.2.5
 mimeparse==0.1.3

@@ -149,9 +149,9 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = []
         concerts = self.primary_concerts.with_permissions(collection_ids, permission)
         if raagas:
-            concerts = concerts.filter(recordings__work__raaga__in=raagas)
+            concerts = concerts.filter(recordings__works__raaga__in=raagas)
         if taalas:
-            concerts = concerts.filter(recordings__work__taala__in=taalas)
+            concerts = concerts.filter(recordings__works__taala__in=taalas)
         ret.extend(concerts.all())
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
@@ -172,9 +172,9 @@ class Artist(CarnaticStyle, data.models.Artist):
         IPClass = self.get_object_map("performance")
         concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
         if raagas:
-            concerts = concerts.filter(recordings__work__raaga__in=raagas)
+            concerts = concerts.filter(recordings__works__raaga__in=raagas)
         if taalas:
-            concerts = concerts.filter(recordings__work__taala__in=taalas)
+            concerts = concerts.filter(recordings__works__taala__in=taalas)
         concerts = concerts.distinct()
         ret = []
         for c in concerts:
@@ -532,7 +532,7 @@ class Raaga(data.models.BaseModel):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__recordings__work__raaga=self).filter(main_instrument__in=[1, 2])
+        artists = Artist.objects.filter(primary_concerts__recordings__works__raaga=self).filter(main_instrument__in=[1, 2])
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -555,7 +555,7 @@ class Raaga(data.models.BaseModel):
             return []
 
     def recordings(self, limit=None):
-        recordings = Recording.objects.filter(work__raaga=self)
+        recordings = Recording.objects.filter(works__raaga=self)
         if recordings is not None:
             recordings = recordings[:limit]
         return recordings
@@ -625,12 +625,12 @@ class Taala(data.models.BaseModel):
         return Composer.objects.filter(works__taala=self).distinct()
 
     def artists(self):
-        return Artist.objects.filter(primary_concerts__recordings__work__taala=self).distinct()
+        return Artist.objects.filter(primary_concerts__recordings__works__taala=self).distinct()
 
     def percussion_artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(Q(instrumentperformance__recording__work__taala=self) & Q(instrumentperformance__instrument__percussion=True))
+        artists = Artist.objects.filter(Q(instrumentperformance__recording__works__taala=self) & Q(instrumentperformance__instrument__percussion=True))
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -641,7 +641,7 @@ class Taala(data.models.BaseModel):
         return artists
 
     def recordings(self, limit=None):
-        recordings = Recording.objects.filter(work__taala=self)
+        recordings = Recording.objects.filter(works__taala=self)
         if recordings is not None:
             recordings = recordings[:limit]
         return recordings
@@ -712,9 +712,6 @@ class RecordingWork(models.Model):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
 
 class Recording(CarnaticStyle, data.models.Recording):
-    # TODO: To remove
-    work = models.ForeignKey('Work', blank=True, null=True, related_name='single_work')
-
     works = models.ManyToManyField('Work', through='RecordingWork')
     forms = models.ManyToManyField('Form', through='RecordingForm')
 
@@ -731,8 +728,11 @@ class Recording(CarnaticStyle, data.models.Recording):
         if forms[0].attrfromrecording:
             return self.raagas.all()
 
-        if self.work and self.work.raaga:
-            return [self.work.raaga]
+        if len(self.works.all()):
+            ret = []
+            for w in self.works.all():
+                ret.append(w.raaga)
+            return ret
         else:
             return []
 
@@ -744,8 +744,11 @@ class Recording(CarnaticStyle, data.models.Recording):
         if forms[0].attrfromrecording:
             return self.taalas.all()
 
-        if self.work and self.work.taala:
-            return [self.work.taala]
+        if len(self.works.all()):
+            ret = []
+            for w in self.works.all():
+                ret.append(w.taala)
+            return ret
         else:
             return []
 
