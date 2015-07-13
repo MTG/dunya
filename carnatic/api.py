@@ -186,7 +186,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     raaga = RaagaInnerSerializer(source='get_raaga', many=True)
     taala = TaalaInnerSerializer(source='get_taala', many=True)
     form = FormInnerSerializer(source='forms', many=True)
-    work = WorkInnerSerializer()
+    work = WorkInnerSerializer(source='works', many=True)
 
     class Meta:
         model = models.Recording

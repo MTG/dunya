@@ -327,7 +327,7 @@ class RaagaTest(TestCase):
     
         self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
         self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", raaga=self.raaga)
-        self.recording2 = models.Recording.objects.create(work=self.work, title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.recording2 = models.Recording.objects.create(title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
         models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
     
@@ -375,7 +375,7 @@ class TaalaTest(TestCase):
     
         self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
         self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", taala=self.taala)
-        self.recording2 = models.Recording.objects.create(work=self.work, title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.recording2 = models.Recording.objects.create(title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
         models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
 
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
