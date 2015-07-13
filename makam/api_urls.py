@@ -50,7 +50,11 @@ urlpatterns = [
     url(r'^composer/%s$' % uuid_match, makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
 
     url(r'^release$', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
-    url(r'^release/%s$' % uuid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail')
+    url(r'^release/%s$' % uuid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail'),
+
+    url(r'^symbtr$', makam.api.SymbtrList.as_view(), name='api-makam-symbtr-list'),
+    url(r'^symbtr/%s$' % uuid_match, makam.api.SymbtrDetail.as_view(), name='api-makam-symbtr-detail')
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])
