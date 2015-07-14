@@ -219,7 +219,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         if created or self.overwrite:
             work.form.clear()
             work.usul.clear()
-            work.makam.add(makam)
+            work.makam.clear()
 
         if created or self.overwrite:
             form_attr = self._get_form_mb(mbwork)
@@ -234,7 +234,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 if usul:
                     work.usul.add(usul)
                 if makam:
-                    work.makam.clear()
+                    work.makam.add(makam)
                 work.save()
 
     def _get_form_mb(self, mb_work):
