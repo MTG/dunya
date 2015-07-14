@@ -142,7 +142,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             if makam:
                 recording.makam.add(makam)
                 recording.save()
-        
+
         # tags for no taksim
         notaksimt = [g for g in groups if g.get("form") != "taksim" and g.get("form") != "gazel"]
 
@@ -158,11 +158,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             form = self._get_form(t.get("form"))
             usul = self._get_usul(t.get("usul"))
             w = works[0]
-            if makam and len(w.makam) == 0:
+            if makam and w.makam.count() == 0:
                 w.makam.add(makam)
-            if usul and len(w.usul) == 0:
+            if usul and w.usul.count() == 0:
                 w.usul.add(usul)
-            if form and len(w.form) == 0:
+            if form and w.form.count() == 0:
                 w.form.add(form)
         elif len(works) == len(notaksimt):
             pass
@@ -215,7 +215,12 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     def _add_work_attributes(self, work, mbwork, created):
         """ Read mb attributes from the webservice query
         and add them to the object """
-        
+
+        if created or self.overwrite:
+            work.form.clear()
+            work.usul.clear()
+            work.makam.add(makam)
+
         if created or self.overwrite:
             form_attr = self._get_form_mb(mbwork)
             usul_attr = self._get_usul_mb(mbwork)
@@ -225,14 +230,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 usul = self._get_usul(usul_attr)
                 makam = self._get_makam(makam_attr)
                 if form:
-                    work.form.clear()
                     work.form.add(form)
                 if usul:
-                    work.usul.clear()
                     work.usul.add(usul)
                 if makam:
                     work.makam.clear()
-                    work.makam.add(makam)
                 work.save()
 
     def _get_form_mb(self, mb_work):
