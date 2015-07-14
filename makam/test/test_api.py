@@ -298,11 +298,11 @@ class MakamTest(ApiTestCase):
 
     def test_render_makam_detail(self):
         s = api.MakamDetailSerializer(self.m)
-        self.assertEquals(["gazels", "id", "name", "taksims", "works"], sorted(s.data.keys()))
+        self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(s.data.keys()))
 
     def test_render_makam_list(self):
         s = api.MakamInnerSerializer(self.m)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/makam/9c9b77cc-e357-402f-9278-2c5ed49e06b7")
@@ -320,11 +320,11 @@ class FormTest(ApiTestCase):
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
-        self.assertEquals(["id", "name", "works"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid", "works"], sorted(s.data.keys()))
 
     def test_render_form_list(self):
         s = api.FormInnerSerializer(self.f)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/form/1494b665-8b67-430f-b6e6-efdcd42ddd3f")
@@ -342,11 +342,11 @@ class UsulTest(ApiTestCase):
 
     def test_render_usul_detail(self):
         s = api.UsulDetailSerializer(self.u)
-        self.assertEquals(["gazels", "id", "name", "taksims", "works"], sorted(s.data.keys()))
+        self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(s.data.keys()))
 
     def test_render_usul_list(self):
         s = api.UsulInnerSerializer(self.u)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/usul/d5e15ee7-e6c3-4148-845c-8e7610c619e9")

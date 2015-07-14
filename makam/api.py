@@ -52,17 +52,17 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
-        fields = ['id', 'name']
+        fields = ['uuid', 'name']
 
 class UsulInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Usul
-        fields = ['id', 'name']
+        fields = ['uuid', 'name']
 
 class MakamInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Makam
-        fields = ['id', 'name']
+        fields = ['uuid', 'name']
 
 class ReleaseInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,7 +85,7 @@ class MakamDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Makam
-        fields = ['id', 'name', 'works', 'taksims', 'gazels']
+        fields = ['uuid', 'name', 'works', 'taksims', 'gazels']
 
 class MakamDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
@@ -105,7 +105,7 @@ class FormDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Form
-        fields = ['id', 'name', 'works']
+        fields = ['name', 'uuid', 'works']
 
 class FormDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
@@ -127,7 +127,7 @@ class UsulDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Usul
-        fields = ['id', 'name', 'works', 'taksims', 'gazels']
+        fields = ['name', 'works', 'taksims', 'gazels', 'uuid']
 
 class UsulDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
