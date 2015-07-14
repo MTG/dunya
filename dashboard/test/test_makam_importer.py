@@ -1,0 +1,33 @@
+# -*- coding: utf-8 -*-
+from django.test import TestCase
+
+from dashboard import makam_importer
+from makam import models
+
+class MakamImporterTest(TestCase):
+    def setUp(self):
+        self.mi = makam_importer.MakamReleaseImporter()
+
+    def test_get_makam(self):
+        # Makam that exists
+        m = models.Makam.objects.create(name="A makam")
+        get_m = self.mi._get_makam("a makam")
+        self.assertEqual(m, get_m)
+
+        # Makam alias that exists
+        ma = models.MakamAlias.objects.create(makam=m, name="alias makam")
+        get_m = self.mi._get_makam("alias makam")
+        self.assertEqual(m, get_m)
+
+        # 2 aliases with the same unaccent() representation
+        hm = models.Makam.objects.create(name=u"Hicaz Hümayun")
+        hma1 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümayun")
+        hma2 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümâyûn")
+
+        get_m = self.mi._get_makam("hicaz-humayun")
+        self.assertEqual(hm, get_m)
+
+        # Something that doesn't exist
+        get_m = self.mi._get_makam("Not a makam")
+        self.assertEqual(None, get_m)
+

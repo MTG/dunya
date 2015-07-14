@@ -55,7 +55,7 @@ class Artist(MakamStyle, data.models.Artist):
         """ Releases where this artist is named on the cover """
         if not permission:
             permission = ["U"]
-        
+
         return self.primary_concerts.with_permissions(collection_ids, permission).all()
 
     def accompanying_releases(self):
@@ -76,7 +76,7 @@ class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases")
-    
+
     objects = managers.CollectionReleaseManager()
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
@@ -130,9 +130,9 @@ class Recording(MakamStyle, data.models.Recording):
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True)
-    
+
     objects = managers.CollectionRecordingManager()
-    
+
     def makamlist(self):
         return self.makam.all()
 
@@ -191,8 +191,11 @@ class Instrument(MakamStyle, data.models.Instrument):
 class UnaccentManager(models.Manager):
     """ A manager to use postgres' unaccent module to get items
     with a specified `name` field """
+    def unaccent_all(self, name):
+        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name])
+
     def unaccent_get(self, name):
-        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name]).get()
+        return self.unaccent_all(name).get()
 
 class MakamAlias(models.Model):
     name = models.CharField(max_length=100)

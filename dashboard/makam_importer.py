@@ -51,10 +51,10 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         try:
             return makam.models.Makam.objects.unaccent_get(makamname)
         except makam.models.Makam.DoesNotExist:
-            try:
-                malias = makam.models.MakamAlias.objects.unaccent_get(makamname)
-                return malias.makam
-            except makam.models.MakamAlias.DoesNotExist:
+            malias = makam.models.MakamAlias.objects.unaccent_all(makamname)
+            if malias.count():
+                return malias[0].makam
+            else:
                 return None
 
     def _get_usul(self, usul):
