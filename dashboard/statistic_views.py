@@ -724,9 +724,9 @@ def beijing_stats(request):
 @user_passes_test(views.is_staff)
 def andalusian_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
-
+    ret = _common_stats(collectionid)
     releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid).all()
-    ret = {}
+    
     if len(releases):
         pass
     else:

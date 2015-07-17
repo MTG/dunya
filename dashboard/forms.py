@@ -124,3 +124,16 @@ class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
         exclude = ['name']
+
+OPTIONS = (
+            ("tabs", "Tabs"),
+            ("nawbas", "Nawbas"),
+            ("forms", "Forms"),
+            ("mizans", "Mizans"),
+          )
+class CsvAndalusianForm(forms.Form):
+    csv_file = forms.FileField()
+    elem_type = forms.ChoiceField(choices=OPTIONS)
+class CsvAndalusianCatalogForm(forms.Form):
+    csv_file = forms.FileField()
+

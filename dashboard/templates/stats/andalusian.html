@@ -1,0 +1,28 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Andalusian Statistics{% endblock %}
+
+{% block wrap %}
+
+<h1>Andalusian Statistics</h1>
+{% if missing %}
+Error: Andalusian collection is not imported
+{% else %}
+
+<li>Number of releases: {{releases}}
+<li>Number of releases missing audio: {{releases_missing}}
+<li>Number of releases currently ignored (bad data): {{releases_ignored}}
+<p>
+<li>Number of recordings: {{recordings}}
+<p>
+<li>Number of artists: {{artists}}
+<li>Number of release artists: {{releaseartists}}
+{% comment %}
+<li>Number of lead artists (relationship tag): {{leadartiststag}}
+{% endcomment %}
+<li>Number of composers: {{composers}}
+<li>Number of works: {{works}}
+
+{% endif %}
+
+{% endblock %}
+

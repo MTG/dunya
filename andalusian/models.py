@@ -137,13 +137,8 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 		return ret
 
 
-class ArtistAlias(models.Model):
-    name = models.CharField(max_length=200)
-    artist = models.ForeignKey("Artist", related_name="aliases")
-
-    def __unicode__(self):
-        return self.name
-
+class ArtistAlias(data.models.ArtistAlias):
+    pass
 
 class AlbumType(models.Model):
 	type = models.CharField(max_length=255)

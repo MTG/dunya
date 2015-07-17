@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Load Catalog CSV file{% endblock %}
+
+{% block wrap %}
+
+
+
+{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+
+<h3>Load Catalog CSV file</h3>
+
+<form method="post" action="{% url 'dashboard-andalusian-catalog' %}" enctype="multipart/form-data">
+        {{ form }}
+        {% csrf_token %}
+    <input type="submit" value="Save">
+</form>
+{% endblock %}
+
+

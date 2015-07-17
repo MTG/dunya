@@ -118,8 +118,17 @@
     <div class="col-md-6">
         <h2>Other statistics</h2>
         <li><a href="{% url 'dashboard-beijing-stats' %}">Beijing</a>
-        <li><a href="{% url 'dashboard-andalusian-stats' %}">Andalusian</a>
     </div>
+    
+    <div class="col-md-6">
+
+        <h2>Arab Andalusian</h2>
+        <li><a href="{% url 'dashboard-andalusian-stats' %}">Statistics</a>
+        <h3>Data management</h3>
+        <li><a href="{% url 'dashboard-andalusian-elements' %}">Load CSV file</a>
+        <li><a href="{% url 'dashboard-andalusian-catalog' %}">Load Catalog CSV file</a>
+    </div>
+
 </div>
 
 {% endblock %}

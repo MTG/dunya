@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+import csv
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
@@ -31,7 +32,13 @@ import docserver
 
 import compmusic
 import os
+import time
 
+import tashkeel.tashkeel 
+from arabic.ALA_LC_Transliterator import ALA_LC_Transliterator
+import arabic.arabic_reshaper 
+
+import andalusian
 import carnatic
 import hindustani
 import makam
@@ -660,5 +667,95 @@ def edit_access_collections(request, uuid):
         form = forms.AccessCollectionForm(instance=collection)
     params = {"form": form, "collection": collection, "message": message}
     return render(request, "dashboard/collections_edit.html", params)
+
+def import_andalusian_elements(request):
+    message=""
+    if request.method == 'POST':
+        form = forms.CsvAndalusianForm(request.POST, request.FILES)
+        if form.is_valid():
+            transliterator = ALA_LC_Transliterator()
+            vocalizer=tashkeel.tashkeel.TashkeelClass()
+            csv_file = form.cleaned_data['csv_file']
+            reader = csv.reader(csv_file.read().splitlines())
+            klass = None
+            if form.cleaned_data['elem_type'] == 'tabs':
+                klass = andalusian.models.Tab
+            elif form.cleaned_data['elem_type'] == 'nawbas':
+                klass = andalusian.models.Nawba
+            elif form.cleaned_data['elem_type'] == 'forms':
+                klass = andalusian.models.Form
+            elif form.cleaned_data['elem_type'] == 'mizans':
+                klass = andalusian.models.Mizan
+            if klass:
+                for row in reader:
+                    elem, created = klass.objects.get_or_create(name = row[0].decode('utf8'))
+                    
+                    voc = vocalizer.tashkeel(row[0].decode('utf8'))
+                    tr = transliterator.do(voc.strip())
+                    elem.transliterated_name = arabic.arabic_reshaper.reshape(tr)
+                    elem.save()
+                message = "The elements has been successfully loaded"
+    else:
+        form = forms.CsvAndalusianForm()
+    params = {"form": form, "message": message}
+    return render(request, "dashboard/load_csv.html", params)
+
+def import_andalusian_catalog(request):
+    message=""
+    if request.method == 'POST':
+        form = forms.CsvAndalusianCatalogForm(request.POST, request.FILES)
+        if form.is_valid():
+            transliterator = ALA_LC_Transliterator()
+            vocalizer=tashkeel.tashkeel.TashkeelClass()
+            omited = 0
+            csv_file = form.cleaned_data['csv_file']
+            reader = csv.reader(csv_file.read().splitlines())
+            next(reader)
+            for row in reader:
+                
+                genre = row[0]
+                rec_mbid = row[11]
+                nawba = row[14]
+                tab = row[15]
+                form = row[16]
+                mizan = row[17]
+                
+                if rec_mbid:
+                    section_start = row[18]
+                    section_end = row[19]
+                    genre, created = andalusian.models.Genre.objects.get_or_create(name = genre.decode('utf8'))
+                    rec = andalusian.models.Recording.objects.get(mbid = rec_mbid)
+                    sec, created = andalusian.models.Section.objects.get_or_create(recording=rec, start_time=section_start, end_time=section_end)
+                    tab = andalusian.models.Tab.objects.get(name=tab.decode('utf8'))
+                    form = andalusian.models.Form.objects.get(name=form.decode('utf8'))
+                    nawba = andalusian.models.Nawba.objects.get(name=nawba.decode('utf8'))
+                    mizan = andalusian.models.Mizan.objects.get(name=mizan.decode('utf8'))
+                    
+                    voc = vocalizer.tashkeel(row[0].decode('utf8'))
+                    tr = transliterator.do(voc.strip())
+                    genre.transliterated_name = arabic.arabic_reshaper.reshape(tr)
+                    genre.save()
+                    
+                    voc = vocalizer.tashkeel(rec.title)
+                    tr = transliterator.do(voc.strip())
+                    rec.transliterated_title = arabic.arabic_reshaper.reshape(tr)
+                    rec.genre = genre
+                    rec.save()
+
+                    sec.mizan = mizan
+                    sec.tab = tab
+                    sec.form = form
+                    sec.nawba = nawba
+                    sec.save()
+                else:
+                    omited += 1
+            message = "The elements has been successfully loaded"
+            if omited:
+                message += "(%d rows omited)" % omited
+    else:
+        form = forms.CsvAndalusianCatalogForm()
+    params = {"form": form, "message": message}
+    return render(request, "dashboard/load_catalog_csv.html", params)
+
 
 

@@ -24,6 +24,7 @@ from dashboard import models
 from dashboard import carnatic_importer
 from dashboard import hindustani_importer
 from dashboard import makam_importer
+from dashboard import andalusian_importer 
 
 import compmusic
 
@@ -102,7 +103,7 @@ def import_single_release(releasepk):
 
     ri = get_release_importer(collection.name, force=True)
     if not ri:
-        release.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
+        release.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
         release.set_state_error()
         return
     import_release(releasepk, ri)
@@ -199,6 +200,8 @@ def get_release_importer(name, force=False):
         ri = carnatic_importer.CarnaticReleaseImporter(overwrite=force, is_bootleg=bootleg)
     elif "makam" in name:
         ri = makam_importer.MakamReleaseImporter(overwrite=force, is_bootleg=bootleg)
+    elif "andalusian" in name:
+        ri = andalusian_importer.AndalusianReleaseImporter(overwrite=force, is_bootleg=bootleg)
     return ri
 
 @app.task(base=CollectionDunyaTask)
@@ -210,7 +213,7 @@ def force_import_all_releases(collectionid):
     collection = models.Collection.objects.get(pk=collectionid)
     ri = get_release_importer(collection.name, force=True)
     if not ri:
-        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
+        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
         collection.set_state_error()
         return
     collection.set_state_importing()
@@ -240,7 +243,7 @@ def import_all_releases(collectionid):
     collection.set_state_importing()
     ri = get_release_importer(collection.name)
     if not ri:
-        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
+        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
         collection.set_state_error()
         return
     releases = collection.musicbrainzrelease_set.filter(ignore=False)
