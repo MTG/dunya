@@ -102,6 +102,8 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             work.save()
 
     def _join_recording_and_works(self, recording, works):
+        if self.overwrite:
+            carnatic.models.RecordingWork.objects.filter(recording=recording).delete()
         # A carnatic recording only has many works.
         for i, w in list(enumerate(works)):
             carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=i)
