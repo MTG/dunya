@@ -27,6 +27,7 @@ from dashboard import makam_importer
 
 import compmusic
 
+import data
 import docserver
 import docserver.util
 
@@ -100,7 +101,7 @@ def import_single_release(releasepk):
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
     collection = release.collection
 
-    ri = get_release_importer(collection.name, force=True)
+    ri = get_release_importer(collection, overwrite=True)
     if not ri:
         release.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
         release.set_state_error()
@@ -186,29 +187,31 @@ def import_release(releasepk, ri):
         release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
-def get_release_importer(name, force=False):
+def get_release_importer(collection, overwrite=False):
+    name = collection.name.lower()
     name = name.lower()
+    data_coll = data.models.Collection.objects.get(mbid=collection.id)
     ri = None
     if "bootleg" in name:
         bootleg = True
     else:
         bootleg = False
     if "hindustani" in name:
-        ri = hindustani_importer.HindustaniReleaseImporter(overwrite=force, is_bootleg=bootleg)
+        ri = hindustani_importer.HindustaniReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
     elif "carnatic" in name:
-        ri = carnatic_importer.CarnaticReleaseImporter(overwrite=force, is_bootleg=bootleg)
+        ri = carnatic_importer.CarnaticReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
     elif "makam" in name:
-        ri = makam_importer.MakamReleaseImporter(overwrite=force, is_bootleg=bootleg)
+        ri = makam_importer.MakamReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
     return ri
 
 @app.task(base=CollectionDunyaTask)
 def force_import_all_releases(collectionid):
-    """ Reimport releases in a collection.
+    """ Reimport releases in a dashboard collection.
     This will (re)import all releases that are in the collection, even if they
     are marked as ignored or are finished, unless they are missing a directory
     """
     collection = models.Collection.objects.get(pk=collectionid)
-    ri = get_release_importer(collection.name, force=True)
+    ri = get_release_importer(collection, overwrite=True)
     if not ri:
         collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
         collection.set_state_error()
@@ -232,13 +235,13 @@ def force_import_all_releases(collectionid):
 @app.task(base=CollectionDunyaTask)
 def import_all_releases(collectionid):
     """ Import releases in a collection.
-    This will not import releases that are ignored, or have a state of 'finished' 
+    This will not import releases that are ignored, or have a state of 'finished'
     unless the file changed.
     It will also not import releases that are missing a matching directory.
     """
     collection = models.Collection.objects.get(pk=collectionid)
     collection.set_state_importing()
-    ri = get_release_importer(collection.name)
+    ri = get_release_importer(collection)
     if not ri:
         collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam?)")
         collection.set_state_error()

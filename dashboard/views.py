@@ -103,9 +103,19 @@ def addcollection(request):
                 id=coll_id, name=coll_name,
                 root_directory=dashboard_root, do_import=do_import)
             new_collection.checkers.add(*checkers)
-            docserver.models.Collection.objects.get_or_create(
+            docserver_coll, created = docserver.models.Collection.objects.get_or_create(
                 collectionid=coll_id,
                 defaults={"root_directory": path, "name": coll_name})
+            if not created:
+                docserver_coll.root_directory = path
+                docserver_coll.name = coll_name
+                docserver_coll.save()
+            data_coll, created = data.models.Collection.objects.get_or_create(
+                mbid=coll_id,
+                defaults={"name": coll_name})
+            if not created:
+                data_coll.name = coll_name
+                data_coll.save()
             jobs.load_and_import_collection(new_collection.id)
             return redirect('dashboard-home')
     else:
