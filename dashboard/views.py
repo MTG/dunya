@@ -613,6 +613,18 @@ def makam_instruments(request):
 
     return _edit_attributedata(request, data)
 
+@user_passes_test(is_staff)
+def makam_symbtrlist(request):
+    symbtr = makam.models.SymbTr.objects.all()
+    ret = {"symbtr": symbtr}
+    return render(request, "dashboard/makam_symbtrlist.html", ret)
+
+@user_passes_test(is_staff)
+def makam_symbtr(request, uuid):
+    symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+    ret = {"symbtr": symbtr}
+    return render(request, "dashboard/makam_symbtr.html", ret)
+
 def _edit_artists_list(request, data):
     """ Generic view to display list of data.Artist """
     params = {"artists": data["artists"],

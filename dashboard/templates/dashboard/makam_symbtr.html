@@ -1,0 +1,15 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Symbtr{% endblock %}
+
+{% block wrap %}
+
+<p><a href="{% url 'dashboard-makam-symbtrlist' %}">&lt;-- Back to list</a></p>
+
+<p>
+Symbtr name: {{symbtr.name}}
+<p>
+Musicbrainz id: <a href="http://musicbrainz.org/work/{{symbtr.uuid}}">http://musicbrainz.org/work/{{symbtr.uuid}}</a><br>
+(If the work doesn't exist it might be because this is a taksim and it's a recordingid instead)
+
+{% endblock %}
+
