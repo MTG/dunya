@@ -187,11 +187,10 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
         if instrument:
-            recording = makam.models.Recording.objects.get(mbid=recordingid)
-            perf = makam.models.InstrumentPerformance(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
-            perf.save()
+            instrument = self._get_instrument(instrument)
+        recording = makam.models.Recording.objects.get(mbid=recordingid)
+        perf = makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
 
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
         logger.info("  Adding release performance...")

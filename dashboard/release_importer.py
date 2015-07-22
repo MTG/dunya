@@ -232,7 +232,7 @@ class ReleaseImporter(object):
     def _get_artist_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
-            if perf["type"] in ["vocal", "instrument"]:
+            if perf["type"] in ["vocal", "instrument", "performer"]:
                 artistid = perf["target"]
                 attrs = perf.get("attribute-list", [])
                 is_lead = False
@@ -256,8 +256,10 @@ class ReleaseImporter(object):
                         inst = insts[0]
                     else:
                         inst = None
-                else:
+                elif perf["type"] == "vocal":
                     inst = "vocal"
+                else:
+                    inst = None
                 performances.append((artistid, inst, is_lead))
         return performances
 
