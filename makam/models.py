@@ -121,6 +121,7 @@ class RecordingWork(models.Model):
 
 class Recording(MakamStyle, data.models.Recording):
     works = models.ManyToManyField("Work", through="RecordingWork")
+    artists = models.ManyToManyField("Artist", related_name="recordings_artist")
 
     # the form Taksim refers to an instrumental improvisation
     has_taksim = models.BooleanField(default=False)
@@ -130,6 +131,7 @@ class Recording(MakamStyle, data.models.Recording):
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True)
+    analyse = models.BooleanField(default=True)
 
     objects = managers.CollectionRecordingManager()
 
@@ -188,20 +190,11 @@ class Instrument(MakamStyle, data.models.Instrument):
 
     objects = InstrumentManager()
 
-class UnaccentManager(models.Manager):
-    """ A manager to use postgres' unaccent module to get items
-    with a specified `name` field """
-    def unaccent_all(self, name):
-        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name])
-
-    def unaccent_get(self, name):
-        return self.unaccent_all(name).get()
-
 class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
     makam = models.ForeignKey("Makam", related_name="aliases")
 
-    objects = UnaccentManager()
+    objects = managers.UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -210,7 +203,7 @@ class Makam(models.Model):
     name = models.CharField(max_length=100)
     uuid = UUIDField(db_index=True, auto=True)
 
-    objects = UnaccentManager()
+    objects = managers.MakamFuzzyManager()
 
     def __unicode__(self):
         return self.name
@@ -235,7 +228,7 @@ class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
 
-    objects = UnaccentManager()
+    objects = managers.UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -244,7 +237,7 @@ class Usul(models.Model):
     name = models.CharField(max_length=100)
     uuid = UUIDField(db_index=True, auto=True)
 
-    objects = UnaccentManager()
+    objects = managers.MakamUsulManager()
 
     def __unicode__(self):
         return self.name
@@ -273,7 +266,7 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=100)
     form = models.ForeignKey("Form", related_name="aliases")
 
-    objects = UnaccentManager()
+    objects = managers.UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -282,7 +275,7 @@ class Form(models.Model):
     name = models.CharField(max_length=100)
     uuid = UUIDField(db_index=True, auto=True)
 
-    objects = UnaccentManager()
+    objects = managers.MakamFormManager()
 
     def __unicode__(self):
         return self.name

@@ -22,6 +22,8 @@ import makam.api
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
 urlpatterns = [
+    url(r'^fuzzy$', makam.api.fuzzy, name='api-makam-makam-detailbyfuzzy'),
+
     url(r'^form$', makam.api.FormList.as_view(), name='api-makam-form-list'),
     url(r'^form/(?P<pk>\d+)$', makam.api.formbyid, name='api-makam-form-detailbyid'),
     url(r'^form/%s$' % uuid_match, makam.api.FormDetail.as_view(), name='api-makam-form-detail'),

@@ -211,6 +211,20 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             work.composers.clear()
             work.lyricists.clear()
 
+    def _add_recording_artists(self, rec, artistids):
+        if self.overwrite:
+            rec.artists.clear()
+        for a in artistids:
+            # If the artist is [dialogue] the we don't show analysis.
+            if a == "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc":
+                rec.analyse = False
+                rec.save()
+            artist = self.add_and_get_artist(a)
+            logger.info("  artist: %s" % artist)
+            if not rec.artists.filter(pk=artist.pk).exists():
+                logger.info("  - adding to artist list 2")
+                rec.artists.add(artist)
+
     def _add_work_attributes(self, work, mbwork, created):
         """ Read mb attributes from the webservice query
         and add them to the object """
@@ -253,7 +267,4 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             if a['type'] == u'Makam (Ottoman, Turkish)':
                 return a['attribute']
         return None
-
-
-
 
