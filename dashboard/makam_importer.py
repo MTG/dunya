@@ -21,6 +21,8 @@ import makam
 import makam.models
 import compmusic
 
+DIALOGUE_ARTIST = "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc"
+
 class MakamReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = makam.models.Artist
     _ArtistAliasClass = makam.models.ArtistAlias
@@ -216,7 +218,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             rec.artists.clear()
         for a in artistids:
             # If the artist is [dialogue] the we don't show analysis.
-            if a == "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc":
+            if a == DIALOGUE_ARTIST:
                 rec.analyse = False
                 rec.save()
             artist = self.add_and_get_artist(a)
