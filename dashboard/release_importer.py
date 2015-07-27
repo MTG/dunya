@@ -199,6 +199,8 @@ class ReleaseImporter(object):
 
     def add_and_get_release_artist(self, artistid):
         return self.add_and_get_artist(artistid)
+    def add_and_get_recording_artist(self, artistid):
+        return self.add_and_get_artist(artistid)
 
     def add_and_get_artist(self, artistid):
         if artistid in self.imported_artists:
@@ -262,7 +264,7 @@ class ReleaseImporter(object):
         return performances
 
     def add_and_get_recording(self, recordingid):
-        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels", "artists"])
         mbrec = mbrec["recording"]
 
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
@@ -273,6 +275,15 @@ class ReleaseImporter(object):
             rec.length = mbrec.get("length")
             rec.title = mbrec["title"]
             rec.save()
+            
+            if 'artist-credit' in mbrec:
+                artistids = []
+                # Create recording primary artists
+                for a in mbrec["artist-credit"]:
+                    if isinstance(a, dict):
+                        artistid = a["artist"]["id"]
+                        artistids.append(artistid)
+                self._add_recording_artists(rec, artistids)
 
             works = []
             for work in mbrec.get("work-relation-list", []):
@@ -299,6 +310,8 @@ class ReleaseImporter(object):
 
     def _clear_work_composers(self, work):
         pass
+    def _add_recording_artists(self, rec, artistids):
+        pass 
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]

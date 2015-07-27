@@ -211,3 +211,13 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         if self.overwrite:
             work.composers.clear()
             work.lyricists.clear()
+    def _add_recording_artists(self, rec, artistids):
+        if self.overwrite:
+            rec.artists.clear()
+        for a in artistids:
+            logger.info(a)
+            artist = self.add_and_get_artist(a)
+            logger.info("  artist: %s" % artist)
+            if not rec.artists.filter(pk=artist.pk).exists():
+                logger.info("  - adding to artist list 2")
+                rec.artists.add(artist)

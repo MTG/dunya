@@ -121,6 +121,7 @@ class RecordingWork(models.Model):
 
 class Recording(MakamStyle, data.models.Recording):
     works = models.ManyToManyField("Work", through="RecordingWork")
+    artists = models.ManyToManyField("Artist", related_name="recordings_artist")
 
     # the form Taksim refers to an instrumental improvisation
     has_taksim = models.BooleanField(default=False)
@@ -130,7 +131,8 @@ class Recording(MakamStyle, data.models.Recording):
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True)
-    
+    analyse = models.BooleanField(default=True)
+
     objects = managers.CollectionRecordingManager()
     
     def makamlist(self):
