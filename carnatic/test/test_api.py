@@ -138,10 +138,13 @@ class RecordingTest(TestCase):
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         self.wrestricted = models.Work.objects.create(title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
-        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971", work=self.wnormal)
-        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24", work=self.wrestricted)
+        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
+        models.RecordingWork.objects.create(recording=self.rnormal, work=self.wnormal, sequence=1)
+        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingWork.objects.create(recording=self.rrestricted, work=self.wrestricted, sequence=1)
         self.wstaff = models.Work.objects.create(title="staff work", mbid="91e8db80-e8e1-11e4-a224-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b", work=self.wstaff)
+        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        models.RecordingWork.objects.create(recording=self.rstaff, work=self.wstaff, sequence=1)
 
         models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
         models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1)
@@ -195,7 +198,7 @@ class RecordingTest(TestCase):
 
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
-        fields = ['artists', 'concert', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_detail_restr_collection(self):
@@ -206,7 +209,7 @@ class RecordingTest(TestCase):
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
         self.assertEqual(200, response.status_code)
-        fields = ['artists', 'concert', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
         # If we request another collection over the header parameter
@@ -228,10 +231,13 @@ class WorkTest(TestCase):
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         self.wrestricted = models.Work.objects.create(title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
-        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971", work=self.wnormal)
-        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24", work=self.wrestricted)
+        self.rnormal = models.Recording.objects.create(title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
+        models.RecordingWork.objects.create(recording=self.rnormal, work=self.wnormal, sequence=1)
+        self.rrestricted = models.Recording.objects.create(title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingWork.objects.create(recording=self.rrestricted, work=self.wrestricted, sequence=1)
         self.wstaff = models.Work.objects.create(title="staff work", mbid="91e8db80-e8e1-11e4-a224-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b", work=self.wstaff)
+        self.rstaff = models.Recording.objects.create(title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        models.RecordingWork.objects.create(recording=self.rstaff, work=self.wstaff, sequence=1)
 
         models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
         models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1)
@@ -257,7 +263,7 @@ class WorkTest(TestCase):
 
         response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         data = response.data
-        fields = ['composers', 'mbid', 'raagas', 'recordings', 'taalas', 'title']
+        fields = ['composers', 'lyricists', 'mbid', 'raagas', 'recordings', 'taalas', 'title']
         self.assertEquals(fields, sorted(data.keys()))
 
     def test_work_collection_recordings_staff(self):
@@ -311,8 +317,20 @@ class WorkTest(TestCase):
 
 class RaagaTest(TestCase):
     def setUp(self):
-        self.raaga = models.Raaga.objects.create(id=1, name="My Raaga")
-
+        self.raaga = models.Raaga.objects.create(id=1, name="My Raaga", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
+        self.normaluser = auth.models.User.objects.create_user("normaluser")
+        self.form = models.Form.objects.create(attrfromrecording=True, name='form')
+        
+        self.recording = models.Recording.objects.create(title="recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingRaaga.objects.create(raaga=self.raaga, recording=self.recording)
+        models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
+    
+        self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
+        self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", raaga=self.raaga)
+        self.recording2 = models.Recording.objects.create(title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
+        models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
+    
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
         self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
@@ -323,14 +341,45 @@ class RaagaTest(TestCase):
             self.fail("uuid is not correct/present")
 
     def test_render_raaga_detail(self):
-        s = api.RaagaDetailSerializer(self.raaga)
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
-        self.assertEqual(fields, sorted(s.data.keys()))
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
+        data = response.data
+        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
+        self.assertEqual(fields, sorted(data.keys()))
+
+    def test_recording_raaga(self):
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
+        
+        data = response.data
+        self.assertEqual(1, len(data["recordings"]))
+       
+        # Test get_raaga method from recording
+        data = self.recording.get_raaga()
+        self.assertEqual(1, len(data))
+        
+        data = self.recording2.get_raaga()
+        self.assertEqual(1, len(data))
 
 class TaalaTest(TestCase):
     def setUp(self):
-        self.taala = models.Taala.objects.create(id=1, name="My Taala")
+        self.taala = models.Taala.objects.create(id=1, name="My Taala", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
+        self.normaluser = auth.models.User.objects.create_user("normaluser")
+        self.form = models.Form.objects.create(attrfromrecording=True, name='form')
+        
+        self.recording = models.Recording.objects.create(title="recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingTaala.objects.create(taala=self.taala, recording=self.recording)
+        models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
+    
+        self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
+        self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", taala=self.taala)
+        self.recording2 = models.Recording.objects.create(title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
 
+        models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
+    
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)
         self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
@@ -341,9 +390,28 @@ class TaalaTest(TestCase):
             self.fail("uuid is not correct/present")
 
     def test_render_taala_detail(self):
-        s = api.TaalaDetailSerializer(self.taala)
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid', 'works']
-        self.assertEqual(fields, sorted(s.data.keys()))
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
+        data = response.data
+        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
+        self.assertEqual(fields, sorted(data.keys()))
+
+   
+    def test_recording_taala(self):
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+        response = client.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
+        
+        data = response.data
+        self.assertEqual(1, len(data["recordings"]))
+       
+        # Test get_taala method from recording
+        data = self.recording.get_taala()
+        self.assertEqual(1, len(data))
+        
+        data = self.recording2.get_taala()
+        self.assertEqual(1, len(data))
 
 class ConcertTest(TestCase):
     def setUp(self):

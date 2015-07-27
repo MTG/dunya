@@ -974,5 +974,29 @@
     },
     "model": "makam.formalias",
     "pk": 22
+},
+{
+    "fields": {
+        "name": "beste-murabba",
+        "form": 97
+    },
+    "model": "makam.formalias",
+    "pk": 23
+},
+{
+    "fields": {
+        "name": "beste murabba",
+        "form": 97
+    },
+    "model": "makam.formalias",
+    "pk": 24
+},
+{
+    "fields": {
+        "name": "beste mubabba",
+        "form": 97
+    },
+    "model": "makam.formalias",
+    "pk": 25
 }
 ]

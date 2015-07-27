@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -13,6 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+import json
+import musicbrainzngs
 
 from dashboard.log import logger
 from dashboard import release_importer
@@ -82,70 +85,128 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             carnatic.models.ConcertRecording.objects.create(
                 concert=concert, recording=recording, track=trackorder, disc=mnum, disctrack=tnum)
 
+    def _add_work_attributes(self, work, mbwork, created):
+        """ Read raaga and taala attributes from the webservice query
+        and add them to the object """
+        if created or self.overwrite:
+            raaga_attr = self._get_raaga_mb(mbwork)
+            taala_attr = self._get_taala_mb(mbwork)
+            if raaga_attr:
+                raaga = self._get_raaga(raaga_attr)
+                if raaga:
+                    work.raaga = raaga
+            if taala_attr:
+                taala = self._get_taala(taala_attr)
+                if taala:
+                    work.taala = taala
+            work.save()
+
     def _join_recording_and_works(self, recording, works):
-        # A carnatic recording only has one work.
-        if len(works):
-            w = works[0]
-            recording.work = w
-            recording.save()
+        # A carnatic recording only has many works.
+        for i, w in list(enumerate(works)):
+            carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=i)
 
     def _apply_tags(self, recording, works, tags):
-        if len(works):
-            w = works[0]
-            if self.overwrite:
-                w.raaga.clear()
-                w.taala.clear()
+        if self.overwrite:
+            recording.forms.clear()
+            recording.raagas.clear()
+            recording.taalas.clear()
 
-            raagas = self._get_raaga_tags(tags)
-            taalas = self._get_taala_tags(tags)
-
-            for seq, rname in raagas:
-                r = self._get_raaga(rname)
-                if r:
-                    carnatic.models.WorkRaaga.objects.create(work=w, raaga=r, sequence=seq)
-                else:
-                    logger.warn("Cannot find raaga: %s" % rname)
-
-            for seq, tname in taalas:
-                t = self._get_taala(tname)
-                if t:
-                    carnatic.models.WorkTaala.objects.create(work=w, taala=t, sequence=seq)
-                else:
-                    logger.warn("Cannot find taala: %s" % tname)
+        # Check that there is not more than one form
+        noform = False
+        forms = recording.forms.all()
+        if len(forms) > 1:
+            raise release_importer.ImportFailedException('TODO: Support more than one form per recording')
+        elif len(forms) < 1:
+            form = self._get_form_tag(tags)
+            if form:
+                # TODO: If there is more than one form, set sequence properly
+                carnatic.models.RecordingForm.objects.create(recording=recording, form=form, sequence=1)
+            else:
+                # If we have no form, we import anyway and put the tags on the recording
+                noform = True
         else:
-            # If we have no works, we don't need to do this
-            return
+            form = forms[0]
+
+        if noform or form.attrfromrecording:
+            # Create the relation with Raaga and Taala
+
+            raaga_tag = self._get_raaga_tags(tags)
+            taala_tag = self._get_taala_tags(tags)
+
+            if raaga_tag:
+                r = self._get_raaga(raaga_tag)
+                if r:
+                    carnatic.models.RecordingRaaga.objects.create(recording=recording, raaga=r, sequence=1)
+
+            if taala_tag:
+                t = self._get_taala(taala_tag)
+                if t:
+                    carnatic.models.RecordingTaala.objects.create(recording=recording, taala=t, sequence=1)
+        elif not form.attrfromrecording:
+            # In this case, we read attributes from the work. If the work has no attributes
+            # we should add these tags to the recording anyway.
+            pass
+
+
+    def _get_form_tag(self, tags):
+        for t in tags:
+            name = t["name"].lower()
+            if compmusic.tags.has_carnatic_form(name):
+                form_tag = compmusic.tags.parse_carnatic_form(name)
+                # forms are returned in (num, tag) - for now we just
+                # assume there is one
+                form = self._get_form(form_tag[1])
+                return form
+        return None
+
+
+    def _get_raaga_mb(self, mb_work):
+        for a in mb_work.get('attribute-list',[]):
+            if a['type'] == u'Rāga (Carnatic)':
+                return a['attribute']
+        return None
+
+    def _get_taala_mb(self, mb_work):
+        for a in mb_work.get('attribute-list',[]):
+            if a['type'] == u'Tāla (Carnatic)':
+                return a['attribute']
+        return None
 
     def _get_raaga_tags(self, taglist):
-        ret = []
-        seq = 1
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_raaga(name):
-                ret.append((seq, compmusic.tags.parse_raaga(name)))
-                seq += 1
-        return ret
+                return compmusic.tags.parse_raaga(name)
+        return None
 
     def _get_taala_tags(self, taglist):
-        ret = []
-        seq = 1
         for t in taglist:
             name = t["name"].lower()
             if compmusic.tags.has_taala(name):
-                ret.append((seq, compmusic.tags.parse_taala(name)))
-                seq += 1
-        return ret
+                return compmusic.tags.parse_taala(name)
+        return None
+
+    def _get_form(self, form):
+        try:
+            return carnatic.models.Form.objects.fuzzy(form)
+        except carnatic.models.Form.DoesNotExist:
+            logger.warn("Cannot find form: %s" % form)
+            return None
+
 
     def _get_raaga(self, raaganame):
         try:
             return carnatic.models.Raaga.objects.fuzzy(raaganame)
         except carnatic.models.Raaga.DoesNotExist:
+            logger.warn("Cannot find raaga: %s" % raaganame)
             return None
 
     def _get_taala(self, taalaname):
         try:
             return carnatic.models.Taala.objects.fuzzy(taalaname)
         except carnatic.models.Taala.DoesNotExist:
+            logger.warn("Cannot find taala: %s" % taalaname)
             return None
 
     def _get_instrument(self, instname):

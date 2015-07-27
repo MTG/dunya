@@ -12,11 +12,11 @@
 <h2>Raagas and taalas not in the Dunya database</h2>
 <h3>Raagas</h3>
 {% for r in missingr %}
-    <li> <a href="{{r.file.get_absolute_url}}">{{r.file.name}}</a> ({{r.raagas|join:", "}})
+    <li> <a href="{{r.file.get_absolute_url}}">{{r.file.name}}</a> ({{r.get_raagas|join:", "}})
 {% endfor %}
 <h3>Taalas</h3>
 {% for t in missingt %}
-    <li> <a href="{{t.file.get_absolute_url}}">{{t.file.name}}</a> ({{t.taalas|join:", "}})
+    <li> <a href="{{t.file.get_absolute_url}}">{{t.file.name}}</a> ({{t.get_taalas|join:", "}})
 {% endfor %}
 
 <a name="notag"></a>

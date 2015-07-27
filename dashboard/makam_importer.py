@@ -142,7 +142,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             if makam:
                 recording.makam.add(makam)
                 recording.save()
-
+        
         # tags for no taksim
         notaksimt = [g for g in groups if g.get("form") != "taksim" and g.get("form") != "gazel"]
 
@@ -158,11 +158,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             form = self._get_form(t.get("form"))
             usul = self._get_usul(t.get("usul"))
             w = works[0]
-            if makam and not w.makam.filter(pk=makam.pk).exists():
+            if makam and len(w.makam) == 0:
                 w.makam.add(makam)
-            if usul and not w.usul.filter(pk=usul.pk).exists():
+            if usul and len(w.usul) == 0:
                 w.usul.add(usul)
-            if form and not w.form.filter(pk=form.pk).exists():
+            if form and len(w.form) == 0:
                 w.form.add(form)
         elif len(works) == len(notaksimt):
             pass
@@ -211,13 +211,58 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         if self.overwrite:
             work.composers.clear()
             work.lyricists.clear()
+
     def _add_recording_artists(self, rec, artistids):
         if self.overwrite:
             rec.artists.clear()
         for a in artistids:
-            logger.info(a)
+            if a == "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc":
+                rec.analyse = False
+                rec.save()
             artist = self.add_and_get_artist(a)
             logger.info("  artist: %s" % artist)
             if not rec.artists.filter(pk=artist.pk).exists():
                 logger.info("  - adding to artist list 2")
                 rec.artists.add(artist)
+
+    def _add_work_attributes(self, work, mbwork, created):
+        """ Read mb attributes from the webservice query
+        and add them to the object """
+        
+        if created or self.overwrite:
+            form_attr = self._get_form_mb(mbwork)
+            usul_attr = self._get_usul_mb(mbwork)
+            makam_attr = self._get_makam_mb(mbwork)
+            if form_attr != "taksim" and form_attr != "gazel":
+                form = self._get_form(form_attr)
+                usul = self._get_usul(usul_attr)
+                makam = self._get_makam(makam_attr)
+                if form:
+                    work.form.clear()
+                    work.form.add(form)
+                if usul:
+                    work.usul.clear()
+                    work.usul.add(usul)
+                if makam:
+                    work.makam.clear()
+                    work.makam.add(makam)
+                work.save()
+
+    def _get_form_mb(self, mb_work):
+        for a in mb_work.get('attribute-list',[]):
+            if a['type'] == u'Form (Ottoman, Turkish)':
+                return a['attribute']
+        return None
+
+    def _get_usul_mb(self, mb_work):
+        for a in mb_work.get('attribute-list',[]):
+            if a['type'] == u'Usul (Ottoman, Turkish)':
+                return a['attribute']
+        return None
+
+    def _get_makam_mb(self, mb_work):
+        for a in mb_work.get('attribute-list',[]):
+            if a['type'] == u'Makam (Ottoman, Turkish)':
+                return a['attribute']
+        return None
+

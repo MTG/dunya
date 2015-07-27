@@ -199,8 +199,6 @@ class ReleaseImporter(object):
 
     def add_and_get_release_artist(self, artistid):
         return self.add_and_get_artist(artistid)
-    def add_and_get_recording_artist(self, artistid):
-        return self.add_and_get_artist(artistid)
 
     def add_and_get_artist(self, artistid):
         if artistid in self.imported_artists:
@@ -276,14 +274,13 @@ class ReleaseImporter(object):
             rec.title = mbrec["title"]
             rec.save()
             
-            if 'artist-credit' in mbrec:
-                artistids = []
-                # Create recording primary artists
-                for a in mbrec["artist-credit"]:
-                    if isinstance(a, dict):
-                        artistid = a["artist"]["id"]
-                        artistids.append(artistid)
-                self._add_recording_artists(rec, artistids)
+            artistids = []
+            # Create recording primary artists
+            for a in mbrec.get("artist-credit", []):
+                if isinstance(a, dict):
+                    artistid = a["artist"]["id"]
+                    artistids.append(artistid)
+            self._add_recording_artists(rec, artistids)
 
             works = []
             for work in mbrec.get("work-relation-list", []):
@@ -313,6 +310,9 @@ class ReleaseImporter(object):
     def _add_recording_artists(self, rec, artistids):
         pass 
 
+    def _add_work_attributes(self, work, mbwork, created):
+        pass
+
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
         work, created = self._WorkClass.objects.get_or_create(
@@ -325,8 +325,8 @@ class ReleaseImporter(object):
             work.title = mbwork["title"]
             work.save()
 
-        # TODO: Work attributes
         self._clear_work_composers(work)
+        self._add_work_attributes(work, mbwork, created)
 
         for artist in mbwork.get("artist-relation-list", []):
             if artist["type-id"] == RELATION_COMPOSER:
@@ -339,3 +339,6 @@ class ReleaseImporter(object):
                     work.lyricists.add(lyricist)
 
         return work
+
+class ImportFailedException(Exception):
+    pass
