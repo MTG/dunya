@@ -247,7 +247,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'releases', 'performers', 'works']
+        fields = ['mbid', 'title', 'releases', 'performers', 'works', 'artists']
 
     def release_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
@@ -334,13 +334,12 @@ class ReleaseList(generics.ListAPIView):
 
 class ReleaseDetailSerializer(serializers.ModelSerializer, WithImageMixin):
     recordings  = ReleaseRecordingInnerSerializer(many=True, source='releaserecording_set')
-    artists = ArtistInnerSerializer(source='performers', many=True)
     release_artists = ArtistInnerSerializer(source='artists', many=True)
     image = serializers.SerializerMethodField('get_image_abs_url')
 
     class Meta:
         model = models.Release
-        fields = ['mbid', 'title', 'year', 'image', 'artists', 'release_artists', 'recordings']
+        fields = ['mbid', 'title', 'year', 'image', 'release_artists', 'recordings']
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'

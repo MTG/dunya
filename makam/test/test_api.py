@@ -143,7 +143,7 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        self.assertEquals(["artists", "image", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
+        self.assertEquals(["image", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
 
     def test_render_release_list(self):
         s = api.ReleaseInnerSerializer(self.r)
@@ -196,7 +196,7 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/makam/recording/2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
-        self.assertEqual(["mbid", "performers", "releases", "title", "works"], sorted(resp.data.keys()))
+        self.assertEqual(["artists", "mbid", "performers", "releases", "title", "works"], sorted(resp.data.keys()))
 
     def test_render_recording_list(self):
         s = api.RecordingInnerSerializer(self.r)
