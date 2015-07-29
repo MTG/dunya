@@ -242,6 +242,7 @@ class InstrumentPerformanceSerializer(serializers.ModelSerializer):
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     releases = serializers.SerializerMethodField('release_list')
+    artists = ArtistInnerSerializer('artists', many=True)
     performers = InstrumentPerformanceSerializer(source='instrumentperformance_set', many=True)
     works = WorkInnerSerializer(source='worklist', many=True)
 
