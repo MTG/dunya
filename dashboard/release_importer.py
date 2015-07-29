@@ -232,7 +232,7 @@ class ReleaseImporter(object):
     def _get_artist_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
-            if perf["type"] in ["vocal", "instrument", "performer"]:
+            if perf["type"] in ["vocal", "instrument", "performer", "performing orchestra"]:
                 artistid = perf["target"]
                 attrs = perf.get("attribute-list", [])
                 is_lead = False
@@ -275,7 +275,7 @@ class ReleaseImporter(object):
             rec.length = mbrec.get("length")
             rec.title = mbrec["title"]
             rec.save()
-            
+
             artistids = []
             # Create recording primary artists
             for a in mbrec.get("artist-credit", []):
@@ -310,7 +310,7 @@ class ReleaseImporter(object):
     def _clear_work_composers(self, work):
         pass
     def _add_recording_artists(self, rec, artistids):
-        pass 
+        pass
 
     def _add_work_attributes(self, work, mbwork, created):
         pass
