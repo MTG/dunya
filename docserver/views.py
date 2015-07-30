@@ -28,6 +28,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.forms.models import modelformset_factory
 
 from docserver import models
 from docserver import forms
@@ -140,29 +141,37 @@ class DocumentDetail(generics.RetrieveAPIView):
     serializer_class = serializers.DocumentSerializer
 
 def download_external(request, uuid, ftype):
+    try:
+        doc = models.Document.objects.get(external_identifier=uuid)
+    except models.Document.DoesNotExist:
+        raise NoFileException("Cannot find a document with id %s" % documentid)
+
+    has_access = util.user_has_access(request.user, doc, ftype)
+    if not has_access:
+        return HttpResponse("Not logged in", status=401)
     # Test authentication. We support a rest-framework token
     # or a logged-in user
 
-    loggedin = request.user.is_authenticated()
-    is_staff = request.user.is_staff
-    try:
-        t = auther.authenticate(request)
-        if t:
-            is_staff = t[0].is_staff
-            token = True
-        else:
-            token = False
-    except exceptions.AuthenticationFailed:
-        token = False
-
-    referrer = request.META.get("HTTP_REFERER")
-    good_referrer = False
-    if referrer and "dunya.compmusic.upf.edu" in referrer:
-        good_referrer = True
+    #loggedin = request.user.is_authenticated()
+    #is_staff = request.user.is_staff
+    #try:
+    #    t = auther.authenticate(request)
+    #    if t:
+    #        is_staff = t[0].is_staff
+    #        token = True
+    #    else:
+    #        token = False
+    #except exceptions.AuthenticationFailed:
+    #    token = False
+    
+    #referrer = request.META.get("HTTP_REFERER")
+    #good_referrer = False
+    #if referrer and "dunya.compmusic.upf.edu" in referrer:
+    #    good_referrer = True
 
     # The only thing that's limited at the moment is mp3 files
-    if ftype == "mp3" and not (loggedin or token or good_referrer):
-        return HttpResponse("Not logged in", status=401)
+    #if ftype == "mp3" and not (loggedin or token or good_referrer):
+    #    return HttpResponse("Not logged in", status=401)
 
     try:
         version = request.GET.get("v")
@@ -174,7 +183,7 @@ def download_external(request, uuid, ftype):
         mimetype = filepart.mimetype
 
         ratelimit = "off"
-        if ftype == "mp3" and not is_staff:
+        if util.has_rate_limit(request.user, doc, ftype):
             # 200k
             ratelimit = 200 * 1024
 
@@ -506,14 +515,22 @@ def addcollection(request):
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
+    file_types = models.SourceFileType.objects.filter(sourcefile__document__collection=coll).distinct()
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST, instance=coll)
-        if form.is_valid():
+        permission_form = PermissionFormSet(request.POST)
+        if form.is_valid() and permission_form.is_valid():
             form.save()
+            coll_perms = permission_form.save(commit=False)
+            for coll_perm in coll_perms:
+                coll_perm.collection = coll
+                coll_perm.save()
             return redirect(coll.get_absolute_url())
     else:
         form = forms.CollectionForm(instance=coll)
-    ret = {"form": form, "mode": "edit"}
+        permission_form = PermissionFormSet(queryset=models.CollectionPermission.objects.filter(collection=coll))
+    ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)

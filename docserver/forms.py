@@ -22,7 +22,7 @@ from docserver import jobs
 class CollectionForm(forms.ModelForm):
     class Meta:
         model = models.Collection
-        fields = ["name", "slug", "description", "root_directory", "restricted"]
+        fields = ["name", "slug", "description", "root_directory"]
 
 class SourceFileTypeForm(forms.ModelForm):
     class Meta:

@@ -195,3 +195,47 @@ def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
         return json.loads(contents)
     except IOError:
         raise NoFileException
+
+def get_user_permissions(user):
+    permission = ["U"]
+    if user.is_staff:
+        permission = ["S", "R", "U"]
+    elif user.has_perm('docserver.access_restricted_file'):
+        permission = ["R", "U"]
+    return permission
+
+def user_has_access(user, document, file_type):
+    '''
+    Returns True if the user has access to the source_file, this is made through 
+    the related collection.
+    Also returns True if there is no Source File with that slug but there is a Module.
+    '''
+
+    try:
+        sourcetype = models.SourceFileType.objects.get_by_slug(file_type)
+    except models.SourceFileType.DoesNotExist:
+        sourcetype = None
+    if not sourcetype:
+        try:
+            module = models.Module.objects.get(slug=file_type)
+            return True
+        except models.Module.DoesNotExist:
+            return False
+    
+    user_permissions = get_user_permissions(user)
+    return models.CollectionPermission.objects.filter(
+            collection=document.collection, source_type=sourcetype, permission__in=user_permissions).count() != 0
+def has_rate_limit(user, document, file_type):
+    '''
+    Returns True if the user has access to the source_file with rate limit, 
+    but if the user is staff always returns False
+    '''
+    user_permissions = get_user_permissions(user)
+    for c in models.CollectionPermission.objects.filter(
+            collection=document.collection, source_type__slug=file_type, permission__in=user_permissions).all():
+        if user.is_staff:
+            return False
+        return c.rate_limit
+    return False
+
+

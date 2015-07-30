@@ -39,8 +39,6 @@ class Collection(models.Model):
     description = models.CharField(max_length=200)
     root_directory = models.CharField(max_length=200)
 
-    restricted = models.BooleanField(default=False)
-
     def __unicode__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
         if self.description:
@@ -131,7 +129,6 @@ class Document(models.Model):
 
             newret[k] = items
         return newret
-
 
 class FileTypeManager(models.Manager):
     def get_by_slug(self, slug):
@@ -266,6 +263,22 @@ class DerivedFile(models.Model):
     def __unicode__(self):
         return u"%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
 
+class CollectionPermission(models.Model):
+    class Meta:
+        permissions = (
+            ("access_restricted_file", "Can see restricted source files"),
+        )
+
+    PERMISSIONS = (
+        ('S', 'Staff-only'),
+        ('R', 'Restricted'),
+        ('U', 'Unrestricted')
+    )
+
+    permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
+    collection = models.ForeignKey(Collection)
+    source_type = models.ForeignKey(SourceFileType)
+    rate_limit = models.BooleanField(default=False)
 
 # Essentia management stuff
 
