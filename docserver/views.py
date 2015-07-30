@@ -141,38 +141,25 @@ class DocumentDetail(generics.RetrieveAPIView):
     serializer_class = serializers.DocumentSerializer
 
 def download_external(request, uuid, ftype):
+    # Test authentication. We support a rest-framework token
+    # or a logged-in user
+    user = request.user
+    try:
+        t = auther.authenticate(request)
+        if t:
+            user = t[0]
+    except exceptions.AuthenticationFailed:
+        pass
+    
     try:
         doc = models.Document.objects.get(external_identifier=uuid)
     except models.Document.DoesNotExist:
         raise NoFileException("Cannot find a document with id %s" % documentid)
 
-    has_access = util.user_has_access(request.user, doc, ftype)
+    has_access = util.user_has_access(user, doc, ftype)
     if not has_access:
         return HttpResponse("Not logged in", status=401)
-    # Test authentication. We support a rest-framework token
-    # or a logged-in user
-
-    #loggedin = request.user.is_authenticated()
-    #is_staff = request.user.is_staff
-    #try:
-    #    t = auther.authenticate(request)
-    #    if t:
-    #        is_staff = t[0].is_staff
-    #        token = True
-    #    else:
-    #        token = False
-    #except exceptions.AuthenticationFailed:
-    #    token = False
-    
-    #referrer = request.META.get("HTTP_REFERER")
-    #good_referrer = False
-    #if referrer and "dunya.compmusic.upf.edu" in referrer:
-    #    good_referrer = True
-
-    # The only thing that's limited at the moment is mp3 files
-    #if ftype == "mp3" and not (loggedin or token or good_referrer):
-    #    return HttpResponse("Not logged in", status=401)
-
+ 
     try:
         version = request.GET.get("v")
         subtype = request.GET.get("subtype")
@@ -183,7 +170,7 @@ def download_external(request, uuid, ftype):
         mimetype = filepart.mimetype
 
         ratelimit = "off"
-        if util.has_rate_limit(request.user, doc, ftype):
+        if util.has_rate_limit(user, doc, ftype):
             # 200k
             ratelimit = 200 * 1024
 
