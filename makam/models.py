@@ -319,7 +319,7 @@ class SymbTr(models.Model):
     name = models.CharField(max_length=200)
     # We use a uuid directly instead of a link to an existing model
     # because this could be a workid (most common), or a recordingid (sometimes)
-    uuid = UUIDField(db_index=True)
+    uuid = models.UUIDField(db_index=True)
 
     def __unicode__(self):
         return u"%s -> %s" % (self.uuid, self.name)

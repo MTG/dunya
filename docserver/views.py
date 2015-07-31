@@ -81,11 +81,30 @@ class DocumentDetailExternal(generics.CreateAPIView, generics.RetrieveAPIView):
     serializer_class = serializers.DocumentSerializer
     permission_classes = (StaffWritePermission, )
 
-class SourceFile(generics.CreateAPIView):
+class SourceFileException(Exception):
+    def __init__(self, status_code, message):
+        super(SourceFileException, self).__init__(self)
+        self.status_code = status_code
+        self.message = message
+
+class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = (StaffWritePermission, )
 
-    def create(self, request, external_identifier, file_type):
+    def _write_to_disk(self, file, filepath):
+        """ write the file object `file` to disk at `filepath'"""
+
+        size = 0
+        try:
+            with open(filepath, 'wb') as dest:
+                for chunk in file.chunks():
+                    size += len(chunk)
+                    dest.write(chunk)
+        except IOError as e:
+            raise
+        return size
+
+    def _save_file(self, external_identifier, file_type, file):
         try:
             document = models.Document.objects.get(external_identifier=external_identifier)
         except models.Document.DoesNotExist:
@@ -97,10 +116,10 @@ class SourceFile(generics.CreateAPIView):
             data = {'detail': 'No filetype with this slug'}
             return response.Response(data, status=status.HTTP_404_NOT_FOUND)
 
-        file = request.data.get("file")
         if not file:
             data = {'detail': 'Need exactly one file called "file"'}
             return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
+
         collection = document.collection
         root = collection.root_directory
 
@@ -118,21 +137,30 @@ class SourceFile(generics.CreateAPIView):
             pass
 
         filename = "%s-%s.%s" % (mbid, slug, ext)
-        size = 0
-        try:
-            with open(os.path.join(datadir, filename), 'wb') as dest:
-                for chunk in file.chunks():
-                    size += len(chunk)
-                    dest.write(chunk)
+        filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
 
-            filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
-            models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
-            data = {'detail': 'ok'}
-            return response.Response(data, status=status.HTTP_200_OK)
+        try:
+            size = self._write_to_disk(file, filepath)
         except IOError as e:
             data = {'detail': 'Cannot write file'}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        sf, created = models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
+        if created:
+            retstatus = status.HTTP_201_CREATED
+            data = {'detail': 'created'}
+        else:
+            retstatus = status.HTTP_200_OK
+            data = {'detail': 'updated'}
+        return response.Response(data, status=retstatus)
+
+    def create(self, request, external_identifier, file_type):
+        file = request.data.get("file")
+        return self._save_file(external_identifier, file_type, file)
+
+    def update(self, request, external_identifier, file_type):
+        file = request.data.get("file")
+        return self._save_file(external_identifier, file_type, file)
 
 
 class DocumentDetail(generics.RetrieveAPIView):

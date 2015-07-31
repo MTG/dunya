@@ -51,6 +51,9 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
         document.save()
     docserver_add_sourcefile(document.pk, filetype, path)
 
+def docserver_update_sourcefile(document_id, ftype, tmpefile, contents):
+    pass
+
 def docserver_add_sourcefile(document_id, ftype, path):
     """ Add a file to the given document. If a file with the given filetype
         already exists for the document just update the path and size. """

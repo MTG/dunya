@@ -24,7 +24,7 @@ external_identifier = r'(?P<external_identifier>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]
 
 api_patterns = [
     url(r'^collections$', views.CollectionList.as_view(), name='collection-list'),
-    url(r'^by-id/%s/add/(?P<file_type>[a-z0-9-]+)$' % external_identifier, views.SourceFile.as_view(), name='ds-add-sourcetype'),
+    url(r'^by-id/%s/(?:add|update)/(?P<file_type>[a-z0-9-]+)$' % external_identifier, views.SourceFile.as_view(), name='ds-add-sourcetype'),
     url(r'^by-id/%s/(?P<ftype>[a-z0-9-]+)$' % uuid_match, views.download_external, name='ds-download-external'),
     url(r'^by-id/%s\.(?P<ftype>mp3)$' % uuid_match, views.download_external, name='ds-download-mp3'),
     url(r'^by-id/%s$' % external_identifier, views.DocumentDetailExternal.as_view(), name='ds-document-external'),
