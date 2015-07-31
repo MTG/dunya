@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 import re
 import os
+import uuid
 
 import data
 import compmusic
@@ -124,3 +125,17 @@ class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
         exclude = ['name']
+
+class DashUUIDField(forms.UUIDField):
+    """A UUIDField which returns uuids with dashes """
+    def prepare_value(self, value):
+        if isinstance(value, uuid.UUID):
+            return str(value)
+        return value
+
+class SymbTrForm(forms.ModelForm):
+    uuid = DashUUIDField()
+    class Meta:
+        import makam
+        model = makam.models.SymbTr
+        fields = ['name', 'uuid']

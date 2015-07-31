@@ -1,15 +1,45 @@
 {% extends "dashboard/base.html" %}
 {% block title %}Symbtr{% endblock %}
 
+{% block css %}
+<style type="text/css">
+#id_name, #id_uuid {
+    width: 350px;
+}
+#datatable td {
+    padding: 5px;
+}
+</style>
+{% endblock %}
+
 {% block wrap %}
 
-<p><a href="{% url 'dashboard-makam-symbtrlist' %}">&lt;-- Back to list</a></p>
+<p><a href="{% url 'dashboard-makam-symbtrlist' %}">&larr;Back to list</a></p>
 
+{% if add %}
+<h3>Add SymbTr</h3>
+{% else %}
+<h3>Symbtr: {{symbtr.name}}</h3>
 <p>
-Symbtr name: {{symbtr.name}}
-<p>
-Musicbrainz id: <a href="http://musicbrainz.org/work/{{symbtr.uuid}}">http://musicbrainz.org/work/{{symbtr.uuid}}</a><br>
-(If the work doesn't exist it might be because this is a taksim and it's a recordingid instead)
+MusicBrainz: <a href="{{url}}">{{url}}</a><br>
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    <table id="datatable">
+{{form.as_table}}
+    </table>
+<input type="submit" value="Update">
+</form>
+
+<form method="POST">
+
+<input type="submit" value="Upload">
+</form>
+
+
+
+<p>[<a href="?delete">Delete this symbtr and all associated files</a>]</p>
 
 {% endblock %}
+
 

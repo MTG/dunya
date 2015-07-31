@@ -4,6 +4,8 @@
 {% block wrap %}
 <h1>SymbTr</h1>
 
+<p><a href="{% url 'dashboard-makam-symbtrnew' %}">Add new</a></p>
+
 {% for s in symbtr %}
 <li><a href="{% url 'dashboard-makam-symbtr' s.uuid %}">{{s.name}}</a>
 {% endfor %}

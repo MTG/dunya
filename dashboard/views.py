@@ -619,10 +619,63 @@ def makam_symbtrlist(request):
     ret = {"symbtr": symbtr}
     return render(request, "dashboard/makam_symbtrlist.html", ret)
 
+def _get_symbtr_sourcetypes():
+    types = [u'symbtrtxt', u'symbtrmidi', u'symbtrpdf', u'symbtrxml', u'symbtrmu2']
+    return docserver.models.SourceFileType.objects.filter(slug__in=types)
+
 @user_passes_test(is_staff)
-def makam_symbtr(request, uuid):
-    symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
-    ret = {"symbtr": symbtr}
+def makam_symbtr(request, uuid=None):
+    """
+      - Add new mapping
+        - Create document if it doesn't exist
+      - Rename mapping
+        - Rename document name  (if not taksim)
+        - If uuid changes, make or get document
+          - Copy symbtr source files from old to new
+          - Delete old document if no other sourcefiles
+      - Upload symbtr file
+        - Get name, copy in, create/get sourcefile, attach to document
+    """
+    if uuid:
+        symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+        is_taksim = "taksim" in symbtr.name
+        if is_taksim:
+            mbtype = "recording"
+        else:
+            mbtype = "work"
+        url = "https://musicbrainz.org/%s/%s" % (mbtype, symbtr.uuid)
+    else:
+        is_taksim = False
+        symbtr = None
+        url = ""
+
+    if request.method == 'POST':
+        form = forms.SymbTrForm(request.POST, instance=symbtr)
+        if form.is_valid():
+            form.save()
+            newuuid = form.instance.uuid
+            newdoc, created = docserver.models.Document.objects.get_or_create(
+                    external_identifier=newuuid, defaults={"title": form.instance.name})
+            if not created and not is_taksim:
+                newdoc.title = form.instance.name
+                newdoc.save()
+            if uuid != form.instance.uuid:
+                # Copy from old document to new document
+                if uuid:
+                    olddoc = docserver.models.Document.objects.get(external_identifier=uuid)
+                    sfs = olddoc.sourcefiles.filter(sourcefiletype__in=_get_symbtr_sourcetypes())
+                    for s in sfs:
+                        s.document = newdoc
+                        s.save()
+                    olddoc = docserver.models.Document.get(external_identifier=uuid)
+                    if olddoc.sourcefiles.count() == 0:
+                        olddoc.delete()
+                return redirect('dashboard-makam-symbtr', form.instance.uuid)
+            symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+    else:
+        form = forms.SymbTrForm(instance=symbtr)
+
+    ret = {"add": uuid is None, "symbtr": symbtr, "url": url, "form": form}
     return render(request, "dashboard/makam_symbtr.html", ret)
 
 def _edit_artists_list(request, data):
