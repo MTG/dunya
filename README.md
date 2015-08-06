@@ -235,9 +235,12 @@ To run the server:
 
 To run jobs, make sure rabbitmq is running on the server
 
-And on each client you run celery
+And on each client you run celery, either for executing the feature processing algorithms or the 
+information import from MusicBrainz.
 
     celery -A dunya worker -l info
+
+    celery -A dunya worker -l info -Q import
 
 To make a complete dump of the database to a file called `dunya_data.json` or to
 load it again, run

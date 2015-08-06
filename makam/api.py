@@ -21,6 +21,8 @@ from data import utils
 from rest_framework import generics
 from rest_framework import serializers
 from django.shortcuts import redirect
+from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -100,24 +102,27 @@ def fuzzy(request):
     qmakam = request.GET.get('makam', None)
     qform = request.GET.get('form', None)
     qusul = request.GET.get('usul', None)
-    if qmakam:
-        try:
-            return redirect('api-makam-makam-detail', models.Makam.objects.unaccent_get(qmakam).uuid, permanent=True)
-        except:
-            makam = models.Makam.objects.fuzzy(qmakam)
-            return redirect('api-makam-makam-detail', makam.uuid, permanent=True)
-    if qform:
-        try:
-            return redirect('api-makam-form-detail', models.Form.objects.unaccent_get(qform).uuid, permanent=True)
-        except:
-            form = models.Form.objects.fuzzy(qform)
-            return redirect('api-makam-form-detail', form.uuid, permanent=True)
-    if qusul:
-        try:
-            return redirect('api-makam-usul-detail', models.Usul.objects.unaccent_get(qusul).uuid, permanent=True)
-        except:
-            usul = models.Usul.objects.fuzzy(qusul)
-            return redirect('api-makam-usul-detail', usul.uuid, permanent=True)
+    try:
+        if qmakam:
+            try:
+                return redirect('api-makam-makam-detail', models.Makam.objects.unaccent_get(qmakam).uuid, permanent=True)
+            except:
+                makam = models.Makam.objects.fuzzy(qmakam)
+                return redirect('api-makam-makam-detail', makam.uuid, permanent=True)
+        if qform:
+            try:
+                return redirect('api-makam-form-detail', models.Form.objects.unaccent_get(qform).uuid, permanent=True)
+            except:
+                form = models.Form.objects.fuzzy(qform)
+                return redirect('api-makam-form-detail', form.uuid, permanent=True)
+        if qusul:
+            try:
+                return redirect('api-makam-usul-detail', models.Usul.objects.unaccent_get(qusul).uuid, permanent=True)
+            except:
+                usul = models.Usul.objects.fuzzy(qusul)
+                return redirect('api-makam-usul-detail', usul.uuid, permanent=True)
+    except ObjectDoesNotExist, e:
+        raise Http404("Attribute does not exist")
 
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
