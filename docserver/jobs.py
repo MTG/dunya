@@ -167,15 +167,18 @@ def delete_collection(cid):
     have been created for the documents.
     """
     collection = models.Collection.objects.get(pk=cid)
-    # Because we are deleting all files for a collection we can just
-    # directly delete the collection's directory - e.g.
-    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6/71/718840e9-8715-4f59-ae47-f52d1691dab1/wav/0.5/wav-length-1.dat ->
-    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6
-    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collection=collection)
+    
+    doc_collections = []
+    for d in collection.document_collection_set.all():
+        if len(d.collections) > 1:
+            d.collections.remove(collection)
+        else:
+            doc_collections.add(d)
+
+    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__rel_collections__in=doc_collections)
     paths = [f.fullpath for f in dfparts]
-    prefix = os.path.commonprefix(paths)
-    if os.path.isdir(prefix):
-        shutil.rmtree(prefix)
+    for f in paths:
+        os.remove(f)
     collection.delete()
 
 class NumPyArangeEncoder(json.JSONEncoder):
@@ -184,10 +187,10 @@ class NumPyArangeEncoder(json.JSONEncoder):
             return obj.tolist()  # or map(int, obj)
         return json.JSONEncoder.default(self, obj)
 
-def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
+def _save_file(root_directory, recordingid, version, slug, partslug, partnumber, extension, data):
     recordingstub = recordingid[:2]
-    reldir = os.path.join(collection, recordingstub, recordingid, slug, version)
-    fdir = os.path.join(settings.AUDIO_ROOT, reldir)
+    reldir = os.path.join(recordingstub, recordingid, slug, version)
+    fdir = root_directory
     try:
         os.makedirs(fdir)
     except OSError:
@@ -231,7 +234,7 @@ def process_document(documentid, moduleversionid):
         worker = None
 
     document = models.Document.objects.get(pk=documentid)
-    collection = document.collection
+    doc_collection = document.rel_collections
 
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
@@ -240,12 +243,11 @@ def process_document(documentid, moduleversionid):
         fname = s.fullpath.encode("utf-8")
         starttime = time.time()
         results = instance.process_document(
-            collection.collectionid, document.pk,
+            doc_collection, document.pk,
             s.pk, document.external_identifier, fname)
         endtime = time.time()
         total_time = int(endtime - starttime)
 
-        collectionid = document.collection.collectionid
         moduleslug = module.slug
         with transaction.atomic():
             for dataslug, contents in results.items():
@@ -268,14 +270,14 @@ def process_document(documentid, moduleversionid):
                     contents = [contents]
                 for i, partdata in enumerate(contents, 1):
                     saved_name, rel_path, saved_size = _save_file(
-                        collectionid, document.external_identifier,
+                        document.get_absolute_path(), document.external_identifier,
                         version.version, moduleslug, dataslug, i, extension, partdata)
                     if saved_name:
                         df.save_part(i, rel_path, saved_size)
 
         # When we've finished, log that we processed the file. If this throws an
         # exception, we won't do the log.
-        log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
+        log.log_processed_file(hostname, doc_collection, document.external_identifier, moduleversionid)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
@@ -313,7 +315,7 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
         # All documents that don't already have a derived file for this module version
         docs = models.Document.objects.filter(
             sourcefiles__file_type=module.source_type,
-            collection=collection).exclude(derivedfiles__module_version=version)
+            rel_collections__collections=collection).exclude(derivedfiles__module_version=version)
         for i, d in enumerate(docs, 1):
             print "  document %s/%s - %s" % (i, len(docs), d)
             process_document.delay(d.pk, version.pk)

@@ -5,7 +5,7 @@
 
 <ul class="breadcrumbs">
     <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
-    <li><a href="{{document.collection.get_absolute_url}}">{{document.collection.name}}</a></li>
+    <li><a href="{{document.rel_collections.path}}">{{document.rel_collections.name}}</a></li>
     <li>{{document.title}}</li>
     {% if modulever %}
     <li>Module {{modulever.module.name}} {{modulever.version}}</li>

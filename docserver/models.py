@@ -24,6 +24,8 @@ import django.utils.timezone
 import collections
 import os
 
+ROOT_DIRECTORY = "/incoming"
+
 class Collection(models.Model):
     """A set of related documents"""
 
@@ -37,7 +39,12 @@ class Collection(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.CharField(max_length=200)
-    root_directory = models.CharField(max_length=200)
+
+    def get_default_doc_collection(self):
+        for d in self.document_collection_set.all():
+            if len(d.collections) == 1:
+                return d
+        raise DocumentCollection.DoesNotExist
 
     def __unicode__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
@@ -57,15 +64,19 @@ class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
         return self.get_queryset().get(external_identifier=external_id)
 
+class DocumentCollection(models.Model):
+    collections = models.ManyToManyField(Collection)
+    root_directory = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+
 class Document(models.Model):
     """An item in the collection.
     It has a known title and is part of a collection.
     It can have an option title and description
     """
-
     objects = DocumentManager()
 
-    collection = models.ForeignKey(Collection, related_name='documents')
+    rel_collections = models.ForeignKey(DocumentCollection, blank=True, null=True)
     title = models.CharField(max_length=500)
     """If the file is known in a different database, the identifier
        for the item."""

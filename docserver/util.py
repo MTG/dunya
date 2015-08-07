@@ -45,7 +45,8 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
           filetype: a SourceFileType
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
-    document = models.Document.objects.create(collection=collection, title=title)
+    doc_collection = collection.get_default_doc_collection()
+    document = models.Document.objects.create(rel_collections=doc_collection, title=title)
     if alt_id:
         document.external_identifier = alt_id
         document.save()
@@ -60,7 +61,7 @@ def docserver_add_sourcefile(document_id, ftype, path):
     document = models.Document.objects.get(pk=document_id)
 
     size = os.stat(path).st_size
-    root_directory = document.collection.root_directory
+    root_directory = document.get_absolute_path()
     if path.startswith(root_directory):
         # If the path is absolute, remove it
         path = path[len(root_directory):]
@@ -227,7 +228,7 @@ def user_has_access(user, document, file_type):
     
     user_permissions = get_user_permissions(user)
     return models.CollectionPermission.objects.filter(
-            collection=document.collection, source_type=sourcetype, permission__in=user_permissions).count() != 0
+            collection__in=document.rel_collections.collections, source_type=sourcetype, permission__in=user_permissions).count() != 0
 def has_rate_limit(user, document, file_type):
     '''
     Returns True if the user has access to the source_file with rate limit, 
@@ -235,7 +236,7 @@ def has_rate_limit(user, document, file_type):
     '''
     user_permissions = get_user_permissions(user)
     for c in models.CollectionPermission.objects.filter(
-            collection=document.collection, source_type__slug=file_type, permission__in=user_permissions).all():
+            collection__in=document.rel_collections.collections, source_type__slug=file_type, permission__in=user_permissions).all():
         if user.is_staff:
             return False
         return c.rate_limit

@@ -120,8 +120,7 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
             data = {'detail': 'Need exactly one file called "file"'}
             return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-        collection = document.collection
-        root = collection.root_directory
+        root = document.get_absolute_path()
 
         mbid = external_identifier
         mb = mbid[:2]
@@ -510,7 +509,7 @@ def delete_collection(request, slug):
         elif delete.lower().startswith("no"):
             return redirect("docserver-collection", c.slug)
 
-    modules = models.Module.objects.filter(versions__derivedfile__document__collection=c).distinct()
+    modules = models.Module.objects.filter(versions__derivedfile__document__rel_collections_collections=c).distinct()
 
     ret = {"collection": c, "modules": modules}
     return render(request, 'docserver/delete_collection.html', ret)
@@ -520,7 +519,9 @@ def addcollection(request):
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
         if form.is_valid():
-            form.save()
+            col = form.save()
+            doc_collection = models.DocumentCollection(name=name, path=form.cleaned_data['root_directory'])
+            doc_collection.collections.add(col)
             return redirect('docserver-manager')
     else:
         form = forms.CollectionForm()
@@ -533,10 +534,11 @@ def editcollection(request, slug):
     file_types = models.SourceFileType.objects.filter(sourcefile__document__collection=coll).distinct()
     PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
     if request.method == 'POST':
+        # TODO: fix root_directory change
         form = forms.CollectionForm(request.POST, instance=coll)
         permission_form = PermissionFormSet(request.POST)
         if form.is_valid() and permission_form.is_valid():
-            form.save()
+            coll = form.save()
             coll_perms = permission_form.save(commit=False)
             for coll_perm in coll_perms:
                 coll_perm.collection = coll

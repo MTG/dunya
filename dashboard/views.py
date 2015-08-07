@@ -105,11 +105,13 @@ def addcollection(request):
             new_collection.checkers.add(*checkers)
             docserver_coll, created = docserver.models.Collection.objects.get_or_create(
                 collectionid=coll_id,
-                defaults={"root_directory": path, "name": coll_name})
+                defaults={"name": coll_name})
             if not created:
-                docserver_coll.root_directory = path
                 docserver_coll.name = coll_name
                 docserver_coll.save()
+            else:
+                docserver.DocumentCollection.objects.create(root_directory=path, name=coll_name)
+                decserver.collections.add(docserver_coll)
             data_coll, created = data.models.Collection.objects.get_or_create(
                 mbid=coll_id,
                 defaults={"name": coll_name})

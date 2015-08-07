@@ -19,28 +19,34 @@ from rest_framework import serializers
 from rest_framework import fields
 from django.shortcuts import get_object_or_404
 
+class DocumentCollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DocumentCollection
+        fields = ['name', 'root_directory', 'id']
+
+
 class CollectionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Collection
-        fields = ['name', 'description', 'slug', 'root_directory', 'id']
+        fields = ['name', 'description', 'slug', 'id']
 
 
 class DocumentSerializer(serializers.ModelSerializer):
     # The slug field isn't part of a SourceFile, but we get it from the filetype
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
     derivedfiles = fields.ReadOnlyField(source='derivedmap', read_only=True)
-    collection = serializers.CharField(max_length=100, source='collection.slug')
+    collection = serializers.CharField(max_length=100, source='rel_collections.id')
 
     class Meta:
         model = models.Document
-        fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
+        fields = ['rel_collections', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
 
     def create(self, validated_data):
         args = self.context["view"].kwargs
-        slug = validated_data.pop('collection')
-        collection = get_object_or_404(models.Collection, **slug)
+        doc_collections = validated_data.pop('rel_collections')
+        rel_collection = get_object_or_404(models.DocumentCollection, **doc_collections)
         external = args["external_identifier"]
-        document, created = models.Document.objects.get_or_create(collection=collection, external_identifier=external, defaults=validated_data)
+        document, created = models.Document.objects.get_or_create(rel_collections=rel_collections, external_identifier=external, defaults=validated_data)
         return document
 
 class DocumentIdSerializer(serializers.ModelSerializer):
