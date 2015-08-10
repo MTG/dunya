@@ -110,8 +110,8 @@ def addcollection(request):
                 docserver_coll.name = coll_name
                 docserver_coll.save()
             else:
-                docserver.DocumentCollection.objects.create(root_directory=path, name=coll_name)
-                decserver.collections.add(docserver_coll)
+                doc_coll = docserver.models.DocumentCollection.objects.create(root_directory=path, name=coll_name)
+                doc_coll.collections.add(docserver_coll)
             data_coll, created = data.models.Collection.objects.get_or_create(
                 mbid=coll_id,
                 defaults={"name": coll_name})

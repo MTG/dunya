@@ -228,7 +228,7 @@ def user_has_access(user, document, file_type):
     
     user_permissions = get_user_permissions(user)
     return models.CollectionPermission.objects.filter(
-            collection__in=document.rel_collections.collections, source_type=sourcetype, permission__in=user_permissions).count() != 0
+            collection__in=document.rel_collections.collections.all(), source_type=sourcetype, permission__in=user_permissions).count() != 0
 def has_rate_limit(user, document, file_type):
     '''
     Returns True if the user has access to the source_file with rate limit, 
@@ -236,7 +236,7 @@ def has_rate_limit(user, document, file_type):
     '''
     user_permissions = get_user_permissions(user)
     for c in models.CollectionPermission.objects.filter(
-            collection__in=document.rel_collections.collections, source_type__slug=file_type, permission__in=user_permissions).all():
+            collection__in=document.rel_collections.collections.all(), source_type__slug=file_type, permission__in=user_permissions).all():
         if user.is_staff:
             return False
         return c.rate_limit

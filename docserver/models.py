@@ -65,7 +65,7 @@ class DocumentManager(models.Manager):
         return self.get_queryset().get(external_identifier=external_id)
 
 class DocumentCollection(models.Model):
-    collections = models.ManyToManyField(Collection)
+    collections = models.ManyToManyField(Collection, related_name="rel_documents")
     root_directory = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
 

@@ -610,7 +610,8 @@ def collectionversion(request, slug, version, type):
 @user_passes_test(is_staff)
 def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
-    doc = collection.documents.get_by_external_id(uuid)
+
+    doc = models.Document.objects.get(external_identifier=uuid, rel_collections__collections=collection)
 
     derived = doc.derivedfiles.all()
     showderived = False
