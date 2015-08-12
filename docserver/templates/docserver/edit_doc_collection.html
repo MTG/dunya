@@ -1,0 +1,24 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{mode|capfirst}} Documents collection{% endblock %}
+
+{% block wrap %}
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>{{mode|capfirst}} Documents collection</li>
+</ul>
+
+<h2>{{mode|capfirst}} Document relation with collection</h2>
+{% ifequal mode 'add' %}
+<form method="post" action="{% url 'docserver-add-doc-collection' collection.slug %}">{% csrf_token %}
+    {{ form_add.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+{% endifequal %}
+
+<form method="post" action="{% url 'docserver-create-doc-collection' collection.slug %}>{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
+
+

@@ -147,12 +147,18 @@ class FileTypeManager(models.Manager):
         return self.get_queryset().get(slug=slug)
 
 class SourceFileType(models.Model):
+    FILE_TYPE_CHOICES = (
+        ('audio', 'Audio'),
+        ('data', 'Data'),
+    )
     objects = FileTypeManager()
 
     slug = models.SlugField(db_index=True, validators=[RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")])
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
+    
+    stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -186,7 +192,7 @@ class SourceFile(models.Model):
 
     @property
     def fullpath(self):
-        return os.path.join(self.document.collection.root_directory, self.path)
+        return os.path.join(self.document.rel_collections.root_directory, file_type.stype, self.path)
 
     @property
     def mimetype(self):
@@ -413,7 +419,7 @@ class ModuleVersion(models.Model):
         else:
             collections = [collection]
         qs = Document.objects.filter(
-            collection__in=collections,
+            rel_collections__collections__in=collections,
             sourcefiles__file_type=self.module.source_type)
         qs = qs.filter(derivedfiles__module_version=self)
         return qs.distinct()
@@ -424,7 +430,7 @@ class ModuleVersion(models.Model):
         else:
             collections = [collection]
         qs = Document.objects.filter(
-            collection__in=collections,
+            rel_collections__collections__in=collections,
             sourcefiles__file_type=self.module.source_type)
         qs = qs.exclude(derivedfiles__module_version=self)
         return qs.distinct()

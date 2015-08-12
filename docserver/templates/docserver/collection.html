@@ -12,6 +12,14 @@
 </ul>
 
 <div class="topbox">
+    <div class="topheader">Documents Collection Relation</div>
+    {% for d in collection.rel_documents.all %}
+        <li>{{d.name}}: {{d.root_directory}} <a href="{% url 'docserver-doc-collectionedit' d.id %}">Edit relation</a></li>
+    {% endfor %}
+    <li><a href="{% url 'docserver-create-doc-collection' collection.slug %}">Add relation</a></li>
+</div>
+
+<div class="topbox">
     <div class="topheader">Actions</div>
     <li><a href="{% url 'docserver-editcollection' collection.slug %}">Edit collection</a>
     <li><a href="{% url 'docserver-delete-collection' collection.slug %}">Delete collection and all files</a>

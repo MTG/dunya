@@ -61,7 +61,7 @@ def docserver_add_sourcefile(document_id, ftype, path):
     document = models.Document.objects.get(pk=document_id)
 
     size = os.stat(path).st_size
-    root_directory = document.get_absolute_path()
+    root_directory = os.path.join(document.get_absolute_path(), ftype.stype)
     if path.startswith(root_directory):
         # If the path is absolute, remove it
         path = path[len(root_directory):]

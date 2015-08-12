@@ -127,7 +127,7 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
         slug = sft.slug
         ext = sft.extension
         filedir = os.path.join(mb, mbid, slug)
-        datadir = os.path.join(root, models.Collection.DATA_DIR, filedir)
+        datadir = os.path.join(root, sft.stype, filedir)
 
         try:
             os.makedirs(datadir)
@@ -496,6 +496,52 @@ def module(request, module):
     return render(request, 'docserver/module.html', ret)
 
 @user_passes_test(is_staff)
+def add_doc_collection(request, slug):
+    c = get_object_or_404(models.Collection, slug=slug)
+    form_add = forms.ModelChoiceField(queryset=models.DocumentCollection.exclude(pk__in=c.rel_documents))
+    if request.method == "POST":
+        form_add.clean(request.POST.get())
+        if True:
+            doc_coll = form.save()
+            doc_coll.collections.add(c)
+            return redirect('docserver-manager')
+    
+    ret = {"form_add":form_add, "mode": "Add"}
+    return render(request, 'docserver/edit_doc_collection.html', ret)
+
+@user_passes_test(is_staff)
+def create_doc_collection(request, slug):
+    c = get_object_or_404(models.Collection, slug=slug)
+    
+    form_add = forms.ModelChoiceField(queryset=models.DocumentCollection.exclude(pk__in=c.rel_documents))
+    if request.method == "POST":
+        form = forms.DocumentCollectionForm(request.POST)
+        if form.is_valid():
+            doc_coll = form.save()
+            doc_coll.collections.add(c)
+            return redirect('docserver-manager')
+    else:
+        form = forms.DocumentCollectionForm()
+    
+    ret = {"collection":c ,"form":form, "form_add":form_add, "mode": "Add"}
+    return render(request, 'docserver/edit_doc_collection.html', ret)
+
+@user_passes_test(is_staff)
+def doc_collection_edit(request, rel_id):
+    doc_coll = get_object_or_404(models.DocumentCollection, pk=rel_id)
+
+    if request.method == "POST":
+        form = forms.DocumentCollectionForm(request.POST, instance=doc_coll)
+        if form.is_valid():
+            form.save()
+            return redirect('docserver-manager')
+    else:
+        form = forms.DocumentCollectionForm(instance=doc_coll)
+    
+    ret = {"doc_coll": doc_coll, "form":form, "mode": "edit"}
+    return render(request, 'docserver/edit_doc_collection.html', ret)
+
+@user_passes_test(is_staff)
 def delete_collection(request, slug):
     c = get_object_or_404(models.Collection, slug=slug)
 
@@ -516,26 +562,32 @@ def delete_collection(request, slug):
 
 @user_passes_test(is_staff)
 def addcollection(request):
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
-        if form.is_valid():
+        permission_form = PermissionFormSet(request.POST)
+        if form.is_valid() and permission_form.is_valid():
             col = form.save()
             doc_collection = models.DocumentCollection(name=name, path=form.cleaned_data['root_directory'])
             doc_collection.collections.add(col)
+            coll_perms = permission_form.save(commit=False)
+            for coll_perm in coll_perms:
+                coll_perm.collection = col
+                coll_perm.save()
             return redirect('docserver-manager')
     else:
         form = forms.CollectionForm()
-    ret = {"form": form, "mode": "add"}
+        permission_form = PermissionFormSet()
+    ret = {"form": form, "permission_form": permission_form, "mode": "add"}
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
-    file_types = models.SourceFileType.objects.filter(sourcefile__document__collection=coll).distinct()
+    file_types = models.SourceFileType.objects.filter(sourcefile__document__rel_collections__collections=coll).distinct()
     PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
     if request.method == 'POST':
-        # TODO: fix root_directory change
-        form = forms.CollectionForm(request.POST, instance=coll)
+        form = forms.EditCollectionForm(request.POST, instance=coll)
         permission_form = PermissionFormSet(request.POST)
         if form.is_valid() and permission_form.is_valid():
             coll = form.save()
@@ -545,7 +597,7 @@ def editcollection(request, slug):
                 coll_perm.save()
             return redirect(coll.get_absolute_url())
     else:
-        form = forms.CollectionForm(instance=coll)
+        form = forms.EditCollectionForm(instance=coll)
         permission_form = PermissionFormSet(queryset=models.CollectionPermission.objects.filter(collection=coll))
     ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
     return render(request, 'docserver/addcollection.html', ret)
