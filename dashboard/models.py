@@ -115,7 +115,7 @@ class CollectionState(models.Model):
         return u"%s (%s)" % (self.state_name, self.state_date)
 
 class Collection(models.Model):
-
+    AUDIO_DIR = 'audio'
     objects = CollectionManager()
 
     id = UUIDField(primary_key=True)

@@ -110,9 +110,7 @@ def docserver_get_mp3_url(documentid):
 
 def docserver_get_filename(documentid, slug, subtype=None, part=None, version=None):
     part = _docserver_get_part(documentid, slug, subtype, part, version)
-    derived_root = settings.AUDIO_ROOT
-    file_path = part.path
-    full_path = os.path.join(derived_root, file_path)
+    full_path = part.fullpath
     return full_path
 
 def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None):

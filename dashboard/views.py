@@ -98,7 +98,7 @@ def addcollection(request):
             checkers = []
             for i in form.cleaned_data['checkers']:
                 checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
-            dashboard_root = os.path.join(path, docserver.models.Collection.AUDIO_DIR)
+            dashboard_root = os.path.join(path, models.Collection.AUDIO_DIR)
             new_collection = models.Collection.objects.create(
                 id=coll_id, name=coll_name,
                 root_directory=dashboard_root, do_import=do_import)

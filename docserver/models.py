@@ -24,13 +24,8 @@ import django.utils.timezone
 import collections
 import os
 
-ROOT_DIRECTORY = "/incoming"
-
 class Collection(models.Model):
     """A set of related documents"""
-
-    AUDIO_DIR = "audio"
-    DATA_DIR = "data"
 
     class Meta:
         permissions = (('read_restricted', "Can read files in restricted collections"), )
@@ -166,7 +161,7 @@ class SourceFileType(models.Model):
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
     
-    stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES, null=True, blank=True)
+    stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES)
 
     def __unicode__(self):
         return self.name
@@ -221,7 +216,8 @@ class DerivedFilePart(models.Model):
 
     @property
     def fullpath(self):
-        return os.path.join(settings.AUDIO_ROOT, self.path)
+        self.derivedfile.document.rel_collections.root_directory
+        return os.path.join(self.derivedfile.document.rel_collections.root_directory, settings.DERIVED_FOLDER, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
         url = reverse(

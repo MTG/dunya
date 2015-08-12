@@ -49,7 +49,7 @@ class CollectionForm(forms.Form):
         pth = self.cleaned_data.get('path')
         if pth and not os.path.exists(pth):
             raise forms.ValidationError("This path doesn't exist")
-        docserver_pth = os.path.join(pth, "audio")
+        docserver_pth = os.path.join(pth, models.Collection.AUDIO_DIR)
         if not os.path.exists(docserver_pth):
             raise forms.ValidationError("Path doesn't contain inner 'audio'")
         return pth
