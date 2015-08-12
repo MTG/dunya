@@ -16,7 +16,7 @@
     {% for d in collection.rel_documents.all %}
         <li>{{d.name}}: {{d.root_directory}} <a href="{% url 'docserver-doc-collectionedit' d.id %}">Edit relation</a></li>
     {% endfor %}
-    <li><a href="{% url 'docserver-create-doc-collection' collection.slug %}">Add relation</a></li>
+    <li><a href="{% url 'docserver-add-doc-collection' collection.slug %}">Add relation</a></li>
 </div>
 
 <div class="topbox">

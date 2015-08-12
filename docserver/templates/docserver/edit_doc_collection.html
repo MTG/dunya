@@ -7,6 +7,15 @@
     <li>{{mode|capfirst}} Documents collection</li>
 </ul>
 
+{% ifequal mode 'edit' %}
+<div>
+You are about to edit a Relation Element that is linked to the following collections:
+{%for c in doc_coll.collections.all %}
+<li>{{c.name}}</li>
+{% endfor %}
+</div>
+{% endifequal %}
+
 <h2>{{mode|capfirst}} Document relation with collection</h2>
 {% ifequal mode 'add' %}
 <form method="post" action="{% url 'docserver-add-doc-collection' collection.slug %}">{% csrf_token %}
@@ -15,7 +24,7 @@
 </form>
 {% endifequal %}
 
-<form method="post" action="{% url 'docserver-create-doc-collection' collection.slug %}>{% csrf_token %}
+<form method="post" action="">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
 </form>

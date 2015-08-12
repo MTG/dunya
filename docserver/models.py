@@ -69,6 +69,14 @@ class DocumentCollection(models.Model):
     root_directory = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        ret = u""
+        if self.name:
+            ret += u"%s" % self.name
+        if self.root_directory:
+            ret += u" (%s)" % self.root_directory
+        return ret
+
 class Document(models.Model):
     """An item in the collection.
     It has a known title and is part of a collection.

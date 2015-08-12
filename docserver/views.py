@@ -498,32 +498,32 @@ def module(request, module):
 @user_passes_test(is_staff)
 def add_doc_collection(request, slug):
     c = get_object_or_404(models.Collection, slug=slug)
-    form_add = forms.ModelChoiceField(queryset=models.DocumentCollection.exclude(pk__in=c.rel_documents))
+
     if request.method == "POST":
-        form_add.clean(request.POST.get())
-        if True:
-            doc_coll = form.save()
+        form_add = forms.AddDocumentCollectionForm(request.POST, doc_coll_ids=[i.id for i in c.rel_documents.all()])
+        if form_add.is_valid():
+            doc_coll = form_add.cleaned_data['doc_coll']
             doc_coll.collections.add(c)
-            return redirect('docserver-manager')
-    
-    ret = {"form_add":form_add, "mode": "Add"}
-    return render(request, 'docserver/edit_doc_collection.html', ret)
+            return redirect('docserver-collection', c.slug)
+    else:
+        form_add = forms.AddDocumentCollectionForm(doc_coll_ids=[i.id for i in c.rel_documents.all()])
+    ret = {"collection":c, "form_add":form_add, "mode": "Add"}
+    return render(request, 'docserver/add_doc_collection.html', ret)
 
 @user_passes_test(is_staff)
 def create_doc_collection(request, slug):
     c = get_object_or_404(models.Collection, slug=slug)
     
-    form_add = forms.ModelChoiceField(queryset=models.DocumentCollection.exclude(pk__in=c.rel_documents))
     if request.method == "POST":
         form = forms.DocumentCollectionForm(request.POST)
         if form.is_valid():
             doc_coll = form.save()
             doc_coll.collections.add(c)
-            return redirect('docserver-manager')
+            return redirect('docserver-collection', c.slug)
     else:
         form = forms.DocumentCollectionForm()
     
-    ret = {"collection":c ,"form":form, "form_add":form_add, "mode": "Add"}
+    ret = {"collection":c ,"form":form, "mode": "Add"}
     return render(request, 'docserver/edit_doc_collection.html', ret)
 
 @user_passes_test(is_staff)
