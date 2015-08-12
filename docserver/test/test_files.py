@@ -46,19 +46,21 @@ class SourceFileTest(TestCase):
         models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type, rate_limit=True)
         models.CollectionPermission.objects.create(collection=self.col3, permission="S", source_type=self.file_type, rate_limit=False)
 
-    def test_user_access(self):
+    def test_regular_user_access(self):
         # Regular user can access only pdf of collection 1
         self.assertTrue(util.user_has_access(self.nuser, self.doc1, self.file_type2.slug))
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, self.file_type.slug))
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, self.file_type2.slug))
         self.assertFalse(util.user_has_access(self.nuser, self.doc1, self.file_type.slug))
        
+    def test_restricted_user_access(self):
         # Restricted users can access only to mp3 of collection 2 and pdf of collection 1
         self.assertTrue(util.user_has_access(self.ruser, self.doc2, self.file_type.slug))
         self.assertTrue(util.user_has_access(self.ruser, self.doc1, self.file_type2.slug))
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type.slug))
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type2.slug))
         
+    def test_staff_user_access(self):
         # Staff users access to mp3 of collection 3 and collection 2 and pdf of collection 1 
         self.assertTrue(util.user_has_access(self.suser, self.doc2, self.file_type.slug))
         self.assertTrue(util.user_has_access(self.suser, self.doc3, self.file_type.slug))
