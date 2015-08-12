@@ -42,9 +42,9 @@ class SourceFileTest(TestCase):
         self.sfile2 = models.SourceFile.objects.create(document=self.doc2, file_type=self.file_type, size=1000)
         self.sfile3 = models.SourceFile.objects.create(document=self.doc3, file_type=self.file_type2, size=1000)
 
-        models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type2, rate_limit=False)
-        models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type, rate_limit=True)
-        models.CollectionPermission.objects.create(collection=self.col3, permission="S", source_type=self.file_type, rate_limit=False)
+        models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type2, streamable=False)
+        models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type, streamable=True)
+        models.CollectionPermission.objects.create(collection=self.col3, permission="S", source_type=self.file_type, streamable=False)
 
     def test_regular_user_access(self):
         # Regular user can access only pdf of collection 1

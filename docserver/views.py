@@ -562,7 +562,7 @@ def delete_collection(request, slug):
 
 @user_passes_test(is_staff)
 def addcollection(request):
-    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
         permission_form = PermissionFormSet(request.POST)
@@ -585,7 +585,7 @@ def addcollection(request):
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
     file_types = models.SourceFileType.objects.filter(sourcefile__document__rel_collections__collections=coll).distinct()
-    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.EditCollectionForm(request.POST, instance=coll)
         permission_form = PermissionFormSet(request.POST)

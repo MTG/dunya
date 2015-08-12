@@ -299,7 +299,7 @@ class CollectionPermission(models.Model):
     permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
     collection = models.ForeignKey(Collection)
     source_type = models.ForeignKey(SourceFileType)
-    rate_limit = models.BooleanField(default=False)
+    streamable = models.BooleanField(default=False)
 
 # Essentia management stuff
 

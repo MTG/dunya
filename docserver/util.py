@@ -21,7 +21,7 @@ import os
 import subprocess
 import json
 from django.conf import settings
-
+from django.core.exceptions import ObjectDoesNotExist
 class NoFileException(Exception):
     pass
 
@@ -236,15 +236,18 @@ def has_rate_limit(user, document, file_type_slug):
     Returns True if the user has access to the source_file with rate limit, 
     but if the user is staff always returns False
     file_type_slug is the slug of the file SourceFileType.
+    In the case where there is no CollectionPermission element we return 
+    False, because it corresponds to a Module slug
     '''
     user_permissions = get_user_permissions(user)
     if user.is_staff:
         return False
-    for c in models.CollectionPermission.objects.filter(
+    try:
+        c = models.CollectionPermission.objects.get(
             collection__in=document.rel_collections.collections.all(),
             source_type__slug=file_type_slug,
-            permission__in=user_permissions).all():
-        return c.rate_limit
-    return False
-
+            permission__in=user_permissions)
+        return c.streamable
+    except ObjectDoesNotExist, e:
+         return False
 

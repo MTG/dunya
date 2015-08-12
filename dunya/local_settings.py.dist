@@ -53,10 +53,8 @@ WORKER_REDIS_HOST = 'localhost'
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # for example, images
 MEDIA_ROOT = ''
-# Where generated files live (e.g. extracted features)
-AUDIO_ROOT = ''
 #Inside each collection folder, where the derived files are located
-DERIVED_FOLDER = 'incoming'
+DERIVED_FOLDER = 'derived'
 
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
