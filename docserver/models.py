@@ -181,7 +181,7 @@ class SourceFile(models.Model):
         root_directory = None
         for c in self.document.collections.all():
             if root_directory and root_directory != c.root_directory:
-                raise Exception
+                raise Exception("If a document is in more than one collection they must have the same root_directory")
             root_directory = c.root_directory
                 
         return os.path.join(root_directory, self.file_type.stype, self.path)
