@@ -91,18 +91,6 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = (StaffWritePermission, )
 
-    def _write_to_disk(self, file, filepath):
-        """ write the file object `file` to disk at `filepath'"""
-
-        size = 0
-        try:
-            with open(filepath, 'wb') as dest:
-                for chunk in file.chunks():
-                    size += len(chunk)
-                    dest.write(chunk)
-        except IOError as e:
-            raise
-        return size
 
     def _save_file(self, external_identifier, file_type, file):
         try:
@@ -120,31 +108,12 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
             data = {'detail': 'Need exactly one file called "file"'}
             return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-        root = document.get_absolute_path()
-
-        mbid = external_identifier
-        mb = mbid[:2]
-        slug = sft.slug
-        ext = sft.extension
-        filedir = os.path.join(mb, mbid, slug)
-        datadir = os.path.join(root, sft.stype, filedir)
-
         try:
-            os.makedirs(datadir)
-        except OSError:
-            print "Error making directory", datadir
-            pass
-
-        filename = "%s-%s.%s" % (mbid, slug, ext)
-        filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
-
-        try:
-            size = self._write_to_disk(file, filepath)
+            sf, created = util.docserver_upload_and_save_file(document.id, sft.id, file)
         except IOError as e:
             data = {'detail': 'Cannot write file'}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        sf, created = models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
         if created:
             retstatus = status.HTTP_201_CREATED
             data = {'detail': 'created'}
@@ -177,16 +146,19 @@ def download_external(request, uuid, ftype):
             user = t[0]
     except exceptions.AuthenticationFailed:
         pass
-    
+
     try:
         doc = models.Document.objects.get(external_identifier=uuid)
     except models.Document.DoesNotExist:
         raise NoFileException("Cannot find a document with id %s" % documentid)
 
+    # if ftype is a sourcetype and it has streamable set, and
+    # referrer is dunya, then has_access is true (but we rate-limit)
+
     has_access = util.user_has_access(user, doc, ftype)
     if not has_access:
         return HttpResponse("Not logged in", status=401)
- 
+
     try:
         version = request.GET.get("v")
         subtype = request.GET.get("subtype")
