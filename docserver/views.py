@@ -120,15 +120,14 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
             data = {'detail': 'Need exactly one file called "file"'}
             return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-        collection = document.collection
-        root = collection.root_directory
+        root = document.get_absolute_path()
 
         mbid = external_identifier
         mb = mbid[:2]
         slug = sft.slug
         ext = sft.extension
         filedir = os.path.join(mb, mbid, slug)
-        datadir = os.path.join(root, models.Collection.DATA_DIR, filedir)
+        datadir = os.path.join(root, sft.stype, filedir)
 
         try:
             os.makedirs(datadir)
@@ -510,40 +509,47 @@ def delete_collection(request, slug):
         elif delete.lower().startswith("no"):
             return redirect("docserver-collection", c.slug)
 
-    modules = models.Module.objects.filter(versions__derivedfile__document__collection=c).distinct()
+    modules = models.Module.objects.filter(versions__derivedfile__document_collections=c).distinct()
 
     ret = {"collection": c, "modules": modules}
     return render(request, 'docserver/delete_collection.html', ret)
 
 @user_passes_test(is_staff)
 def addcollection(request):
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
-        if form.is_valid():
-            form.save()
+        permission_form = PermissionFormSet(request.POST)
+        if form.is_valid() and permission_form.is_valid():
+            col = form.save()
+            coll_perms = permission_form.save(commit=False)
+            for coll_perm in coll_perms:
+                coll_perm.collection = col
+                coll_perm.save()
             return redirect('docserver-manager')
     else:
         form = forms.CollectionForm()
-    ret = {"form": form, "mode": "add"}
+        permission_form = PermissionFormSet()
+    ret = {"form": form, "permission_form": permission_form, "mode": "add"}
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
-    file_types = models.SourceFileType.objects.filter(sourcefile__document__collection=coll).distinct()
-    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "rate_limit"), extra=2)
+    file_types = models.SourceFileType.objects.filter(sourcefile__document__collections=coll).distinct()
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
-        form = forms.CollectionForm(request.POST, instance=coll)
+        form = forms.EditCollectionForm(request.POST, instance=coll)
         permission_form = PermissionFormSet(request.POST)
         if form.is_valid() and permission_form.is_valid():
-            form.save()
+            coll = form.save()
             coll_perms = permission_form.save(commit=False)
             for coll_perm in coll_perms:
                 coll_perm.collection = coll
                 coll_perm.save()
             return redirect(coll.get_absolute_url())
     else:
-        form = forms.CollectionForm(instance=coll)
+        form = forms.EditCollectionForm(instance=coll)
         permission_form = PermissionFormSet(queryset=models.CollectionPermission.objects.filter(collection=coll))
     ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
     return render(request, 'docserver/addcollection.html', ret)
@@ -608,7 +614,8 @@ def collectionversion(request, slug, version, type):
 @user_passes_test(is_staff)
 def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
-    doc = collection.documents.get_by_external_id(uuid)
+
+    doc = models.Document.objects.get(external_identifier=uuid, collections=collection)
 
     derived = doc.derivedfiles.all()
     showderived = False

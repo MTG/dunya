@@ -27,31 +27,37 @@ class SourceFileTest(TestCase):
         self.file_type = models.SourceFileType.objects.create(extension="mp3", name="mp3_file_type", slug="mp3")
         self.file_type2 = models.SourceFileType.objects.create(extension="pdf", name="pdf_file", slug="application/pdf")
 
-        self.doc1 = models.Document.objects.create(title="doc1", external_identifier="111111", collection=self.col1)
-        self.doc2 = models.Document.objects.create(title="doc2", external_identifier="222222", collection=self.col2)
-        self.doc3 = models.Document.objects.create(title="doc3", external_identifier="333333", collection=self.col3)
+        self.doc1 = models.Document.objects.create(title="doc1", external_identifier="111111")
+        self.doc2 = models.Document.objects.create(title="doc2", external_identifier="222222")
+        self.doc3 = models.Document.objects.create(title="doc3", external_identifier="333333")
+
+        self.doc1.collections.add(self.col1)
+        self.doc2.collections.add(self.col2)
+        self.doc3.collections.add(self.col3)
 
         self.sfile1 = models.SourceFile.objects.create(document=self.doc1, file_type=self.file_type, size=1000)
         self.sfile2 = models.SourceFile.objects.create(document=self.doc2, file_type=self.file_type, size=1000)
         self.sfile3 = models.SourceFile.objects.create(document=self.doc3, file_type=self.file_type2, size=1000)
 
-        models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type2, rate_limit=False)
-        models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type, rate_limit=True)
-        models.CollectionPermission.objects.create(collection=self.col3, permission="S", source_type=self.file_type, rate_limit=False)
+        models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type2, streamable=False)
+        models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type, streamable=True)
+        models.CollectionPermission.objects.create(collection=self.col3, permission="S", source_type=self.file_type, streamable=False)
 
-    def test_user_access(self):
+    def test_regular_user_access(self):
         # Regular user can access only pdf of collection 1
         self.assertTrue(util.user_has_access(self.nuser, self.doc1, self.file_type2.slug))
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, self.file_type.slug))
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, self.file_type2.slug))
         self.assertFalse(util.user_has_access(self.nuser, self.doc1, self.file_type.slug))
        
+    def test_restricted_user_access(self):
         # Restricted users can access only to mp3 of collection 2 and pdf of collection 1
         self.assertTrue(util.user_has_access(self.ruser, self.doc2, self.file_type.slug))
         self.assertTrue(util.user_has_access(self.ruser, self.doc1, self.file_type2.slug))
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type.slug))
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type2.slug))
         
+    def test_staff_user_access(self):
         # Staff users access to mp3 of collection 3 and collection 2 and pdf of collection 1 
         self.assertTrue(util.user_has_access(self.suser, self.doc2, self.file_type.slug))
         self.assertTrue(util.user_has_access(self.suser, self.doc3, self.file_type.slug))

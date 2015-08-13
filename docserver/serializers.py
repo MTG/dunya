@@ -29,18 +29,18 @@ class DocumentSerializer(serializers.ModelSerializer):
     # The slug field isn't part of a SourceFile, but we get it from the filetype
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
     derivedfiles = fields.ReadOnlyField(source='derivedmap', read_only=True)
-    collection = serializers.CharField(max_length=100, source='collection.slug')
+    collections = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
 
     class Meta:
         model = models.Document
-        fields = ['collection', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
+        fields = ['collections', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
 
     def create(self, validated_data):
         args = self.context["view"].kwargs
-        slug = validated_data.pop('collection')
-        collection = get_object_or_404(models.Collection, **slug)
+        collection = validated_data.pop('collection')
+        rel_collection = get_object_or_404(models.Collection, **collection)
         external = args["external_identifier"]
-        document, created = models.Document.objects.get_or_create(collection=collection, external_identifier=external, defaults=validated_data)
+        document, created = models.Document.objects.get_or_create(collections=collection, external_identifier=external, defaults=validated_data)
         return document
 
 class DocumentIdSerializer(serializers.ModelSerializer):

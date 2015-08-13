@@ -1,0 +1,18 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Add Documents collection{% endblock %}
+
+{% block wrap %}
+<ul class="breadcrumbs">
+    <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li>Add Documents collection {{ collection.name }}</li>
+</ul>
+
+<h2>Add Document relation with collection: {{ collection.name }}</h2>
+<form method="post" action="{% url 'docserver-add-doc-collection' collection.slug %}">{% csrf_token %}
+    {{ form_add.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+<a href="{% url 'docserver-create-doc-collection' collection.slug %}">Create new Relation Element</a>
+{% endblock %}
+
+

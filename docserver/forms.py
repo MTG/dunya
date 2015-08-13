@@ -24,6 +24,11 @@ class CollectionForm(forms.ModelForm):
         model = models.Collection
         fields = ["name", "slug", "description", "root_directory"]
 
+class EditCollectionForm(forms.ModelForm):
+    class Meta:
+        model = models.Collection
+        fields = ["name", "slug", "description", "root_directory"]
+
 class SourceFileTypeForm(forms.ModelForm):
     class Meta:
         model = models.SourceFileType

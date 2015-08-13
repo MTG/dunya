@@ -21,7 +21,7 @@ import os
 import subprocess
 import json
 from django.conf import settings
-
+from django.core.exceptions import ObjectDoesNotExist
 class NoFileException(Exception):
     pass
 
@@ -45,7 +45,8 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
           filetype: a SourceFileType
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
-    document = models.Document.objects.create(collection=collection, title=title)
+    document = models.Document.objects.create(title=title)
+    document.collections.add(collection)
     if alt_id:
         document.external_identifier = alt_id
         document.save()
@@ -60,7 +61,7 @@ def docserver_add_sourcefile(document_id, ftype, path):
     document = models.Document.objects.get(pk=document_id)
 
     size = os.stat(path).st_size
-    root_directory = document.collection.root_directory
+    root_directory = os.path.join(document.get_absolute_path(), ftype.stype)
     if path.startswith(root_directory):
         # If the path is absolute, remove it
         path = path[len(root_directory):]
@@ -109,9 +110,7 @@ def docserver_get_mp3_url(documentid):
 
 def docserver_get_filename(documentid, slug, subtype=None, part=None, version=None):
     part = _docserver_get_part(documentid, slug, subtype, part, version)
-    derived_root = settings.AUDIO_ROOT
-    file_path = part.path
-    full_path = os.path.join(derived_root, file_path)
+    full_path = part.fullpath
     return full_path
 
 def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None):
@@ -207,38 +206,48 @@ def get_user_permissions(user):
         permission = ["R", "U"]
     return permission
 
-def user_has_access(user, document, file_type):
+def user_has_access(user, document, file_type_slug):
     '''
     Returns True if the user has access to the source_file, this is made through 
     the related collection.
     Also returns True if there is no Source File with that slug but there is a Module.
+    file_type_slug is the slug of the file SourceFileType.
     '''
 
     try:
-        sourcetype = models.SourceFileType.objects.get_by_slug(file_type)
+        sourcetype = models.SourceFileType.objects.get_by_slug(file_type_slug)
     except models.SourceFileType.DoesNotExist:
         sourcetype = None
     if not sourcetype:
         try:
-            module = models.Module.objects.get(slug=file_type)
+            module = models.Module.objects.get(slug=file_type_slug)
             return True
         except models.Module.DoesNotExist:
             return False
     
     user_permissions = get_user_permissions(user)
     return models.CollectionPermission.objects.filter(
-            collection=document.collection, source_type=sourcetype, permission__in=user_permissions).count() != 0
-def has_rate_limit(user, document, file_type):
+            collection__in=document.collections.all(),
+            source_type=sourcetype,
+            permission__in=user_permissions).count() != 0
+
+def has_rate_limit(user, document, file_type_slug):
     '''
     Returns True if the user has access to the source_file with rate limit, 
     but if the user is staff always returns False
+    file_type_slug is the slug of the file SourceFileType.
+    In the case where there is no CollectionPermission element we return 
+    False, because it corresponds to a Module slug
     '''
     user_permissions = get_user_permissions(user)
-    for c in models.CollectionPermission.objects.filter(
-            collection=document.collection, source_type__slug=file_type, permission__in=user_permissions).all():
-        if user.is_staff:
-            return False
-        return c.rate_limit
-    return False
-
+    if user.is_staff:
+        return False
+    try:
+        c = models.CollectionPermission.objects.get(
+            collection__in=document.collections.all(),
+            source_type__slug=file_type_slug,
+            permission__in=user_permissions)
+        return c.streamable
+    except ObjectDoesNotExist, e:
+         return False
 

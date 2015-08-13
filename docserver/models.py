@@ -27,9 +27,6 @@ import os
 class Collection(models.Model):
     """A set of related documents"""
 
-    AUDIO_DIR = "audio"
-    DATA_DIR = "data"
-
     class Meta:
         permissions = (('read_restricted', "Can read files in restricted collections"), )
 
@@ -37,6 +34,7 @@ class Collection(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.CharField(max_length=200)
+
     root_directory = models.CharField(max_length=200)
 
     def __unicode__(self):
@@ -62,10 +60,9 @@ class Document(models.Model):
     It has a known title and is part of a collection.
     It can have an option title and description
     """
-
     objects = DocumentManager()
 
-    collection = models.ForeignKey(Collection, related_name='documents')
+    collections = models.ManyToManyField(Collection, related_name='documents')
     title = models.CharField(max_length=500)
     """If the file is known in a different database, the identifier
        for the item."""
@@ -136,12 +133,18 @@ class FileTypeManager(models.Manager):
         return self.get_queryset().get(slug=slug)
 
 class SourceFileType(models.Model):
+    FILE_TYPE_CHOICES = (
+        ('audio', 'Audio'),
+        ('data', 'Data'),
+    )
     objects = FileTypeManager()
 
     slug = models.SlugField(db_index=True, validators=[RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")])
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
+    
+    stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES)
 
     def __unicode__(self):
         return self.name
@@ -175,7 +178,13 @@ class SourceFile(models.Model):
 
     @property
     def fullpath(self):
-        return os.path.join(self.document.collection.root_directory, self.path)
+        root_directory = None
+        for c in self.document.collections.all():
+            if root_directory and root_directory != c.root_directory:
+                raise Exception("If a document is in more than one collection they must have the same root_directory")
+            root_directory = c.root_directory
+                
+        return os.path.join(root_directory, self.file_type.stype, self.path)
 
     @property
     def mimetype(self):
@@ -196,7 +205,7 @@ class DerivedFilePart(models.Model):
 
     @property
     def fullpath(self):
-        return os.path.join(settings.AUDIO_ROOT, self.path)
+        return os.path.join(self.derivedfile.collection.root_directory, settings.DERIVED_FOLDER, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
         url = reverse(
@@ -219,6 +228,7 @@ class DerivedFile(models.Model):
 
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
+    
     """The path on disk to the file"""
     derived_from = models.ForeignKey(SourceFile)
 
@@ -278,7 +288,7 @@ class CollectionPermission(models.Model):
     permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
     collection = models.ForeignKey(Collection)
     source_type = models.ForeignKey(SourceFileType)
-    rate_limit = models.BooleanField(default=False)
+    streamable = models.BooleanField(default=False)
 
 # Essentia management stuff
 
@@ -402,7 +412,7 @@ class ModuleVersion(models.Model):
         else:
             collections = [collection]
         qs = Document.objects.filter(
-            collection__in=collections,
+            collections__in=collections,
             sourcefiles__file_type=self.module.source_type)
         qs = qs.filter(derivedfiles__module_version=self)
         return qs.distinct()
@@ -413,7 +423,7 @@ class ModuleVersion(models.Model):
         else:
             collections = [collection]
         qs = Document.objects.filter(
-            collection__in=collections,
+            collections__in=collections,
             sourcefiles__file_type=self.module.source_type)
         qs = qs.exclude(derivedfiles__module_version=self)
         return qs.distinct()
