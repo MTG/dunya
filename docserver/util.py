@@ -69,21 +69,14 @@ def docserver_upload_and_save_file(document_id, sft_id, file):
     document = models.Document.objects.get(id=document_id)
     sft = models.SourceFileType.objects.get(id=sft_id)
 
-    # TODO: when documents have >1 collection, we need to
-    # get the common one
-    collection = document.collection
-    root = collection.root_directory
+    root = document.get_root_dir()
 
     mbid = document.external_identifier
     mb = mbid[:2]
     slug = sft.slug
     ext = sft.extension
+    subdir = sft.stype
     filedir = os.path.join(mb, mbid, slug)
-    # TODO: Update to use new sft stype
-    if sft.slug == "mp3":
-        subdir = "audio"
-    else:
-        subdir = "data"
     datadir = os.path.join(root, subdir, filedir)
 
     try:
@@ -106,7 +99,7 @@ def docserver_add_sourcefile(document_id, sft_id, path):
     sft = models.SourceFileType.objects.get(pk=sft_id)
 
     size = os.stat(path).st_size
-    root_directory = os.path.join(document.get_absolute_path(), ftype.stype)
+    root_directory = os.path.join(document.get_root_dir(), sft.stype)
     if path.startswith(root_directory):
         # If the path is absolute, remove it
         path = path[len(root_directory):]

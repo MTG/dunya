@@ -2,6 +2,7 @@
 {
   "fields": {
     "mimetype": "",
+    "stype": "data",
     "slug": "csv",
     "extension": "csv",
     "name": "csv_file_type"
@@ -12,6 +13,7 @@
 {
   "fields": {
     "mimetype": "",
+    "stype": "audio",
     "slug": "mp3",
     "extension": "mp3",
     "name": "mp3_file_type"
@@ -22,6 +24,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "symbtrtxt",
     "extension": "txt",
     "name": "SymbTr text files"
@@ -32,6 +35,7 @@
 {
   "fields": {
     "mimetype": "audio/midi",
+    "stype": "data",
     "slug": "symbtrmidi",
     "extension": "mid",
     "name": "SymbTr midi files"
@@ -42,6 +46,7 @@
 {
   "fields": {
     "mimetype": "application/pdf",
+    "stype": "data",
     "slug": "symbtrpdf",
     "extension": "pdf",
     "name": "SymbTr pdf files"
@@ -52,6 +57,7 @@
 {
   "fields": {
     "mimetype": "application/vnd.recordare.musicxml+xml",
+    "stype": "data",
     "slug": "symbtrxml",
     "extension": "xml",
     "name": "SymbTr musicxml files"
@@ -62,6 +68,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "symbtrmu2",
     "extension": "mu2",
     "name": "SymbTr mu2 files"
@@ -72,6 +79,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "sama-manual",
     "extension": "sama",
     "name": "Semi automatically extracted sama locations"
@@ -82,6 +90,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "tempo-manual",
     "extension": "tempo",
     "name": "Semi-automatically Extracted tempo"
@@ -92,6 +101,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "mphrases-manual",
     "extension": "mphrases",
     "name": "Manually extracted melodic phrases"
@@ -102,6 +112,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "sections-manual",
     "extension": "sections",
     "name": "Manually annotated sections"
@@ -112,6 +123,7 @@
 {
   "fields": {
     "mimetype": "text/plain",
+    "stype": "data",
     "slug": "pitch-vocal",
     "extension": "vpitch",
     "name": "Pitch extracted using only vocal track "

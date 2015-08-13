@@ -67,6 +67,14 @@ class Document(models.Model):
     """If the file is known in a different database, the identifier
        for the item."""
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
+    
+    def get_root_dir(self):
+        root_directory = None
+        for c in self.collections.all():
+            if root_directory and root_directory != c.root_directory:
+                raise Exception("If a document is in more than one collection they must have the same root_directory")
+            root_directory = c.root_directory
+        return root_directory
 
     def get_absolute_url(self):
         return reverse("ds-document-external", args=[self.external_identifier])
@@ -178,12 +186,7 @@ class SourceFile(models.Model):
 
     @property
     def fullpath(self):
-        root_directory = None
-        for c in self.document.collections.all():
-            if root_directory and root_directory != c.root_directory:
-                raise Exception("If a document is in more than one collection they must have the same root_directory")
-            root_directory = c.root_directory
-                
+        root_directory = self.document.get_root_dir()
         return os.path.join(root_directory, self.file_type.stype, self.path)
 
     @property

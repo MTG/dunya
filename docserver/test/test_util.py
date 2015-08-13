@@ -16,8 +16,13 @@ class UtilTest(TestCase):
 
         self.coll = models.Collection.objects.create(collectionid=self.u, name='test collection',
                 slug='test-collection', description='', root_directory=self.root)
-        self.doc = models.Document.objects.create(external_identifier="1122-3333-4444", collection=self.coll)
+        self.doc = models.Document.objects.create(external_identifier="1122-3333-4444")
+        self.doc.collections.add(self.coll)
         self.sft = models.SourceFileType.objects.get_by_slug("mp3")
+    
+    def test_get_root_dir(self):
+        self.assertEqual(self.doc.get_root_dir(), "/root/directory")
+
 
     @mock.patch('os.makedirs')
     @mock.patch('docserver.util._write_to_disk')
@@ -60,7 +65,7 @@ class UtilTest(TestCase):
         stat.assert_called_with(final_filename)
         self.assertEqual(self.doc, sf.document)
         self.assertEqual(sft, sf.file_type)
-        self.assertEqual("audio/11/1122-3333-4444/mp3/1122-3333-4444-mp3.mp3", sf.path)
+        self.assertEqual("11/1122-3333-4444/mp3/1122-3333-4444-mp3.mp3", sf.path)
 
     @mock.patch('os.stat')
     def test_add_sourcefile_relative_path(self, stat):
@@ -87,6 +92,6 @@ class UtilTest(TestCase):
         newsf, created = util.docserver_add_sourcefile(self.doc.id, self.sft.id, new_filename)
 
         self.assertFalse(created)
-        self.assertEqual("audio/something-else.mp3", newsf.path)
+        self.assertEqual("something-else.mp3", newsf.path)
         self.assertEqual(200, newsf.size)
         self.assertEqual(sfid, newsf.id)
