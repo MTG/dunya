@@ -1,0 +1,122 @@
+[
+{
+  "fields": {
+    "mimetype": "",
+    "slug": "csv",
+    "extension": "csv",
+    "name": "csv_file_type"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 1
+},
+{
+  "fields": {
+    "mimetype": "",
+    "slug": "mp3",
+    "extension": "mp3",
+    "name": "mp3_file_type"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 2
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "symbtrtxt",
+    "extension": "txt",
+    "name": "SymbTr text files"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 3
+},
+{
+  "fields": {
+    "mimetype": "audio/midi",
+    "slug": "symbtrmidi",
+    "extension": "mid",
+    "name": "SymbTr midi files"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 4
+},
+{
+  "fields": {
+    "mimetype": "application/pdf",
+    "slug": "symbtrpdf",
+    "extension": "pdf",
+    "name": "SymbTr pdf files"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 5
+},
+{
+  "fields": {
+    "mimetype": "application/vnd.recordare.musicxml+xml",
+    "slug": "symbtrxml",
+    "extension": "xml",
+    "name": "SymbTr musicxml files"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 6
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "symbtrmu2",
+    "extension": "mu2",
+    "name": "SymbTr mu2 files"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 7
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "sama-manual",
+    "extension": "sama",
+    "name": "Semi automatically extracted sama locations"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 8
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "tempo-manual",
+    "extension": "tempo",
+    "name": "Semi-automatically Extracted tempo"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 9
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "mphrases-manual",
+    "extension": "mphrases",
+    "name": "Manually extracted melodic phrases"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 10
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "sections-manual",
+    "extension": "sections",
+    "name": "Manually annotated sections"
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 11
+},
+{
+  "fields": {
+    "mimetype": "text/plain",
+    "slug": "pitch-vocal",
+    "extension": "vpitch",
+    "name": "Pitch extracted using only vocal track "
+  },
+  "model": "docserver.sourcefiletype",
+  "pk": 12
+}
+]

@@ -35,29 +35,74 @@ def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
 
     try:
         doc = models.Document.objects.get_by_external_id(recordingid)
-        docserver_add_sourcefile(doc.pk, mp3type, fpath)
+        docserver_add_sourcefile(doc.pk, mp3type.pk, fpath)
     except models.Document.DoesNotExist:
-        docserver_add_document(collectionid, mp3type, title, fpath, recordingid)
+        docserver_add_document(collectionid, mp3type.pk, title, fpath, recordingid)
 
-def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
+def docserver_add_document(collection_id, filetype_id, title, path, external_identifier=None):
     """ Add a document.
         Arguments:
           filetype: a SourceFileType
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
     document = models.Document.objects.create(collection=collection, title=title)
-    if alt_id:
-        document.external_identifier = alt_id
+    if external_identifier:
+        document.external_identifier = external_identifier
         document.save()
-    docserver_add_sourcefile(document.pk, filetype, path)
+    docserver_add_sourcefile(document.pk, filetype_id, path)
 
-def docserver_update_sourcefile(document_id, ftype, tmpefile, contents):
-    pass
+def _write_to_disk(self, file, filepath):
+    """ write the file object `file` to disk at `filepath'"""
 
-def docserver_add_sourcefile(document_id, ftype, path):
+    size = 0
+    try:
+        with open(filepath, 'wb') as dest:
+            for chunk in file.chunks():
+                size += len(chunk)
+                dest.write(chunk)
+    except IOError as e:
+        raise
+    return size
+
+def docserver_upload_and_save_file(document_id, sft_id, file):
+    document = models.Document.objects.get(id=document_id)
+    sft = models.SourceFileType.objects.get(id=sft_id)
+
+    # TODO: when documents have >1 collection, we need to
+    # get the common one
+    collection = document.collection
+    root = collection.root_directory
+
+    mbid = document.external_identifier
+    mb = mbid[:2]
+    slug = sft.slug
+    ext = sft.extension
+    filedir = os.path.join(mb, mbid, slug)
+    # TODO: Update to use new sft stype
+    if sft.slug == "mp3":
+        subdir = "audio"
+    else:
+        subdir = "data"
+    datadir = os.path.join(root, subdir, filedir)
+
+    try:
+        os.makedirs(datadir)
+    except OSError:
+        print "Error making directory", datadir
+        pass
+
+    filename = "%s-%s.%s" % (mbid, slug, ext)
+    filepath = os.path.join(datadir, filename)
+
+    size = _write_to_disk(file, filepath)
+
+    return docserver_add_sourcefile(document_id, sft_id, filepath)
+
+def docserver_add_sourcefile(document_id, sft_id, path):
     """ Add a file to the given document. If a file with the given filetype
         already exists for the document just update the path and size. """
     document = models.Document.objects.get(pk=document_id)
+    sft = models.SourceFileType.objects.get(pk=sft_id)
 
     size = os.stat(path).st_size
     root_directory = document.collection.root_directory
@@ -67,14 +112,13 @@ def docserver_add_sourcefile(document_id, ftype, path):
     if path.startswith("/"):
         path = path[1:]
 
-    try:
-        sfile = models.SourceFile.objects.get(document=document, file_type=ftype)
-        sfile.path = path
-        sfile.size = size
-        sfile.save()
-    except models.SourceFile.DoesNotExist:
-
-        sfile = models.SourceFile.objects.create(document=document, file_type=ftype, path=path, size=size)
+    sf, created = models.SourceFile.objects.get_or_create(document=document, file_type=sft,
+            defaults={"path":path, "size": size})
+    if not created:
+        sf.path = path
+        sf.size = size
+        sf.save()
+    return sf, created
 
 def docserver_get_wav_filename(documentid):
     """ Return a tuple (filename, created) containing the filename
@@ -209,7 +253,7 @@ def get_user_permissions(user):
 
 def user_has_access(user, document, file_type):
     '''
-    Returns True if the user has access to the source_file, this is made through 
+    Returns True if the user has access to the source_file, this is made through
     the related collection.
     Also returns True if there is no Source File with that slug but there is a Module.
     '''
@@ -224,13 +268,13 @@ def user_has_access(user, document, file_type):
             return True
         except models.Module.DoesNotExist:
             return False
-    
+
     user_permissions = get_user_permissions(user)
     return models.CollectionPermission.objects.filter(
             collection=document.collection, source_type=sourcetype, permission__in=user_permissions).count() != 0
 def has_rate_limit(user, document, file_type):
     '''
-    Returns True if the user has access to the source_file with rate limit, 
+    Returns True if the user has access to the source_file with rate limit,
     but if the user is staff always returns False
     '''
     user_permissions = get_user_permissions(user)
