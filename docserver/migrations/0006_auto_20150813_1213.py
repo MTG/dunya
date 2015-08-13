@@ -7,35 +7,44 @@ import django.core.validators
 def forwards_func(apps, schema_editor):
      "Migration from old model to the new one."
      Document = apps.get_model("docserver", "Document")
-     DocumentCollection = apps.get_model("docserver", "DocumentCollection")
+     Collection = apps.get_model("docserver", "Collection")
      db_alias = schema_editor.connection.alias
      for d in Document.objects.using(db_alias).all():
-         coll = d.collection
-         doc_c, created = DocumentCollection.objects.get_or_create(name=coll.name, root_directory=coll.root_directory)
-         if created:
-             doc_c.collections.add(coll)
-         d.rel_collections = doc_c
-         d.save()
+         d.collections.add(d.collection)
 
 def backwards_func(apps, schema_editor):
      "Migration from new model to the old one."
      Document = apps.get_model("docserver", "Document")
-     DocumentCollection = apps.get_model("docserver", "DocumentCollection")
+     Collection = apps.get_model("docserver", "Collection")
      db_alias = schema_editor.connection.alias
      for d in Document.objects.using(db_alias).all():
-         coll = d.rel_collections.collections[0]
+         coll = d.collections[0]
          d.collection = coll
-         coll.root_directory = d.rel_collections.root_directory
          coll.save()
-         d.save()
-
+ 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('docserver', '0006_auto_20150807_1523'),
+        ('docserver', '0005_auto_20150729_1721'),
     ]
 
     operations = [
+        migrations.RenameField(
+            model_name='collectionpermission',
+            old_name='rate_limit',
+            new_name='streamable',
+        ),
+        migrations.AddField(
+            model_name='document',
+            name='collections',
+            field=models.ManyToManyField(to='docserver.Collection'),
+        ),
+        migrations.AddField(
+            model_name='sourcefiletype',
+            name='stype',
+            field=models.CharField(default='data', max_length=10, choices=[(b'audio', b'Audio'), (b'data', b'Data')]),
+            preserve_default=False,
+        ),
         migrations.RunPython(
             forwards_func,
             reverse_code=backwards_func

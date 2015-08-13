@@ -168,14 +168,14 @@ def delete_collection(cid):
     """
     collection = models.Collection.objects.get(pk=cid)
     
-    doc_collections = []
-    for d in collection.document_collection_set.all():
+    collections = []
+    for d in collection.document.all():
         if len(d.collections) > 1:
             d.collections.remove(collection)
         else:
-            doc_collections.add(d)
+            collections.add(d)
 
-    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__rel_collections__in=doc_collections)
+    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collections__in=collections)
     paths = [f.fullpath for f in dfparts]
     for f in paths:
         os.remove(f)
@@ -234,7 +234,7 @@ def process_document(documentid, moduleversionid):
         worker = None
 
     document = models.Document.objects.get(pk=documentid)
-    doc_collection = document.rel_collections
+    collections = document.collections
 
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
@@ -243,7 +243,7 @@ def process_document(documentid, moduleversionid):
         fname = s.fullpath.encode("utf-8")
         starttime = time.time()
         results = instance.process_document(
-            doc_collection, document.pk,
+            collections, document.pk,
             s.pk, document.external_identifier, fname)
         endtime = time.time()
         total_time = int(endtime - starttime)
@@ -277,7 +277,7 @@ def process_document(documentid, moduleversionid):
 
         # When we've finished, log that we processed the file. If this throws an
         # exception, we won't do the log.
-        log.log_processed_file(hostname, doc_collection, document.external_identifier, moduleversionid)
+        log.log_processed_file(hostname, collections, document.external_identifier, moduleversionid)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
@@ -315,7 +315,7 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
         # All documents that don't already have a derived file for this module version
         docs = models.Document.objects.filter(
             sourcefiles__file_type=module.source_type,
-            rel_collections__collections=collection).exclude(derivedfiles__module_version=version)
+            collections=collection).exclude(derivedfiles__module_version=version)
         for i, d in enumerate(docs, 1):
             print "  document %s/%s - %s" % (i, len(docs), d)
             process_document.delay(d.pk, version.pk)

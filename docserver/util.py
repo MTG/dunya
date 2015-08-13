@@ -45,8 +45,8 @@ def docserver_add_document(collection_id, filetype, title, path, alt_id=None):
           filetype: a SourceFileType
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
-    doc_collection = collection.get_default_doc_collection()
-    document = models.Document.objects.create(rel_collections=doc_collection, title=title)
+    document = models.Document.objects.create(title=title)
+    document.collections.add(collection)
     if alt_id:
         document.external_identifier = alt_id
         document.save()
@@ -227,7 +227,7 @@ def user_has_access(user, document, file_type_slug):
     
     user_permissions = get_user_permissions(user)
     return models.CollectionPermission.objects.filter(
-            collection__in=document.rel_collections.collections.all(),
+            collection__in=document.collections.all(),
             source_type=sourcetype,
             permission__in=user_permissions).count() != 0
 
@@ -244,7 +244,7 @@ def has_rate_limit(user, document, file_type_slug):
         return False
     try:
         c = models.CollectionPermission.objects.get(
-            collection__in=document.rel_collections.collections.all(),
+            collection__in=document.collections.all(),
             source_type__slug=file_type_slug,
             permission__in=user_permissions)
         return c.streamable

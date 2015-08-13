@@ -496,52 +496,6 @@ def module(request, module):
     return render(request, 'docserver/module.html', ret)
 
 @user_passes_test(is_staff)
-def add_doc_collection(request, slug):
-    c = get_object_or_404(models.Collection, slug=slug)
-
-    if request.method == "POST":
-        form_add = forms.AddDocumentCollectionForm(request.POST, doc_coll_ids=[i.id for i in c.rel_documents.all()])
-        if form_add.is_valid():
-            doc_coll = form_add.cleaned_data['doc_coll']
-            doc_coll.collections.add(c)
-            return redirect('docserver-collection', c.slug)
-    else:
-        form_add = forms.AddDocumentCollectionForm(doc_coll_ids=[i.id for i in c.rel_documents.all()])
-    ret = {"collection":c, "form_add":form_add, "mode": "Add"}
-    return render(request, 'docserver/add_doc_collection.html', ret)
-
-@user_passes_test(is_staff)
-def create_doc_collection(request, slug):
-    c = get_object_or_404(models.Collection, slug=slug)
-    
-    if request.method == "POST":
-        form = forms.DocumentCollectionForm(request.POST)
-        if form.is_valid():
-            doc_coll = form.save()
-            doc_coll.collections.add(c)
-            return redirect('docserver-collection', c.slug)
-    else:
-        form = forms.DocumentCollectionForm()
-    
-    ret = {"collection":c ,"form":form, "mode": "Add"}
-    return render(request, 'docserver/edit_doc_collection.html', ret)
-
-@user_passes_test(is_staff)
-def doc_collection_edit(request, rel_id):
-    doc_coll = get_object_or_404(models.DocumentCollection, pk=rel_id)
-
-    if request.method == "POST":
-        form = forms.DocumentCollectionForm(request.POST, instance=doc_coll)
-        if form.is_valid():
-            form.save()
-            return redirect('docserver-manager')
-    else:
-        form = forms.DocumentCollectionForm(instance=doc_coll)
-    
-    ret = {"doc_coll": doc_coll, "form":form, "mode": "edit"}
-    return render(request, 'docserver/edit_doc_collection.html', ret)
-
-@user_passes_test(is_staff)
 def delete_collection(request, slug):
     c = get_object_or_404(models.Collection, slug=slug)
 
@@ -555,7 +509,7 @@ def delete_collection(request, slug):
         elif delete.lower().startswith("no"):
             return redirect("docserver-collection", c.slug)
 
-    modules = models.Module.objects.filter(versions__derivedfile__document__rel_collections_collections=c).distinct()
+    modules = models.Module.objects.filter(versions__derivedfile__document_collections=c).distinct()
 
     ret = {"collection": c, "modules": modules}
     return render(request, 'docserver/delete_collection.html', ret)
@@ -568,8 +522,6 @@ def addcollection(request):
         permission_form = PermissionFormSet(request.POST)
         if form.is_valid() and permission_form.is_valid():
             col = form.save()
-            doc_collection = models.DocumentCollection(name=name, path=form.cleaned_data['root_directory'])
-            doc_collection.collections.add(col)
             coll_perms = permission_form.save(commit=False)
             for coll_perm in coll_perms:
                 coll_perm.collection = col
@@ -584,7 +536,7 @@ def addcollection(request):
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
-    file_types = models.SourceFileType.objects.filter(sourcefile__document__rel_collections__collections=coll).distinct()
+    file_types = models.SourceFileType.objects.filter(sourcefile__document__collections=coll).distinct()
     PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.EditCollectionForm(request.POST, instance=coll)
@@ -663,7 +615,7 @@ def collectionversion(request, slug, version, type):
 def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
 
-    doc = models.Document.objects.get(external_identifier=uuid, rel_collections__collections=collection)
+    doc = models.Document.objects.get(external_identifier=uuid, collections=collection)
 
     derived = doc.derivedfiles.all()
     showderived = False

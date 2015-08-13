@@ -19,30 +19,15 @@ from django import forms
 from docserver import models
 from docserver import jobs
 
-class AddDocumentCollectionForm(forms.Form):
-    doc_coll = forms.ModelChoiceField(queryset = models.DocumentCollection.objects.all() )
-    def __init__(self, *args, **kwargs):
-        doc_coll_ids = kwargs.pop('doc_coll_ids', None)
-        super(AddDocumentCollectionForm, self).__init__(*args, **kwargs)
-        
-        if doc_coll_ids:
-             self.fields["doc_coll"].queryset = models.DocumentCollection.objects.exclude(pk__in = doc_coll_ids)
-
 class CollectionForm(forms.ModelForm):
-    root_directory = forms.CharField()
     class Meta:
         model = models.Collection
-        fields = ["name", "slug", "description"]
+        fields = ["name", "slug", "description", "root_directory"]
 
 class EditCollectionForm(forms.ModelForm):
     class Meta:
         model = models.Collection
-        fields = ["name", "slug", "description"]
-
-class DocumentCollectionForm(forms.ModelForm):
-    class Meta:
-        model = models.DocumentCollection
-        fields = ["name", "root_directory"]
+        fields = ["name", "slug", "description", "root_directory"]
 
 class SourceFileTypeForm(forms.ModelForm):
     class Meta:

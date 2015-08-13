@@ -35,11 +35,7 @@ class Collection(models.Model):
     slug = models.SlugField()
     description = models.CharField(max_length=200)
 
-    def get_default_doc_collection(self):
-        for d in self.document_collection_set.all():
-            if len(d.collections) == 1:
-                return d
-        raise DocumentCollection.DoesNotExist
+    root_directory = models.CharField(max_length=200)
 
     def __unicode__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
@@ -59,19 +55,6 @@ class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
         return self.get_queryset().get(external_identifier=external_id)
 
-class DocumentCollection(models.Model):
-    collections = models.ManyToManyField(Collection, related_name="rel_documents")
-    root_directory = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
-
-    def __unicode__(self):
-        ret = u""
-        if self.name:
-            ret += u"%s" % self.name
-        if self.root_directory:
-            ret += u" (%s)" % self.root_directory
-        return ret
-
 class Document(models.Model):
     """An item in the collection.
     It has a known title and is part of a collection.
@@ -79,7 +62,7 @@ class Document(models.Model):
     """
     objects = DocumentManager()
 
-    rel_collections = models.ForeignKey(DocumentCollection, blank=True, null=True)
+    collections = models.ManyToManyField(Collection, related_name='documents')
     title = models.CharField(max_length=500)
     """If the file is known in a different database, the identifier
        for the item."""
@@ -195,7 +178,13 @@ class SourceFile(models.Model):
 
     @property
     def fullpath(self):
-        return os.path.join(self.document.rel_collections.root_directory, file_type.stype, self.path)
+        root_directory = None
+        for c in self.document.collections.all():
+            if root_directory and root_directory != c.root_directory:
+                raise Exception
+            root_directory = c.root_directory
+                
+        return os.path.join(root_directory, self.file_type.stype, self.path)
 
     @property
     def mimetype(self):
@@ -216,8 +205,7 @@ class DerivedFilePart(models.Model):
 
     @property
     def fullpath(self):
-        self.derivedfile.document.rel_collections.root_directory
-        return os.path.join(self.derivedfile.document.rel_collections.root_directory, settings.DERIVED_FOLDER, self.path)
+        return os.path.join(self.derivedfile.collection.root_directory, settings.DERIVED_FOLDER, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
         url = reverse(
@@ -240,6 +228,7 @@ class DerivedFile(models.Model):
 
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
+    
     """The path on disk to the file"""
     derived_from = models.ForeignKey(SourceFile)
 
@@ -423,7 +412,7 @@ class ModuleVersion(models.Model):
         else:
             collections = [collection]
         qs = Document.objects.filter(
-            rel_collections__collections__in=collections,
+            collections__in=collections,
             sourcefiles__file_type=self.module.source_type)
         qs = qs.filter(derivedfiles__module_version=self)
         return qs.distinct()
@@ -434,7 +423,7 @@ class ModuleVersion(models.Model):
         else:
             collections = [collection]
         qs = Document.objects.filter(
-            rel_collections__collections__in=collections,
+            collections__in=collections,
             sourcefiles__file_type=self.module.source_type)
         qs = qs.exclude(derivedfiles__module_version=self)
         return qs.distinct()

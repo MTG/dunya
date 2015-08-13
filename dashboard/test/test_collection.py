@@ -132,5 +132,5 @@ class CollectionTest(TestCase):
 
         # docserver collection
         docc = docserver.models.Collection.objects.get(collectionid=collid)
-        self.assertEqual("/incoming/carnatic", docc.rel_documents.all()[0].root_directory)
+        self.assertEqual("/incoming/carnatic", docc.root_directory)
 
