@@ -15,21 +15,41 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+import json
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
     source_file_type = models.ForeignKey("docserver.SourceFileType", blank=True, null=True)
+
     def __str__(self):
         return ('%s' % self.name)
 
+    def to_json(self):
+        return json.dumps(self.to_object())
+
+    def to_object(self):
+        c = []
+        for i in self.items.all():
+            c.append(i.to_object())
+        return c
+
 class Item(models.Model):
-    category = models.ForeignKey(Category, related_name="items") 
-    ref = models.CharField(max_length=200) 
+    category = models.ForeignKey(Category, related_name="items")
+    ref = models.CharField(max_length=200)
     verified = models.BooleanField(default=False)
     reverify = models.BooleanField(default=False)
 
+    def to_json(self):
+        return json.dumps(self.to_object())
+
+    def to_object(self):
+        ret = {}
+        for f in self.fields.all():
+            ret[f.key] = f.value
+        return ret
+
 class Field(models.Model):
-    item = models.ForeignKey(Item, related_name="fields")  
+    item = models.ForeignKey(Item, related_name="fields")
     key = models.CharField(max_length=200)
     value = models.TextField()
     modified = models.BooleanField(default=False)
