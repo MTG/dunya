@@ -242,9 +242,7 @@ def process_document(documentid, moduleversionid):
         s = sfiles[0]
         fname = s.fullpath.encode("utf-8")
         starttime = time.time()
-        results = instance.process_document(
-            collections, document.pk,
-            s.pk, document.external_identifier, fname)
+        results = instance.process_document(s.pk, document.external_identifier, fname)
         endtime = time.time()
         total_time = int(endtime - starttime)
 
@@ -277,7 +275,7 @@ def process_document(documentid, moduleversionid):
 
         # When we've finished, log that we processed the file. If this throws an
         # exception, we won't do the log.
-        log.log_processed_file(hostname, collections, document.external_identifier, moduleversionid)
+        log.log_processed_file(hostname, document.external_identifier, moduleversionid)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)

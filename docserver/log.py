@@ -25,11 +25,10 @@ def _send_item_with_size(key, data, size):
     redis.lpush(key, data)
     redis.ltrim(key, 0, size - 1)
 
-def log_processed_file(worker, collections, recordingid, moduleversion):
+def log_processed_file(worker, recordingid, moduleversion):
     now = datetime.datetime.now()
     key = "processed-file-%s" % worker
-    data = {"collections": collections,
-            "recording": recordingid,
+    data = { "recording": recordingid,
             "moduleversion": moduleversion,
             "date": now.isoformat(),
             "worker": worker}
