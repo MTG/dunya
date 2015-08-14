@@ -41,7 +41,8 @@ class SourceFileTest(TestCase):
 
         models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type2, streamable=False)
         models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type, streamable=True)
-        models.CollectionPermission.objects.create(collection=self.col3, permission="S", source_type=self.file_type, streamable=False)
+        # Collection 3 doesn't specify permissions, so it's only staff.
+
 
     def test_regular_user_access(self):
         # Regular user can access only pdf of collection 1
@@ -58,12 +59,13 @@ class SourceFileTest(TestCase):
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type2.slug))
         
     def test_staff_user_access(self):
-        # Staff users access to mp3 of collection 3 and collection 2 and pdf of collection 1 
+        # Staff users access to mp3 of collection 3 and collection 2 and pdf of collection 1,
+        # even if theres in no Permission created they have access too
         self.assertTrue(util.user_has_access(self.suser, self.doc2, self.file_type.slug))
         self.assertTrue(util.user_has_access(self.suser, self.doc3, self.file_type.slug))
         self.assertTrue(util.user_has_access(self.suser, self.doc1, self.file_type2.slug))
-        self.assertFalse(util.user_has_access(self.suser, self.doc3, self.file_type2.slug))
-        self.assertFalse(util.user_has_access(self.suser, self.doc1, self.file_type.slug))
+        self.assertTrue(util.user_has_access(self.suser, self.doc3, self.file_type2.slug))
+        self.assertTrue(util.user_has_access(self.suser, self.doc1, self.file_type.slug))
     
     def test_rate_limit(self):
         # Return rate limit, if user is staff always return False

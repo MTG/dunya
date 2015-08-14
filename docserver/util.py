@@ -247,10 +247,13 @@ def user_has_access(user, document, file_type_slug):
     '''
     Returns True if the user has access to the source_file, this is made through
     the related collection.
+    If the user is_staff also returns True.
     Also returns True if there is no Source File with that slug but there is a Module.
     file_type_slug is the slug of the file SourceFileType.
     '''
-
+    user_permissions = get_user_permissions(user)
+    if user.is_staff:
+        return True
     try:
         sourcetype = models.SourceFileType.objects.get_by_slug(file_type_slug)
     except models.SourceFileType.DoesNotExist:
@@ -262,7 +265,6 @@ def user_has_access(user, document, file_type_slug):
         except models.Module.DoesNotExist:
             return False
 
-    user_permissions = get_user_permissions(user)
     return models.CollectionPermission.objects.filter(
             collection__in=document.collections.all(),
             source_type=sourcetype,
