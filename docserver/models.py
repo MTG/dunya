@@ -208,7 +208,7 @@ class DerivedFilePart(models.Model):
 
     @property
     def fullpath(self):
-        return os.path.join(self.derivedfile.collection.root_directory, settings.DERIVED_FOLDER, self.path)
+        return os.path.join(self.derivedfile.document.get_root_dir(), settings.DERIVED_FOLDER, self.path)
 
     def get_absolute_url(self, url_slug='ds-download-external'):
         url = reverse(
