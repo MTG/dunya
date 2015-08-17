@@ -150,7 +150,7 @@ def download_external(request, uuid, ftype):
     try:
         doc = models.Document.objects.get(external_identifier=uuid)
     except models.Document.DoesNotExist:
-        raise util.NoFileException("Cannot find a document with id %s" % uuid)
+        return HttpResponseNotFound("Cannot find a document with id %s" % uuid)
 
     # if ftype is a sourcetype and it has streamable set, and
     # referrer is dunya, then has_access is true (but we rate-limit)
