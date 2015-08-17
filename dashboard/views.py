@@ -28,6 +28,7 @@ from dashboard import models
 from dashboard import forms
 from dashboard import jobs
 import docserver
+import docserver.util
 
 import compmusic
 import os
@@ -672,10 +673,38 @@ def makam_symbtr(request, uuid=None):
                         olddoc.delete()
                 return redirect('dashboard-makam-symbtr', form.instance.uuid)
             symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+            # If main data form is valid, this one was unused
+            symbtrfiles = forms.SymbTrFileForm()
+
+
+        symbtrfiles = forms.SymbTrFileForm(request.POST, request.FILES)
+        if symbtrfiles.is_valid():
+            pref = "symbtr"
+            for f in ['txt', 'midi', 'xml', 'pdf', 'mu2']:
+                fdata = symbtrfiles.files.get(f)
+                if fdata:
+                    stypename = pref + f
+                    stype = docserver.models.SourceFileType.objects.get_by_slug(stypename)
+                    doc = docserver.models.Document.objects.get(external_identifier=uuid)
+                    print "UPLOADING", stypename
+                    docserver.util.docserver_upload_and_save_file(doc.id, stype.id, fdata)
+            # if file form was valid, this one was unused
+            form = forms.SymbTrForm(instance=symbtr)
+
     else:
         form = forms.SymbTrForm(instance=symbtr)
+        symbtrfiles = forms.SymbTrFileForm()
 
-    ret = {"add": uuid is None, "symbtr": symbtr, "url": url, "form": form}
+    existing = {}
+    if uuid:
+        doc = docserver.models.Document.objects.get(external_identifier=uuid)
+        sfs = doc.sourcefiles.filter(file_type__in=_get_symbtr_sourcetypes())
+        for s in sfs:
+            existing[s.file_type.slug] = s.get_absolute_url
+
+
+    ret = {"add": uuid is None, "symbtr": symbtr, "url": url, "form": form,
+            "symbtrfiles": symbtrfiles, "existingfiles": existing}
     return render(request, "dashboard/makam_symbtr.html", ret)
 
 def _edit_artists_list(request, data):

@@ -139,3 +139,10 @@ class SymbTrForm(forms.ModelForm):
         import makam
         model = makam.models.SymbTr
         fields = ['name', 'uuid']
+
+class SymbTrFileForm(forms.Form):
+    pdf = forms.FileField(required=False)
+    txt = forms.FileField(required=False)
+    mu2 = forms.FileField(required=False)
+    xml = forms.FileField(required=False)
+    midi = forms.FileField(required=False)

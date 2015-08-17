@@ -31,7 +31,39 @@ MusicBrainz: <a href="{{url}}">{{url}}</a><br>
 <input type="submit" value="Update">
 </form>
 
-<form method="POST">
+<h2>Files</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h4>pdf</h4>
+    {%  if "symbtrpdf" in existingfiles %}
+    <a href="{{existingfiles.symbtrpdf}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.pdf }}
+
+    <h4>txt</h4>
+    {%  if "symbtrtxt" in existingfiles %}
+    <a href="{{existingfiles.symbtrtxt}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.txt }}
+
+    <h4>mu2</h4>
+    {%  if "symbtrmu2" in existingfiles %}
+    <a href="{{existingfiles.symbtrmu2}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.mu2 }}
+
+    <h4>xml</h4>
+    {%  if "symbtrxml" in existingfiles %}
+    <a href="{{existingfiles.symbtrxml}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.xml }}
+
+    <h4>midi</h4>
+    {%  if "symbtrmidi" in existingfiles %}
+    <a href="{{existingfiles.symbtrmidi}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.midi }}
 
 <input type="submit" value="Upload">
 </form>
