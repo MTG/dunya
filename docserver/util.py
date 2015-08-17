@@ -52,7 +52,7 @@ def docserver_add_document(collection_id, filetype_id, title, path, external_ide
         document.save()
     docserver_add_sourcefile(document.pk, filetype_id, path)
 
-def _write_to_disk(self, file, filepath):
+def _write_to_disk(file, filepath):
     """ write the file object `file` to disk at `filepath'"""
 
     size = 0
@@ -275,7 +275,7 @@ def has_rate_limit(user, document, file_type_slug):
     Returns True if the user has access to the source_file with rate limit,
     but if the user is staff always returns False
     file_type_slug is the slug of the file SourceFileType.
-    In the case where there is no CollectionPermission element we return 
+    In the case where there is no CollectionPermission element we return
     False, because it corresponds to a Module slug
     '''
     user_permissions = get_user_permissions(user)
