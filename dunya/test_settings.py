@@ -21,4 +21,4 @@ TEST_RUNNER = "dunya.test_settings.DunyaTestRunner"
 TEST_OUTPUT_VERBOSE = True
 TEST_OUTPUT_DESCRIPTIONS = True
 TEST_OUTPUT_DIR = "xmlrunner"
-
+CELERY_ALWAYS_EAGER = True
