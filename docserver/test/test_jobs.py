@@ -37,6 +37,7 @@ class AbstractFileTest(TestCase):
         self.doc1 = models.Document.objects.create(title="doc1", external_identifier="111111")
         self.doc1.collections.add(self.col1)
         self.sfile1 = models.SourceFile.objects.create(document=self.doc1, file_type=self.file_type, size=1000)
+
         self.get_m = mock.Mock() 
         self.log = mock.Mock()
         jobs.log = self.log 
