@@ -366,7 +366,8 @@ class Module(models.Model):
     source_type = models.ForeignKey(SourceFileType)
     disabled = models.BooleanField(default=False)
     restricted = models.BooleanField(default=False)
-
+    many_files = models.BooleanField(default=False)
+    
     collections = models.ManyToManyField(Collection)
 
     def __unicode__(self):
