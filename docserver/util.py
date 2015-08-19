@@ -22,6 +22,7 @@ import subprocess
 import json
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+
 class NoFileException(Exception):
     pass
 
@@ -34,23 +35,22 @@ def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     title = meta["meta"].get("title")
 
     try:
-        doc = models.Document.objects.get_by_external_id(recordingid)
-        docserver_add_sourcefile(doc.pk, mp3type.pk, fpath)
+        document = models.Document.objects.get_by_external_id(recordingid)
     except models.Document.DoesNotExist:
-        docserver_add_document(collectionid, mp3type.pk, title, fpath, recordingid)
+        document = docserver_create_document(collectionid, recordingid, title)
 
-def docserver_add_document(collection_id, filetype_id, title, path, external_identifier=None):
-    """ Add a document.
-        Arguments:
-          filetype: a SourceFileType
+    docserver_add_sourcefile(document.pk, mp3type.pk, fpath)
+
+def docserver_create_document(collection_id, external_identifier, title):
+    """ Create a document and add it to the specified collection. If the
+        document already exists, add it to the collection.
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
-    document = models.Document.objects.create(title=title)
+    document, created = models.Document.objects.get_or_create(
+            external_identifier=external_identifier,
+            defaults={"title": title})
     document.collections.add(collection)
-    if external_identifier:
-        document.external_identifier = external_identifier
-        document.save()
-    docserver_add_sourcefile(document.pk, filetype_id, path)
+    return document
 
 def _write_to_disk(file, filepath):
     """ write the file object `file` to disk at `filepath'"""

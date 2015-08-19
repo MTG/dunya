@@ -19,7 +19,7 @@ class UtilTest(TestCase):
         self.doc = models.Document.objects.create(external_identifier="1122-3333-4444")
         self.doc.collections.add(self.coll)
         self.sft = models.SourceFileType.objects.get_by_slug("mp3")
-    
+
     def test_get_root_dir(self):
         self.assertEqual(self.doc.get_root_dir(), "/root/directory")
 
@@ -95,3 +95,33 @@ class UtilTest(TestCase):
         self.assertEqual("something-else.mp3", newsf.path)
         self.assertEqual(200, newsf.size)
         self.assertEqual(sfid, newsf.id)
+
+    def test_create_document_already_exists(self):
+        """ Adding a document that is already in a collection we want to add it to """
+        self.assertEqual(1, self.coll.documents.count())
+        docuuid = self.doc.external_identifier
+        util.docserver_create_document(self.coll.collectionid, docuuid, "some title")
+        self.assertEqual(1, self.coll.documents.count())
+
+    def test_create_document_other_collection(self):
+        """ A document that already exists in a different collection """
+        u = str(uuid.uuid4())
+        root = "/other/root/directory"
+        othercoll = models.Collection.objects.create(collectionid=u, name='second collection',
+                slug='second-collection', description='', root_directory=root)
+
+        docuuid = self.doc.external_identifier
+        util.docserver_create_document(u, docuuid, "some title")
+        self.assertEqual(1, self.coll.documents.count())
+        self.assertEqual(1, othercoll.documents.count())
+        self.assertEqual(2, self.doc.collections.count())
+
+    def test_create_document(self):
+        """ A document that doesn't exist """
+        self.assertEqual(1, models.Document.objects.count())
+
+        u = str(uuid.uuid4())
+        doc = util.docserver_create_document(self.coll.collectionid, u, "some title")
+        self.assertEqual(2, models.Document.objects.count())
+        self.assertEqual(u, doc.external_identifier)
+        self.assertEqual("some title", doc.title)

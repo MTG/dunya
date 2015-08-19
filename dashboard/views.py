@@ -639,6 +639,10 @@ def makam_symbtr(request, uuid=None):
     """
     if uuid:
         symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+        delete = request.GET.get("delete")
+        if delete == "1":
+            symbtr.delete()
+            return redirect('dashboard-makam-symbtrlist')
         is_taksim = "taksim" in symbtr.name
         if is_taksim:
             mbtype = "recording"
@@ -657,6 +661,8 @@ def makam_symbtr(request, uuid=None):
             newuuid = form.instance.uuid
             newdoc, created = docserver.models.Document.objects.get_or_create(
                     external_identifier=newuuid, defaults={"title": form.instance.name})
+            collection = docserver.models.Collection.objects.get(slug="makam-symbtr")
+            docserver.util.docserver_create_document(collection.collectionid, newuuid, form.instance.name)
             if not created and not is_taksim:
                 newdoc.title = form.instance.name
                 newdoc.save()
@@ -664,11 +670,11 @@ def makam_symbtr(request, uuid=None):
                 # Copy from old document to new document
                 if uuid:
                     olddoc = docserver.models.Document.objects.get(external_identifier=uuid)
-                    sfs = olddoc.sourcefiles.filter(sourcefiletype__in=_get_symbtr_sourcetypes())
+                    sfs = olddoc.sourcefiles.filter(file_type__in=_get_symbtr_sourcetypes())
                     for s in sfs:
                         s.document = newdoc
                         s.save()
-                    olddoc = docserver.models.Document.get(external_identifier=uuid)
+                    olddoc = docserver.models.Document.objects.get(external_identifier=uuid)
                     if olddoc.sourcefiles.count() == 0:
                         olddoc.delete()
                 return redirect('dashboard-makam-symbtr', form.instance.uuid)
@@ -686,10 +692,7 @@ def makam_symbtr(request, uuid=None):
                     stypename = pref + f
                     stype = docserver.models.SourceFileType.objects.get_by_slug(stypename)
                     doc = docserver.models.Document.objects.get(external_identifier=uuid)
-                    print "UPLOADING", stypename
                     docserver.util.docserver_upload_and_save_file(doc.id, stype.id, fdata)
-            # if file form was valid, this one was unused
-            form = forms.SymbTrForm(instance=symbtr)
 
     else:
         form = forms.SymbTrForm(instance=symbtr)
