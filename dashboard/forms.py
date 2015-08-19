@@ -140,6 +140,14 @@ class SymbTrForm(forms.ModelForm):
         model = makam.models.SymbTr
         fields = ['name', 'uuid']
 
+    def clean_uuid(self):
+        data = self.cleaned_data['uuid']
+        import makam
+        if makam.models.SymbTr.objects.filter(uuid=data).exists():
+            raise forms.ValidationError("UUID already exists")
+        return data
+
+
 class SymbTrFileForm(forms.Form):
     pdf = forms.FileField(required=False)
     txt = forms.FileField(required=False)

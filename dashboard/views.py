@@ -692,10 +692,7 @@ def makam_symbtr(request, uuid=None):
                     stypename = pref + f
                     stype = docserver.models.SourceFileType.objects.get_by_slug(stypename)
                     doc = docserver.models.Document.objects.get(external_identifier=uuid)
-                    print "UPLOADING", stypename
                     docserver.util.docserver_upload_and_save_file(doc.id, stype.id, fdata)
-            # if file form was valid, this one was unused
-            form = forms.SymbTrForm(instance=symbtr)
 
     else:
         form = forms.SymbTrForm(instance=symbtr)
