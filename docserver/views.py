@@ -28,6 +28,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.forms.models import modelformset_factory
 
 from docserver import models
 from docserver import forms
@@ -80,11 +81,18 @@ class DocumentDetailExternal(generics.CreateAPIView, generics.RetrieveAPIView):
     serializer_class = serializers.DocumentSerializer
     permission_classes = (StaffWritePermission, )
 
-class SourceFile(generics.CreateAPIView):
+class SourceFileException(Exception):
+    def __init__(self, status_code, message):
+        super(SourceFileException, self).__init__(self)
+        self.status_code = status_code
+        self.message = message
+
+class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = (StaffWritePermission, )
 
-    def create(self, request, external_identifier, file_type):
+
+    def _save_file(self, external_identifier, file_type, file):
         try:
             document = models.Document.objects.get(external_identifier=external_identifier)
         except models.Document.DoesNotExist:
@@ -96,42 +104,31 @@ class SourceFile(generics.CreateAPIView):
             data = {'detail': 'No filetype with this slug'}
             return response.Response(data, status=status.HTTP_404_NOT_FOUND)
 
-        file = request.data.get("file")
         if not file:
             data = {'detail': 'Need exactly one file called "file"'}
             return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
-        collection = document.collection
-        root = collection.root_directory
-
-        mbid = external_identifier
-        mb = mbid[:2]
-        slug = sft.slug
-        ext = sft.extension
-        filedir = os.path.join(mb, mbid, slug)
-        datadir = os.path.join(root, models.Collection.DATA_DIR, filedir)
 
         try:
-            os.makedirs(datadir)
-        except OSError:
-            print "Error making directory", datadir
-            pass
-
-        filename = "%s-%s.%s" % (mbid, slug, ext)
-        size = 0
-        try:
-            with open(os.path.join(datadir, filename), 'wb') as dest:
-                for chunk in file.chunks():
-                    size += len(chunk)
-                    dest.write(chunk)
-
-            filepath = os.path.join(models.Collection.DATA_DIR, filedir, filename)
-            models.SourceFile.objects.get_or_create(document=document, file_type=sft, path=filepath, defaults={"size": size})
-            data = {'detail': 'ok'}
-            return response.Response(data, status=status.HTTP_200_OK)
+            sf, created = util.docserver_upload_and_save_file(document.id, sft.id, file)
         except IOError as e:
             data = {'detail': 'Cannot write file'}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        if created:
+            retstatus = status.HTTP_201_CREATED
+            data = {'detail': 'created'}
+        else:
+            retstatus = status.HTTP_200_OK
+            data = {'detail': 'updated'}
+        return response.Response(data, status=retstatus)
+
+    def create(self, request, external_identifier, file_type):
+        file = request.data.get("file")
+        return self._save_file(external_identifier, file_type, file)
+
+    def update(self, request, external_identifier, file_type):
+        file = request.data.get("file")
+        return self._save_file(external_identifier, file_type, file)
 
 
 class DocumentDetail(generics.RetrieveAPIView):
@@ -142,26 +139,24 @@ class DocumentDetail(generics.RetrieveAPIView):
 def download_external(request, uuid, ftype):
     # Test authentication. We support a rest-framework token
     # or a logged-in user
-
-    loggedin = request.user.is_authenticated()
-    is_staff = request.user.is_staff
+    user = request.user
     try:
         t = auther.authenticate(request)
         if t:
-            is_staff = t[0].is_staff
-            token = True
-        else:
-            token = False
+            user = t[0]
     except exceptions.AuthenticationFailed:
-        token = False
+        pass
 
-    referrer = request.META.get("HTTP_REFERER")
-    good_referrer = False
-    if referrer and "dunya.compmusic.upf.edu" in referrer:
-        good_referrer = True
+    try:
+        doc = models.Document.objects.get(external_identifier=uuid)
+    except models.Document.DoesNotExist:
+        return HttpResponseNotFound("Cannot find a document with id %s" % uuid)
 
-    # The only thing that's limited at the moment is mp3 files
-    if ftype == "mp3" and not (loggedin or token or good_referrer):
+    # if ftype is a sourcetype and it has streamable set, and
+    # referrer is dunya, then has_access is true (but we rate-limit)
+
+    has_access = util.user_has_access(user, doc, ftype)
+    if not has_access:
         return HttpResponse("Not logged in", status=401)
 
     try:
@@ -174,7 +169,7 @@ def download_external(request, uuid, ftype):
         mimetype = filepart.mimetype
 
         ratelimit = "off"
-        if ftype == "mp3" and not is_staff:
+        if util.has_rate_limit(user, doc, ftype):
             # 200k
             ratelimit = 200 * 1024
 
@@ -486,34 +481,49 @@ def delete_collection(request, slug):
         elif delete.lower().startswith("no"):
             return redirect("docserver-collection", c.slug)
 
-    modules = models.Module.objects.filter(versions__derivedfile__document__collection=c).distinct()
+    modules = models.Module.objects.filter(versions__derivedfile__document_collections=c).distinct()
 
     ret = {"collection": c, "modules": modules}
     return render(request, 'docserver/delete_collection.html', ret)
 
 @user_passes_test(is_staff)
 def addcollection(request):
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
-        if form.is_valid():
-            form.save()
+        permission_form = PermissionFormSet(request.POST)
+        if form.is_valid() and permission_form.is_valid():
+            col = form.save()
+            coll_perms = permission_form.save(commit=False)
+            for coll_perm in coll_perms:
+                coll_perm.collection = col
+                coll_perm.save()
             return redirect('docserver-manager')
     else:
         form = forms.CollectionForm()
-    ret = {"form": form, "mode": "add"}
+        permission_form = PermissionFormSet()
+    ret = {"form": form, "permission_form": permission_form, "mode": "add"}
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
+    file_types = models.SourceFileType.objects.filter(sourcefile__document__collections=coll).distinct()
+    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
-        form = forms.CollectionForm(request.POST, instance=coll)
-        if form.is_valid():
-            form.save()
+        form = forms.EditCollectionForm(request.POST, instance=coll)
+        permission_form = PermissionFormSet(request.POST)
+        if form.is_valid() and permission_form.is_valid():
+            coll = form.save()
+            coll_perms = permission_form.save(commit=False)
+            for coll_perm in coll_perms:
+                coll_perm.collection = coll
+                coll_perm.save()
             return redirect(coll.get_absolute_url())
     else:
-        form = forms.CollectionForm(instance=coll)
-    ret = {"form": form, "mode": "edit"}
+        form = forms.EditCollectionForm(instance=coll)
+        permission_form = PermissionFormSet(queryset=models.CollectionPermission.objects.filter(collection=coll))
+    ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)
@@ -576,7 +586,8 @@ def collectionversion(request, slug, version, type):
 @user_passes_test(is_staff)
 def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
-    doc = collection.documents.get_by_external_id(uuid)
+
+    doc = models.Document.objects.get(external_identifier=uuid, collections=collection)
 
     derived = doc.derivedfiles.all()
     showderived = False

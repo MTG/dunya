@@ -59,10 +59,10 @@ class DatabaseLogHandler(logging.Handler):
                 doc = models.Document.objects.get(pk=int(documentid))
                 models.DocumentLogMessage.objects.create(document=doc, moduleversion=modv, sourcefile=sourcef, level=record.levelname, message=record.getMessage())
             except models.Document.DoesNotExist:
-                print "no document, can't create a log file"
+                log.error("no document, can't create a log file")
         else:
-            print "no document, can't create a log file"
-
+            log.error("no document, can't create a log file")
+            
 logger = logging.getLogger("extractor")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(DatabaseLogHandler())
@@ -95,10 +95,12 @@ def create_module(modulepath, collections):
         name=modulepath.rsplit(".", 1)[1],
         slug=instance.__slug__,
         depends=instance.__depends__,
+        many_files=instance.__many_files__,
         module=modulepath,
         source_type=sourcetype)
     module.collections.add(*collections)
     get_latest_module_version(module.pk)
+    return module
 
 def get_latest_module_version(themod_id=None):
     """ Create a new ModuleVersion if this module has been
@@ -109,9 +111,9 @@ def get_latest_module_version(themod_id=None):
     else:
         modules = models.Module.objects.filter(disabled=False)
     for m in modules:
-        print "module", m
+        log.info("module %s" % m)
         instance = _get_module_instance_by_path(m.module)
-        print "instance", instance
+        log.info("instance %s" % instance)
         if instance:
             if m.disabled: # if we were disabled and exist again, reenable.
                 m.disabled = False
@@ -129,7 +131,7 @@ def get_latest_module_version(themod_id=None):
 @app.task
 def delete_moduleversion(vid):
     version = models.ModuleVersion.objects.get(pk=vid)
-    print "deleting moduleversion", version
+    log.info("deleting moduleversion %s" % version)
     files = version.derivedfile_set.all()
     for f in files:
         for p in f.parts.all():
@@ -147,18 +149,18 @@ def delete_moduleversion(vid):
     module = version.module
     version.delete()
     if module.versions.count() == 0:
-        print "No more moduleversions for this module, deleting the module"
+        log.info("No more moduleversions for this module, deleting the module")
         module.delete()
-        print " .. module deleted"
-    print "done"
+        log.info(" .. module deleted")
+    log.info("done")
 
 @app.task
 def delete_module(mid):
     module = models.Module.objects.get(pk=mid)
-    print "deleting entire module", module
+    log.info("deleting entire module %s" % module)
     for v in module.versions.all():
         delete_moduleversion(v.pk)
-    print "done"
+    log.info("done")
 
 @app.task
 def delete_collection(cid):
@@ -167,15 +169,18 @@ def delete_collection(cid):
     have been created for the documents.
     """
     collection = models.Collection.objects.get(pk=cid)
-    # Because we are deleting all files for a collection we can just
-    # directly delete the collection's directory - e.g.
-    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6/71/718840e9-8715-4f59-ae47-f52d1691dab1/wav/0.5/wav-length-1.dat ->
-    # f96e7215-b2bd-4962-b8c9-2b40c17a1ec6
-    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collection=collection)
+    
+    collections = []
+    for d in collection.document.all():
+        if len(d.collections) > 1:
+            d.collections.remove(collection)
+        else:
+            collections.add(d)
+
+    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collections__in=collections)
     paths = [f.fullpath for f in dfparts]
-    prefix = os.path.commonprefix(paths)
-    if os.path.isdir(prefix):
-        shutil.rmtree(prefix)
+    for f in paths:
+        os.remove(f)
     collection.delete()
 
 class NumPyArangeEncoder(json.JSONEncoder):
@@ -184,14 +189,14 @@ class NumPyArangeEncoder(json.JSONEncoder):
             return obj.tolist()  # or map(int, obj)
         return json.JSONEncoder.default(self, obj)
 
-def _save_file(collection, recordingid, version, slug, partslug, partnumber, extension, data):
+def _save_file(root_directory, recordingid, version, slug, partslug, partnumber, extension, data):
     recordingstub = recordingid[:2]
-    reldir = os.path.join(collection, recordingstub, recordingid, slug, version)
-    fdir = os.path.join(settings.AUDIO_ROOT, reldir)
+    reldir = os.path.join(recordingstub, recordingid, slug, version)
+    fdir = root_directory
     try:
         os.makedirs(fdir)
     except OSError:
-        print "Error making directory", fdir
+        log.warn("Error making directory %s" % fdir)
         pass
     fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
 
@@ -203,12 +208,12 @@ def _save_file(collection, recordingid, version, slug, partslug, partnumber, ext
             json.dump(data, fp, cls=NumPyArangeEncoder)
         else:
             if not isinstance(data, basestring):
-                print "Data is not a string-ish thing. instead it's %s" % type(data)
+                log.warn("Data is not a string-ish thing. instead it's %s" % type(data))
             fp.write(data)
         fp.close()
     except OSError:
-        print "Error writing to file %s" % fullname
-        print "Probably a permissions error"
+        log.warn("Error writing to file %s" % fullname)
+        log.warn("Probably a permissions error")
         return None, None, None
     if not isinstance(data, basestring):
         data = str(data)
@@ -221,7 +226,7 @@ def process_document(documentid, moduleversionid):
     instance = _get_module_instance_by_path(module.module)
 
     hostname = process_document.request.hostname
-    if "@" in hostname:
+    if hostname and "@" in hostname:
         hostname = hostname.split("@")[1]
     try:
         worker = models.Worker.objects.get(hostname=hostname)
@@ -230,22 +235,29 @@ def process_document(documentid, moduleversionid):
         # Worker object for all our hosts
         worker = None
 
+    # if the extractor run over all the collection then the document 
+    # has the same id of the collection and the result is 
+    # set to this document
     document = models.Document.objects.get(pk=documentid)
-    collection = document.collection
-
-    sfiles = document.sourcefiles.filter(file_type=module.source_type)
-    if len(sfiles):
-        # TODO: If there is more than 1 source file
-        s = sfiles[0]
-        fname = s.fullpath.encode("utf-8")
+    results = None
+    if module.many_files:
+        sfiles = models.SourceFile.objects.filter(file_type=module.source_type).all()
+        fnames = [s.fullpath.encode("utf8") for s in sfiles]
         starttime = time.time()
-        results = instance.process_document(
-            collection.collectionid, document.pk,
-            s.pk, document.external_identifier, fname)
+        results = instance.process_document(s.pk, document.pk, document.external_identifier, fnames)
         endtime = time.time()
+    else:
+        sfiles = document.sourcefiles.filter(file_type=module.source_type)
+        if len(sfiles):
+            s = sfiles[0]
+            fname = s.fullpath.encode("utf-8")
+            starttime = time.time()
+            results = instance.process_document(s.pk, document.pk, document.external_identifier, fname)
+            endtime = time.time()
+    
+    if results:
         total_time = int(endtime - starttime)
 
-        collectionid = document.collection.collectionid
         moduleslug = module.slug
         with transaction.atomic():
             for dataslug, contents in results.items():
@@ -253,8 +265,8 @@ def process_document(documentid, moduleversionid):
                 extension = outputdata["extension"]
                 mimetype = outputdata["mimetype"]
                 multipart = outputdata.get("parts", False)
-                print "data %s (%s)" % (dataslug, type(contents))
-                print "multiparts %s" % multipart
+                log.info("data %s (%s)" % (dataslug, type(contents)))
+                log.info("multiparts %s" % multipart)
                 df = models.DerivedFile.objects.create(
                     document=document, derived_from=s,
                     module_version=version, outputname=dataslug, extension=extension,
@@ -268,14 +280,14 @@ def process_document(documentid, moduleversionid):
                     contents = [contents]
                 for i, partdata in enumerate(contents, 1):
                     saved_name, rel_path, saved_size = _save_file(
-                        collectionid, document.external_identifier,
+                        document.get_root_dir(), document.external_identifier,
                         version.version, moduleslug, dataslug, i, extension, partdata)
                     if saved_name:
                         df.save_part(i, rel_path, saved_size)
 
         # When we've finished, log that we processed the file. If this throws an
         # exception, we won't do the log.
-        log.log_processed_file(hostname, collection.collectionid, document.external_identifier, moduleversionid)
+        log.log_processed_file(hostname, document.external_identifier, moduleversionid)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
@@ -286,17 +298,17 @@ def run_module(moduleid, versionid=None):
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
-    print "running module %s on %s files" % (module, len(recids))
+    log.info("running module %s on %s files" % (module, len(recids)))
     if version:
-        print "version", version, version.pk
+        log.info("version %s %s" % (version, version.pk))
         # All documents that don't already have a derived file for this module version
         docs = models.Document.objects.filter(
             sourcefiles__file_type=module.source_type,
             external_identifier__in=recids,
         ).exclude(derivedfiles__module_version=version)
         for d in docs:
-            print "  document", d
-            print "  docid", d.pk
+            log.info("  document %s" % d)
+            log.info("  docid %s" % d.pk)
             process_document.delay(d.pk, version.pk)
 
 @app.task
@@ -307,15 +319,26 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
         version = module.versions.get(pk=versionid)
     else:
         version = module.get_latest_version()
-    print "running module", module, "on collection", collection
+    log.info("running module %s on collection %s" % (module, collection))
     if version:
-        print "version", version
-        # All documents that don't already have a derived file for this module version
-        docs = models.Document.objects.filter(
-            sourcefiles__file_type=module.source_type,
-            collection=collection).exclude(derivedfiles__module_version=version)
+        log.info("version %s" % version)
+
+        docs = []
+        if module.many_files:
+            doc, created = models.Document.objects.get_or_create(pk=collectionid,
+                external_identifier=collection.collectionid)
+            if created:
+                doc.collections.add(collection)
+            
+            if not len(doc.derivedfiles.filter(module_version=version)):
+                docs.append(doc)
+        else:
+            # All documents that don't already have a derived file for this module version
+            docs = models.Document.objects.filter(
+                sourcefiles__file_type=module.source_type,
+                collections=collection).exclude(derivedfiles__module_version=version)
         for i, d in enumerate(docs, 1):
-            print "  document %s/%s - %s" % (i, len(docs), d)
+            log.info("  document %s/%s - %s" % (i, len(docs), d))
             process_document.delay(d.pk, version.pk)
 
 

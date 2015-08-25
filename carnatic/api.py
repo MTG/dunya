@@ -65,7 +65,14 @@ class ConcertInnerSerializer(serializers.ModelSerializer):
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name']
+        fields = ['mbid', 'name']
+
+class InstrumentPerformanceInnerSerializer(serializers.ModelSerializer):
+    artist = ArtistInnerSerializer()
+    instrument = InstrumentInnerSerializer()
+    class Meta:
+        model = models.InstrumentPerformance
+        fields = ['artist', 'instrument']
 
 class TaalaList(generics.ListAPIView):
     queryset = models.Taala.objects.all()
@@ -134,7 +141,7 @@ class InstrumentDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name', 'artists']
+        fields = ['mbid', 'name', 'artists']
 
 class InstrumentDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -182,11 +189,11 @@ class RecordingList(generics.ListAPIView):
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     concert = serializers.SerializerMethodField('concert_list')
-    artists = ArtistInnerSerializer(source='all_artists', many=True)
     raaga = RaagaInnerSerializer(source='get_raaga', many=True)
     taala = TaalaInnerSerializer(source='get_taala', many=True)
     form = FormInnerSerializer(source='forms', many=True)
     work = WorkInnerSerializer(source='works', many=True)
+    artists = InstrumentPerformanceInnerSerializer(source='instrumentperformance_set.all', many=True)
 
     class Meta:
         model = models.Recording

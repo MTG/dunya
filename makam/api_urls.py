@@ -22,6 +22,8 @@ import makam.api
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
 urlpatterns = [
+    url(r'^fuzzy$', makam.api.fuzzy, name='api-makam-makam-detailbyfuzzy'),
+
     url(r'^form$', makam.api.FormList.as_view(), name='api-makam-form-list'),
     url(r'^form/(?P<pk>\d+)$', makam.api.formbyid, name='api-makam-form-detailbyid'),
     url(r'^form/%s$' % uuid_match, makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
@@ -50,7 +52,11 @@ urlpatterns = [
     url(r'^composer/%s$' % uuid_match, makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
 
     url(r'^release$', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
-    url(r'^release/%s$' % uuid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail')
+    url(r'^release/%s$' % uuid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail'),
+
+    url(r'^symbtr$', makam.api.SymbtrList.as_view(), name='api-makam-symbtr-list'),
+    url(r'^symbtr/%s$' % uuid_match, makam.api.SymbtrDetail.as_view(), name='api-makam-symbtr-detail')
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

@@ -29,6 +29,7 @@ from dashboard import models
 from dashboard import forms
 from dashboard import jobs
 import docserver
+import docserver.util
 
 import compmusic
 import os
@@ -105,14 +106,24 @@ def addcollection(request):
             checkers = []
             for i in form.cleaned_data['checkers']:
                 checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
-            dashboard_root = os.path.join(path, docserver.models.Collection.AUDIO_DIR)
+            dashboard_root = os.path.join(path, models.Collection.AUDIO_DIR)
             new_collection = models.Collection.objects.create(
                 id=coll_id, name=coll_name,
                 root_directory=dashboard_root, do_import=do_import)
             new_collection.checkers.add(*checkers)
-            docserver.models.Collection.objects.get_or_create(
+            docserver_coll, created = docserver.models.Collection.objects.get_or_create(
                 collectionid=coll_id,
                 defaults={"root_directory": path, "name": coll_name})
+            if not created:
+                docserver_coll.root_directory = path
+                docserver_coll.name = coll_name
+                docserver_coll.save()
+            data_coll, created = data.models.Collection.objects.get_or_create(
+                mbid=coll_id,
+                defaults={"name": coll_name})
+            if not created:
+                data_coll.name = coll_name
+                data_coll.save()
             jobs.load_and_import_collection(new_collection.id)
             return redirect('dashboard-home')
     else:
@@ -609,6 +620,102 @@ def makam_instruments(request):
             }
 
     return _edit_attributedata(request, data)
+
+@user_passes_test(is_staff)
+def makam_symbtrlist(request):
+    symbtr = makam.models.SymbTr.objects.all()
+    ret = {"symbtr": symbtr}
+    return render(request, "dashboard/makam_symbtrlist.html", ret)
+
+def _get_symbtr_sourcetypes():
+    types = [u'symbtrtxt', u'symbtrmidi', u'symbtrpdf', u'symbtrxml', u'symbtrmu2']
+    return docserver.models.SourceFileType.objects.filter(slug__in=types)
+
+@user_passes_test(is_staff)
+def makam_symbtr(request, uuid=None):
+    """
+      - Add new mapping
+        - Create document if it doesn't exist
+      - Rename mapping
+        - Rename document name  (if not taksim)
+        - If uuid changes, make or get document
+          - Copy symbtr source files from old to new
+          - Delete old document if no other sourcefiles
+      - Upload symbtr file
+        - Get name, copy in, create/get sourcefile, attach to document
+    """
+    if uuid:
+        symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+        delete = request.GET.get("delete")
+        if delete == "1":
+            symbtr.delete()
+            return redirect('dashboard-makam-symbtrlist')
+        is_taksim = "taksim" in symbtr.name
+        if is_taksim:
+            mbtype = "recording"
+        else:
+            mbtype = "work"
+        url = "https://musicbrainz.org/%s/%s" % (mbtype, symbtr.uuid)
+    else:
+        is_taksim = False
+        symbtr = None
+        url = ""
+
+    if request.method == 'POST':
+        form = forms.SymbTrForm(request.POST, instance=symbtr)
+        if form.is_valid():
+            form.save()
+            newuuid = form.instance.uuid
+            newdoc, created = docserver.models.Document.objects.get_or_create(
+                    external_identifier=newuuid, defaults={"title": form.instance.name})
+            collection = docserver.models.Collection.objects.get(slug="makam-symbtr")
+            docserver.util.docserver_create_document(collection.collectionid, newuuid, form.instance.name)
+            if not created and not is_taksim:
+                newdoc.title = form.instance.name
+                newdoc.save()
+            if uuid != form.instance.uuid:
+                # Copy from old document to new document
+                if uuid:
+                    olddoc = docserver.models.Document.objects.get(external_identifier=uuid)
+                    sfs = olddoc.sourcefiles.filter(file_type__in=_get_symbtr_sourcetypes())
+                    for s in sfs:
+                        s.document = newdoc
+                        s.save()
+                    olddoc = docserver.models.Document.objects.get(external_identifier=uuid)
+                    if olddoc.sourcefiles.count() == 0:
+                        olddoc.delete()
+                return redirect('dashboard-makam-symbtr', form.instance.uuid)
+            symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
+            # If main data form is valid, this one was unused
+            symbtrfiles = forms.SymbTrFileForm()
+
+
+        symbtrfiles = forms.SymbTrFileForm(request.POST, request.FILES)
+        if symbtrfiles.is_valid():
+            pref = "symbtr"
+            for f in ['txt', 'midi', 'xml', 'pdf', 'mu2']:
+                fdata = symbtrfiles.files.get(f)
+                if fdata:
+                    stypename = pref + f
+                    stype = docserver.models.SourceFileType.objects.get_by_slug(stypename)
+                    doc = docserver.models.Document.objects.get(external_identifier=uuid)
+                    docserver.util.docserver_upload_and_save_file(doc.id, stype.id, fdata)
+
+    else:
+        form = forms.SymbTrForm(instance=symbtr)
+        symbtrfiles = forms.SymbTrFileForm()
+
+    existing = {}
+    if uuid:
+        doc = docserver.models.Document.objects.get(external_identifier=uuid)
+        sfs = doc.sourcefiles.filter(file_type__in=_get_symbtr_sourcetypes())
+        for s in sfs:
+            existing[s.file_type.slug] = s.get_absolute_url
+
+
+    ret = {"add": uuid is None, "symbtr": symbtr, "url": url, "form": form,
+            "symbtrfiles": symbtrfiles, "existingfiles": existing}
+    return render(request, "dashboard/makam_symbtr.html", ret)
 
 def _edit_artists_list(request, data):
     """ Generic view to display list of data.Artist """

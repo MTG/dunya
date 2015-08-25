@@ -10,40 +10,40 @@ from makam import api
 class ApiTestCase(TestCase):
     def setUp(self):
         self.a = models.Artist.objects.create(name="Artist", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85")
-        
-        self.col = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 1", permission="U") 
+
+        self.col = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 1", permission="U")
         self.r = models.Release.objects.create(collection=self.col, title="Rel", mbid="805a3604-92e6-482f-a0e3-6620c4523d7a")
 
         self.rec = models.Recording.objects.create(title="recording", mbid="2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
         models.ReleaseRecording.objects.create(release=self.r, recording=self.rec, track=1)
 
-        self.col2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="R") 
+        self.col2 = data.models.Collection.objects.create(mbid="f22f2f73", name="collection 2", permission="R")
         self.r2 = models.Release.objects.create(collection=self.col2, title="Rel 2", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
 
         self.rec2 = models.Recording.objects.create(title="recording 2", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
         models.ReleaseRecording.objects.create(release=self.r2, recording=self.rec2, track=1)
 
-        self.col3 = data.models.Collection.objects.create(mbid="f44f4f73", name="collection 3", permission="S") 
+        self.col3 = data.models.Collection.objects.create(mbid="f44f4f73", name="collection 3", permission="S")
         self.r3 = models.Release.objects.create(collection=self.col3, title="Rel 3", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
 
         self.rec3 = models.Recording.objects.create(title="recording 3", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
         models.ReleaseRecording.objects.create(release=self.r3, recording=self.rec3, track=1)
-        
+
         self.r.artists.add(self.a)
         self.r2.artists.add(self.a)
         self.r3.artists.add(self.a)
-       
+
         self.staffuser = auth.models.User.objects.create_user("staffuser")
         self.staffuser.is_staff = True
         self.staffuser.save()
-        
+
         permission = Permission.objects.get(codename='access_restricted')
         self.restricteduser = auth.models.User.objects.create_user("restricteduser")
         self.restricteduser.user_permissions.add(permission)
         self.restricteduser.save()
-        
+
         self.normaluser = auth.models.User.objects.create_user("normaluser")
-        
+
         self.apiclient = APIClient()
         self.apiclient.force_authenticate(user=self.staffuser)
 
@@ -52,7 +52,7 @@ class ArtistTest(ApiTestCase):
     def test_render_artist_detail(self):
         response = self.apiclient.get("/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85")
         data = response.data
-         
+
         keys = sorted(data.keys())
         self.assertEqual(["instruments", "mbid", "name", "releases"], keys)
 
@@ -100,7 +100,7 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(2, len(data["releases"]))
         self.assertEqual("805a3604-92e6-482f-a0e3-6620c4523d7a", data["releases"][0]["mbid"])
         self.assertEqual("cbe1ba35-8758-4a7d-9811-70bc48f41734", data["releases"][1]["mbid"])
-    
+
     def test_artist_collections_restricted(self):
         # a restricted user can choose if they see normal releases
         client = APIClient()
@@ -143,7 +143,7 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        self.assertEquals(["artists", "image", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
+        self.assertEquals(["image", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
 
     def test_render_release_list(self):
         s = api.ReleaseInnerSerializer(self.r)
@@ -171,7 +171,7 @@ class ReleaseTest(ApiTestCase):
 
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f22f2f73'})
         data = response.data
-        
+
         self.assertEqual(2, len(data["results"]))
 
 
@@ -181,7 +181,7 @@ class ReleaseTest(ApiTestCase):
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f33f3f73'})
         data = response.data
         self.assertEqual(1, len(data["results"]))
-       
+
         # A restricted user using collection header will get the release associated
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
@@ -196,7 +196,7 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/makam/recording/2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
-        self.assertEqual(["mbid", "performers", "releases", "title", "works"], sorted(resp.data.keys()))
+        self.assertEqual(["artists", "mbid", "performers", "releases", "title", "works"], sorted(resp.data.keys()))
 
     def test_render_recording_list(self):
         s = api.RecordingInnerSerializer(self.r)
@@ -223,8 +223,8 @@ class RecordingTest(ApiTestCase):
         response = client.get("/api/makam/recording")
         data = response.data
         self.assertEqual(3, len(data["results"]))
-        
-        # A restricted user passing a restricted collection over the header parameter will 
+
+        # A restricted user passing a restricted collection over the header parameter will
         # get 1 recording
         client.force_authenticate(user=self.restricteduser)
 
@@ -298,11 +298,11 @@ class MakamTest(ApiTestCase):
 
     def test_render_makam_detail(self):
         s = api.MakamDetailSerializer(self.m)
-        self.assertEquals(["gazels", "id", "name", "taksims", "works"], sorted(s.data.keys()))
+        self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(s.data.keys()))
 
     def test_render_makam_list(self):
         s = api.MakamInnerSerializer(self.m)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/makam/9c9b77cc-e357-402f-9278-2c5ed49e06b7")
@@ -320,11 +320,11 @@ class FormTest(ApiTestCase):
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
-        self.assertEquals(["id", "name", "works"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid", "works"], sorted(s.data.keys()))
 
     def test_render_form_list(self):
         s = api.FormInnerSerializer(self.f)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/form/1494b665-8b67-430f-b6e6-efdcd42ddd3f")
@@ -342,11 +342,11 @@ class UsulTest(ApiTestCase):
 
     def test_render_usul_detail(self):
         s = api.UsulDetailSerializer(self.u)
-        self.assertEquals(["gazels", "id", "name", "taksims", "works"], sorted(s.data.keys()))
+        self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(s.data.keys()))
 
     def test_render_usul_list(self):
         s = api.UsulInnerSerializer(self.u)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/usul/d5e15ee7-e6c3-4148-845c-8e7610c619e9")
@@ -354,6 +354,25 @@ class UsulTest(ApiTestCase):
 
     def test_instrument_list_url(self):
         resp = self.apiclient.get("/api/makam/usul")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(1, len(resp.data["results"]))
+
+
+class SymbTrTest(ApiTestCase):
+    def setUp(self):
+        super(SymbTrTest, self).setUp()
+        self.s = models.SymbTr.objects.create(name="usul", uuid="d5e15ee7-e6c3-4148-4444-8e7610c65555")
+
+    def test_render_symbtr_detail(self):
+        s = api.SymbtrDetailSerializer(self.s)
+        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
+
+    def test_symbtr_detail_url(self):
+        resp = self.apiclient.get("/api/makam/symbtr/d5e15ee7-e6c3-4148-4444-8e7610c65555")
+        self.assertEqual(200, resp.status_code)
+
+    def test_symbtr_list_url(self):
+        resp = self.apiclient.get("/api/makam/symbtr")
         self.assertEqual(200, resp.status_code)
         self.assertEqual(1, len(resp.data["results"]))
 

@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 import re
 import os
+import uuid
 
 import data
 import compmusic
@@ -48,7 +49,7 @@ class CollectionForm(forms.Form):
         pth = self.cleaned_data.get('path')
         if pth and not os.path.exists(pth):
             raise forms.ValidationError("This path doesn't exist")
-        docserver_pth = os.path.join(pth, "audio")
+        docserver_pth = os.path.join(pth, models.Collection.AUDIO_DIR)
         if not os.path.exists(docserver_pth):
             raise forms.ValidationError("Path doesn't contain inner 'audio'")
         return pth
@@ -137,3 +138,31 @@ class CsvAndalusianForm(forms.Form):
 class CsvAndalusianCatalogForm(forms.Form):
     csv_file = forms.FileField()
 
+class DashUUIDField(forms.UUIDField):
+    """A UUIDField which returns uuids with dashes """
+    def prepare_value(self, value):
+        if isinstance(value, uuid.UUID):
+            return str(value)
+        return value
+
+class SymbTrForm(forms.ModelForm):
+    uuid = DashUUIDField()
+    class Meta:
+        import makam
+        model = makam.models.SymbTr
+        fields = ['name', 'uuid']
+
+    def clean_uuid(self):
+        data = self.cleaned_data['uuid']
+        import makam
+        if makam.models.SymbTr.objects.filter(uuid=data).exists():
+            raise forms.ValidationError("UUID already exists")
+        return data
+
+
+class SymbTrFileForm(forms.Form):
+    pdf = forms.FileField(required=False)
+    txt = forms.FileField(required=False)
+    mu2 = forms.FileField(required=False)
+    xml = forms.FileField(required=False)
+    midi = forms.FileField(required=False)

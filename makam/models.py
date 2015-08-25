@@ -55,7 +55,7 @@ class Artist(MakamStyle, data.models.Artist):
         """ Releases where this artist is named on the cover """
         if not permission:
             permission = ["U"]
-        
+
         return self.primary_concerts.with_permissions(collection_ids, permission).all()
 
     def accompanying_releases(self):
@@ -76,7 +76,7 @@ class Release(MakamStyle, data.models.Release):
     is_concert = models.BooleanField(default=False)
     recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases")
-    
+
     objects = managers.CollectionReleaseManager()
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
@@ -121,6 +121,7 @@ class RecordingWork(models.Model):
 
 class Recording(MakamStyle, data.models.Recording):
     works = models.ManyToManyField("Work", through="RecordingWork")
+    artists = models.ManyToManyField("Artist", related_name="recordings_artist")
 
     # the form Taksim refers to an instrumental improvisation
     has_taksim = models.BooleanField(default=False)
@@ -130,9 +131,10 @@ class Recording(MakamStyle, data.models.Recording):
     # the `makam` field to, so we store it here. Only use this field
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True)
-    
+    analyse = models.BooleanField(default=True)
+
     objects = managers.CollectionRecordingManager()
-    
+
     def makamlist(self):
         return self.makam.all()
 
@@ -188,17 +190,11 @@ class Instrument(MakamStyle, data.models.Instrument):
 
     objects = InstrumentManager()
 
-class UnaccentManager(models.Manager):
-    """ A manager to use postgres' unaccent module to get items
-    with a specified `name` field """
-    def unaccent_get(self, name):
-        return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name]).get()
-
 class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
     makam = models.ForeignKey("Makam", related_name="aliases")
 
-    objects = UnaccentManager()
+    objects = managers.UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -207,7 +203,7 @@ class Makam(models.Model):
     name = models.CharField(max_length=100)
     uuid = UUIDField(db_index=True, auto=True)
 
-    objects = UnaccentManager()
+    objects = managers.MakamFuzzyManager()
 
     def __unicode__(self):
         return self.name
@@ -232,7 +228,7 @@ class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
 
-    objects = UnaccentManager()
+    objects = managers.UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -241,7 +237,7 @@ class Usul(models.Model):
     name = models.CharField(max_length=100)
     uuid = UUIDField(db_index=True, auto=True)
 
-    objects = UnaccentManager()
+    objects = managers.MakamUsulManager()
 
     def __unicode__(self):
         return self.name
@@ -270,7 +266,7 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=100)
     form = models.ForeignKey("Form", related_name="aliases")
 
-    objects = UnaccentManager()
+    objects = managers.UnaccentManager()
 
     def __unicode__(self):
         return self.name
@@ -279,7 +275,7 @@ class Form(models.Model):
     name = models.CharField(max_length=100)
     uuid = UUIDField(db_index=True, auto=True)
 
-    objects = UnaccentManager()
+    objects = managers.MakamFormManager()
 
     def __unicode__(self):
         return self.name
@@ -323,7 +319,7 @@ class SymbTr(models.Model):
     name = models.CharField(max_length=200)
     # We use a uuid directly instead of a link to an existing model
     # because this could be a workid (most common), or a recordingid (sometimes)
-    uuid = UUIDField(db_index=True)
+    uuid = models.UUIDField(db_index=True)
 
     def __unicode__(self):
         return u"%s -> %s" % (self.uuid, self.name)

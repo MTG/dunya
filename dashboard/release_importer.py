@@ -232,7 +232,7 @@ class ReleaseImporter(object):
     def _get_artist_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
-            if perf["type"] in ["vocal", "instrument"]:
+            if perf["type"] in ["vocal", "instrument", "performer", "performing orchestra"]:
                 artistid = perf["target"]
                 attrs = perf.get("attribute-list", [])
                 is_lead = False
@@ -256,13 +256,15 @@ class ReleaseImporter(object):
                         inst = insts[0]
                     else:
                         inst = None
-                else:
+                elif perf["type"] == "vocal":
                     inst = "vocal"
+                else:
+                    inst = None
                 performances.append((artistid, inst, is_lead))
         return performances
 
     def add_and_get_recording(self, recordingid):
-        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels"])
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels", "artists"])
         mbrec = mbrec["recording"]
 
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
@@ -273,6 +275,14 @@ class ReleaseImporter(object):
             rec.length = mbrec.get("length")
             rec.title = mbrec["title"]
             rec.save()
+
+            artistids = []
+            # Create recording primary artists
+            for a in mbrec.get("artist-credit", []):
+                if isinstance(a, dict):
+                    artistid = a["artist"]["id"]
+                    artistids.append(artistid)
+            self._add_recording_artists(rec, artistids)
 
             works = []
             for work in mbrec.get("work-relation-list", []):
@@ -298,6 +308,8 @@ class ReleaseImporter(object):
         return rec
 
     def _clear_work_composers(self, work):
+        pass
+    def _add_recording_artists(self, rec, artistids):
         pass
 
     def _add_work_attributes(self, work, mbwork, created):

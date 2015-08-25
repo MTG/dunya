@@ -2,7 +2,26 @@
 {% block title %}{{mode|capfirst}} collection{% endblock %}
 
 {% block wrap %}
-
+<script>
+$(document).ready(function() {
+    function hideAll(){
+        $("span[id$='-ftype']").hide();    
+    };
+    function showSelected(){
+        $("select[id^='id_form-'][id$='source_type'] :selected").each(function(){
+            if ($(this).val()){
+                $("#"+$(this).val()+"-ftype").show(); 
+            }
+        });
+    };
+    $("select[id^='id_form-'][id$='source_type']").change(function(){
+        hideAll();
+        showSelected();
+    });
+    hideAll();
+    showSelected();
+});
+</script>
 <ul class="breadcrumbs">
     <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
     <li>{{mode|capfirst}} collection</li>
@@ -15,13 +34,35 @@
       {{message}}
     </div>
 {% endfor %}
-
+{% if file_types %}
+    <div>
+    <p>The following Source File Types are used, make sure you assign permission to all of them.</p>
+    <ul>
+        {% for f in file_types%}
+            <li>{{ f }}<span id="{{f.id}}-ftype" style="display:none">&#10004;</span></li>
+        {% endfor%}
+    </ul>
+    </div>
+{%endif%}
 <h2>{{mode|capfirst}} collection</h2>
 <form method="post">{% csrf_token %}
+    {{ permission_form.management_form }}
     {{ form.as_p }}
+    {% for f in permission_form %}
+    <div class='table'>
+        <table class='no_error'>
+            {{ f.as_p }}
+        </table>
+    </div>
+    {% endfor%}
+    <input type="button" value="Add More" id="add_more">
+    <script>
+        $('#add_more').click(function() {
+            cloneMore('div.table:last', 'form');
+        });
+    </script>
     <input type="submit" value="Submit" />
 </form>
-
 {% endblock %}
 
 

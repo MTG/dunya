@@ -1,0 +1,77 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Symbtr{% endblock %}
+
+{% block css %}
+<style type="text/css">
+#id_name, #id_uuid {
+    width: 350px;
+}
+#datatable td {
+    padding: 5px;
+}
+</style>
+{% endblock %}
+
+{% block wrap %}
+
+<p><a href="{% url 'dashboard-makam-symbtrlist' %}">&larr;Back to list</a></p>
+
+{% if add %}
+<h3>Add SymbTr</h3>
+{% else %}
+<h3>Symbtr: {{symbtr.name}}</h3>
+<p><a href="?delete=1" onclick="return confirm('are you sure you want to delete?')">Delete</a></p>
+<p>
+MusicBrainz: <a href="{{url}}">{{url}}</a><br>
+{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    <table id="datatable">
+{{form.as_table}}
+    </table>
+</form>
+
+<h2>Files</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h4>pdf</h4>
+    {%  if "symbtrpdf" in existingfiles %}
+    <a href="{{existingfiles.symbtrpdf}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.pdf }}
+
+    <h4>txt</h4>
+    {%  if "symbtrtxt" in existingfiles %}
+    <a href="{{existingfiles.symbtrtxt}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.txt }}
+
+    <h4>mu2</h4>
+    {%  if "symbtrmu2" in existingfiles %}
+    <a href="{{existingfiles.symbtrmu2}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.mu2 }}
+
+    <h4>xml</h4>
+    {%  if "symbtrxml" in existingfiles %}
+    <a href="{{existingfiles.symbtrxml}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.xml }}
+
+    <h4>midi</h4>
+    {%  if "symbtrmidi" in existingfiles %}
+    <a href="{{existingfiles.symbtrmidi}}">Existing file</a><br>
+    {% endif %}
+    {{ symbtrfiles.midi }}
+
+    <p><input type="submit" value="Update and/or upload"></p>
+</form>
+
+
+
+<p>[<a href="?delete">Delete this symbtr and all associated files</a>]</p>
+
+{% endblock %}
+
+

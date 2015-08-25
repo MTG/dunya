@@ -19,6 +19,20 @@ class MakamTest(TestCase):
         ret = models.Makam.objects.unaccent_get("buselik")
         self.assertEqual(m, ret)
 
+        hm = models.Makam.objects.create(name=u"Hicaz Hümayun")
+        hma1 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümayun")
+        hma2 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümâyûn")
+
+        hma_all = models.MakamAlias.objects.unaccent_all("hicaz-humayun")
+        self.assertEqual(2, hma_all.count())
+
+        try:
+            hma_all = models.MakamAlias.objects.unaccent_get("hicaz-humayun")
+            # Shouldn't get here
+            self.assertTrue(False)
+        except models.MakamAlias.MultipleObjectsReturned:
+            pass
+
     def test_worklist(self):
         self.assertTrue(self.w in self.m.worklist())
         self.assertEqual(1, len(self.m.worklist()))

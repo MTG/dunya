@@ -21,6 +21,8 @@ import makam
 import makam.models
 import compmusic
 
+DIALOGUE_ARTIST = "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc"
+
 class MakamReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = makam.models.Artist
     _ArtistAliasClass = makam.models.ArtistAlias
@@ -51,10 +53,10 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         try:
             return makam.models.Makam.objects.unaccent_get(makamname)
         except makam.models.Makam.DoesNotExist:
-            try:
-                malias = makam.models.MakamAlias.objects.unaccent_get(makamname)
-                return malias.makam
-            except makam.models.MakamAlias.DoesNotExist:
+            malias = makam.models.MakamAlias.objects.unaccent_all(makamname)
+            if malias.count():
+                return malias[0].makam
+            else:
                 return None
 
     def _get_usul(self, usul):
@@ -142,7 +144,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             if makam:
                 recording.makam.add(makam)
                 recording.save()
-        
+
         # tags for no taksim
         notaksimt = [g for g in groups if g.get("form") != "taksim" and g.get("form") != "gazel"]
 
@@ -158,11 +160,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             form = self._get_form(t.get("form"))
             usul = self._get_usul(t.get("usul"))
             w = works[0]
-            if makam and len(w.makam) == 0:
+            if makam and w.makam.count() == 0:
                 w.makam.add(makam)
-            if usul and len(w.usul) == 0:
+            if usul and w.usul.count() == 0:
                 w.usul.add(usul)
-            if form and len(w.form) == 0:
+            if form and w.form.count() == 0:
                 w.form.add(form)
         elif len(works) == len(notaksimt):
             pass
@@ -187,11 +189,10 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
         if instrument:
-            recording = makam.models.Recording.objects.get(mbid=recordingid)
-            perf = makam.models.InstrumentPerformance(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
-            perf.save()
+            instrument = self._get_instrument(instrument)
+        recording = makam.models.Recording.objects.get(mbid=recordingid)
+        perf = makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
 
     def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
         logger.info("  Adding release performance...")
@@ -212,10 +213,29 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             work.composers.clear()
             work.lyricists.clear()
 
+    def _add_recording_artists(self, rec, artistids):
+        if self.overwrite:
+            rec.artists.clear()
+        for a in artistids:
+            # If the artist is [dialogue] the we don't show analysis.
+            if a == DIALOGUE_ARTIST:
+                rec.analyse = False
+                rec.save()
+            artist = self.add_and_get_artist(a)
+            logger.info("  artist: %s" % artist)
+            if not rec.artists.filter(pk=artist.pk).exists():
+                logger.info("  - adding to artist list 2")
+                rec.artists.add(artist)
+
     def _add_work_attributes(self, work, mbwork, created):
         """ Read mb attributes from the webservice query
         and add them to the object """
-        
+
+        if created or self.overwrite:
+            work.form.clear()
+            work.usul.clear()
+            work.makam.clear()
+
         if created or self.overwrite:
             form_attr = self._get_form_mb(mbwork)
             usul_attr = self._get_usul_mb(mbwork)
@@ -225,13 +245,10 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 usul = self._get_usul(usul_attr)
                 makam = self._get_makam(makam_attr)
                 if form:
-                    work.form.clear()
                     work.form.add(form)
                 if usul:
-                    work.usul.clear()
                     work.usul.add(usul)
                 if makam:
-                    work.makam.clear()
                     work.makam.add(makam)
                 work.save()
 
@@ -252,7 +269,4 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             if a['type'] == u'Makam (Ottoman, Turkish)':
                 return a['attribute']
         return None
-
-
-
 
