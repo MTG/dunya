@@ -204,7 +204,7 @@ def get_release_importer(collection, overwrite=False):
     elif "makam" in name:
         ri = makam_importer.MakamReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
     elif "andalusian" in name:
-        ri = andalusian_importer.AndalusianReleaseImporter(overwrite=force, is_bootleg=bootleg, collection=data_coll)
+        ri = andalusian_importer.AndalusianReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
     return ri
 
 @app.task(base=CollectionDunyaTask)

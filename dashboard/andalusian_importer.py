@@ -34,16 +34,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
     _RecordingClass = andalusian.models.Recording
     _InstrumentClass = andalusian.models.Instrument
     _WorkClass = andalusian.models.Work
-
-    def __init__(self, overwrite=False, is_bootleg=False):
-        """Create a release importer.
-        Arguments:
-          overwrite: If we replace everything in the database with new
-                     data even if it exists.
-          is_bootleg: If true, mark releases as bootleg
-        """
-        super(AndalusianReleaseImporter, self).__init__(overwrite, is_bootleg)
-        self.imported_orchestras = []
+    imported_orchestras = []
 
     def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():

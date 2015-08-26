@@ -223,8 +223,11 @@ class Recording(AndalusianStyle, data.models.BaseModel):
 	length = models.IntegerField(blank=True, null=True)
 	year = models.IntegerField(blank=True, null=True)
 	genre = models.ForeignKey('Genre', null=True)
-
-	def __unicode__(self):
+	archive_url = models.CharField(max_length=255)
+	musescore_url = models.CharField(max_length=255)
+        poems = models.ManyToManyField("Poem", through="RecordingPoem")
+	
+        def __unicode__(self):
 		#ret = u", ".join([unicode(a) for a in self.performers()])
 		return u"%s" % self.title
 
@@ -410,9 +413,16 @@ class Poem(data.models.BaseModel):
 	type = models.ForeignKey(PoemType, blank=True, null=True)
 	text = models.TextField()
 	transliterated_text = models.TextField(blank=True)
+	title = models.CharField(max_length=255, blank=True, null=True)
+	transliterated_title = models.CharField(max_length=255, blank=True, null=True)
 
 	def __unicode__(self):
 		return self.identifier
+
+class RecordingPoem(models.Model):
+    recording = models.ForeignKey('Recording')
+    poem = models.ForeignKey('Poem')
+    order_number = models.IntegerField(blank=True, null=True)
 
 '''
 class PoemAlias(models.Model):
@@ -421,8 +431,6 @@ class PoemAlias(models.Model):
 
     def __unicode__(self):
         return self.identifier
-'''
-
 
 class SectionSanaaPoem(models.Model):
     section = models.ForeignKey('Section')
@@ -433,3 +441,4 @@ class SectionSanaaPoem(models.Model):
     def __unicode__(self):
         return u"Poem %s from san'a %s in section %s of recording %s" % \
                (self.poem, self.sanaa, self.section.order_number, self.section.recording)
+'''
