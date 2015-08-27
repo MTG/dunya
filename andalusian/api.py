@@ -181,22 +181,6 @@ class GenreList(generics.ListAPIView):
     queryset = models.Genre.objects.all()
     serializer_class = GenreInnerSerializer
 
-
-class RecordingDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Recording
-        fields = ['mbid', 'title', 'transliterated_title']
-
-class RecordingDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
-    queryset = models.Recording.objects.all()
-    serializer_class = RecordingDetailSerializer
-
-class RecordingList(generics.ListAPIView):
-    queryset = models.Recording.objects.all()
-    serializer_class = RecordingInnerSerializer
-
-
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
@@ -270,6 +254,31 @@ class FormDetail(generics.RetrieveAPIView):
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
     serializer_class = FormInnerSerializer
+
+class SectionDetailSerializer(serializers.ModelSerializer):
+    tab = TabDetailSerializer()
+    nawba = NawbaDetailSerializer()
+    mizan = MizanDetailSerializer()
+    form = FormDetailSerializer()
+    
+    class Meta:
+        model = models.Section
+        fields = ['start_time', 'end_time', 'tab', 'nawba', 'mizan', 'form']
+
+class RecordingDetailSerializer(serializers.ModelSerializer):
+    sections = SectionDetailSerializer(source='section_set.all', many=True) 
+    class Meta:
+        model = models.Recording
+        fields = ['mbid', 'title', 'transliterated_title', 'musescore_url', 'archive_url', 'sections']
+
+class RecordingDetail(generics.RetrieveAPIView):
+    lookup_field = 'mbid'
+    queryset = models.Recording.objects.all()
+    serializer_class = RecordingDetailSerializer
+
+class RecordingList(generics.ListAPIView):
+    queryset = models.Recording.objects.all()
+    serializer_class = RecordingInnerSerializer
 
 
 class SanaaDetailSerializer(serializers.ModelSerializer):
