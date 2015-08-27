@@ -35,9 +35,9 @@ import compmusic
 import os
 import time
 
-import tashkeel.tashkeel 
-from arabic.ALA_LC_Transliterator import ALA_LC_Transliterator
-import arabic.arabic_reshaper 
+from mishkal.tashkeel.tashkeel import TashkeelClass
+import ALA_LC_Transliterator
+import arabic_reshaper 
 
 import andalusian
 import carnatic
@@ -781,7 +781,7 @@ def import_andalusian_elements(request):
         form = forms.CsvAndalusianForm(request.POST, request.FILES)
         if form.is_valid():
             transliterator = ALA_LC_Transliterator()
-            vocalizer=tashkeel.tashkeel.TashkeelClass()
+            vocalizer=TashkeelClass()
             csv_file = form.cleaned_data['csv_file']
             reader = csv.reader(csv_file.read().splitlines())
             klass = None
@@ -813,7 +813,7 @@ def import_andalusian_catalog(request):
         form = forms.CsvAndalusianCatalogForm(request.POST, request.FILES)
         if form.is_valid():
             transliterator = ALA_LC_Transliterator()
-            vocalizer=tashkeel.tashkeel.TashkeelClass()
+            vocalizer=TashkeelClass()
             omited = 0
             csv_file = form.cleaned_data['csv_file']
             reader = csv.reader(csv_file.read().splitlines())
