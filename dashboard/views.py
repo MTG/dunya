@@ -799,7 +799,7 @@ def import_andalusian_elements(request):
                     
                     voc = vocalizer.tashkeel(row[0].decode('utf8'))
                     tr = transliterator.do(voc.strip())
-                    elem.transliterated_name = arabic.arabic_reshaper.reshape(tr)
+                    elem.transliterated_name = arabic_reshaper.reshape(tr)
                     elem.save()
                 message = "The elements has been successfully loaded"
     else:
@@ -840,12 +840,12 @@ def import_andalusian_catalog(request):
                     
                     voc = vocalizer.tashkeel(row[0].decode('utf8'))
                     tr = transliterator.do(voc.strip())
-                    genre.transliterated_name = arabic.arabic_reshaper.reshape(tr)
+                    genre.transliterated_name = arabic_reshaper.reshape(tr)
                     genre.save()
                     
                     voc = vocalizer.tashkeel(rec.title)
                     tr = transliterator.do(voc.strip())
-                    rec.transliterated_title = arabic.arabic_reshaper.reshape(tr)
+                    rec.transliterated_title = arabic_reshaper.reshape(tr)
                     rec.genre = genre
                     rec.save()
 
