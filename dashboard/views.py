@@ -36,7 +36,7 @@ import os
 import time
 
 from mishkal.tashkeel.tashkeel import TashkeelClass
-import ALA_LC_Transliterator
+from ALA_LC_Transliterator import ALA_LC_Transliterator
 import arabic_reshaper 
 
 import andalusian
