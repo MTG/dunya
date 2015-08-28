@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
-
+import json
 from andalusian import models
 
 from rest_framework import generics
@@ -280,7 +280,6 @@ class RecordingList(generics.ListAPIView):
     queryset = models.Recording.objects.all()
     serializer_class = RecordingInnerSerializer
 
-
 class SanaaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Sanaa
@@ -297,9 +296,20 @@ class SanaaList(generics.ListAPIView):
 
 
 class PoemDetailSerializer(serializers.ModelSerializer):
+    text = serializers.SerializerMethodField('get_text_obj')
+    transliterated_text = serializers.SerializerMethodField('get_transliterated_text_obj')
+
     class Meta:
         model = models.Poem
-        fields = ['id', 'first_words', 'transliterated_first_words']
+        fields = ['text','transliterated_text','title', 'transliterated_title', 'first_words', 'transliterated_first_words']
+    
+    def get_text_obj(self, ob):
+        text = json.loads(ob.text)
+        return text
+    
+    def get_transliterated_text_obj(self, ob):
+        text = json.loads(ob.transliterated_text)
+        return text
 
 class PoemDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
@@ -309,13 +319,17 @@ class PoemDetail(generics.RetrieveAPIView):
 class PoemList(generics.ListAPIView):
     queryset = models.Poem.objects.all()
     serializer_class = PoemInnerSerializer
+     
+class RecordingPoemSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.Poem
+        fields = ['text','transliterated_text','title', 'transliterated_title', 'first_words', 'transliterated_first_words']
 
+class LyricDetail(generics.ListAPIView):
+    serializer_class = PoemDetailSerializer
 
+    def get_queryset(self):
+        mbid = self.kwargs['mbid'] 
+        return models.Poem.objects.filter(recordingpoem__recording__mbid=mbid).order_by('recordingpoem__order_number').all()
 
-# class RaagaDetailSerializer(serializers.ModelSerializer):
-#     aliases = serializers.RelatedField(many=True, source='aliases.all')
-#     artists = ArtistInnerSerializer(source='artists')
-#
-#     class Meta:
-#         model = models.Raaga
-#         fields = ['id', 'name', 'aliases', 'artists']
