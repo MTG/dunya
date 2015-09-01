@@ -25,6 +25,7 @@ import logging
 import time
 import subprocess
 
+from dashboard.log import logger
 from docserver import models
 from docserver import log
 import numpy as np
@@ -37,9 +38,7 @@ class DatabaseLogHandler(logging.Handler):
         documentid = getattr(record, "documentid", None)
         sourcefileid = getattr(record, "sourcefileid", None)
         modulename = getattr(record, "modulename", None)
-        moduleversion = None
-        if hasattr(record, 'moduleversion'):
-            moduleversion = getattr(record, "moduleversion")
+        moduleversion = getattr(record, "moduleversion", None)
 
         modv = None
         if modulename and moduleversion:
@@ -61,13 +60,13 @@ class DatabaseLogHandler(logging.Handler):
                 doc = models.Document.objects.get(pk=int(documentid))
                 models.DocumentLogMessage.objects.create(document=doc, moduleversion=modv, sourcefile=sourcef, level=record.levelname, message=record.getMessage())
             except models.Document.DoesNotExist:
-                log.error("no document, can't create a log file")
+                logger.error("no document, can't create a log file")
         else:
-            log.error("no document, can't create a log file")
+            logger.error("no document, can't create a log file")
             
-logger = logging.getLogger("extractor")
-logger.setLevel(logging.DEBUG)
-logger.addHandler(DatabaseLogHandler())
+#logger = logging.getLogger("extractor")
+#logger.setLevel(logging.DEBUG)
+#logger.addHandler(DatabaseLogHandler())
 
 def _get_module_instance_by_path(modulepath):
     args = {}
@@ -133,7 +132,7 @@ def get_latest_module_version(themod_id=None):
 @app.task
 def delete_moduleversion(vid):
     version = models.ModuleVersion.objects.get(pk=vid)
-    log.info("deleting moduleversion %s" % version)
+    logger.info("deleting moduleversion %s" % version)
     files = version.derivedfile_set.all()
     for f in files:
         for p in f.parts.all():
@@ -151,18 +150,18 @@ def delete_moduleversion(vid):
     module = version.module
     version.delete()
     if module.versions.count() == 0:
-        log.info("No more moduleversions for this module, deleting the module")
+        logger.info("No more moduleversions for this module, deleting the module")
         module.delete()
-        log.info(" .. module deleted")
-    log.info("done")
+        logger.info(" .. module deleted")
+    logger.info("done")
 
 @app.task
 def delete_module(mid):
     module = models.Module.objects.get(pk=mid)
-    log.info("deleting entire module %s" % module)
+    logger.info("deleting entire module %s" % module)
     for v in module.versions.all():
         delete_moduleversion(v.pk)
-    log.info("done")
+    logger.info("done")
 
 @app.task
 def delete_collection(cid):
@@ -198,7 +197,7 @@ def _save_file(root_directory, recordingid, version, slug, partslug, partnumber,
     try:
         os.makedirs(fdir)
     except OSError:
-        log.warn("Error making directory %s" % fdir)
+        logger.warn("Error making directory %s" % fdir)
         pass
     fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
 
@@ -210,12 +209,12 @@ def _save_file(root_directory, recordingid, version, slug, partslug, partnumber,
             json.dump(data, fp, cls=NumPyArangeEncoder)
         else:
             if not isinstance(data, basestring):
-                log.warn("Data is not a string-ish thing. instead it's %s" % type(data))
+                logger.warn("Data is not a string-ish thing. instead it's %s" % type(data))
             fp.write(data)
         fp.close()
     except OSError:
-        log.warn("Error writing to file %s" % fullname)
-        log.warn("Probably a permissions error")
+        logger.warn("Error writing to file %s" % fullname)
+        logger.warn("Probably a permissions error")
         return None, None, None
     if not isinstance(data, basestring):
         data = str(data)
@@ -267,8 +266,8 @@ def process_document(documentid, moduleversionid):
                 extension = outputdata["extension"]
                 mimetype = outputdata["mimetype"]
                 multipart = outputdata.get("parts", False)
-                log.info("data %s (%s)" % (dataslug, type(contents)))
-                log.info("multiparts %s" % multipart)
+                logger.info("data %s (%s)" % (dataslug, type(contents)))
+                logger.info("multiparts %s" % multipart)
                 df = models.DerivedFile.objects.create(
                     document=document, derived_from=s,
                     module_version=version, outputname=dataslug, extension=extension,
@@ -300,17 +299,17 @@ def run_module(moduleid, versionid=None):
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
-    log.info("running module %s on %s files" % (module, len(recids)))
+    logger.info("running module %s on %s files" % (module, len(recids)))
     if version:
-        log.info("version %s %s" % (version, version.pk))
+        logger.info("version %s %s" % (version, version.pk))
         # All documents that don't already have a derived file for this module version
         docs = models.Document.objects.filter(
             sourcefiles__file_type=module.source_type,
             external_identifier__in=recids,
         ).exclude(derivedfiles__module_version=version)
         for d in docs:
-            log.info("  document %s" % d)
-            log.info("  docid %s" % d.pk)
+            logger.info("  document %s" % d)
+            logger.info("  docid %s" % d.pk)
             process_document.delay(d.pk, version.pk)
 
 @app.task
@@ -321,9 +320,9 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
         version = module.versions.get(pk=versionid)
     else:
         version = module.get_latest_version()
-    log.info("running module %s on collection %s" % (module, collection))
+    logger.info("running module %s on collection %s" % (module, collection))
     if version:
-        log.info("version %s" % version)
+        logger.info("version %s" % version)
 
         docs = []
         if module.many_files:
@@ -340,7 +339,7 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
                 sourcefiles__file_type=module.source_type,
                 collections=collection).exclude(derivedfiles__module_version=version)
         for i, d in enumerate(docs, 1):
-            log.info("  document %s/%s - %s" % (i, len(docs), d))
+            logger.info("  document %s/%s - %s" % (i, len(docs), d))
             process_document.delay(d.pk, version.pk)
 
 
