@@ -111,9 +111,9 @@ def get_latest_module_version(themod_id=None):
     else:
         modules = models.Module.objects.filter(disabled=False)
     for m in modules:
-        log.info("module %s" % m)
+        logger.info("module %s" % m)
         instance = _get_module_instance_by_path(m.module)
-        log.info("instance %s" % instance)
+        logger.info("instance %s" % instance)
         if instance:
             if m.disabled: # if we were disabled and exist again, reenable.
                 m.disabled = False
