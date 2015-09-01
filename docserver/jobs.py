@@ -37,7 +37,9 @@ class DatabaseLogHandler(logging.Handler):
         documentid = getattr(record, "documentid", None)
         sourcefileid = getattr(record, "sourcefileid", None)
         modulename = getattr(record, "modulename", None)
-        moduleversion = getattr(record, "moduleversion")
+        moduleversion = None
+        if hasattr(record, 'moduleversion'):
+            moduleversion = getattr(record, "moduleversion")
 
         modv = None
         if modulename and moduleversion:
