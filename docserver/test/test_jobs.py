@@ -73,7 +73,10 @@ class SourceFileTest(AbstractFileTest):
         doc = models.Document.objects.get(pk=self.col1.pk)
         self.assertEqual(len(doc.derivedfiles.all()), 1)
     
-    def test_process_document(self):
+    @mock.patch('os.makedirs') 
+    @mock.patch('__builtin__.open') 
+    def test_process_document(self, mock_open, makedir):
+        #/tmp/col1/incoming/11/111111/asd2/0.1
         modulepath = "compmusic.extractors.Test2Extractor"
         instance = Test2Extractor()
         self.get_m.return_value = instance
