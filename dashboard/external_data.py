@@ -23,7 +23,7 @@ from compmusic import wikipedia
 from compmusic import kutcheris
 from compmusic import image
 
-def import_artist_kutcheris(a, overwrite):
+def import_artist_kutcheris(a):
     artist = kutcheris.search_artist(a.name)
     if artist:
         print "Found data on kutcheris.com"
@@ -36,11 +36,10 @@ def import_artist_kutcheris(a, overwrite):
     if b:
         source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": a.name})
         description = data.models.Description.objects.create(description=b, source=source)
-        if overwrite or not a.description:
-            a.description = description
-            a.save()
+        a.description = description
+        a.save()
 
-def import_artist_wikipedia(artist, overwrite):
+def import_artist_wikipedia(artist):
     print "Looking for data on wikipedia"
     sn = data.models.SourceName.objects.get(name="Wikipedia")
     refs = artist.references.filter(source_name=sn)
@@ -54,7 +53,7 @@ def import_artist_wikipedia(artist, overwrite):
             description = data.models.Description.objects.create(description=bio, source=source)
             # We call this with Composers too, which don't have `description_edited`
             # If d_edited is set, never overwrite it.
-            if not getattr(artist, 'description_edited', False) and (overwrite or not artist.description):
+            if not getattr(artist, 'description_edited', False):
                 artist.description = description
                 artist.save()
         if img:
@@ -62,8 +61,8 @@ def import_artist_wikipedia(artist, overwrite):
                 existingimg = artist.images.get(image__contains="%s" % artist.mbid)
                 if not os.path.exists(existingimg.image.path):
                     existingimg.delete()
-                elif existingimg.image.size != len(img) or overwrite:
-                    # If the imagesize has changed, or overwrite is set, remove the image
+                elif existingimg.image.size != len(img)
+                    # If the imagesize has changed, remove the image
                     os.unlink(existingimg.image.path)
                     existingimg.delete()
             except data.models.Image.DoesNotExist:
@@ -73,7 +72,7 @@ def import_artist_wikipedia(artist, overwrite):
             im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
             artist.images.add(im)
 
-def import_release_image(release, directories=[], overwrite=False):
+def import_release_image(release, directories=[]):
     for existing in release.images.all():
         name = os.path.splitext(os.path.basename(existing.image.name))
         if name == release.mbid:
@@ -103,18 +102,15 @@ def import_release_image(release, directories=[], overwrite=False):
             haveimage = True
             if not os.path.exists(existingimg.image.path):
                 existingimg.delete()
-            elif existingimg.image.size != len(i) or overwrite:
-                # If the imagesize has changed, or overwrite is set, remove the image
+            elif existingimg.image.size != len(i):
+                # If the imagesize has changed, remove it
                 os.unlink(existingimg.image.path)
                 existingimg.delete()
         except data.models.Image.DoesNotExist:
             haveimage = False
 
-        # If we have an image and overwrite is false, don't add it
-        if haveimage and not overwrite:
-            pass
-        else:
-            # Otherwise overwrite is true, or we didn't have an image
+        # If we have an image, don't add it
+        if not haveimage:
             release.images.add(im)
             release.save()
     else:

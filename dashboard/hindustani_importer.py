@@ -37,9 +37,8 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
 
     def _join_recording_and_works(self, recording, works):
         # A hindustani recording can have many works
-        if self.overwrite:
-            hindustani.models.WorkTime.objects.filter(recording=recording).delete()
 
+        hindustani.models.WorkTime.objects.filter(recording=recording).delete()
         sequence = 1
         for w in works:
             hindustani.models.WorkTime.objects.create(work=w, recording=recording, sequence=sequence)
@@ -51,11 +50,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         layas = self._get_laya_tags(tags)
         forms = self._get_form_tags(tags)
 
-        if self.overwrite:
-            hindustani.models.RecordingTaal.objects.filter(recording=recording).delete()
-            hindustani.models.RecordingLaya.objects.filter(recording=recording).delete()
-            hindustani.models.RecordingRaag.objects.filter(recording=recording).delete()
-            hindustani.models.RecordingForm.objects.filter(recording=recording).delete()
+        hindustani.models.RecordingTaal.objects.filter(recording=recording).delete()
+        hindustani.models.RecordingLaya.objects.filter(recording=recording).delete()
+        hindustani.models.RecordingRaag.objects.filter(recording=recording).delete()
+        hindustani.models.RecordingForm.objects.filter(recording=recording).delete()
 
         for l in layas:
             lpos = l[0]

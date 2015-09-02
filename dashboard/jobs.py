@@ -24,7 +24,7 @@ from dashboard import models
 from dashboard import carnatic_importer
 from dashboard import hindustani_importer
 from dashboard import makam_importer
-from dashboard import andalusian_importer 
+from dashboard import andalusian_importer
 
 import compmusic
 
@@ -102,7 +102,7 @@ def import_single_release(releasepk):
     release = models.MusicbrainzRelease.objects.get(pk=releasepk)
     collection = release.collection
 
-    ri = get_release_importer(collection, overwrite=True)
+    ri = get_release_importer(collection)
     if not ri:
         release.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
         release.set_state_error()
@@ -188,7 +188,7 @@ def import_release(releasepk, ri):
         release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
-def get_release_importer(collection, overwrite=False):
+def get_release_importer(collection):
     name = collection.name.lower()
     name = name.lower()
     data_coll = data.models.Collection.objects.get(mbid=collection.id)
@@ -198,13 +198,13 @@ def get_release_importer(collection, overwrite=False):
     else:
         bootleg = False
     if "hindustani" in name:
-        ri = hindustani_importer.HindustaniReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
+        ri = hindustani_importer.HindustaniReleaseImporter(is_bootleg=bootleg, collection=data_coll)
     elif "carnatic" in name:
-        ri = carnatic_importer.CarnaticReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
+        ri = carnatic_importer.CarnaticReleaseImporter(is_bootleg=bootleg, collection=data_coll)
     elif "makam" in name:
-        ri = makam_importer.MakamReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
+        ri = makam_importer.MakamReleaseImporter(is_bootleg=bootleg, collection=data_coll)
     elif "andalusian" in name:
-        ri = andalusian_importer.AndalusianReleaseImporter(overwrite=overwrite, is_bootleg=bootleg, collection=data_coll)
+        ri = andalusian_importer.AndalusianReleaseImporter(is_bootleg=bootleg, collection=data_coll)
     return ri
 
 @app.task(base=CollectionDunyaTask)

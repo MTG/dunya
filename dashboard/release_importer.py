@@ -29,14 +29,11 @@ RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
 RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
 
 class ReleaseImporter(object):
-    def __init__(self, overwrite=False, is_bootleg=False, collection=None):
+    def __init__(self, is_bootleg=False, collection=None):
         """Create a release importer.
         Arguments:
-          overwrite: If we replace everything in the database with new
-                     data even if it exists.
           is_bootleg: If true, mark releases as bootleg
         """
-        self.overwrite = overwrite
         self.is_bootleg = is_bootleg
         self.date_import_started = django.utils.timezone.now()
         self.collection = collection
@@ -83,9 +80,7 @@ class ReleaseImporter(object):
         release = self._create_release_object(rel)
 
         # Create release primary artists
-        if self.overwrite:
-            # If it already exists and we're doing an overwrite
-            release.artists.clear()
+        release.artists.clear()
         for a in rel["artist-credit"]:
             if isinstance(a, dict):
                 artistid = a["artist"]["id"]
@@ -99,8 +94,7 @@ class ReleaseImporter(object):
         for mnum, medium in enumerate(rel["medium-list"], 1):
             for tnum, track in enumerate(medium["track-list"], 1):
                 recordings.append( (track["recording"]["id"], mnum, tnum))
-        if self.overwrite:
-            release.recordings.clear()
+        release.recordings.clear()
         trackorder = 1
         for recid, mnum, tnum in recordings:
             recob = self.add_and_get_recording(recid)
@@ -111,30 +105,36 @@ class ReleaseImporter(object):
             artistid, instrument, is_lead = perf
             self._add_release_performance(release.mbid, artistid, instrument, is_lead)
 
-        external_data.import_release_image(release, directories, self.overwrite)
+        self._add_release_artists_as_relationship(release, rel["artist-credit"])
+
+        external_data.import_release_image(release, directories)
         self.imported_releases.append(releaseid)
         return release
+
+    def _add_release_artists_as_relationship(self, release, artist_credit):
+        # Can be overwritten to take the release artists and add them
+        # as relationships on recordings
+        pass
 
     def _create_release_object(self, mbrelease):
         release, created = self._ReleaseClass.objects.get_or_create(
             mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
-        if created or self.overwrite:
-            rel_type = mbrelease["release-group"]
-            if "release-group" in mbrelease and "primary-type" in mbrelease["release-group"]:
-                release.rel_type = mbrelease["release-group"]["primary-type"]
-            if "status" in mbrelease:
-                release.status = mbrelease["status"]
-            release.title = mbrelease["title"]
-            year = self._get_year_from_date(mbrelease.get("date"))
-            release.year = year
-            credit_phrase = mbrelease.get("artist-credit-phrase")
-            release.artistcredit = credit_phrase
-            source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbrelease["id"])
-            release.source = source
-            if self.is_bootleg:
-                release.bootleg = True
-            release.collection = self.collection
-            release.save()
+        rel_type = mbrelease["release-group"]
+        if "release-group" in mbrelease and "primary-type" in mbrelease["release-group"]:
+            release.rel_type = mbrelease["release-group"]["primary-type"]
+        if "status" in mbrelease:
+            release.status = mbrelease["status"]
+        release.title = mbrelease["title"]
+        year = self._get_year_from_date(mbrelease.get("date"))
+        release.year = year
+        credit_phrase = mbrelease.get("artist-credit-phrase")
+        release.artistcredit = credit_phrase
+        source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbrelease["id"])
+        release.source = source
+        if self.is_bootleg:
+            release.bootleg = True
+        release.collection = self.collection
+        release.save()
 
         return release
 
@@ -145,56 +145,53 @@ class ReleaseImporter(object):
             mbid=artistid,
             defaults={"name": mbartist["name"]})
 
-        if created or self.overwrite:
-            logger.info("  adding artist/composer %s" % (artistid, ))
-            source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
-            artist.source = source
-            artist.name = mbartist["name"]
-            if mbartist.get("type") == "Person":
-                artist.artist_type = "P"
-            elif mbartist.get("type") == "Group":
-                artist.artist_type = "G"
-            if mbartist.get("gender") == "Male":
-                artist.gender = "M"
-            elif mbartist.get("gender") == "Female":
-                artist.gender = "F"
-            dates = mbartist.get("life-span")
-            if dates:
-                artist.begin = dates.get("begin")
-                artist.end = dates.get("end")
-            artist.save()
+        logger.info("  adding artist/composer %s" % (artistid, ))
+        source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
+        artist.source = source
+        artist.name = mbartist["name"]
+        if mbartist.get("type") == "Person":
+            artist.artist_type = "P"
+        elif mbartist.get("type") == "Group":
+            artist.artist_type = "G"
+        if mbartist.get("gender") == "Male":
+            artist.gender = "M"
+        elif mbartist.get("gender") == "Female":
+            artist.gender = "F"
+        dates = mbartist.get("life-span")
+        if dates:
+            artist.begin = dates.get("begin")
+            artist.end = dates.get("end")
+        artist.save()
 
-            # add wikipedia references if they exist
-            if self.overwrite:
-                artist.references.clear()
-            for rel in mbartist.get("url-relation-list", []):
-                if rel["type-id"] == RELEASE_TYPE_WIKIPEDIA:
-                    source = self.make_wikipedia_source(rel["target"])
-                    if not artist.references.filter(pk=source.pk).exists():
-                        artist.references.add(source)
+        # add wikipedia references if they exist
+        artist.references.clear()
+        for rel in mbartist.get("url-relation-list", []):
+            if rel["type-id"] == RELEASE_TYPE_WIKIPEDIA:
+                source = self.make_wikipedia_source(rel["target"])
+                if not artist.references.filter(pk=source.pk).exists():
+                    artist.references.add(source)
 
-            if self.overwrite:
-                # We can't 'clear' an alias list from artist because an alias
-                # object requires an artist.
-                # TODO Deleting these each time we overwrite means we churn the
-                # alias ids. This may or may not be a good idea
-                args = {}
-                args[alias_ref] = artist
-                AliasKlass.objects.filter(**args).delete()
-            for alias in mbartist.get("alias-list", []):
-                a = alias["alias"]
-                primary = alias.get("primary")
-                locale = alias.get("locale")
-                args = {"alias": a}
-                args[alias_ref] = artist
-                aob, created = AliasKlass.objects.get_or_create(**args)
-                if primary:
-                    aob.primary = True
-                if locale:
-                    aob.locale = locale
-                aob.save()
+        # We can't 'clear' an alias list from artist because an alias
+        # object requires an artist.
+        # TODO Deleting these each time we overwrite means we churn the
+        # alias ids. This may or may not be a good idea
+        args = {}
+        args[alias_ref] = artist
+        AliasKlass.objects.filter(**args).delete()
+        for alias in mbartist.get("alias-list", []):
+            a = alias["alias"]
+            primary = alias.get("primary")
+            locale = alias.get("locale")
+            args = {"alias": a}
+            args[alias_ref] = artist
+            aob, created = AliasKlass.objects.get_or_create(**args)
+            if primary:
+                aob.primary = True
+            if locale:
+                aob.locale = locale
+            aob.save()
 
-            external_data.import_artist_wikipedia(artist, self.overwrite)
+        external_data.import_artist_wikipedia(artist)
         return artist
 
     def add_and_get_release_artist(self, artistid):
@@ -208,8 +205,7 @@ class ReleaseImporter(object):
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
         artist = self._create_artist_object(self._ArtistClass, self._ArtistAliasClass, mbartist)
 
-        if self.overwrite:
-            artist.group_members.clear()
+        artist.group_members.clear()
         if mbartist.get("type") == "Group":
             for member in mbartist.get("artist-relation-list", []):
                 if member["type-id"] == MEMBER_OF_GROUP and member.get("direction") == "backward":
@@ -268,42 +264,40 @@ class ReleaseImporter(object):
         mbrec = mbrec["recording"]
 
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
-        if created or self.overwrite:
-            logger.info("  adding recording %s" % (recordingid,))
-            source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
-            rec.source = source
-            rec.length = mbrec.get("length")
-            rec.title = mbrec["title"]
-            rec.save()
+        logger.info("  adding recording %s" % (recordingid,))
+        source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
+        rec.source = source
+        rec.length = mbrec.get("length")
+        rec.title = mbrec["title"]
+        rec.save()
 
-            artistids = []
-            # Create recording primary artists
-            for a in mbrec.get("artist-credit", []):
-                if isinstance(a, dict):
-                    artistid = a["artist"]["id"]
-                    artistids.append(artistid)
-            self._add_recording_artists(rec, artistids)
+        artistids = []
+        # Create recording primary artists
+        for a in mbrec.get("artist-credit", []):
+            if isinstance(a, dict):
+                artistid = a["artist"]["id"]
+                artistids.append(artistid)
+        self._add_recording_artists(rec, artistids)
 
-            works = []
-            for work in mbrec.get("work-relation-list", []):
-                if work["type"] == "performance":
-                    w = self.add_and_get_work(work["target"])
-                    works.append(w)
+        works = []
+        for work in mbrec.get("work-relation-list", []):
+            if work["type"] == "performance":
+                w = self.add_and_get_work(work["target"])
+                works.append(w)
 
-            tags = mbrec.get("tag-list", [])
-            # Join recording and works in a subclass because some models
-            # have 1 work per recording and others have many
-            self._join_recording_and_works(rec, works)
+        tags = mbrec.get("tag-list", [])
+        # Join recording and works in a subclass because some models
+        # have 1 work per recording and others have many
+        self._join_recording_and_works(rec, works)
 
-            # Sometime we attach tags to works, sometimes to recordings
-            self._apply_tags(rec, works, tags)
+        # Sometime we attach tags to works, sometimes to recordings
+        self._apply_tags(rec, works, tags)
 
-            if self.overwrite:
-                IPClass = rec.get_object_map("performance")
-                IPClass.objects.filter(recording=rec).delete()
-            for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
-                artistid, instrument, is_lead = perf
-                self._add_recording_performance(recordingid, artistid, instrument, is_lead)
+        IPClass = rec.get_object_map("performance")
+        IPClass.objects.filter(recording=rec).delete()
+        for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
+            artistid, instrument, is_lead = perf
+            self._add_recording_performance(recordingid, artistid, instrument, is_lead)
 
         return rec
 
@@ -321,11 +315,10 @@ class ReleaseImporter(object):
             mbid=workid,
             defaults={"title": mbwork["title"]})
 
-        if created or self.overwrite:
-            source = self.make_mb_source("http://musicbrainz.org/work/%s" % workid)
-            work.source = source
-            work.title = mbwork["title"]
-            work.save()
+        source = self.make_mb_source("http://musicbrainz.org/work/%s" % workid)
+        work.source = source
+        work.title = mbwork["title"]
+        work.save()
 
         self._clear_work_composers(work)
         self._add_work_attributes(work, mbwork, created)

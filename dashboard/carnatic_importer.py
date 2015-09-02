@@ -88,31 +88,28 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     def _add_work_attributes(self, work, mbwork, created):
         """ Read raaga and taala attributes from the webservice query
         and add them to the object """
-        if created or self.overwrite:
-            raaga_attr = self._get_raaga_mb(mbwork)
-            taala_attr = self._get_taala_mb(mbwork)
-            if raaga_attr:
-                raaga = self._get_raaga(raaga_attr)
-                if raaga:
-                    work.raaga = raaga
-            if taala_attr:
-                taala = self._get_taala(taala_attr)
-                if taala:
-                    work.taala = taala
-            work.save()
+        raaga_attr = self._get_raaga_mb(mbwork)
+        taala_attr = self._get_taala_mb(mbwork)
+        if raaga_attr:
+            raaga = self._get_raaga(raaga_attr)
+            if raaga:
+                work.raaga = raaga
+        if taala_attr:
+            taala = self._get_taala(taala_attr)
+            if taala:
+                work.taala = taala
+        work.save()
 
     def _join_recording_and_works(self, recording, works):
-        if self.overwrite:
-            carnatic.models.RecordingWork.objects.filter(recording=recording).delete()
+        carnatic.models.RecordingWork.objects.filter(recording=recording).delete()
         # A carnatic recording only has many works.
         for i, w in list(enumerate(works)):
             carnatic.models.RecordingWork.objects.create(work=w, recording=recording, sequence=i)
 
     def _apply_tags(self, recording, works, tags):
-        if self.overwrite:
-            recording.forms.clear()
-            recording.raagas.clear()
-            recording.taalas.clear()
+        recording.forms.clear()
+        recording.raagas.clear()
+        recording.taalas.clear()
 
         # Check that there is not more than one form
         noform = False
@@ -240,7 +237,20 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 perf = carnatic.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
                 perf.save()
 
+    def _add_release_artists_as_relationship(self, release, artist_credit):
+        for a in artist_credit:
+            if isinstance(a, dict):
+                artistid = a["artist"]["id"]
+                artist = self.add_and_get_release_artist(artistid)
+                logger.info("  artist: %s" % artist)
+
+
+        for rec in concert.recordings.all():
+            if not carnatic.models.InstrumentPerformance.objects.filter(
+               recording=rec, instrument=instrument, artist=artist).exists():
+                perf = carnatic.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
+                perf.save()
+
     def _clear_work_composers(self, work):
-        if self.overwrite:
-            work.composers.clear()
-            work.lyricists.clear()
+        work.composers.clear()
+        work.lyricists.clear()

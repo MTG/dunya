@@ -45,8 +45,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         # A andalusian recording can be of many works. Note that because works
         # in musicbrainz are unordered we don't know if this sequence is
         # correct. All of these recordings will need to be manually checked.
-        if self.overwrite:
-            andalusian.models.RecordingWork.objects.filter(recording=recording).delete()
+        andalusian.models.RecordingWork.objects.filter(recording=recording).delete()
         sequence = 1
         for w in works:
             andalusian.models.RecordingWork.objects.create(work=w, recording=recording, sequence=sequence)
@@ -116,8 +115,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         mborchestra = compmusic.mb.get_artist_by_id(orchestraid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
         orchestra = self._create_artist_object(self._OrchestraClass, self._OrchestraAliasClass, mborchestra, alias_ref="orchestra")
 
-        if self.overwrite:
-            orchestra.group_members.clear()
+        orchestra.group_members.clear()
         if mborchestra.get("type") == "Group":
             for artist, instruments in self._get_orchestra_performances(mborchestra.get("artist-relation-list", [])):
                 memberartist = self.add_and_get_artist(artist)

@@ -42,8 +42,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         # A makam recording can be of many works. Note that because works
         # in musicbrainz are unordered we don't know if this sequence is
         # correct. All of these recordings will need to be manually checked.
-        if self.overwrite:
-            makam.models.RecordingWork.objects.filter(recording=recording).delete()
+        makam.models.RecordingWork.objects.filter(recording=recording).delete()
         sequence = 1
         for w in works:
             makam.models.RecordingWork.objects.create(work=w, recording=recording, sequence=sequence)
@@ -209,13 +208,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                     perf.save()
 
     def _clear_work_composers(self, work):
-        if self.overwrite:
-            work.composers.clear()
-            work.lyricists.clear()
+        work.composers.clear()
+        work.lyricists.clear()
 
     def _add_recording_artists(self, rec, artistids):
-        if self.overwrite:
-            rec.artists.clear()
+        rec.artists.clear()
         for a in artistids:
             # If the artist is [dialogue] the we don't show analysis.
             if a == DIALOGUE_ARTIST:
@@ -231,26 +228,24 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         """ Read mb attributes from the webservice query
         and add them to the object """
 
-        if created or self.overwrite:
-            work.form.clear()
-            work.usul.clear()
-            work.makam.clear()
+        work.form.clear()
+        work.usul.clear()
+        work.makam.clear()
 
-        if created or self.overwrite:
-            form_attr = self._get_form_mb(mbwork)
-            usul_attr = self._get_usul_mb(mbwork)
-            makam_attr = self._get_makam_mb(mbwork)
-            if form_attr != "taksim" and form_attr != "gazel":
-                form = self._get_form(form_attr)
-                usul = self._get_usul(usul_attr)
-                makam = self._get_makam(makam_attr)
-                if form:
-                    work.form.add(form)
-                if usul:
-                    work.usul.add(usul)
-                if makam:
-                    work.makam.add(makam)
-                work.save()
+        form_attr = self._get_form_mb(mbwork)
+        usul_attr = self._get_usul_mb(mbwork)
+        makam_attr = self._get_makam_mb(mbwork)
+        if form_attr != "taksim" and form_attr != "gazel":
+            form = self._get_form(form_attr)
+            usul = self._get_usul(usul_attr)
+            makam = self._get_makam(makam_attr)
+            if form:
+                work.form.add(form)
+            if usul:
+                work.usul.add(usul)
+            if makam:
+                work.makam.add(makam)
+            work.save()
 
     def _get_form_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
