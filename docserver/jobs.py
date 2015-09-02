@@ -236,6 +236,7 @@ def process_document(documentid, moduleversionid):
         # Worker object for all our hosts
         worker = None
 
+    instance.hostnmae = hostname
     # if the extractor run over all the collection then the document 
     # has the same id of the collection and the result is 
     # set to this document
