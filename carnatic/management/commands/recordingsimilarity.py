@@ -67,6 +67,7 @@ class Command(BaseCommand):
                 adata = util.docserver_get_json(a, "normalisedpitch", "normalisedhistogram")
             except util.NoFileException:
                 print "can't find recording %s in docserver" % a
+                self.intonationmap[a] = None
                 return None
             self.intonationmap[a] = adata
         if b in self.intonationmap:
@@ -78,7 +79,11 @@ class Command(BaseCommand):
             except util.NoFileException:
                 print "can't find recording %s in docserver" % b
                 return None
+                self.intonationmap[b] = None
             self.intonationmap[b] = bdata
+
+        if adata is None or bdata is None:
+            return None
 
         if (a, b) in self.distancemap:
             # print " -hit d-ab"
@@ -103,19 +108,20 @@ class Command(BaseCommand):
             distance = self.compute_distance(rid, oid)
             if distance:
                 sims.append((oid, distance))
-        sims = sorted(sims, key=lambda a: a[1], reverse=True)
+        sims = sorted(sims, key=lambda a: a[1])
         name = "similarity/%s.json" % rid
         ret = {"mbid": rid, "similar": sims}
         json.dump(ret, open(name, "wb"))
 
     def compute_matrix_carnatic(self):
-        recordings = carnatic.models.Recording.objects.all()
+        recordings = carnatic.models.Recording.objects.filter(concert__collection__permission__in=['R', 'U'])
         total = len(recordings)
         for i, rec in enumerate(recordings, 1):
-            raaga = rec.raaga()
-            otherrecordings = carnatic.models.Recording.objects.filter(work__raaga__in=[raaga]).exclude(pk=rec.pk).distinct()
-            print "Recording %s (%s/%s)" % (rec, i, total)
-            self.compute_similarity(rec, otherrecordings)
+            raaga = rec.get_raaga()
+            if raaga:
+                otherrecordings = carnatic.models.Recording.objects.filter(works__raaga=raaga[0], concert__collection__permission__in=['R', 'U']).exclude(pk=rec.pk).distinct()
+                print "Recording %s (%s/%s)" % (rec, i, total)
+                self.compute_similarity(rec, otherrecordings)
 
     def compute_matrix_hindustani(self):
         recordings = hindustani.models.Recording.objects.all()
@@ -128,6 +134,8 @@ class Command(BaseCommand):
                 self.compute_similarity(rec, otherrecordings)
 
     def handle(self, *args, **options):
+        self.compute_matrix_carnatic()
+    """
         if len(args) < 1:
             raise CommandError("arguments: <hindustani|carnatic> [import]")
 
@@ -140,3 +148,4 @@ class Command(BaseCommand):
                 self.compute_matrix_carnatic()
             elif module == "hindustani":
                 self.compute_matrix_hindustani()
+    """

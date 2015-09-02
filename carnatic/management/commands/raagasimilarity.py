@@ -23,6 +23,7 @@ import os
 import collections
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter
+import decimal
 
 from compmusic.extractors.similaritylib import recording
 import compmusic.extractors.similaritylib.raaga
@@ -87,10 +88,11 @@ class Command(BaseCommand):
 
             if distance:
                 sims.append((oid, distance))
-        sims = sorted(sims, key=lambda a: a[1], reverse=True)
+        sims = [ (i[0], round(i[1], 2)) for i in sims if not decimal.Decimal(i[1]).is_nan() ]
+        sims = sorted(sims, key=lambda a: a[1])
         name = os.path.join(dirname, "%s.json" % rid)
         ret = {"rid": rid, "similar": sims}
-        json.dump(ret, open(name, "wb"))
+        json.dump(ret, open(name, "wb"), indent=2)
 
     def calc_profile(self, raag, recordings):
         average = compmusic.extractors.similaritylib.raaga.Raaga(raag.name, "")
@@ -101,10 +103,13 @@ class Command(BaseCommand):
             try:
                 pitch = util.docserver_get_json(mbid, "pitch", "pitch")
                 tonic = util.docserver_get_contents(mbid, "votedtonic", "tonic")
-                tonic = float(tonic)
-                npp = np.array(pitch)
-                pitches.append(npp)
-                tonics.append(tonic)
+                try:
+                    tonic = float(tonic)
+                    npp = np.array(pitch)
+                    pitches.append(npp)
+                    tonics.append(tonic)
+                except ValueError:
+                    pass
             except util.NoFileException:
                 pass
         average.compute_average_hist_data(pitches, tonics)
@@ -114,12 +119,12 @@ class Command(BaseCommand):
         return y.tolist()
 
     def compute_matrix_carnatic(self):
-        recordings = carnatic.models.Recording.objects.all()
+        recordings = carnatic.models.Recording.objects.filter(concert__collection__permission__in=['R', 'U'])
         recmap = collections.defaultdict(list)
         for r in recordings:
-            ra = r.raaga()
-            if ra:
-                recmap[ra].append(r)
+            ra = r.get_raaga()
+            if ra and ra[0]:
+                recmap[ra[0]].append(r)
         numraagas = len(recmap.keys())
         print "Got", numraagas, "raags"
         raagaprofiles = {}
@@ -159,6 +164,8 @@ class Command(BaseCommand):
             self.compute_similarity(r, profile, otherraags, "hindustani")
 
     def handle(self, *args, **options):
+        self.compute_matrix_carnatic()
+        """
         if len(args) < 1:
             raise CommandError("arguments: <hindustani|carnatic> [import]")
 
@@ -171,3 +178,4 @@ class Command(BaseCommand):
                 self.compute_matrix_carnatic()
             elif module == "hindustani":
                 self.compute_matrix_hindustani()
+        """
