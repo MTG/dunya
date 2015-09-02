@@ -193,7 +193,7 @@ class NumPyArangeEncoder(json.JSONEncoder):
 def _save_file(root_directory, recordingid, version, slug, partslug, partnumber, extension, data):
     recordingstub = recordingid[:2]
     reldir = os.path.join(recordingstub, recordingid, slug, version)
-    fdir = root_directory
+    fdir = os.path.join(root_directory, settings.DERIVED_FOLDER, reldir)
     try:
         os.makedirs(fdir)
     except OSError:
