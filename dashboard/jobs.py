@@ -210,7 +210,7 @@ def force_import_all_releases(collectionid):
     are marked as ignored or are finished, unless they are missing a directory
     """
     collection = models.Collection.objects.get(pk=collectionid)
-    ri = get_release_importer(collection, overwrite=True)
+    ri = get_release_importer(collection)
     if not ri:
         collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
         collection.set_state_error()
