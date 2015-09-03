@@ -29,12 +29,11 @@ RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
 RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
 
 class ReleaseImporter(object):
-    def __init__(self, is_bootleg=False, collection=None):
+    def __init__(self, collection):
         """Create a release importer.
         Arguments:
-          is_bootleg: If true, mark releases as bootleg
+          collection: the data.Collection that the release is to be added to
         """
-        self.is_bootleg = is_bootleg
         self.date_import_started = django.utils.timezone.now()
         self.collection = collection
 
@@ -131,8 +130,6 @@ class ReleaseImporter(object):
         release.artistcredit = credit_phrase
         source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbrelease["id"])
         release.source = source
-        if self.is_bootleg:
-            release.bootleg = True
         release.collection = self.collection
         release.save()
 

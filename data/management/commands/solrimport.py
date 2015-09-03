@@ -45,8 +45,6 @@ class Command(BaseCommand):
                     aliases.append(i.common_name)
                 if aliases:
                     doc["alias_txt"] = aliases
-            if hasattr(i, "bootleg"):
-                doc["bootleg_s"] = i.bootleg
             insert.append(doc)
         return insert
 

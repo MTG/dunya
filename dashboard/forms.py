@@ -32,7 +32,6 @@ class CollectionForm(forms.Form):
     collectionid = forms.CharField(max_length=100, label="Musicbrainz collection ID")
     path = forms.CharField(max_length=200, label="Path to files on disk")
     do_import = forms.BooleanField(required=False)
-    bootleg = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)

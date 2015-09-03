@@ -193,18 +193,14 @@ def get_release_importer(collection):
     name = name.lower()
     data_coll = data.models.Collection.objects.get(mbid=collection.id)
     ri = None
-    if "bootleg" in name:
-        bootleg = True
-    else:
-        bootleg = False
     if "hindustani" in name:
-        ri = hindustani_importer.HindustaniReleaseImporter(is_bootleg=bootleg, collection=data_coll)
+        ri = hindustani_importer.HindustaniReleaseImporter(data_coll)
     elif "carnatic" in name:
-        ri = carnatic_importer.CarnaticReleaseImporter(is_bootleg=bootleg, collection=data_coll)
+        ri = carnatic_importer.CarnaticReleaseImporter(data_coll)
     elif "makam" in name:
-        ri = makam_importer.MakamReleaseImporter(is_bootleg=bootleg, collection=data_coll)
+        ri = makam_importer.MakamReleaseImporter(data_coll)
     elif "andalusian" in name:
-        ri = andalusian_importer.AndalusianReleaseImporter(is_bootleg=bootleg, collection=data_coll)
+        ri = andalusian_importer.AndalusianReleaseImporter(data_coll)
     return ri
 
 @app.task(base=CollectionDunyaTask)
