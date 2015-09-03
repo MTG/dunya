@@ -29,7 +29,6 @@ import compmusic
 from musicbrainzngs import caa
 import musicbrainzngs
 
-makam_release_importer = makam_importer.MakamReleaseImporter()
 
 class CompletenessBase(object):
     """ Base class for a task that checks something is correct """
@@ -92,6 +91,7 @@ class MakamTags(CompletenessBase):
         return makams, usuls, forms
 
     def task(self, collectionfile_id):
+        makam_release_importer = makam_importer.MakamReleaseImporter(None)
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
         fpath = thefile.path
         meta = compmusic.file_metadata(fpath)
