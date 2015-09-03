@@ -6,7 +6,7 @@ from makam import models
 
 class MakamImporterTest(TestCase):
     def setUp(self):
-        self.mi = makam_importer.MakamReleaseImporter()
+        self.mi = makam_importer.MakamReleaseImporter(None)
 
     def test_get_makam(self):
         # Makam that exists
