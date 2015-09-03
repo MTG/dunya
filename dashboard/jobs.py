@@ -94,7 +94,7 @@ def load_musicbrainz_collection(collectionid):
     coll.add_log_message("Collection scan finished")
     return collectionid
 
-@app.task(base=CollectionDunyaTask)
+@app.task(base=ReleaseDunyaTask)
 def import_single_release(releasepk):
     """ A job to find a release's collection, create a release importer,
     and then call import_release
