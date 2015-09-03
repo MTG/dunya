@@ -61,12 +61,14 @@ def import_artist_wikipedia(artist):
                 existingimg = artist.images.get(image__contains="%s" % artist.mbid)
                 if not os.path.exists(existingimg.image.path):
                     existingimg.delete()
-                elif existingimg.image.size != len(img)
+                elif existingimg.image.size != len(img):
                     # If the imagesize has changed, remove the image
                     os.unlink(existingimg.image.path)
                     existingimg.delete()
             except data.models.Image.DoesNotExist:
                 pass
+            except data.models.Image.MultipleObjectsReturned:
+                artist.images.filter(image__contains="%s" % artist.mbid).delete()
 
             im = data.models.Image()
             im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))

@@ -88,6 +88,8 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     def _add_work_attributes(self, work, mbwork, created):
         """ Read raaga and taala attributes from the webservice query
         and add them to the object """
+        work.raaga = None
+        work.taala = None
         raaga_attr = self._get_raaga_mb(mbwork)
         taala_attr = self._get_taala_mb(mbwork)
         if raaga_attr:
@@ -127,7 +129,17 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         else:
             form = forms[0]
 
-        if noform or form.attrfromrecording:
+        # If we are missing a work, or if the work is missing raaga & taala, we should
+        # add the information to the recording from the tag
+        nowork = False
+        if len(works) == 0:
+            nowork = True
+        for w in works:
+            if not w.raaga or not w.taala:
+                nowork = True
+                break
+
+        if noform or form.attrfromrecording or nowork:
             # Create the relation with Raaga and Taala
 
             raaga_tag = self._get_raaga_tags(tags)
@@ -230,20 +242,6 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
         concert = carnatic.models.Concert.objects.get(mbid=releaseid)
         # Instrument could be None if we don't know it
-
-        for rec in concert.recordings.all():
-            if not carnatic.models.InstrumentPerformance.objects.filter(
-               recording=rec, instrument=instrument, artist=artist).exists():
-                perf = carnatic.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
-                perf.save()
-
-    def _add_release_artists_as_relationship(self, release, artist_credit):
-        for a in artist_credit:
-            if isinstance(a, dict):
-                artistid = a["artist"]["id"]
-                artist = self.add_and_get_release_artist(artistid)
-                logger.info("  artist: %s" % artist)
-
 
         for rec in concert.recordings.all():
             if not carnatic.models.InstrumentPerformance.objects.filter(
