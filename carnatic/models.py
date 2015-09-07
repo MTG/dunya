@@ -561,7 +561,7 @@ class Raaga(data.models.BaseModel):
         return recordings
 
     def recordings_form(self, form=None):
-        ret = Recording.objects.filter(works__raaga=self)
+        ret = Recording.objects.filter(Q(works__raaga=self) | Q(raaga=self))
         if form:
             ret = ret.filter(forms__name=form)
         return ret.all()
