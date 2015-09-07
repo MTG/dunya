@@ -354,7 +354,9 @@ class RaagaTest(TestCase):
         response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
 
         data = response.data
-        self.assertEqual(1, len(data["recordings"]))
+        # For now we return the Recordings that are directly related
+        # and the recordings that are related with a work with this raaga
+        self.assertEqual(2, len(data["recordings"]))
 
         # Test get_raaga method from recording
         data = self.recording.get_raaga()
