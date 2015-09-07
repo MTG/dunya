@@ -78,8 +78,12 @@ We obtain melodic similarity thresholds using expert feedback (explanation in th
 {% block nav %}
 <li><a href="{% url 'motif-main'%}">Browsing options</a></li>
 <li><a href="{% url 'motif-artists'%}">Artist list </a></li>
-<li><a href="{% url 'motif-artist' recording.concert_set.all.0.artists.all.0.mbid %}">Releases</a></li>
+{% if recording.concert_set.all|length %}
+  {% if recording.concert_set.all.artists.all|length %}
+    <li><a href="{% url 'motif-artist' recording.concert_set.all.0.artists.all.0.mbid %}">Releases</a></li>
+  {% endif%}
 <li><a href="{% url 'motif-release' recording.concert_set.get.mbid %}">Recordings</a></li>
+{% endif %}
 <li><a href="{% url 'motif-seeds' recording.mbid %}">Seeds</a></li>
 <br>
 <br>
