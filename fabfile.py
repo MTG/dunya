@@ -26,6 +26,16 @@ def cleantest(module=None):
     test(module, False)
 
 @roles("web")
+def pipinstall():
+    """Install new dependencies added to requirements"""
+    env.user = "mtg_dunya"
+    with cd("/srv/dunya"):
+        run("env/bin/pip install -r requirements")
+
+    run("sudo supervisorctl restart dunya")
+
+
+@roles("web")
 def updateweb():
     """Update the webserver"""
     env.user = "mtg_dunya"
