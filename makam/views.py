@@ -18,7 +18,9 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest
+from django.conf import settings
 
+import json
 import data
 from makam import models
 import docserver
@@ -29,11 +31,36 @@ def makamplayer(request):
 
 def main(request):
 
-    artists = models.Artist.objects.all()
-    permission = data.utils.get_user_permissions(request.user)
-    releases = models.Release.objects.with_permissions(False, permission).all()
+    artist = request.GET.get('artist', None)
+    form = request.GET.get('form', None)
+    #makam = request.GET.get('makam', None)
+    usul = request.GET.get('usul', None)
 
-    ret = {"artists": artists, "releases": releases}
+
+    artists = models.Composer.objects.order_by('name').all()
+    forms = models.Form.objects.order_by('name').all()
+    #makams = models.Makam.objects.order_by('name').all()
+    usuls = models.Usul.objects.order_by('name').all()
+    
+    works = models.Work.objects
+    if artist and artist != '':
+        works = works.filter(composers=artist)
+    if form and form != '':
+        work = works.filter(form=form)
+    if usul and usul != '':
+        works = works.filter(usul=usul)
+    
+    ret = {
+        "artists": artists, 
+        #"makams": makams, 
+        'usuls': usuls, 
+        'forms': forms , 
+        'artist': artist, 
+        'form':form,
+        #'makam':makam,
+        'usul':usul,
+        'works': works.all()
+        }
     return render(request, "makam/index.html", ret)
 
 def composer(request, uuid, name=None):
@@ -88,11 +115,66 @@ def release(request, uuid, title=None):
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
+   
+    try:
+        wave = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
+    except docserver.util.NoFileException:
+        wave = None
+    try:
+        spec = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
+    except docserver.util.NoFileException:
+        spec = None
+    try:
+        small = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
+    except docserver.util.NoFileException:
+        small = None
+    try:
+        audio = docserver.util.docserver_get_mp3_url(recording.mbid)
+    except docserver.util.NoFileException:
+        audio = None
+    try:
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
+        notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
+        tonic = round(float(tonic), 2)
+        thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
+        thebin = int(round(thebin))
+        tonic = str(tonic)
+        if thebin <= 11 and thebin >= 0:
+            tonicname = notenames[thebin]
+        else:
+            print "bin is", thebin, "weird"
+            print tonic
+            tonicname = ""
+    except docserver.util.NoFileException:
+        tonic = None
+        tonicname = None
+    try:
+        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
+        akshara = str(round(float(akshara), 3) * 1000)
+    except docserver.util.NoFileException:
+        akshara = None
+    try:
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "makampitch", "pitch", version="0.4")
+    except docserver.util.NoFileException:
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "makampitch", "pitch", "0.4")
 
-    ret = {"recording": recording,
+    mbid = recording.mbid
+
+    ret = {
+           "recording": recording,
+           "objecttype": "recording",
+           "objectid": recording.id,
+           "waveform": wave,
+           "spectrogram": spec,
+           "smallimage": small,
+           "audio": audio,
+           "tonic": tonic,
+           "tonicname": tonicname,
+           "akshara": akshara,
+           "mbid": mbid,
+           "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
-
-           }
+    }
     return render(request, "makam/recording.html", ret)
 
 def work(request, uuid, title=None):

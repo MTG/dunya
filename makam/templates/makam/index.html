@@ -11,25 +11,76 @@
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     {% endif %}
 {% endblock %}
-
 {% block title %}Makam index | {% endblock %}
+{% block script %}
+<style>
 
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+  
+</style>
+<script src="{% static 'makam/js/works.js' %}"></script>
+<script>
+$(function() {      
+    $( "#combo-artist" ).combobox();
+      $( "#toggle" ).click(function() {
+          $( "#combo-artist" ).toggle();
+     });
+  });
+</script>
+{% endblock%}
 {% block wrap %}
 <div id="detail">
-
-    <table width="100%">
-        <tr><td>Artists</td><td>Releases</td></tr>
-        <tr>
-            <td>
-                {% for a in artists %}
-                {% inline_artist a %}<br>
-                {% endfor %}
-            </td><td>
-                {% for r in releases %}
-                {% inline_release r %}<br>
-                {% endfor %}
-            </td>
-        </tr>
+    <form method="get">
+        <label for="form">Musical Form</label>
+        <select name="form">
+           <option value="">Select</option>
+           {% for i in forms%}
+               <option value="{{i.pk}}" {%if i.pk|slugify == form %}selected{% endif%}>{{i.name}}</option>
+           {% endfor %}
+        </select> 
+        <label for="usual">Usual</label>
+        <select name="usul">
+           <option value="">Select</option>
+           {% for i in usuls%}
+               <option value="{{i.pk}}" {%if i.pk|slugify == usul %}selected{% endif%}>{{i.name}}</option>
+           {% endfor %}
+        </select>
+       <label for="artist">Artist</label>
+        <select name="artist" id="combo-artist">
+           <option value="">Select one...</option>
+           <option value="">Select</option>
+           {% for i in artists%}
+               <option value="{{i.pk}}" {%if i.pk|slugify == artist %}selected{% endif%}>{{i.name}}</option>
+           {% endfor %}
+        </select>
+        <input type="submit" value="Search">
+    </form>
+    <table width="900px" style="margin-left:30px">
+        <tr><td>Recording name</td><td>Artist</td></tr>
+            {% for w in works %}
+                <tr>
+                    <td height="30">
+                        <div><a href="{% url 'makam-work' w.mbid%}">{{w.title}}</a></div>
+                    </td>
+                    </td><td>
+                        <div><a href="{% url 'makam-work' w.mbid%}">{%for i in w.composers.all%}{{w}}{%endfor%}</a></div>
+                    </td>
+                </tr>
+            {% endfor %}
     </table>
 
     <div class="clearfix"></div>
