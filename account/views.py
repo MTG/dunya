@@ -20,7 +20,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from social import forms
+from account import forms
 from django.shortcuts import render
 from django.conf import settings
 from rest_framework.authtoken.models import Token

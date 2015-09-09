@@ -3,7 +3,7 @@ import os
 from django.conf.urls import include, url
 from django.views.generic import TemplateView
 import django.contrib.auth.views
-from social import views
+from account import views
 
 
 urlpatterns = [

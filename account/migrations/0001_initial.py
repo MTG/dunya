@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='annotation',
             name='tag',
-            field=models.ForeignKey(to='social.Tag'),
+            field=models.ForeignKey(to='account.Tag'),
         ),
         migrations.AddField(
             model_name='annotation',

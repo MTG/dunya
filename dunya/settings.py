@@ -131,7 +131,7 @@ INSTALLED_APPS = (
     'carnatic',
     'dashboard',
     'docserver',
-    'social',
+    'account',
     'makam',
     'dunya',
     'hindustani',
