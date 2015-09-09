@@ -131,16 +131,22 @@ INSTALLED_APPS = (
     'carnatic',
     'dashboard',
     'docserver',
-    'social',
+    'account',
     'makam',
     'dunya',
     'hindustani',
     'motifdiscovery',
     'andalusian',
     'jingju',
-    'kvedit'
+    'kvedit',
+    'social.apps.django_app.default',
 )
-
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 
 # Celery
