@@ -72,3 +72,11 @@ SENDFILE_BACKEND = 'sendfile.backends.development'
 NOTIFICATION_EMAIL_FROM = ""
 # Who gets system emails (e.g., new user) [list/set]
 NOTIFICATION_EMAIL_TO = ('', )
+
+GOOGLE_OAUTH2_CLIENT_ID      = ''
+GOOGLE_OAUTH2_CLIENT_SECRET  = ''
+
+YAHOO_CONSUMER_KEY           = ''
+YAHOO_CONSUMER_SECRET        = ''
+TWITTER_CONSUMER_KEY         = ''
+TWITTER_CONSUMER_SECRET      = ''

@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django.contrib.admin',
     'djcelery',
+    'social_auth',
     'data',
     'carnatic',
     'dashboard',
@@ -140,6 +141,15 @@ INSTALLED_APPS = (
     'jingju',
     'kvedit'
 )
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
+
+SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
 
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
 

@@ -1,4 +1,5 @@
 {%extends "carnatic/base.html" %}
+{% load static %}
 
 {% block wrap %}
 <div id="login" class="logCenter">
@@ -20,6 +21,14 @@
    {% endif %}
   </form>
   <p><a href="{% url 'social-pwreset' %}">Password reset</a></p>
+    <div><a href="{% url 'socialauth_begin' 'facebook' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
+      <img width="160" src='{% static 'social/img/facebook.png' %}' alt='Login with Google'/></a>
+    </a></div>
+    <div><a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}"></div>
+      <img width="165" src='{% static 'social/img/btn_google.png' %}' alt='Login with Google'/></a>
+    <div><a href="{% url 'socialauth_begin' 'twitter' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
+      <img  src='{% static 'social/img/twitter.png' %}' alt='Login with Google'/></a>
+    </a></div>
 </div>
 {% endblock %}
 
