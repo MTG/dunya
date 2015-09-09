@@ -17,7 +17,6 @@ django-extensions==1.2.5
 django-less==0.7.2
 django-sendfile==0.3.4
 djangorestframework==3.1.0
-django-social-auth==0.7.28
 ecdsa==0.10
 flup==1.0.3.dev-20110405
 # Don't leave eyed3 in requirements, because it's weirdly
