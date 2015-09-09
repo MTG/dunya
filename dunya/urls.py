@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^accounts/login/$', django.contrib.auth.views.login),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout),
     url(r'^makamplayer/$', makam.views.makamplayer),
+    url('', include('social.apps.django_app.urls', namespace='social'))
 ]
 
 if settings.DEBUG:
