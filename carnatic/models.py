@@ -732,12 +732,15 @@ class Recording(CarnaticStyle, data.models.Recording):
         if len(self.works.all()):
             ret = []
             for w in self.works.all():
-                ret.append(w.raaga)
-            return ret
-        else:
-            # If we have no works (and we should) just return from the
-            # recording anyway (perhaps we got data from tags)
-            return self.raagas.all()
+                if w.raaga:
+                    ret.append(w.raaga)
+            if ret:
+                return ret
+
+        # If we have no works (and we should), or we have works
+        # and there are no attributes, just return from the
+        # recording anyway (perhaps we got data from tags)
+        return self.raagas.all()
 
     def get_taala(self):
         forms = self.forms.all()
@@ -750,12 +753,14 @@ class Recording(CarnaticStyle, data.models.Recording):
         if len(self.works.all()):
             ret = []
             for w in self.works.all():
-                ret.append(w.taala)
-            return ret
-        else:
-            # If we have no works (and we should) just return from the
-            # recording anyway (perhaps we got data from tags)
-            return self.taalas.all()
+                if w.taala:
+                    ret.append(w.taala)
+            if ret:
+                return ret
+        # If we have no works (and we should), or we have works
+        # and there are no attributes, just return from the
+        # recording anyway (perhaps we got data from tags)
+        return self.taalas.all()
 
     def all_artists(self):
         ArtistClass = self.get_object_map("artist")
