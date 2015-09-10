@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from social import models
+from account import models
 
 class UserProfileInline(admin.StackedInline):
     model = models.UserProfile

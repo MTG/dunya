@@ -25,12 +25,13 @@ urlpatterns = [
     url(r'^jingju/', include('jingju.urls')),
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^social/', include('social.urls')), 
+    url(r'^social/', include('account.urls')), 
     url(r'^kvedit/', include('kvedit.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^accounts/login/$', django.contrib.auth.views.login),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout),
     url(r'^makamplayer/$', makam.views.makamplayer),
+    url('', include('social.apps.django_app.urls', namespace='social'))
 ]
 
 if settings.DEBUG:

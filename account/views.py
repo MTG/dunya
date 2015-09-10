@@ -13,21 +13,23 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+import json
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from social import forms
 from django.shortcuts import render
 from django.conf import settings
-from rest_framework.authtoken.models import Token
 from django.contrib.sites.models import get_current_site
-
-import json
 from django.core.mail import send_mail
+
+from social.apps.django_app.utils import psa
+from rest_framework.authtoken.models import Token
+
+from account import forms
 
 def logout_page(request):
     logout(request)
@@ -114,4 +116,15 @@ def user_profile(request):
         'form': form
     }
     return render(request, 'social/user_profile.html', ret)
-
+ 
+@psa('social:complete')
+def register_by_access_token(request, backend):
+    # log in using external OAuth access Token
+    token = request.GET.get('access_token')
+    user = request.backend.do_auth(token)
+    if user:
+        login(request, user)
+        ret_token,created = Token.objects.get_or_create(user=user)
+        return HttpResponse(json.dumps({"result":"Sucess", "token": ret_token.key}))
+    else:
+        return HttpResponse(json.dumps({"result":"error"}))

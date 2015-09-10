@@ -3,7 +3,7 @@ import os
 from django.conf.urls import include, url
 from django.views.generic import TemplateView
 import django.contrib.auth.views
-from social import views
+from account import views
 
 
 urlpatterns = [
@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
     url(r'^register/$', views.register_page, name='social-auth-register'),
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
-
+    url(r'^api-auth-login/(?P<backend>[^/]+)/$', views.register_by_access_token, name='social-api-auth-login'),
 ]
