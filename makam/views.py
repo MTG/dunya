@@ -30,6 +30,10 @@ def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
 def main(request):
+    q = request.GET.get('q', None)
+    recordings = None
+    if q and q != '':
+        recordings = models.Recording.objects.filter(title__contains=q).all()
 
     artist = request.GET.get('artist', None)
     form = request.GET.get('form', None)
@@ -59,7 +63,8 @@ def main(request):
         'form':form,
         #'makam':makam,
         'usul':usul,
-        'works': works.all()
+        'works': works.all(),
+        'recordings': recordings
         }
     return render(request, "makam/index.html", ret)
 

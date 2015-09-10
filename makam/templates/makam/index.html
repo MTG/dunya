@@ -44,6 +44,21 @@ $(function() {
 {% endblock%}
 {% block wrap %}
 <div id="detail">
+    {% if recordings%}
+    <table width="900px" style="margin-left:30px">
+        <tr><td>Recording name</td><td>Artist</td></tr>
+            {% for r in recordings %}
+                <tr>
+                    <td height="30">
+                        <div><a href="{% url 'makam-recording' r.mbid%}">{{r.title}}</a></div>
+                    </td>
+                    </td><td>
+                        <div><a href="{% url 'makam-recording' r.mbid%}">{%for i in r.artists.all%}{{i}}{%endfor%}</a></div>
+                    </td>
+                </tr>
+            {% endfor %}
+    </table>
+    {%else%}
     <form method="get">
         <label for="form">Musical Form</label>
         <select name="form">
@@ -70,19 +85,19 @@ $(function() {
         <input type="submit" value="Search">
     </form>
     <table width="900px" style="margin-left:30px">
-        <tr><td>Recording name</td><td>Artist</td></tr>
-            {% for w in works %}
+        <tr><td>Work name</td><td>Artist</td></tr>
+            {% for w in works|slice:"50" %}
                 <tr>
                     <td height="30">
                         <div><a href="{% url 'makam-work' w.mbid%}">{{w.title}}</a></div>
                     </td>
                     </td><td>
-                        <div><a href="{% url 'makam-work' w.mbid%}">{%for i in w.composers.all%}{{w}}{%endfor%}</a></div>
+                        <div><a href="{% url 'makam-work' w.mbid%}">{%for i in w.composers.all%}{{i}}{%endfor%}</a></div>
                     </td>
                 </tr>
             {% endfor %}
     </table>
-
+    {%endif%}
     <div class="clearfix"></div>
 </div>
 {% endblock %}
