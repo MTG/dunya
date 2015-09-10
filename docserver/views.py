@@ -355,13 +355,13 @@ def worker(request, hostname):
     recent = []
     for p in processed_files:
         try:
-            collection = models.Collection.objects.get(collectionid=p["collection"])
-            document = collection.documents.get(external_identifier=p["recording"])
-            modver = models.ModuleVersion.objects.get(pk=p["moduleversion"])
+            collection = models.Collection.objects.get(collectionid=p.get("collection"))
+            document = collection.documents.get(external_identifier=p.get("recording"))
+            modver = models.ModuleVersion.objects.get(pk=p.get("moduleversion"))
             recent.append({"document": document,
                            "collection": collection,
                            "modulever": modver,
-                           "date": p["date"]})
+                           "date": p.get("date")})
         except ObjectDoesNotExist:
             pass
 
