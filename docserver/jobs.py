@@ -63,7 +63,7 @@ class DatabaseLogHandler(logging.Handler):
                 logger.error("no document, can't create a log file")
         else:
             logger.error("no document, can't create a log file")
-            
+
 #logger = logging.getLogger("extractor")
 #logger.setLevel(logging.DEBUG)
 #logger.addHandler(DatabaseLogHandler())
@@ -86,17 +86,17 @@ def _get_module_instance_by_path(modulepath):
 def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)
     try:
-        sourcetype = models.SourceFileType.objects.get(extension=instance.__sourcetype__)
+        sourcetype = models.SourceFileType.objects.get(extension=instance._sourcetype)
     except models.SourceFileType.DoesNotExist as e:
-        raise Exception("Cannot find source file type '%s'" % instance.__sourcetype__, e)
-    if models.Module.objects.filter(slug=instance.__slug__).exists():
-        raise Exception("A module with this slug (%s) already exists" % instance.__slug__)
+        raise Exception("Cannot find source file type '%s'" % instance._sourcetype, e)
+    if models.Module.objects.filter(slug=instance._slug).exists():
+        raise Exception("A module with this slug (%s) already exists" % instance._slug)
 
     module = models.Module.objects.create(
         name=modulepath.rsplit(".", 1)[1],
-        slug=instance.__slug__,
-        depends=instance.__depends__,
-        many_files=instance.__many_files__,
+        slug=instance._slug,
+        depends=instance._depends,
+        many_files=instance._many_files,
         module=modulepath,
         source_type=sourcetype)
     module.collections.add(*collections)
@@ -119,7 +119,7 @@ def get_latest_module_version(themod_id=None):
             if m.disabled: # if we were disabled and exist again, reenable.
                 m.disabled = False
                 m.save()
-            version = instance.__version__
+            version = instance._version
             v = "%s" % version
 
             versions = m.versions.filter(version=version)
@@ -170,7 +170,7 @@ def delete_collection(cid):
     have been created for the documents.
     """
     collection = models.Collection.objects.get(pk=cid)
-    
+
     collections = []
     for d in collection.document.all():
         if len(d.collections) > 1:

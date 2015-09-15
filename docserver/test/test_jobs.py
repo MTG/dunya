@@ -11,22 +11,22 @@ from docserver import jobs
 import compmusic.extractors
 
 class TestExtractor(compmusic.extractors.ExtractorModule):
-    __version__ = "0.1"
-    __sourcetype__ = "mp3"
-    __slug__ = "asd"
-    __many_files__ = True
-    __output__ = {"pitch": {"extension": "json", "mimetype": "application/json"}}
-    
+    _version = "0.1"
+    _sourcetype = "mp3"
+    _slug = "asd"
+    _many_files = True
+    _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
+
     def run(self, fname):
        return {'pitch': '{"test": "0.1"}'}
 
 class Test2Extractor(compmusic.extractors.ExtractorModule):
-    __version__ = "0.1"
-    __sourcetype__ = "mp3"
-    __slug__ = "asd2"
-    __many_files__ = False
-    __output__ = {"pitch": {"extension": "json", "mimetype": "application/json"}}
-    
+    _version = "0.1"
+    _sourcetype = "mp3"
+    _slug = "asd2"
+    _many_files = False
+    _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
+
     def run(self, fname):
        return {'pitch': '{"test": "0.1"}'}
 
@@ -38,9 +38,9 @@ class AbstractFileTest(TestCase):
         self.doc1.collections.add(self.col1)
         self.sfile1 = models.SourceFile.objects.create(document=self.doc1, file_type=self.file_type, size=1000)
 
-        self.get_m = mock.Mock() 
+        self.get_m = mock.Mock()
         self.log = mock.Mock()
-        jobs.log = self.log 
+        jobs.log = self.log
         jobs._get_module_instance_by_path = self.get_m
 
 class SourceFileTest(AbstractFileTest):
@@ -56,10 +56,10 @@ class SourceFileTest(AbstractFileTest):
 
         jobs.run_module_on_collection(self.col1.pk, mod.pk)
         self.assertEqual(len(models.Document.objects.all()), 2)
-        
+
         jobs.run_module_on_collection(self.col1.pk, mod.pk)
-    
-    @mock.patch('docserver.log.log_processed_file') 
+
+    @mock.patch('docserver.log.log_processed_file')
     def test_process_document(self, log):
         modulepath = "compmusic.extractors.TestExtractor"
         instance = TestExtractor()
@@ -67,14 +67,14 @@ class SourceFileTest(AbstractFileTest):
 
         mod = jobs.create_module(modulepath, [self.col1.pk])
         self.assertEqual(len(models.Module.objects.all()), 1)
-        
+
         jobs.run_module_on_collection(self.col1.pk, mod.pk)
 
         doc = models.Document.objects.get(pk=self.col1.pk)
         self.assertEqual(len(doc.derivedfiles.all()), 1)
-    
-    @mock.patch('os.makedirs') 
-    @mock.patch('__builtin__.open') 
+
+    @mock.patch('os.makedirs')
+    @mock.patch('__builtin__.open')
     def test_process_document(self, mock_open, makedir):
         #/tmp/col1/incoming/11/111111/asd2/0.1
         modulepath = "compmusic.extractors.Test2Extractor"
@@ -83,7 +83,7 @@ class SourceFileTest(AbstractFileTest):
 
         mod = jobs.create_module(modulepath, [self.col1.pk])
         self.assertEqual(len(models.Module.objects.all()), 1)
-        
+
         jobs.run_module_on_collection(self.col1.pk, mod.pk)
 
         self.assertEqual(len(self.doc1.derivedfiles.all()), 1)
