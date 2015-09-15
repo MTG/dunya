@@ -263,7 +263,7 @@ def process_document(documentid, moduleversionid):
         moduleslug = module.slug
         with transaction.atomic():
             for dataslug, contents in results.items():
-                outputdata = instance.__output__[dataslug]
+                outputdata = instance._output[dataslug]
                 extension = outputdata["extension"]
                 mimetype = outputdata["mimetype"]
                 multipart = outputdata.get("parts", False)
