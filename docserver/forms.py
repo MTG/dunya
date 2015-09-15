@@ -65,8 +65,8 @@ class ModuleForm(forms.Form):
         instance = jobs._get_module_instance_by_path(modulepath)
         if not instance:
             raise forms.ValidationError("The specified module doesn't exist")
-        if models.Module.objects.filter(slug=instance.__slug__).exists():
-            raise forms.ValidationError("A module with this slug (%s) already exists" % instance.__slug__)
+        if models.Module.objects.filter(slug=instance._slug).exists():
+            raise forms.ValidationError("A module with this slug (%s) already exists" % instance._slug)
         return modulepath
 
     class Meta:
