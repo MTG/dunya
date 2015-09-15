@@ -20,15 +20,22 @@
     <input type="hidden" name="next" value="{% url 'carnatic-main' %}" />
    {% endif %}
   </form>
-  <p><a href="{% url 'social-pwreset' %}">Password reset</a></p>
+  <p>
+  {% if 'facebook' in api_login %}
+  <a href="{% url 'social-pwreset' %}">Password reset</a></p>
     <div><a rel="nofollow" href="{% url 'social:begin' 'facebook' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
       <img width="160" src='{% static 'account/img/facebook.png' %}' alt='Login with Facebook'/></a>
     </a></div>
+  {% endif %}
+  {% if 'google' in api_login %}
     <div><a rel="nofollow" href="{% url 'social:begin' 'google-oauth2' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}"></div>
       <img width="165" src='{% static 'account/img/btn_google.png' %}' alt='Login with Google'/></a>
-    <div><a rel="nofollow" href="{% url 'social:begin' 'twitter' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
+  {% endif %}
+  {% if 'twitter' in api_login %}
+  <div><a rel="nofollow" href="{% url 'social:begin' 'twitter' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
       <img  src='{% static 'account/img/twitter.png' %}' alt='Login with Twitter'/></a>
     </a></div>
+  {% endif %}
 </div>
 {% endblock %}
 
