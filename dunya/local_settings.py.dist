@@ -73,6 +73,8 @@ NOTIFICATION_EMAIL_FROM = ""
 # Who gets system emails (e.g., new user) [list/set]
 NOTIFICATION_EMAIL_TO = ('', )
 
+EXTERNAL_OAUTH_LOGIN = []
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 
