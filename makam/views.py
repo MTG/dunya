@@ -162,6 +162,12 @@ def recording(request, uuid, title=None):
         pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "makampitch", "pitch", version="0.4")
     except docserver.util.NoFileException:
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "makampitch", "pitch", "0.4")
+    
+    try:
+        scoreurl = docserver.util.docserver_get_url(recording.mbid, "score", "score", version="0.1")
+    except docserver.util.NoFileException:
+        scoreurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "score", "score", "0.1")
+
 
     mbid = recording.mbid
 
@@ -179,6 +185,7 @@ def recording(request, uuid, title=None):
            "mbid": mbid,
            "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
+           "scoreurl": scoreurl,
     }
     return render(request, "makam/recording.html", ret)
 

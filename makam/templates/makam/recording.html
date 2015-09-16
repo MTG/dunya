@@ -96,6 +96,7 @@
 <script>
     var pitchtrackurl = "http://localhost:8001{{pitchtrackurl|safe}}";
     var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
+    var scoreurl = "http://dunya.compmusic.upf.edu{{scoreurl|safe}}";
     var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
     var smallurl = "http://dunya.compmusic.upf.edu{{smallimage|safe}}";
     var secondsPerView = 32;
@@ -104,8 +105,8 @@
     var rhythmdata = null;
     var aksharadata = null;
     var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
-    var recordinglengthfmt = "{{recording.length_format}}";
-    var recordinglengthseconds = "{{recording.length_seconds}}";
+    var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
+    var recordinglengthseconds = "{%if recroding.length %}{{recording.length_seconds}}{% endif %}";
 
     {% if user.is_authenticated %}
     function playrecord(){
@@ -252,7 +253,7 @@
 	     		<div class="container2">
                  <canvas id="histogramcanvas" style="height:251px; width:200px;"></canvas>
 	     		  <div id="totalcontrol2">
-                      <div id="timecode">00:00<span>{{recording.length_format}}</span></div>
+                      <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
 
 
          </div>
