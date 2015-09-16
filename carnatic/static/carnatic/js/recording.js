@@ -226,6 +226,9 @@ function sortNumber(a,b) {
 }
 
 function plotticks(context, data) {
+    if (data.length == 0) {
+        return;
+    }
     // TODO: it looked like for some of this data
     // we were sorting by asciibetical not numeric
     data.sort(sortNumber);
@@ -260,6 +263,9 @@ function plotticks(context, data) {
 }
 
 function plottempo(context, data) {
+    if (data.length == 0) {
+        return;
+    }
     var low = 1;
     var high = 0;
     for (var i = 0; i < data.length; i++) {
@@ -332,24 +338,32 @@ function loaddata() {
     var ticksDone = false;
     var rhythmDone = false;
 
-    $.ajax(rhythmurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
-            rhythmdata = data;
-            ticksDone = true;
-            dodraw();
-    }});
+    if (rhythmurl) {
+        $.ajax(rhythmurl, {dataType: "json", type: "GET",
+            success: function(data, textStatus, xhr) {
+                rhythmdata = data;
+                ticksDone = true;
+                dodraw();
+        }});
+    } else {
+        // If we have no data, don't draw the curve
+        rhythmdata = [];
+        ticksDone = true;
+        dodraw();
+    }
 
     if (aksharaurl) {
-    $.ajax(aksharaurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
-            aksharadata = data;
-            rhythmDone = true;
-            dodraw();
-    }});
+        $.ajax(aksharaurl, {dataType: "json", type: "GET",
+            success: function(data, textStatus, xhr) {
+                aksharadata = data;
+                rhythmDone = true;
+                dodraw();
+        }});
     } else {
         // If we have no data, don't draw the curve
         aksharadata = [];
         rhythmDone = true;
+        dodraw();
     }
 
     function dodraw() {
