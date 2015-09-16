@@ -240,7 +240,7 @@ def main(request):
         numinstruments = len([i for i in displayres if i[0] == "instrument"])
         numforms = len([i for i in displayres if i[0] == "form"])
         numlayas = len([i for i in displayres if i[0] == "laya"])
-    
+
     ret = {"numartists": numartists,
            "filter_items": json.dumps(get_filter_items()),
            "numcomposers": numcomposers,
@@ -395,8 +395,8 @@ def recording(request, uuid, title=None):
         aksharaurl = None
 
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "packedpitch", version=settings.FEAT_VERSION_NORMALISED_PITCH)
-        histogramurl = docserver.util.docserver_get_url(recording.mbid, "normalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_NORMALISED_PITCH)
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "packedpitch", version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
+        histogramurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
     except docserver.util.NoFileException:
         pitchtrackurl = None
