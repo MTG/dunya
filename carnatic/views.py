@@ -500,17 +500,21 @@ def recording(request, uuid, title=None):
 
     try:
         pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "packedpitch", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
+        pitchtrackurl = request.build_absolute_uri(pitchtrackurl)
         histogramurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
+        histogramurl = request.build_absolute_uri(histogramurl)
     except docserver.util.NoFileException:
-        pitchtrackurl = None
-        histogramurl = None
+        pitchtrackurl = ""
+        histogramurl = ""
 
     try:
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
+        rhythmurl = request.build_absolute_uri(rhythmurl)
         aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
+        aksharaurl = request.build_absolute_uri(aksharaurl)
     except docserver.util.NoFileException:
-        rhythmurl = None
-        aksharaurl = None
+        rhythmurl = ""
+        aksharaurl = ""
 
     similar = []
     try:

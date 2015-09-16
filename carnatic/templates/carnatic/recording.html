@@ -18,10 +18,10 @@
 
 {% block script %}
 <script>
-    var pitchtrackurl = "http://dunya.compmusic.upf.edu{{pitchtrackurl|safe}}";
-    var histogramurl = "http://dunya.compmusic.upf.edu{{histogramurl|safe}}";
-    var rhythmurl = "http://dunya.compmusic.upf.edu{{rhythmurl|safe}}";
-    var aksharaurl = "http://dunya.compmusic.upf.edu{{aksharaurl|safe}}";
+    var pitchtrackurl = "{{pitchtrackurl|safe}}";
+    var histogramurl = "{{histogramurl|safe}}";
+    var rhythmurl = "{{rhythmurl|safe}}";
+    var aksharaurl = "{{aksharaurl|safe}}";
     var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
     var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
     var secondsPerView = 32;
