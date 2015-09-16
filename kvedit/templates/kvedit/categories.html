@@ -17,7 +17,7 @@
 <p> Select a Category</p>
 <div class="row">
     {% for cat in categories %}
-        <div class="col-md-6"> 
+        <div class="col-md-6">
           <li><a href="{%url "kvedit-items" cat.id %}">{{cat.name}}</a></li>
         </div>
     {% endfor %}
@@ -27,7 +27,7 @@
 
 <form method="post" action="{% url "kvedit-categories" %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <div>{{form}}</div>
+    <div>{{form.as_p}}</div>
     <input type="submit" value="Upload">
 </form>
 

@@ -14,18 +14,24 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
+import uuid
 
 from django import forms
 from django.conf import settings
 
-from docserver.models import SourceFileType
+import docserver
 from kvedit.models import Field, Item, Category
 from kvedit import utils
 
 class JsonForm(forms.Form):
     json_file = forms.FileField()
     category = forms.CharField()
-    source_file_type = forms.ModelChoiceField(queryset=SourceFileType.objects.all(), empty_label="")
+    source_file_type = forms.ModelChoiceField(
+            queryset=docserver.models.SourceFileType.objects.all(),
+            empty_label="")
+    collection = forms.ModelChoiceField(
+            queryset=docserver.models.Collection.objects.all(),
+            empty_label="")
 
     def clean_json_file(self):
         # Validate that is a json file and size is less than the specified
@@ -45,7 +51,11 @@ class JsonForm(forms.Form):
             for i in new_items:
                 if "id" not in i.keys():
                     raise forms.ValidationError('All the elements must contain an "id" key, error at: %s ...' % str(i)[:45] )
-                #Fill map with the id as the key and the values as the Field objects
+                try:
+                    uuid.UUID(i["id"])
+                except ValueError:
+                    raise forms.ValidationError('id key must be a UUID')
+                # Fill map with the id as the key and the values as the Field objects
                 for k,v in i.iteritems():
                     if k != "id":
                         if i['id'] not in new_items_dic:
@@ -54,7 +64,10 @@ class JsonForm(forms.Form):
             self.new_items_dic = new_items_dic
 
     def save(self, commit=True):
-        utils.upload_kvdata(self.cleaned_data['category'], self.cleaned_data['source_file_type'], self.new_items_dic)
+        utils.upload_kvdata(self.cleaned_data['category'],
+                            self.cleaned_data['collection'],
+                            self.cleaned_data['source_file_type'],
+                            self.new_items_dic)
 
 
 class ItemForm(forms.ModelForm):

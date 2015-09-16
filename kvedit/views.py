@@ -22,7 +22,8 @@ from django.forms.models import inlineformset_factory
 
 from forms import JsonForm, FieldForm, ItemForm
 from kvedit.models import Category, Field, Item
-from docserver.util import docserver_add_sourcefile
+from docserver.util import docserver_upload_and_save_file, docserver_create_document
+from django.core.files.base import ContentFile
 
 def is_staff(user):
     return user.is_staff
@@ -44,9 +45,18 @@ def edit_item(request, item_id, cat_id):
             form = FieldSet(instance=item)
             item_form = ItemForm(instance=item)
             message = "Item successfully saved."
-            if item.verified and item.category.source_file_type:
-                #docserver_add_sourcefile(item.ref, item.category.source_file_type, "")
-                message += " Sourcefile uploaded."
+            if item.verified and item.category.source_file_type and item.category.collection:
+                if item.fields.filter(key="name").exists():
+                    name = item.fields.get(key="name").value
+                else:
+                    name = item.ref
+                document = docserver_create_document(item.category.collection.collectionid,
+                                                     item.ref,
+                                                     name)
+                docserver_upload_and_save_file(document.id,
+                                               item.category.source_file_type.id,
+                                               ContentFile(item.to_json()))
+                message += " SourceFile uploaded."
     else:
         item_form = ItemForm(instance=item)
         form = FieldSet(instance = item)

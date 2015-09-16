@@ -1,10 +1,22 @@
 from kvedit.models import Field, Item, Category
 
-def upload_kvdata(cat_name, source_file_type, items_dic):
-    category, created = Category.objects.get_or_create(name=cat_name, defaults={source_file_type: source_file_type})
+def upload_kvdata(cat_name, collection, source_file_type, items_dic):
+    print "creating", cat_name, collection, source_file_type
+
+    category, created = Category.objects.get_or_create(name=cat_name,
+            defaults={"source_file_type": source_file_type,
+                      "collection": collection})
+
+    changed = False
     if category.source_file_type != source_file_type:
         category.source_file_type = source_file_type
+        changed = True
+    if category.collection != collection:
+        category.collection = collection
+        changed = True
+    if changed:
         category.save()
+
     # Select the items with the same id
     existing_items = Item.objects.filter(ref__in=items_dic.keys(), category=category)
     for item in existing_items:

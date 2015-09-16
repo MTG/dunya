@@ -20,6 +20,7 @@ import json
 class Category(models.Model):
     name = models.CharField(max_length=200)
     source_file_type = models.ForeignKey("docserver.SourceFileType", blank=True, null=True)
+    collection = models.ForeignKey("docserver.Collection", blank=True, null=True)
 
     def __str__(self):
         return ('%s' % self.name)
@@ -40,7 +41,7 @@ class Item(models.Model):
     reverify = models.BooleanField(default=False)
 
     def to_json(self):
-        return json.dumps(self.to_object())
+        return json.dumps(self.to_object(), indent=2)
 
     def to_object(self):
         ret = {}
@@ -53,6 +54,9 @@ class Field(models.Model):
     key = models.CharField(max_length=200)
     value = models.TextField()
     modified = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return u"%s: %s" % (self.key, self.value)
 
     def save(self, *args, **kwargs):
         ''' On save, update modified value '''
