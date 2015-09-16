@@ -75,11 +75,21 @@ class StaffWritePermission(permissions.IsAuthenticated):
         else:
             return perm
 
-class DocumentDetailExternal(generics.CreateAPIView, generics.RetrieveAPIView):
+class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
     lookup_field = 'external_identifier'
-    queryset = models.Document.objects.all()
     serializer_class = serializers.DocumentSerializer
     permission_classes = (StaffWritePermission, )
+
+    def get_queryset(self):
+        if "slug" in self.kwargs:
+            slug = self.kwargs["slug"]
+            collection = get_object_or_404(models.Collection.objects, slug=slug)
+            return collection.documents
+        return models.Document.objects
+
+    def create(self, request, slug, external_identifier):
+        collection = get_object_or_404(models.Collection.objects, slug=slug)
+        return util.docserver_create_document(collection.collectionid, external_identifier, title)
 
 class SourceFileException(Exception):
     def __init__(self, status_code, message):
@@ -129,12 +139,6 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     def update(self, request, external_identifier, file_type):
         file = request.data.get("file")
         return self._save_file(external_identifier, file_type, file)
-
-
-class DocumentDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
-    queryset = models.Document.objects.all()
-    serializer_class = serializers.DocumentSerializer
 
 def download_external(request, uuid, ftype):
     # Test authentication. We support a rest-framework token

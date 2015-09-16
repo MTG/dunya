@@ -27,9 +27,9 @@ api_patterns = [
     url(r'^by-id/%s/(?:add|update)/(?P<file_type>[a-z0-9-]+)$' % external_identifier, views.SourceFile.as_view(), name='ds-add-sourcetype'),
     url(r'^by-id/%s/(?P<ftype>[a-z0-9-]+)$' % uuid_match, views.download_external, name='ds-download-external'),
     url(r'^by-id/%s\.(?P<ftype>mp3)$' % uuid_match, views.download_external, name='ds-download-mp3'),
-    url(r'^by-id/%s$' % external_identifier, views.DocumentDetailExternal.as_view(), name='ds-document-external'),
+    url(r'^by-id/%s$' % external_identifier, views.DocumentDetail.as_view(), name='ds-document-external'),
     url(r'^(?P<slug>[^/]+)$', views.CollectionDetail.as_view(), name='collection-detail'),
-    url(r'^(?P<slug>[^/]+)/(?P<pk>\d+)$', views.DocumentDetail.as_view(), name='ds-document')
+    url(r'^(?P<slug>[^/]+)/%s$' % external_identifier, views.DocumentDetail.as_view(), name='ds-document')
 ]
 api_patterns = format_suffix_patterns(api_patterns, allowed=['json', 'api'])
 
