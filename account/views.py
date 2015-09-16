@@ -115,7 +115,7 @@ def user_profile(request):
         'token': token.key,
         'form': form
     }
-    return render(request, 'social/user_profile.html', ret)
+    return render(request, 'account/user_profile.html', ret)
  
 @psa('social:complete')
 def register_by_access_token(request, backend):
