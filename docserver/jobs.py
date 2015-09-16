@@ -220,13 +220,7 @@ def _save_file(root_directory, recordingid, version, slug, partslug, partnumber,
         data = str(data)
     return fullname, fullrelname, len(data)
 
-@app.task
-def process_document(documentid, moduleversionid):
-    version = models.ModuleVersion.objects.get(pk=moduleversionid)
-    module = version.module
-    instance = _get_module_instance_by_path(module.module)
-
-    hostname = process_document.request.hostname
+def _get_worker_from_hostname(hostname):
     if hostname and "@" in hostname:
         hostname = hostname.split("@")[1]
     try:
@@ -235,61 +229,98 @@ def process_document(documentid, moduleversionid):
         # Not the end of the world, though we really should have a
         # Worker object for all our hosts
         worker = None
+    return worker
 
-    instance.hostnmae = hostname
-    # if the extractor run over all the collection then the document 
-    # has the same id of the collection and the result is 
+def _save_process_results(version, instance, document, worker, results, starttime, endtime):
+    total_time = int(endtime - starttime)
+
+    module = version.module
+    moduleslug = module.slug
+    with transaction.atomic():
+        for dataslug, contents in results.items():
+            outputdata = instance._output[dataslug]
+            extension = outputdata["extension"]
+            mimetype = outputdata["mimetype"]
+            multipart = outputdata.get("parts", False)
+            logger.info("data %s (%s)" % (dataslug, type(contents)))
+            logger.info("multiparts %s" % multipart)
+            df = models.DerivedFile.objects.create(
+                document=document,
+                module_version=version, outputname=dataslug, extension=extension,
+                mimetype=mimetype, computation_time=total_time)
+            if worker:
+                df.essentia = worker.essentia
+                df.pycompmusic = worker.pycompmusic
+                df.save()
+
+            if not multipart:
+                contents = [contents]
+            for i, partdata in enumerate(contents, 1):
+                saved_name, rel_path, saved_size = _save_file(
+                    document.get_root_dir(), document.external_identifier,
+                    version.version, moduleslug, dataslug, i, extension, partdata)
+                if saved_name:
+                    df.save_part(i, rel_path, saved_size)
+
+    # When we've finished, log that we processed the file. If this throws an
+    # exception, we won't do the log.
+    log.log_processed_file(instance.hostname, document.external_identifier, version.pk)
+
+
+@app.task
+def process_collection(collectionid, moduleversionid):
+    version = models.ModuleVersion.objects.get(pk=moduleversionid)
+    module = version.module
+    instance = _get_module_instance_by_path(module.module)
+
+    hostname = process_document.request.hostname
+    worker = _get_worker_from_hostname(hostname)
+
+    instance.hostname = hostname
+    # if the extractor run over all the collection then the document
+    # has the same id of the collection and the result is
     # set to this document
+
+    collection = models.Collection.objects.get(pk=collectionid)
+    results = None
+    sfiles = models.SourceFile.objects.filter(document__collections=collection, file_type=module.source_type)
+
+    document, created = models.Document.objects.get_or_create(pk=collectionid,
+                        external_identifier=collection.collectionid)
+    if created:
+        document.collections.add(collection)
+    if len(sfiles):
+        id_fnames = [(s.document.external_identifier, s.fullpath.encode("utf8")) for s in sfiles]
+        starttime = time.time()
+        results = instance.process_collection(document.pk, id_fnames)
+        endtime = time.time()
+
+    if results:
+        _save_process_results(version, instance, document, worker, results, starttime, endtime)
+
+
+@app.task
+def process_document(documentid, moduleversionid):
+    version = models.ModuleVersion.objects.get(pk=moduleversionid)
+    module = version.module
+    instance = _get_module_instance_by_path(module.module)
+
+    hostname = process_document.request.hostname
+    worker = _get_worker_from_hostname(hostname)
+    instance.hostname = hostname
+
     document = models.Document.objects.get(pk=documentid)
     results = None
-    if module.many_files:
-        sfiles = models.SourceFile.objects.filter(file_type=module.source_type).all()
-        fnames = [s.fullpath.encode("utf8") for s in sfiles]
+    sfiles = document.sourcefiles.filter(file_type=module.source_type)
+    if len(sfiles):
+        s = sfiles[0]
+        fname = s.fullpath.encode("utf-8")
         starttime = time.time()
-        results = instance.process_document(s.pk, document.pk, document.external_identifier, fnames)
+        results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
         endtime = time.time()
-    else:
-        sfiles = document.sourcefiles.filter(file_type=module.source_type)
-        if len(sfiles):
-            s = sfiles[0]
-            fname = s.fullpath.encode("utf-8")
-            starttime = time.time()
-            results = instance.process_document(s.pk, document.pk, document.external_identifier, fname)
-            endtime = time.time()
-    
+
     if results:
-        total_time = int(endtime - starttime)
-
-        moduleslug = module.slug
-        with transaction.atomic():
-            for dataslug, contents in results.items():
-                outputdata = instance._output[dataslug]
-                extension = outputdata["extension"]
-                mimetype = outputdata["mimetype"]
-                multipart = outputdata.get("parts", False)
-                logger.info("data %s (%s)" % (dataslug, type(contents)))
-                logger.info("multiparts %s" % multipart)
-                df = models.DerivedFile.objects.create(
-                    document=document, derived_from=s,
-                    module_version=version, outputname=dataslug, extension=extension,
-                    mimetype=mimetype, computation_time=total_time)
-                if worker:
-                    df.essentia = worker.essentia
-                    df.pycompmusic = worker.pycompmusic
-                    df.save()
-
-                if not multipart:
-                    contents = [contents]
-                for i, partdata in enumerate(contents, 1):
-                    saved_name, rel_path, saved_size = _save_file(
-                        document.get_root_dir(), document.external_identifier,
-                        version.version, moduleslug, dataslug, i, extension, partdata)
-                    if saved_name:
-                        df.save_part(i, rel_path, saved_size)
-
-        # When we've finished, log that we processed the file. If this throws an
-        # exception, we won't do the log.
-        log.log_processed_file(hostname, document.external_identifier, moduleversionid)
+        _save_process_results(version, instance, document, worker, results, starttime, endtime)
 
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
@@ -325,23 +356,16 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
     if version:
         logger.info("version %s" % version)
 
-        docs = []
         if module.many_files:
-            doc, created = models.Document.objects.get_or_create(pk=collectionid,
-                external_identifier=collection.collectionid)
-            if created:
-                doc.collections.add(collection)
-            
-            if not len(doc.derivedfiles.filter(module_version=version)):
-                docs.append(doc)
+            process_collection.delay(collection.pk, version.pk)
         else:
             # All documents that don't already have a derived file for this module version
             docs = models.Document.objects.filter(
                 sourcefiles__file_type=module.source_type,
                 collections=collection).exclude(derivedfiles__module_version=version)
-        for i, d in enumerate(docs, 1):
-            logger.info("  document %s/%s - %s" % (i, len(docs), d))
-            process_document.delay(d.pk, version.pk)
+            for i, d in enumerate(docs, 1):
+                logger.info("  document %s/%s - %s" % (i, len(docs), d))
+                process_document.delay(d.pk, version.pk)
 
 
 ESSENTIA_DIR = "/srv/essentia"

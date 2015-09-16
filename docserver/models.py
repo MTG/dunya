@@ -67,7 +67,7 @@ class Document(models.Model):
     """If the file is known in a different database, the identifier
        for the item."""
     external_identifier = models.CharField(max_length=200, blank=True, null=True)
-    
+
     def get_root_dir(self):
         root_directory = None
         for c in self.collections.all():
@@ -151,7 +151,7 @@ class SourceFileType(models.Model):
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
-    
+
     stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES)
 
     def __unicode__(self):
@@ -231,9 +231,6 @@ class DerivedFile(models.Model):
 
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
-    
-    """The path on disk to the file"""
-    derived_from = models.ForeignKey(SourceFile)
 
     # A module could output more than 1 file. The combination of
     # module_version and (outputname/extension) refers to one
@@ -367,7 +364,7 @@ class Module(models.Model):
     disabled = models.BooleanField(default=False)
     restricted = models.BooleanField(default=False)
     many_files = models.BooleanField(default=False)
-    
+
     collections = models.ManyToManyField(Collection)
 
     def __unicode__(self):
@@ -415,10 +412,15 @@ class ModuleVersion(models.Model):
             collections = self.module.collections.all()
         else:
             collections = [collection]
-        qs = Document.objects.filter(
-            collections__in=collections,
-            sourcefiles__file_type=self.module.source_type)
+        if self.module.many_files:
+            coll_ids = [c.collectionid for c in collections]
+            qs = Document.objects.filter(external_identifier__in=coll_ids)
+        else:
+            qs = Document.objects.filter(
+                collections__in=collections,
+                sourcefiles__file_type=self.module.source_type)
         qs = qs.filter(derivedfiles__module_version=self)
+
         return qs.distinct()
 
     def unprocessed_files(self, collection=None):
@@ -426,11 +428,15 @@ class ModuleVersion(models.Model):
             collections = self.module.collections.all()
         else:
             collections = [collection]
-        qs = Document.objects.filter(
-            collections__in=collections,
-            sourcefiles__file_type=self.module.source_type)
-        qs = qs.exclude(derivedfiles__module_version=self)
-        return qs.distinct()
+        if self.module.many_files:
+            total = len(collections) - len(self.processed_files(collection))
+            return range(total)
+        else:
+            qs = Document.objects.filter(
+                collections__in=collections,
+                sourcefiles__file_type=self.module.source_type)
+            qs = qs.exclude(derivedfiles__module_version=self)
+            return qs.distinct()
 
     def __unicode__(self):
         return u"v%s for %s" % (self.version, self.module)
