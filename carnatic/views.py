@@ -502,15 +502,15 @@ def recording(request, uuid, title=None):
         pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "packedpitch", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
         histogramurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
     except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "carnaticnormalisedpitch", "packedpitch", settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
-        histogramurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "carnaticnormalisedpitch", "drawhistogram", settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
+        pitchtrackurl = None
+        histogramurl = None
 
     try:
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
         aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
     except docserver.util.NoFileException:
-        rhythmurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "rhythm", "aksharaTicks", settings.FEAT_VERSION_RHYTHM)
-        aksharaurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "rhythm", "APcurve", settings.FEAT_VERSION_RHYTHM)
+        rhythmurl = None
+        aksharaurl = None
 
     similar = []
     try:
