@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from makam import models
+import docserver.models
 from data.models import WithImageMixin
 from data import utils
 
@@ -364,7 +365,6 @@ class SymbtrList(generics.ListAPIView):
     serializer_class = SymbtrListSerializer
 
 class SymbtrDetailSerializer(serializers.ModelSerializer, WithImageMixin):
-
     class Meta:
         model = models.SymbTr
         fields = ['uuid', 'name']

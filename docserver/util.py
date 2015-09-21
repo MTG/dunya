@@ -222,6 +222,13 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
     else:
         raise NoFileException("No known versions for this module")
 
+def docserver_get_symbtrtxt(documentid):
+    try:
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug = 'symbtrtxt')    
+    except ObjectDoesNotExist:
+        return None
+    return sf.fullpath
+
 def docserver_get_contents(documentid, slug, subtype=None, part=None, version=None):
     try:
         return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
