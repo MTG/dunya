@@ -194,10 +194,11 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     form = FormInnerSerializer(source='forms', many=True)
     work = WorkInnerSerializer(source='works', many=True)
     artists = InstrumentPerformanceInnerSerializer(source='instrumentperformance_set.all', many=True)
+    album_artists = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'length', 'artists', 'raaga', 'taala', 'form', 'work', 'concert']
+        fields = ['mbid', 'title', 'length', 'artists', 'raaga', 'taala', 'form', 'work', 'concert', 'album_artists']
 
     def concert_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
@@ -206,6 +207,15 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
         cs = ConcertInnerSerializer(concerts, many=True)
         return cs.data
 
+    def get_album_artists(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        concerts = ob.concert_set.with_permissions(collection_ids, permission)
+        ret = []
+        if len(concerts):
+            ret = concerts[0].artists
+        arts = ArtistInnerSerializer(ret, many=True)
+        return arts.data
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
