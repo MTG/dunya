@@ -198,7 +198,7 @@ class RecordingTest(TestCase):
 
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
-        fields = ['artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['album_artists', 'artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_detail_restr_collection(self):
@@ -209,7 +209,7 @@ class RecordingTest(TestCase):
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
         self.assertEqual(200, response.status_code)
-        fields = ['artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ['album_artists', 'artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
         self.assertEqual(fields, sorted(data.keys()))
 
         # If we request another collection over the header parameter
