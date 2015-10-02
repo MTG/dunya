@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^register/$', views.register_page, name='social-auth-register'),
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
     url(r'^api-auth-login/(?P<backend>[^/]+)/$', views.register_by_access_token, name='social-api-auth-login'),
+    url(r'^api-login/$', views.token_login, name='api-token-login'),
 ]

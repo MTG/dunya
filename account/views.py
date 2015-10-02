@@ -30,12 +30,20 @@ from social.apps.django_app.utils import psa
 from rest_framework.authtoken.models import Token
 
 from account import forms
+from rest_framework.authtoken.models import Token
 
 def logout_page(request):
     logout(request)
     if "next" in request.GET:
         return HttpResponseRedirect(request.GET['next'])
     return HttpResponseRedirect(reverse('carnatic-main'))
+
+def token_login(request):
+    token = request.GET.get('token',None)
+    t = Token.objects.get(key=token)
+    t.user.backend = 'django.contrib.auth.backends.ModelBackend'
+    login(request, t.user)
+    return HttpResponse("")    
 
 def register_page(request):
     if request.method == 'POST':
