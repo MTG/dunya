@@ -25,7 +25,7 @@ def test(module=None, keepdb=True):
 def cleantest(module=None):
     test(module, False)
 
-@roles("web")
+@roles("workers")
 def pipinstall():
     """Install new dependencies added to requirements"""
     env.user = "mtg_dunya"

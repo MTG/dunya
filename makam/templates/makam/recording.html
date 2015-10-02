@@ -30,19 +30,8 @@
 
 #detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
   background: none;
-  border: black thick solid;
   height: 64px;
   z-index: 4;
-}
-#lyrics {
-  position: relative;
-  height: 30px;
-  font-size: 20px;
-}
-#lyrics .lyric {
-  position: absolute;
-  height: 30px;
-  margin: 2px;
 }
 
 #banshis {
@@ -94,19 +83,22 @@
     </style>
 
 <script>
-    var pitchtrackurl = "http://localhost:8001{{pitchtrackurl|safe}}";
+    var pitchtrackurl = "http://dunya.compmusic.upf.edu{{pitchtrackurl|safe}}";
     var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
     var scoreurl = "http://dunya.compmusic.upf.edu{{scoreurl|safe}}";
     var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
     var smallurl = "http://dunya.compmusic.upf.edu{{smallimage|safe}}";
-    var secondsPerView = 32;
+    var intervalsurl = "http://dunya.compmusic.upf.edu{{intervalsurl|safe}}";
+    var notesalignurl = "http://dunya.compmusic.upf.edu{{notesalignurl|safe}}";
+    var sectionsurl = "http://dunya.compmusic.upf.edu{{sectionsurl|safe}}";
+    var secondsPerView = 8;
     var pitchtrackdata = null;
     var histogramdata = null;
     var rhythmdata = null;
     var aksharadata = null;
-    var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
+    var audiourl = "http://dunya.compmusic.upf.edulocalhost:8001{{audio|safe}}";
     var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
-    var recordinglengthseconds = "{%if recroding.length %}{{recording.length_seconds}}{% endif %}";
+    var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
 
     {% if user.is_authenticated %}
     function playrecord(){
@@ -212,7 +204,7 @@
 	 	<div class="alldata">
 	 	    <div class="container">
 	     	<div class="thedata">
-	     		<div id="rendersMask" style="height:640px;">
+	     		<div id="rendersMask" style="height:650px;">
 	     			<div id="renders">
 	     				<div id="capcal" style="height:320px;"></div>
 
@@ -241,18 +233,14 @@
                     <span class="timecode4"></span>
                     <span class="timecode5"></span>
                 </div>
-                <div id="lyrics">
-                </div>
-                <div id="banshis">
-                </div>
-                <div id="percussions">
-                </div>
+                 <canvas id="scorecanvas" style="height:300px; width:900px;"></canvas>
 		     			</div>
 	     			</div>
 	     		</div>
 	     		<div class="container2">
-                 <canvas id="histogramcanvas" style="height:251px; width:200px;"></canvas>
-	     		  <div id="totalcontrol2">
+	     		  <div class="waveLabel">
+                          </div>
+                          <div id="totalcontrol2">
                       <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
 
 

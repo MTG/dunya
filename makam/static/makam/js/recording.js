@@ -12,6 +12,14 @@ $(document).ready(function() {
      plButton = $("#control .plButton");
      timecode = $("#timecode");
      zooms = $(".zoom");
+     currentSymbtrIndex = 1;
+     currentInterval = 1;
+     currentPage = 0;
+     lastOffset = null;
+     colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#00FF80"]
+     images = [];
+     startLoaded = 0;
+     lastLoaded = 0;
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
@@ -116,7 +124,7 @@ function spectrogram(context, view) {
     //console.debug("with skip, " + (remaining/skip) + " rem");
     //console.debug("skip " + skip);
     //console.debug("draw from " + start + " to " + end);
-    context.beginPath();
+    //context.beginPath();
     for (var i = start; i < end; i++) {
         // Find our point
         var xpos = i-start;
@@ -149,25 +157,66 @@ function spectrogram(context, view) {
     context.stroke();
     context.closePath();
 }
- 
- 
-function plotscore() {
+function getImage(part){
+    if (lastLoaded > part && startLoaded < part){
+       // console.log(images[part-startLoaded]);
+        return images[part-startLoaded]
+    }
+    startLoaded = part;
+    //console.log(startLoaded);
+    for(var i=part; i<Object.keys(symbtrIndex2time).length && (i-startLoaded)<10 ;i++){
+        var spec = new Image();
+        spec.src = scoreurl.replace(/part=[0-9]+/, "part="+i);
+        images[i -startLoaded]=spec;
+        lastLoaded=i;
+    }
+    //     console.log(images[part- startLoaded]);
+    return images[part- startLoaded]
+} 
+function plotscore(part) {
     // In order to account for slow internet connections,
     // we always load one image ahead of what we need.
     // TODO: We need to know when the final image is.
-    var spec = new Image();
-    spec.src = scoreurl;
-    //var view = new Uint8Array(pitchdata);
+    var spec = getImage(part-1);
+    var spec2= getImage(part);
+    var spec3= getImage(part+1);
+
     var canvas = $("#scorecanvas")[0];
     canvas.width = 900;
-    canvas.height = 256;
+    canvas.height = 300;
     var context = canvas.getContext("2d");
-    spec.onload = function() {
-        context.drawImage(spec, -30, -30, 900, 1200);
-        //spectrogram(context, view);
+    var oc   = document.createElement('canvas'),
+    octx = oc.getContext('2d');
+
+    oc.width  = spec.width  * 0.5;
+    oc.height = spec.height * 3 * 0.5;
+
+    octx.drawImage(spec, 0, 0, oc.width, spec.height/2);
+    octx.drawImage(spec2, 0, spec.height/2-20, oc.width, spec.height/2);
+    octx.drawImage(spec3, 0, spec.height-40, oc.width, spec.height/2);
+  
+    context.globalAlpha = 1;
+    context.drawImage(oc, 0,  0, oc.width * 0.7, oc.height * 0.7);
+
+    // Highlight part
+    context.globalAlpha = 0.2;
+    context.fillStyle = '#FFFF00';
+    context.fillRect(10, spec.height/2 *0.7 -10, 850 , 80);
+}
+function updateScoreProgress(currentTime){
+    if (currentTime > endPeriod || currentTime < startPeriod)
+    {
+        for (var i=0; i<aligns.length; i++){
+            if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
+                endPeriod = aligns[i]['endtime'];
+                startPeriod = aligns[i]['starttime'];
+                plotscore(aligns[i]['index']+2); 
+            return;
+            }
+        } 
     }
 }
-      
+
 function plotpitch() {
     // In order to account for slow internet connections,
     // we always load one image ahead of what we need.
@@ -191,17 +240,12 @@ function plotsmall() {
         context.fillStyle = colour;
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
-            var txt = d[0];
-            var s = d[1];
-            var e = d[2];
-            if($.type(colour) === "string") {
-                context.globalAlpha = 0.5;
-                context.fillStyle = colour;
-            } else {
-                var col = colour[txt];
-                context.globalAlpha = 1;
-                context.fillStyle = col;
-            }
+            var txt = d['name'];
+            var s = d['time'][0];
+            var e = d['time'][1];
+            context.globalAlpha = 0.4;
+            context.fillStyle = colors[i];
+            
             var spos = Math.round(s * pxpersec)+0.5;
             var epos = Math.round(e * pxpersec)+0.5;
             context.fillRect(spos, 0, epos-spos, 64);
@@ -219,11 +263,8 @@ function plotsmall() {
         //smallFill(luogudata, "#0f0");
     }
     
-    // Draw zones on smallcanvas
-    //example = { 'zonex': { 'init': 10.0,'end':30.0}, 'zoney': {'init': 100.0, 'end':145.0}}
-    example2 = [[ 'a', 10.0, 30.0 ], ['b', 100.0, 145.0]]
-    smallFill(example2, "#0ff");
-
+    // Draw sections on smallcanvas
+    smallFill(sections, "#0ff");
 }
 
 function drawwaveform() {
@@ -260,20 +301,95 @@ function loaddata() {
     oReq.send();
 
     var ticksDone = false;
-   
+    var symbtrIndex2timeDone = false;
+    var intervalsDone = false;
+    var sectionsDone = false;
+
+    $.ajax(intervalsurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            intervals = data;
+            intervalsDone = true;
+            dodraw();
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
+
+    $.ajax(notesalignurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            var elems = data.notes; 
+            symbtrIndex2time = {};
+            for (var i=0; i<elems.length;i++){
+                if (!(elems[i].IndexInScore in symbtrIndex2time)){
+                    symbtrIndex2time[elems[i].IndexInScore] = [];
+                }
+                symbtrIndex2time[elems[i].IndexInScore].push({'start': parseFloat(elems[i].Interval[0]), 'end': parseFloat(elems[i].Interval[1])});
+            }
+            symbtrIndex2timeDone = true;
+            dodraw();
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
+
+    $.ajax(sectionsurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            sections = data.links; 
+            
+            sectionsDone = true;
+            dodraw();
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
+
     function dodraw() {
-        if (pitchDone ) {
+        if (pitchDone && symbtrIndex2timeDone && intervalsDone && sectionsDone) {
             drawdata();
+            
+            endPeriod = 0;
+            startPeriod = -1;
+           
+            aligns = []
+            for (var i=0; i<intervals.length;i++){
+                var start = [];
+                var end = [];
+                if (intervals[i]['start'] in symbtrIndex2time){
+                    start = symbtrIndex2time[intervals[i]['start']];
+                    
+                }
+                if (intervals[i]['end'] in symbtrIndex2time){
+                    end = symbtrIndex2time[intervals[i]['end']];                 
+                }
+                if (start.length == end.length) {
+                    for (var j=0;j<start.length;j++){
+                        var min=Number.MAX_VALUE;
+                        var val = 0;
+                        for (var k=0;k<end.length;k++){
+                            if (min > (end[k]['end']-start[j]['start']) && (end[k]['end']-start[j]['start'])){
+                                min = (end[k]['end']-start[j]['start']);
+                                val = k;
+                            }
+                        } 
+                        if (min != Number.MAX_VALUE){
+                            aligns.push({'index':i, 'starttime': start[j]['start'], 'endtime': end[val]['end']});
+                            end.splice(val,1);
+                        }
+                    }
+                }
+           }
         }
     }
-    
-}
+  }
 
 function drawdata() {
     //drawwaveform();
+    if(lastLoaded < 1){
+        getImage(1);
+    }
     plotpitch();
     plotsmall();
-    plotscore();
+    //plotscore(2);
     var start = beginningOfView;
     var skip = secondsPerView / 4;
     $(".timecode1").html(formatseconds(start));
@@ -297,11 +413,14 @@ function mouPlay(desti){
     percent = desti/waveform.width();
     clickseconds = recordinglengthseconds * percent
 
+    console.log(recordinglengthseconds);
     posms = clickseconds * 1000;
+    console.log(clickseconds);
     part = Math.ceil(clickseconds / secondsPerView);
     // Update the internal position counter (counts from 0, part counts from 1)
     beginningOfView = (part - 1) * secondsPerView;
-
+    console.log(pagesound);
+    console.log(pagesound.duration);
     if (pagesound && pagesound.duration) {
         // We can only set a position if it's fully loaded
         var wasplaying = !pagesound.paused;
@@ -309,6 +428,7 @@ function mouPlay(desti){
             pagesound.pause();
         }
         pagesound.setPosition(posms);
+        console.log(posms);
         replacepart(part);
         updateProgress();
         if (wasplaying) {
@@ -375,7 +495,8 @@ function updateProgress() {
     leftSmallView = ampleRenderTotal*total_progress_frac;
     capcal.css('left', leftLargeView-5);
     capcalTotal.css('left', leftSmallView-6);
-
+    
+    updateScoreProgress(currentTime);
     if (leftLargeView > 900) {
         beginningOfView = Math.floor(currentTime / secondsPerView) * secondsPerView;
         pnum = Math.floor(beginningOfView / secondsPerView + 1);

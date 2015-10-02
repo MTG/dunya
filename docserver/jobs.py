@@ -75,13 +75,14 @@ def _get_module_instance_by_path(modulepath):
         args = {"redis_host": redis_host}
     except AttributeError:
         pass
-    try:
-        mod, clsname = modulepath.rsplit(".", 1)
-        package = importlib.import_module(mod)
-        cls = getattr(package, clsname)
-        return cls(**args)
-    except ImportError:
-        return None
+    #try:
+    mod, clsname = modulepath.rsplit(".", 1)
+    print mod, clsname
+    package = importlib.import_module(mod)
+    cls = getattr(package, clsname)
+    return cls(**args)
+    #except ImportError:
+    #    return None
 
 def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)

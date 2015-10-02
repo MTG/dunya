@@ -122,15 +122,15 @@ def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
    
     try:
-        wave = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
+        wave = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "waveform8", 1, version=0.1)
     except docserver.util.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
+        spec = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "spectrum8", 1, version=0.1)
     except docserver.util.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
+        small = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "smallfull", version=0.1)
     except docserver.util.NoFileException:
         small = None
     try:
@@ -159,14 +159,29 @@ def recording(request, uuid, title=None):
     except docserver.util.NoFileException:
         akshara = None
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "makampitch", "pitch", version="0.4")
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "pitch", version="0.1")
     except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "makampitch", "pitch", "0.4")
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "makamaudioimages", "pitch", "0.1")
+    try:
+        intervalsurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "intervals", version="0.1")
+    except docserver.util.NoFileException:
+        intervalsurl = None 
     
     try:
-        scoreurl = docserver.util.docserver_get_url(recording.mbid, "score", "score", version="0.1")
+        notesalignurl = docserver.util.docserver_get_url(recording.mbid, "scorealign", "notesalign", 1, version="0.1")
     except docserver.util.NoFileException:
-        scoreurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "score", "score", "0.1")
+        notesalignurl = None 
+    
+    try:
+        scoreurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "score", 1, version="0.1")
+    except docserver.util.NoFileException:
+        scoreurl = None 
+
+    try:
+        sectionsurl = "/static/makam/js/example2.json"
+        sectionsurl = docserver.util.docserver_get_url(recording.mbid, "scorealign", "sectionlinks", 1, version="0.1")
+    except docserver.util.NoFileException:
+        sectionsurl = None 
 
 
     mbid = recording.mbid
@@ -186,6 +201,9 @@ def recording(request, uuid, title=None):
            "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
            "scoreurl": scoreurl,
+           "sectionsurl": sectionsurl, 
+           "notesalignurl": notesalignurl,
+           "intervalsurl": intervalsurl,
     }
     return render(request, "makam/recording.html", ret)
 
