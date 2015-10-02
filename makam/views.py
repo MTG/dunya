@@ -162,8 +162,15 @@ def recording(request, uuid, title=None):
         pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "pitch", version="0.1")
     except docserver.util.NoFileException:
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (recording.mbid, "makamaudioimages", "pitch", "0.1")
+    
+    work = None
+    if len(recording.works.all()):
+        work = recording.works.all()[0].mbid
+    
     try:
-        intervalsurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "intervals", version="0.1")
+        intervalsurl = None
+        if work: 
+            intervalsurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "intervals", version="0.1")
     except docserver.util.NoFileException:
         intervalsurl = None 
     
@@ -173,7 +180,9 @@ def recording(request, uuid, title=None):
         notesalignurl = None 
     
     try:
-        scoreurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "score", 1, version="0.1")
+        scoreurl = None
+        if work:
+            scoreurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "score", 1, version="0.1")
     except docserver.util.NoFileException:
         scoreurl = None 
 
