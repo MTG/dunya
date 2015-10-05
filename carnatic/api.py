@@ -155,8 +155,8 @@ class WorkList(generics.ListAPIView):
 
 class WorkDetailSerializer(serializers.ModelSerializer):
     composers = ComposerInnerSerializer(many=True)
-    raagas = RaagaInnerSerializer(source='raaga', many=True)
-    taalas = TaalaInnerSerializer(source='taala', many=True)
+    raagas = RaagaInnerSerializer(source='raaga')
+    taalas = TaalaInnerSerializer(source='taala')
     recordings = serializers.SerializerMethodField('recording_list')
     lyricists = ComposerInnerSerializer(many=True)
 
