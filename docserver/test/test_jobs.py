@@ -27,7 +27,7 @@ class Test2Extractor(compmusic.extractors.ExtractorModule):
     _many_files = False
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
-    def run(self, fname):
+    def run(self,mb, fname):
        return {'pitch': '{"test": "0.1"}'}
 
 class AbstractFileTest(TestCase):
@@ -45,8 +45,7 @@ class AbstractFileTest(TestCase):
 
 class SourceFileTest(AbstractFileTest):
 
-    @mock.patch('docserver.jobs.process_document')
-    def test_run_module_on_collection(self, pd):
+    def test_run_module_on_collection(self):
         modulepath = "compmusic.extractors.TestExtractor"
         instance = TestExtractor()
         self.get_m.return_value = instance
@@ -54,10 +53,9 @@ class SourceFileTest(AbstractFileTest):
         mod = jobs.create_module(modulepath, [self.col1.pk])
         self.assertEqual(len(models.Module.objects.all()), 1)
 
-        jobs.run_module_on_collection(self.col1.pk, mod.pk)
+        jobs.process_collection(self.col1.pk, mod.versions.all()[0].pk)
         self.assertEqual(len(models.Document.objects.all()), 2)
 
-        jobs.run_module_on_collection(self.col1.pk, mod.pk)
 
     @mock.patch('docserver.log.log_processed_file')
     def test_process_document(self, log):
