@@ -1,4 +1,4 @@
-{% extends "carnatic/base.html" %}
+{% extends "makam/base.html" %}
 {% load makam.inline %}
 {% load carnatic.badges %}
 {% load staticfiles %}
@@ -99,6 +99,7 @@
     var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
     var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
     var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
+    var tonic = "{{tonic}}";
 
     {% if user.is_authenticated %}
     function playrecord(){
@@ -167,9 +168,6 @@
 									</b>
 
                                 {% endif %}
-									{% if tonic %}
-                                    <label>Tonic</label><b>{{tonicname}} ({{tonic}} Hz)</b>
-									{% endif %}
 									{% if akshara %}
                                     <label>Akshara period</label><b>{{akshara}} ms </b>
 									{% endif %}
@@ -183,17 +181,9 @@
      	   </div>
          <div id="totalcontrol">
           <div id="control">
-              {% if prevrecording %}
-                  <a href="{{prevrecording.get_absolute_url}}"><div class="revButton active"></div></a>
-              {% else %}
                   <div class="revButton"></div>
-              {% endif %}
               <div class="plButton" onclick="playrecord();"></div>
-              {% if nextrecording %}
-                  <a href="{{nextrecording.get_absolute_url}}"><div class="folButton active"></div></a>
-              {% else %}
                   <div class="folButton"></div>
-              {% endif %}
           </div>
          </div>
     <div style="padding-top:6px; margin-right:1em;">
@@ -206,7 +196,7 @@
 	     	<div class="thedata">
 	     		<div id="rendersMask" style="height:650px;">
 	     			<div id="renders">
-	     				<div id="capcal" style="height:320px;"></div>
+	     				<div id="capcal" style="height:255px;"></div>
 
                  <div id="bigPitch">
                          <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
@@ -252,7 +242,7 @@
 	 	</div>
             <div class="thedata">
                 <div class="leftdata">
-                    <h3>Similar recordings</h3>
+                    <!--<h3>Similar recordings</h3>-->
                 </div>
 
                 <div class="rightdata">
@@ -268,41 +258,6 @@
             </div>
 
 	 	<div class="clearfix"></div>
-</div>
-
-<div id="detail">
-    <h1>Recording {{recording.title}}</h1>
-
-    <h3>External sites</h3>
-    {% for r in recording.refs %}
-    <li><a href="{{r.url}}">{{r.title}}</a>
-    {% endfor %}
-
-    <h3>From release(s)</h3>
-    {% inline_release_list recording.releaselist %}
-
-    <h3>Works</h3>
-    {% for w in worklist %}
-    <li>{% inline_work w %}</li>
-    {% endfor %}
-
-    {% if recording.has_gazel %}
-       <h3>Recording contains gazel</h3>
-       With makam(s) {% inline_makam_list recording.makamlist %}
-    {% endif %}
-    {% if recording.has_taksim %}
-       <h3>Recording contains taksim</h3>
-       With makam(s) {% inline_makam_list recording.makamlist %}
-    {% endif %}
-
-    <h3>Musicians</h3>
-    {% for p in recording.performers %}
-    {% recording_instruments_for_artist recording p as instrumentlist %}
-    <li>{% inline_artist p %}
-    {% if instrumentlist %}({% inline_instrument instrumentlist %}){% endif %}</li>
-    {% endfor %}
-
-    <div class="clearfix"></div>
 </div>
 {% endblock %}
 

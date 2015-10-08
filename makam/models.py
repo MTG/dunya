@@ -291,6 +291,7 @@ class Form(models.Model):
         return self.work_set.all()
 
 class Work(MakamStyle, data.models.Work):
+    objects = managers.MakamWorkManager()
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
     makam = models.ManyToManyField(Makam, blank=True)

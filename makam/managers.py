@@ -44,6 +44,12 @@ class UnaccentManager(models.Manager):
     def unaccent_all(self, name):
             return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name])
 
+class MakamWorkManager(models.Manager):
+    """ A manager to use postgres' unaccent module to get items
+    with a specified `name` field """
+    def unaccent_get(self, name):
+        return super(MakamWorkManager, self).get_queryset().extra(where=["unaccent(lower(title)) like unaccent(lower(%s))"], params=["%"+name+"%"])
+ 
 class MakamFormManager(UnaccentManager):
     def fuzzy(self, name):
         try:

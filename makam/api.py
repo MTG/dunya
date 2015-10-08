@@ -48,9 +48,11 @@ class ReleaseRecordingInnerSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'track']
 
 class RecordingInnerSerializer(serializers.ModelSerializer):
+    artists = ArtistInnerSerializer('artists', many=True)
+    
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title']
+        fields = ['mbid', 'title', 'artists']
 
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -190,13 +192,36 @@ class InstrumentDetail(generics.RetrieveAPIView):
 
 
 class WorkListSerializer(serializers.ModelSerializer):
+    composers = ArtistInnerSerializer(many=True)
     class Meta:
         model = models.Work
-        fields = ['mbid', 'title']
+        fields = ['mbid', 'title', 'composers']
 
 class WorkList(generics.ListAPIView):
     queryset = models.Work.objects.all()
     serializer_class = WorkListSerializer
+
+    def get_queryset(self):
+        works = models.Work.objects
+        q = self.request.GET.get('q', None)
+        
+        if q:
+            works = works.unaccent_get(q)
+        
+        artist = self.request.GET.get('artist', None)
+        form = self.request.GET.get('form', None)
+        #makam = request.GET.get('makam', None)
+        usul = self.request.GET.get('usul', None)
+
+        if artist and artist != '':
+            works = works.filter(composers=artist)
+        if form and form != '':
+            work = works.filter(form=form)
+        if usul and usul != '':
+            works = works.filter(usul=usul)
+        works = works.order_by('title')
+        return works.all()
+
 
 class WorkDetailSerializer(serializers.ModelSerializer):
     composers = ComposerInnerSerializer(source='composerlist', many=True)

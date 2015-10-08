@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest
 from django.conf import settings
@@ -35,36 +36,17 @@ def main(request):
     if q and q != '':
         recordings = models.Recording.objects.filter(title__contains=q).all()
 
-    artist = request.GET.get('artist', None)
-    form = request.GET.get('form', None)
-    #makam = request.GET.get('makam', None)
-    usul = request.GET.get('usul', None)
-
-
     artists = models.Composer.objects.order_by('name').all()
     forms = models.Form.objects.order_by('name').all()
     #makams = models.Makam.objects.order_by('name').all()
     usuls = models.Usul.objects.order_by('name').all()
-    
-    works = models.Work.objects
-    if artist and artist != '':
-        works = works.filter(composers=artist)
-    if form and form != '':
-        work = works.filter(form=form)
-    if usul and usul != '':
-        works = works.filter(usul=usul)
-    
+
     ret = {
+        'recordings': recordings,
         "artists": artists, 
         #"makams": makams, 
         'usuls': usuls, 
         'forms': forms , 
-        'artist': artist, 
-        'form':form,
-        #'makam':makam,
-        'usul':usul,
-        'works': works.all(),
-        'recordings': recordings
         }
     return render(request, "makam/index.html", ret)
 
@@ -137,22 +119,7 @@ def recording(request, uuid, title=None):
         audio = docserver.util.docserver_get_mp3_url(recording.mbid)
     except docserver.util.NoFileException:
         audio = None
-    try:
-        tonic = docserver.util.docserver_get_contents(recording.mbid, "votedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
-        notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
-        tonic = round(float(tonic), 2)
-        thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
-        thebin = int(round(thebin))
-        tonic = str(tonic)
-        if thebin <= 11 and thebin >= 0:
-            tonicname = notenames[thebin]
-        else:
-            print "bin is", thebin, "weird"
-            print tonic
-            tonicname = ""
-    except docserver.util.NoFileException:
-        tonic = None
-        tonicname = None
+    
     try:
         akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
         akshara = str(round(float(akshara), 3) * 1000)
@@ -187,11 +154,21 @@ def recording(request, uuid, title=None):
         scoreurl = None 
 
     try:
-        sectionsurl = "/static/makam/js/example2.json"
         sectionsurl = docserver.util.docserver_get_url(recording.mbid, "scorealign", "sectionlinks", 1, version="0.1")
     except docserver.util.NoFileException:
         sectionsurl = None 
-
+    try:
+        tonic = docserver.util.docserver_get_json(recording.mbid, "tonictempotuning", "tonic", 1, version="0.1")
+        pitch_max = docserver.util.docserver_get_json(recording.mbid, "makamaudioimages", "pitchmax", 1, version="0.1")
+        tonic = 255 * tonic['scoreInformed']['Value'] / pitch_max['value']
+    except docserver.util.NoFileException:
+        tonic = None
+    
+    try:
+        max_pitch = docserver.util.docserver_get_url(recording.mbid, "makamaudioimages", "pitchmax", 1, version="0.1")
+    except docserver.util.NoFileException:
+        max_pitch = None
+    
 
     mbid = recording.mbid
 
@@ -204,7 +181,6 @@ def recording(request, uuid, title=None):
            "smallimage": small,
            "audio": audio,
            "tonic": tonic,
-           "tonicname": tonicname,
            "akshara": akshara,
            "mbid": mbid,
            "pitchtrackurl": pitchtrackurl,

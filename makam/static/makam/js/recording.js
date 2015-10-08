@@ -20,6 +20,8 @@ $(document).ready(function() {
      images = [];
      startLoaded = 0;
      lastLoaded = 0;
+     contextNames = [];
+     lastIndex = -1;
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
@@ -38,14 +40,23 @@ $(document).ready(function() {
          }
      });
      waveform.mousemove(function(e) {
-         if (pagesound && pagesound.duration) {
+        var sectionName = ''; 
+        var rect = waveform[0].getBoundingClientRect();
+        var mousePos = e.clientX - rect.left;
+     
+        for (var i = 0; i < contextNames.length; i++) {
+          if (contextNames[i][0] < mousePos && contextNames[i][1]>mousePos){
+             sectionName = contextNames[i][2];
+          }
+        }
+        if (pagesound && pagesound.duration) {
              var offset_l = $(this).offset().left - $(window).scrollLeft();
              var left = Math.round( (e.clientX - offset_l) );
              var miniviewWidth = renderTotal.width();
              var miniviewPercent = left / miniviewWidth;
              var timeseconds = Math.floor(recordinglengthseconds * miniviewPercent);
 
-             $("#timepoint").html(formatseconds(timeseconds));
+             $("#timepoint").html(formatseconds(timeseconds)+'</br><b>'+sectionName+'</b>');
              $("#timepoint").show();
              var offset = $("#renderTotal").offset();
              $("#timepoint").css({
@@ -89,26 +100,20 @@ $(document).ready(function() {
      });
 });
 
-function plotsa(context) {
+function plottonic(context) {
     // Sa and sa+1 line.
     context.beginPath();
     // sa+1, dotted
-    context.moveTo(0, 128);
+    var tonicval = 255-tonic;
+    context.moveTo(0, tonicval);
     for (var i = 0; i < 900; i+=10) {
-        context.moveTo(i, 128.5);
-        context.lineTo(i+5, 128.5);
+        context.moveTo(i, tonicval);
+        context.lineTo(i+5, tonicval);
     }
-    // sa, solid
-    context.moveTo(0, 192.5);
-    context.lineTo(900, 192.5);
-    context.strokeStyle = "#eee";
-    context.lineWidth = 1;
-    context.stroke();
-    context.closePath()
 }
 
 function spectrogram(context, view) {
-    plotsa(context);
+    plottonic(context);
     var waszero = false;
     context.moveTo(0, 10);
     context.lineTo(10, 10);
@@ -164,56 +169,108 @@ function getImage(part){
     }
     startLoaded = part;
     //console.log(startLoaded);
-    for(var i=part; i<Object.keys(symbtrIndex2time).length && (i-startLoaded)<10 ;i++){
+    for(var i=part; i<aligns.length && (i-startLoaded)<10 ;i++){
         var spec = new Image();
-        spec.src = scoreurl.replace(/part=[0-9]+/, "part="+i);
+        spec.src = scoreurl.replace(/part=[0-9]+/, "part="+(aligns[i]['index']+2));
         images[i -startLoaded]=spec;
         lastLoaded=i;
     }
     //     console.log(images[part- startLoaded]);
     return images[part- startLoaded]
 } 
-function plotscore(part) {
+function plotscore(part, color) {
     // In order to account for slow internet connections,
     // we always load one image ahead of what we need.
     // TODO: We need to know when the final image is.
-    var spec = getImage(part-1);
+    if(part>0){
+        var spec = getImage(part-1);
+    }
     var spec2= getImage(part);
     var spec3= getImage(part+1);
-
+   
     var canvas = $("#scorecanvas")[0];
     canvas.width = 900;
     canvas.height = 300;
     var context = canvas.getContext("2d");
-    var oc   = document.createElement('canvas'),
-    octx = oc.getContext('2d');
+      
+    if(spec2.complete) {        
 
-    oc.width  = spec.width  * 0.5;
-    oc.height = spec.height * 3 * 0.5;
+        var oc   = document.createElement('canvas'),
+        octx = oc.getContext('2d');
 
-    octx.drawImage(spec, 0, 0, oc.width, spec.height/2);
-    octx.drawImage(spec2, 0, spec.height/2-20, oc.width, spec.height/2);
-    octx.drawImage(spec3, 0, spec.height-40, oc.width, spec.height/2);
-  
-    context.globalAlpha = 1;
-    context.drawImage(oc, 0,  0, oc.width * 0.7, oc.height * 0.7);
+        oc.width  = spec2.width  * 0.5;
+        oc.height = spec2.height * 3 * 0.5;
+        if(part>0){
+            octx.drawImage(spec, 0, 0, oc.width, spec.height/2);
+        }
+        octx.drawImage(spec2, 0, spec2.height/2-20, oc.width, spec2.height/2);
+        octx.drawImage(spec3, 0, spec2.height-40, oc.width, spec2.height/2);
+      
+        context.globalAlpha = 1;
+        context.drawImage(oc, 0,  0, oc.width * 0.7, oc.height * 0.7);
 
-    // Highlight part
-    context.globalAlpha = 0.2;
-    context.fillStyle = '#FFFF00';
-    context.fillRect(10, spec.height/2 *0.7 -10, 850 , 80);
+        // Highlight part
+        context.globalAlpha = 0.2;
+        context.fillStyle = '#FFFF00';
+        if( color in colorsNames){
+            context.fillStyle = colorsNames[color];
+        }
+        context.fillRect(10, spec2.height/2 *0.7 -10, 850 , 80);
+    }else{
+        context.fillStyle = '#FFFFFF';
+        context.fillRect(0,0,900,300);
+
+        context.globalAlpha = 0.2;
+        context.fillStyle = '#000000';
+        context.font = "30px Arial";
+        context.fillText("The score is loading ...", 300, 50);
+    
+    }
+}
+
+function disableScore(currentTime){
+    if (currentTime > (endPeriod+0.5) || currentTime < (startPeriod-0.5)){
+        var canvas = $("#scorecanvas")[0];
+        canvas.width = 900;
+        canvas.height = 300;
+        var context = canvas.getContext("2d");
+
+        context.fillStyle = '#FFFFFF';
+        context.fillRect(0,0,900,300);
+
+        context.globalAlpha = 0.2;
+        context.fillStyle = '#000000';
+        context.font = "30px Arial";
+        context.fillText("No Score for this part", 300, 50);
+    }
 }
 function updateScoreProgress(currentTime){
     if (currentTime > endPeriod || currentTime < startPeriod)
     {
-        for (var i=0; i<aligns.length; i++){
-            if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
-                endPeriod = aligns[i]['endtime'];
-                startPeriod = aligns[i]['starttime'];
-                plotscore(aligns[i]['index']+2); 
-            return;
+        var updated = false;
+        if (lastIndex && aligns.length < (lastIndex + 1)){
+            aligns[lastIndex+1]['starttime'];
+            if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
+                endPeriod = aligns[lastIndex+1]['endtime'];
+                startPeriod = aligns[lastIndex+1]['starttime'];           
+                plotscore(lastIndex+1)   
+                lastIndex = lastIndex+1;
+                updated = true;
             }
-        } 
+        }
+        if(!updated){
+            for (var i=0; i<aligns.length; i++){
+                if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
+                    endPeriod = aligns[i]['endtime'];
+                    startPeriod = aligns[i]['starttime'];
+                    color = aligns[i]['color'];
+                    plotscore(i, color); 
+                    lastIndex = i;
+                    return;
+                }
+            }
+        }
+        disableScore(currentTime); 
     }
 }
 
@@ -236,7 +293,7 @@ function plotpitch() {
 
 function plotsmall() {
     var pxpersec = 900.0/recordinglengthseconds;
-    var smallFill = function(data, colour) {
+    var smallFill = function(data, colour, colorsNames) {
         context.fillStyle = colour;
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
@@ -244,13 +301,15 @@ function plotsmall() {
             var s = d['time'][0];
             var e = d['time'][1];
             context.globalAlpha = 0.4;
-            context.fillStyle = colors[i];
-            
+            context.fillStyle = colorsNames[txt];
+
             var spos = Math.round(s * pxpersec)+0.5;
             var epos = Math.round(e * pxpersec)+0.5;
             context.fillRect(spos, 0, epos-spos, 64);
+            
+            contextNames.push([spos,epos,txt]);
         }
-    };
+        };
     var small = new Image();
     small.src = smallurl;
     var canvas = $("#smallcanvas")[0];
@@ -263,8 +322,19 @@ function plotsmall() {
         //smallFill(luogudata, "#0f0");
     }
     
+        
+
     // Draw sections on smallcanvas
-    smallFill(sections, "#0ff");
+    colorsNames = {};
+    currColor = 0;
+    for (var i = 0; i < sections.length; i++) {
+            var name = sections[i]['name'];
+            if (!(name in colorsNames)){
+                colorsNames[name]=colors[currColor];
+                currColor += 1;
+            }
+    }
+    smallFill(sections, "#0ff", colorsNames);
 }
 
 function drawwaveform() {
@@ -372,21 +442,33 @@ function loaddata() {
                             }
                         } 
                         if (min != Number.MAX_VALUE){
-                            aligns.push({'index':i, 'starttime': start[j]['start'], 'endtime': end[val]['end']});
+                            var color = "default";
+                            for (var s = 0; s < sections.length; s++) {
+                                var t0 = sections[s]['time'][0][0];
+                                var t1 = sections[s]['time'][1][0];
+                                if (start[j]['start'] > t0 && end[val]['end'] < t1){
+                                    color = sections[s]['name'];
+                                    break;
+                                }
+                            }
+
+                            aligns.push({'index':i, 'starttime': start[j]['start'], 'endtime': end[val]['end'], "color":color});
                             end.splice(val,1);
                         }
                     }
                 }
            }
+           aligns.sort(function(a, b){return a['endtime']-b['endtime']});
+           if(lastLoaded < 1){
+               getImage(0);
+           }       
         }
     }
   }
 
 function drawdata() {
     //drawwaveform();
-    if(lastLoaded < 1){
-        getImage(1);
-    }
+    
     plotpitch();
     plotsmall();
     //plotscore(2);
@@ -413,14 +495,14 @@ function mouPlay(desti){
     percent = desti/waveform.width();
     clickseconds = recordinglengthseconds * percent
 
-    console.log(recordinglengthseconds);
+    //console.log(recordinglengthseconds);
     posms = clickseconds * 1000;
-    console.log(clickseconds);
+    //console.log(clickseconds);
     part = Math.ceil(clickseconds / secondsPerView);
     // Update the internal position counter (counts from 0, part counts from 1)
     beginningOfView = (part - 1) * secondsPerView;
-    console.log(pagesound);
-    console.log(pagesound.duration);
+    //console.log(pagesound);
+    //console.log(pagesound.duration);
     if (pagesound && pagesound.duration) {
         // We can only set a position if it's fully loaded
         var wasplaying = !pagesound.paused;
@@ -428,7 +510,7 @@ function mouPlay(desti){
             pagesound.pause();
         }
         pagesound.setPosition(posms);
-        console.log(posms);
+        //console.log(posms);
         replacepart(part);
         updateProgress();
         if (wasplaying) {
