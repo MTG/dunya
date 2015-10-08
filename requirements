@@ -52,6 +52,7 @@ six==1.4.1
 solrpy==0.9.6
 sqlparse==0.1.10
 ssh==1.8.0
+-e git+https://github.com/sertansenturk/symbtrdataextractor.git@master#egg=symbtrdataextractor-dev
 uWSGI==2.0.6
 Wand==0.4.1
 wikitools==1.1.1
