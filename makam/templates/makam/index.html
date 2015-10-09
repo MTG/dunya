@@ -124,7 +124,7 @@ h2{
 #results{
 margin-left: 30px;
 }
-#initial{
+#initial, #loading, #no-results{
   font-family: 'Sintony', sans-serif;
   font-size: 14px;
   margin-left: 30px;
@@ -162,9 +162,21 @@ $(function() {
      });
   });
 function loadTable(data){
+  $('#no-results').hide();
   if (data['results'].length==0){
     $('#next').hide();
     $('#results').hide();
+    var usul = $('#usul-filter option:selected').val(); 
+    var makam = $('#makam-filter option:selected').val(); 
+    var form = $('#form-filter').find('option:selected').val();
+    var artist = $('#combo-artist option:selected').val();
+    
+    if (usul || makam || form || artist){
+        $('#no-results').find('h3').html("There are no results for this search. Try removing some filters.");
+    }else{
+        $('#no-results').find('h3').html("There are no results for this search.");
+    }
+    $('#no-results').show();
     $('#initial').show();
   }else{
     if(data['next']){
@@ -182,23 +194,29 @@ function loadTable(data){
       }
       $('#one-column-emphasis').append('<tr class="work"><td height="30">'+ data['results'][i]['title'] +'</td><td >'+ artists +'</td><td><div class="recordings" data-id="'+ data['results'][i]['mbid']+'"><a href="#">Show</a></div></td></tr>');
     }
-  
     $('#initial').hide();
   }
 }
+
 function getWorks(txt){
+  $('#loading').show();
   var usul = $('#usul-filter option:selected').val(); 
+  var makam = $('#makam-filter option:selected').val(); 
   var form = $('#form-filter').find('option:selected').val();
   var artist = $('#combo-artist option:selected').val();
+   
   $.ajax({
       method: "GET",
       url: "{% url "api-makam-work-list" %}",
       dataType: "json",
-      data: {"q":txt,"usul":usul, "artist":artist, "form":form },
+      data: {"q":txt.trim(),"usul":usul, "artist":artist, "form":form, "makam": makam},
       }).done(function(data) {
          $('#results').show();
          loadTable(data); 
-    });
+         $('#loading').hide();
+      }).fail(function(jqXHR, textStatus ){
+         $('#loading').hide();
+      });
 }
 
 $( document ).ready(function() {
@@ -213,6 +231,8 @@ $( document ).ready(function() {
     getWorks($('#work-query').val());
     return false;
   });
+  
+  // WHEN CLICK SHOW THE RECORDINGS FOR A WORK
   $('#one-column-emphasis').on('click','div.recordings', function() {
    var work=$(this);
    $.ajax({
@@ -283,6 +303,14 @@ return false;
                  <option value="{{i.pk}}" {%if i.pk|slugify == usul %}selected{% endif%}>{{i.name}}</option>
              {% endfor %}
           </select>
+         <label for="makam">Makam</label>
+          <select name="makam" id="makam-filter">
+             <option value="">Select</option>
+             {% for i in makams%}
+                 <option value="{{i.pk}}" {%if i.pk|slugify == usul %}selected{% endif%}>{{i.name}}</option>
+             {% endfor %}
+          </select>
+
          <label for="artist">Composer</label>
           <select name="artist" id="combo-artist">
              <option value="">Select one...</option>
@@ -295,21 +323,31 @@ return false;
         </div>
 
     </form>
-<div id="results" style="display:none">
-<h2>Results</h2>    
-<table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
-    </table>
-<div id="next">
-<a href="#" id="next-page">next</a>
-</div>
-</div>
- <div id="initial">
-<p> This is a demo of the work for score alignment for makam music of Turkey</br> You can search for a specific Work or filter by musical form, usul or composer. If you want to see an example you can go to some of the following recordings:</p>
-<h2>Some Examples</h2>
-<ul>
-<li><a href="/makam/recording/0756f4f9-7fe2-48a8-b1c8-47ef8be9377f" >Uşşak Saz Semai</a></li>
-</ul>
-</div>  
+    <div id="results"  style="display:none">
+        <h2>Results</h2>    
+        <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
+        </table>
+        <div id="next">
+            <a href="#" id="next-page">next</a>
+        </div>
+    </div>
+    <div id="no-results"  style="display:none">
+        <h3> There are no results for this search. 
+        </h3>
+    </div>
+
+    <div id="loading" style="display:none">
+        <p> Please wait, loading
+        <img src="{% static 'makam/img/loader.gif' %}" />
+        </p>
+    </div>
+    <div id="initial">
+        <p> This is a demo of the work for score alignment for makam music of Turkey</br> You can search for a specific Work or filter by musical form, usul or composer. If you want to see an example you can go to some of the following recordings:</p>
+        <h2>Some Examples</h2>
+        <ul>
+            <li><a href="/makam/recording/0756f4f9-7fe2-48a8-b1c8-47ef8be9377f" >Uşşak Saz Semai</a></li>
+        </ul>
+    </div>  
     <div class="clearfix"></div>
 </div>
 {% endblock %}

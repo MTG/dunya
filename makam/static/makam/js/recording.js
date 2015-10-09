@@ -106,18 +106,21 @@ function plottonic(context) {
     // sa+1, dotted
     var tonicval = 255-tonic;
     context.moveTo(0, tonicval);
+    context.lineWidth = 2;
     for (var i = 0; i < 900; i+=10) {
         context.moveTo(i, tonicval);
         context.lineTo(i+5, tonicval);
     }
+    context.strokeStyle = "#ffffff";
+    context.stroke();
 }
 
 function spectrogram(context, view) {
-    plottonic(context);
     var waszero = false;
-    context.moveTo(0, 10);
-    context.lineTo(10, 10);
-    context.moveTo(0,0);
+    //context.moveTo(0, 10);
+    //context.moveTo(0, 10);
+    //context.lineTo(10, 10);
+    //context.moveTo(0,0);
     var skip = secondsPerView / 4;
     // Start is in samples
     var start = (beginningOfView / secondsPerView) * 900 * skip;
@@ -150,6 +153,7 @@ function spectrogram(context, view) {
                 context.moveTo(xpos, tmp);
             } else {
                 context.lineTo(xpos, tmp);
+                context.lineTo(xpos, tmp);
             }
         }
         // Set the pitchvals so we can draw the histogram
@@ -157,10 +161,15 @@ function spectrogram(context, view) {
     }
 
     //context.strokeStyle = "#e71d25";
-    context.strokeStyle = "#eee";
+    context.strokeStyle = "#8A8A8A";
+    context.lineWidth = 3;
+    context.stroke();
+    context.strokeStyle = "#FFFFFF";
     context.lineWidth = 2;
     context.stroke();
+    
     context.closePath();
+    plottonic(context);
 }
 function getImage(part){
     if (lastLoaded > part && startLoaded < part){
@@ -300,7 +309,7 @@ function plotsmall() {
             var txt = d['name'];
             var s = d['time'][0];
             var e = d['time'][1];
-            context.globalAlpha = 0.4;
+            context.globalAlpha = 0.3;
             context.fillStyle = colorsNames[txt];
 
             var spos = Math.round(s * pxpersec)+0.5;

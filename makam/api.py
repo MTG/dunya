@@ -210,7 +210,7 @@ class WorkList(generics.ListAPIView):
         
         artist = self.request.GET.get('artist', None)
         form = self.request.GET.get('form', None)
-        #makam = request.GET.get('makam', None)
+        makam = self.request.GET.get('makam', None)
         usul = self.request.GET.get('usul', None)
 
         if artist and artist != '':
@@ -219,6 +219,8 @@ class WorkList(generics.ListAPIView):
             work = works.filter(form=form)
         if usul and usul != '':
             works = works.filter(usul=usul)
+        if makam and makam != '':
+            works = works.filter(makam=makam)
         works = works.order_by('title')
         return works.all()
 

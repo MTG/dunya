@@ -38,13 +38,13 @@ def main(request):
 
     artists = models.Composer.objects.order_by('name').all()
     forms = models.Form.objects.order_by('name').all()
-    #makams = models.Makam.objects.order_by('name').all()
+    makams = models.Makam.objects.order_by('name').all()
     usuls = models.Usul.objects.order_by('name').all()
 
     ret = {
         'recordings': recordings,
         "artists": artists, 
-        #"makams": makams, 
+        "makams": makams, 
         'usuls': usuls, 
         'forms': forms , 
         }

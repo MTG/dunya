@@ -17,86 +17,89 @@
 {% block title %}{{recording.title}} - {% endblock %}
 
 {% block script %}
-   <style type="text/css">
-        #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
-          width: 14% !important;
-        }
-        #detail.recording #header #scrollrec #summary #innerSummary span h1 {
-              font-size: 14px !important;
-        }
-        #detail.recording .alldata .container .thedata #renderTotal #smallcanvas {
-          opacity: 1;
-        }
-
-#detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
-  background: none;
-  height: 64px;
-  z-index: 4;
-}
-
-#banshis {
-  position: relative;
-  height: 25px;
-  font-size: 15px;
-}
-#banshis .banshi {
-  position: absolute;
-  height: 25px;
-  margin: 2px;
-}
-
-#percussions {
-  position: relative;
-  height: 25px;
-  font-size: 15px;
-}
-#percussions .percussion {
-  position: absolute;
-  height: 25px;
-  margin: 2px;
-}
-
-#timecodes {
-  position: relative;
-  height: 20px;
-}
-#timecodes span {
-  position: absolute;
-  height: 25px;
-  margin: 2px;
-}
-#timecodes .timecode1 {
-  left: 0px;
-}
-#timecodes .timecode2 {
-  left: 220px;
-}
-#timecodes .timecode3 {
-  left: 445px;
-}
-#timecodes .timecode4 {
-  left: 670px;
-}
-#timecodes .timecode5 {
-  right: 0px;
-}
-    </style>
+<style type="text/css">
+  #capcalTotal {
+    background: url('/static/makam/img/capcal.png') 0 0 repeat-y !important;
+    height: 94% !important;
+  }
+  #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
+    width: 14% !important;
+  }
+  #detail.recording #header #scrollrec #summary #innerSummary span h1 {
+    font-size: 14px !important;
+  }
+  #detail.recording .alldata .container .thedata #renderTotal #smallcanvas {
+    opacity: 1;
+  }
+  #detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
+    background: none;
+    height: 64px;
+    z-index: 4;
+  }
+  #banshis {
+    position: relative;
+    height: 25px;
+    font-size: 15px;
+  }
+  #banshis .banshi {
+    position: absolute;
+    height: 25px;
+    margin: 2px;
+  }
+  #percussions {
+    position: relative;
+    height: 25px;
+    font-size: 15px;
+  }
+  #percussions .percussion {
+    position: absolute;
+    height: 25px;
+    margin: 2px;
+  }
+  #timecodes {
+    position: relative;
+    height: 20px;
+  }
+  #timecodes span {
+    position: absolute;
+    height: 25px;
+    margin: 2px;
+  }
+  #timecodes .timecode1 {
+    left: 0px;
+  }
+  #timecodes .timecode2 {
+    left: 220px;
+  }
+  #timecodes .timecode3 {
+    left: 445px;
+  }
+  #timecodes .timecode4 {
+    left: 670px;
+  }
+  #timecodes .timecode5 {
+    right: 0px;
+  }
+  #excerpt{
+   padding-top:0 !important;
+  }    
+</style>
 
 <script>
-    var pitchtrackurl = "http://dunya.compmusic.upf.edu{{pitchtrackurl|safe}}";
-    var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
-    var scoreurl = "http://dunya.compmusic.upf.edu{{scoreurl|safe}}";
-    var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
-    var smallurl = "http://dunya.compmusic.upf.edu{{smallimage|safe}}";
-    var intervalsurl = "http://dunya.compmusic.upf.edu{{intervalsurl|safe}}";
-    var notesalignurl = "http://dunya.compmusic.upf.edu{{notesalignurl|safe}}";
-    var sectionsurl = "http://dunya.compmusic.upf.edu{{sectionsurl|safe}}";
+    var pitchtrackurl = "http://localhost:8001{{pitchtrackurl|safe}}";
+    var waveformurl = "http://localhost:8001{{waveform|safe}}";
+    var scoreurl = "http://localhost:8001{{scoreurl|safe}}";
+    var specurl = "http://localhost:8001{{spectrogram|safe}}";
+    var smallurl = "http://localhost:8001{{smallimage|safe}}";
+    var intervalsurl = "http://localhost:8001{{intervalsurl|safe}}";
+    var notesalignurl = "http://localhost:8001{{notesalignurl|safe}}";
+    var sectionsurl = "http://localhost:8001{{sectionsurl|safe}}";
     var secondsPerView = 8;
     var pitchtrackdata = null;
     var histogramdata = null;
     var rhythmdata = null;
     var aksharadata = null;
-    var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
+    var audiourl = "http://localhost:8001{{audio|safe}}";
     var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
     var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
     var tonic = "{{tonic}}";
@@ -142,7 +145,7 @@
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{recording.title}}</h1>
-		     			<h2> by {% inline_artist_list recording.work_set.get.artistnames %}</h2>
+		     			<h2> by {% for a in recording.artists.all %}{{ a }}{% endfor %} </h2>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
@@ -153,25 +156,26 @@
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
 								<span class="list">
-                                    {% if work %}
-									<label>From album</label><b>{% inline_work work %}</b>
-                                    {% endif %}
-                                    {% if recording.work %}
-									<label>Performing</label><b>{% inline_work recording.work %}</b>
-                                    {% if recording.work.composer %}
-                                    <label>Composer</label><b>
-                                        {% inline_composer recording.work.composer %}</b>
-                                    {% endif %}
-									<label>Taala</label><b>
-		    						</b>
-
-									</b>
-
-                                {% endif %}
-									{% if akshara %}
-                                    <label>Akshara period</label><b>{{akshara}} ms </b>
-									{% endif %}
-
+                                                                   {% for w in  recording.works.all%}
+									<label>Album</label><b><span>{{ w }}</span></b>
+                                                                   {% endfor %}
+                                                                   {% for w in recording.works.all %}
+                                                                     {% for c in w.composerlist.all %}
+                                                                         <label>Composer</label><b><span>{{c}}</span></b>
+                                                                     {% endfor %}
+                                                                     {% for c in w.lyricistlist.all %}
+                                                                         <label>Lyricist</label><b><span>{{c}}</span></b>
+                                                                     {% endfor %}
+                                                                     {% for m in w.makam.all %}
+                                                                         <label>Makam</label><b><span>{{m}}</span></b>
+                                                                     {% endfor %}
+                                                                     {% for f in w.form.all %}
+                                                                         <label>Form</label><b><span>{{f}}</span></b>
+                                                                     {% endfor %}
+                                                                     {% for u in w.usul.all %}
+                                                                         <label>Usul</label><b><span>{{u}}</span></b>
+                                                                     {% endfor %}
+                                                                   {% endfor%}
 								</span>
 							</div>
 				 		</div>
