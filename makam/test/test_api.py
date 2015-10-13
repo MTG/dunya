@@ -200,7 +200,7 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_list(self):
         s = api.RecordingInnerSerializer(self.r)
-        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
+        self.assertEquals(["artists", "mbid", "title"], sorted(s.data.keys()))
 
     def test_recording_detail_url(self):
         resp = self.apiclient.get("/api/makam/recording/2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
