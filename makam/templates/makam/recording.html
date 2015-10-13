@@ -86,20 +86,20 @@
 </style>
 
 <script>
-    var pitchtrackurl = "http://dunya.compmusic.upf.edu{{pitchtrackurl|safe}}";
-    var waveformurl = "http://dunya.compmusic.upf.edu{{waveform|safe}}";
-    var scoreurl = "http://dunya.compmusic.upf.edu{{scoreurl|safe}}";
-    var specurl = "http://dunya.compmusic.upf.edu{{spectrogram|safe}}";
-    var smallurl = "http://dunya.compmusic.upf.edu{{smallimage|safe}}";
-    var intervalsurl = "http://dunya.compmusic.upf.edu{{intervalsurl|safe}}";
-    var notesalignurl = "http://dunya.compmusic.upf.edu{{notesalignurl|safe}}";
-    var sectionsurl = "http://dunya.compmusic.upf.edu{{sectionsurl|safe}}";
+    var pitchtrackurl = "http://localhost:8001{{pitchtrackurl|safe}}";
+    var waveformurl = "http://localhost:8001{{waveform|safe}}";
+    var scoreurl = "http://localhost:8001{{scoreurl|safe}}";
+    var specurl = "http://localhost:8001{{spectrogram|safe}}";
+    var smallurl = "http://localhost:8001{{smallimage|safe}}";
+    var intervalsurl = "http://localhost:8001{{intervalsurl|safe}}";
+    var notesalignurl = "http://localhost:8001{{notesalignurl|safe}}";
+    var sectionsurl = "http://localhost:8001{{sectionsurl|safe}}";
     var secondsPerView = 8;
     var pitchtrackdata = null;
     var histogramdata = null;
     var rhythmdata = null;
     var aksharadata = null;
-    var audiourl = "http://dunya.compmusic.upf.edu{{audio|safe}}";
+    var audiourl = "http://localhost:8001{{audio|safe}}";
     var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
     var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
     var tonic = "{{tonic}}";
@@ -232,8 +232,16 @@
 	     			</div>
 	     		</div>
 	     		<div class="container2">
-	     		  <div class="waveLabel">
-                          </div>
+                          <div class="waveLabel">
+                            <h1>Current Note</h1>
+                                <div>The current player shows the<br /> note-level score alignment for this<br /> recording, enable the following <br /> checkbox to see the current<br /> note over the pitch track.
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="enable-show-pitch"><label for="enable-show-pitch"> Show Current Notes</label>
+                                </div>
+                              <span class="tempoup"></span>
+                              <span class="tempodown"></span>
+                          </div> 
                           <div id="totalcontrol2">
                       <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
 

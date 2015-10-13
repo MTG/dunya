@@ -22,6 +22,7 @@ $(document).ready(function() {
      lastLoaded = 0;
      contextNames = [];
      lastIndex = -1;
+     lastpitch = -1; 
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
@@ -78,6 +79,10 @@ $(document).ready(function() {
          $("[class='"+zclasses+"']").addClass("selected");
          var level = $(this).data("length");
          zoom(level);
+     });
+     
+     $('#enable-show-pitch').change(function(){
+         enabledCurrentPitch = this.checked ;
      });
      loaddata();
 
@@ -398,13 +403,16 @@ function loaddata() {
         success: function(data, textStatus, xhr) {
             var elems = data.notes; 
             symbtrIndex2time = {};
+            pitchintervals = [];
             for (var i=0; i<elems.length;i++){
                 if (!(elems[i].IndexInScore in symbtrIndex2time)){
                     symbtrIndex2time[elems[i].IndexInScore] = [];
                 }
                 symbtrIndex2time[elems[i].IndexInScore].push({'start': parseFloat(elems[i].Interval[0]), 'end': parseFloat(elems[i].Interval[1])});
+                pitchintervals.push({'start': parseFloat(elems[i].Interval[0]), 'end': parseFloat(elems[i].Interval[1])});
             }
             symbtrIndex2timeDone = true;
+            pitchintervals.sort(function(a, b){return a['end']-b['end']});
             dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -571,7 +579,16 @@ function replacepart(pnum) {
     specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
     drawdata();
 }
+function drawCurrentPitch(start, end){
+    startPx = start % secondsPerView * 900 / secondsPerView;
+    
+    endPx = end % secondsPerView * 900 / secondsPerView;
+    var canvas = $("#pitchcanvas")[0];
+    var context = canvas.getContext("2d");
+    context.globalAlpha = 0.5;
+    context.fillRect(startPx, 0, startPx-endPx, 255);
 
+}
 function updateProgress() {
     var currentTime = pagesound.position / 1000;
     // formatseconds appears to run 1 second ahead of time,
@@ -594,6 +611,27 @@ function updateProgress() {
         replacepart(pnum)
     }
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
+    
+    var futureTime = currentTime + 0.2;
+    if(enabledCurrentPitch && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
+        var updated = false;
+        if( pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
+            drawCurrentPitch(pitchintervals[lastpitch + 1]['start'], pitchintervals[lastpitch + 1]['end'])
+            
+            lastpitch = lastpitch+1;
+            updated = true;
+        
+        }
+        if(!updated){
+            for (var i=0; i<pitchintervals.length; i++){
+                if (pitchintervals[i]['start'] < futureTime && pitchintervals[i]['end'] > futureTime){
+                    drawCurrentPitch(pitchintervals[i]['start'], pitchintervals[i]['end'])
+                    lastpitch = i;
+                    return;
+                }
+            }
+        }
+    }
 };
 
 function zoom(level){
