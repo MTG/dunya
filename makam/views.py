@@ -154,6 +154,17 @@ def recording(request, uuid, title=None):
         scoreurl = None 
 
     try:
+        indexmapurl = None
+        if work:
+            indexmapurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "indexmap", 1, version="0.1")
+    except docserver.util.NoFileException:
+        indexmapurl = None 
+
+    documentsurl = None
+    if work:
+        documentsurl = "/document/by-id/%s" % work
+
+    try:
         sectionsurl = docserver.util.docserver_get_url(recording.mbid, "scorealign", "sectionlinks", 1, version="0.1")
     except docserver.util.NoFileException:
         sectionsurl = None 
@@ -186,9 +197,11 @@ def recording(request, uuid, title=None):
            "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
            "scoreurl": scoreurl,
+           "indexmapurl": indexmapurl,
            "sectionsurl": sectionsurl, 
            "notesalignurl": notesalignurl,
            "intervalsurl": intervalsurl,
+           "documentsurl": documentsurl,
     }
     return render(request, "makam/recording.html", ret)
 

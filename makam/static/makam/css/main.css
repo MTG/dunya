@@ -1,0 +1,869 @@
+/*! normalize.css v1.1.0 | MIT License | git.io/normalize */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden] {
+  display: none;
+}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+html,
+button,
+input,
+select,
+textarea {
+  font-family: sans-serif;
+}
+body {
+  margin: 0;
+}
+a:focus {
+  outline: thin dotted;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+}
+h5 {
+  font-size: .83em;
+  margin: 1.67em 0;
+}
+h6 {
+  font-size: .67em;
+  margin: 2.33em 0;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+blockquote {
+  margin: 1em 40px;
+}
+dfn {
+  font-style: italic;
+}
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+mark {
+  background: #ff0;
+  color: #000000;
+}
+p,
+pre {
+  margin: 1em 0;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace,serif;
+  _font-family: 'courier new', monospace;
+  font-size: 1em;
+}
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+q {
+  quotes: none;
+}
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+dl,
+menu,
+ol,
+ul {
+  margin: 1em 0;
+}
+dd {
+  margin: 0 0 0 40px;
+}
+menu,
+ol,
+ul {
+  padding: 0 0 0 40px;
+}
+nav ul,
+nav ol {
+  list-style: none;
+  list-style-image: none;
+}
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 0;
+}
+form {
+  margin: 0;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+  white-space: normal;
+  *margin-left: -7px;
+}
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+button,
+input {
+  line-height: normal;
+}
+button,
+select {
+  text-transform: none;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+  *overflow: visible;
+}
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+  *height: 13px;
+  *width: 13px;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.shadow1 {
+  box-shadow: 1px 1px 3px #666;
+}
+/** This goes at the top right of a 4x4 box or right on a 1x2 box. */
+/* ==========================================================================
+    BASE ELEMENTS
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+html,
+button,
+input,
+select,
+textarea {
+  color: #222;
+}
+body {
+  font-size: 12px;
+  background: #fff;
+  font-family: 'Open Sans', sans-serif;
+}
+::-moz-selection {
+  background: #dcdcdc;
+  text-shadow: none;
+}
+::selection {
+  background: #dcdcdc;
+  text-shadow: none;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+img {
+  vertical-align: middle;
+}
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+textarea {
+  resize: vertical;
+}
+.nopad {
+  padding: 0px !important;
+}
+.header-container,
+.main-container {
+  min-width: 1024px;
+}
+#entitiesList.filterListClosed,
+#entitiesList {
+  width: 150px !important;
+}
+#aboutdialog {
+  padding: 1em;
+  display: none;
+}
+#playback_dialog {
+  display: none;
+}
+/* ==========================================================================
+   HEADER 
+   ========================================================================== */
+.header-container {
+  position: relative;
+  width: 100%;
+}
+.header-container #logo {
+  position: relative;
+  top: 8px;
+  left: 0px;
+  width: 57px;
+  height: 59px;
+  float: left;
+  margin-left: 15px;
+  margin-bottom: 13px;
+}
+.header-container #globalsearch {
+  position: relative;
+  top: 15px;
+  float: left;
+  margin-left: 15px;
+}
+.header-container #globalsearch input {
+  background: url("../img/searchBackground.png") 0 0 no-repeat;
+  border: none;
+  width: 411px;
+  height: 44px;
+  font-family: 'Open Sans', sans-serif;
+  padding: 10px;
+  font-size: 14px;
+  color: #666666;
+  box-shadow: inset 0px 1px 5px #aaa;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+.header-container #globalsearch .button {
+  background: url("../img/icon_search.png") 0 0 no-repeat;
+  width: 28px;
+  height: 29px;
+  position: absolute;
+  top: 8px;
+  border: none;
+  right: 5px;
+}
+.header-container #globalMusic {
+  position: relative;
+  float: left;
+  top: 16px;
+  margin-left: 15px;
+}
+.header-container #globalMusic label {
+  position: relative;
+  font-size: 10px;
+}
+.header-container #globalMusic #gmSelected {
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  background: url("../img/smallArrow.png") 0 7px no-repeat;
+  padding-left: 12px;
+  cursor: pointer;
+}
+.header-container #globalMusic #gmDropDown {
+  list-style: none;
+  margin: 0px;
+  position: absolute;
+  z-index: 4;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 8px #666;
+  padding: 10px;
+  background: url("../img/cloth_alike.png") 0 0 repeat;
+  display: none;
+}
+.header-container #globalMusic #gmDropDown li {
+  list-style: none;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.header-container #erclogo {
+  float: right;
+  position: relative;
+  width: 300px;
+  text-align: right;
+  padding-right: 10px;
+  margin-top: 5px;
+}
+.header-container #erclogo > div {
+  font-size: 10px;
+  margin-top: 15px;
+  display: inline-block;
+  padding-right: 10px;
+}
+.header-container #erclogo span {
+  display: block;
+  text-align: right;
+}
+.header-container #erclogo > img {
+  height: 60px;
+  vertical-align: middle;
+  float: right;
+}
+.header-container nav#mainmenu {
+  float: right;
+  margin-top: 24px;
+  margin-right: 10px;
+}
+.header-container nav#mainmenu > a {
+  float: left;
+  margin: 0;
+  margin-left: 5px;
+  padding: 4px 7px 3px 7px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  color: #221F1F;
+  background: #eeeded;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+}
+.header-container nav#mainmenu #usermenu {
+  float: left;
+  display: block;
+  position: relative;
+  width: auto;
+  height: auto;
+  padding-right: 5px;
+}
+.header-container nav#mainmenu #usermenu > a {
+  margin: 0;
+  margin-left: 5px;
+  padding: 4px 7px 3px 7px;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: #666;
+  background-size: 177px 157px;
+  color: #fff;
+  cursor: pointer;
+}
+.header-container nav#mainmenu #usermenu > a img {
+  width: 20px;
+}
+.header-container nav#mainmenu #usermenu > a.loggedin {
+  background: url("../img/texturelogo.png") 21% 42% no-repeat;
+}
+.header-container nav#mainmenu #usermenuoptions {
+  display: none;
+  position: absolute;
+  right: 9px;
+  top: 30px;
+  font-size: 14px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
+  color: #221F1F;
+  background: #eeeded;
+  padding: 15px;
+  z-index: 40;
+  margin-top: 5px;
+}
+.header-container nav#mainmenu #usermenuoptions > img {
+  width: 150px;
+}
+.header-container nav#mainmenu #usermenuoptions > a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  white-space: nowrap;
+}
+.header-container nav#mainmenu #usermenuoptions > a:hover {
+  text-decoration: underline;
+}
+.header-container nav#mainmenu #usermenuoptions > h3 {
+  color: #000;
+  display: block;
+  white-space: nowrap;
+}
+.header-container nav#mainmenu #usermenuoptions > h3 b {
+  color: #600;
+}
+.header-container nav#mainmenu #usermenuoptions #userArrow {
+  position: absolute;
+  width: 27px;
+  height: 15px;
+  background: url("../img/userArrow.png") 0 0 no-repeat;
+  top: -9px;
+  right: 8px;
+}
+.header-container nav#mainmenu #usermenuoptions.open {
+  margin-top: 0px;
+}
+.header-container nav#mainmenu li:first-child a {
+  margin-left: 0;
+}
+.header-container nav#mainmenu li:last-child a {
+  margin-right: 0;
+}
+.header-container nav#mainmenu ul li {
+  display: inline;
+}
+.header-container nav#mainmenu .oldie nav a {
+  margin: 0 0.7%;
+}
+#uncompatibleIE-bar {
+  position: relative;
+  top: 150px;
+  height: 200px;
+  z-index: 2;
+  opacity: 0.95;
+  background: black;
+  background: #2e2e2e;
+  width: 980px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  bottom: 0px;
+  margin: 0;
+  left: 50%;
+  margin-left: -490px;
+  /* Half of the width */
+
+}
+#uncompatibleIE-bar p {
+  font-size: 28px;
+  font-style: italic;
+  color: white;
+  margin: 5px;
+}
+#uncompatibleIE-bar a {
+  color: #AB4646;
+}
+#cookie-bar {
+  display: none;
+  position: fixed;
+  height: 50px;
+  z-index: 2;
+  opacity: 0.95;
+  background: black;
+  background: #2e2e2e;
+  width: 980px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  bottom: 0px;
+  margin: 0;
+  left: 50%;
+  margin-left: -490px;
+  /* Half of the width */
+
+}
+#cookie-bar p {
+  font-size: 12px;
+  font-style: italic;
+  color: white;
+  margin: 5px;
+}
+#cookie-bar a {
+  color: #AB4646;
+}
+#bootleg-bar {
+  display: none;
+  position: fixed;
+  height: 50px;
+  z-index: 2;
+  opacity: 0.95;
+  background: black;
+  background: #2e2e2e;
+  width: 980px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  bottom: 0px;
+  margin: 0;
+  left: 50%;
+  margin-left: -490px;
+  /* Half of the width */
+
+  width: 500px;
+  margin-left: -250px;
+  display: block;
+  top: 0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+#bootleg-bar p {
+  font-size: 12px;
+  font-style: italic;
+  color: white;
+  margin: 5px;
+}
+#bootleg-bar a {
+  color: #AB4646;
+}
+/* ==========================
+ * Common to all pages
+ * ======================== */
+.miniitem {
+  height: auto !important;
+  left: 0px;
+  position: relative;
+  top: 0px;
+  width: 100% !important;
+  background: none;
+  margin-top: 5px;
+  padding: 6px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  clear: both;
+}
+.miniitem label {
+  font-size: 12px;
+  line-height: 14px;
+  display: block;
+  color: rgba(0, 0, 0, 0.5);
+}
+.miniitem label b {
+  display: block;
+  color: #000;
+}
+.miniitem .disco {
+  float: left;
+  margin-right: 8px;
+  margin-bottom: 15px;
+}
+.miniitem .disco img {
+  width: 40px !important;
+}
+.miniitem .disco a {
+  background: none;
+}
+/******************************
+ * Small things inside badges or on page lists
+ *****************************/
+.miniitem.artist .colorCode {
+  border-color: #69d2e7 !important;
+}
+.miniitem.concert .colorCode {
+  border-color: #a7dbd8 !important;
+}
+.miniitem.work .colorCode {
+  border-color: #e0e4cc !important;
+}
+.miniitem.instrument .colorCode {
+  border-color: #f38630 !important;
+}
+.miniitem.raaga .colorCode {
+  border-color: #fa6900 !important;
+}
+.miniitem.taala .colorCode {
+  border-color: #ecd078 !important;
+}
+.miniitem.recording .colorCode {
+  border-color: #d95b43 !important;
+}
+.miniitem.composer .colorCode {
+  border-color: #c02942 !important;
+}
+/* ==========================================================================
+   LOGIN
+   ========================================================================== */
+#login {
+  position: relative;
+  margin: 0 auto;
+  width: 500px;
+  padding: 30px;
+  padding-top: 100px;
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 8px #ddd, 2px 2px 10px #888;
+  background: #ffffff url("../img/logoDunya.png") 50% 40px no-repeat;
+  color: #333;
+  margin-top: 100px;
+  text-align: center;
+}
+#login h1 {
+  text-shadow: 1px 2px 2px black;
+  color: #ddd;
+}
+#login label {
+  text-align: right;
+  width: 125px;
+  position: relative;
+  display: inline-block;
+}
+#login.logCenter label {
+  text-align: center;
+}
+input[type="button"],
+input[type="submit"] {
+  position: relative;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: #fff;
+  color: #444;
+  border: none;
+  text-transform: uppercase;
+  outline: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7px;
+  padding-bottom: 6px;
+}
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background: #444;
+  color: #ddd;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  position: relative;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  border: none;
+  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
+  background: #fff;
+  color: #000;
+  outline: 0;
+}
+/************
+ * Top segment, used for browse interface and also navigation header on other pages
+ ************/
+#filterMask #filterArea #entitiesList ul li.artist .colorCode {
+  border-color: #69d2e7;
+}
+#filterMask #filterArea #entitiesList ul li.concert .colorCode {
+  border-color: #a7dbd8;
+}
+#filterMask #filterArea #entitiesList ul li.work .colorCode {
+  border-color: #e0e4cc;
+}
+#filterMask #filterArea #entitiesList ul li.instrument .colorCode {
+  border-color: #f38630;
+}
+#filterMask #filterArea #entitiesList ul li.raaga .colorCode {
+  border-color: #fa6900;
+}
+#filterMask #filterArea #entitiesList ul li.taala .colorCode {
+  border-color: #ecd078;
+}
+#filterMask #filterArea #entitiesList ul li.recording .colorCode {
+  border-color: #d95b43;
+}
+#filterMask #filterArea #entitiesList ul li.composer .colorCode {
+  border-color: #c02942;
+}
+#breadcrumb {
+  height: 80px;
+}
+#breadcrumb #navigationhistory .inner {
+  width: 2000px;
+}
+#breadcrumb #navigationhistory .inner .microitem {
+  float: left;
+  clear: none;
+  width: 300px !important;
+  height: 69px !important;
+  margin-left: 4px;
+  overflow: hidden;
+}
+#breadcrumb #navigationhistory .inner .microitem .disco img {
+  width: 15%;
+  height: auto;
+  float: right;
+  margin-top: 3px;
+  margin-right: 3px;
+}
+#breadcrumb #navigationhistory .inner .microitem.artist {
+  background: #69d2e7;
+}
+#breadcrumb #navigationhistory .inner .microitem.concert {
+  background: #a7dbd8;
+}
+#breadcrumb #navigationhistory .inner .microitem.instrument {
+  background: #f38630;
+}
+#breadcrumb #navigationhistory .inner .microitem.raaga {
+  background: #fa6900;
+}
+#breadcrumb #navigationhistory .inner .microitem.taala {
+  background: #ecd078;
+}
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+.visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+.invisible {
+  visibility: hidden;
+}
+.clearer {
+  clear: both;
+}
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  *zoom: 1;
+}

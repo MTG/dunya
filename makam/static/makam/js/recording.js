@@ -23,6 +23,8 @@ $(document).ready(function() {
      contextNames = [];
      lastIndex = -1;
      lastpitch = -1; 
+     scoreLoaded = false;
+     barPages = [];
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
@@ -80,7 +82,8 @@ $(document).ready(function() {
          var level = $(this).data("length");
          zoom(level);
      });
-     
+
+     enabledCurrentPitch = false;
      $('#enable-show-pitch').change(function(){
          enabledCurrentPitch = this.checked ;
      });
@@ -176,88 +179,127 @@ function spectrogram(context, view) {
     context.closePath();
     plottonic(context);
 }
-function getImage(part){
-    if (lastLoaded > part && startLoaded < part){
-       // console.log(images[part-startLoaded]);
-        return images[part-startLoaded]
-    }
-    startLoaded = part;
-    //console.log(startLoaded);
-    for(var i=part; i<aligns.length && (i-startLoaded)<10 ;i++){
-        var spec = new Image();
-        spec.src = scoreurl.replace(/part=[0-9]+/, "part="+(aligns[i]['index']+2));
-        images[i -startLoaded]=spec;
-        lastLoaded=i;
-    }
-    //     console.log(images[part- startLoaded]);
-    return images[part- startLoaded]
-} 
-function plotscore(part, color) {
-    // In order to account for slow internet connections,
-    // we always load one image ahead of what we need.
-    // TODO: We need to know when the final image is.
-    if(part>0){
-        var spec = getImage(part-1);
-    }
-    var spec2= getImage(part);
-    var spec3= getImage(part+1);
-   
-    var canvas = $("#scorecanvas")[0];
-    canvas.width = 900;
-    canvas.height = 300;
-    var context = canvas.getContext("2d");
-      
-    if(spec2.complete) {        
 
-        var oc   = document.createElement('canvas'),
-        octx = oc.getContext('2d');
-
-        oc.width  = spec2.width  * 0.5;
-        oc.height = spec2.height * 3 * 0.5;
-        if(part>0){
-            octx.drawImage(spec, 0, 0, oc.width, spec.height/2);
-        }
-        octx.drawImage(spec2, 0, spec2.height/2-20, oc.width, spec2.height/2);
-        octx.drawImage(spec3, 0, spec2.height-40, oc.width, spec2.height/2);
-      
-        context.globalAlpha = 1;
-        context.drawImage(oc, 0,  0, oc.width * 0.7, oc.height * 0.7);
-
-        // Highlight part
-        context.globalAlpha = 0.2;
-        context.fillStyle = '#FFFF00';
-        if( color in colorsNames){
-            context.fillStyle = colorsNames[color];
-        }
-        context.fillRect(10, spec2.height/2 *0.7 -10, 850 , 80);
-    }else{
-        context.fillStyle = '#FFFFFF';
-        context.fillRect(0,0,900,300);
-
-        context.globalAlpha = 0.2;
-        context.fillStyle = '#000000';
-        context.font = "30px Arial";
-        context.fillText("The score is loading ...", 300, 50);
+function plotscore(index, color) {
+        
+    $("#no-score").hide(); 
+    $("#score-cont").show(); 
+    if (!scoreLoaded ){
+        for(var i=1; i<=numbScore;i++){
+            $("#score-cont").append('<div class="score-page" id="score-'+i+'"></div>');
+        }    
+        for(var i=1; i<=numbScore;i++){
+            score = scoreurl.replace(/part=[0-9]+/, "part="+i);
+            $.ajax(score, {dataType: "text", type: "GET", score:i,
+                success: function(data, textStatus, xhr) {
+                
+                data = data.replace('</svg>','<rect class="marker" x="0" y="0" width="0" height="0" ry="0.0000" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9" /></svg>');
+                
+                $("#score-"+this.score).append(data);
+                var bars = []
+                $("#score-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
+                    var pos = $(this).attr('transform').split("(");
+                    var xy = pos[1].split(", ");
+                    bars.push([parseInt(xy[0]), parseInt(xy[1]), $(this)]);
+                });
+                barPages[this.score] = bars;
     
+            }, error: function(xhr, textStatus, errorThrown) {
+               console.debug("xhr error " + textStatus);
+               console.debug(errorThrown);
+            }});
+        }
+        scoreLoaded = true;
+        
+    }else{
+        if (aligns[index]){
+          var find = false;
+          var curr =   $("a[id^='l" + aligns[index]['line'] + "-f");
+          curr.each(function(){
+              find = find || highlightNote(index, $(this));             
+          });
+          if (!find){
+            console.log("COULD NOT FIND");
+            console.log(index);
+          }
+        }
     }
 }
 
 function disableScore(currentTime){
-    if (currentTime > (endPeriod+0.5) || currentTime < (startPeriod-0.5)){
-        var canvas = $("#scorecanvas")[0];
-        canvas.width = 900;
-        canvas.height = 300;
-        var context = canvas.getContext("2d");
-
-        context.fillStyle = '#FFFFFF';
-        context.fillRect(0,0,900,300);
-
-        context.globalAlpha = 0.2;
-        context.fillStyle = '#000000';
-        context.font = "30px Arial";
-        context.fillText("No Score for this part", 300, 50);
+    if (currentTime > (endPeriod+1) || currentTime < (startPeriod-1)){
+        $("#no-score").show(); 
+        $("#score-cont").hide(); 
     }
 }
+function highlightNote(index, note){
+
+    var find = false;
+    if(parseInt(note.attr('from')) <= aligns[index]['pos'] && parseInt(note.attr('to')) > aligns[index]['pos']){
+        $("a[highlight='1'").attr('highlight','0');
+       
+        var pos = note.find('path').attr('transform').split("(");
+        var xy = pos[1].replace(") scale","").split(',');
+
+        var prev = null;
+        var prevmin= Number.MAX_VALUE;
+        var prevx = 0;
+        var prevy = 0;
+        var next = null;
+        var nextmin= Number.MAX_VALUE;
+        var nextx = 0;
+        var nexty = 0;
+       
+        var page = parseInt(note.closest(".score-page").attr('id').replace("score-",''));
+        var bars = barPages[page];
+        for(var i=0;i<bars.length; i++){
+         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
+             prevmin = parseInt(xy[0]) - bars[i][0];
+             prev = bars[i][2];
+             prevx = bars[i][0];
+             prevy = bars[i][1];
+
+         }
+         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (bars[i][0] - parseInt(xy[0])) > 0 && nextmin > (bars[i][0] - parseInt(xy[0]))){
+             nextmin = bars[i][0] - parseInt(xy[0]) ;
+             next = bars[i][2];
+             nextx = bars[i][0];
+             nexty = bars[i][1];
+         }
+        }
+        note.attr('highlight','1');    
+       
+        $(".score-page").hide();
+        var currScore = $("#score-"+page);
+        currScore.show();
+        $("#score-"+(page+1)).each(function(){$(this).show()});
+        
+        var y = -2 * nexty;
+        if (nexty > 15){
+            
+            y = y * 2 ;
+        }
+        if(next && prev){
+           currScore.find('.marker').attr('x',prevx);
+           currScore.find('.marker').attr('y', prevy-4);
+           currScore.find('.marker').attr('width',nextx-prevx);
+           currScore.find('.marker').attr('height',"10");
+           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
+           $('#score-cont').css("top", y );
+        }else if(next && prev==null){
+           currScore.find('.marker').attr('x', 0);
+           currScore.find('.marker').attr('y', nexty-4);
+           currScore.find('.marker').attr('width',nextx);
+           currScore.find('.marker').attr('height',"10");
+           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
+           $('#score-cont').css("top", y);
+        }
+     
+        find = true;
+    }
+    return find;
+}
+
 function updateScoreProgress(currentTime){
     if (currentTime > endPeriod || currentTime < startPeriod)
     {
@@ -267,7 +309,7 @@ function updateScoreProgress(currentTime){
             if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
                 endPeriod = aligns[lastIndex+1]['endtime'];
                 startPeriod = aligns[lastIndex+1]['starttime'];           
-                plotscore(lastIndex+1)   
+                plotscore(lastIndex)   
                 lastIndex = lastIndex+1;
                 updated = true;
             }
@@ -388,11 +430,33 @@ function loaddata() {
     var symbtrIndex2timeDone = false;
     var intervalsDone = false;
     var sectionsDone = false;
+    var indexmapDone = false;
+    var numbScoreDone = false;
 
     $.ajax(intervalsurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             intervals = data;
             intervalsDone = true;
+            dodraw();
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
+    
+    $.ajax(documentsurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            numbScore = data['derivedfiles']['score']['score']['numparts'];
+            numbScoreDone = true;
+            dodraw();
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
+
+    $.ajax(indexmapurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            indexmap = data;
+            indexmapDone = true;
             dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -431,54 +495,32 @@ function loaddata() {
     }});
 
     function dodraw() {
-        if (pitchDone && symbtrIndex2timeDone && intervalsDone && sectionsDone) {
+        if (pitchDone && symbtrIndex2timeDone && intervalsDone && sectionsDone && indexmapDone && numbScoreDone) {
             drawdata();
             
             endPeriod = 0;
             startPeriod = -1;
            
-            aligns = []
-            for (var i=0; i<intervals.length;i++){
-                var start = [];
-                var end = [];
-                if (intervals[i]['start'] in symbtrIndex2time){
-                    start = symbtrIndex2time[intervals[i]['start']];
-                    
+           aligns = []
+            for (var i=0; i<indexmap.length;i++){
+                var vals = [];
+                if (indexmap[i][0] in symbtrIndex2time){
+                   vals = symbtrIndex2time[indexmap[i][0]];
                 }
-                if (intervals[i]['end'] in symbtrIndex2time){
-                    end = symbtrIndex2time[intervals[i]['end']];                 
-                }
-                if (start.length == end.length) {
-                    for (var j=0;j<start.length;j++){
-                        var min=Number.MAX_VALUE;
-                        var val = 0;
-                        for (var k=0;k<end.length;k++){
-                            if (min > (end[k]['end']-start[j]['start']) && (end[k]['end']-start[j]['start'])){
-                                min = (end[k]['end']-start[j]['start']);
-                                val = k;
-                            }
-                        } 
-                        if (min != Number.MAX_VALUE){
-                            var color = "default";
-                            for (var s = 0; s < sections.length; s++) {
-                                var t0 = sections[s]['time'][0][0];
-                                var t1 = sections[s]['time'][1][0];
-                                if (start[j]['start'] > t0 && end[val]['end'] < t1){
-                                    color = sections[s]['name'];
-                                    break;
-                                }
-                            }
-
-                            aligns.push({'index':i, 'starttime': start[j]['start'], 'endtime': end[val]['end'], "color":color});
-                            end.splice(val,1);
+                for (var j=0;j<vals.length;j++){
+                    var color = "default";
+                    for (var s = 0; s < sections.length; s++) {
+                        var t0 = sections[s]['time'][0][0];
+                        var t1 = sections[s]['time'][1][0];
+                        if (vals[j]['start'] > t0 && vals[j]['end'] < t1){
+                            color = sections[s]['name'];
+                            break;
                         }
-                    }
+                     }
+                     aligns.push({'index':indexmap[i][0], 'starttime': vals[j]['start'], 'endtime': vals[j]['end'], "color":color, "pos": indexmap[i][1], "line": indexmap[i][2]});
                 }
            }
            aligns.sort(function(a, b){return a['endtime']-b['endtime']});
-           if(lastLoaded < 1){
-               getImage(0);
-           }       
         }
     }
   }
@@ -488,7 +530,7 @@ function drawdata() {
     
     plotpitch();
     plotsmall();
-    //plotscore(2);
+    //plotscore(1);
     var start = beginningOfView;
     var skip = secondsPerView / 4;
     $(".timecode1").html(formatseconds(start));
@@ -581,12 +623,12 @@ function replacepart(pnum) {
 }
 function drawCurrentPitch(start, end){
     startPx = start % secondsPerView * 900 / secondsPerView;
-    
     endPx = end % secondsPerView * 900 / secondsPerView;
+    
     var canvas = $("#pitchcanvas")[0];
     var context = canvas.getContext("2d");
     context.globalAlpha = 0.5;
-    context.fillRect(startPx, 0, startPx-endPx, 255);
+    context.fillRect(startPx, 0, endPx-startPx, 255);
 
 }
 function updateProgress() {
@@ -612,7 +654,7 @@ function updateProgress() {
     }
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
     
-    var futureTime = currentTime + 0.2;
+    var futureTime = currentTime ;
     if(enabledCurrentPitch && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
         var updated = false;
         if( pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
