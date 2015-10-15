@@ -530,7 +530,9 @@ function drawdata() {
     
     plotpitch();
     plotsmall();
-    //plotscore(1);
+    if (!scoreLoaded ){
+      plotscore(1);
+    }
     var start = beginningOfView;
     var skip = secondsPerView / 4;
     $(".timecode1").html(formatseconds(start));
