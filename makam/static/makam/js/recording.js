@@ -123,7 +123,7 @@ function plottonic(context) {
     context.stroke();
 }
 
-function spectrogram(context, view) {
+function spectrogram(context, view, color) {
     var waszero = false;
     //context.moveTo(0, 10);
     //context.moveTo(0, 10);
@@ -140,7 +140,7 @@ function spectrogram(context, view) {
     //console.debug("with skip, " + (remaining/skip) + " rem");
     //console.debug("skip " + skip);
     //console.debug("draw from " + start + " to " + end);
-    //context.beginPath();
+    context.beginPath();
     for (var i = start; i < end; i++) {
         // Find our point
         var xpos = i-start;
@@ -161,7 +161,6 @@ function spectrogram(context, view) {
                 context.moveTo(xpos, tmp);
             } else {
                 context.lineTo(xpos, tmp);
-                context.lineTo(xpos, tmp);
             }
         }
         // Set the pitchvals so we can draw the histogram
@@ -169,10 +168,10 @@ function spectrogram(context, view) {
     }
 
     //context.strokeStyle = "#e71d25";
-    context.strokeStyle = "#8A8A8A";
+    context.strokeStyle = color[0];
     context.lineWidth = 3;
     context.stroke();
-    context.strokeStyle = "#FFFFFF";
+    context.strokeStyle = color[1];
     context.lineWidth = 2;
     context.stroke();
     
@@ -337,13 +336,15 @@ function plotpitch() {
     var spec = new Image();
     spec.src = specurl;
     var view = new Uint8Array(pitchdata);
+    var correctedview = new Uint8Array(correctedpitchdata);
     var canvas = $("#pitchcanvas")[0];
     canvas.width = 900;
     canvas.height = 256;
     var context = canvas.getContext("2d");
     spec.onload = function() {
         context.drawImage(spec, 0, 0);
-        spectrogram(context, view);
+        spectrogram(context, view, ["#E0A3C2", "#CC6699"]);
+        spectrogram(context, correctedview, ["#8A8A8A", "#FFFFFF"]);
     }
 }
 
@@ -426,6 +427,19 @@ function loaddata() {
     };
     oReq.send();
 
+    correctedpitchDone = false;
+    var oReq2 = new XMLHttpRequest();
+    oReq2.open("GET", correctedpitchurl, true);
+    oReq2.responseType = "arraybuffer";
+    oReq2.onload = function(oEvent) {
+        if (oReq2.status == 200) {
+            correctedpitchdata = oReq2.response;
+            correctedpitchDone = true;
+            dodraw();
+        }
+    };
+    oReq2.send();
+
     var ticksDone = false;
     var symbtrIndex2timeDone = false;
     var intervalsDone = false;
@@ -495,7 +509,7 @@ function loaddata() {
     }});
 
     function dodraw() {
-        if (pitchDone && symbtrIndex2timeDone && intervalsDone && sectionsDone && indexmapDone && numbScoreDone) {
+        if ( pitchDone && correctedpitchDone && symbtrIndex2timeDone && intervalsDone && sectionsDone && indexmapDone && numbScoreDone) {
             drawdata();
             
             endPeriod = 0;
@@ -627,10 +641,44 @@ function drawCurrentPitch(start, end){
     startPx = start % secondsPerView * 900 / secondsPerView;
     endPx = end % secondsPerView * 900 / secondsPerView;
     
-    var canvas = $("#pitchcanvas")[0];
+    var canvas = $("#overlap-pitch")[0];
     var context = canvas.getContext("2d");
+    canvas.width = 900;
+    canvas.height = 256;
     context.globalAlpha = 0.5;
-    context.fillRect(startPx, 0, endPx-startPx, 255);
+
+    context.clearRect (0, 0, 900, 900);
+    context.beginPath();
+    waszero = false; 
+    for(var i=Math.floor(startPx); i< endPx; i++){
+        var pos = i;
+        console.log(pos);
+        if ( i in pitchvals){
+        var tmp = pitchvals[i] ;
+        console.log(tmp);
+        //context.fillRect(i, tmp, 10, 10);
+        if (tmp == 0 || tmp == 255) {
+            waszero = true;
+            context.moveTo(pos, tmp);
+        } else {
+            if (waszero) {
+                waszero = false;
+                context.moveTo(pos, tmp);
+            } else {
+                context.lineTo(pos, tmp);
+            }
+        }}
+    }
+
+
+    context.strokeStyle = "#DB4D4D";
+    context.lineWidth = 3;
+    context.stroke();
+    context.strokeStyle = "#CC0000";
+    context.lineWidth = 2;
+    context.stroke();
+    
+    context.closePath();
 
 }
 function updateProgress() {

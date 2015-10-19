@@ -105,10 +105,19 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
   }
+  #overlap-pitch{
+    position: absolute; 
+    left: 0px; 
+    top: 0px; 
+/*    width: 900px; 
+    height: 256px; */
+    z-index: 2;
+  }
 </style>
 
 <script>
     var pitchtrackurl = "{{pitchtrackurl|safe}}";
+    var correctedpitchurl = "{{correctedpitchurl|safe}}";
     var waveformurl = "{{waveform|safe}}";
     var scoreurl = "{{scoreurl|safe}}";
     var indexmapurl = "{{indexmapurl|safe}}";
@@ -227,7 +236,8 @@
 	     				<div id="capcal" style="height:255px;"></div>
 
                  <div id="bigPitch">
-                         <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
+                        <canvas id="overlap-pitch" style="width:900px; height:256px;"></canvas>
+                        <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
 		     			 <div id="zooms" style="bottom: 5px;">
                  <!-- <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
                   <a class="zoom zoom2" data-length="16" href="#">x2</a>
