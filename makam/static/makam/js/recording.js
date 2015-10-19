@@ -86,7 +86,23 @@ $(document).ready(function() {
      enabledCurrentPitch = false;
      $('#enable-show-pitch').change(function(){
          enabledCurrentPitch = this.checked ;
+         if (enabledCurrentPitch){
+             $("#overlap-pitch").show();
+             $("#overlap-corrected-pitch").show();
+             $("#enable-corrected-pitch").prop('checked', true);
+         }else{
+             $("#overlap-pitch").hide();
+         }
      });
+     $("#enable-corrected-pitch").change(function(){
+         if (this.checked || enabledCurrentPitch){
+             $("#overlap-corrected-pitch").show();
+         }else{
+             $("#overlap-corrected-pitch").hide();
+         }
+     });
+     
+     
      loaddata();
 
      $("#showRhythm").click(function(e) {
@@ -338,13 +354,17 @@ function plotpitch() {
     var view = new Uint8Array(pitchdata);
     var correctedview = new Uint8Array(correctedpitchdata);
     var canvas = $("#pitchcanvas")[0];
+    var correctedCanvas = $("#overlap-corrected-pitch")[0];
     canvas.width = 900;
     canvas.height = 256;
-    var context = canvas.getContext("2d");
+    correctedCanvas.width = 900;
+    correctedCanvas.height = 256;
+   var context = canvas.getContext("2d");
+    var correctedContext = correctedCanvas.getContext("2d");
     spec.onload = function() {
         context.drawImage(spec, 0, 0);
         spectrogram(context, view, ["#E0A3C2", "#CC6699"]);
-        spectrogram(context, correctedview, ["#8A8A8A", "#FFFFFF"]);
+        spectrogram(correctedContext, correctedview, ["#8A8A8A", "#FFFFFF"]);
     }
 }
 
@@ -652,11 +672,8 @@ function drawCurrentPitch(start, end){
     waszero = false; 
     for(var i=Math.floor(startPx); i< endPx; i++){
         var pos = i;
-        console.log(pos);
         if ( i in pitchvals){
         var tmp = pitchvals[i] ;
-        console.log(tmp);
-        //context.fillRect(i, tmp, 10, 10);
         if (tmp == 0 || tmp == 255) {
             waszero = true;
             context.moveTo(pos, tmp);

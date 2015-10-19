@@ -105,13 +105,14 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
   }
-  #overlap-pitch{
+  #overlap-pitch, #overlap-corrected-pitch{
     position: absolute; 
     left: 0px; 
     top: 0px; 
-/*    width: 900px; 
-    height: 256px; */
     z-index: 2;
+  }
+  #overlap-pitch{
+  z-index: 3;
   }
 </style>
 
@@ -237,6 +238,7 @@
 
                  <div id="bigPitch">
                         <canvas id="overlap-pitch" style="width:900px; height:256px;"></canvas>
+                        <canvas id="overlap-corrected-pitch" style="width:900px; height:256px;"></canvas>
                         <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
 		     			 <div id="zooms" style="bottom: 5px;">
                  <!-- <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
@@ -278,6 +280,9 @@
                                 </div>
                                 <div>
                                     <input type="checkbox" id="enable-show-pitch"><label for="enable-show-pitch"> Show Current Notes</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" checked id="enable-corrected-pitch"><label for="enable-corrected-pitch"> Show Octave Correction</label>
                                 </div>
                               <span class="tempoup"></span>
                               <span class="tempodown"></span>
