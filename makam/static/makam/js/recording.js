@@ -356,7 +356,7 @@ function plotpitch() {
     var spec = new Image();
     spec.src = specurl;
     var view = new Uint8Array(pitchdata);
-    correctedview = new Uint8Array(correctedpitchdata);
+    var correctedview = new Uint8Array(correctedpitchdata);
     var canvas = $("#pitchcanvas")[0];
     var correctedCanvas = $("#overlap-corrected-pitch")[0];
     canvas.width = 900;
@@ -365,10 +365,12 @@ function plotpitch() {
     correctedCanvas.height = 256;
    var context = canvas.getContext("2d");
     var correctedContext = correctedCanvas.getContext("2d");
+    loading = true;
     spec.onload = function() {
         context.drawImage(spec, 0, 0);
         spectrogram(context, view, ["#E0A3C2", "#CC6699"]);
         spectrogram(correctedContext, correctedview, ["#8A8A8A", "#FFFFFF"]);
+        loading = false;
     }
 }
 
@@ -726,8 +728,11 @@ function updateProgress() {
     }
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
     
-    var futureTime = currentTime ;
-    if(enabledCurrentPitch && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
+    updateCurrentPitch();
+};
+function updateCurrentPitch(){
+    var futureTime = pagesound.position / 1000 ;
+    if(!loading && enabledCurrentPitch && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
         var updated = false;
         if( pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
             drawCurrentPitch(pitchintervals[lastpitch + 1]['start'], pitchintervals[lastpitch + 1]['end'])
@@ -746,8 +751,8 @@ function updateProgress() {
             }
         }
     }
-};
 
+}
 function zoom(level){
     secondsPerView = level;
     waveformurl = waveformurl.replace(/waveform[0-9]{1,2}/, "waveform"+level);
