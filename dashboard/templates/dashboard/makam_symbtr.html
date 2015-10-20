@@ -24,16 +24,13 @@
 <p>
 MusicBrainz: <a href="{{url}}">{{url}}</a><br>
 {% endif %}
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table id="datatable">
 {{form.as_table}}
     </table>
-</form>
 
 <h2>Files</h2>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
 
     <h4>pdf</h4>
     {%  if "symbtrpdf" in existingfiles %}
