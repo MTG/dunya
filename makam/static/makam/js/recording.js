@@ -95,10 +95,13 @@ $(document).ready(function() {
          }
      });
      $("#enable-corrected-pitch").change(function(){
-         if (this.checked || enabledCurrentPitch){
+         if (this.checked ){
              $("#overlap-corrected-pitch").show();
          }else{
              $("#overlap-corrected-pitch").hide();
+             $('#enable-show-pitch').attr('checked', false);
+             enabledCurrentPitch = false ;
+             $("#overlap-pitch").hide();
          }
      });
      
@@ -181,6 +184,7 @@ function spectrogram(context, view, color) {
         }
         // Set the pitchvals so we can draw the histogram
         pitchvals[xpos] = tmp;
+    
     }
 
     //context.strokeStyle = "#e71d25";
@@ -352,7 +356,7 @@ function plotpitch() {
     var spec = new Image();
     spec.src = specurl;
     var view = new Uint8Array(pitchdata);
-    var correctedview = new Uint8Array(correctedpitchdata);
+    correctedview = new Uint8Array(correctedpitchdata);
     var canvas = $("#pitchcanvas")[0];
     var correctedCanvas = $("#overlap-corrected-pitch")[0];
     canvas.width = 900;
@@ -607,7 +611,7 @@ function mouPlay(desti){
         pagesound.setPosition(posms);
         //console.log(posms);
         replacepart(part);
-        updateProgress();
+        //updateProgress();
         if (wasplaying) {
             pagesound.resume();
         }
@@ -660,7 +664,7 @@ function replacepart(pnum) {
 function drawCurrentPitch(start, end){
     startPx = start % secondsPerView * 900 / secondsPerView;
     endPx = end % secondsPerView * 900 / secondsPerView;
-    
+      
     var canvas = $("#overlap-pitch")[0];
     var context = canvas.getContext("2d");
     canvas.width = 900;
@@ -670,6 +674,7 @@ function drawCurrentPitch(start, end){
     context.clearRect (0, 0, 900, 900);
     context.beginPath();
     waszero = false; 
+    
     for(var i=Math.floor(startPx); i< endPx; i++){
         var pos = i;
         if ( i in pitchvals){
