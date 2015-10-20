@@ -141,7 +141,7 @@ def recording(request, uuid, title=None):
     try:
         intervalsurl = None
         if work: 
-            intervalsurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "intervals", version="0.1")
+            intervalsurl = docserver.util.docserver_get_url(work, "score", "intervals", version="0.1")
     except docserver.util.NoFileException:
         intervalsurl = None 
     
@@ -153,14 +153,14 @@ def recording(request, uuid, title=None):
     try:
         scoreurl = None
         if work:
-            scoreurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "score", 1, version="0.1")
+            scoreurl = docserver.util.docserver_get_url(work, "score", "score", 1, version="0.1")
     except docserver.util.NoFileException:
         scoreurl = None 
 
     try:
         indexmapurl = None
         if work:
-            indexmapurl = docserver.util.docserver_get_url(recording.works.all()[0].mbid, "score", "indexmap", 1, version="0.1")
+            indexmapurl = docserver.util.docserver_get_url(work, "score", "indexmap", 1, version="0.1")
     except docserver.util.NoFileException:
         indexmapurl = None 
 
