@@ -20,6 +20,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest
 from django.conf import settings
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 
 import json
 import data
@@ -30,7 +32,14 @@ import docserver
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
+def guest_login(request):
+    if not request.user.is_authenticated():
+        user = User.objects.get(username='guest')
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+
 def main(request):
+    guest_login(request)
     q = request.GET.get('q', None)
     recordings = None
     if q and q != '':
@@ -101,6 +110,7 @@ def release(request, uuid, title=None):
     return render(request, "makam/release.html", ret)
 
 def recording(request, uuid, title=None):
+    guest_login(request)
     recording = get_object_or_404(models.Recording, mbid=uuid)
    
     try:

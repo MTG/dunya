@@ -252,7 +252,7 @@ function disableScore(currentTime){
     }
 }
 function highlightNote(index, note){
-
+    
     var find = false;
     if(parseInt(note.attr('from')) <= aligns[index]['pos'] && parseInt(note.attr('to')) > aligns[index]['pos']){
         $("a[highlight='1'").attr('highlight','0');
@@ -286,8 +286,9 @@ function highlightNote(index, note){
              nexty = bars[i][1];
          }
         }
-        note.attr('highlight','1');    
-       
+        if(enabledCurrentPitch){
+            note.attr('highlight','1');    
+        }
         $(".score-page").hide();
         var currScore = $("#score-"+page);
         currScore.show();
