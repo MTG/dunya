@@ -79,8 +79,8 @@ def recording(request, uuid):
         pitchtrackurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "packedpitch")
         histogramurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "drawhistogram")
     except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "normalisedpitch", "packedpitch")
-        histogramurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "normalisedpitch", "drawhistogram")
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s" % (mbid, "normalisedpitch", "packedpitch")
+        histogramurl = "/document/by-id/%s/%s?subtype=%s" % (mbid, "normalisedpitch", "drawhistogram")
 
     ret = {
            "recording": recording,
