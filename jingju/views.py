@@ -18,7 +18,6 @@
 
 from django.shortcuts import render
 from django.http import Http404
-from django.conf import settings
 import math
 import json
 
@@ -64,11 +63,11 @@ def recording(request, uuid):
     length = int(recordings[uuid]["duration"]["val"])
 
     try:
-        spec = docserver.util.docserver_get_url(mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
+        spec = docserver.util.docserver_get_url(mbid, "audioimages", "spectrum32", 1)
     except docserver.util.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
+        small = docserver.util.docserver_get_url(mbid, "audioimages", "smallfull")
     except docserver.util.NoFileException:
         small = None
     try:
@@ -77,11 +76,11 @@ def recording(request, uuid):
         audio = None
 
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "packedpitch", version=settings.FEAT_VERSION_NORMALISED_PITCH)
-        histogramurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_NORMALISED_PITCH)
+        pitchtrackurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "packedpitch")
+        histogramurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "drawhistogram")
     except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "normalisedpitch", "packedpitch", settings.FEAT_VERSION_NORMALISED_PITCH)
-        histogramurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "normalisedpitch", "drawhistogram", settings.FEAT_VERSION_NORMALISED_PITCH)
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "normalisedpitch", "packedpitch")
+        histogramurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "normalisedpitch", "drawhistogram")
 
     ret = {
            "recording": recording,
