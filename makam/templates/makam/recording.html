@@ -192,7 +192,7 @@
 				 		<div class="metaContainer">
 							<div id="excerpt" class="metaDetails recordingDetails">
 								<span class="list">
-                                                                   {% for w in  recording.works.all%}
+                                                                   {% for w in  recording.releaselist%}
 									<label>Album</label><b><span>{{ w }}</span></b>
                                                                    {% endfor %}
                                                                    {% for w in recording.works.all %}
