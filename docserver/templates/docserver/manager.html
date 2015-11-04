@@ -42,6 +42,28 @@ function renderWork(dat){
     html += '</p></div><h4><a href="/document/manager/worker/' + w.host + '">' + w.host + '</a></h4></div>';
   }
   $('#workers').html(html);
+  html = '';
+  if( dat.newworkers.length ){
+    html += '<div class="topbox"><div class="topheader">New workers</div><ul>'  
+    for(var i=0;i<dat.newworkers.length;i++){
+        var w = dat.newworkers[i];  
+        html +='<li>' + w + '<a href="?register=' + w + '">Register</a></li>';
+    }
+    html += '</ul></div>';
+    $(html).insertAfter('#workers');
+  }
+
+  html = '';
+  if( dat.inactiveworkers.length ){
+    html += '<div class="topbox"><div class="topheader">Inactive workers</div><ul>'  
+    for(var i=0;i<dat.inactiveworkers.length;i++){
+        var w = dat.inactiveworkers[i];  
+        html +='<li>' + w + '</li>';
+    }
+    html += '</ul></div>';
+    $(html).insertAfter('#workers');
+  }
+
 }
 $( document ).ready(function() {
   $.ajax({
@@ -74,28 +96,6 @@ $( document ).ready(function() {
   <div id="workers" class="row placeholders">
   <span>Loading Workers status....</span>
   </div>
-
-{% if newworkers %}
-<div class="topbox">
-    <div class="topheader">New workers</div>
-    <ul>
-        {% for w in newworkers %}
-        <li>{{w}} <a href="?register={{w}}">Register</a></li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-
-{% if inactiveworkers %}
-<div class="topbox">
-    <div class="topheader">Inactive workers</div>
-    <ul>
-        {% for w in inactiveworkers %}
-        <li>{{w}}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
 
 <form method="post" action="">
     Press this once to update essentia and pycompmusic from git and restart all workers<br>
