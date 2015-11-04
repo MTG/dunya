@@ -215,8 +215,15 @@ def manager(request):
     modules = models.Module.objects.all().order_by('name')
     collections = models.Collection.objects.all()
 
+    ret = {"modules": modules, "collections": collections}
+    return render(request, 'docserver/manager.html', ret)
+
+@user_passes_test(is_staff)
+def workers_status(request):
     inspect = app.control.inspect()
-    # TODO: Load the task data via ajax, so the page loads quickly
+    latestpycm = models.PyCompmusicVersion.objects.order_by('-commit_date').first()
+    latestessentia = models.EssentiaVersion.objects.order_by('-commit_date').first()
+
     try:
         hosts = inspect.active()
     except:
@@ -230,6 +237,8 @@ def manager(request):
         for w in workers:
             host = w.split("@")[1]
             theworker = workerobs.get(hostname=host)
+            essentia = theworker.essentia
+            pyc = theworker.pycompmusic
             num_proc = len(hosts[w])
             if theworker.state == models.Worker.UPDATING:
                 state = "Updating"
@@ -240,7 +249,7 @@ def manager(request):
             neww.append({"host": host,
                          "number": num_proc,
                          "state": state,
-                         "worker": theworker})
+                         "worker": {'essentia': {'version': essentia.sha1, 'link': essentia.short_link()}, 'pyc': {'version': pyc.sha1, 'link': essentia.short_link()}}})
 
         workers = neww
         newworkers = list(set(hostkeys) - set(workerkeys))
@@ -251,14 +260,10 @@ def manager(request):
         workers = []
         newworkers = []
         inactiveworkers = [w.split("@")[1] for w in workerkeys]
-
-    latestpycm = models.PyCompmusicVersion.objects.order_by('-commit_date').first()
-    latestessentia = models.EssentiaVersion.objects.order_by('-commit_date').first()
-
-    ret = {"modules": modules, "collections": collections, "workers": workers,
-           "newworkers": newworkers, "inactiveworkers": inactiveworkers,
-           "latestpycm": latestpycm, "latestessentia": latestessentia}
-    return render(request, 'docserver/manager.html', ret)
+    ret = {"workers": workers, "newworkers": newworkers, "inactiveworkers": inactiveworkers,
+           "latestpycm": latestpycm.sha1, "latestessentia": latestessentia.sha1}
+    
+    return HttpResponse(json.dumps(ret), content_type='application/json')
 
 def understand_task(task):
     tname = task["name"]

@@ -50,5 +50,6 @@ urlpatterns = [
     url(r'manager/collection/(?P<slug>[^/]+)/%s(?:/(?P<version>\d+))?$' % uuid_match, views.file, name='docserver-file'),
     url(r'manager/module/(?P<module>\d+)$', views.module, name='docserver-module'),
     url(r'manager/worker/(?P<hostname>[^/]+)$', views.worker, name='docserver-worker'),
+    url(r'manager/workers$', views.workers_status, name='docserver-workers'),
     url(r'manager/', views.manager, name='docserver-manager'),
 ] + api_patterns

@@ -14,6 +14,45 @@ input[disabled] {
     color: grey;
 }
 </style>
+<script>
+function renderWork(dat){
+  var html = '';
+  console.log(dat);
+  for(var i=0;i<dat.workers.length;i++){
+    var w = dat.workers[i];  
+    html += '<div class="col-xs-6 col-sm-3 placeholder"><div class="info img-thumbnail">';
+    if( w.number){
+      html += '<span class="h1 activenumber">' +  w.number + '</span><br><span class="h3">' + w.state + '</span>';
+    }else{
+      html += '<span class="h3">' + w.state + '</span>';
+    }
+    html += '<p class="text-left">';
+    if(w.worker.essentia.version != dat.latestessentia){
+      html += '<span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of essentia is older than the most recent in the cluster"> Essentia: ' + w.worker.essentia.link + '</span>';
+    } else if (w.worker.essentia){
+      html += '<span class="label label-default">Ess: ' + w.worker.essentia.link + '</span>';
+    } else {
+      html += '<br>';
+    }
+    if(w.worker.pyc.version != dat.latestpycm){
+      html += '<span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of pycompmusic is older than the most recent in the cluster"> Pcm: ' + w.worker.pyc.link + '</span>';
+    } else if (w.worker.pyc ){
+     html += ' <span class="label label-default">Pcm: ' + w.worker.pyc.link + '</span>';
+    } 
+    html += '</p></div><h4><a href="/document/manager/worker/' + w.host + '">' + w.host + '</a></h4></div>';
+  }
+  $('#workers').html(html);
+}
+$( document ).ready(function() {
+  $.ajax({
+      method: "GET",
+      url: "/document/manager/workers",
+      dataType: "json"
+  }).done(function(dat) {
+      renderWork(dat);
+  });
+});
+</script>
 {% endblock %}
 
 {% block wrap %}
@@ -32,31 +71,8 @@ input[disabled] {
 
 <h2>Workers</h2>
 
-  <div class="row placeholders">
-        {% for w in workers %}
-    <div class="col-xs-6 col-sm-3 placeholder">
-<div class="info img-thumbnail">
-    {% if w.number %}<span class="h1 activenumber">{{w.number}}</span><br><span class="h3">{{w.state}}</span>
-{% else %}
-<span class="h3">{{w.state}}</span>
-    {% endif %}
-    <p class="text-left">
-    {% if w.worker.essentia.commit_date < latestessentia.commit_date %}
-    <span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of essentia is older than the most recent in the cluster"> Essentia: {{w.worker.essentia.short_link|safe}}</span>
-    {% elif w.worker.essentia %}
-    <span class="label label-default">Ess: {{w.worker.essentia.short_link|safe}}</span>
-    {% endif %}
-    <br>
-    {% if w.worker.pycompmusic.commit_date < latestpycm.commit_date %}
-    <span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of pycompmusic is older than the most recent in the cluster"> Pcm: {{w.worker.pycompmusic.short_link|safe}}</span>
-    {% elif w.worker.pycompmusic %}
-    <span class="label label-default">Pcm: {{w.worker.pycompmusic.short_link|safe}}</span>
-    {% endif %}
-    </p>
-</div>
-      <h4><a href="{% url 'docserver-worker' w.host %}">{{w.host}}</a></h4>
-    </div>
-        {% endfor %}
+  <div id="workers" class="row placeholders">
+  <span>Loading Workers status....</span>
   </div>
 
 {% if newworkers %}
