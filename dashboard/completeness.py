@@ -188,9 +188,9 @@ class HindustaniRaagTaal(CompletenessBase):
 
     def task(self, collectionfile_id):
         import hindustani_importer
-        hi = hindustani_importer.HindustaniReleaseImporter(collectionfile_id)
-
         thefile = models.CollectionFile.objects.get(pk=collectionfile_id)
+        hi = hindustani_importer.HindustaniReleaseImporter(thefile.directory.collection)
+
         fpath = thefile.path
         meta = compmusic.file_metadata(fpath)
         m = meta["meta"]
