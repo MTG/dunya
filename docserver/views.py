@@ -212,11 +212,27 @@ def manager(request):
             jobs.run_module(int(run))
             return redirect('docserver-manager')
 
-    modules = models.Module.objects.all().order_by('name')
     collections = models.Collection.objects.all()
 
-    ret = {"modules": modules, "collections": collections}
+    ret = {"collections": collections}
     return render(request, 'docserver/manager.html', ret)
+
+@user_passes_test(is_staff)
+def modules_status(request):
+    modules = []
+    for m in models.Module.objects.all().order_by('name'):
+        modules.append({'disabled': m.disabled, 
+            'abs_url': m.get_absolute_url(),
+            'name': m.name,
+            'module': m.module,
+            'latest_version_number': m.latest_version_number(),
+            'processed_files': len(m.processed_files()),
+            'unprocessed_files': len(m.unprocessed_files()),
+            'pk': m.pk,
+            'collections': [c.name for c in m.collections.all()]
+            })
+    ret = {"modules": modules}
+    return HttpResponse(json.dumps(ret), content_type='application/json')
 
 @user_passes_test(is_staff)
 def workers_status(request):

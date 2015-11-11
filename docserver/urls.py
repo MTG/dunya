@@ -51,5 +51,6 @@ urlpatterns = [
     url(r'manager/module/(?P<module>\d+)$', views.module, name='docserver-module'),
     url(r'manager/worker/(?P<hostname>[^/]+)$', views.worker, name='docserver-worker'),
     url(r'manager/workers$', views.workers_status, name='docserver-workers'),
+    url(r'manager/modules$', views.modules_status, name='docserver-modules'),
     url(r'manager/', views.manager, name='docserver-manager'),
 ] + api_patterns

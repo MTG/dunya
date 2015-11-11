@@ -38,11 +38,19 @@
     <tr>
         <td></td>
         <td>{{v.version}}</td>
-        <td><a href="{% url 'docserver-collectionversion' 'processed' collection.slug v.pk %}">
+        {% if v.module.many_files %}
+            <td><a href="{% url 'docserver-file' collection.slug collection.collectionid v.pk %}">
                 {% processed_count_for_collection v collection %}</a></td>
-        <td><a href="{% url 'docserver-collectionversion' 'unprocessed' collection.slug v.pk %}">
+            <td><a href="{% url 'docserver-file' collection.slug collection.collectionid v.pk %}">
+            {% unprocessed_count_for_collection v collection %}</a></td>
+            <td></td>
+        {% else %}
+            <td><a href="{% url 'docserver-collectionversion' 'processed' collection.slug v.pk %}">
+                {% processed_count_for_collection v collection %}</a></td>
+            <td><a href="{% url 'docserver-collectionversion' 'unprocessed' collection.slug v.pk %}">
                 {% unprocessed_count_for_collection v collection %}</a></td>
-        <td></td>
+            <td></td>
+        {% endif %}
     </tr>
     {% endfor %}
     {% endfor %}
