@@ -9,7 +9,7 @@ from docserver import util
 
 class SourceFileTest(TestCase):
     def setUp(self):
-        permission = Permission.objects.get(codename='docserver.read_restricted')
+        permission = Permission.objects.get(codename='read_restricted')
         self.nuser = auth.models.User.objects.create_user("normaluser")
 
         self.suser = auth.models.User.objects.create_user("user1", "", "pass1")
