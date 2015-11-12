@@ -8,8 +8,8 @@ from django.test.runner import DiscoverRunner
 from django.db import connections, DEFAULT_DB_ALIAS
 
 # We use the XMLTestRunner on CI
-class DunyaTestRunner(XMLTestRunner):
-#class DunyaTestRunner(DiscoverRunner):
+#class DunyaTestRunner(XMLTestRunner):
+class DunyaTestRunner(DiscoverRunner):
     def setup_databases(self):
         result = super(DunyaTestRunner, self).setup_databases()
         connection = connections[DEFAULT_DB_ALIAS]

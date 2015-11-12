@@ -246,7 +246,7 @@ def get_user_permissions(user):
     permission = ["U"]
     if user.is_staff:
         permission = ["S", "R", "U"]
-    elif user.has_perm('docserver.access_restricted_file'):
+    elif user.has_perm('docserver.read_restricted'):
         permission = ["R", "U"]
     return permission
 
