@@ -88,16 +88,16 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
         return models.Document.objects
 
     def create(self, request, external_identifier):
-        title = None
-        if "title" in request.kwargs:
-            title = request.kwargs["title"]
+        title = request.data.get("title", None)
+        slug = request.data.get("collection", None)
             
-        if not "slug" in request.kwargs:
+        if not slug:
             raise Exception("Slug not present in request")
-        slug = request.kwargs["slug"]
 
         collection = get_object_or_404(models.Collection.objects, slug=slug)
-        return util.docserver_create_document(collection.collectionid, external_identifier, title)
+        doc = util.docserver_create_document(collection.collectionid, external_identifier, title)
+        serialized = serializers.DocumentSerializer(doc)
+        return response.Response(serialized.data, status=status.HTTP_201_CREATED)
 
 class SourceFileException(Exception):
     def __init__(self, status_code, message):
