@@ -91,7 +91,6 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
         title = None
         if "title" in self.kwargs:
             title = self.kwargs["title"]
-        if "title" in self.kwargs:
             
         if not "slug" in self.kwarg:
             raise Exception("Slug not present in request")
