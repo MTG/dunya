@@ -267,22 +267,23 @@ class WorkTest(ApiTestCase):
 class InstrumentTest(ApiTestCase):
     def setUp(self):
         super(InstrumentTest, self).setUp()
-        self.i1 = models.Instrument.objects.create(pk=3, name="inst1")
+        self.uuid = "1f20598b-cf3a-4253-a576-d8025abb47fd"
+        self.i1 = models.Instrument.objects.create(pk=3, name="inst1", mbid=self.uuid)
         self.rec1 = models.Recording.objects.create(title="rec1")
         self.a1 = models.Artist.objects.create(name="a1")
         models.InstrumentPerformance.objects.create(recording=self.rec1, artist=self.a1, instrument=self.i1)
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i1)
-        self.assertEquals(["artists", "id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["artists", "mbid", "name"], sorted(s.data.keys()))
         self.assertEquals(1, len(s.data["artists"]))
 
     def test_render_instrument_list(self):
         s = api.InstrumentInnerSerializer(self.i1)
-        self.assertEquals(["id", "name"], sorted(s.data.keys()))
+        self.assertEquals(["mbid", "name"], sorted(s.data.keys()))
 
     def test_instrument_detail_url(self):
-        resp = self.apiclient.get("/api/makam/instrument/3")
+        resp = self.apiclient.get("/api/makam/instrument/%s" % self.uuid)
         self.assertEqual(200, resp.status_code)
 
     def test_instrument_list_url(self):

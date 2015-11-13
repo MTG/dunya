@@ -49,7 +49,7 @@ class ReleaseRecordingInnerSerializer(serializers.ModelSerializer):
 
 class RecordingInnerSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer('artists', many=True)
-    
+
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'artists']
@@ -77,7 +77,7 @@ class ReleaseInnerSerializer(serializers.ModelSerializer):
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name']
+        fields = ['mbid', 'name']
 
 class MakamList(generics.ListAPIView):
     queryset = models.Makam.objects.all()
@@ -172,7 +172,7 @@ def usulbyid(request, pk):
 class InstrumentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name']
+        fields = ['mbid', 'name']
 
 class InstrumentList(generics.ListAPIView):
     queryset = models.Instrument.objects.all()
@@ -183,10 +183,11 @@ class InstrumentDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name', 'artists']
+        fields = ['mbid', 'name', 'artists']
 
 class InstrumentDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_url_kwarg = 'uuid'
+    lookup_field = 'mbid'
     queryset = models.Instrument.objects.all()
     serializer_class = InstrumentDetailSerializer
 
@@ -204,10 +205,10 @@ class WorkList(generics.ListAPIView):
     def get_queryset(self):
         works = models.Work.objects
         q = self.request.GET.get('q', None)
-        
+
         if q:
             works = works.unaccent_get(q)
-        
+
         artist = self.request.GET.get('artist', None)
         form = self.request.GET.get('form', None)
         makam = self.request.GET.get('makam', None)
