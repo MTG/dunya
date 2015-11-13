@@ -182,6 +182,21 @@ def delete_collection(request, uuid):
     return render(request, 'dashboard/delete_collection.html', ret)
 
 @user_passes_test(is_staff)
+def delete_database_files(request, uuid):
+    c = get_object_or_404(models.Collection, pk=uuid)
+
+    if request.method == "POST":
+        delete = request.POST.get("delete")
+        if delete.lower().startswith("yes"):
+            c.collectiondirectory_set.all().delete()
+            return redirect("dashboard-home")
+        elif delete.lower().startswith("no"):
+            return redirect("dashboard-collection", c.pk)
+
+    ret = {"collection": c}
+    return render(request, 'dashboard/delete_collection_db_files.html', ret)
+
+@user_passes_test(is_staff)
 def collection(request, uuid):
     c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), pk=uuid)
 
@@ -193,7 +208,7 @@ def collection(request, uuid):
     if forcescan is not None:
         jobs.force_load_and_import_collection(c.id)
         return redirect('dashboard-collection', uuid)
-
+    
     order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)\
         .prefetch_related('musicbrainzreleasestate_set')\

@@ -34,6 +34,7 @@
     <div class="topheader">Actions</div>
     <li><a href="?rescan">Scan and update collection</a>
     <li><a href="?forcescan">Scan and reimport all existing data</a>
+    <li><a href="{% url 'dashboard-delete-collection-db-files' collection.pk %}">Delete Related Files and Directory from Database</a>
     <li><a href="{% url 'dashboard-delete-collection' collection.pk %}">Delete collection</a>
     <p>
     <li><a href="?order=error">Order by errors first</a>

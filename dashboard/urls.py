@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^collection/%s$' % (uuid_match, ), views.collection, name='dashboard-collection'),
     url(r'^collection/%s/edit$' % (uuid_match, ), views.editcollection, name='dashboard-editcollection'),
     url(r'^delete_collection/%s$' % (uuid_match, ), views.delete_collection, name='dashboard-delete-collection'),
+    url(r'^delete_collection_db_files/%s$' % (uuid_match, ), views.delete_database_files, name='dashboard-delete-collection-db-files'),
     url(r'addcollection$', views.addcollection, name='dashboard-addcollection'),
     url(r'release/(?P<releaseid>\d+)$', views.release, name='dashboard-release'),
     url(r'directory/(?P<dirid>\d+)$', views.directory, name='dashboard-directory'),
