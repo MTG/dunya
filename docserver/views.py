@@ -89,12 +89,12 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
 
     def create(self, request, external_identifier):
         title = None
-        if "title" in self.kwargs:
-            title = self.kwargs["title"]
+        if "title" in request.kwargs:
+            title = request.kwargs["title"]
             
-        if not "slug" in self.kwarg:
+        if not "slug" in request.kwargs:
             raise Exception("Slug not present in request")
-        slug = self.kwargs["slug"]
+        slug = request.kwargs["slug"]
 
         collection = get_object_or_404(models.Collection.objects, slug=slug)
         return util.docserver_create_document(collection.collectionid, external_identifier, title)
