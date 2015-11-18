@@ -122,56 +122,24 @@ def import_release(releasepk, ri):
     release.add_log_message("Starting import")
     collection = release.collection
 
-    # 1. Run release checkers
+    # If there have been no errors, import to the docserver
+    # and to dunya
+    cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
+    for cfile in cfiles:
+        # 3a. Import file to docserver
+        docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
+        cfile.set_state_finished()
+
+    # 3b. Import release to dunya database
     abort = False
-    rcheckers = collection.checkers.filter(type='r')
-    for check in rcheckers:
-        inst = check.get_instance()
-        release.add_log_message("Running release test %s" % inst.name)
+    if collection.do_import:
         try:
-            res = inst.do_check(release.id)
-            # If the test fails and abort_on_bad is set then we stop the import
-            abort = abort or (not res and inst.abort_on_bad)
+            directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
+            ri.import_release(release.mbid, directories)
         except Exception as e:
-            # also stop the import if there's an exception
             abort = True
             tb = traceback.format_exc()
             release.add_log_message(tb)
-
-    cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
-    # 2. Run file checkers
-    fcheckers = collection.checkers.filter(type='f')
-    for cfile in cfiles:
-        # 2a. Check file
-        for check in fcheckers:
-            inst = check.get_instance()
-            cfile.add_log_message("Running file test %s" % inst.name)
-            try:
-                res = inst.do_check(cfile.id)
-                abort = abort or (not res and inst.abort_on_bad)
-            except Exception as e:
-                abort = True
-                tb = traceback.format_exc()
-                cfile.add_log_message(tb)
-                cfile.set_state_error()
-
-    if not abort:
-        # If there have been no errors, import to the docserver
-        # and to dunya
-        for cfile in cfiles:
-            # 3a. Import file to docserver
-            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
-            cfile.set_state_finished()
-
-        # 3b. Import release to dunya database
-        if collection.do_import:
-            try:
-                directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
-                ri.import_release(release.mbid, directories)
-            except Exception as e:
-                abort = True
-                tb = traceback.format_exc()
-                release.add_log_message(tb)
 
     if not abort:
         # If the import succeeded, clean up.
@@ -346,7 +314,6 @@ def _match_directory_to_release(collectionid, root):
             therelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
             cd.musicbrainzrelease = therelease
             cd.save()
-            cd.add_log_message("Successfully matched to a release", None)
 
             mp3files = _get_mp3_files(os.listdir(root))
             for f in mp3files:
@@ -355,11 +322,7 @@ def _match_directory_to_release(collectionid, root):
                 size = os.path.getsize(os.path.join(root, f))
                 cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid, defaults={'filesize': size})
         except models.MusicbrainzRelease.DoesNotExist:
-            cd.add_log_message("Cannot find this directory's release (%s) in the imported releases" % (releaseid, ), None)
-    elif len(rels) == 0:
-        cd.add_log_message("No releases found in ID3 tags", None)
-    else:
-        cd.add_log_message("More than one release found in ID3 tags", None)
+            pass
 
 def scan_and_link(collectionid):
     """ Scan the root directory of a collection and see if any directories

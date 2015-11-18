@@ -12,7 +12,7 @@
     <div class="topheader">Info</div>
     <li>Directory: {{directory.full_path}}
     {% if got_release_id %}
-        <li>Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a> 
+        <li>Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a>
         {% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}">{{artistname}}</a>{% endif %}
     {% else %}
         <li>This release doesn't have any Musicbrainz tags set.
@@ -35,7 +35,5 @@
     </td></tr>
     {% endfor %}
 </table>
-
-{% include "dashboard/log.html" with logs=directory.collectiondirectorylogmessage_set.all %}
 
 {% endblock %}
