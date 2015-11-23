@@ -153,9 +153,12 @@ class SymbTrForm(forms.ModelForm):
 
     def clean_uuid(self):
         data = self.cleaned_data['uuid']
-        import makam
-        if makam.models.SymbTr.objects.filter(uuid=data).exists():
-            raise forms.ValidationError("UUID already exists")
+        if 'uuid' in self.changed_data or self.instance.pk is None:
+            # If this is new, or if the uuid has changed, check if
+            # there is already an object with this id
+            import makam
+            if makam.models.SymbTr.objects.filter(uuid=data).exists():
+                raise forms.ValidationError("UUID already exists")
         return data
 
 
