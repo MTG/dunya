@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^form/%s$' % (uuid_match, ), hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
 
     url(r'^instrument$', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),
-    url(r'^instrument/(?P<pk>\d+)$', hindustani.api.InstrumentDetail.as_view(), name='api-hindustani-instrument-detail'),
+    url(r'^instrument/%s$' % (uuid_match, ), hindustani.api.InstrumentDetail.as_view(), name='api-hindustani-instrument-detail'),
 
     url(r'^work$', hindustani.api.WorkList.as_view(), name='api-hindustani-work-list'),
     url(r'^work/%s$' % uuid_match, hindustani.api.WorkDetail.as_view(), name='api-hindustani-work-detail'),
