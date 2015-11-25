@@ -87,7 +87,7 @@ def _get_module_instance_by_path(modulepath):
 def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)
     try:
-        sourcetype = models.SourceFileType.objects.get(extension=instance._sourcetype)
+        sourcetype = models.SourceFileType.objects.get_by_slug(instance._sourcetype)
     except models.SourceFileType.DoesNotExist as e:
         raise Exception("Cannot find source file type '%s'" % instance._sourcetype, e)
     if models.Module.objects.filter(slug=instance._slug).exists():
