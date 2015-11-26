@@ -4,7 +4,7 @@
         "description": null,
         "percussion": false,
         "source": null,
-        "mbid": "8d050ded-8749-4a6c-849f-2ec332b91b73",
+        "mbid": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa",
         "references": [],
         "name_tr": "Vokal",
         "images": [],
@@ -458,7 +458,7 @@
         "references": [],
         "name_tr": "Perk\u00fcsyon",
         "images": [],
-        "hidden": false,
+        "hidden": true,
         "name": "Percussion"
     },
     "model": "makam.instrument",
@@ -733,5 +733,230 @@
     },
     "model": "makam.instrument",
     "pk": 56
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "29480d87-363a-467b-9950-058c0fe86fe6",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "santur"
+    },
+    "model": "makam.instrument",
+    "pk": 57
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "39d85868-3476-45cc-94d0-3d43e3135921",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "pipe organ"
+    },
+    "model": "makam.instrument",
+    "pk": 58
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "3a4d70ed-7c34-4d50-b6a3-b8ce63a8c234",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "End-blown Flute"
+    },
+    "model": "makam.instrument",
+    "pk": 59
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "4431f7b0-69a4-49ee-b84f-15dda19fb70c",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "tambourine"
+    },
+    "model": "makam.instrument",
+    "pk": 60
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "6a0a53ab-1e66-45c4-af0d-2ec1e145b84e",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": true,
+        "name": "body percussion"
+    },
+    "model": "makam.instrument",
+    "pk": 61
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "7d86c75c-bccd-4c9d-a73d-4bb443e5110b",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "timpani"
+    },
+    "model": "makam.instrument",
+    "pk": 62
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "8947e594-91fe-4143-9acd-d567963224aa",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "lavta"
+    },
+    "model": "makam.instrument",
+    "pk": 63
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "b0acbf59-ffba-4e2f-8104-31aed56fa364",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "tef"
+    },
+    "model": "makam.instrument",
+    "pk": 64
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "59054b12-01ac-43ee-a618-285fd397e461",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": true,
+        "name": "instrument"
+    },
+    "model": "makam.instrument",
+    "pk": 65
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "628a9658-f54c-4142-b0c0-95f031b544da",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": true,
+        "name": "performer"
+    },
+    "model": "makam.instrument",
+    "pk": 66
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "3b6616c5-88ba-4341-b4ee-81ce1e6d7ebb",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": true,
+        "name": "performing orchestra"
+    },
+    "model": "makam.instrument",
+    "pk": 67
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "117dacfc-0ad0-4e90-81a4-a28b4c03929b",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "Spanish acoustic guitar"
+    },
+    "model": "makam.instrument",
+    "pk": 68
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "34c1af71-f7fc-4e34-a46a-5c29ee4c019b",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "folk harp"
+    },
+    "model": "makam.instrument",
+    "pk": 69
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "6682190e-1ead-40cf-903f-76cbe351c019",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "\u00c7evgen"
+    },
+    "model": "makam.instrument",
+    "pk": 70
+},
+{
+    "fields": {
+        "description": null,
+        "percussion": false,
+        "source": null,
+        "mbid": "f711b03f-86c6-4e67-86eb-c6716ddbe1c1",
+        "references": [],
+        "name_tr": "",
+        "images": [],
+        "hidden": false,
+        "name": "K\u00f6s"
+    },
+    "model": "makam.instrument",
+    "pk": 71
 }
 ]
