@@ -185,7 +185,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         except makam.models.Instrument.DoesNotExist:
             return None
 
-    def _performance_type_to_instrument(self, performance_type, attrs):
+    def _performance_type_to_instrument(self, perf_type, attrs):
         if perf_type in [release_importer.RELATION_ORCHESTRA, release_importer.RELATION_PERFORMER, release_importer.RELATION_VOCAL]:
             try:
                 instrument = makam.models.Instrument.objects.get(mbid=perf_type)
