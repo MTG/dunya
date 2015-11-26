@@ -185,27 +185,40 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         except makam.models.Instrument.DoesNotExist:
             return None
 
-    def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+    def _performance_type_to_instrument(performance_type, attrs):
+        if perf_type in [release_importer.RELATION_ORCHESTRA, release_importer.RELATION_PERFORMER, release_importer.RELATION_VOCAL]:
+            try:
+                instrument = makam.models.Instrument.objects.get(mbid=perf_type)
+            except makam.models.Instrument.DoesNotExist:
+                pass
+            attributes = " ".join(attrs)
+        elif perf_type == release_importer.RELATION_INSTRUMENT:
+            if attrs:
+                instr_name = attrs[-1]
+                instrument = self._get_instrument(instr_name)
+                attrs = attrs[:-1]
+                attributes = " ".join(attrs)
+
+        return instrument, attributes
+
+    def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        if instrument:
-            instrument = self._get_instrument(instrument)
-        recording = makam.models.Recording.objects.get(mbid=recordingid)
-        perf = makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
 
-    def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
-        logger.info("  Adding release performance...")
-        artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
-        if instrument:
-            release = makam.models.Release.objects.get(mbid=releaseid)
-            # For each recording in the release, see if the relationship
-            # already exists. If not, create it.
-            for rec in release.recordings.all():
-                if not makam.models.InstrumentPerformance.objects.filter(
-                   recording=rec, instrument=instrument, artist=artist).exists():
-                    perf = makam.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
-                    perf.save()
+        instrument = None
+        is_lead = False
+        if "lead" in attrs:
+            is_lead = True
+
+        instrument, attributes = _performance_type_to_instrument(perf_type, attrs)
+
+        recording = makam.models.Recording.objects.get(mbid=recordingid)
+        perf = makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, attributes=attributes, lead=is_lead)
+
+    def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
+        # We don't expect to see any release-level performance relationships, so we
+        # raise an error to quit the whole import, so that we can fix it
+        raise Exception("Performance relationship found on release %s" % releaseid)
 
     def _clear_work_composers(self, work):
         work.composers.clear()

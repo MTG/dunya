@@ -369,6 +369,7 @@ class InstrumentPerformance(models.Model):
     artist = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument', blank=True, null=True)
     lead = models.BooleanField(default=False)
+    attributes = models.CharField(max_length=200, blank=True, null=True)
 
     def __unicode__(self):
         person = u"%s" % self.artist
