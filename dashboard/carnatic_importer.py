@@ -226,28 +226,39 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         except carnatic.models.Instrument.DoesNotExist:
             return None
 
-    def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+    def _performance_type_to_instrument(self, perf_type, attrs):
+        is_lead = False
+        if perf_type == release_importer.RELATION_VOCAL:
+            instr_name = "voice"
+            if "lead vocals" in attrs:
+                is_lead = True
+        elif perf_type == release_importer.RELATION_INSTRUMENT:
+            instr_name = attrs[-1]
+            attrs = attrs[:-1]
+            if "lead" in attrs:
+                is_lead = True
+
+        attributes = " ".join(attrs)
+        instrument = self._get_instrument(instr_name)
+
+        return instrument, attributes, is_lead
+
+    def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
-        if instrument:
-            recording = carnatic.models.Recording.objects.get(mbid=recordingid)
-            perf = carnatic.models.InstrumentPerformance(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
-            perf.save()
+        recording = carnatic.models.Recording.objects.get(mbid=recordingid)
 
-    def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
+        instrument, attributes, is_lead = self._performance_type_to_instrument(perf_type, attrs)
+
+        if instrument:
+            carnatic.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
+
+    def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         logger.info("  Adding concert performance...")
-        artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
 
         concert = carnatic.models.Concert.objects.get(mbid=releaseid)
-        # Instrument could be None if we don't know it
-
         for rec in concert.recordings.all():
-            if not carnatic.models.InstrumentPerformance.objects.filter(
-               recording=rec, instrument=instrument, artist=artist).exists():
-                perf = carnatic.models.InstrumentPerformance(recording=rec, instrument=instrument, artist=artist, lead=is_lead)
-                perf.save()
+            self._add_recording_performance(rec.mbid, artistid, perf_type, attrs)
 
     def _clear_work_composers(self, work):
         work.composers.clear()
