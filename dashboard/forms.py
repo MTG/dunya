@@ -36,14 +36,6 @@ class CollectionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
 
-        choices = []
-        for checker in models.CompletenessChecker.objects.all():
-            choices.append((checker.pk, checker.name))
-        self.ccheckers = choices
-
-        self.fields['checkers'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=choices)
-
-
     def clean_path(self):
         pth = self.cleaned_data.get('path')
         if pth and not os.path.exists(pth):

@@ -37,7 +37,7 @@ import time
 
 from mishkal.tashkeel.tashkeel import TashkeelClass
 from ALA_LC_Transliterator import ALA_LC_Transliterator
-import arabic_reshaper 
+import arabic_reshaper
 
 import andalusian
 import carnatic
@@ -55,7 +55,6 @@ def editcollection(request, uuid):
         data = {'collectionid': uuid,
                 'path': request.POST.get("path"),
                 'do_import': request.POST.get("do_import"),
-                'checkers': request.POST.getlist("checkers")
                 }
         form = forms.EditCollectionForm(uuid, data)
         if form.is_valid():
@@ -63,18 +62,12 @@ def editcollection(request, uuid):
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
             do_import = form.cleaned_data['do_import']
-            checkers = []
-            for i in form.cleaned_data['checkers']:
-                checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
 
             if coll_name and coll_name != collection.name:
                 collection.name = coll_name
             collection.do_import = do_import
             collection.root_directory = path
             collection.save()
-
-            collection.checkers.clear()
-            collection.checkers.add(*checkers)
 
             doccoll = docserver.models.Collection.objects.get(collectionid=coll_id)
             if coll_name and coll_name != doccoll.name:
@@ -83,11 +76,9 @@ def editcollection(request, uuid):
             doccoll.save()
             return redirect('dashboard-collection', uuid)
     else:
-        checkers = [str(c.pk) for c in collection.checkers.all()]
         data = {'collectionid': uuid,
                 'path': collection.root_directory,
                 'do_import': collection.do_import,
-                'checkers': checkers,
                 }
         form = forms.EditCollectionForm(uuid, data)
     ret = {'form': form}
@@ -103,14 +94,10 @@ def addcollection(request):
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
             do_import = form.cleaned_data['do_import']
-            checkers = []
-            for i in form.cleaned_data['checkers']:
-                checkers.append(get_object_or_404(models.CompletenessChecker, pk=int(i)))
             dashboard_root = os.path.join(path, models.Collection.AUDIO_DIR)
             new_collection = models.Collection.objects.create(
                 id=coll_id, name=coll_name,
                 root_directory=dashboard_root, do_import=do_import)
-            new_collection.checkers.add(*checkers)
             docserver_coll, created = docserver.models.Collection.objects.get_or_create(
                 collectionid=coll_id,
                 defaults={"root_directory": path, "name": coll_name})
@@ -287,29 +274,14 @@ def release(request, releaseid):
     files = release.collectiondirectory_set.order_by('path').all()
     log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
 
-    allres = []
-    results = release.get_latest_checker_results()
-    for r in results:
-        allres.append({"latest": r,
-                       "others": release.get_rest_results_for_checker(r.checker.id)
-                       })
-
     modules = docserver.models.Module.objects.all()
-    ret = {"release": release, "files": files, "results": allres, "log_messages": log,
+    ret = {"release": release, "files": files, "log_messages": log,
            "modules": modules}
     return render(request, 'dashboard/release.html', ret)
 
 @user_passes_test(is_staff)
 def file(request, fileid):
     thefile = get_object_or_404(models.CollectionFile, pk=fileid)
-    log = thefile.collectionfilelogmessage_set.order_by('-datetime').all()
-
-    allres = []
-    results = thefile.get_latest_checker_results()
-    for r in results:
-        allres.append({"latest": r,
-                       "others": thefile.get_rest_results_for_checker(r.checker.id)
-                       })
 
     collection = thefile.directory.collection
     docid = thefile.recordingid
@@ -324,8 +296,6 @@ def file(request, fileid):
     except docserver.models.Document.DoesNotExist:
         pass
     ret = {"file": thefile,
-           "results": allres,
-           "log_messages": log,
            "sourcefiles": sourcefiles,
            "derivedfiles": derivedfiles,
            "docsrvdoc": docsrvdoc}
@@ -811,7 +781,7 @@ def import_andalusian_elements(request):
             if klass:
                 for row in reader:
                     elem, created = klass.objects.get_or_create(name = row[0].decode('utf8'))
-                    
+
                     voc = vocalizer.tashkeel(row[0].decode('utf8'))
                     tr = transliterator.do(voc.strip())
                     elem.transliterated_name = arabic_reshaper.reshape(tr)
@@ -834,14 +804,14 @@ def import_andalusian_catalog(request):
             reader = csv.reader(csv_file.read().splitlines())
             next(reader)
             for row in reader:
-                
+
                 genre = row[0]
                 rec_mbid = row[11]
                 nawba = row[14]
                 tab = row[15]
                 form = row[16]
                 mizan = row[17]
-                
+
                 if rec_mbid:
                     section_start = row[18]
                     section_end = row[19]
@@ -852,12 +822,12 @@ def import_andalusian_catalog(request):
                     form = andalusian.models.Form.objects.get(name=form.decode('utf8'))
                     nawba = andalusian.models.Nawba.objects.get(name=nawba.decode('utf8'))
                     mizan = andalusian.models.Mizan.objects.get(name=mizan.decode('utf8'))
-                    
+
                     voc = vocalizer.tashkeel(row[0].decode('utf8'))
                     tr = transliterator.do(voc.strip())
                     genre.transliterated_name = arabic_reshaper.reshape(tr)
                     genre.save()
-                    
+
                     voc = vocalizer.tashkeel(rec.title)
                     tr = transliterator.do(voc.strip())
                     rec.transliterated_title = arabic_reshaper.reshape(tr)

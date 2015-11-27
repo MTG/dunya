@@ -72,31 +72,6 @@ class MusicbrainzReleaseManager(StateCarryingManager):
     stateclass = "MusicbrainzReleaseState"
     linkname = "musicbrainzrelease"
 
-class CompletenessChecker(models.Model):
-    """ Stores information about modules that have been written to check
-    the completeness and consistency of the data that we have stored in
-    external sources and the audio files.
-    See the dashboard.jobs module for more information
-    """
-    TYPE_CHOICE = (('r', 'Release'), ('f', 'File'))
-    name = models.CharField(max_length=200)
-    module = models.CharField(max_length=200)
-    templatefile = models.CharField(max_length=200, blank=True, null=True)
-    # flag for if this a checker for a single file, or for a whole release
-    type = models.CharField(max_length=5, choices=TYPE_CHOICE)
-
-    def __unicode__(self):
-        return u"%s (%s / %s)" % (self.name, self.module, self.type)
-
-    def get_instance(self):
-        """ Import the class referred to by 'module' and return
-        an instance of it """
-        mod, clsname = self.module.rsplit(".", 1)
-        package = importlib.import_module(mod)
-        cls = getattr(package, clsname)
-        instance = cls()
-        return instance
-
 class CollectionState(models.Model):
 
     class Meta:
@@ -123,8 +98,6 @@ class Collection(models.Model):
     last_updated = models.DateTimeField(default=django.utils.timezone.now)
     root_directory = models.CharField(max_length=255)
 
-    # The Completeness Checkers to run on this collection
-    checkers = models.ManyToManyField(CompletenessChecker)
     # If we want to import this collection to main Dunya
     do_import = models.BooleanField(default=True)
 
@@ -187,7 +160,7 @@ class Collection(models.Model):
         return CollectionLogMessage.objects.create(collection=self, message=message)
 
 class CollectionLogMessage(models.Model):
-    """ A message that a completeness checker can add to a Collection """
+    """ A message about a collection """
 
     class Meta:
         ordering = ['-datetime']
@@ -277,30 +250,16 @@ class MusicbrainzRelease(models.Model):
     def get_previous_states(self):
         return self.musicbrainzreleasestate_set.all()[1:]
 
-    def get_latest_checker_results(self):
-        # for each checker, get one result ordered by date
-        ret = []
-        for ch in CompletenessChecker.objects.filter(type='r'):
-            results = self.musicbrainzreleaseresult_set.filter(checker=ch).all()
-            if len(results):
-                ret.append(results[0])
-        return ret
-
-    def get_rest_results_for_checker(self, checkerid):
-        # order by date
-        return self.musicbrainzreleaseresult_set.filter(checker__id=checkerid)[1:]
-
-    def add_log_message(self, message, checker=None):
-        return MusicbrainzReleaseLogMessage.objects.create(musicbrainzrelease=self, checker=checker, message=message)
+    def add_log_message(self, message):
+        return MusicbrainzReleaseLogMessage.objects.create(musicbrainzrelease=self, message=message)
 
 class MusicbrainzReleaseLogMessage(models.Model):
-    """ A message that a completeness checker can add to a MusicbrainzRelease """
+    """ A message about a MusicbrainzRelease """
 
     class Meta:
         ordering = ['-datetime']
 
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease)
-    checker = models.ForeignKey(CompletenessChecker, blank=True, null=True)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -334,25 +293,8 @@ class CollectionDirectory(models.Model):
     def get_absolute_url(self):
         return reverse('dashboard-directory', args=[int(self.id)])
 
-    def add_log_message(self, message, checker=None):
-        return CollectionDirectoryLogMessage.objects.create(collectiondirectory=self, checker=checker, message=message)
-
     def get_file_list(self):
         return self.collectionfile_set.order_by('name').all()
-
-class CollectionDirectoryLogMessage(models.Model):
-    """ A message that a completeness checker can add to a CollectionDirectory """
-
-    class Meta:
-        ordering = ['-datetime']
-
-    collectiondirectory = models.ForeignKey(CollectionDirectory)
-    checker = models.ForeignKey(CompletenessChecker, blank=True, null=True)
-    message = models.TextField()
-    datetime = models.DateTimeField(default=django.utils.timezone.now)
-
-    def __unicode__(self):
-        return u"%s: %s" % (self.datetime, self.message)
 
 class CollectionFileState(models.Model):
     """ Indicates the processing state of a single file.
@@ -424,96 +366,6 @@ class CollectionFile(models.Model):
     def get_previous_states(self):
         return self.collectionfilestate_set.all()[1:]
 
-    def add_log_message(self, message, checker=None):
-        return CollectionFileLogMessage.objects.create(collectionfile=self, checker=checker, message=message)
-
     def get_absolute_url(self):
         return reverse('dashboard-file', args=[int(self.id)])
 
-    def get_latest_checker_results(self):
-        # for each checker, get the most recent result
-        ret = []
-        for ch in CompletenessChecker.objects.filter(type='f'):
-            results = self.collectionfileresult_set.filter(checker=ch)
-            if len(results):
-                ret.append(results[0])
-        return ret
-
-    def get_rest_results_for_checker(self, checkerid):
-        # order by date
-        return self.collectionfileresult_set.filter(checker__id=checkerid)[1:]
-
-class CollectionFileLogMessage(models.Model):
-    """ A message that a completeness checker can add to a CollectionFile """
-
-    class Meta:
-        ordering = ['-datetime']
-
-    collectionfile = models.ForeignKey(CollectionFile)
-    checker = models.ForeignKey(CompletenessChecker, blank=True, null=True)
-    message = models.TextField()
-    datetime = models.DateTimeField(default=django.utils.timezone.now)
-
-class CollectionFileResult(models.Model):
-    """ The result of running a single completeness checker
-    on a single file. The a completeness checker either returns
-    True or False.
-    """
-
-    class Meta:
-        ordering = ['-datetime']
-
-    RESULT_CHOICE = (('g', 'Good'), ('b', 'Bad'))
-    datetime = models.DateTimeField(default=django.utils.timezone.now)
-    collectionfile = models.ForeignKey(CollectionFile)
-    checker = models.ForeignKey(CompletenessChecker)
-    result = models.CharField(max_length=10, choices=RESULT_CHOICE)
-    data = models.TextField(blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s testing %s: %s" % (self.checker.name, self.collectionfile.name, self.result)
-
-    def get_result_icon(self):
-        icons = {"g": "tick.png",
-                 "b": "cross.png"
-                 }
-        return icons[self.result]
-
-    @property
-    def data_object(self):
-        if self.data:
-            return json.loads(self.data)
-        else:
-            return {}
-
-class MusicbrainzReleaseResult(models.Model):
-    """ The result of running a single completeness checker
-    on a single release. The a completeness checker either returns
-    True or False.
-    """
-
-    class Meta:
-        ordering = ['-datetime']
-
-    RESULT_CHOICE = (('g', 'Good'), ('b', 'Bad'))
-    datetime = models.DateTimeField(default=django.utils.timezone.now)
-    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
-    checker = models.ForeignKey(CompletenessChecker)
-    result = models.CharField(max_length=10, choices=RESULT_CHOICE)
-    data = models.TextField(blank=True, null=True)
-
-    def __unicode__(self):
-        return u"%s testing %s: %s" % (self.checker.name, self.musicbrainzrelease.title, self.result)
-
-    def get_result_icon(self):
-        icons = {"g": "tick.png",
-                 "b": "cross.png"
-                 }
-        return icons[self.result]
-
-    @property
-    def data_object(self):
-        if self.data:
-            return json.loads(self.data)
-        else:
-            return {}
