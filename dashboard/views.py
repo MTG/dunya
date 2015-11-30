@@ -248,6 +248,12 @@ def release(request, releaseid):
         jobs.import_single_release.delay(release.id)
         return redirect('dashboard-release', releaseid)
 
+    delete = request.GET.get("delete")
+    if delete is not None:
+        collection = release.collection
+        release.delete()
+        return redirect('dashboard-collection', collection.pk)
+
     ignore = request.GET.get("ignore")
     if ignore is not None:
         release.ignore = True

@@ -22,6 +22,7 @@
 <div class="topbox">
     <div class="topheader">Actions</div>
     <li><a href="?reimport">Reimport release</a>
+    <li><a href="?delete" onclick="return confirm('Are you sure you want to delete?')">Delete this release from dashboard (to reimport)</a>
     {% if not release.ignore %}
     <li><a href="?ignore" title="Don't try and automatically import this release">Ignore release</a>
     {% endif %}
