@@ -56,14 +56,6 @@ class CollectionDunyaTask(DunyaTask):
 class ReleaseDunyaTask(DunyaTask):
     ObjectClass = models.MusicbrainzRelease
 
-def load_and_import_collection(collectionid):
-    """ Scan the collection contents and import all releases that
-    haven't been imported before.
-    """
-    # Note, use 'immutable subtasks' (.si()) which doesn't pass results from 1 method to the next
-    chain = load_musicbrainz_collection.si(collectionid) | import_all_releases.si(collectionid)
-    chain.apply_async()
-
 def force_load_and_import_collection(collectionid):
     """ Scan the collection contents and import every release again
     (including ones already imported)
@@ -195,46 +187,6 @@ def force_import_all_releases(collectionid):
                 r.ignore = False
                 r.save()
             unstarted.append(r)
-    for r in unstarted:
-        import_release(r.id, ri)
-    collection.set_state_finished()
-
-@app.task(base=CollectionDunyaTask)
-def import_all_releases(collectionid):
-    """ Import releases in a collection.
-    This will not import releases that are ignored, or have a state of 'finished'
-    unless the file changed.
-    It will also not import releases that are missing a matching directory.
-    """
-    collection = models.Collection.objects.get(pk=collectionid)
-    collection.set_state_importing()
-    ri = get_release_importer(collection)
-    if not ri:
-        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
-        collection.set_state_error()
-        return
-    releases = collection.musicbrainzrelease_set.filter(ignore=False)
-    unstarted = []
-    for r in releases:
-        matched_paths = r.collectiondirectory_set.all()
-        # Only import if it's not finished and has a matched directory
-        if r.get_current_state().state != 'f' and len(matched_paths):
-            unstarted.append(r)
-        elif len(matched_paths):
-            added = False
-            for m in matched_paths:
-                for f in m.collectionfile_set.all():
-                    afile = os.path.join(collection.root_directory, f.path)
-                    if not os.path.isfile(afile):
-                        f.delete()
-                        if (m.collectionfile_set.all()) ==0:
-                            m.delete()
-                    elif not f.filesize == os.path.getsize(afile):
-                        f.filesize = os.path.getsize(afile)
-                        f.save()
-                        if not added:
-                            unstarted.append(r)
-                            added = True
     for r in unstarted:
         import_release(r.id, ri)
     collection.set_state_finished()

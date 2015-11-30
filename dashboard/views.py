@@ -187,15 +187,11 @@ def delete_database_files(request, uuid):
 def collection(request, uuid):
     c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), pk=uuid)
 
-    rescan = request.GET.get("rescan")
-    if rescan is not None:
-        jobs.load_and_import_collection(c.id)
-        return redirect('dashboard-collection', uuid)
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
         jobs.force_load_and_import_collection(c.id)
         return redirect('dashboard-collection', uuid)
-    
+
     order = request.GET.get("order")
     releases = models.MusicbrainzRelease.objects.filter(collection=c)\
         .prefetch_related('musicbrainzreleasestate_set')\
