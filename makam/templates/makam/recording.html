@@ -3,87 +3,87 @@
 {% load carnatic.badges %}
 {% load staticfiles %}
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/pages.less' %}" />
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/recording.less' %}" />
-    {% else %}
-    <link rel="stylesheet" type="text/css" href="{% static 'makam/css/pages.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'makam/css/recording.css' %}" />
-    {% endif %}
+{% if debug %}
+{% load less %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/pages.less' %}" />
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/recording.less' %}" />
+{% else %}
+<link rel="stylesheet" type="text/css" href="{% static 'makam/css/pages.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'makam/css/recording.css' %}" />
+{% endif %}
 {% endblock %}
 
 {% block title %}{{recording.title}} - {% endblock %}
 
 {% block script %}
 <style type="text/css">
-  #capcal{
-  background: url('/static/carnatic/img/capcal.png') 0 0 repeat-y !important;
-  }
+#capcal{
+    background: url('/static/carnatic/img/capcal.png') 0 0 repeat-y !important;
+}
   #capcalTotal {
-    height: 94% !important;
+      height: 94% !important;
   }
   #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
-    width: 14% !important;
+      width: 14% !important;
   }
   #detail.recording #header #scrollrec #summary #innerSummary span h1 {
-    font-size: 14px !important;
+      font-size: 14px !important;
   }
   #detail.recording .alldata .container .thedata #renderTotal #smallcanvas {
-    opacity: 1;
+      opacity: 1;
   }
   #detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
-    background: none;
-    height: 64px;
-    z-index: 4;
+      background: none;
+      height: 64px;
+      z-index: 4;
   }
   #banshis {
-    position: relative;
-    height: 25px;
-    font-size: 15px;
+      position: relative;
+      height: 25px;
+      font-size: 15px;
   }
   #banshis .banshi {
-    position: absolute;
-    height: 25px;
-    margin: 2px;
+      position: absolute;
+      height: 25px;
+      margin: 2px;
   }
   #percussions {
-    position: relative;
-    height: 25px;
-    font-size: 15px;
+      position: relative;
+      height: 25px;
+      font-size: 15px;
   }
   #percussions .percussion {
-    position: absolute;
-    height: 25px;
-    margin: 2px;
+      position: absolute;
+      height: 25px;
+      margin: 2px;
   }
   #timecodes {
-    position: relative;
-    height: 20px;
+      position: relative;
+      height: 20px;
   }
   #timecodes span {
-    position: absolute;
-    height: 25px;
-    margin: 2px;
+      position: absolute;
+      height: 25px;
+      margin: 2px;
   }
   #timecodes .timecode1 {
-    left: 0px;
+      left: 0px;
   }
   #timecodes .timecode2 {
-    left: 220px;
+      left: 220px;
   }
   #timecodes .timecode3 {
-    left: 445px;
+      left: 445px;
   }
   #timecodes .timecode4 {
-    left: 670px;
+      left: 670px;
   }
   #timecodes .timecode5 {
-    right: 0px;
+      right: 0px;
   }
   #excerpt{
-   padding-top:0 !important;
+      padding-top:0 !important;
   }
   svg a {
       color: #000000 !important;
@@ -92,71 +92,81 @@
       background-color: yellow;
       color: red;
       margin: 10px; 
-       box-shadow: 0 0 20px yellow;
+      box-shadow: 0 0 20px yellow;
   }
   #score{
-  overflow: hidden;
+      overflow: hidden;
   }
   #score-cont{
-  position: relative;
+      position: relative;
   }
   #no-score{
-    margin: 30px 0 0 20px;
-    color: #46433a;
-    font-size: 30px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 300;
+      margin: 30px 0 0 20px;
+      color: #46433a;
+      font-size: 30px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
   }
-  #overlap-pitch, #overlap-corrected-pitch{
-    position: absolute; 
-    left: 0px; 
-    top: 0px; 
-    z-index: 2;
+  #overlap-pitch, #overlap-histogram, #histogram-current-note{
+      position: absolute; 
+      left: 0px; 
+      top: 0px; 
+      z-index: 2;
+  }
+  #histogramcanvas{
+    filter: alpha(opacity=70);
+      opacity: 0.7;
+  
   }
   #overlap-pitch{
-  z-index: 3;
+      z-index: 3;
   }
 </style>
 
 <script>
-    var pitchtrackurl = "{{pitchtrackurl|safe}}";
-    var correctedpitchurl = "{{correctedpitchurl|safe}}";
-    var waveformurl = "{{waveform|safe}}";
-    var scoreurl = "{{scoreurl|safe}}";
-    var indexmapurl = "{{indexmapurl|safe}}";
-    var specurl = "{{spectrogram|safe}}";
-    var smallurl = "{{smallimage|safe}}";
-    var intervalsurl = "{{intervalsurl|safe}}";
-    var notesalignurl = "{{notesalignurl|safe}}";
-    var sectionsurl = "{{sectionsurl|safe}}";
-    var documentsurl = "{{documentsurl|safe}}";
-    var secondsPerView = 8;
-    var pitchtrackdata = null;
-    var histogramdata = null;
-    var rhythmdata = null;
-    var aksharadata = null;
-    var audiourl = "{{audio|safe}}";
-    var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
-    var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
-    var tonic = "{{tonic}}";
+var pitchMax = "{{max_pitch}}";
+var pitchMin = "{{min_pitch}}";
+var histogramurl = "{{histogramurl|safe}}";
+var notemodelsurl = "{{notemodelsurl|safe}}";
+var pitchtrackurl = "{{pitchtrackurl|safe}}";
+var waveformurl = "{{waveform|safe}}";
+var scoreurl = "{{scoreurl|safe}}";
+var indexmapurl = "{{indexmapurl|safe}}";
+var specurl = "{{spectrogram|safe}}";
+var smallurl = "{{smallimage|safe}}";
+var intervalsurl = "{{intervalsurl|safe}}";
+var notesalignurl = "{{notesalignurl|safe}}";
+var sectionsurl = "{{sectionsurl|safe}}";
+var documentsurl = "{{documentsurl|safe}}";
+var secondsPerView = 8;
+var pitchtrackdata = null;
+var histogramdata = null;
+var rhythmdata = null;
+var aksharadata = null;
+var audiourl = "{{audio|safe}}";
+var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
+var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
+var tonicurl = "{{tonicurl}}";
+var worksurl = "{{worksurl}}";
+var phraseurl = "{{phraseurl}}";
 
-    {% if user.is_authenticated %}
-    function playrecord(){
-        if(plButton.hasClass("stop")){
-            pause();
-            plButton.removeClass("stop");
-        }else{
-            play();
-            plButton.addClass("stop");
-        }
+{% if user.is_authenticated %}
+function playrecord(){
+    if(plButton.hasClass("stop")){
+        pause();
+        plButton.removeClass("stop");
+    }else{
+        play();
+        plButton.addClass("stop");
     }
-    {% else %}
-    function playrecord(){
-        $( "#playback_dialog" ).dialog( "open" );
-    }
-    {% endif %}
+}
+{% else %}
+function playrecord(){
+    $( "#playback_dialog" ).dialog( "open" );
+}
+{% endif %}
 
-    widthOfChildren('.metaContainer');
+widthOfChildren('.metaContainer');
 
 </script>
 <script src="{% static 'makam/js/recording.js' %}"></script>
@@ -164,159 +174,151 @@
 
 {% block wrap %}
 {% if bootleg %}
-    <div id="bootleg-bar">
-       <div style="float:left">
-           <p>This is a bootleg recording only visible to CompMusic researchers.
-           <br>Do not share.</p>
-       </div>
-       <div style="float:right; margin-top:10px;margin-right:10px;">
-           <button onclick='$("#bootleg-bar").hide()'>Ok</button>
-       </div>
+<div id="bootleg-bar">
+    <div style="float:left">
+        <p>This is a bootleg recording only visible to CompMusic researchers.
+        <br>Do not share.</p>
     </div>
+    <div style="float:right; margin-top:10px;margin-right:10px;">
+        <button onclick='$("#bootleg-bar").hide()'>Ok</button>
+    </div>
+</div>
 {% endif %}
 <div id="detail" class="recording">
-     	<div id="header">
-     	   <div id="scrollrec">
-         <div id="summary">
-     			<div id="innerSummary">
-	     			<span>
-		     			<h1>{{recording.title}}</h1>
-		     			<h2> by {% for a in recording.artists.all %}{{ a }}{% endfor %} </h2>
-	     			</span>
-     			</div>
-     			<div id="summaryBack"></div>
-     		</div>
-         <div id="meta">
-	     		<div class="metaBlock">
-					<div class="metaMask">
-				 		<div class="metaContainer">
-							<div id="excerpt" class="metaDetails recordingDetails">
-								<span class="list">
-                                                                   {% for w in  recording.releaselist%}
-									<label>Album</label><b><span>{{ w }}</span></b>
-                                                                   {% endfor %}
-                                                                   {% for w in recording.works.all %}
-                                                                     {% for c in w.composerlist.all %}
-                                                                         <label>Composer</label><b><span>{{c}}</span></b>
-                                                                     {% endfor %}
-                                                                     {% for c in w.lyricistlist.all %}
-                                                                         <label>Lyricist</label><b><span>{{c}}</span></b>
-                                                                     {% endfor %}
-                                                                     {% for m in w.makam.all %}
-                                                                         <label>Makam</label><b><span>{{m}}</span></b>
-                                                                     {% endfor %}
-                                                                     {% for f in w.form.all %}
-                                                                         <label>Form</label><b><span>{{f}}</span></b>
-                                                                     {% endfor %}
-                                                                     {% for u in w.usul.all %}
-                                                                         <label>Usul</label><b><span>{{u}}</span></b>
-                                                                     {% endfor %}
-                                                                   {% endfor%}
-								</span>
-							</div>
-				 		</div>
-					</div>
-	     		</div>
-     		</div>
-     	   </div>
-         <div id="totalcontrol">
-          <div id="control">
-                  <div class="revButton"></div>
-              <div class="plButton" onclick="playrecord();"></div>
-                  <div class="folButton"></div>
-          </div>
-         </div>
-    <div style="padding-top:6px; margin-right:1em;">
-    </div>
-	     	<div class="clearfix"></div>
-     	</div><!-- HEADER END -->
-
-	 	<div class="alldata">
-	 	    <div class="container">
-	     	<div class="thedata">
-	     		<div id="rendersMask" style="height:650px;">
-	     			<div id="renders">
-	     				<div id="capcal" style="height:255px;"></div>
-
-                 <div id="bigPitch">
-                        <canvas id="overlap-pitch" style="width:900px; height:256px;"></canvas>
-                        <canvas id="overlap-corrected-pitch" style="width:900px; height:256px;"></canvas>
-                        <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
-		     			 <div id="zooms" style="bottom: 5px;">
-                 <!-- <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
-                  <a class="zoom zoom2" data-length="16" href="#">x2</a>
-                  <a class="zoom zoom3" data-length="8" href="#">x3</a>
-                  <a class="zoom zoom3" data-length="4" href="#">x4</a>-->
+    <div id="header">
+        <div id="scrollrec">
+            <div id="summary">
+                <div id="innerSummary">
+                    <span>
+                        <h1>{{recording.title}}</h1>
+                        <h2> by {% for a in recording.artists.all %}{{ a }}{% endfor %} </h2>
+                    </span>
                 </div>
+                <div id="summaryBack"></div>
+            </div>
+            <div id="meta">
+                <div class="metaBlock">
+                    <div class="metaMask">
+                        <div class="metaContainer">
+                            <div id="excerpt" class="metaDetails recordingDetails">
+                                <span class="list">
+                                    {% for w in  recording.releaselist%}
+                                    <label>Album</label><b><span>{{ w }}</span></b>
+                                    {% endfor %}
+                                    {% for w in recording.works.all %}
+                                    {% for c in w.composerlist.all %}
+                                    <label>Composer</label><b><span>{{c}}</span></b>
+                                    {% endfor %}
+                                    {% for c in w.lyricistlist.all %}
+                                    <label>Lyricist</label><b><span>{{c}}</span></b>
+                                    {% endfor %}
+                                    {% for m in w.makam.all %}
+                                    <label>Makam</label><b><span>{{m}}</span></b>
+                                    {% endfor %}
+                                    {% for f in w.form.all %}
+                                    <label>Form</label><b><span>{{f}}</span></b>
+                                    {% endfor %}
+                                    {% for u in w.usul.all %}
+                                    <label>Usul</label><b><span>{{u}}</span></b>
+                                    {% endfor %}
+                                    {% endfor%}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="totalcontrol">
+            <div id="control">
+                <div class="revButton"></div>
+                <div class="plButton" onclick="playrecord();"></div>
+                <div class="folButton"></div>
+            </div>
+        </div>
+        <div style="padding-top:6px; margin-right:1em;">
+        </div>
+        <div class="clearfix"></div>
+    </div><!-- HEADER END -->
+
+    <div class="alldata">
+        <div class="container">
+            <div class="thedata">
+                <div id="rendersMask" style="height:650px;">
+                    <div id="renders">
+                        <div id="capcal" style="height:255px;"></div>
+
+                        <div id="bigPitch">
+                            <canvas id="overlap-pitch" style="width:900px; height:256px;"></canvas>
+                            <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
+                            <div id="zooms" style="bottom: 5px;">
+                                <!-- <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
+                                    <a class="zoom zoom2" data-length="16" href="#">x2</a>
+                                    <a class="zoom zoom3" data-length="8" href="#">x3</a>
+                                    <a class="zoom zoom3" data-length="4" href="#">x4</a>-->
+                            </div>
                         </div>
 
 
-		     	<div id="renderTotal">
-		     			   <div id="capcalTotal"></div>
-		     			   <div id="timepoint"></div>
-		     			   <div id="miniviewHighlight"></div>
-                           <canvas id="smallcanvas"></canvas>
-              </div>
-              <div>
-                    <div id="timecodes">
-                    <span class="timecode1"></span>
-                    <span class="timecode2"></span>
-                    <span class="timecode3"></span>
-                    <span class="timecode4"></span>
-                    <span class="timecode5"></span>
+                        
+                        <div>
+                            <div id="timecodes">
+                                <span class="timecode1"></span>
+                                <span class="timecode2"></span>
+                                <span class="timecode3"></span>
+                                <span class="timecode4"></span>
+                                <span class="timecode5"></span>
+                            </div>
+                            <div id="score" style="height:300px; width:900px;">
+                                <div id="no-score" style="display:none">
+                                    There is no score to show at this part.
+                                </div>
+                                <div id="score-cont">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="renderTotal">
+                            <div id="capcalTotal"></div>
+                            <div id="timepoint"></div>
+                            <div id="miniviewHighlight"></div>
+                            <canvas id="smallcanvas"></canvas>
+                        </div>
+                    </div>
                 </div>
-                 <div id="score" style="height:300px; width:900px;">
-                 <div id="no-score" style="display:none">
-                 There is no score to show at this part.
-                 </div>
-                 <div id="score-cont">
-                 </div>
-                 </div>
-		     			</div>
-	     			</div>
-	     		</div>
-	     		<div class="container2">
-                          <div class="waveLabel">
-                            <h1>Current Note</h1>
-                                <div>The current player shows the<br /> score alignment for this recording,<br />enable the following checkbox<br />to see the current note .
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="enable-show-pitch"><label for="enable-show-pitch"> Show Current Notes</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" checked id="enable-corrected-pitch"><label for="enable-corrected-pitch"> Show Octave Correction</label>
-                                </div>
-                              <span class="tempoup"></span>
-                              <span class="tempodown"></span>
-                          </div> 
-                          <div id="totalcontrol2">
-                      <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
+                <div class="container2">
+                    <div class="waveLabel">
+                      <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
+                      <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
+                      <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
+                    </div> 
+                    <div id="totalcontrol2">
+                        <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
 
 
-         </div>
-            	     		</div>
-	     	</div>
-	     	</div>
-		 	<div class="clearfix"></div>
-	 	</div>
-            <div class="thedata">
-                <div class="leftdata">
-                    <!--<h3>Similar recordings</h3>-->
-                </div>
-
-                <div class="rightdata">
-	     			<div class="innerrightdata scrolldata nopad">
-	                    <div class="tracklist">
-                        {% for s in similar %}
-                            {% badge_similar_recording s %}
-                        {% endfor %}
-	                    </div>
-                        <div class="clearfix"></div>
-	     			</div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="thedata">
+        <div class="leftdata">
+            <!--<h3>Similar recordings</h3>-->
+        </div>
 
-	 	<div class="clearfix"></div>
+        <div class="rightdata">
+            <div class="innerrightdata scrolldata nopad">
+                <div class="tracklist">
+                    {% for s in similar %}
+                    {% badge_similar_recording s %}
+                    {% endfor %}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
 </div>
 {% endblock %}
 

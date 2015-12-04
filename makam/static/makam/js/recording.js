@@ -1,5 +1,6 @@
 $(document).ready(function() {
      hasfinished = false;
+     currentWork = null;
      pagesound = ""
      audio = $("#theaudio")[0];
      renders = $('#renders');
@@ -16,7 +17,29 @@ $(document).ready(function() {
      currentInterval = 1;
      currentPage = 0;
      lastOffset = null;
-     colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#00FF80"]
+     lastTime = null;
+     colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
+     color_notes = {
+             "G5b4":"#FFC400",
+             "G5": "#00FFB3", 
+             "G4": "#0099FF",
+             "F5#4": "#FF007F",
+             "F5": "#00FFFF",
+             "F4#4": "#FF000D",
+             "E5b5": "#FF9100",
+             "E5b4": "#4800FF",
+             "E5": "#00FF40",
+             "E4b5": "#D4D390",
+             "D5": "#404036",
+             "D4": "#00FF80",
+             "C5#4": "#8471BD",
+             "C5": "#C47766",
+             "B5b5": "#66B3C4",
+             "B4b5": "#1627D9",
+             "B4b1": "#16D9A2",
+             "A5": "#D99B16",
+             "A4#4": "#009100",
+             "A4":"#FF9190"};
      images = [];
      startLoaded = 0;
      lastLoaded = 0;
@@ -24,17 +47,22 @@ $(document).ready(function() {
      lastIndex = -1;
      lastpitch = -1; 
      scoreLoaded = false;
-     barPages = [];
+     barPages = {};
+     maxbin = 0;
+     minbin = 99999;
+     histogramMax = 0;
+     lastnote = null;
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
-	 waveform.click(function(e) {
+     histovals = new Array(900);
+     waveform.click(function(e) {
 	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
-	 });
+     });
      waveform.mouseenter(function(e) {
          if (pagesound && pagesound.duration) {
              waveform.css("cursor", "pointer");
@@ -83,29 +111,6 @@ $(document).ready(function() {
          zoom(level);
      });
 
-     enabledCurrentPitch = false;
-     $('#enable-show-pitch').change(function(){
-         enabledCurrentPitch = this.checked ;
-         if (enabledCurrentPitch){
-             $("#overlap-pitch").show();
-             $("#overlap-corrected-pitch").show();
-             $("#enable-corrected-pitch").prop('checked', true);
-         }else{
-             $("#overlap-pitch").hide();
-         }
-     });
-     $("#enable-corrected-pitch").change(function(){
-         if (this.checked ){
-             $("#overlap-corrected-pitch").show();
-         }else{
-             $("#overlap-corrected-pitch").hide();
-             $('#enable-show-pitch').attr('checked', false);
-             enabledCurrentPitch = false ;
-             $("#overlap-pitch").hide();
-         }
-     });
-     
-     
      loaddata();
 
      $("#showRhythm").click(function(e) {
@@ -127,11 +132,105 @@ $(document).ready(function() {
      });
 });
 
+function plothistogram() {
+    var histogram = $("#histogramcanvas")[0];
+    histogram.width = 200;
+    histogram.height = 256;
+    var context = histogram.getContext("2d");
+    histogramMax = 0;
+    var data = histogramdata[0];
+    maxbin = 0;
+    minbin = 999999;
+    for (var i = 0; i < data['vals'].length; i++) {
+        if (data['vals'][i] > histogramMax) {
+            histogramMax = data['vals'][i];
+        }
+        if (data['bins'][i] > maxbin) {
+            maxbin = data['bins'][i];
+        }
+        if (data['bins'][i] < minbin) {
+            minbin = data['bins'][i];
+        }
+    }
+    
+    var lastStables = [];
+    for (key in notemodels[currentWork]){
+        var currMax = 0;
+        for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
+            if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
+                histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
+            }
+        }
+        lastStables.push([notemodels[currentWork][key]['stablepitch']['Value'], key, notemodels[currentWork][key]['interval']['Value']]);
+    }
+    plotRefFreq(context, lastStables); 
+    plothistogrampart(context, data);
+}
+function plotRefFreq(context, lastStables){
+    var positiveFreqs = lastStables.filter(function (el) {
+        return el[2] >= 0;
+    });
+    lastStables = positiveFreqs;
+    lastStables.sort(function(a, b){return a[2]-b[2]}); 
+    lastUsed = null;
+    for (var i=0; i<lastStables.length; i++){
+      var freq = Math.floor(lastStables[i][0]);
+      if(lastUsed==null || freq - lastUsed > 40) {
+         var j = (freq - minbin) / ( maxbin - minbin );
+         context.font = "bold 11px Arial";
+         context.fillText(lastStables[i][1] + ", " + freq + " Hz, "+ Math.floor(lastStables[i][2]) +" cents", 70 ,260-Math.round(j*255));
+         context.beginPath();
+             
+         context.moveTo(0, 255-Math.round(j*255));
+         for (k=0;k<70;k+=10){
+             context.lineTo(k, 255-Math.round(j*255));
+             context.moveTo(k+5, 255-Math.round(j*255));
+         }
+         lastUsed = freq;
+      }
+      context.lineWidth = 1;
+      context.strokeStyle = "#000";
+      context.stroke();
+      context.closePath();
+    }
+}
+function plothistogrampart(context, data, color){
+    context.beginPath();
+
+    var lastv = [];
+    var lastj = 0;
+    for (var i = 0; i < data['vals'].length; i++) {
+        var v = (data['vals'][i]) * 200/histogramMax;
+        var j = (data['bins'][i] - minbin) / ( maxbin - minbin );
+        curr = 255-Math.round(j*255);
+        lastv.push(v);
+        if (curr != lastj){
+                sum = 0;
+                for (var r=0;r<lastv.length;r++){
+                    sum+=lastv[r];
+                }
+                context.lineTo(sum/lastv.length, curr);
+                lastv = [];
+        }
+        lastj = curr;
+        
+    }
+    context.lineWidth = 2;
+    if(color){
+        context.strokeStyle = color;
+    }else{
+        context.strokeStyle = "#e71d25";
+    }
+    context.stroke();
+    context.closePath();
+
+}
 function plottonic(context) {
     // Sa and sa+1 line.
     context.beginPath();
     // sa+1, dotted
-    var tonicval = 255-tonic;
+    var tonic = Math.floor(tonicdata[currentWork]['scoreInformed']['Value']);
+    var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
     context.moveTo(0, tonicval);
     context.lineWidth = 2;
     for (var i = 0; i < 900; i+=10) {
@@ -204,36 +303,48 @@ function plotscore(index, color) {
     $("#no-score").hide(); 
     $("#score-cont").show(); 
     if (!scoreLoaded ){
-        for(var i=1; i<=numbScore;i++){
-            $("#score-cont").append('<div class="score-page" id="score-'+i+'"></div>');
+      for (w in worksdata){
+        $("#score-cont").append('<div id="score-'+w+'"></div>');
+        for(var i=1; i<=numbScore[w];i++){
+            $("#score-"+w).append('<div class="score-page" id="score-'+w+'-'+i+'"></div>');
         }    
-        for(var i=1; i<=numbScore;i++){
-            score = scoreurl.replace(/part=[0-9]+/, "part="+i);
-            $.ajax(score, {dataType: "text", type: "GET", score:i,
+        for(var i=1; i<=numbScore[w];i++){
+            score = documentsurl + w + scoreurl.replace(/part=[0-9]+/, "part="+i);
+            $.ajax(score, {dataType: "text", type: "GET", 
+                context: {work: w, score:i},
                 success: function(data, textStatus, xhr) {
                 
                 data = data.replace('</svg>','<rect class="marker" x="0" y="0" width="0" height="0" ry="0.0000" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9" /></svg>');
                 
-                $("#score-"+this.score).append(data);
+                $("#score-"+this.work+"-"+this.score).append(data);
                 var bars = []
-                $("#score-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
+                $("#score-"+this.work+"-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
                     var pos = $(this).attr('transform').split("(");
                     var xy = pos[1].split(", ");
                     bars.push([parseInt(xy[0]), parseInt(xy[1]), $(this)]);
                 });
-                barPages[this.score] = bars;
-    
+                if (! (this.work in barPages)){
+                    barPages[this.work] = {};
+                }
+                barPages[this.work][this.score] = bars;
+ 
+               $('svg').each(function () { 
+                 
+                 $(this)[0].setAttribute('width', '230mm') ; 
+                 $(this)[0].setAttribute('height', '139mm') ; 
+                 $(this)[0].setAttribute('viewBox', '0 0 115 65') }); 
+
             }, error: function(xhr, textStatus, errorThrown) {
                console.debug("xhr error " + textStatus);
                console.debug(errorThrown);
             }});
         }
         scoreLoaded = true;
-        
+      }
     }else{
-        if (aligns[index]){
+      if (aligns[index]){
           var find = false;
-          var curr =   $("a[id^='l" + aligns[index]['line'] + "-f");
+          var curr = $("#score-"+currentWork).find("a[id^=l" + aligns[index]['line'] + "-f]");
           curr.each(function(){
               find = find || highlightNote(index, $(this));             
           });
@@ -268,9 +379,9 @@ function highlightNote(index, note){
         var nextmin= Number.MAX_VALUE;
         var nextx = 0;
         var nexty = 0;
-       
-        var page = parseInt(note.closest(".score-page").attr('id').replace("score-",''));
-        var bars = barPages[page];
+      
+        var page = parseInt(note.closest(".score-page").attr('id').replace("score-"+currentWork+"-",''));
+        var bars = barPages[currentWork][page];
         for(var i=0;i<bars.length; i++){
          if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
              prevmin = parseInt(xy[0]) - bars[i][0];
@@ -286,13 +397,12 @@ function highlightNote(index, note){
              nexty = bars[i][1];
          }
         }
-        if(enabledCurrentPitch){
-            note.attr('highlight','1');    
-        }
+        
+        note.attr('highlight','1');    
         $(".score-page").hide();
-        var currScore = $("#score-"+page);
+        var currScore = $("#score-"+currentWork+"-"+page);
         currScore.show();
-        $("#score-"+(page+1)).each(function(){$(this).show()});
+        $("#score-"+currentWork+"-"+(page+1)).each(function(){$(this).show()});
         
         var y = -2 * nexty;
         if (nexty > 15){
@@ -318,6 +428,41 @@ function highlightNote(index, note){
         find = true;
     }
     return find;
+}
+function showNoteOnHistogram(note, time){
+  var histogram = $("#histogram-current-note")[0];
+   histogram.width = 200;
+   histogram.height = 256;
+   var ctxNotes = histogram.getContext("2d");
+   color = color_notes[note];
+   if (!note){
+       return;
+   }
+   plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], color);
+
+   var canvas = $('#overlap-histogram')[0];
+   canvas.width = 200;
+   canvas.height = 256;
+   var context = canvas.getContext("2d");
+   var currPos = (time % 8);
+      
+   currPos = time % secondsPerView * 900 / secondsPerView;
+
+   var pitch = histovals[Math.floor(currPos)];
+   if (!pitch){
+       ctxNotes.clearRect(0, 0, 900, 900);
+       return ;
+   }
+   var curr = pitch;
+   context.beginPath(); 
+   context.moveTo(0, curr); 
+   context.lineTo(200, curr); 
+   context.lineWidth = 1; 
+   context.strokeStyle = 'rgba(0,0,0,0.9)';
+   context.fillStyle = 'rgba(0,0,0,0.9)';
+   context.stroke(); 
+   context.closePath(); 
+    
 }
 
 function updateScoreProgress(currentTime){
@@ -357,20 +502,14 @@ function plotpitch() {
     var spec = new Image();
     spec.src = specurl;
     var view = new Uint8Array(pitchdata);
-    var correctedview = new Uint8Array(correctedpitchdata);
     var canvas = $("#pitchcanvas")[0];
-    var correctedCanvas = $("#overlap-corrected-pitch")[0];
     canvas.width = 900;
     canvas.height = 256;
-    correctedCanvas.width = 900;
-    correctedCanvas.height = 256;
    var context = canvas.getContext("2d");
-    var correctedContext = correctedCanvas.getContext("2d");
     loading = true;
     spec.onload = function() {
         context.drawImage(spec, 0, 0);
-        spectrogram(context, view, ["#E0A3C2", "#CC6699"]);
-        spectrogram(correctedContext, correctedview, ["#8A8A8A", "#FFFFFF"]);
+        spectrogram(context, view, ["#8A8A8A", "#FFFFFF"]);
         loading = false;
     }
 }
@@ -384,7 +523,7 @@ function plotsmall() {
             var txt = d['name'];
             var s = d['time'][0];
             var e = d['time'][1];
-            context.globalAlpha = 0.3;
+            context.globalAlpha = 0.2;
             context.fillStyle = colorsNames[txt];
 
             var spos = Math.round(s * pxpersec)+0.5;
@@ -401,24 +540,26 @@ function plotsmall() {
     canvas.height = 64;
     var context = canvas.getContext("2d");
     small.onload = function() {
-        context.drawImage(small, 0, 0, 900, 64, 0, 0, 900, 64);
+        context.drawImage(small, 0, 0, 2486, 236, 0, 0, 900, 64);
         //smallFill(banshidata, banshicolours);
         //smallFill(luogudata, "#0f0");
-    }
     
-        
-
-    // Draw sections on smallcanvas
-    colorsNames = {};
-    currColor = 0;
-    for (var i = 0; i < sections.length; i++) {
-            var name = sections[i]['name'];
-            if (!(name in colorsNames)){
-                colorsNames[name]=colors[currColor];
-                currColor += 1;
-            }
+        // Draw sections on smallcanvas
+        var sec = [];
+        for (w in sections){
+            sec = sec.concat(sections[w]['links'])
+        }
+        colorsNames = {};
+        currColor = 0;
+        for (var i = 0; i < sec.length; i++) {
+                var name = sec[i]['name'];
+                if (!(name in colorsNames)){
+                    colorsNames[name]=colors[currColor];
+                    currColor += 1;
+                }
+        }
+        smallFill(sec, "#0ff", colorsNames);
     }
-    smallFill(sections, "#0ff", colorsNames);
 }
 
 function drawwaveform() {
@@ -436,68 +577,98 @@ function drawwaveform() {
 function sortNumber(a,b) {
     return a - b;
 }
-
 function loaddata() {
+
+    var loadingDone= 0;
+    var partsLoaded= 0;
+    var indexLoaded= 0;
+    var partsDone = false;
+    var indexmapDone = false;
+    $.ajax(worksurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+            numbScore = {};
+            indexmap = {};
+            worksdata = data;
+            minInterval = 9999;
+            for (w in worksdata){
+                if (minInterval > worksdata[w]["from"]){
+                    minInterval = worksdata[w]["from"];
+                    currentWork = w;
+                }
+                workDocumentsUrl = documentsurl + w;
+                           
+                $.ajax(workDocumentsUrl, {dataType: "json", type: "GET",
+                    context: {work: w},
+                    success: function(data, textStatus, xhr) {
+                        numbScore[this.work] = data['derivedfiles']['score']['score']['numparts'];
+                        partsLoaded++;
+                        if (partsLoaded == Object.keys(worksdata).length ){  
+                           partsDone = true;
+                        }
+                        dodraw();
+                }, error: function(xhr, textStatus, errorThrown) {
+                   console.debug("xhr error " + textStatus);
+                   console.debug(errorThrown);
+                }});
+                $.ajax(workDocumentsUrl + indexmapurl, {dataType: "json", type: "GET",
+                    context: {work: w},
+                    success: function(data, textStatus, xhr) {
+                        indexmap[this.work] = data;
+                        indexLoaded++;
+                        if (indexLoaded == Object.keys(worksdata).length){  
+                            indexmapDone = true;
+                        }
+                        dodraw();
+                }, error: function(xhr, textStatus, errorThrown) {
+                   console.debug("xhr error " + textStatus);
+                   console.debug(errorThrown);
+                }});
+            }
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }}); 
+
+
     // We do pitch track with manual httprequest, because
     // we want typedarray access
 
-    pitchDone = false;
     var oReq = new XMLHttpRequest();
     oReq.open("GET", pitchtrackurl, true);
     oReq.responseType = "arraybuffer";
     oReq.onload = function(oEvent) {
         if (oReq.status == 200) {
             pitchdata = oReq.response;
-            pitchDone = true;
+            loadingDone++;
             dodraw();
         }
     };
     oReq.send();
-
-    correctedpitchDone = false;
-    var oReq2 = new XMLHttpRequest();
-    oReq2.open("GET", correctedpitchurl, true);
-    oReq2.responseType = "arraybuffer";
-    oReq2.onload = function(oEvent) {
-        if (oReq2.status == 200) {
-            correctedpitchdata = oReq2.response;
-            correctedpitchDone = true;
-            dodraw();
-        }
-    };
-    oReq2.send();
-
-    var ticksDone = false;
-    var symbtrIndex2timeDone = false;
-    var intervalsDone = false;
-    var sectionsDone = false;
-    var indexmapDone = false;
-    var numbScoreDone = false;
-
-    $.ajax(intervalsurl, {dataType: "json", type: "GET",
+    
+    $.ajax(tonicurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-            intervals = data;
-            intervalsDone = true;
+            tonicdata = data;
+            loadingDone++;
             dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
     }});
     
-    $.ajax(documentsurl, {dataType: "json", type: "GET",
+    $.ajax(histogramurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-            numbScore = data['derivedfiles']['score']['score']['numparts'];
-            numbScoreDone = true;
+            histogramdata = data;
+            loadingDone++;
             dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
     }});
-
-    $.ajax(indexmapurl, {dataType: "json", type: "GET",
+        
+    $.ajax(notemodelsurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-            indexmap = data;
-            indexmapDone = true;
+            notemodels = data;
+            loadingDone++;
             dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -505,20 +676,26 @@ function loaddata() {
     }});
 
     $.ajax(notesalignurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
-            var elems = data.notes; 
-            symbtrIndex2time = {};
-            pitchintervals = [];
-            for (var i=0; i<elems.length;i++){
-                if (!(elems[i].IndexInScore in symbtrIndex2time)){
-                    symbtrIndex2time[elems[i].IndexInScore] = [];
-                }
-                symbtrIndex2time[elems[i].IndexInScore].push({'start': parseFloat(elems[i].Interval[0]), 'end': parseFloat(elems[i].Interval[1])});
-                pitchintervals.push({'start': parseFloat(elems[i].Interval[0]), 'end': parseFloat(elems[i].Interval[1])});
-            }
-            symbtrIndex2timeDone = true;
-            pitchintervals.sort(function(a, b){return a['end']-b['end']});
-            dodraw();
+    success: function(data, textStatus, xhr) {
+        var elems = data; 
+        symbtrIndex2time = {};
+        pitchintervals = [];
+        for (w in elems){
+          var n = elems[w].notes;
+          for (var i=0; i<n.length;i++){
+              if(! (w in symbtrIndex2time)){
+                  symbtrIndex2time[w] = {};
+              }
+              if (!(n[i].IndexInScore in symbtrIndex2time[w])){
+                  symbtrIndex2time[w][n[i].IndexInScore] = [];
+              }
+              symbtrIndex2time[w][n[i].IndexInScore].push({'start': parseFloat(n[i].Interval[0]), 'end': parseFloat(n[i].Interval[1])});
+              pitchintervals.push({'start': parseFloat(n[i].Interval[0]), 'end': parseFloat(n[i].Interval[1]), 'note': n[i]['Symbol']});
+          }
+        }
+        loadingDone++;
+        pitchintervals.sort(function(a, b){return a['end']-b['end']});
+        dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
@@ -526,50 +703,52 @@ function loaddata() {
 
     $.ajax(sectionsurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-            sections = data.links; 
-            
-            sectionsDone = true;
+            sections = data; 
+            loadingDone++;
             dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
     }});
-
+    
     function dodraw() {
-        if ( pitchDone && correctedpitchDone && symbtrIndex2timeDone && intervalsDone && sectionsDone && indexmapDone && numbScoreDone) {
+        if (loadingDone == 6 && indexmapDone && partsDone) {
             drawdata();
             
             endPeriod = 0;
             startPeriod = -1;
            
-           aligns = []
-            for (var i=0; i<indexmap.length;i++){
-                var vals = [];
-                if (indexmap[i][0] in symbtrIndex2time){
-                   vals = symbtrIndex2time[indexmap[i][0]];
-                }
-                for (var j=0;j<vals.length;j++){
-                    var color = "default";
-                    for (var s = 0; s < sections.length; s++) {
-                        var t0 = sections[s]['time'][0][0];
-                        var t1 = sections[s]['time'][1][0];
-                        if (vals[j]['start'] > t0 && vals[j]['end'] < t1){
-                            color = sections[s]['name'];
-                            break;
-                        }
-                     }
-                     aligns.push({'index':indexmap[i][0], 'starttime': vals[j]['start'], 'endtime': vals[j]['end'], "color":color, "pos": indexmap[i][1], "line": indexmap[i][2]});
-                }
+            aligns = []
+            for (w in indexmap){
+              for (var i=0; i<indexmap[w].length;i++){
+                  var vals = [];
+                  if (indexmap[w][i][0] in symbtrIndex2time[w]){
+                     vals = symbtrIndex2time[w][indexmap[w][i][0]];
+                  }
+                  for (var j=0;j<vals.length;j++){
+                      var color = "default";
+                      for (var s = 0; s < sections[w].length; s++) {
+                          var t0 = sections[w][s]['time'][0][0];
+                          var t1 = sections[w][s]['time'][1][0];
+                          if (vals[j]['start'] > t0 && vals[j]['end'] < t1){
+                              color = sections[w][s]['name'];
+                              break;
+                          }
+                       }
+                      aligns.push({'index':indexmap[w][i][0], 'starttime': vals[j]['start'], 'endtime': vals[j]['end'], "color":color, "pos": indexmap[w][i][1], "line": indexmap[w][i][2]});
+                    }
+              }
            }
-           aligns.sort(function(a, b){return a['endtime']-b['endtime']});
+           aligns.sort(function(a, b){return a['index']-b['index']});
         }
     }
-  }
+}
 
 function drawdata() {
     //drawwaveform();
     
     plotpitch();
+    plothistogram();
     plotsmall();
     if (!scoreLoaded ){
       plotscore(1);
@@ -664,7 +843,7 @@ function replacepart(pnum) {
     specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
     drawdata();
 }
-function drawCurrentPitch(start, end){
+function drawCurrentPitch(start, end, note){
     startPx = start % secondsPerView * 900 / secondsPerView;
     endPx = end % secondsPerView * 900 / secondsPerView;
       
@@ -677,24 +856,25 @@ function drawCurrentPitch(start, end){
     context.clearRect (0, 0, 900, 900);
     context.beginPath();
     waszero = false; 
-    
+    histovals = new Array(900);
     for(var i=Math.floor(startPx); i< endPx; i++){
         var pos = i;
         if ( i in pitchvals){
-        var tmp = pitchvals[i] ;
-        if (tmp == 0 || tmp == 255) {
-            waszero = true;
-            context.moveTo(pos, tmp);
-        } else {
-            if (waszero) {
-                waszero = false;
+            var tmp = pitchvals[i] ;
+            histovals[i] = tmp ;
+            if (tmp == 0 || tmp == 255) {
+                waszero = true;
                 context.moveTo(pos, tmp);
             } else {
-                context.lineTo(pos, tmp);
+                if (waszero) {
+                    waszero = false;
+                    context.moveTo(pos, tmp);
+                } else {
+                    context.lineTo(pos, tmp);
+                }
             }
-        }}
+        }
     }
-
 
     context.strokeStyle = "#DB4D4D";
     context.lineWidth = 3;
@@ -702,7 +882,6 @@ function drawCurrentPitch(start, end){
     context.strokeStyle = "#CC0000";
     context.lineWidth = 2;
     context.stroke();
-    
     context.closePath();
 
 }
@@ -733,27 +912,41 @@ function updateProgress() {
 };
 function updateCurrentPitch(){
     var futureTime = pagesound.position / 1000 ;
-    if(!loading && enabledCurrentPitch && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
+    for (w in worksdata){
+        if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
+            currentWork = w;
+            plothistogram();
+        }
+    }
+    if(!loading && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
         var updated = false;
         if( pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
-            drawCurrentPitch(pitchintervals[lastpitch + 1]['start'], pitchintervals[lastpitch + 1]['end'])
-            
+            drawCurrentPitch(pitchintervals[lastpitch + 1]['start'], pitchintervals[lastpitch + 1]['end'], pitchintervals[lastpitch + 1]['note'])
+            lastnote = pitchintervals[lastpitch + 1]['note'];
             lastpitch = lastpitch+1;
             updated = true;
-        
+            lastTime = futureTime;
         }
         if(!updated){
             for (var i=0; i<pitchintervals.length; i++){
                 if (pitchintervals[i]['start'] < futureTime && pitchintervals[i]['end'] > futureTime){
-                    drawCurrentPitch(pitchintervals[i]['start'], pitchintervals[i]['end'])
+                    drawCurrentPitch(pitchintervals[i]['start'], pitchintervals[i]['end'], pitchintervals[i]['note'])
+                    lastnote = pitchintervals[lastpitch + 1]['note'];
                     lastpitch = i;
+            lastTime = futureTime;
                     return;
                 }
             }
         }
+    }else if(lastTime+1 < futureTime ){
+        // If no update since last second then hide current pitch
+        var canvas = $("#overlap-pitch")[0];
+        var context = canvas.getContext("2d");
+        context.clearRect (0, 0, 900, 900);
     }
-
+    showNoteOnHistogram(lastnote, futureTime);
 }
+
 function zoom(level){
     secondsPerView = level;
     waveformurl = waveformurl.replace(/waveform[0-9]{1,2}/, "waveform"+level);
