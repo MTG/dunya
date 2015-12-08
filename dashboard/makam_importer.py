@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from dashboard.log import logger
+from dashboard.log import import_logger
 from dashboard import release_importer
 
 import makam
@@ -56,6 +57,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             if malias.count():
                 return malias[0].makam
             else:
+                import_logger.warning("Cannot find makam '%s' in database", makamname)
                 return None
 
     def _get_usul(self, usul):
@@ -66,6 +68,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 ualias = makam.models.UsulAlias.objects.unaccent_get(usul)
                 return ualias.usul
             except makam.models.UsulAlias.DoesNotExist:
+                import_logger.warning("Cannot find usul '%s' in database", usul)
                 return None
 
     def _get_form(self, form):
@@ -76,6 +79,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 falias = makam.models.FormAlias.objects.unaccent_get(form)
                 return falias.form
             except makam.models.FormAlias.DoesNotExist:
+                import_logger.warning("Cannot find form '%s' in database", form)
                 return None
 
     def _get_makam_tags(self, taglist):
@@ -183,6 +187,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         try:
             return makam.models.Instrument.objects.alias_get(instname)
         except makam.models.Instrument.DoesNotExist:
+            import_logger.warning("Cannot find instrument '%s' in database", instname)
             return None
 
     def _performance_type_to_instrument(self, perf_type, attrs):

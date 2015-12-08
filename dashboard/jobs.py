@@ -35,6 +35,8 @@ import docserver.util
 #import populate_images
 from dunya.celery import app
 
+from dashboard.log import import_logger
+
 class DunyaTask(celery.Task):
     abstract = True
 
@@ -127,6 +129,8 @@ def import_release(releasepk, ri):
     if collection.do_import:
         try:
             directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
+            # Set the release logger releaseid to the id of the current release
+            import_logger.releaseid = release.pk
             ri.import_release(release.mbid, directories)
         except Exception as e:
             abort = True

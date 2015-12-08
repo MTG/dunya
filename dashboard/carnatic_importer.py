@@ -18,6 +18,7 @@ import json
 import musicbrainzngs
 
 from dashboard.log import logger
+from dashboard.log import import_logger
 from dashboard import release_importer
 import carnatic.models
 

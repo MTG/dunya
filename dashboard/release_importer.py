@@ -17,6 +17,7 @@
 import django.utils.timezone
 
 from dashboard.log import logger
+from dashboard.log import import_logger
 
 import compmusic
 import data
@@ -244,6 +245,7 @@ class ReleaseImporter(object):
 
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
         logger.info("  adding recording %s" % (recordingid,))
+        import_logger.info("importing recording %s", mbrec["title"])
         source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
         rec.source = source
         rec.length = mbrec.get("length")
@@ -291,6 +293,7 @@ class ReleaseImporter(object):
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
+        import_logger.info("adding work %s", mbwork["title"])
         work, created = self._WorkClass.objects.get_or_create(
             mbid=workid,
             defaults={"title": mbwork["title"]})
