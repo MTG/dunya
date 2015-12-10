@@ -273,12 +273,23 @@ def _match_directory_to_release(collectionid, root):
 
             mp3files = _get_mp3_files(os.listdir(root))
             for f in mp3files:
-                meta = compmusic.file_metadata(os.path.join(root, f))
-                recordingid = meta["meta"].get("recordingid")
-                size = os.path.getsize(os.path.join(root, f))
-                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid, defaults={'filesize': size})
+                _create_collectionfile(cd, f)
         except models.MusicbrainzRelease.DoesNotExist:
             pass
+
+def _create_collectionfile(cd, name):
+    """arguments:
+       cd: a collectiondirectory
+       name: the name of the file, with no path information
+    """
+    path = os.path.join(cd.full_path, name)
+    meta = compmusic.file_metadata(path)
+    recordingid = meta["meta"].get("recordingid")
+    size = os.path.getsize(path)
+    cfile, created = models.CollectionFile.objects.get_or_create(name=name, directory=cd, recordingid=recordingid, defaults={'filesize': size})
+    if not created:
+        cfile.filesize = size
+        cfile.save()
 
 def scan_and_link(collectionid):
     """ Scan the root directory of a collection and see if any directories
@@ -320,6 +331,43 @@ def scan_and_link(collectionid):
     cds = coll.collectiondirectory_set.filter(musicbrainzrelease__isnull=True)
     for cd in cds:
         _match_directory_to_release(coll.id, cd.full_path)
+
+    _check_existing_directories(coll)
+
+def _check_existing_directories(coll):
+    # For all of the matched directories, look at the contents of them and
+    # remove/add files as needed
+    # We don't remove from the docserver because it's not very important to
+    # remove them, and it's complex to cover all cases. We do this separately
+    for cd in coll.collectiondirectory_set.all():
+        files = os.listdir(cd.full_path)
+        mp3files = _get_mp3_files(files)
+        existing_f = cd.collectionfile_set.all()
+        existing_names = [f.name for f in existing_f]
+
+        to_remove = set(existing_names) - set(mp3files)
+        to_add = set(mp3files) - set(existing_names)
+        same_files = set(mp3files) & set(existing_names)
+
+        for rm in to_remove:
+            # If it was renamed, we will make a CollectionFile in
+            # the to_add block below
+            cd.collectionfile_set.get(name=rm).delete()
+
+        for f in same_files:
+            # Look through all files and see if the mbid has changed. If it's changed,
+            # update the reference
+            fileobject = cd.collectionfile_set.get(name=f)
+            meta = compmusic.file_metadata(os.path.join(cd.full_path, f))
+            recordingid = meta["meta"].get("recordingid")
+            if recordingid != fileobject.recordingid:
+                fileobject.recordingid = recordingid
+                fileobject.save()
+
+        if to_add:
+            # If there are new files in the directory, just run _match again and
+            # it will create the new file objects
+            _match_directory_to_release(coll.id, cd.full_path)
 
 @app.task
 def delete_collection(cid):
