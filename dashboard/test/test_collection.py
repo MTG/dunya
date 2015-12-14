@@ -17,16 +17,13 @@ class CollectionTest(TestCase):
         self.user1.is_staff = True
         self.user1.save()
 
-        models.CompletenessChecker.objects.create(pk=1, name="Completeness-1")
-        models.CompletenessChecker.objects.create(pk=2, name="Completeness-1")
-
         self.mockname = mock.Mock(return_value="My collection")
         forms.compmusic.musicbrainz.get_collection_name = self.mockname
         self.pathmock = mock.Mock(return_value=True)
         forms.os.path.exists = self.pathmock
 
     def test_valid_form(self):
-        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath&checkers=1&checkers=2"
+        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
@@ -40,7 +37,7 @@ class CollectionTest(TestCase):
         pathmock = mock.Mock(return_value=False)
         forms.os.path.exists = pathmock
 
-        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath&checkers=1&checkers=2"
+        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
@@ -55,7 +52,7 @@ class CollectionTest(TestCase):
         pathmock = mock.Mock(side_effect=[True, False])
         forms.os.path.exists = pathmock
 
-        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath&checkers=1&checkers=2"
+        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d&path=%2Fsome%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
@@ -64,7 +61,7 @@ class CollectionTest(TestCase):
         self.assertEqual(errormsg, f.errors["path"][0])
 
     def test_collection_bad_uuid(self):
-        formdata = "collectionid=5xxxxxad8-1b15-44d5-8dc8-notauuid&path=%2Fsome%2Fpath&checkers=1&checkers=2"
+        formdata = "collectionid=5xxxxxad8-1b15-44d5-8dc8-notauuid&path=%2Fsome%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
@@ -76,7 +73,7 @@ class CollectionTest(TestCase):
 
     def test_collection_exists(self):
         models.Collection.objects.create(pk="55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee", name="test collection")
-        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee&path=%2Fsome%2Fpath&checkers=1&checkers=2"
+        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee&path=%2Fsome%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
@@ -86,7 +83,7 @@ class CollectionTest(TestCase):
         self.assertEqual(errormsg, f.errors["collectionid"][0])
 
     def test_collection_musicbrainz_error(self):
-        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee&path=%2Fpath%2Fpath&checkers=1&checkers=2"
+        formdata = "collectionid=55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee&path=%2Fpath%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
@@ -117,7 +114,7 @@ class CollectionTest(TestCase):
         self.client.login(username="user1", password="pass1")
 
         collid = "55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d"
-        data = {"collectionid": collid, "path": "/incoming/carnatic", "checkers": ["1", "2"]}
+        data = {"collectionid": collid, "path": "/incoming/carnatic"}
 
         mockimport = mock.Mock()
         views.jobs.load_and_import_collection = mockimport
@@ -125,7 +122,6 @@ class CollectionTest(TestCase):
 
         # dashboard collection
         dashc = models.Collection.objects.get(pk=collid)
-        self.assertEqual(2, len(dashc.checkers.all()))
         self.assertEqual("/incoming/carnatic/audio", dashc.root_directory)
         mockimport.assert_called_once_with(dashc.id)
 
