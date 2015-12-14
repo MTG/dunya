@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib import auth
 from rest_framework.test import APIClient
 from django.contrib.auth.models import Permission
+import uuid
 
 import data
 from hindustani import models
@@ -459,18 +460,19 @@ class ReleaseTest(ApiTestCase):
 class InstrumentTest(ApiTestCase):
     def setUp(self):
         super(InstrumentTest, self).setUp()
-        self.i = models.Instrument.objects.create(name="inst", id=9)
+        self.instmbid = str(uuid.uuid4())
+        self.i = models.Instrument.objects.create(name="inst", id=9, mbid=self.instmbid)
 
     def test_render_instrument_inner(self):
         s = api.InstrumentInnerSerializer(self.i)
-        self.assertEqual(['id', 'name'], sorted(s.data.keys()))
+        self.assertEqual(['mbid', 'name'], sorted(s.data.keys()))
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i)
-        expected = ['artists', 'id', 'name']
+        expected = ['artists', 'mbid', 'name']
         self.assertEqual(expected, sorted(s.data.keys()))
 
-    def test_laya_detail_url(self):
-        resp = self.apiclient.get("/api/hindustani/instrument/9")
+    def test_instrument_detail_url(self):
+        resp = self.apiclient.get("/api/hindustani/instrument/%s" % self.instmbid)
         self.assertEqual(200, resp.status_code)
 
