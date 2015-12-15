@@ -22,6 +22,7 @@ from django.http import HttpResponseBadRequest
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.utils.safestring import SafeString
 
 import json
 import data
@@ -40,24 +41,130 @@ def guest_login(request):
 
 def main(request):
     guest_login(request)
-    q = request.GET.get('q', None)
-    recordings = None
-    if q and q != '':
-        recordings = models.Recording.objects.filter(title__contains=q).all()
+    q = request.GET.get('q', '')
+    
+    s_artist = request.GET.get('artist', '')
+    s_perf = request.GET.get('performer', '')
+    s_form = request.GET.get('form', '')
+    s_makam = request.GET.get('makam', '')
+    s_usul = request.GET.get('usul', '')
 
-    artists = models.Composer.objects.order_by('name').all()
-    forms = models.Form.objects.order_by('name').all()
-    makams = models.Makam.objects.order_by('name').all()
-    usuls = models.Usul.objects.order_by('name').all()
-
+    artist = ""
+    if s_artist and s_artist != '': 
+        artist = models.Artist.objects.get(id=s_artist)
+    perf = ""
+    if s_perf and s_perf != '': 
+        perf = models.Artist.objects.get(id=s_perf)
+    form = ""
+    if s_form and s_form != '':
+        form = models.Form.objects.get(id=s_form)
+    usul = ""
+    if s_usul and s_usul != '': 
+        usul = models.Usul.objects.get(id=s_usul)
+    makam = ""
+    if s_makam and s_makam != '': 
+        makam = models.Makam.objects.get(id=s_makam)
+    
+    url = None
+    works = None
+    results = None
+    if s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
+        works, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
+        results = len(works) != 0
+   
+        paginator = Paginator(works, 25)
+        page = request.GET.get('page')
+        try:
+            works = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            works = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            works = paginator.page(paginator.num_pages)
+    if not url:
+        url = {
+                "q": "q=%s" % SafeString(q),
+                "usul": "usul=%s" % s_usul, 
+                "form": "form=%s" % s_form, 
+                "artist": "artist=%s" % s_artist, 
+                "makam": "makam=%s" % s_makam, 
+                "perf": "performer=%s" % s_perf 
+                }
+     
     ret = {
-        'recordings': recordings,
-        "artists": artists, 
-        "makams": makams, 
-        'usuls': usuls, 
-        'forms': forms , 
-        }
+        'artist': artist, 
+        'perf': perf, 
+        'makam': makam, 
+        'usul': usul, 
+        'form': form,
+        'works': works,
+        'results': results,
+        'q': q,
+        'params': url,
+    }
     return render(request, "makam/index.html", ret)
+
+def filter_directory(request):
+    elem = request.GET.get('elem', None)
+    
+    q = request.GET.get('q', None)
+    
+    artist = request.GET.get('artist', '')
+    perf = request.GET.get('performer', '')
+    form = request.GET.get('form', '')
+    makam = request.GET.get('makam', '')
+    usul = request.GET.get('usul', '')
+   
+    works, url = get_works_and_url(artist, form, usul, makam, perf, None, elem)
+    
+    if q and q!='':
+        url["q"] = "q=" + q
+
+    if elem == "makam":
+        elems = models.Makam.objects.filter(work__in=works.all()).order_by('name').distinct()
+    elif elem == "form": 
+        elems = models.Form.objects.filter(work__in=works.all()).order_by('name').distinct()
+    elif elem == "usul":
+        elems = models.Usul.objects.filter(work__in=works.all()).order_by('name').distinct()
+    elif elem == "artist":
+        elems = models.Artist.objects.filter(recording__works__in=works.all()).order_by('name').distinct()
+    elif elem == "performer":
+        e_perf = models.Artist.objects.filter(instrumentperformance__recording__works__in=works.all()) | \
+                models.Artist.objects.filter(primary_concerts__recordings__works__in=works.all())
+        elems = e_perf.order_by('name').distinct()
+    return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
+
+def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
+    works = models.Work.objects
+    if q and q!='':
+        works = works.unaccent_get(q) | works.filter(recording__title__contains=q)
+    
+    url = {}
+    if elem != "artist": 
+        if artist and artist != '': 
+            works = works.filter(composers=artist)
+        url["artist"] = "artist=" + artist 
+    if elem != "form": 
+        if form and form != '': 
+            works = works.filter(form=form) 
+        url["form"] = "form=" + form 
+    if elem != "usul": 
+        if usul and usul != '': 
+            works = works.filter(usul=usul) 
+        url["usul"] = "usul=" + usul 
+    if elem != "makam": 
+        if makam and makam != '': 
+            works = works.filter(makam=makam) 
+        url["makam"] = "makam=" + makam 
+    if elem != "performer": 
+        if perf and perf != '':
+            works = works.filter(recordingwork__recording__instrumentperformance__artist=perf) | \
+                    works.filter(recordingwork__recording__release__artists=perf)
+        url["perf"] = "performer=" + perf 
+
+    works = works.order_by('title')
+    return works, url
 
 def composer(request, uuid, name=None):
     composer = get_object_or_404(models.Composer, mbid=uuid)
@@ -108,6 +215,25 @@ def release(request, uuid, title=None):
            "performers": perfinst
            }
     return render(request, "makam/release.html", ret)
+
+def work_score(request, uuid, title=None):
+    guest_login(request)
+    work = None
+    works = models.Work.objects.filter(mbid=uuid)
+    if len(works):
+        work = works[0]
+    
+    scoreurl = "/document/by-id/%s/score?v=0.1&subtype=score&part=1" % uuid
+    phraseurl = "/document/by-id/%s/segmentphraseseg?v=0.1&subtype=segments" % uuid
+    indexmapurl = "/document/by-id/%s/score?v=0.1&subtype=indexmap" % uuid
+
+    return render(request, "makam/work_score.html", {
+            "work": work,
+            "phraseurl": phraseurl, 
+            "scoreurl": scoreurl,
+            "indexmapurl": indexmapurl
+        })
+
 
 def recording(request, uuid, title=None):
     guest_login(request)

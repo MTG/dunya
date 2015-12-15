@@ -121,6 +121,47 @@
   #overlap-pitch{
       z-index: 3;
   }
+  .works-info{
+      cursor: pointer;
+      float: left;
+  }
+  .work-name{
+      text-align: center;
+      position: absolute;
+      top: 70;
+      display: none;
+      border-radius: 5px;
+      border-top: 1px solid #ccc;
+  }
+  #freq-info, #current-note{  
+    display: none;
+    position: absolute;
+    z-index: 5;
+    background-color: white;
+    border: thin solid black;
+    padding: 2px;
+  }
+  #current-note{
+    top: 5px;
+    left: 130px;
+  }
+  .work-box{
+      background-color: #f9f6f5;
+      border: 1px solid #ebe2df;
+      border-radius: 2px;
+      float: left;
+      width: 90%;
+  }
+  .works-info:after {
+      content: "\039e";
+      position: relative;
+      right: -164px;
+      top: -22px;
+  }
+  .work-mb{
+      display: inline; 
+      margin-left: 11px; 
+  }
 </style>
 
 <script>
@@ -167,7 +208,6 @@ function playrecord(){
 {% endif %}
 
 widthOfChildren('.metaContainer');
-
 </script>
 <script src="{% static 'makam/js/recording.js' %}"></script>
 {% endblock %}
@@ -203,26 +243,36 @@ widthOfChildren('.metaContainer');
                             <div id="excerpt" class="metaDetails recordingDetails">
                                 <span class="list">
                                     {% for w in  recording.releaselist%}
-                                    <label>Album</label><b><span>{{ w }}</span></b>
+                                        <label>Album</label><b><span>{{ w }}</span></b>
                                     {% endfor %}
+                                    <label>Compositions</label><b><span>&nbsp;</span></b>
                                     {% for w in recording.works.all %}
-                                    {% for c in w.composerlist.all %}
-                                    <label>Composer</label><b><span>{{c}}</span></b>
-                                    {% endfor %}
-                                    {% for c in w.lyricistlist.all %}
-                                    <label>Lyricist</label><b><span>{{c}}</span></b>
-                                    {% endfor %}
-                                    {% for m in w.makam.all %}
-                                    <label>Makam</label><b><span>{{m}}</span></b>
-                                    {% endfor %}
-                                    {% for f in w.form.all %}
-                                    <label>Form</label><b><span>{{f}}</span></b>
-                                    {% endfor %}
-                                    {% for u in w.usul.all %}
-                                    <label>Usul</label><b><span>{{u}}</span></b>
-                                    {% endfor %}
+                                    <div class="work-box">
+                                        <span class="works-info">
+                                          <div>
+                                            <a class="work-ref" href="#" ref="#work-{{w.id}}">{{w}}</a>
+                                            <a class="work-mb" href="http://musicbrainz.org/work/{{w.mbid}}"><img src="{% static 'makam/img/mb.png' %}" /></a>
+                                          </div>
+                                        </span>
+                                        <div class="work-info" id="work-{{w.id}}" style="display:none">
+                                            {% for c in w.composerlist.all %}
+                                            <label>Composer</label><b><span><a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                            {% endfor %}
+                                            {% for c in w.lyricistlist.all %}
+                                            <label>Lyricist</label><b><span><a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                            {% endfor %}
+                                            {% for m in w.makam.all %}
+                                            <label>Makam</label><b><span><a href="{% url "makam-main" %}?makam={{m.id}}">{{m}}</a></span></b>
+                                            {% endfor %}
+                                            {% for f in w.form.all %}
+                                            <label>Form</label><b><span><a href="{% url "makam-main" %}?form={{f.id}}">{{f}}</a></span></b>
+                                            {% endfor %}
+                                            {% for u in w.usul.all %}
+                                            <label>Usul</label><b><span><a href="{% url "makam-main" %}?usul={{u.id}}">{{u}}</a></span></b>
+                                            {% endfor %}
+                                        </div>
+                                     </div>
                                     {% endfor%}
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -244,7 +294,7 @@ widthOfChildren('.metaContainer');
     <div class="alldata">
         <div class="container">
             <div class="thedata">
-                <div id="rendersMask" style="height:650px;">
+                <div id="rendersMask" style="height:680px;">
                     <div id="renders">
                         <div id="capcal" style="height:255px;"></div>
 
@@ -282,6 +332,9 @@ widthOfChildren('.metaContainer');
                             <div id="timepoint"></div>
                             <div id="miniviewHighlight"></div>
                             <canvas id="smallcanvas"></canvas>
+                            {% for w in recording.works.all %}
+                                <div class="work-name" id="work-name-{{w.mbid}}"><a href="#" class="work-ref" ref="#work-{{w.id}}">{{w}}</a></div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -290,11 +343,11 @@ widthOfChildren('.metaContainer');
                       <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
+                      <div id="freq-info"></div>
+                      <div id="current-note"></div>
                     </div> 
                     <div id="totalcontrol2">
                         <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
-
-
                     </div>
                 </div>
             </div>

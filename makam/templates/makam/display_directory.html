@@ -1,0 +1,30 @@
+<h1>Filter by {{elem}}</h1>
+<p>Select the {{elem}} to filter the results.</p>
+
+{% regroup elems by name.0|slugify|upper as letter_list %}
+{% for letter in letter_list %}
+    <a class="letter" href="#anchor-{{ letter.grouper }}">{{ letter.grouper }}</a>
+{% endfor %}
+
+<div id="letters" style="display:none">
+    <h2>{{elem}}</h2>
+    <div class="row">
+        {% for letter in letter_list %}
+            <div class="item" class="col-md-6" style="display:none" id="anchor-{{ letter.grouper }}" > 
+                {% for item in letter.list %}
+                <li><a href="/makam/?{%for k,v in params%}{{v}}&{%endfor%}{{elem}}={{item.id}}">{{item.name}}</a></li>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+$('.letter').click(function(){
+    $("#letters").show();
+    $('.item').hide();
+    var letter = $(this).attr('href');
+    $(letter).show();
+    return false;
+})
+</script>
+

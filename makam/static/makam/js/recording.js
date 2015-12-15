@@ -18,6 +18,9 @@ $(document).ready(function() {
      currentPage = 0;
      lastOffset = null;
      lastTime = null;
+     showingNote = null;
+     lastNotes = [];
+     lastLine = null;
      colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
      color_notes = {
              "G5b4":"#FFC400",
@@ -48,8 +51,6 @@ $(document).ready(function() {
      lastpitch = -1; 
      scoreLoaded = false;
      barPages = {};
-     maxbin = 0;
-     minbin = 99999;
      histogramMax = 0;
      lastnote = null;
      // What point in seconds the left-hand side of the
@@ -58,6 +59,26 @@ $(document).ready(function() {
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
      histovals = new Array(900);
+     var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+     oscillator = audioCtx.createOscillator();
+     gainNode = audioCtx.createGain();
+     oscillator.connect(gainNode);
+     gainNode.connect(audioCtx.destination);
+     oscillator.type = 'sine';
+     gainNode.gain.value = 0;
+     oscillator.start(0);    
+     $('.works-info').click(function(e){
+        if(e.target.nodeName !="IMG"){
+          $('.work-info').hide();
+          $($(this).find(".work-ref").attr('ref')).show();
+          return false;
+        }
+     });
+     $('.work-ref').click(function(e){
+        $('.work-info').hide();
+        $($(this).attr('ref')).show();
+        return false;
+     });    
      waveform.click(function(e) {
 	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
@@ -139,17 +160,9 @@ function plothistogram() {
     var context = histogram.getContext("2d");
     histogramMax = 0;
     var data = histogramdata[0];
-    maxbin = 0;
-    minbin = 999999;
     for (var i = 0; i < data['vals'].length; i++) {
         if (data['vals'][i] > histogramMax) {
             histogramMax = data['vals'][i];
-        }
-        if (data['bins'][i] > maxbin) {
-            maxbin = data['bins'][i];
-        }
-        if (data['bins'][i] < minbin) {
-            minbin = data['bins'][i];
         }
     }
     
@@ -166,27 +179,78 @@ function plothistogram() {
     plotRefFreq(context, lastStables); 
     plothistogrampart(context, data);
 }
+/*
+ * Sets the event for showing the frequency ath the mouse position, 
+ * also draws tonic on canvas
+ */
 function plotRefFreq(context, lastStables){
-    var positiveFreqs = lastStables.filter(function (el) {
+  var positiveFreqs = lastStables.filter(function (el) {
         return el[2] >= 0;
     });
     lastStables = positiveFreqs;
     lastStables.sort(function(a, b){return a[2]-b[2]}); 
-    lastUsed = null;
+
+    histogramcanvas = $('.waveLabel canvas');
+    histogramcanvas.mousemove(function(e) {
+        var sectionName = ''; 
+        var rect = histogramcanvas[0].getBoundingClientRect();
+        var mousePos = e.clientY - rect.top;
+        if (lastStables) {
+            var offset_t = $(this).offset().top - $(window).scrollTop();
+            var vtop = Math.round( (e.clientY - offset_t) );
+            var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
+            var note = null;
+            var cents = null;
+            for (var i=0; i<lastStables.length; i++){
+                if(Math.floor(lastStables[i][0]) < Math.floor(freq)+10 && Math.floor(lastStables[i][0]) > Math.floor(freq) - 10){
+                  note = lastStables[i][1];
+                  cents = Math.floor(lastStables[i][2]);
+                  break;
+                }
+            }
+            var html = "";
+            if (note != null){
+              html += "<b>" + note + "</b>, ";
+            }
+              html += Math.floor(freq) + " Hz";
+            if(cents){
+              html += ", " + Math.floor(lastStables[i][2]) +" cents";
+            }
+            $("#freq-info").html(html);
+            $("#freq-info").show();
+            $("#freq-info").css({
+                "top" : e.pageY - $(this).offset().top,
+                "left" : e.pageX - $(this).offset().left + 15 
+            });
+        }
+     });
+     histogramcanvas.click(function(e) {
+        var sectionName = ''; 
+        var rect = histogramcanvas[0].getBoundingClientRect();
+        var mousePos = e.clientY - rect.top;
+        var offset_t = $(this).offset().top - $(window).scrollTop();
+        var vtop = Math.round( (e.clientY - offset_t) );
+        var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
+        play_osc(Math.floor(freq)); 
+        console.log(freq)
+     });
+     
+     histogramcanvas.mouseleave(function() {
+        $("#freq-info").hide();
+     });
+
     for (var i=0; i<lastStables.length; i++){
-      var freq = Math.floor(lastStables[i][0]);
-      if(lastUsed==null || freq - lastUsed > 40) {
-         var j = (freq - minbin) / ( maxbin - minbin );
+      if(lastStables[i][2]==0 ) {
+         var freq = Math.floor(lastStables[i][0]);
+         var j = (freq - pitchMin) / ( pitchMax - pitchMin );
          context.font = "bold 11px Arial";
-         context.fillText(lastStables[i][1] + ", " + freq + " Hz, "+ Math.floor(lastStables[i][2]) +" cents", 70 ,260-Math.round(j*255));
+         context.fillText(lastStables[i][1] + ", " + freq + " Hz, "+ Math.floor(lastStables[i][2]) +" cents", 91 ,265-Math.round(j*255));
          context.beginPath();
-             
          context.moveTo(0, 255-Math.round(j*255));
-         for (k=0;k<70;k+=10){
+         for (k=0;k<100;k+=10){
              context.lineTo(k, 255-Math.round(j*255));
              context.moveTo(k+5, 255-Math.round(j*255));
          }
-         lastUsed = freq;
       }
       context.lineWidth = 1;
       context.strokeStyle = "#000";
@@ -194,14 +258,16 @@ function plotRefFreq(context, lastStables){
       context.closePath();
     }
 }
+/*
+ * Given data and color, plots histogram of frequencies. Used por current note and whole histogram.
+ */
 function plothistogrampart(context, data, color){
     context.beginPath();
-
     var lastv = [];
     var lastj = 0;
     for (var i = 0; i < data['vals'].length; i++) {
         var v = (data['vals'][i]) * 200/histogramMax;
-        var j = (data['bins'][i] - minbin) / ( maxbin - minbin );
+        var j = (data['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
         curr = 255-Math.round(j*255);
         lastv.push(v);
         if (curr != lastj){
@@ -313,121 +379,148 @@ function plotscore(index, color) {
             $.ajax(score, {dataType: "text", type: "GET", 
                 context: {work: w, score:i},
                 success: function(data, textStatus, xhr) {
-                
-                data = data.replace('</svg>','<rect class="marker" x="0" y="0" width="0" height="0" ry="0.0000" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9" /></svg>');
-                
-                $("#score-"+this.work+"-"+this.score).append(data);
-                var bars = []
-                $("#score-"+this.work+"-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
-                    var pos = $(this).attr('transform').split("(");
-                    var xy = pos[1].split(", ");
-                    bars.push([parseInt(xy[0]), parseInt(xy[1]), $(this)]);
-                });
-                if (! (this.work in barPages)){
-                    barPages[this.work] = {};
-                }
-                barPages[this.work][this.score] = bars;
- 
-               $('svg').each(function () { 
+                  
+                  data = data.replace('</svg>','<rect class="marker" x="0" y="0" width="0" height="0" ry="0.0000" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9" /></svg>');
+                  
+                  $("#score-"+this.work+"-"+this.score).append(data);
+                  var bars = []
+                  $("#score-"+this.work+"-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
+                      var pos = $(this).attr('transform').split("(");
+                      var xy = pos[1].split(", ");
+                      bars.push([parseInt(xy[0]), parseInt(xy[1]), $(this)]);
+                  });
+                  if (! (this.work in barPages)){
+                      barPages[this.work] = {};
+                  }
+                  barPages[this.work][this.score] = bars;
+   
+                 $('svg').each(function () { 
+                   
+                   $(this)[0].setAttribute('width', '230mm') ; 
+                   $(this)[0].setAttribute('height', '139mm') ; 
+                   $(this)[0].setAttribute('viewBox', '0 0 115 65') 
+                 }); 
+                if(document.URL.indexOf("show-phrase")>=0){     
                  
-                 $(this)[0].setAttribute('width', '230mm') ; 
-                 $(this)[0].setAttribute('height', '139mm') ; 
-                 $(this)[0].setAttribute('viewBox', '0 0 115 65') }); 
-
+                 for (var p in phrase[this.work]){
+                   for(var j=0; j<aligns.length;j++){
+                       if (aligns[j]['index'] == phrase[this.work][p][0]){
+                         highlightPhraseSegm(this.work, j);
+                         break;
+                       }
+                   }
+                }
+                }
             }, error: function(xhr, textStatus, errorThrown) {
                console.debug("xhr error " + textStatus);
                console.debug(errorThrown);
             }});
         }
-        scoreLoaded = true;
+        
       }
+      scoreLoaded = true;
     }else{
       if (aligns[index]){
           var find = false;
           var curr = $("#score-"+currentWork).find("a[id^=l" + aligns[index]['line'] + "-f]");
+          var sameLine = [];
           curr.each(function(){
-              find = find || highlightNote(index, $(this));             
+    
+            if(parseInt($(this).attr('from')) <= aligns[index]['pos'] && parseInt($(this).attr('to')) > aligns[index]['pos']){
+              if( !($(this) in lastNotes) ){
+                sameLine.push($(this));
+              }   
+            }
           });
-          if (!find){
-            console.log("COULD NOT FIND");
-            console.log(index);
+          sameLine.sort(function(a, b){return parseInt(a.attr('from'))-parseInt(b.attr('from'))});       
+          console.log(sameLine);
+          console.log(aligns[index]);
+          if(sameLine.length > 0){
+            highlightNote(sameLine[0], index);
+          }else{
+          console.log(aligns[index]);
+          }
+          if(lastLine != aligns[index]['line']){
+            lastLine = aligns[index]['line'];
+            lastNotes = [];
           }
         }
     }
 }
-
+function highlightPhraseSegm(w, j){
+  $("#score-"+w).find("a[id^=l" + aligns[j]['line'] + "-f]").each( function(){
+     note = $(this); 
+     if(parseInt(note.attr('from')) <= aligns[j]['pos'] && parseInt(note.attr('to')) > aligns[j]['pos']){
+       note.attr('highlight-segm','1');    
+     }
+   });
+}
 function disableScore(currentTime){
     if (currentTime > (endPeriod+1) || currentTime < (startPeriod-1)){
         $("#no-score").show(); 
         $("#score-cont").hide(); 
     }
 }
-function highlightNote(index, note){
-    
-    var find = false;
-    if(parseInt(note.attr('from')) <= aligns[index]['pos'] && parseInt(note.attr('to')) > aligns[index]['pos']){
-        $("a[highlight='1'").attr('highlight','0');
-       
-        var pos = note.find('path').attr('transform').split("(");
-        var xy = pos[1].replace(") scale","").split(',');
-
-        var prev = null;
-        var prevmin= Number.MAX_VALUE;
-        var prevx = 0;
-        var prevy = 0;
-        var next = null;
-        var nextmin= Number.MAX_VALUE;
-        var nextx = 0;
-        var nexty = 0;
-      
-        var page = parseInt(note.closest(".score-page").attr('id').replace("score-"+currentWork+"-",''));
-        var bars = barPages[currentWork][page];
-        for(var i=0;i<bars.length; i++){
-         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
-             prevmin = parseInt(xy[0]) - bars[i][0];
-             prev = bars[i][2];
-             prevx = bars[i][0];
-             prevy = bars[i][1];
-
-         }
-         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (bars[i][0] - parseInt(xy[0])) > 0 && nextmin > (bars[i][0] - parseInt(xy[0]))){
-             nextmin = bars[i][0] - parseInt(xy[0]) ;
-             next = bars[i][2];
-             nextx = bars[i][0];
-             nexty = bars[i][1];
-         }
-        }
-        
-        note.attr('highlight','1');    
-        $(".score-page").hide();
-        var currScore = $("#score-"+currentWork+"-"+page);
-        currScore.show();
-        $("#score-"+currentWork+"-"+(page+1)).each(function(){$(this).show()});
-        
-        var y = -2 * nexty;
-        if (nexty > 15){
-            
-            y = y * 2 ;
-        }
-        if(next && prev){
-           currScore.find('.marker').attr('x',prevx);
-           currScore.find('.marker').attr('y', prevy-4);
-           currScore.find('.marker').attr('width',nextx-prevx);
-           currScore.find('.marker').attr('height',"10");
-           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
-           $('#score-cont').css("top", y );
-        }else if(next && prev==null){
-           currScore.find('.marker').attr('x', 0);
-           currScore.find('.marker').attr('y', nexty-4);
-           currScore.find('.marker').attr('width',nextx);
-           currScore.find('.marker').attr('height',"10");
-           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
-           $('#score-cont').css("top", y);
-        }
+function highlightNote(note, index){
+      lastNotes.push(note);
+      $("a[highlight='1'").attr('highlight','0');
      
-        find = true;
-    }
-    return find;
+      var pos = note.find('path').attr('transform').split("(");
+      var xy = pos[1].replace(") scale","").split(',');
+
+      var prev = null;
+      var prevmin= Number.MAX_VALUE;
+      var prevx = 0;
+      var prevy = 0;
+      var next = null;
+      var nextmin= Number.MAX_VALUE;
+      var nextx = 0;
+      var nexty = 0;
+    
+      var page = parseInt(note.closest(".score-page").attr('id').replace("score-"+currentWork+"-",''));
+      var bars = barPages[currentWork][page];
+      for(var i=0;i<bars.length; i++){
+       if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
+           prevmin = parseInt(xy[0]) - bars[i][0];
+           prev = bars[i][2];
+           prevx = bars[i][0];
+           prevy = bars[i][1];
+
+       }
+       if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (bars[i][0] - parseInt(xy[0])) > 0 && nextmin > (bars[i][0] - parseInt(xy[0]))){
+           nextmin = bars[i][0] - parseInt(xy[0]) ;
+           next = bars[i][2];
+           nextx = bars[i][0];
+           nexty = bars[i][1];
+       }
+      }
+      
+      note.attr('highlight','1');    
+      $(".score-page").hide();
+      var currScore = $("#score-"+currentWork+"-"+page);
+      currScore.show();
+      $("#score-"+currentWork+"-"+(page+1)).each(function(){$(this).show()});
+      
+      var y = -2 * nexty;
+      if (nexty > 15){
+          
+          y = y * 2 ;
+      }
+      if(next && prev){
+         currScore.find('.marker').attr('x',prevx);
+         currScore.find('.marker').attr('y', prevy-4);
+         currScore.find('.marker').attr('width',nextx-prevx);
+         currScore.find('.marker').attr('height',"10");
+         currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
+         $('#score-cont').css("top", y );
+      }else if(next && prev==null){
+         currScore.find('.marker').attr('x', 0);
+         currScore.find('.marker').attr('y', nexty-4);
+         currScore.find('.marker').attr('width',nextx);
+         currScore.find('.marker').attr('height',"10");
+         currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
+         $('#score-cont').css("top", y);
+      }
 }
 function showNoteOnHistogram(note, time){
   var histogram = $("#histogram-current-note")[0];
@@ -461,8 +554,14 @@ function showNoteOnHistogram(note, time){
    context.strokeStyle = 'rgba(0,0,0,0.9)';
    context.fillStyle = 'rgba(0,0,0,0.9)';
    context.stroke(); 
-   context.closePath(); 
-    
+   context.closePath();
+   
+   $('#current-note').show()
+
+   if (showingNote!=note){
+       $('#current-note').html("Current Note:<br /><b>" + note + "</b>");
+       showingNote=note;
+   }
 }
 
 function updateScoreProgress(currentTime){
@@ -540,7 +639,7 @@ function plotsmall() {
     canvas.height = 64;
     var context = canvas.getContext("2d");
     small.onload = function() {
-        context.drawImage(small, 0, 0, 2486, 236, 0, 0, 900, 64);
+        context.drawImage(small, 0, 0, small.width, small.height, 0, 0, 900, 64);
         //smallFill(banshidata, banshicolours);
         //smallFill(luogudata, "#0f0");
     
@@ -587,10 +686,18 @@ function loaddata() {
     $.ajax(worksurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             numbScore = {};
+            phrase = {};
             indexmap = {};
             worksdata = data;
             minInterval = 9999;
             for (w in worksdata){
+              if(Object.keys(worksdata).length > 1){ 
+                var position = 900*(worksdata[w]["from"]/recordinglengthseconds) ;
+                var width = 900*((worksdata[w]["to"]- worksdata[w]["from"])/recordinglengthseconds) ;
+                $('#work-name-' + w).show();  
+                $('#work-name-' + w).css("margin-left",position+"px");
+                $('#work-name-' + w).css("width",width+"px");
+              }
                 if (minInterval > worksdata[w]["from"]){
                     minInterval = worksdata[w]["from"];
                     currentWork = w;
@@ -619,6 +726,15 @@ function loaddata() {
                             indexmapDone = true;
                         }
                         dodraw();
+                }, error: function(xhr, textStatus, errorThrown) {
+                   console.debug("xhr error " + textStatus);
+                   console.debug(errorThrown);
+                }});
+
+                $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
+                    context: {work: w},
+                    success: function(data, textStatus, xhr) {
+                        phrase[this.work] = data[0]["boundary_noteIdx"];
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
@@ -713,7 +829,6 @@ function loaddata() {
     
     function dodraw() {
         if (loadingDone == 6 && indexmapDone && partsDone) {
-            drawdata();
             
             endPeriod = 0;
             startPeriod = -1;
@@ -740,6 +855,7 @@ function loaddata() {
               }
            }
            aligns.sort(function(a, b){return a['index']-b['index']});
+           drawdata();
         }
     }
 }
@@ -940,6 +1056,7 @@ function updateCurrentPitch(){
         }
     }else if(lastTime+1 < futureTime ){
         // If no update since last second then hide current pitch
+        $("#current-note").hide();
         var canvas = $("#overlap-pitch")[0];
         var context = canvas.getContext("2d");
         context.clearRect (0, 0, 900, 900);
@@ -961,5 +1078,10 @@ function zoom(level){
     drawdata();
 
 }
-
-
+function play_osc(f){
+    gainNode.gain.value = 0.5;
+    oscillator.frequency.value = f; // value in hertz
+    window.setTimeout(function(){
+        gainNode.gain.value = 0;
+    }, 1000);
+} 

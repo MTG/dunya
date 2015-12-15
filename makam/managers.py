@@ -48,7 +48,7 @@ class MakamWorkManager(models.Manager):
     """ A manager to use postgres' unaccent module to get items
     with a specified `name` field """
     def unaccent_get(self, name):
-        return super(MakamWorkManager, self).get_queryset().extra(where=["unaccent(lower(title)) like unaccent(lower(%s))"], params=["%"+name+"%"])
+        return super(MakamWorkManager, self).get_queryset().extra(where=["unaccent(lower(makam_work.title)) like unaccent(lower(%s))"], params=["%"+name+"%"])
  
 class MakamFormManager(UnaccentManager):
     def fuzzy(self, name):

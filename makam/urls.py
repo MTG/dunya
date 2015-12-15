@@ -28,9 +28,11 @@ urlpatterns = [
     url(r'^artist/%s%s$' % (uuid_match, name_match), views.artist, name='makam-artist'),
     url(r'^release/%s%s$' % (uuid_match, title_match), views.release, name='makam-release'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
+    url(r'^score/%s$' % (uuid_match), views.work_score, name='makam-score'),
     url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='makam-work'),
     url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),
 
+    url(r'^filter/popup$', views.filter_directory, name='makam-directory'),
     url(r'^makam/(?P<makamid>\d+)%s$' % (name_match, ), views.makambyid, name='makam-makambyid'),
     url(r'^makam/%s%s$' % (uuid_match, name_match, ), views.makam, name='makam-makam'),
     url(r'^form/(?P<formid>\d+)%s$' % (name_match, ), views.formbyid, name='makam-formbyid'),
