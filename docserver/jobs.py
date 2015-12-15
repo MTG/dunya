@@ -245,10 +245,10 @@ def _save_process_results(version, instance, document, worker, results, starttim
             multipart = outputdata.get("parts", False)
             logger.info("data %s (%s)" % (dataslug, type(contents)))
             logger.info("multiparts %s" % multipart)
-            df = models.DerivedFile.objects.create(
+            df, created = models.DerivedFile.objects.get_or_create(
                 document=document,
                 module_version=version, outputname=dataslug, extension=extension,
-                mimetype=mimetype, computation_time=total_time)
+                mimetype=mimetype, defaults={'computation_time':total_time})
             if worker:
                 df.essentia = worker.essentia
                 df.pycompmusic = worker.pycompmusic

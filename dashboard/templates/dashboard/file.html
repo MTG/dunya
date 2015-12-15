@@ -22,22 +22,6 @@
 
 
 <div class="topbox">
-    <div class="topheader">File-specific checks</div>
-<table>
-    <tr><th>Checker</th><th>Status</th></tr>
-    {% for r in results %}
-    {% include "dashboard/release_check_stub.html" with item=r.latest more=r.others pk=r.latest.pk hide=False only %}
-    {% if r.others %}
-        {% for item in r.others %}
-        {% include "dashboard/release_check_stub.html" with item=item more=False hide=r.latest.pk only %}
-        {% endfor %}
-    {% endif %}
-
-    {% endfor %}
-</table>
-</div>
-
-<div class="topbox">
     <div class="topheader">Documents</div>
     {% if docsrvdoc %}
     <h3>Docserver</h3>
@@ -67,7 +51,5 @@
     {% endfor %}
     {% endif %}
 </div>
-
-{% include "dashboard/log.html" with logs=log_messages %}
 
 {% endblock %}

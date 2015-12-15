@@ -17,6 +17,7 @@
 import django.utils.timezone
 
 from dashboard.log import logger
+from dashboard.log import import_logger
 
 import compmusic
 import data
@@ -27,6 +28,12 @@ RELEASE_TYPE_WIKIPEDIA = "29651736-fa6d-48e4-aadc-a557c6add1cb"
 MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"
 RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
 RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
+
+RELATION_ORCHESTRA = "3b6616c5-88ba-4341-b4ee-81ce1e6d7ebb"
+RELATION_PERFORMER = "628a9658-f54c-4142-b0c0-95f031b544da"
+# Children of relation_performer
+RELATION_VOCAL = "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa"
+RELATION_INSTRUMENT = "59054b12-01ac-43ee-a618-285fd397e461"
 
 class ReleaseImporter(object):
     def __init__(self, collection):
@@ -101,8 +108,8 @@ class ReleaseImporter(object):
             trackorder += 1
 
         for perf in self._get_artist_performances(rel.get("artist-relation-list", [])):
-            artistid, instrument, is_lead = perf
-            self._add_release_performance(release.mbid, artistid, instrument, is_lead)
+            artistid, perf_type, attrs = perf
+            self._add_release_performance(release.mbid, artistid, perf_type, attrs)
 
         self._add_release_artists_as_relationship(release, rel["artist-credit"])
 
@@ -225,35 +232,11 @@ class ReleaseImporter(object):
     def _get_artist_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
-            if perf["type"] in ["vocal", "instrument", "performer", "performing orchestra"]:
+            if perf["type-id"] in [RELATION_PERFORMER, RELATION_VOCAL, RELATION_INSTRUMENT, RELATION_ORCHESTRA]:
                 artistid = perf["target"]
                 attrs = perf.get("attribute-list", [])
-                is_lead = False
-                for a in attrs:
-                    if "lead" in a:
-                        is_lead = True
-                if perf["type"] == "instrument":
-                    # The attributes 'additional' or 'solo' may be set.
-                    # If this is the case then remove them so that we don't
-                    # select them as the instrument name
-                    if "additional" in perf.get("attribute-list", []):
-                        perf["attribute-list"].remove("additional")
-                    if "solo" in perf.get("attribute-list", []):
-                        perf["attribute-list"].remove("solo")
-                    if "guest" in perf.get("attribute-list", []):
-                        perf["attribute-list"].remove("guest")
-                    insts = perf.get("attribute-list", [])
-                    # TODO: If someone performed more than 1 instrument
-                    # we won't catch it
-                    if insts:
-                        inst = insts[0]
-                    else:
-                        inst = None
-                elif perf["type"] == "vocal":
-                    inst = "vocal"
-                else:
-                    inst = None
-                performances.append((artistid, inst, is_lead))
+                type_id = perf["type-id"]
+                performances.append((artistid, type_id, attrs))
         return performances
 
     def add_and_get_recording(self, recordingid):
@@ -262,6 +245,7 @@ class ReleaseImporter(object):
 
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
         logger.info("  adding recording %s" % (recordingid,))
+        import_logger.info("importing recording %s", mbrec["title"])
         source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
         rec.source = source
         rec.length = mbrec.get("length")
@@ -293,13 +277,14 @@ class ReleaseImporter(object):
         IPClass = rec.get_object_map("performance")
         IPClass.objects.filter(recording=rec).delete()
         for perf in self._get_artist_performances(mbrec.get("artist-relation-list", [])):
-            artistid, instrument, is_lead = perf
-            self._add_recording_performance(recordingid, artistid, instrument, is_lead)
+            artistid, perf_type, attrs = perf
+            self._add_recording_performance(recordingid, artistid, perf_type, attrs)
 
         return rec
 
     def _clear_work_composers(self, work):
         pass
+
     def _add_recording_artists(self, rec, artistids):
         pass
 
@@ -308,6 +293,7 @@ class ReleaseImporter(object):
 
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
+        import_logger.info("adding work %s", mbwork["title"])
         work, created = self._WorkClass.objects.get_or_create(
             mbid=workid,
             defaults={"title": mbwork["title"]})

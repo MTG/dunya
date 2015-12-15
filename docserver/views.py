@@ -90,7 +90,7 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
     def create(self, request, external_identifier):
         title = request.data.get("title", None)
         slug = request.data.get("collection", None)
-            
+
         if not slug:
             raise Exception("Slug not present in request")
 
@@ -229,7 +229,7 @@ def manager(request):
 def modules_status(request):
     modules = []
     for m in models.Module.objects.all().order_by('name'):
-        modules.append({'disabled': m.disabled, 
+        modules.append({'disabled': m.disabled,
             'abs_url': m.get_absolute_url(),
             'name': m.name,
             'module': m.module,
@@ -286,7 +286,7 @@ def workers_status(request):
         inactiveworkers = [w.split("@")[1] for w in workerkeys]
     ret = {"workers": workers, "newworkers": newworkers, "inactiveworkers": inactiveworkers,
            "latestpycm": latestpycm.sha1, "latestessentia": latestessentia.sha1}
-    
+
     return HttpResponse(json.dumps(ret), content_type='application/json')
 
 def understand_task(task):
@@ -428,18 +428,22 @@ def get_module_source(modulename):
 
 def extractor_modules():
     ret = []
+    errors = []
     modules = models.Module.objects
     for importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "compmusic.extractors."):
         if not ispkg:
             stype = get_module_source(modname)
             if stype == imp.PY_SOURCE:
-                module = __import__(modname, fromlist="dummy")
-                for name, ftype in inspect.getmembers(module, inspect.isclass):
-                    if issubclass(ftype, extractors.ExtractorModule):
-                        classname = "%s.%s" % (modname, name)
-                        if not modules.filter(module=classname).exists():
-                            ret.append(classname)
-    return ret
+                try:
+                    module = __import__(modname, fromlist="dummy")
+                    for name, ftype in inspect.getmembers(module, inspect.isclass):
+                        if issubclass(ftype, extractors.ExtractorModule):
+                            classname = "%s.%s" % (modname, name)
+                            if not modules.filter(module=classname).exists():
+                                ret.append(classname)
+                except ImportError:
+                    errors.append(modname)
+    return ret, errors
 
 @user_passes_test(is_staff)
 def addmodule(request):
@@ -454,8 +458,8 @@ def addmodule(request):
             return redirect('docserver-manager')
     else:
         form = forms.ModuleForm()
-    newmodules = extractor_modules()
-    ret = {"form": form, "newmodules": newmodules}
+    newmodules, errors = extractor_modules()
+    ret = {"form": form, "newmodules": newmodules, "errormodules": errors}
     return render(request, 'docserver/addmodule.html', ret)
 
 @user_passes_test(is_staff)

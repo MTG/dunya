@@ -8,17 +8,55 @@
     {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     {% endif %}
+    <style type="text/css">
+/*  SECTIONS  */
+.section {
+	clear: both;
+	padding: 0px;
+	margin: 0px;
+}
+
+/*  COLUMN SETUP  */
+.col {
+	display: block;
+	float:left;
+	margin: 1% 0 1% 1.6%;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; /* For IE 6/7 */ }
+/*  GRID OF THREE  */
+.span_3_of_3 { width: 100%; }
+.span_2_of_3 { width: 66.13%; }
+.span_1_of_3 { width: 32.26%; }
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 480px) {
+	.col {  margin: 1% 0 1% 0%; }
+	.span_3_of_3, .span_2_of_3, .span_1_of_3 { width: 100%; }
+}
+    </style>
 {% endblock %}
 
 {% block title %}Jingju recording list - {% endblock %}
 
 {% block wrap %}
 <div id="detail" class="recording">
+
+<div class="section group">
     {% for recording in recordings %}
+	<div class="col span_1_of_3">
         <a href="recording/{{recording.recording}}">
         <img width="250px" src="http://coverartarchive.org/release/{{recording.release}}/front-500">
         <h1>{{recording.title}}</h1></a>
+	</div>
+	{% if forloop.counter|divisibleby:3 %}</div><div class="section group">{% endif %}
     {% endfor %}
+</div>
 	 	<div class="clearfix"></div>
 </div>
 

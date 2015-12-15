@@ -15,8 +15,34 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import logging
+import dashboard
 
-logger = logging.getLogger('dunya')
+class ImportLogAdapter(logging.LoggerAdapter):
+    def process(self, msg, kwargs):
+        extra = {}
+        if hasattr(self, "releaseid"):
+            extra["releaseid"] = self.releaseid
+        kwargs["extra"] = extra
+        return (msg, kwargs)
+
+class ImportLogHandler(logging.Handler):
+    def handle(self, record):
+        releaseid = getattr(record, "releaseid", None)
+
+        if releaseid:
+            release = dashboard.models.MusicbrainzRelease.objects.get(pk=releaseid)
+            message = "%s: %s" % (record.levelname, record.getMessage())
+            release.add_log_message(message)
+
+
 ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
+
+import_base_logger = logging.getLogger('dunya.importer')
+import_base_logger.addHandler(ImportLogHandler())
+import_base_logger.addHandler(ch)
+import_logger = ImportLogAdapter(import_base_logger, {})
+
+
+logger = logging.getLogger('dunya')
 logger.addHandler(ch)

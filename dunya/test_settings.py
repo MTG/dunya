@@ -1,4 +1,5 @@
 from settings import *
+import os
 
 if "motif" in DATABASES:
     del DATABASES["motif"]
@@ -7,9 +8,13 @@ from xmlrunner.extra.djangotestrunner import XMLTestRunner
 from django.test.runner import DiscoverRunner
 from django.db import connections, DEFAULT_DB_ALIAS
 
-# We use the XMLTestRunner on CI
-#class DunyaTestRunner(XMLTestRunner):
-class DunyaTestRunner(DiscoverRunner):
+if os.environ.get('JENKINS_URL'):
+    # We use the XMLTestRunner on CI
+    TestRunnerBaseClass = XMLTestRunner
+else:
+    TestRunnerBaseClass = DiscoverRunner
+
+class DunyaTestRunner(TestRunnerBaseClass):
     def setup_databases(self):
         result = super(DunyaTestRunner, self).setup_databases()
         connection = connections[DEFAULT_DB_ALIAS]

@@ -80,7 +80,6 @@ def setupdb():
         or have deleted your database
     """
     local("python manage.py migrate")
-    local("python manage.py mkdunyadata")
 
 def updatedb():
     """ Run this when someone has committed some changes to the

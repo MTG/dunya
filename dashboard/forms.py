@@ -36,14 +36,6 @@ class CollectionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
 
-        choices = []
-        for checker in models.CompletenessChecker.objects.all():
-            choices.append((checker.pk, checker.name))
-        self.ccheckers = choices
-
-        self.fields['checkers'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=choices)
-
-
     def clean_path(self):
         pth = self.cleaned_data.get('path')
         if pth and not os.path.exists(pth):
@@ -153,9 +145,12 @@ class SymbTrForm(forms.ModelForm):
 
     def clean_uuid(self):
         data = self.cleaned_data['uuid']
-        import makam
-        if makam.models.SymbTr.objects.filter(uuid=data).exists():
-            raise forms.ValidationError("UUID already exists")
+        if 'uuid' in self.changed_data or self.instance.pk is None:
+            # If this is new, or if the uuid has changed, check if
+            # there is already an object with this id
+            import makam
+            if makam.models.SymbTr.objects.filter(uuid=data).exists():
+                raise forms.ValidationError("UUID already exists")
         return data
 
 

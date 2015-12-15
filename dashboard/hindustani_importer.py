@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from dashboard.log import logger
+from dashboard.log import import_logger
 from dashboard import release_importer
 import compmusic
 
@@ -55,7 +56,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         hindustani.models.RecordingRaag.objects.filter(recording=recording).delete()
         hindustani.models.RecordingForm.objects.filter(recording=recording).delete()
 
+        if not layas:
+            import_logger.warning("No laya tags found on recording")
         for l in layas:
+            import_logger.info("Found laya tag %s", l)
             lpos = l[0]
             lob = self._get_laya(l[1])
             if lob:
@@ -63,7 +67,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             else:
                 print "couldn't find a laya", l
 
+        if not taals:
+            import_logger.warning("No taal tags found on recording")
         for t in taals:
+            import_logger.info("Found taal tag %s", t)
             tpos = t[0]
             tob = self._get_taal(t[1])
             if tob:
@@ -71,7 +78,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             else:
                 print "couldn't find a taal", t
 
+        if not raags:
+            import_logger.warning("No raag tags found on recording")
         for r in raags:
+            import_logger.info("Found raag tag %s", r)
             rpos = r[0]
             rob = self._get_raag(r[1])
             if rob:
@@ -79,7 +89,10 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             else:
                 print "could't find a raag", r
 
+        if not forms:
+            import_logger.warning("No form tags found on recording")
         for f in forms:
+            import_logger.info("Found form tag %s", f)
             fpos = f[0]
             fob = self._get_form(f[1])
             if fob:
@@ -131,46 +144,66 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         try:
             return hindustani.models.Raag.objects.fuzzy(rname)
         except hindustani.models.Raag.DoesNotExist:
+            import_logger.warning("Cannot find raag '%s' in the database", rname)
             return None
 
     def _get_taal(self, tname):
         try:
             return hindustani.models.Taal.objects.fuzzy(tname)
         except hindustani.models.Taal.DoesNotExist:
+            import_logger.warning("Cannot find taal '%s' in the database", tname)
             return None
 
     def _get_form(self, fname):
         try:
             return hindustani.models.Form.objects.fuzzy(fname)
         except hindustani.models.Form.DoesNotExist:
+            import_logger.warning("Cannot find form '%s' in the database", fname)
             return None
 
     def _get_laya(self, lname):
         try:
             return hindustani.models.Laya.objects.fuzzy(lname)
         except hindustani.models.Laya.DoesNotExist:
+            import_logger.warning("Cannot find laya '%s' in the database", lname)
             return None
 
-    def get_instrument(self, instname):
+    def _get_instrument(self, instname):
         try:
             return hindustani.models.Instrument.objects.get(name__iexact=instname)
         except hindustani.models.Instrument.DoesNotExist:
+            import_logger.warning("Cannot find instrument '%s' in the database", instname)
             return None
 
-    def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+    def _performance_type_to_instrument(self, perf_type, attrs):
+        is_lead = False
+        if perf_type == release_importer.RELATION_VOCAL:
+            instr_name = "voice"
+            if "lead vocals" in attrs:
+                is_lead = True
+        elif perf_type == release_importer.RELATION_INSTRUMENT:
+            instr_name = attrs[-1]
+            attrs = attrs[:-1]
+            if "lead" in attrs:
+                is_lead = True
+
+        attributes = " ".join(attrs)
+        instrument = self._get_instrument(instr_name)
+
+        return instrument, attributes, is_lead
+
+    def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        # Musicbrainz calls it 'vocal', but we want it to be 'voice'
-        if instrument == "vocal":
-            instrument = "voice"
-        instrument = self.get_instrument(instrument)
-        if instrument:
-            recording = hindustani.models.Recording.objects.get(mbid=recordingid)
-            perf = hindustani.models.InstrumentPerformance(recording=recording, instrument=instrument, artist=artist, lead=is_lead)
-            perf.save()
+        recording = hindustani.models.Recording.objects.get(mbid=recordingid)
 
-    def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
+        instrument, attributes, is_lead = self._performance_type_to_instrument(perf_type, attrs)
+
+        if instrument:
+            hindustani.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
+
+    def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         logger.info("  Adding concert performance to all recordings...")
         release = hindustani.models.Release.objects.get(mbid=releaseid)
         for t in release.recordings.all():
-            self._add_recording_performance(t.mbid, artistid, instrument, is_lead)
+            self._add_recording_performance(t.mbid, artistid, perf_type, attrs)

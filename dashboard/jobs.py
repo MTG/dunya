@@ -35,6 +35,8 @@ import docserver.util
 #import populate_images
 from dunya.celery import app
 
+from dashboard.log import import_logger
+
 class DunyaTask(celery.Task):
     abstract = True
 
@@ -55,14 +57,6 @@ class CollectionDunyaTask(DunyaTask):
 
 class ReleaseDunyaTask(DunyaTask):
     ObjectClass = models.MusicbrainzRelease
-
-def load_and_import_collection(collectionid):
-    """ Scan the collection contents and import all releases that
-    haven't been imported before.
-    """
-    # Note, use 'immutable subtasks' (.si()) which doesn't pass results from 1 method to the next
-    chain = load_musicbrainz_collection.si(collectionid) | import_all_releases.si(collectionid)
-    chain.apply_async()
 
 def force_load_and_import_collection(collectionid):
     """ Scan the collection contents and import every release again
@@ -122,56 +116,26 @@ def import_release(releasepk, ri):
     release.add_log_message("Starting import")
     collection = release.collection
 
-    # 1. Run release checkers
+    # If there have been no errors, import to the docserver
+    # and to dunya
+    cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
+    for cfile in cfiles:
+        # 3a. Import file to docserver
+        docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
+        cfile.set_state_finished()
+
+    # 3b. Import release to dunya database
     abort = False
-    rcheckers = collection.checkers.filter(type='r')
-    for check in rcheckers:
-        inst = check.get_instance()
-        release.add_log_message("Running release test %s" % inst.name)
+    if collection.do_import:
         try:
-            res = inst.do_check(release.id)
-            # If the test fails and abort_on_bad is set then we stop the import
-            abort = abort or (not res and inst.abort_on_bad)
+            directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
+            # Set the release logger releaseid to the id of the current release
+            import_logger.releaseid = release.pk
+            ri.import_release(release.mbid, directories)
         except Exception as e:
-            # also stop the import if there's an exception
             abort = True
             tb = traceback.format_exc()
             release.add_log_message(tb)
-
-    cfiles = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
-    # 2. Run file checkers
-    fcheckers = collection.checkers.filter(type='f')
-    for cfile in cfiles:
-        # 2a. Check file
-        for check in fcheckers:
-            inst = check.get_instance()
-            cfile.add_log_message("Running file test %s" % inst.name)
-            try:
-                res = inst.do_check(cfile.id)
-                abort = abort or (not res and inst.abort_on_bad)
-            except Exception as e:
-                abort = True
-                tb = traceback.format_exc()
-                cfile.add_log_message(tb)
-                cfile.set_state_error()
-
-    if not abort:
-        # If there have been no errors, import to the docserver
-        # and to dunya
-        for cfile in cfiles:
-            # 3a. Import file to docserver
-            docserver.util.docserver_add_mp3(collection.id, release.mbid, cfile.path, cfile.recordingid)
-            cfile.set_state_finished()
-
-        # 3b. Import release to dunya database
-        if collection.do_import:
-            try:
-                directories = [os.path.join(collection.root_directory, d.path) for d in release.collectiondirectory_set.all()]
-                ri.import_release(release.mbid, directories)
-            except Exception as e:
-                abort = True
-                tb = traceback.format_exc()
-                release.add_log_message(tb)
 
     if not abort:
         # If the import succeeded, clean up.
@@ -227,46 +191,6 @@ def force_import_all_releases(collectionid):
                 r.ignore = False
                 r.save()
             unstarted.append(r)
-    for r in unstarted:
-        import_release(r.id, ri)
-    collection.set_state_finished()
-
-@app.task(base=CollectionDunyaTask)
-def import_all_releases(collectionid):
-    """ Import releases in a collection.
-    This will not import releases that are ignored, or have a state of 'finished'
-    unless the file changed.
-    It will also not import releases that are missing a matching directory.
-    """
-    collection = models.Collection.objects.get(pk=collectionid)
-    collection.set_state_importing()
-    ri = get_release_importer(collection)
-    if not ri:
-        collection.add_log_message("Cannot discover importer based on collection name (does it include carnatic/hindustani/makam/andalusian?)")
-        collection.set_state_error()
-        return
-    releases = collection.musicbrainzrelease_set.filter(ignore=False)
-    unstarted = []
-    for r in releases:
-        matched_paths = r.collectiondirectory_set.all()
-        # Only import if it's not finished and has a matched directory
-        if r.get_current_state().state != 'f' and len(matched_paths):
-            unstarted.append(r)
-        elif len(matched_paths):
-            added = False
-            for m in matched_paths:
-                for f in m.collectionfile_set.all():
-                    afile = os.path.join(collection.root_directory, f.path)
-                    if not os.path.isfile(afile):
-                        f.delete()
-                        if (m.collectionfile_set.all()) ==0:
-                            m.delete()
-                    elif not f.filesize == os.path.getsize(afile):
-                        f.filesize = os.path.getsize(afile)
-                        f.save()
-                        if not added:
-                            unstarted.append(r)
-                            added = True
     for r in unstarted:
         import_release(r.id, ri)
     collection.set_state_finished()
@@ -346,20 +270,26 @@ def _match_directory_to_release(collectionid, root):
             therelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
             cd.musicbrainzrelease = therelease
             cd.save()
-            cd.add_log_message("Successfully matched to a release", None)
 
             mp3files = _get_mp3_files(os.listdir(root))
             for f in mp3files:
-                meta = compmusic.file_metadata(os.path.join(root, f))
-                recordingid = meta["meta"].get("recordingid")
-                size = os.path.getsize(os.path.join(root, f))
-                cfile, created = models.CollectionFile.objects.get_or_create(name=f, directory=cd, recordingid=recordingid, defaults={'filesize': size})
+                _create_collectionfile(cd, f)
         except models.MusicbrainzRelease.DoesNotExist:
-            cd.add_log_message("Cannot find this directory's release (%s) in the imported releases" % (releaseid, ), None)
-    elif len(rels) == 0:
-        cd.add_log_message("No releases found in ID3 tags", None)
-    else:
-        cd.add_log_message("More than one release found in ID3 tags", None)
+            pass
+
+def _create_collectionfile(cd, name):
+    """arguments:
+       cd: a collectiondirectory
+       name: the name of the file, with no path information
+    """
+    path = os.path.join(cd.full_path, name)
+    meta = compmusic.file_metadata(path)
+    recordingid = meta["meta"].get("recordingid")
+    size = os.path.getsize(path)
+    cfile, created = models.CollectionFile.objects.get_or_create(name=name, directory=cd, recordingid=recordingid, defaults={'filesize': size})
+    if not created:
+        cfile.filesize = size
+        cfile.save()
 
 def scan_and_link(collectionid):
     """ Scan the root directory of a collection and see if any directories
@@ -401,6 +331,43 @@ def scan_and_link(collectionid):
     cds = coll.collectiondirectory_set.filter(musicbrainzrelease__isnull=True)
     for cd in cds:
         _match_directory_to_release(coll.id, cd.full_path)
+
+    _check_existing_directories(coll)
+
+def _check_existing_directories(coll):
+    # For all of the matched directories, look at the contents of them and
+    # remove/add files as needed
+    # We don't remove from the docserver because it's not very important to
+    # remove them, and it's complex to cover all cases. We do this separately
+    for cd in coll.collectiondirectory_set.all():
+        files = os.listdir(cd.full_path)
+        mp3files = _get_mp3_files(files)
+        existing_f = cd.collectionfile_set.all()
+        existing_names = [f.name for f in existing_f]
+
+        to_remove = set(existing_names) - set(mp3files)
+        to_add = set(mp3files) - set(existing_names)
+        same_files = set(mp3files) & set(existing_names)
+
+        for rm in to_remove:
+            # If it was renamed, we will make a CollectionFile in
+            # the to_add block below
+            cd.collectionfile_set.get(name=rm).delete()
+
+        for f in same_files:
+            # Look through all files and see if the mbid has changed. If it's changed,
+            # update the reference
+            fileobject = cd.collectionfile_set.get(name=f)
+            meta = compmusic.file_metadata(os.path.join(cd.full_path, f))
+            recordingid = meta["meta"].get("recordingid")
+            if recordingid != fileobject.recordingid:
+                fileobject.recordingid = recordingid
+                fileobject.save()
+
+        if to_add:
+            # If there are new files in the directory, just run _match again and
+            # it will create the new file objects
+            _match_directory_to_release(coll.id, cd.full_path)
 
 @app.task
 def delete_collection(cid):

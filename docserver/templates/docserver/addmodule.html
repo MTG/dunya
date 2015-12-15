@@ -31,6 +31,14 @@ Autodiscovered new modules:
 </ul>
 <p>
 {% endif %}
+{% if errormodules %}
+These modules failed to import:
+<ul>
+    {% for e in errormodules %}
+    <li>{{e}}
+    {% endfor %}
+</ul>
+{% endif %}
 
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
