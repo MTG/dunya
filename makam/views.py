@@ -289,7 +289,7 @@ def recording(request, uuid, title=None):
         notemodelsurl = None 
 
     try:
-        sectionsurl = docserver.util.docserver_get_url(mbid, "scorealign", "sectionlinks", 1, version="0.1")
+        sectionsurl = docserver.util.docserver_get_url(mbid, "scorealign", "sectionlinks", 1, version="0.2")
     except docserver.util.NoFileException:
         sectionsurl = None 
      
