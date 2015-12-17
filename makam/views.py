@@ -274,7 +274,7 @@ def recording(request, uuid, title=None):
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "dunyapitchmakam", "pitch", "0.2")
      
     try:
-        notesalignurl = docserver.util.docserver_get_url(mbid, "scorealign", "notesalign", 1, version="0.1")
+        notesalignurl = docserver.util.docserver_get_url(mbid, "scorealign", "notesalign", 1, version="0.2")
     except docserver.util.NoFileException:
         notesalignurl = None 
    
