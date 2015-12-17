@@ -202,7 +202,8 @@ function plotRefFreq(context, lastStables){
             var note = null;
             var cents = null;
             for (var i=0; i<lastStables.length; i++){
-                if(Math.floor(lastStables[i][0]) < Math.floor(freq)+10 && Math.floor(lastStables[i][0]) > Math.floor(freq) - 10){
+                  var cent = 1200*Math.log2(freq/lastStables[i][0])
+                  if( Math.abs(cent) < 50 ){
                   note = lastStables[i][1];
                   cents = Math.floor(lastStables[i][2]);
                   break;
@@ -212,9 +213,11 @@ function plotRefFreq(context, lastStables){
             if (note != null){
               html += "<b>" + note + "</b>, ";
             }
-              html += Math.floor(freq) + " Hz";
             if(cents){
+              html += Math.floor(lastStables[i][0]) + " Hz";
               html += ", " + Math.floor(lastStables[i][2]) +" cents";
+            }else{
+              html += Math.floor(freq) + " Hz";
             }
             $("#freq-info").html(html);
             $("#freq-info").show();
@@ -231,7 +234,22 @@ function plotRefFreq(context, lastStables){
         var offset_t = $(this).offset().top - $(window).scrollTop();
         var vtop = Math.round( (e.clientY - offset_t) );
         var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
-        play_osc(Math.floor(freq)); 
+        if (lastStables) {
+            var fix_freq = null;
+            for (var i=0; i<lastStables.length; i++){
+                  var cent = 1200*Math.log2(freq/lastStables[i][0])
+                  if( Math.abs(cent) < 50 ){
+                  fix_freq = Math.floor(lastStables[i][0]);
+                  break;
+                }
+            }
+            if(fix_freq){
+              play_osc(Math.floor(lastStables[i][0])); 
+            }else{
+              play_osc(Math.floor(freq)); 
+            }
+        }
+
         console.log(freq)
      });
      
@@ -243,11 +261,13 @@ function plotRefFreq(context, lastStables){
       if(lastStables[i][2]==0 ) {
          var freq = Math.floor(lastStables[i][0]);
          var j = (freq - pitchMin) / ( pitchMax - pitchMin );
-         context.font = "bold 11px Arial";
-         context.fillText(lastStables[i][1] + ", " + freq + " Hz, "+ Math.floor(lastStables[i][2]) +" cents", 91 ,265-Math.round(j*255));
+         context.font = "Bold 12px Open Sans";
+         context.fillText(lastStables[i][1]+": ", 120 ,265-Math.round(j*255));
+         context.font = "12px Open Sans";
+         context.fillText(freq + " Hz", 150 ,265-Math.round(j*255));
          context.beginPath();
          context.moveTo(0, 255-Math.round(j*255));
-         for (k=0;k<100;k+=10){
+         for (k=0;k<130;k+=10){
              context.lineTo(k, 255-Math.round(j*255));
              context.moveTo(k+5, 255-Math.round(j*255));
          }
