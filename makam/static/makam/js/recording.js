@@ -22,27 +22,6 @@ $(document).ready(function() {
      lastNotes = [];
      lastLine = null;
      colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
-     color_notes = {
-             "G5b4":"#FFC400",
-             "G5": "#00FFB3", 
-             "G4": "#0099FF",
-             "F5#4": "#FF007F",
-             "F5": "#00FFFF",
-             "F4#4": "#FF000D",
-             "E5b5": "#FF9100",
-             "E5b4": "#4800FF",
-             "E5": "#00FF40",
-             "E4b5": "#D4D390",
-             "D5": "#404036",
-             "D4": "#00FF80",
-             "C5#4": "#8471BD",
-             "C5": "#C47766",
-             "B5b5": "#66B3C4",
-             "B4b5": "#1627D9",
-             "B4b1": "#16D9A2",
-             "A5": "#D99B16",
-             "A4#4": "#009100",
-             "A4":"#FF9190"};
      images = [];
      startLoaded = 0;
      lastLoaded = 0;
@@ -547,11 +526,10 @@ function showNoteOnHistogram(note, time){
    histogram.width = 200;
    histogram.height = 256;
    var ctxNotes = histogram.getContext("2d");
-   color = color_notes[note];
    if (!note){
        return;
    }
-   plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], color);
+   plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], "#0099FF");
 
    var canvas = $('#overlap-histogram')[0];
    canvas.width = 200;
