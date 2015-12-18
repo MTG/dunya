@@ -286,7 +286,8 @@ def process_collection(collectionid, moduleversionid):
     results = None
     sfiles = models.SourceFile.objects.filter(document__collections=collection, file_type=module.source_type)
 
-    document, created = models.Document.objects.get_or_create(pk=collectionid,
+    document, created = models.Document.objects.get_or_create(
+                        title=collection.name,
                         external_identifier=collection.collectionid)
     if created:
         document.collections.add(collection)
