@@ -407,6 +407,9 @@ class ModuleVersion(models.Model):
     version = models.CharField(max_length=10)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
+    def is_latest(self):
+        return self.module.get_latest_version() == self
+
     def processed_files(self, collection=None):
         if not collection:
             collections = self.module.collections.all()

@@ -58,10 +58,13 @@ Are you sure you want to delete this module? ({{module.name}}, and all {{module.
                 <input type="hidden" name="deleteversion" value="yes">
                 <input type="hidden" name="version" value="{{v.pk}}">
                 <input type="submit" value="Delete version"></form>
+            {% if v.is_latest %}
             <p><form method="post" action="">
                 {% csrf_token %}
                 <input type="hidden" name="runversion" value="{{v.pk}}">
-                <input type="submit" value="Process this version"></form></td>
+                <input type="submit" value="Process this version"></form>
+            {% endif %}
+        </td>
     </tr>
     {% endfor %}
 </table>
