@@ -22,27 +22,6 @@ $(document).ready(function() {
      lastNotes = [];
      lastLine = null;
      colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
-     color_notes = {
-             "G5b4":"#FFC400",
-             "G5": "#00FFB3", 
-             "G4": "#0099FF",
-             "F5#4": "#FF007F",
-             "F5": "#00FFFF",
-             "F4#4": "#FF000D",
-             "E5b5": "#FF9100",
-             "E5b4": "#4800FF",
-             "E5": "#00FF40",
-             "E4b5": "#D4D390",
-             "D5": "#404036",
-             "D4": "#00FF80",
-             "C5#4": "#8471BD",
-             "C5": "#C47766",
-             "B5b5": "#66B3C4",
-             "B4b5": "#1627D9",
-             "B4b1": "#16D9A2",
-             "A5": "#D99B16",
-             "A4#4": "#009100",
-             "A4":"#FF9190"};
      images = [];
      startLoaded = 0;
      lastLoaded = 0;
@@ -202,7 +181,8 @@ function plotRefFreq(context, lastStables){
             var note = null;
             var cents = null;
             for (var i=0; i<lastStables.length; i++){
-                if(Math.floor(lastStables[i][0]) < Math.floor(freq)+10 && Math.floor(lastStables[i][0]) > Math.floor(freq) - 10){
+                  var cent = 1200*Math.log2(freq/lastStables[i][0])
+                  if( Math.abs(cent) < 50 ){
                   note = lastStables[i][1];
                   cents = Math.floor(lastStables[i][2]);
                   break;
@@ -212,9 +192,11 @@ function plotRefFreq(context, lastStables){
             if (note != null){
               html += "<b>" + note + "</b>, ";
             }
-              html += Math.floor(freq) + " Hz";
             if(cents){
+              html += Math.floor(lastStables[i][0]) + " Hz";
               html += ", " + Math.floor(lastStables[i][2]) +" cents";
+            }else{
+              html += Math.floor(freq) + " Hz";
             }
             $("#freq-info").html(html);
             $("#freq-info").show();
@@ -231,7 +213,22 @@ function plotRefFreq(context, lastStables){
         var offset_t = $(this).offset().top - $(window).scrollTop();
         var vtop = Math.round( (e.clientY - offset_t) );
         var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
-        play_osc(Math.floor(freq)); 
+        if (lastStables) {
+            var fix_freq = null;
+            for (var i=0; i<lastStables.length; i++){
+                  var cent = 1200*Math.log2(freq/lastStables[i][0])
+                  if( Math.abs(cent) < 50 ){
+                  fix_freq = Math.floor(lastStables[i][0]);
+                  break;
+                }
+            }
+            if(fix_freq){
+              play_osc(Math.floor(lastStables[i][0])); 
+            }else{
+              play_osc(Math.floor(freq)); 
+            }
+        }
+
         console.log(freq)
      });
      
@@ -243,11 +240,13 @@ function plotRefFreq(context, lastStables){
       if(lastStables[i][2]==0 ) {
          var freq = Math.floor(lastStables[i][0]);
          var j = (freq - pitchMin) / ( pitchMax - pitchMin );
-         context.font = "bold 11px Arial";
-         context.fillText(lastStables[i][1] + ", " + freq + " Hz, "+ Math.floor(lastStables[i][2]) +" cents", 91 ,265-Math.round(j*255));
+         context.font = "Bold 12px Open Sans";
+         context.fillText(lastStables[i][1]+": ", 120 ,265-Math.round(j*255));
+         context.font = "12px Open Sans";
+         context.fillText(freq + " Hz", 150 ,265-Math.round(j*255));
          context.beginPath();
          context.moveTo(0, 255-Math.round(j*255));
-         for (k=0;k<100;k+=10){
+         for (k=0;k<130;k+=10){
              context.lineTo(k, 255-Math.round(j*255));
              context.moveTo(k+5, 255-Math.round(j*255));
          }
@@ -527,11 +526,10 @@ function showNoteOnHistogram(note, time){
    histogram.width = 200;
    histogram.height = 256;
    var ctxNotes = histogram.getContext("2d");
-   color = color_notes[note];
    if (!note){
        return;
    }
-   plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], color);
+   plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], "#0099FF");
 
    var canvas = $('#overlap-histogram')[0];
    canvas.width = 200;
