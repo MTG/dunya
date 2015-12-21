@@ -64,9 +64,9 @@ class DatabaseLogHandler(logging.Handler):
         else:
             logger.error("no document, can't create a log file")
 
-#logger = logging.getLogger("extractor")
-#logger.setLevel(logging.DEBUG)
-#logger.addHandler(DatabaseLogHandler())
+extractor_logger = logging.getLogger("extractor")
+extractor_logger.setLevel(logging.DEBUG)
+extractor_logger.addHandler(DatabaseLogHandler())
 
 def _get_module_instance_by_path(modulepath):
     args = {}
@@ -274,14 +274,14 @@ def process_collection(collectionid, moduleversionid):
     module = version.module
     instance = _get_module_instance_by_path(module.module)
 
-    hostname = process_document.request.hostname
+    hostname = process_collection.request.hostname
     worker = _get_worker_from_hostname(hostname)
 
     instance.hostname = hostname
+
     # if the extractor run over all the collection then the document
     # has the same id of the collection and the result is
     # set to this document
-
     collection = models.Collection.objects.get(pk=collectionid)
     results = None
     sfiles = models.SourceFile.objects.filter(document__collections=collection, file_type=module.source_type)
