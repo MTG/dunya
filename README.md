@@ -29,7 +29,7 @@ Otherwise, read on
 Dependencies
 ------------
 
-    sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev 
+    sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev
 
 * Create a virtualenv
 
@@ -106,16 +106,16 @@ Where `dunya` is the name of the database
             fab setupdb
 
     2.  Inside your database, add a row to the `django_site` table:
-        Example: 
+        Example:
             id |         domain          |            name
             1  | dunya.compmusic.upf.edu | dunya.compmusic.upf.edu
 
     3.  You need to have a collection of albums and audio files somewhere on your drive.
         You will need to enter the path to this folder. You can download sample collections
-        from one of 'kora' if you have access to it. 
+        from one of 'kora' if you have access to it.
 
     4.  Assuming you have a MusicBrainz account, create a public collection and make
-        sure the name contains the name of the music style that the collection is 
+        sure the name contains the name of the music style that the collection is
         related to. For example, for Carnatic style the word 'carnatic' should be included
         somewhere in the collection name (ie 'carnatic_coll_23423')
         Add the releases for which you have a copy (step 3) into this collection.
@@ -162,7 +162,7 @@ Rabbitmq
 
 This is not needed if you don't want to use the extractors.
 
-We use rabbitmq for sending job commands to workers. On the server you will need to run 
+We use rabbitmq for sending job commands to workers. On the server you will need to run
 (password values aren't important)
 
     rabbitmqctl add_user dunyauser dunyapassword
@@ -235,7 +235,7 @@ To run the server:
 
 To run jobs, make sure rabbitmq is running on the server
 
-And on each client you run celery, either for executing the feature processing algorithms or the 
+And on each client you run celery, either for executing the feature processing algorithms or the
 information import from MusicBrainz.
 
     celery -A dunya worker -l info
@@ -368,7 +368,7 @@ Essentia should be installed into the virtual environment, `/srv/dunya/env`. The
 whole dunya directory should be owned by a user that has write permission to the
 directory. Celery should run as this user too.
 
-You need to make sure that this user can connect to github via ssh. Either log in as the 
+You need to make sure that this user can connect to github via ssh. Either log in as the
 use and run `ssh github.com`, or use https.
 
 The celery configuration should have a queue and hostname configured that are the
@@ -378,7 +378,8 @@ The machines must also listen on the standard `celery` queue for all other work.
     [program:dunyacelery]
     # We need to set the path to include the virtualenv so that e.g. essentia gets the right pythonpath
     # Supervisor doesn't overwrite HOME or USER, so we need to add it so that os.path.expanduser works
-    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8',PATH='/srv/dunya/env/bin:/usr/local/bin:/bin:/usr/bin',HOME='/home/dunya',USER='dunya'
+    # set LD_LIBRARY_PATH so the python module _essentia.so can find libessentia.so
+    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8',PATH='/srv/dunya/env/bin:/usr/local/bin:/bin:/usr/bin',HOME='/home/dunya',USER='dunya',LD_LIBRARY_PATH='/srv/dunya/env/lib'
     user=dunya
     directory=/srv/dunya
     command=/srv/dunya/env/bin/celery -A dunya -n kora worker -l info -Q kora,celery
