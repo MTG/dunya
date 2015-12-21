@@ -501,7 +501,14 @@ def module(request, module):
             jobs.run_module(module.pk, int(run))
             return redirect('docserver-module', module.pk)
 
-    ret = {"module": module, "versions": versions, "form": form, "confirmversion": confirmversion, "confirmmodule": confirmmodule}
+    logmessages = models.DocumentLogMessage.objects.filter(moduleversion__module=module)[:20]
+
+    ret = {"module": module,
+           "versions": versions,
+           "form": form,
+           "confirmversion": confirmversion,
+           "confirmmodule": confirmmodule,
+           "logs": logmessages}
     return render(request, 'docserver/module.html', ret)
 
 @user_passes_test(is_staff)

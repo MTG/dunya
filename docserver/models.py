@@ -458,5 +458,8 @@ class DocumentLogMessage(models.Model):
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
+    def is_exception(self):
+        return "Traceback (most recent call last)" in self.message
+
     def __unicode__(self):
         return u"%s: %s" % (self.datetime, self.message)
