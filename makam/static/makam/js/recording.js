@@ -49,13 +49,8 @@ $(document).ready(function() {
      soundManager.onready(function() {
          pagesound = soundManager.createSound({
                url: audiourl,
-         });
+         }).load();
 
-         pagesound.play({onfinish: function() {
-            window.clearInterval(int);
-            plButton.removeClass("stop");
-            hasfinished = true;
-        }});
      });
 
      $('.folButton').click(function(e){
