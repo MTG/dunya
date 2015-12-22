@@ -108,6 +108,10 @@ def inline_work(work):
     # return '<a href="%s">%s</a>' % (work.get_absolute_url(), work.title)
 
 @register.simple_tag
+def inline_raaga_list(raagas):
+    return ", ".join([inline_raaga(r) for r in raagas])
+
+@register.simple_tag
 def inline_raaga(raaga):
     if raaga:
         return '<span title="%s">%s</span>' % (raaga.common_name.title(), raaga.name.title())
@@ -117,6 +121,10 @@ def inline_raaga(raaga):
 @register.simple_tag
 def inline_raaga_link(raaga):
     return '<a href="%s" title="%s">%s</a>' % (raaga.get_absolute_url(), raaga.common_name.title(), raaga.name.title())
+
+@register.simple_tag
+def inline_taala_list(taalas):
+    return ", ".join([inline_taala(t) for t in taalas])
 
 @register.simple_tag
 def inline_taala(taala):

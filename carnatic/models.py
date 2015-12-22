@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
+from django.db.models import Count
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
@@ -146,12 +147,13 @@ class Artist(CarnaticStyle, data.models.Artist):
             rcollections = collection_ids.replace(' ','').split(",")
         if not permission:
             permission = ["U"]
+
         ret = []
         concerts = self.primary_concerts.with_permissions(collection_ids, permission)
         if raagas:
-            concerts = concerts.filter(recordings__works__raaga__in=raagas)
+            concerts = concerts.filter(Q(recordings__works__raaga__in=raagas)|Q(recordings__raagas__in=raagas)).distinct()
         if taalas:
-            concerts = concerts.filter(recordings__works__taala__in=taalas)
+            concerts = concerts.filter(Q(recordings__works__taala__in=taalas)|Q(recordings__taalas__in=taalas)).distinct()
         ret.extend(concerts.all())
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
@@ -790,22 +792,20 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         return "The description of an instrument"
 
     def ordered_performers(self):
-        perfs, counts = self.performers()
-        perfs = sorted(perfs, key=lambda p: counts[p.artist], reverse=True)
-        return [p.artist for p in perfs]
+        artists, counts = self.performers()
+        artists = sorted(artists, key=lambda a: counts[a], reverse=True)
+        return artists
 
     def performers(self):
-        IPClass = self.get_object_map("performance")
-        performances = IPClass.objects.filter(instrument=self).distinct()
+        artists = Artist.objects.filter(
+                instrumentperformance__instrument=self).annotate(
+                num_times=Count('instrumentperformance__instrument'))
+
+        artistcount = {}
         ret = []
-        artists = []
-        # Sort how many performances this artist makes
-        artistcount = collections.Counter()
-        for p in performances:
-            artistcount[p.artist] += 1
-            if p.artist not in artists:
-                ret.append(p)
-                artists.append(p.artist)
+        for a in artists:
+            ret.append(a)
+            artistcount[a] = a.num_times
 
         return ret, artistcount
 
