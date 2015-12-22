@@ -83,7 +83,9 @@ span.yellow {
     background-repeat: no-repeat;
     padding-left: 60px !important;
 }
-
+#workers{
+    min-height: 250px;
+}
 /*
  * Placeholder dashboard ideas
  */
