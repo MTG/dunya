@@ -65,7 +65,7 @@
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{recording.title}}</h1>
-		     			<h2> by {% inline_artist_list recording.release_set.get.artistnames %}</h2>
+		     			<h2> by {% inline_artist_list artists %}</h2>
 	     			</span>
      			</div>
      			<div id="summaryBack"></div>
@@ -77,7 +77,11 @@
 							<div id="excerpt" class="metaDetails recordingDetails">
 								<span class="list">
                                     {% if recording.release_set %}
-									<label>From album</label><b>{% inline_release recording.release_set.get %}</b>
+									<label>From album</label><b>
+                                        {% for r in releases %}
+                                          {% inline_release r %}
+                                          {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
                                     {% endif %}
                                     {% if recording.works.count %}
 									<label>Performing</label><b>{% inline_work_list recording.works.all %}</b>

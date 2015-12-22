@@ -404,11 +404,14 @@ def recording(request, uuid, title=None):
         rhythmurl = None
 
     try:
-        release = recording.release_set.get()
+        releases = recording.release_set.all()
+        # TODO: If this recording is on more than 1 release, the position
+        # might be that of a different release. How will we know?
+        release = releases[0]
         recordings = list(release.recordings.all())
         recordingpos = recordings.index(recording)
     except models.Release.DoesNotExist:
-        release = None
+        releases = []
         recordings = []
         recordingpos = 0
     nextrecording = None
@@ -418,6 +421,8 @@ def recording(request, uuid, title=None):
     if recordingpos + 1 < len(recordings):
         nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
+
+    artists = list(set([v for s in [r.artistnames() for r in releases] for v in s]))
 
     ret = {"recording": recording,
            "objecttype": "recording",
@@ -437,7 +442,8 @@ def recording(request, uuid, title=None):
            "rhythmurl": rhythmurl,
            "aksharaurl": aksharaurl,
            "drawtempo": drawtempo,
-           "release": release,
+           "releases": releases,
+           "artists": artists
            }
     return render(request, "hindustani/recording.html", ret)
 
