@@ -46,6 +46,18 @@ $(document).ready(function() {
      oscillator.type = 'sine';
      gainNode.gain.value = 0;
      oscillator.start(0);    
+     soundManager.onready(function() {
+         pagesound = soundManager.createSound({
+               url: audiourl,
+         });
+
+         pagesound.play({onfinish: function() {
+            window.clearInterval(int);
+            plButton.removeClass("stop");
+            hasfinished = true;
+        }});
+     });
+
      $('.folButton').click(function(e){
        playNextSection(true);      
      });
@@ -66,16 +78,12 @@ $(document).ready(function() {
         return false;
      });    
      waveform.click(function(e) {
-	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
+		var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
      });
      waveform.mouseenter(function(e) {
-         if (pagesound && pagesound.duration) {
              waveform.css("cursor", "pointer");
-         } else {
-             waveform.css("cursor", "wait");
-         }
      });
      waveform.mousemove(function(e) {
         var sectionName = ''; 
@@ -124,19 +132,6 @@ $(document).ready(function() {
         //drawwaveform();
      });
 
-     soundManager.onready(function() {
-         pagesound = soundManager.createSound({
-               url: audiourl,
-         });
-     });
-
-     $(document).keypress(function(e) {
-         // The Space key is play/pause unless in the searchbox
-         if ((e.keyCode == 0 || e.keyCode == 32) && !$(e.target).is("#searchbox")) {
-             e.preventDefault();
-             playrecord();
-         }
-     });
 });
 
 function plothistogram() {
