@@ -924,7 +924,7 @@ function mouPlay(desti){
         pagesound.setPosition(posms);
         //console.log(posms);
         replacepart(part);
-        //updateProgress();
+        updateProgress();
         if (wasplaying) {
             pagesound.resume();
         }
@@ -1102,43 +1102,40 @@ function play_osc(f){
 }
 function playNextSection(right){
    var changepos = null;
-   var aux = []
+   var starts= []
+   var ends = []
    var currentTime=pagesound.position / 1000;
    for (w in sections){
      for (var s = 0; s < sections[w]['links'].length; s++) {
-         aux.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
+         starts.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
+         ends.push(parseFloat(sections[w]['links'][s]['time'][1][0]));
      }  
    }
-   aux.sort(function(a, b){ return a - b;});
-   if (currentTime<=aux[0] || currentTime >=aux[aux.length-1]){
-     if (right){
-         changepos = aux[0];
-     }else{
-         if(currentTime >=aux[aux.length-1]){
-             changepos = aux[aux.length-2];
-         }else{
-             changepos = aux[aux.length-1];
+   starts.sort(function(a, b){ return a - b;});
+   ends.sort(function(a, b){ return a - b;});
+   if (right && (currentTime <= starts[0] || currentTime >= starts[starts.length-1])){
+       changepos = starts[0]+0.1;
+   }else if (!right && (currentTime < ends[0] || currentTime > ends[ends.length-1])){
+       changepos = starts[starts.length-1]+0.1;
+   }
+   if(changepos == null){
+     for(var s = 0; s < starts.length;s++){
+         if(starts[s]<=currentTime && ends[s]>=currentTime){
+           if(right){  
+             changepos = starts[s+1]+0.1;
+           }else{
+             changepos = starts[s-1]+0.1;
+           }
+           break;
          }
-     }
-   }else{
-     for(var s = 0; s < aux.length-1;s++){
-       if(aux[s]<currentTime && aux[s+1]>currentTime){
-         if(right){  
-           changepos = aux[s+1];
-         }else if(s==0){
-           changepos = aux[aux.length-1];
-         }else{
-           changepos = aux[s-1];
-         }
-         break;
-       }
      }
    }
-   
+
    if(changepos != null){
      part = Math.ceil(changepos / secondsPerView);
      pagesound.setPosition(changepos * 1000);
      replacepart(part);
    }
+   updateProgress();
 
 }
