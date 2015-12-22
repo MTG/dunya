@@ -46,6 +46,13 @@ $(document).ready(function() {
      oscillator.type = 'sine';
      gainNode.gain.value = 0;
      oscillator.start(0);    
+     $('.folButton').click(function(e){
+       playNextSection(true);      
+     });
+     $('.revButton').click(function(e){
+       playNextSection(false);      
+     });
+
      $('.works-info').click(function(e){
         if(e.target.nodeName !="IMG"){
           $('.work-info').hide();
@@ -789,6 +796,16 @@ function loaddata() {
        console.debug(errorThrown);
     }});
 
+    $.ajax(ahenkurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+         for (w in data){
+           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w] + "</span></b>") 
+
+         }
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
     $.ajax(notesalignurl, {dataType: "json", type: "GET",
     success: function(data, textStatus, xhr) {
         var elems = data; 
@@ -1077,9 +1094,51 @@ function zoom(level){
 
 }
 function play_osc(f){
-    gainNode.gain.value = 0.5;
     oscillator.frequency.value = f; // value in hertz
+    gainNode.gain.value = 0.5;
     window.setTimeout(function(){
         gainNode.gain.value = 0;
     }, 1000);
-} 
+}
+function playNextSection(right){
+   var changepos = null;
+   var aux = []
+   var currentTime=pagesound.position / 1000;
+   for (w in sections){
+     for (var s = 0; s < sections[w]['links'].length; s++) {
+         aux.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
+     }  
+   }
+   aux.sort(function(a, b){ return a - b;});
+   if (currentTime<=aux[0] || currentTime >=aux[aux.length-1]){
+     if (right){
+         changepos = aux[0];
+     }else{
+         if(currentTime >=aux[aux.length-1]){
+             changepos = aux[aux.length-2];
+         }else{
+             changepos = aux[aux.length-1];
+         }
+     }
+   }else{
+     for(var s = 0; s < aux.length-1;s++){
+       if(aux[s]<currentTime && aux[s+1]>currentTime){
+         if(right){  
+           changepos = aux[s+1];
+         }else if(s==0){
+           changepos = aux[aux.length-1];
+         }else{
+           changepos = aux[s-1];
+         }
+         break;
+       }
+     }
+   }
+   
+   if(changepos != null){
+     part = Math.ceil(changepos / secondsPerView);
+     pagesound.setPosition(changepos * 1000);
+     replacepart(part);
+   }
+
+}

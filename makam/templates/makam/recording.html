@@ -190,6 +190,7 @@ var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds
 var tonicurl = "{{tonicurl}}";
 var worksurl = "{{worksurl}}";
 var phraseurl = "{{phraseurl}}";
+var ahenkurl = "{{ahenkurl}}";
 
 {% if user.is_authenticated %}
 function playrecord(){
@@ -250,11 +251,11 @@ widthOfChildren('.metaContainer');
                                     <div class="work-box">
                                         <span class="works-info">
                                           <div>
-                                            <a class="work-ref" href="#" ref="#work-{{w.id}}">{{w}}</a>
+                                            <a class="work-ref" href="#" ref="#work-{{w.mbid}}">{{w}}</a>
                                             <a class="work-mb" href="http://musicbrainz.org/work/{{w.mbid}}"><img src="{% static 'makam/img/mb.png' %}" /></a>
                                           </div>
                                         </span>
-                                        <div class="work-info" id="work-{{w.id}}" style="display:none">
+                                        <div class="work-info" id="work-{{w.mbid}}" style="display:none">
                                             {% for c in w.composerlist.all %}
                                             <label>Composer</label><b><span><a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
                                             {% endfor %}
@@ -333,7 +334,7 @@ widthOfChildren('.metaContainer');
                             <div id="miniviewHighlight"></div>
                             <canvas id="smallcanvas"></canvas>
                             {% for w in recording.works.all %}
-                                <div class="work-name" id="work-name-{{w.mbid}}"><a href="#" class="work-ref" ref="#work-{{w.id}}">{{w}}</a></div>
+                                <div class="work-name" id="work-name-{{w.mbid}}"><a href="#" class="work-ref" ref="#work-{{w.mbid}}">{{w}}</a></div>
                             {% endfor %}
                         </div>
                     </div>
