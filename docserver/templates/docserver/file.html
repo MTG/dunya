@@ -1,6 +1,17 @@
 {% extends "dashboard/base.html" %}
 {% block title %}{{document.title}}{% endblock %}
 
+{% block css %}
+<style>
+pre.stacktrace {
+  overflow-x: scroll;
+  word-wrap: normal;
+  white-space: pre;
+  max-width: 600px;
+}
+</style>
+{% endblock %}
+
 {% block wrap %}
 
 <ul class="breadcrumbs">
@@ -60,8 +71,8 @@
         <div class="topheader">Logs</div>
     <table class="table table-condensed">
         <tr>
-            <th style="width:150px;">Date</th>
-            <th style="width:150px;">Module</th>
+            <th style="width:180px;">Date</th>
+            <th style="width:180px;">Module</th>
             <th style="width:100px;">Level</th>
             <th>Message</th>
         </tr>
@@ -70,7 +81,11 @@
             <td>{{l.datetime}}</td>
             <td>{{l.moduleversion.module.name}} ({{l.moduleversion.version}})</td>
             <td>{{l.level}}</td>
-            <td>{{l.message}}</td>
+            <td>
+                {% if l.is_exception %}<pre class="stacktrace">{% endif %}
+                {{l.message.strip}}
+                {% if l.is_exception %}</pre>{% endif %}
+            </td>
         </tr>
         {% endfor %}
     </table>
