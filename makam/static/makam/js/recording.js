@@ -46,6 +46,20 @@ $(document).ready(function() {
      oscillator.type = 'sine';
      gainNode.gain.value = 0;
      oscillator.start(0);    
+     soundManager.onready(function() {
+         pagesound = soundManager.createSound({
+               url: audiourl,
+         }).load();
+
+     });
+
+     $('.folButton').click(function(e){
+       playNextSection(true);      
+     });
+     $('.revButton').click(function(e){
+       playNextSection(false);      
+     });
+
      $('.works-info').click(function(e){
         if(e.target.nodeName !="IMG"){
           $('.work-info').hide();
@@ -59,16 +73,12 @@ $(document).ready(function() {
         return false;
      });    
      waveform.click(function(e) {
-	 	var offset_l = $(this).offset().left - $(window).scrollLeft();
+		var offset_l = $(this).offset().left - $(window).scrollLeft();
 		var left = Math.round( (e.clientX - offset_l) );
 	    mouPlay(left);
      });
      waveform.mouseenter(function(e) {
-         if (pagesound && pagesound.duration) {
              waveform.css("cursor", "pointer");
-         } else {
-             waveform.css("cursor", "wait");
-         }
      });
      waveform.mousemove(function(e) {
         var sectionName = ''; 
@@ -117,19 +127,6 @@ $(document).ready(function() {
         //drawwaveform();
      });
 
-     soundManager.onready(function() {
-         pagesound = soundManager.createSound({
-               url: audiourl,
-         });
-     });
-
-     $(document).keypress(function(e) {
-         // The Space key is play/pause unless in the searchbox
-         if ((e.keyCode == 0 || e.keyCode == 32) && !$(e.target).is("#searchbox")) {
-             e.preventDefault();
-             playrecord();
-         }
-     });
 });
 
 function plothistogram() {
@@ -789,6 +786,16 @@ function loaddata() {
        console.debug(errorThrown);
     }});
 
+    $.ajax(ahenkurl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+         for (w in data){
+           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w] + "</span></b>") 
+
+         }
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
     $.ajax(notesalignurl, {dataType: "json", type: "GET",
     success: function(data, textStatus, xhr) {
         var elems = data; 
@@ -907,7 +914,7 @@ function mouPlay(desti){
         pagesound.setPosition(posms);
         //console.log(posms);
         replacepart(part);
-        //updateProgress();
+        updateProgress();
         if (wasplaying) {
             pagesound.resume();
         }
@@ -1077,9 +1084,48 @@ function zoom(level){
 
 }
 function play_osc(f){
-    gainNode.gain.value = 0.5;
     oscillator.frequency.value = f; // value in hertz
+    gainNode.gain.value = 0.5;
     window.setTimeout(function(){
         gainNode.gain.value = 0;
     }, 1000);
-} 
+}
+function playNextSection(right){
+   var changepos = null;
+   var starts= []
+   var ends = []
+   var currentTime=pagesound.position / 1000;
+   for (w in sections){
+     for (var s = 0; s < sections[w]['links'].length; s++) {
+         starts.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
+         ends.push(parseFloat(sections[w]['links'][s]['time'][1][0]));
+     }  
+   }
+   starts.sort(function(a, b){ return a - b;});
+   ends.sort(function(a, b){ return a - b;});
+   if (right && (currentTime <= starts[0] || currentTime >= starts[starts.length-1])){
+       changepos = starts[0]+0.1;
+   }else if (!right && (currentTime < ends[0] || currentTime > ends[ends.length-1])){
+       changepos = starts[starts.length-1]+0.1;
+   }
+   if(changepos == null){
+     for(var s = 0; s < starts.length;s++){
+         if(starts[s]<=currentTime && ends[s]>=currentTime){
+           if(right){  
+             changepos = starts[s+1]+0.1;
+           }else{
+             changepos = starts[s-1]+0.1;
+           }
+           break;
+         }
+     }
+   }
+
+   if(changepos != null){
+     part = Math.ceil(changepos / secondsPerView);
+     pagesound.setPosition(changepos * 1000);
+     replacepart(part);
+   }
+   updateProgress();
+
+}

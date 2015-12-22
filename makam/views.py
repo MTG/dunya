@@ -274,7 +274,7 @@ def recording(request, uuid, title=None):
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "dunyapitchmakam", "pitch", "0.2")
      
     try:
-        notesalignurl = docserver.util.docserver_get_url(mbid, "scorealign", "notesalign", 1, version="0.2")
+        notesalignurl = docserver.util.docserver_get_url(mbid, "scorealign", "notesalign", 1, version="0.1")
     except docserver.util.NoFileException:
         notesalignurl = None 
    
@@ -289,7 +289,7 @@ def recording(request, uuid, title=None):
         notemodelsurl = None 
 
     try:
-        sectionsurl = docserver.util.docserver_get_url(mbid, "scorealign", "sectionlinks", 1, version="0.2")
+        sectionsurl = docserver.util.docserver_get_url(mbid, "scorealign", "sectionlinks", 1, version="0.1")
     except docserver.util.NoFileException:
         sectionsurl = None 
      
@@ -304,12 +304,15 @@ def recording(request, uuid, title=None):
         tonicurl = docserver.util.docserver_get_url(mbid, "tonictempotuning", "tonic", 1, version="0.1")
     except docserver.util.NoFileException:
         tonicurl = None
+    try:
+        ahenkurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "ahenk", 1, version="0.2")
+    except docserver.util.NoFileException:
+        ahenkurl = None
 
     try:
         worksurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "works_intervals", 1, version="0.2")
     except docserver.util.NoFileException:
         worksurl = None
-
 
     ret = {
            "recording": recording,
@@ -335,7 +338,8 @@ def recording(request, uuid, title=None):
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
-           "phraseurl": phraseurl
+           "phraseurl": phraseurl,
+           "ahenkurl": ahenkurl
     }
     return render(request, "makam/recording.html", ret)
 
