@@ -33,12 +33,15 @@ def search(name, with_restricted=False):
         id = int(id)
         klass = get_klassmap().get(type)
         if klass:
-            instance = klass.objects.get(pk=id)
-            if type == "concert":
-                if with_restricted or (instance.collection and instance.collection.permission != "S"):
+            try:
+                instance = klass.objects.get(pk=id)
+                if type == "concert":
+                    if with_restricted or (instance.collection and instance.collection.permission != "S"):
+                        ret[type].append(instance)
+                elif type != "concert":
                     ret[type].append(instance)
-            elif type != "concert":
-                ret[type].append(instance)
+            except klass.DoesNotExist:
+                pass
     return dict(ret)
 
 def autocomplete(term):
