@@ -94,23 +94,23 @@
                                     <label>Composer</label><b>
                                         {% inline_composer recording.work.composer %}</b>
                                     {% endif %}
-									{% if recording.work.taala %}
+                                    {% endif %}
+									{% if recording.get_taala %}
 									<label>Taala</label><b>
-										{% for t in recording.work.taala.all %}
+										{% for t in recording.get_taala %}
 										    {% inline_taala t %}
 		    							{% endfor %}
 		    						</b>
 									{% endif %}
 
-									{% if recording.work.raaga %}
+									{% if recording.get_raaga %}
 									<label>Raaga</label><b>
-					     				{% for r in recording.work.raaga.all %}
+					     				{% for r in recording.get_raaga %}
 											{% inline_raaga r %}
 		    							{% endfor %}
 									</b>
 									{% endif %}
 
-                                {% endif %}
 									{% if tonic %}
                                     <label>Tonic</label><b>{{tonicname}} ({{tonic}} Hz)</b>
 									{% endif %}

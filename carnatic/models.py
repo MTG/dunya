@@ -147,12 +147,13 @@ class Artist(CarnaticStyle, data.models.Artist):
             rcollections = collection_ids.replace(' ','').split(",")
         if not permission:
             permission = ["U"]
+
         ret = []
         concerts = self.primary_concerts.with_permissions(collection_ids, permission)
         if raagas:
-            concerts = concerts.filter(recordings__works__raaga__in=raagas)
+            concerts = concerts.filter(Q(recordings__works__raaga__in=raagas)|Q(recordings__raagas__in=raagas)).distinct()
         if taalas:
-            concerts = concerts.filter(recordings__works__taala__in=taalas)
+            concerts = concerts.filter(Q(recordings__works__taala__in=taalas)|Q(recordings__taalas__in=taalas)).distinct()
         ret.extend(concerts.all())
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):

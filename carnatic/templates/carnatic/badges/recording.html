@@ -10,15 +10,15 @@
        </div>
        <div class="trackMeta">
            <label>Raaga:</label>
-           {% if recording.raaga %}
-           <b>{% inline_raaga recording.raaga %}</b>
+           {% if recording.get_raaga %}
+           <b>{% inline_raaga_list recording.get_raaga %}</b>
            {% else %}
            unknown
            {% endif %}
 
            <label>Taala:</label>
-           {% if recording.taala %}
-           <b>{% inline_taala recording.taala %}</b>
+           {% if recording.get_taala %}
+           <b>{% inline_taala_list recording.get_taala %}</b>
            {% else %}
            unknown
            {% endif %}
