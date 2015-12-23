@@ -145,7 +145,7 @@
             {% block extra-search%}
             {% endblock%}
             </div>
-                
+
                 <nav id="mainmenu">
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">
@@ -154,9 +154,7 @@
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
-                        <a href="{% url 'social-user-profile' %}">View profile</a>
                         <a href="{% url 'social-auth-logout' %}?next={% firstof request.path|safe '/' %}">Logout</a>
-                        <a href="{% url 'social-user-changepw' %}">Change password</a>
                     </div>
 
             {% else %}

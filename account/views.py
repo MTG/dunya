@@ -15,7 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
@@ -43,7 +43,7 @@ def token_login(request):
     t = Token.objects.get(key=token)
     t.user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, t.user)
-    return HttpResponse("")    
+    return HttpResponse("")
 
 def register_page(request):
     if request.method == 'POST':
@@ -81,6 +81,8 @@ def register_page(request):
 
 @login_required
 def delete_account(request):
+    if request.user.username == "guest":
+        raise Http404
     if request.method == 'POST':
         form = forms.DeleteAccountForm(request.POST)
         if form.is_valid():
@@ -99,6 +101,8 @@ def delete_account(request):
 
 @login_required
 def user_profile(request):
+    if request.user.username == "guest":
+        raise Http404
     user = request.user
     profile = user.userprofile
     token = Token.objects.get(user=request.user)
@@ -124,7 +128,7 @@ def user_profile(request):
         'form': form
     }
     return render(request, 'account/user_profile.html', ret)
- 
+
 @psa('social:complete')
 def register_by_access_token(request, backend):
     # log in using external OAuth access Token
