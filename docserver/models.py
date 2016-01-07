@@ -249,7 +249,10 @@ class DerivedFile(models.Model):
 
     def save_part(self, part_order, path, size):
         """Add a part to this file"""
-        return DerivedFilePart.objects.get_or_create(derivedfile=self, part_order=part_order, path=path, defaults={'size':size})
+        dfp, created = DerivedFilePart.objects.get_or_create(derivedfile=self, part_order=part_order, path=path, defaults={'size':size})
+        if not created:
+            dfp.size = size
+            dfp.save()
 
     @property
     def versions(self):

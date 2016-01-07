@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 from django.db import transaction
+import django.utils.timezone
 
 import importlib
 import os
@@ -249,6 +250,9 @@ def _save_process_results(version, instance, document, worker, results, starttim
                 document=document,
                 module_version=version, outputname=dataslug, extension=extension,
                 mimetype=mimetype, defaults={'computation_time':total_time})
+            if not created:
+                df.date = django.utils.timezone.now()
+                df.save()
             if worker:
                 df.essentia = worker.essentia
                 df.pycompmusic = worker.pycompmusic

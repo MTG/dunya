@@ -25,52 +25,6 @@ import carnatic.models
 import compmusic
 from compmusic import mb
 
-def remove_deleted_items():
-    """ Search musicbrainz for all items in the database and if they
-    have been deleted then remove them """
-
-    logger.info("Scanning works...")
-    for w in carnatic.models.Work.objects.all():
-        try:
-            mb.get_work_by_id(w.mbid)
-        except mb.ResponseError:
-            logger.info("work %s (%s) missing; deleting" % (w, w.mbid))
-            w.delete()
-
-    logger.info("Scanning recordings...")
-    for r in carnatic.models.Recording.objects.all():
-        try:
-            mb.get_recording_by_id(r.mbid)
-        except mb.ResponseError:
-            logger.info("recording %s (%s) missing; deleting" % (r, r.mbid))
-            r.delete()
-
-    logger.info("Scanning concerts...")
-    for c in carnatic.models.Concert.objects.all():
-        try:
-            mb.get_release_by_id(c.mbid)
-        except mb.ResponseError:
-            logger.info("release %s (%s) missing; deleting" % (c, c.mbid))
-            c.delete()
-
-    logger.info("Scanning artists...")
-    for a in carnatic.models.Artist.objects.all():
-        try:
-            mb.get_artist_by_id(a.mbid)
-        except mb.ResponseError:
-            # We import dummy artists to be gurus, leave them here
-            if not a.dummy:
-                logger.info("artist %s (%s) missing; deleting" % (a, a.mbid))
-                a.delete()
-
-    logger.info("Scanning composers...")
-    for a in carnatic.models.Composer.objects.all():
-        try:
-            mb.get_artist_by_id(a.mbid)
-        except mb.ResponseError:
-            logger.info("artist %s (%s) missing; deleting" % (a, a.mbid))
-            a.delete()
-
 class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = carnatic.models.Artist
     _ArtistAliasClass = carnatic.models.ArtistAlias
@@ -80,6 +34,36 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _RecordingClass = carnatic.models.Recording
     _InstrumentClass = carnatic.models.Instrument
     _WorkClass = carnatic.models.Work
+
+    def remove_nonimported_items(self):
+        # Artists as the performer of a concert
+        concert_artists = self._ArtistClass.objects.filter(primary_concerts__mbid__in=self.imported_releases)
+        concert_ids = [a.pk for a in concert_artists]
+
+        # Artists who performed an instrument on a recording
+        perf_artists = self._ArtistClass.objects.filter(instrumentperformance__recording__concertrecording__concert__mbid__in=self.imported_releases)
+        perf_ids = [a.pk for a in perf_artists]
+
+        artist_ids = list(set(concert_ids + perf_ids))
+
+        # Releases that weren't in the imported list
+        non_release = self._ReleaseClass.objects.exclude(mbid__in=self.imported_releases)
+        non_release.delete()
+        # Artists who aren't in the above two lists
+        non_artist = self._ArtistClass.objects.exclude(pk__in=artist_ids).exclude(dummy=True)
+        non_artist.delete()
+
+        # Recordings not part of a concert that was just imported
+        non_recording = self._RecordingClass.objects.exclude(concertrecording__concert__mbid__in=self.imported_releases)
+        non_recording.delete()
+
+        # Works not part of a recording part of a concert just imported
+        non_work = self._WorkClass.objects.exclude(recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases)
+        non_work.delete()
+
+        # Composers not part of a work not part of a rec, part of concert
+        non_composer = self._ComposerClass.objects.exclude(works__recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases).exclude(lyric_works__recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases)
+        non_composer.delete()
 
     def _link_release_recording(self, concert, recording, trackorder, mnum, tnum):
         if not concert.recordings.filter(pk=recording.pk).exists():
