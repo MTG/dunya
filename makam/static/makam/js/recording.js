@@ -12,7 +12,6 @@ $(document).ready(function() {
      waveform = $('#renderTotal canvas');
      plButton = $("#control .plButton");
      timecode = $("#timecode");
-     zooms = $(".zoom");
      currentSymbtrIndex = 1;
      currentInterval = 1;
      currentPage = 0;
@@ -35,6 +34,7 @@ $(document).ready(function() {
      // What point in seconds the left-hand side of the
      // image refers to.
      beginningOfView = 0;
+     secondsUsedPerView = ratioUsedView * secondsPerView;
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
      histovals = new Array(900);
@@ -109,23 +109,8 @@ $(document).ready(function() {
      waveform.mouseleave(function() {
         $("#timepoint").hide();
      });
-     $(".zoom").click(function(e) {
-         e.preventDefault();
-         // Remove selected
-         $(".zoom").removeClass("selected");
-         // Find all zooms with all our classes (e.g. 'zoom zoom<n>')
-         // and apply 'selected'
-         var zclasses = $(this).attr("class");
-         $("[class='"+zclasses+"']").addClass("selected");
-         var level = $(this).data("length");
-         zoom(level);
-     });
 
      loaddata();
-
-     $("#showRhythm").click(function(e) {
-        //drawwaveform();
-     });
 
 });
 
@@ -156,7 +141,7 @@ function plothistogram() {
     plothistogrampart(context, data);
 }
 /*
- * Sets the event for showing the frequency ath the mouse position, 
+ * Sets the event for showing the frequency at the mouse position, 
  * also draws tonic on canvas
  */
 function plotRefFreq(context, lastStables){
@@ -225,8 +210,6 @@ function plotRefFreq(context, lastStables){
               play_osc(Math.floor(freq)); 
             }
         }
-
-        console.log(freq)
      });
      
      histogramcanvas.mouseleave(function() {
@@ -267,12 +250,12 @@ function plothistogrampart(context, data, color){
         curr = 255-Math.round(j*255);
         lastv.push(v);
         if (curr != lastj){
-                sum = 0;
-                for (var r=0;r<lastv.length;r++){
-                    sum+=lastv[r];
-                }
-                context.lineTo(sum/lastv.length, curr);
-                lastv = [];
+            sum = 0;
+            for (var r=0;r<lastv.length;r++){
+                sum+=lastv[r];
+            }
+            context.lineTo(sum/lastv.length, curr);
+            lastv = [];
         }
         lastj = curr;
         
@@ -309,9 +292,9 @@ function spectrogram(context, view, color) {
     //context.moveTo(0, 10);
     //context.lineTo(10, 10);
     //context.moveTo(0,0);
-    var skip = secondsPerView / 4;
+    var skip = secondsPerView / 4 ;
     // Start is in samples
-    var start = (beginningOfView / secondsPerView) * 900 * skip;
+    var start = beginningOfView * 900 * skip / secondsPerView;
     // Number of pixels we draw
     var end = Math.min(900+start, start+(view.length-start)/skip);
     var remaining = view.length-start;
@@ -429,8 +412,6 @@ function plotscore(index, color) {
             }
           });
           sameLine.sort(function(a, b){return parseInt(a.attr('from'))-parseInt(b.attr('from'))});       
-          console.log(sameLine);
-          console.log(aligns[index]);
           if(sameLine.length > 0){
             highlightNote(sameLine[0], index);
           }else{
@@ -519,23 +500,18 @@ function highlightNote(note, index){
       }
 }
 function showNoteOnHistogram(note, time){
-  var histogram = $("#histogram-current-note")[0];
-   histogram.width = 200;
-   histogram.height = 256;
-   var ctxNotes = histogram.getContext("2d");
-   if (!note){
+   if (!note ){
        return;
    }
-   plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], "#0099FF");
-
+   var histogram = $("#histogram-current-note")[0];
+   var ctxNotes = histogram.getContext("2d");
    var canvas = $('#overlap-histogram')[0];
    canvas.width = 200;
    canvas.height = 256;
    var context = canvas.getContext("2d");
    var currPos = (time % 8);
       
-   currPos = time % secondsPerView * 900 / secondsPerView;
-
+   currPos = (time -beginningOfView) * 900 / secondsPerView ;
    var pitch = histovals[Math.floor(currPos)];
    if (!pitch){
        ctxNotes.clearRect(0, 0, 900, 900);
@@ -554,6 +530,10 @@ function showNoteOnHistogram(note, time){
    $('#current-note').show()
 
    if (showingNote!=note){
+       histogram.width = 200;
+       histogram.height = 256;
+       var ctxNotes = histogram.getContext("2d");
+       plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], "#0099FF");
        $('#current-note').html("Current Note:<br /><b>" + note + "</b>");
        showingNote=note;
    }
@@ -589,22 +569,37 @@ function updateScoreProgress(currentTime){
     }
 }
 
-function plotpitch() {
+function plotpitch(pnum) {
     // In order to account for slow internet connections,
     // we always load one image ahead of what we need.
     // TODO: We need to know when the final image is.
-    var spec = new Image();
-    spec.src = specurl;
+    var extraImg = null;
+    var div = Math.floor(pnum/2);
+    if (pnum % 2 == 0){
+        var extraImg = getImage(div);
+    }
+    var spec = getImage(div + 1);
     var view = new Uint8Array(pitchdata);
     var canvas = $("#pitchcanvas")[0];
     canvas.width = 900;
     canvas.height = 256;
-   var context = canvas.getContext("2d");
+    var context = canvas.getContext("2d");
     loading = true;
-    spec.onload = function() {
-        context.drawImage(spec, 0, 0);
+    var changeImage = function() {
+        if (extraImg != null){
+            context.drawImage(spec, 0, 0, 450, 256, 450, 0, 450, 256);
+            context.drawImage(extraImg, 450, 0, 450, 256, 0, 0, 450, 256);
+        }else{
+            context.drawImage(spec, 0, 0);
+        }
         spectrogram(context, view, ["#8A8A8A", "#FFFFFF"]);
         loading = false;
+    }
+
+    if (spec.complete){
+        changeImage();
+    }else{
+        spec.onload = changeImage;
     }
 }
 
@@ -653,18 +648,6 @@ function plotsmall() {
                 }
         }
         smallFill(sec, "#0ff", colorsNames);
-    }
-}
-
-function drawwaveform() {
-    var wave = new Image();
-    wave.src = waveformurl;
-    var canvas = $("#histogramcanvas")[0];
-    canvas.width = 900;
-    canvas.height = 256;
-    var context = canvas.getContext("2d");
-    wave.onload = function() {
-        context.drawImage(wave, 0, 0);
     }
 }
 
@@ -866,16 +849,15 @@ function loaddata() {
 }
 
 function drawdata() {
-    //drawwaveform();
     
-    plotpitch();
+    plotpitch(1);
     plothistogram();
     plotsmall();
     if (!scoreLoaded ){
       plotscore(1);
     }
     var start = beginningOfView;
-    var skip = secondsPerView / 4;
+    var skip = secondsUsedPerView/ 2;
     $(".timecode1").html(formatseconds(start));
     $(".timecode2").html(formatseconds(start+skip));
     $(".timecode3").html(formatseconds(start+skip*2));
@@ -884,7 +866,7 @@ function drawdata() {
 
     // The highlighted miniview
     var beginPercentage = (beginningOfView/recordinglengthseconds);
-    var endPercentage = (beginningOfView+secondsPerView) / recordinglengthseconds;
+    var endPercentage = (beginningOfView + secondsUsedPerView) / recordinglengthseconds;
 
     var beginPx = renderTotal.width() * beginPercentage;
     var endPx = renderTotal.width() * endPercentage;
@@ -900,9 +882,9 @@ function mouPlay(desti){
     //console.log(recordinglengthseconds);
     posms = clickseconds * 1000;
     //console.log(clickseconds);
-    part = Math.ceil(clickseconds / secondsPerView);
+    part = Math.ceil(clickseconds / secondsUsedPerView);
     // Update the internal position counter (counts from 0, part counts from 1)
-    beginningOfView = (part - 1) * secondsPerView;
+    beginningOfView = (part - 1) * secondsUsedPerView;
     //console.log(pagesound);
     //console.log(pagesound.duration);
     if (pagesound && pagesound.duration) {
@@ -913,7 +895,7 @@ function mouPlay(desti){
         }
         pagesound.setPosition(posms);
         //console.log(posms);
-        replacepart(part);
+        plotpitch(part);
         updateProgress();
         if (wasplaying) {
             pagesound.resume();
@@ -924,7 +906,7 @@ function mouPlay(desti){
 function play() {
     if (hasfinished) {
         hasfinished = false;
-        replacepart(1);
+        plotpitch(1);
         beginningOfView = 0;
         drawdata();
     }
@@ -959,15 +941,9 @@ function formatseconds(seconds) {
     return timecodeHtml;
 }
 
-function replacepart(pnum) {
-    waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
-    specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
-    drawdata();
-}
 function drawCurrentPitch(start, end, note){
-    startPx = start % secondsPerView * 900 / secondsPerView;
-    endPx = end % secondsPerView * 900 / secondsPerView;
-      
+    startPx = (start - beginningOfView) * 900 / secondsPerView ;
+    endPx = (end - beginningOfView) * 900 / secondsPerView ;
     var canvas = $("#overlap-pitch")[0];
     var context = canvas.getContext("2d");
     canvas.width = 900;
@@ -1007,25 +983,30 @@ function drawCurrentPitch(start, end, note){
 
 }
 function updateProgress() {
-    var currentTime = pagesound.position / 1000;
+    ampleMask = rendersMask.width();
+    ampleRenders = renders.width();
+    ampleRenderTotal = renderTotal.width();
+    var currentTime = pagesound.position / 1000 ;
     // formatseconds appears to run 1 second ahead of time,
     // so correct for it here
     formattime = formatseconds(currentTime-1);
-    progress_percent = (currentTime-beginningOfView) / secondsPerView * 100;
+    // Fix currentTime because of firstView
+    // use only from 25% of the view to 75%
+    progress_percent = (currentTime - beginningOfView ) / secondsPerView ;
+    leftLargeView = ampleRenders *progress_percent ;
+    
     total_progress_frac = (currentTime/recordinglengthseconds);
-	ampleMask = rendersMask.width();
-	ampleRenders = renders.width();
-	ampleRenderTotal = renderTotal.width();
-    leftLargeView = ((ampleRenders*progress_percent)/100);
     leftSmallView = ampleRenderTotal*total_progress_frac;
+    
     capcal.css('left', leftLargeView-5);
     capcalTotal.css('left', leftSmallView-6);
     
     updateScoreProgress(currentTime);
-    if (leftLargeView > 900) {
-        beginningOfView = Math.floor(currentTime / secondsPerView) * secondsPerView;
-        pnum = Math.floor(beginningOfView / secondsPerView + 1);
-        replacepart(pnum)
+    if (progress_percent >= (1-ratioUsedView/2)) {
+        hideCurrentPitch();
+        beginningOfView = Math.floor(currentTime / secondsUsedPerView ) * secondsUsedPerView ;
+        pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
+        plotpitch(pnum);
     }
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
     
@@ -1036,7 +1017,8 @@ function updateCurrentPitch(){
     for (w in worksdata){
         if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
             currentWork = w;
-            plothistogram();
+            //plothistogram();
+            break;
         }
     }
     if(!loading && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
@@ -1061,28 +1043,11 @@ function updateCurrentPitch(){
         }
     }else if(lastTime+1 < futureTime ){
         // If no update since last second then hide current pitch
-        $("#current-note").hide();
-        var canvas = $("#overlap-pitch")[0];
-        var context = canvas.getContext("2d");
-        context.clearRect (0, 0, 900, 900);
+        hideCurrentPitch();
     }
     showNoteOnHistogram(lastnote, futureTime);
 }
 
-function zoom(level){
-    secondsPerView = level;
-    waveformurl = waveformurl.replace(/waveform[0-9]{1,2}/, "waveform"+level);
-    specurl = specurl.replace(/spectrum[0-9]{1,2}/, "spectrum"+level);
-    // When we go from a zoomed in to a zoomed out size,
-    // we need to make sure that `beginningOfView` is on an
-    // image boundary
-    beginningOfView = Math.floor(beginningOfView / secondsPerView);
-    pnum = Math.floor(beginningOfView / secondsPerView + 1);
-    waveformurl = waveformurl.replace(/part=[0-9]+/, "part="+pnum);
-    specurl = specurl.replace(/part=[0-9]+/, "part="+pnum);
-    drawdata();
-
-}
 function play_osc(f){
     oscillator.frequency.value = f; // value in hertz
     gainNode.gain.value = 0.5;
@@ -1091,41 +1056,60 @@ function play_osc(f){
     }, 1000);
 }
 function playNextSection(right){
-   var changepos = null;
-   var starts= []
-   var ends = []
-   var currentTime=pagesound.position / 1000;
-   for (w in sections){
-     for (var s = 0; s < sections[w]['links'].length; s++) {
-         starts.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
-         ends.push(parseFloat(sections[w]['links'][s]['time'][1][0]));
-     }  
-   }
-   starts.sort(function(a, b){ return a - b;});
-   ends.sort(function(a, b){ return a - b;});
-   if (right && (currentTime <= starts[0] || currentTime >= starts[starts.length-1])){
-       changepos = starts[0]+0.1;
-   }else if (!right && (currentTime < ends[0] || currentTime > ends[ends.length-1])){
-       changepos = starts[starts.length-1]+0.1;
-   }
-   if(changepos == null){
-     for(var s = 0; s < starts.length;s++){
-         if(starts[s]<=currentTime && ends[s]>=currentTime){
-           if(right){  
-             changepos = starts[s+1]+0.1;
-           }else{
-             changepos = starts[s-1]+0.1;
-           }
-           break;
-         }
-     }
-   }
-
-   if(changepos != null){
-     part = Math.ceil(changepos / secondsPerView);
-     pagesound.setPosition(changepos * 1000);
-     replacepart(part);
-   }
-   updateProgress();
-
+  var changepos = null;
+  var starts= []
+  var ends = []
+  var currentTime=pagesound.position / 1000 ;
+  for (w in sections){
+    for (var s = 0; s < sections[w]['links'].length; s++) {
+       starts.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
+        ends.push(parseFloat(sections[w]['links'][s]['time'][1][0]));
+    }  
+  }
+  starts.sort(function(a, b){ return a - b;});
+  ends.sort(function(a, b){ return a - b;});
+  if (right && (currentTime <= starts[0] || currentTime >= starts[starts.length-1])){
+     changepos = starts[0]+0.1;
+  }else if (!right && (currentTime < ends[0] || currentTime > ends[ends.length-1])){
+      changepos = starts[starts.length-1]+0.1;
+  }
+  if(changepos == null){
+    for(var s = 0; s < starts.length;s++){
+        if(starts[s]<=currentTime && ends[s]>=currentTime){
+          if(right){  
+            changepos = starts[s+1]+0.1;
+          }else{
+            changepos = starts[s-1]+0.1;
+          }
+          break;
+        }
+    }
+  }
+  if(changepos != null){
+    beginningOfView = Math.floor((changepos / secondsUsedPerView ) - 1) * secondsUsedPerView ;
+    pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
+    pagesound.setPosition(changepos * 1000);
+    plotpitch(pnum);
+  }
+  updateProgress();
 }
+function hideCurrentPitch(){
+  $("#current-note").hide();
+  var canvas = $("#overlap-pitch")[0];
+  var context = canvas.getContext("2d");
+  context.clearRect (0, 0, 900, 900);
+}
+function getImage(part){
+    if (lastLoaded > part && startLoaded < part){
+        return images[part-startLoaded]
+    }
+    startLoaded = part;
+    pnumMax = Math.floor(recordinglengthseconds / secondsUsedPerView + 1) ;
+    for(var i=part; i<pnumMax && (i-startLoaded)<10 ;i++){
+        var spec = new Image();
+        spec.src = specurl.replace(/part=[0-9]+/, "part="+i);
+        images[i -startLoaded]=spec;
+        lastLoaded=i;
+    }
+    return images[part- startLoaded]
+} 
