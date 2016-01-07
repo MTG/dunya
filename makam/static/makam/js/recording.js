@@ -586,20 +586,25 @@ function plotpitch(pnum) {
     var context = canvas.getContext("2d");
     loading = true;
     var changeImage = function() {
-        if (extraImg != null){
-            context.drawImage(spec, 0, 0, 450, 256, 450, 0, 450, 256);
-            context.drawImage(extraImg, 450, 0, 450, 256, 0, 0, 450, 256);
-        }else{
-            context.drawImage(spec, 0, 0);
+      if (spec.complete && (extraImg == null || extraImg.complete)){
+            if (extraImg != null){
+                var imageSize = ratioUsedView * 900;
+                context.drawImage(spec, 0, 0, imageSize, 256, imageSize, 0, imageSize, 256);
+                context.drawImage(extraImg, imageSize, 0, imageSize, 256, 0, 0, imageSize, 256);
+            }else{
+                context.drawImage(spec, 0, 0);
+            }
+            spectrogram(context, view, ["#8A8A8A", "#FFFFFF"]);
+            loading = false;
         }
-        spectrogram(context, view, ["#8A8A8A", "#FFFFFF"]);
-        loading = false;
     }
-
+    
     if (spec.complete){
         changeImage();
-    }else{
-        spec.onload = changeImage;
+    }
+    spec.onload = changeImage;
+    if (extraImg!=null){
+        extraImg.onload = changeImage;
     }
 }
 
@@ -843,14 +848,16 @@ function loaddata() {
               }
            }
            aligns.sort(function(a, b){return a['index']-b['index']});
-           drawdata();
+           drawdata(false);
         }
     }
 }
 
-function drawdata() {
+function drawdata(disablePitch) {
     
-    plotpitch(1);
+    if(disablePitch!=true){
+        plotpitch(1);
+    }
     plothistogram();
     plotsmall();
     if (!scoreLoaded ){
@@ -879,14 +886,7 @@ function mouPlay(desti){
     percent = desti/waveform.width();
     clickseconds = recordinglengthseconds * percent
 
-    //console.log(recordinglengthseconds);
     posms = clickseconds * 1000;
-    //console.log(clickseconds);
-    part = Math.ceil(clickseconds / secondsUsedPerView);
-    // Update the internal position counter (counts from 0, part counts from 1)
-    beginningOfView = (part - 1) * secondsUsedPerView;
-    //console.log(pagesound);
-    //console.log(pagesound.duration);
     if (pagesound && pagesound.duration) {
         // We can only set a position if it's fully loaded
         var wasplaying = !pagesound.paused;
@@ -894,8 +894,7 @@ function mouPlay(desti){
             pagesound.pause();
         }
         pagesound.setPosition(posms);
-        //console.log(posms);
-        plotpitch(part);
+        updateView();
         updateProgress();
         if (wasplaying) {
             pagesound.resume();
@@ -908,7 +907,7 @@ function play() {
         hasfinished = false;
         plotpitch(1);
         beginningOfView = 0;
-        drawdata();
+        drawdata(false);
     }
     pagesound.play({onfinish: function() {
         window.clearInterval(int);
@@ -1003,15 +1002,20 @@ function updateProgress() {
     
     updateScoreProgress(currentTime);
     if (progress_percent >= (1-ratioUsedView/2)) {
-        hideCurrentPitch();
-        beginningOfView = Math.floor(currentTime / secondsUsedPerView ) * secondsUsedPerView ;
-        pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
-        plotpitch(pnum);
+        updateView();
     }
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
     
     updateCurrentPitch();
 };
+function updateView(){
+    var currentTime = pagesound.position / 1000 ;
+    hideCurrentPitch();
+    beginningOfView = Math.floor(currentTime / secondsUsedPerView ) * secondsUsedPerView ;
+    pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
+    plotpitch(pnum);
+    drawdata(true);
+}
 function updateCurrentPitch(){
     var futureTime = pagesound.position / 1000 ;
     for (w in worksdata){
@@ -1086,10 +1090,11 @@ function playNextSection(right){
     }
   }
   if(changepos != null){
-    beginningOfView = Math.floor((changepos / secondsUsedPerView ) - 1) * secondsUsedPerView ;
-    pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
-    pagesound.setPosition(changepos * 1000);
-    plotpitch(pnum);
+      beginningOfView = Math.floor((changepos / secondsUsedPerView ) - 1) * secondsUsedPerView ;
+      pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
+      pagesound.setPosition(changepos * 1000);
+      plotpitch(pnum);
+      //updateView();
   }
   updateProgress();
 }
@@ -1101,7 +1106,7 @@ function hideCurrentPitch(){
 }
 function getImage(part){
     if (lastLoaded > part && startLoaded < part){
-        return images[part-startLoaded]
+      return images[part-startLoaded]
     }
     startLoaded = part;
     pnumMax = Math.floor(recordinglengthseconds / secondsUsedPerView + 1) ;
