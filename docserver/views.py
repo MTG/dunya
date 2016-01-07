@@ -633,6 +633,12 @@ def file(request, slug, uuid, version=None):
 
     doc = models.Document.objects.get(external_identifier=uuid, collections=collection)
 
+    runmodule = request.GET.get("runmodule")
+    if runmodule:
+        mversion = models.ModuleVersion.objects.get(pk=runmodule)
+        jobs.process_document.delay(doc.pk, mversion.pk)
+        return redirect('docserver-file', slug, uuid, version)
+
     derived = doc.derivedfiles.all()
     showderived = False
     if version:
