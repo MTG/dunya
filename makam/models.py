@@ -189,6 +189,12 @@ class MakamAlias(models.Model):
 
 class Makam(models.Model):
     name = models.CharField(max_length=100)
+    tonic_symbol = models.CharField(max_length=50, null=True, blank=True)
+    
+    #name in the mu2 files in symtr collection
+    mu2_name = models.CharField(max_length=250, null=True, blank=True)
+    # string used to identify a makam in the symtr filename
+    symtr_key = models.CharField(max_length=250, null=True, blank=True)
     uuid = UUIDField(db_index=True, auto=True)
 
     objects = managers.MakamFuzzyManager()
