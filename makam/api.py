@@ -90,7 +90,7 @@ class MakamDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Makam
-        fields = ['uuid', 'name', 'works', 'taksims', 'gazels']
+        fields = ['uuid', 'symtr_key', 'name', 'works', 'taksims', 'gazels']
 
 class MakamDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
