@@ -17,6 +17,7 @@
 from makam import models
 import docserver.models
 from data.models import WithImageMixin
+from django.db.models import Q
 from data import utils
 
 from rest_framework import generics
@@ -277,12 +278,13 @@ class InstrumentPerformanceSerializer(serializers.ModelSerializer):
 class RecordingDetailSerializer(serializers.ModelSerializer):
     releases = serializers.SerializerMethodField('release_list')
     artists = ArtistInnerSerializer('artists', many=True)
+    makamlist = MakamInnerSerializer('makamlist', many=True)
     performers = InstrumentPerformanceSerializer(source='instrumentperformance_set', many=True)
     works = WorkInnerSerializer(source='worklist', many=True)
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'releases', 'performers', 'works', 'artists']
+        fields = ['mbid', 'title', 'releases', 'performers', 'works', 'artists', 'makamlist']
 
     def release_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
@@ -290,7 +292,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
         releases = ob.release_set.with_permissions(collection_ids, permission)
         rs = ReleaseInnerSerializer(releases, many=True)
         return rs.data
-
+   
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'

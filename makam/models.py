@@ -19,6 +19,7 @@ from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
+from itertools import chain
 
 import collections
 import unidecode
@@ -136,7 +137,8 @@ class Recording(MakamStyle, data.models.Recording):
     objects = managers.CollectionRecordingManager()
 
     def makamlist(self):
-        return self.makam.all()
+        makams = Makam.objects.filter(Q(work__in=self.works.all()) | Q(recording=self)).distinct().all()
+        return makams
 
     def releaselist(self):
         return self.release_set.all()
