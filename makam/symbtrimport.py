@@ -68,21 +68,20 @@ def rmtree(path):
 
 # Create and upload docserver files
 # Run in pycompmusic
-def upload_symbtr(symbtr_file="symbTr_mbid.json"):
+def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
     import compmusic.dunya
     import compmusic.dunya.docserver
     import time
     import json
     import os
     compmusic.dunya.set_token("")
-    symbtr_dir = "/home/alastair/SymbTr"
     dir_slug = {"midi": "symbtrmidi"
               , "mu2": "symbtrmu2"
               , "MusicXML": "symbtrxml"
               , "txt": "symbtrtxt"
               , "SymbTr-pdf": "symbtrpdf"}
 
-    data = json.load(open("symbTr_mbid.json"))
+    data = json.load(open(symbtr_file))
     mbid_file = {s["uuid"]["mbid"]: s["name"] for s in data}
 
     for d, sl in dir_slug.items():
