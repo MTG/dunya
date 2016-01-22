@@ -34,6 +34,7 @@ class Collection(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.CharField(max_length=200)
+    data = models.TextField(blank=True)
 
     root_directory = models.CharField(max_length=200)
 

@@ -68,7 +68,7 @@ def rmtree(path):
 
 # Create and upload docserver files
 # Run in pycompmusic
-def upload_symbtr():
+def upload_symbtr(symbtr_file="symbTr_mbid.json"):
     import compmusic.dunya
     import compmusic.dunya.docserver
     import time
@@ -92,9 +92,70 @@ def upload_symbtr():
             filename = os.path.join(d, "%s.%s" % (name, ext))
             print "%s) %s/%s: %s (%s)" % (sl, i, count, mbid, name)
             compmusic.dunya.docserver.add_sourcetype(mbid, sl, filename)
-            time.sleep(0.1)
+            time.sleep(0.1) 
 
+def retrive_git_changes():
+    '''This method gets all changes from git and creates a file with the same 
+    format as symbTr_mbid.json with the modified files, then calls 
+    upload_symbtr method with this file to upload the modified files.
+    
+    Then calls delete_documents which deletes the documets that are not in the 
+    original symbTr_mbid.json file.
+    
+    Finally calls delete_mappings and create_mappings which deletes all entries
+    on the database from the Symbtr table and creates all again.
+    
+    Note: This method should be run from django shell.'''
+    import json
+    import os
+    import docserver.models
+    import git
+    
+    collid = ''
+    git_dir = ''
+    
+    c = docserver.models.Collection.objects.get(collectionid=collid)
+    c_data = json.loads(c.data)
+    last = c_data['last_commit']
+           
+    dir_slug = {"midi": "symbtrmidi"
+              , "mu2": "symbtrmu2"
+              , "MusicXML": "symbtrxml"
+              , "txt": "symbtrtxt"
+              , "SymbTr-pdf": "symbtrpdf"}
 
+    data = json.load(open(os.path.join(git_dir, "symbTr_mbid.json")))
+    mbid_file = {s["name"]: s["uuid"]["mbid"] for s in data}
 
-
+    g = git.cmd.Git(git_dir)
+    differ = g.diff(last, '--name-only').split("\n")
+    to_add = []
+    to_remove = []
+    for i in differ:
+        score = i.split('/')
+        if score[0] in dir_slug.keys() and len(score)>1:
+            name = score[1].replace(dir_slug[score[0]],"").split(".")[0]
+            if name in mbid_file:
+                to_add.append({'name': name, 'uuid': {'mbid': mbid_file[name], 
+                    'type': 'work'}})
+    with open("/tmp/tmpsymbtr.json", "w") as outfile:
+            json.dump(to_add, outfile, indent=4)
+    
+    print "Generated list of files to upload"
+    print "Uploading Files"
+    upload_symbtr("/tmp/tmpsymbtr.json")
+    
+    print "Deleting documents"
+    delete_documents()
+    
+    print "Deleting Symbtr entries on database"
+    delete_mapping()
+    
+    print "Creating Symbtr entries on database"
+    create_mapping()
+    
+    c_data['last_commit'] = str(git.Repo(git_dir).head.commit)
+    c.data = json.dumps(c_data)
+    c.save()
+    print "Done"
 
