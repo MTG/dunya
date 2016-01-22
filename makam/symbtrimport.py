@@ -57,6 +57,7 @@ def delete_documents():
         doc.save()
 
 def rmtree(path):
+    import os
     if os.path.exists(path):
         os.unlink(path)
     parts = path.split("/")
@@ -140,12 +141,12 @@ def retrive_git_changes():
     with open("/tmp/tmpsymbtr.json", "w") as outfile:
             json.dump(to_add, outfile, indent=4)
     
+    print "Deleting and creating documents"
+    delete_documents()
+    
     print "Generated list of files to upload"
     print "Uploading Files"
     upload_symbtr("/tmp/tmpsymbtr.json")
-    
-    print "Deleting documents"
-    delete_documents()
     
     print "Deleting Symbtr entries on database"
     delete_mapping()
