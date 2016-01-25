@@ -24,7 +24,7 @@ def create_mapping():
 def delete_documents():
     import docserver.models
     import json
-    data = json.load(open("/homedtic/aporter/symbTr_mbid.json"))
+    data = json.load(open("/srv/SymbTr/symbTr_mbid.json"))
 
     collection = docserver.models.Collection.objects.get(slug='makam-symbtr')
     documents = collection.documents.all()
@@ -76,6 +76,7 @@ def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
     import json
     import os
     compmusic.dunya.set_token("")
+    git_dir = '/srv/SymbTr'
     dir_slug = {"midi": "symbtrmidi"
               , "mu2": "symbtrmu2"
               , "MusicXML": "symbtrxml"
@@ -89,7 +90,7 @@ def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
         ext = sl.replace("symbtr", "")[:3]
         count = len(mbid_file)
         for i, (mbid, name) in enumerate(mbid_file.items(), 1):
-            filename = os.path.join(d, "%s.%s" % (name, ext))
+            filename = os.path.join(git_dir, d, "%s.%s" % (name, ext))
             print "%s) %s/%s: %s (%s)" % (sl, i, count, mbid, name)
             compmusic.dunya.docserver.add_sourcetype(mbid, sl, filename)
             time.sleep(0.1) 
@@ -111,8 +112,8 @@ def retrive_git_changes():
     import docserver.models
     import git
     
-    collid = ''
-    git_dir = ''
+    collid = '6d506b76-61ed-46a7-ba92-08df2ecaa6a8'
+    git_dir = '/srv/SymbTr'
     
     c = docserver.models.Collection.objects.get(collectionid=collid)
     c_data = json.loads(c.data)
