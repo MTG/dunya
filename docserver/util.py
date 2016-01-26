@@ -224,10 +224,18 @@ def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None)
 
 def docserver_get_symbtrtxt(documentid):
     try:
-        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug = 'symbtrtxt')    
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug = 'symbtrtxt')
     except ObjectDoesNotExist:
         return None
     return sf.fullpath
+
+def docserver_get_symbtrmu2(documentid):
+    try:
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug = 'symbtrmu2')
+    except ObjectDoesNotExist:
+        return None
+    return sf.fullpath
+
 
 def docserver_get_contents(documentid, slug, subtype=None, part=None, version=None):
     try:
@@ -289,11 +297,14 @@ def has_rate_limit(user, document, file_type_slug):
     if user.is_staff:
         return False
     try:
-        c = models.CollectionPermission.objects.get(
+        c = models.CollectionPermission.objects.filter(
             collection__in=document.collections.all(),
             source_type__slug=file_type_slug,
             permission__in=user_permissions)
-        return c.streamable
+        for p in c.all():
+            if not p.streamable:
+                return False
+        return True
     except ObjectDoesNotExist, e:
          return False
 
