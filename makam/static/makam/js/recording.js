@@ -47,7 +47,7 @@ $(document).ready(function() {
      gainNode.gain.value = 0;
      oscillator.start(0);    
      soundManager.onready(function() {
-         pagesound = soundManager.createSound({
+       pagesound = soundManager.createSound({
                url: audiourl,
          }).load();
 
@@ -120,7 +120,7 @@ function plothistogram() {
     histogram.height = 256;
     var context = histogram.getContext("2d");
     histogramMax = 0;
-    var data = histogramdata[0];
+    var data = histogramdata;
     for (var i = 0; i < data['vals'].length; i++) {
         if (data['vals'][i] > histogramMax) {
             histogramMax = data['vals'][i];
