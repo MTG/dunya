@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'django.contrib.admin',
     'djcelery',
+    'raven.contrib.django.raven_compat',
     'data',
     'carnatic',
     'dashboard',
