@@ -82,3 +82,10 @@ SOCIAL_AUTH_FACEBOOK_KEY = ''
 SOCIAL_AUTH_FACEBOOK_SECRET = ''
 SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
+
+import raven
+
+RAVEN_CONFIG = {
+    'dsn': 'http://<key>:<secret>@10.55.0.191/sentry/<project>',
+    'release': raven.fetch_git_sha(os.path.dirname(__file__)),
+}
