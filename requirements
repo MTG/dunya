@@ -67,7 +67,7 @@ sqlparse==0.1.10
 ssh==1.8.0
 -e git+https://github.com/sertansenturk/symbtrdataextractor.git@master#egg=symbtrdataextractor-dev
 -e git+https://github.com/hsercanatli/tonic_identifier.git@master#egg=tonic_identifier-dev
--e git+https://github.com/georgid/utilsLyrics.git@mater#egg=utilslyrics-dev
+-e git+https://github.com/georgid/utilsLyrics.git@master#egg=utilslyrics-dev
 uWSGI==2.0.6
 Wand==0.4.1
 wikitools==1.1.1
