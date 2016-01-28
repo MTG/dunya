@@ -28,6 +28,7 @@ flup==1.0.3.dev-20110405
 # unsigned and remote-hosted
 #eyeD3==0.7.5
 functools32==3.2.3-1
+-e git+https://github.com/georgid/htkModelParser.git@master#egg=htkmodelparser-dev
 intonation==0.1
 ipdb==0.8
 ipython==2.1.0
@@ -66,6 +67,7 @@ sqlparse==0.1.10
 ssh==1.8.0
 -e git+https://github.com/sertansenturk/symbtrdataextractor.git@master#egg=symbtrdataextractor-dev
 -e git+https://github.com/hsercanatli/tonic_identifier.git@master#egg=tonic_identifier-dev
+-e git+https://github.com/georgid/utilsLyrics.git@mater#egg=utilslyrics-dev
 uWSGI==2.0.6
 Wand==0.4.1
 wikitools==1.1.1
