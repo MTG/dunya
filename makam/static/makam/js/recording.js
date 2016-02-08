@@ -762,7 +762,7 @@ function loaddata() {
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
          for (w in data){
-           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w] + "</span></b>") 
+           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w][0] + "</span></b>") 
 
          }
     }, error: function(xhr, textStatus, errorThrown) {
