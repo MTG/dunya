@@ -422,8 +422,8 @@ function disableScore(currentTime){
     }
 }
 function highlightNote(note, index){
-      $("a[highlight='1'").attr('highlight','0');
       if (note.find('path').length){
+        $("a[highlight='1'").attr('highlight','0');
         var pos = note.find('path').attr('transform').split("(");
         var xy = pos[1].replace(") scale","").split(',');
 
