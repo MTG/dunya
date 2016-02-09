@@ -249,7 +249,7 @@ widthOfChildren('.metaContainer');
                 <div id="innerSummary">
                     <span>
                         <h1>{{recording.title}}</h1>
-                        <h2> by {% for a in recording.artists.all %}{{ a }}{% endfor %} </h2>
+                        <h2> by {{recording.artists.all|join:", " }} </h2>
                     </span>
                 </div>
                 <div id="summaryBack"></div>
