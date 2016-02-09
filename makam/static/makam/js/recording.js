@@ -840,6 +840,7 @@ function loaddata() {
            }
            aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
+           $('#dialog').dialog('close');
         }
     }
 }

@@ -216,6 +216,9 @@ function playrecord(){
         plButton.addClass("stop");
     }
 }
+$(function() {
+    $( "#dialog" ).dialog();
+  });
 {% else %}
 function playrecord(){
     $( "#playback_dialog" ).dialog( "open" );
@@ -385,7 +388,9 @@ widthOfChildren('.metaContainer');
             </div>
         </div>
     </div>
-
+    <div id="dialog" title="Loading">
+      <p>The page is loading. <img src="{% static 'makam/img/loader.gif' %}" /></p>
+    </div>
     <div class="clearfix"></div>
 </div>
 {% endblock %}
