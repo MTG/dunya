@@ -840,7 +840,6 @@ function loaddata() {
            }
            aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
-           $('#dialog').dialog('close');
         }
     }
 }
@@ -871,6 +870,7 @@ function drawdata(disablePitch) {
     var mini = $('#miniviewHighlight');
     mini.css('left', beginPx);
     mini.css('width', endPx-beginPx);
+    $('#dialog').dialog('close');
 }
 
 function mouPlay(desti){
