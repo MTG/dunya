@@ -130,8 +130,7 @@ def filter_directory(request):
     elif elem == "artist":
         elems = models.Artist.objects.filter(recording__works__in=works.all()).order_by('name').distinct()
     elif elem == "performer":
-        e_perf = models.Artist.objects.filter(instrumentperformance__recording__works__in=works.all()) | \
-                models.Artist.objects.filter(primary_concerts__recordings__works__in=works.all())
+        e_perf = models.Artist.objects.all()
         elems = e_perf.order_by('name').distinct()
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
@@ -163,7 +162,7 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
                     works.filter(recordingwork__recording__release__artists=perf)
         url["perf"] = "performer=" + perf 
 
-    works = works.order_by('title')
+    works = works.distinct().order_by('title')
     return works, url
 
 def composer(request, uuid, name=None):
@@ -314,6 +313,11 @@ def recording(request, uuid, title=None):
     except docserver.util.NoFileException:
         worksurl = None
 
+    try:
+        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
+    except docserver.util.NoFileException:
+        lyricsalignurl = None
+
     ret = {
            "recording": recording,
            "objecttype": "recording",
@@ -335,6 +339,7 @@ def recording(request, uuid, title=None):
            "documentsurl": documentsurl,
            "histogramurl": histogramurl,
            "notemodelsurl": notemodelsurl,
+           "lyricsalignurl": lyricsalignurl,
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
