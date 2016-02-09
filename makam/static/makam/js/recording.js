@@ -809,6 +809,9 @@ function loaddata() {
         if (histogramLoaded && notemodelsLoaded) {
             plothistogram();
         
+            if (loadingDone == 4 && indexmapDone && partsDone) {
+                $('#dialog').dialog('close');
+            }
         }
     }
     function dodraw() {
@@ -840,6 +843,10 @@ function loaddata() {
            }
            aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
+        
+           if (histogramLoaded && notemodelsLoaded) {
+               $('#dialog').dialog('close');
+           }
         }
     }
 }
@@ -870,7 +877,6 @@ function drawdata(disablePitch) {
     var mini = $('#miniviewHighlight');
     mini.css('left', beginPx);
     mini.css('width', endPx-beginPx);
-    $('#dialog').dialog('close');
 }
 
 function mouPlay(desti){
