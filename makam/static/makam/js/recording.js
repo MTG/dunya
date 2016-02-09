@@ -484,6 +484,8 @@ function highlightNote(note, index){
 }
 function showNoteOnHistogram(note, time){
    if (!note ){
+       showingNote = null;
+       $('#current-note').hide();
        return;
    }
    var histogram = $("#histogram-current-note")[0];
@@ -498,6 +500,7 @@ function showNoteOnHistogram(note, time){
    var pitch = histovals[Math.floor(currPos)];
    if (!pitch){
        ctxNotes.clearRect(0, 0, 900, 900);
+       showingNote = null;
        return ;
    }
    var curr = pitch;
@@ -510,7 +513,7 @@ function showNoteOnHistogram(note, time){
    context.stroke(); 
    context.closePath();
    
-   $('#current-note').show()
+   $('#current-note').show();
 
    if (showingNote!=note){
        histogram.width = 200;
@@ -1100,6 +1103,7 @@ function hideCurrentPitch(){
   var canvas = $("#overlap-pitch")[0];
   var context = canvas.getContext("2d");
   context.clearRect (0, 0, 900, 900);
+  histovals = new Array(900);
 }
 function getImage(part){
     if (lastLoaded > part && startLoaded < part){
