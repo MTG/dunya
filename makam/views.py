@@ -33,14 +33,7 @@ import docserver
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
-def guest_login(request):
-    if not request.user.is_authenticated():
-        user = User.objects.get(username='guest')
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, user)
-
 def main(request):
-    guest_login(request)
     q = request.GET.get('q', '')
     
     s_artist = request.GET.get('artist', '')
@@ -216,7 +209,6 @@ def release(request, uuid, title=None):
     return render(request, "makam/release.html", ret)
 
 def work_score(request, uuid, title=None):
-    guest_login(request)
     work = None
     works = models.Work.objects.filter(mbid=uuid)
     if len(works):
@@ -235,7 +227,6 @@ def work_score(request, uuid, title=None):
 
 
 def recording(request, uuid, title=None):
-    guest_login(request)
     recording = get_object_or_404(models.Recording, mbid=uuid)
     mbid = recording.mbid
     
