@@ -1021,7 +1021,7 @@ function updateCurrentPitch(){
     for (w in worksdata){
         if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
             currentWork = w;
-            //plothistogram();
+            plothistogram();
             break;
         }
     }
