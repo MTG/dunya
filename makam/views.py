@@ -33,6 +33,11 @@ import docserver
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
+def results(request):
+    return render(request, "makam/results.html", {})
+
+def stats(request):
+    return render(request, "makam/stats.html", {})
 def main(request):
     q = request.GET.get('q', '')
     
