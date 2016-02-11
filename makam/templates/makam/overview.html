@@ -179,6 +179,7 @@ margin: 20px;
     display: inline-block;
     margin: 10px 56px;
     border: 1px solid #ddd;
+  vertical-align:top;
 }
   
 .table-front th{
@@ -190,6 +191,7 @@ margin: 20px;
     padding: 15px;
     text-align: left;
 }
+.table-front tr:nth-child(even) {background-color: #f2f2f2}
 .bold-text{
     font-weight: bold;
 }
@@ -266,103 +268,75 @@ $(".change-filter").click(function() {
 {% block wrap %}
 <div id="detail"   style="min-height: 850px;">
 
-       <div id="disp-filters">
-         <div class="filter {%if form%}filter-sel{% endif %}">
-           <b><span>Musical Form:</span></b>
-           <span>{{form}}</span>
-          {%if form%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "form" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Select</a>
-         </div>
-         <div class="filter {%if usul%}filter-sel{% endif %}">
-           <b><span>Usul:</span></b>
-           <span>{{usul}}</span>
-           {%if usul%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "usul" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=usul">Select</a>
-         </div>
-         <div class="filter {%if makam%}filter-sel{% endif %}">
-           <b><span>Makam:</span></b>
-           <span>{{makam}}</span>
-           {%if makam %}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "makam" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=makam">Select</a>
-         </div>
-         <div class="filter {%if artist%}filter-sel{% endif %}">
-           <b><span>Lyricist/Composer:</span></b>
-           <span>{{artist}}</span>
-           {%if artist%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "artist" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=artist">Select</a>
-         </div>
-         <div class="filter {%if perf%}filter-sel{% endif %}">
-           <b><span>Performer:</span></b>
-           <span>{{perf}}</span>
-           {%if perf%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "perf" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=performer">Select</a>
-         </div>
-        </div>
-
-    {% if works|length %}
-    <div id="results">
-        <h2>Results</h2>    
-        <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
-        <tr><th scope="col">Work name</th><th scope="col">Composer</th><th scope="col">Recordings</th></tr>
-        {% for w in works %}
-      <tr class="work"><td height="30">{{ w.title }}</td><td >{% for a in w.composers.all %}{{ a.name }}{% endfor %}</td><td><div class="recordings" data-id="{{ w.mbid }}"><a href="#">Show</a></div></td></tr>
-        {% endfor %}
-        </table>
-        {% if works.has_next %}
-            <div id="next">
-              <a id="next-page" href="?q={{q}}&usul={{usul.id}}&form={{form.id}}&artist={{artist.id}}&makam={{makam.id}}&elem=artist&page={{ works.next_page_number }}">next</a>
-            </div>
-        {% endif %}
-    </div>
-    {% endif%}
-    {% if results == False %}
-    <div id="no-results" >
-        <h3> There are no results for this search. 
-        </h3>
-    </div>
-    {% endif %}
-
-    {% if works|length == 0 %}
-    <div>
-      <img style="width: 100%;height: 260px;"src="{% static 'makam/img/front.png'%}"/>
-    </div>
-    
-    <div id="initial" >
-            <h1>Welcome to Dunya Makam</h1>
-      <p>
-Dunya-makam is a web application for the analysis and discovery of Turkish makam music, aimed to showcase various technologies developed within the CompMusic project.
-</p> 
-
-You can navigate the analyzed collection using <strong>the search bar and the filters</strong> at the top of the page. If you want a quick preview of the application, you can jump to the examples below:
-      </p>
-      <h2>Some Examples</h2>
-      <ul>
-        <li><a href="http://dunya.compmusic.upf.edu/makam/recording/dfc16e22-0aae-4bd0-a32c-5c000130e96a">Sevdi Gönlüm Ey Melek Sima Seni</a> by <em>Hafız Kemal Bey</em></li>
-        <li><a href="http://dunya.compmusic.upf.edu/makam/recording/727cff89-392f-4d15-926d-63b2697d7f3f">Gel Güzelim Çamlıca'ya</a> by <em>Münir Nurettin Selçuk</em></li>
-        <li><a href="http://dunya.compmusic.upf.edu/makam/recording/4948c836-5485-4a69-8bdc-11fe4559e78f">Muhayyer Sazsemaisi</a> by <em>Necati Çelik</em></li>
-        <li><a href="http://dunya.compmusic.upf.edu/makam/recording/e72db0ad-2ed9-467b-88ae-1f91edcd2c59">Uşşâk Saz Semâîsi</a> by <em>Murat Aydemir </em>&amp;<em> Derya Türkan</em></li>
-        <li><a href="http://dunya.compmusic.upf.edu/makam/recording/37dd6a6a-4c19-4a86-886a-882840d59518">Pençgah Solo</a> by  <em>Niyazi Sayın</em></li>
-      </ul>
- <p>
- In the <a href="/makam/overview">Overview page</a>, we give an explanation of Dunya Makam web application. 
- </p>
- <p>The <a href="/makam/stats">Statistics page</a> describes the corpus we have analysed.
-</p> 
+    <div id="initial">
+        
+        
+       <h1>Application Overview </h1> 
 <p>
-The <a href="/makam/results">Results page</a> provides some of the basic statistics obtained by the analysis.
+Dunya-makam stores and processes musical data such as audio recordings, music scores and relevant metadata. In the background it performs various music analysis tasks and in the front-end it shows musically relevant representations computed automatically from the data. From the visual interface the user can play the audio recordings while visualizing different representations of the analysis obtained from the data. The most important analysis performed results in the synchronization between the audio recordings and the corresponding musical scores, thus resulting in a visualization of this synchronization. 
 
-</p>        
-    {% endif%}
+</p>       
+ 
+       <span style="font-weight: 400;">We currently demonstrate the implementations of these methodologies proposed for the computational analysis of Turkish makam music:</span>
+<ul>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Score section extraction [<a href="https://github.com/sertansenturk/symbtrdataextractor" target="_blank">Code</a>] </span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Audio predominant melody extraction [1], [<a href="https://github.com/sertansenturk/predominantmelodymakam" target="_blank">Code</a>] </span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Audio pitch distribution extraction [2], [<a href="https://github.com/sertansenturk/alignednotemodel" target="_blank">Code</a>] </span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Score informed tonic identification [3]</span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Score informed tempo estimation [4]</span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Section-level audio-score alignment [5]</span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Note-level audio-score alignment [6]</span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Score-informed predominant melody correction [<a href="https://github.com/sertansenturk/alignedpitchfilter" target="_blank">Code</a>] </span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Audio seyir modeling [7], [<a href="https://github.com/sertansenturk/seyiranalyzer" target="_blank">Code</a>] </span></li>
+  <li style="font-weight: 400;"><span style="font-weight: 400;">Score-informed note modeling [<a href="https://github.com/sertansenturk/alignednotemodel" target="_blank">Code</a>] </span></li>
+</ul>
+<h4>References</h4>
+
+<ol>
+  <li>
+    <span style="font-weight: 400;">Atlı, H. S., Uyar, B., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3121"><strong>Audio feature extraction for exploring Turkish makam music.</strong></a> In Proceedings of 3rd International Conference on Audio Technologies for Music and Media, pages 142–153, Ankara, Turkey.</span></li>
+  </li><br />
+<li>
+
+  <span style="font-weight: 400;">Bozkurt, B (2008). <a href="http://www.tandfonline.com/doi/abs/10.1080/09298210802259520"><strong>An Automatic Pitch Analysis Method for Turkish Maqam Music.</strong></a> Journal of New Music Research, 37:1, 1-13</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Şentürk, S., Gulati, S., and Serra, X. (2013). <a href="http://mtg.upf.edu/node/2794"><strong>Score informed tonic identification for makam music of Turkey.</strong></a> In Proceedings of 14th International Society for Music Information Retrieval Conference, pages 175–180, Curitiba, Brazil.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Holzapfel, A., Şimşekli U., Şentürk S., and Cemgil A. T. (2015). <a href="http://mtg.upf.edu/node/3202"><strong>Section-level Modeling of Musical Audio for Linking Performances to Scores in Turkish Makam Music.</strong></a> In Proceedings of IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 141–145, Brisbane, Australia.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Şentürk, S., Holzapfel, A., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/2877"><strong>Linking scores and audio recordings in makam music of Turkey.</strong></a> Journal of New Music Research, 43:34–52.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Şentürk, S., Gulati, S., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/2967"><strong>Towards alignment of score and audio recordings of Ottoman-Turkish makam music.</strong></a> In Proceedings of 4th International Workshop on Folk Music Analysis, pages 57–60, Istanbul, Turkey.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">B. Bozkurt (2015). <a href="http://compmusic.upf.edu/system/files/static_files/Bozkurt_SeyirAnalysis_BookChapter_2015.pdf"><strong>Computational analysis of overall melodic progression for Turkish Makam Music.</strong></a> In Penser l’improvisation, pages 289–298, Delatour France, Sampzon.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">M. Kemal Karaosmanoğlu. <a href="http://compmusic.upf.edu/system/files/static_files/KemalKaraosmanoglu_Ismir2012.pdf"><strong>A Turkish makam music symbolic database for music information retrieval: SymbTr.</strong></a> In Proceedings of 13th International Society for Music Information Retrieval Conference (ISMIR), pages 223–228, 2012.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Uyar, B., Atlı, H. S., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3030"><strong>A corpus for computational research of Turkish makam music.</strong></a> In Proceedings of 1st International Digital Libraries for Musicology Workshop, pages 57–63, London, United Kingdom.</span>
+</li>
+</ol> 
+    </div>
     <div class="clearfix"></div>
 </div>
 <div id="filterdialog" title="Filter">

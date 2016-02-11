@@ -25,6 +25,7 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 urlpatterns = [
     url(r'^$', views.main, name='makam-main'),
     url(r'^stats$', views.stats, name='makam-stats'),
+    url(r'^overview$', views.overview, name='makam-overview'),
     url(r'^results$', views.results, name='makam-results'),
     url(r'^composer/%s%s$' % (uuid_match, name_match), views.composer, name='makam-composer'),
     url(r'^artist/%s%s$' % (uuid_match, name_match), views.artist, name='makam-artist'),

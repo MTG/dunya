@@ -35,6 +35,8 @@ def makamplayer(request):
 
 def results(request):
     return render(request, "makam/results.html", {})
+def overview(request):
+    return render(request, "makam/overview.html", {})
 
 def stats(request):
     return render(request, "makam/stats.html", {})

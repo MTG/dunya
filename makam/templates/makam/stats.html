@@ -269,46 +269,52 @@ $(".change-filter").click(function() {
 <div id="detail"   style="min-height: 850px;">
 
     <div id="initial">
-        <p> Welcome to the demo of Dunya Turkish-makam.</br> 
-        <p class="p1"><span class="s1">Above, you can search the works by name, or filter searches by makam, musical form, usul or composer. </span></p>
-        <p class="p1"><span class="s1">Below we have compiled some examples:</span></p>
+    <h2> CompMusic Turkish makam music corpus</h2>
+
+        <p class="p1">
+To develop methodologies for the automatic analysis, discovery and exploration of the culture-specific characteristics of a music tradition, we need music collections, which are representative of the studied aspects of that music. For Turkish makam music, there are various resources available such as audio recordings, music scores, lyrics and editorial metadata. However, most of these resources are not typically suited for computational analysis, are hard to access, do not have sufficient quality or do not include adequate descriptive information. 
         </p>
-       
-        <table class="table-front">
-          <tr>
-            <th></th>
-            <th># items</th></tr>
-          <tr><td class="bold-text" >Releases</td><td>356</td></tr>
-          <tr><td  class="bold-text">Recordings</td><td>6541</td></tr>
-          <tr><td  class="bold-text">Works</td><td>4290</td></tr>
-          <tr><td  class="bold-text">Artists</td><td>1773</td></tr>
-          <tr><td  class="bold-text">Makams</td><td>308</td></tr>
-          <tr><td  class="bold-text">Usuls</td><td>125</td></tr>
-          <tr><td class="bold-text" >Forms</td><td>103</td></tr>
-        </table>
 
-        <table class="table-front">
-          <tr>
-            <th></th>
-            <th># relations</th>
-          </tr>
-          <tr><td class="bold-text">Recording-Work</td><td>4807</td></tr>
-          <tr><td class="bold-text" >Recording-Artist</td><td>28381</td></tr>
-          <tr><td class="bold-text" >Work-Artist</td><td>6669</td></tr>
-        </table>
+        <p class="p1">
+To satisfy this need of representative music collections suitable for computational research, we have created a corpus of Turkish makam music. The primary considerations during the creation of this corpus reflect some criteria, namely, purpose, coverage, completeness, quality and reusability.
+        </p>
 
-        <table class="table-front">
-          <tr>
-            <th></th>
-            <th># items</th>
-          </tr>
-          <tr><td  class="bold-text">Scores</td><td>2200</td></tr>
-          <tr><td class="bold-text" >Makams</td><td>155</td></tr>
-          <tr><td  class="bold-text">Forms</td><td>56</td></tr>
-          <tr><td  class="bold-text">Usuls</td><td>88</td></tr>
-          <tr><td  class="bold-text">Notes</td><td>883803</td></tr>
-          <tr><td  class="bold-text">Sections</td><td>21536</td></tr>
-        </table>
+        <p class="p1">
+The CompMusic Turkish-makam corpus consists of around <strong>6500 audio recordings</strong>, adding up to 412 hours of playback duration; <a href="https://github.com/MTG/SymbTr"><strong>2200 music scores</strong></a> with lyrics encompassing 883,803 notes, 21536 sections and 100 hours of nominal playback duration; and <strong>13500 instances of editorial metadata</strong> in <a href="http://musicbrainz.org">Musicbrainz</a> related to the classical and folk repertoires of Turkish makam music. These statistics make the corpus the biggest corpus of Turkish makam music intended for computational research. 
+        </p>
+
+<img style="margin-left: 339px;width: 432px;"src="{% static 'makam/img/metadata.png'%}"/>
+        <p class="p1" style="font-style: italic; font-size: 13px; text-align: center;">
+The basic statistics of the CompMusic Turkish makam music corpus. <br />
+The nodes represent the metadata stored and the numbers on the arrows indicate the number of relationships between each type of metadata
+        </p>
+
+        <p class="p1">
+We have compiled several test datasets from the corpus, providing a ground truth for specific computational tasks:
+        </p>
+
+        <p class="p1">
+          <ul>
+          <li><a href="https://github.com/MTG/turkish_makam_tonic_dataset">Tonic Identification dataset</a></li>
+          <li><a href="https://github.com/MTG/makam-symbolic-phrase-segmentation-dataset">Symbolic phrase segmentation dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_partial_alignment_dataset">Partial audio alignment dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_section_dataset">Section dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_audio_score_alignment_dataset">Audio-score alignment dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_recognition_dataset">Makam recognition dataset</a></li>
+          <li><a href="https://github.com/georgid/turkish-makam-lyrics-2-audio-test-data">Audio-lyrics alignment dataset</a></li>
+         </ul>
+         </p>
+
+        <p class="p1">
+We have also started using the corpus to generate a knowledge base for a domain ontology describing Turkish makam music. We hope that this research corpus will facilitate academic studies in several fields such as music information retrieval and computational musicology.
+        </p>
+
+References
+        <p class="p1">
+[1] Uyar, B., Atlı, H. S., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3030">A corpus for computational research of Turkish makam music</a>. In Proceedings of 1st International Digital Libraries for Musicology Workshop, pages 57–63, London, United Kingdom.
+        </p>
+   
+      
 
 
     </div>
