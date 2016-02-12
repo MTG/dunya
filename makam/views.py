@@ -130,8 +130,8 @@ def filter_directory(request):
     elif elem == "usul":
         elems = models.Usul.objects.filter(work__in=works.all()).order_by('name').distinct()
     elif elem == "artist":
-        elems = models.Composer.objects.filter(works__in=works.all()).order_by('name').distinct()| \
-             models.Composer.objects.filter(lyric_works__in=works.all()).order_by('name').distinct()
+        elems = models.Composer.objects.filter(works__in=works.all()).order_by('name').distinct() | \
+            models.Composer.objects.filter(lyric_works__in=works.all()).order_by('name').distinct()
     elif elem == "performer":
         e_perf = models.Artist.objects.all()
         elems = e_perf.order_by('name').distinct()
