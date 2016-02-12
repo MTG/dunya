@@ -12,7 +12,7 @@
         {% for letter in letter_list %}
             <div class="item" class="col-md-6" style="display:none" id="anchor-{{ letter.grouper }}" > 
                 {% for item in letter.list %}
-                <li><a href="/makam/?{%for k,v in params%}{{v}}&{%endfor%}{{elem}}={{item.id}}">{{item.name}}</a></li>
+                <li><a href="/makam/?{%for k,v in params.items%}{{v}}&{%endfor%}{{elem}}={{item.id}}">{{item.name}}</a></li>
                 {% endfor %}
             </div>
         {% endfor %}

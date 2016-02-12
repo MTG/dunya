@@ -117,13 +117,10 @@ def filter_directory(request):
     usul = request.GET.get('usul', '')
    
     works, url = get_works_and_url(artist, form, usul, makam, perf, None, elem)
-    
-    if q and q!='':
-        url["q"] = "q=" + q
 
     if elem == "makam":
         elems = models.Makam.objects.filter(work__in=works.all()).order_by('name').distinct()
-    elif elem == "form": 
+    elif elem == "form":
         elems = models.Form.objects.filter(work__in=works.all()).order_by('name').distinct()
     elif elem == "usul":
         elems = models.Usul.objects.filter(work__in=works.all()).order_by('name').distinct()
@@ -136,31 +133,32 @@ def filter_directory(request):
 
 def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
     works = models.Work.objects
+    url = {}
     if q and q!='':
         works = works.unaccent_get(q) | works.filter(recording__title__contains=q)
-    
-    url = {}
-    if elem != "artist": 
-        if artist and artist != '': 
+        url["q"] = "q=" + q
+
+    if elem != "artist":
+        if artist and artist != '':
             works = works.filter(composers=artist)
-        url["artist"] = "artist=" + artist 
-    if elem != "form": 
-        if form and form != '': 
-            works = works.filter(form=form) 
-        url["form"] = "form=" + form 
-    if elem != "usul": 
-        if usul and usul != '': 
-            works = works.filter(usul=usul) 
-        url["usul"] = "usul=" + usul 
-    if elem != "makam": 
-        if makam and makam != '': 
-            works = works.filter(makam=makam) 
-        url["makam"] = "makam=" + makam 
-    if elem != "performer": 
+        url["artist"] = "artist=" + artist
+    if elem != "form":
+        if form and form != '':
+            works = works.filter(form=form)
+        url["form"] = "form=" + form
+    if elem != "usul":
+        if usul and usul != '':
+            works = works.filter(usul=usul)
+        url["usul"] = "usul=" + usul
+    if elem != "makam":
+        if makam and makam != '':
+            works = works.filter(makam=makam)
+        url["makam"] = "makam=" + makam
+    if elem != "performer":
         if perf and perf != '':
             works = works.filter(recordingwork__recording__instrumentperformance__artist=perf) | \
                     works.filter(recordingwork__recording__release__artists=perf)
-        url["perf"] = "performer=" + perf 
+        url["perf"] = "performer=" + perf
 
     works = works.distinct().order_by('title')
     return works, url
