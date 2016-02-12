@@ -71,7 +71,7 @@ def main(request):
     if s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
         works, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
         if q and q!='':
-            url["q"] = "q=" + SafeString(q)
+            url["q"] = "q=" + SafeString(q.encode('utf8'))
 
         results = len(works) != 0
 
@@ -87,7 +87,7 @@ def main(request):
             works = paginator.page(paginator.num_pages)
     if not url:
         url = {
-                "q": "q=%s" % SafeString(q),
+                "q": "q=%s" % SafeString(q.encode('utf8')),
                 "usul": "usul=%s" % s_usul,
                 "form": "form=%s" % s_form,
                 "artist": "artist=%s" % s_artist,
@@ -121,7 +121,7 @@ def filter_directory(request):
 
     works, url = get_works_and_url(artist, form, usul, makam, perf, q, elem)
     if q and q!='':
-        url["q"] = "q=" + SafeString(q)
+        url["q"] = "q=" + SafeString(q.encode('utf8'))
 
     if elem == "makam":
         elems = models.Makam.objects.filter(work__in=works.all()).order_by('name').distinct()
