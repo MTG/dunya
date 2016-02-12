@@ -62,16 +62,19 @@ def main(request):
     if s_usul and s_usul != '': 
         usul = models.Usul.objects.get(id=s_usul)
     makam = ""
-    if s_makam and s_makam != '': 
+    if s_makam and s_makam != '':
         makam = models.Makam.objects.get(id=s_makam)
-    
+
     url = None
     works = None
     results = None
     if s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
         works, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
+        if q and q!='':
+            url["q"] = "q=" + SafeString(q)
+
         results = len(works) != 0
-   
+
         paginator = Paginator(works, 25)
         page = request.GET.get('page')
         try:
@@ -85,18 +88,18 @@ def main(request):
     if not url:
         url = {
                 "q": "q=%s" % SafeString(q),
-                "usul": "usul=%s" % s_usul, 
-                "form": "form=%s" % s_form, 
-                "artist": "artist=%s" % s_artist, 
-                "makam": "makam=%s" % s_makam, 
-                "perf": "performer=%s" % s_perf 
+                "usul": "usul=%s" % s_usul,
+                "form": "form=%s" % s_form,
+                "artist": "artist=%s" % s_artist,
+                "makam": "makam=%s" % s_makam,
+                "perf": "performer=%s" % s_perf
                 }
-     
+
     ret = {
-        'artist': artist, 
-        'perf': perf, 
-        'makam': makam, 
-        'usul': usul, 
+        'artist': artist,
+        'perf': perf,
+        'makam': makam,
+        'usul': usul,
         'form': form,
         'works': works,
         'results': results,
@@ -107,16 +110,18 @@ def main(request):
 
 def filter_directory(request):
     elem = request.GET.get('elem', None)
-    
+
     q = request.GET.get('q', None)
-    
+
     artist = request.GET.get('artist', '')
     perf = request.GET.get('performer', '')
     form = request.GET.get('form', '')
     makam = request.GET.get('makam', '')
     usul = request.GET.get('usul', '')
-   
-    works, url = get_works_and_url(artist, form, usul, makam, perf, None, elem)
+
+    works, url = get_works_and_url(artist, form, usul, makam, perf, q, elem)
+    if q and q!='':
+        url["q"] = "q=" + SafeString(q)
 
     if elem == "makam":
         elems = models.Makam.objects.filter(work__in=works.all()).order_by('name').distinct()
@@ -125,7 +130,8 @@ def filter_directory(request):
     elif elem == "usul":
         elems = models.Usul.objects.filter(work__in=works.all()).order_by('name').distinct()
     elif elem == "artist":
-        elems = models.Artist.objects.filter(recording__works__in=works.all()).order_by('name').distinct()
+        elems = models.Composer.objects.filter(works__in=works.all()).order_by('name').distinct()| \
+             models.Composer.objects.filter(lyric_works__in=works.all()).order_by('name').distinct()
     elif elem == "performer":
         e_perf = models.Artist.objects.all()
         elems = e_perf.order_by('name').distinct()
@@ -135,12 +141,12 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
     works = models.Work.objects
     url = {}
     if q and q!='':
-        works = works.unaccent_get(q) | works.filter(recording__title__contains=q)
-        url["q"] = "q=" + q
+        ids = list(models.Work.objects.unaccent_get(q).values_list('pk', flat=True))
+        works = works.filter(pk__in=ids) | works.filter(recording__title__contains=q)
 
     if elem != "artist":
         if artist and artist != '':
-            works = works.filter(composers=artist)
+            works = works.filter(composers=artist) | works.filter(lyricists=artist)
         url["artist"] = "artist=" + artist
     if elem != "form":
         if form and form != '':
