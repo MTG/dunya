@@ -42,7 +42,7 @@ def stats(request):
     return render(request, "makam/stats.html", {})
 def main(request):
     q = request.GET.get('q', '')
-    
+
     s_artist = request.GET.get('artist', '')
     s_perf = request.GET.get('performer', '')
     s_form = request.GET.get('form', '')
@@ -50,16 +50,16 @@ def main(request):
     s_usul = request.GET.get('usul', '')
 
     artist = ""
-    if s_artist and s_artist != '': 
-        artist = models.Artist.objects.get(id=s_artist)
+    if s_artist and s_artist != '':
+        artist = models.Composer.objects.get(id=s_artist)
     perf = ""
-    if s_perf and s_perf != '': 
+    if s_perf and s_perf != '':
         perf = models.Artist.objects.get(id=s_perf)
     form = ""
     if s_form and s_form != '':
         form = models.Form.objects.get(id=s_form)
     usul = ""
-    if s_usul and s_usul != '': 
+    if s_usul and s_usul != '':
         usul = models.Usul.objects.get(id=s_usul)
     makam = ""
     if s_makam and s_makam != '':
