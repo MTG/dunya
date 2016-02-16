@@ -293,6 +293,8 @@ class Work(MakamStyle, data.models.Work):
     makam = models.ManyToManyField(Makam, blank=True)
     usul = models.ManyToManyField(Usul, blank=True)
     form = models.ManyToManyField(Form, blank=True)
+    
+    is_processed = models.BooleanField(default=False)
 
     def recordinglist(self):
         return self.recording_set.all()

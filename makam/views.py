@@ -144,6 +144,8 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
         ids = list(models.Work.objects.unaccent_get(q).values_list('pk', flat=True))
         works = works.filter(pk__in=ids) | works.filter(recording__title__contains=q)
 
+    works = works.filter(is_processed=True)
+    
     if elem != "artist":
         if artist and artist != '':
             works = works.filter(composers=artist) | works.filter(lyricists=artist)
