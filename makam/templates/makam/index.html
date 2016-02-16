@@ -215,8 +215,11 @@ $( document ).ready(function() {
        }
        work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
      }
-    }); 
-      
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+       if(jqXHR.status == 401){
+        $("#logindialog").dialog("open");
+       }
+    });
   });
 $(function() {      
     $( "#combo-artist" ).combobox();
@@ -224,6 +227,10 @@ $(function() {
           $( "#combo-artist" ).toggle();
      });
   });
+
+$("#logindialog").dialog({
+  autoOpen: false,
+});
 
 $("#filterdialog").dialog({
   autoOpen: false,
@@ -366,6 +373,9 @@ The <a href="/makam/results">Results page</a> provides some of the basic statist
     <div class="clearfix"></div>
 </div>
 <div id="filterdialog" title="Filter">
+</div>
+<div id="logindialog" title="Login required">
+  <p>You need to log in to play a recording</p>
 </div>
 {% endblock %}
 
