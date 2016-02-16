@@ -687,7 +687,7 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
-                   $('#dialog').html('We don\'t have scores for this recording.')
+                   $('#dialog').html('This recording is not analyzed yet.')
                 }});
                 $.ajax(workDocumentsUrl + indexmapurl, {dataType: "json", type: "GET",
                     context: {work: w},
@@ -701,7 +701,7 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
-                   $('#dialog').html('We don\'t have scores for this recording.')
+                   $('#dialog').html('This recording is not analyzed yet.')
                 }});
 
                 $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
@@ -716,7 +716,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('We don\'t have scores for this recording.')
+       $('#dialog').html('This recording is not analyzed yet.')
     }}); 
 
 
@@ -743,7 +743,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('We don\'t have scores for this recording.')
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
     
     $.ajax(histogramurl, {dataType: "json", type: "GET",
@@ -754,7 +754,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('We don\'t have scores for this recording.')
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
         
     $.ajax(notemodelsurl, {dataType: "json", type: "GET",
@@ -765,7 +765,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('We don\'t have scores for this recording.')
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
 
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
@@ -802,7 +802,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('We don\'t have scores for this recording.')
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
 
     $.ajax(sectionsurl, {dataType: "json", type: "GET",
@@ -813,7 +813,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('We don\'t have scores for this recording.')
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
     
     function dodrawHistogram() {
