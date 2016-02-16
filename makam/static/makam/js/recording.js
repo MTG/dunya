@@ -687,6 +687,7 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
+                   $('#dialog').html('We don\'t have scores for this recording.')
                 }});
                 $.ajax(workDocumentsUrl + indexmapurl, {dataType: "json", type: "GET",
                     context: {work: w},
@@ -700,6 +701,7 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
+                   $('#dialog').html('We don\'t have scores for this recording.')
                 }});
 
                 $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
@@ -714,6 +716,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('We don\'t have scores for this recording.')
     }}); 
 
 
@@ -740,6 +743,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('We don\'t have scores for this recording.')
     }});
     
     $.ajax(histogramurl, {dataType: "json", type: "GET",
@@ -750,6 +754,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('We don\'t have scores for this recording.')
     }});
         
     $.ajax(notemodelsurl, {dataType: "json", type: "GET",
@@ -760,6 +765,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('We don\'t have scores for this recording.')
     }});
 
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
@@ -796,6 +802,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('We don\'t have scores for this recording.')
     }});
 
     $.ajax(sectionsurl, {dataType: "json", type: "GET",
@@ -806,6 +813,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('We don\'t have scores for this recording.')
     }});
     
     function dodrawHistogram() {
