@@ -225,9 +225,9 @@ $(function() {
     });
   });
 {% else %}
-function playrecord(){
+$(function() {
     $( "#playback_dialog" ).dialog( "open" );
-}
+  });
 {% endif %}
 
 widthOfChildren('.metaContainer');
