@@ -25,7 +25,7 @@
 <table class="table">
     <tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Process</th></tr>
     {% for m in collection.module_set.all %}
-    <tr><td colspan="4">{{m}}</td>
+    <tr><td colspan="4"><a href="{{m.get_absolute_url}}">{{m}}</a></td>
         <td>
             <form method="post" action="">
                 {% csrf_token %}

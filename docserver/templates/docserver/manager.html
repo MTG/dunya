@@ -64,44 +64,6 @@ function renderWork(dat){
   }
 
 }
-function renderModules(dat){
-  if (dat.modules.length > 0){
-      $("#modules").append('<table class="table table-condensed "><tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Actions</th></tr></table>');
-  }
-  for(var i=0;i<dat.modules.length;i++){
-    var m = dat.modules[i];
-    var html = "<tr";
-    if (m.disabled){
-      html += 'class="warning"';
-    }
-    html += '><td><a href="'+ m.abs_url +'">' + m.name + '</a>' + '(' + m.module + ')';
-    if (m.disabled){
-      html += '<br><b>Disabled due to error</b>';
-    }
-    html += '<br>';
-    for(var c =0;c<m.collections.length;c++){
-      html += '<li>' + m.collections[c];
-    }   
-    html += '</td><td>' + m.latest_version_number + '</td>';
-    var proccount = m.processed_files;
-    var unproccount = m.unprocessed_files;
-    html += '<td>' + proccount + '</td>';
-    if(unproccount > 0 ){
-      html += '<td class="warning">';
-    }else{
-      html += '<td>';
-    }
-    html += unproccount + '</td>';
-    html += '<td><form method="post" action="">';
-    html += "{% csrf_token %}";
-    html += '<input type="hidden" name="run" value="' + m.pk + '"><input type="submit"';
-    if(m.disabled){
-      html += ' disabled="disabled" ';
-    }
-    html += ' value="Process files"></form></td></tr>';
-    $('#modules table').append(html);
-  }
-}
 $( document ).ready(function() {
   $.ajax({
       method: "GET",
@@ -110,14 +72,6 @@ $( document ).ready(function() {
   }).done(function(dat) {
       renderWork(dat);
   });
-  $.ajax({
-      method: "GET",
-      url: "/document/manager/modules",
-      dataType: "json"
-  }).done(function(dat) {
-      renderModules(dat);
-  });
-
 });
 </script>
 {% endblock %}
@@ -148,12 +102,6 @@ $( document ).ready(function() {
     <input type="hidden" name="updateall" value="yes">
     <input type="submit" value="Update all workers" onclick="return confirm('Do you want to update and restart all workers?');">
 </form>
-
-<h2>Extractor modules</h2>
-
-<div id="modules">
-Loading modules information...
-</div>
 
 <p><a href="{% url 'docserver-addmodule' %}">Add new module</a><br>
 
