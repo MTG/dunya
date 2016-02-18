@@ -36,7 +36,7 @@ $(document).ready(function() {
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
      histovals = new Array(900);
-     var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
      oscillator = audioCtx.createOscillator();
      gainNode = audioCtx.createGain();
      oscillator.connect(gainNode);
@@ -1061,10 +1061,25 @@ function updateCurrentPitch(){
 }
 
 function play_osc(f){
+    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+    var waveArray = new Float32Array(9);
+    waveArray[0] = 0.00001;
+    waveArray[1] = 0.5;
+    waveArray[2] = 0.5;
+    waveArray[3] = 0.5;
+    waveArray[4] = 0.5;
+    waveArray[5] = 0.5;
+    waveArray[6] = 0.5;
+    waveArray[7] = 0.5;
+    waveArray[8] = 0.5;
     oscillator.frequency.value = f; // value in hertz
-    gainNode.gain.value = 0.5;
+    gainNode.gain.setValueCurveAtTime(waveArray, audioCtx.currentTime, 0.5);
     window.setTimeout(function(){
-        gainNode.gain.value = 0;
+      try {
+        gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime);
+      }
+      catch (e) {
+      }
     }, 1000);
 }
 function playNextSection(right){
