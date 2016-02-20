@@ -18,8 +18,6 @@ $(document).ready(function() {
      lastOffset = null;
      lastTime = null;
      showingNote = null;
-     lastNotes = [];
-     lastLine = null;
      colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
      images = [];
      startLoaded = 0;
@@ -38,7 +36,7 @@ $(document).ready(function() {
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
      histovals = new Array(900);
-     var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
      oscillator = audioCtx.createOscillator();
      gainNode = audioCtx.createGain();
      oscillator.connect(gainNode);
@@ -402,25 +400,10 @@ function plotscore(index, color) {
       if (aligns[index]){
           var find = false;
           var curr = $("#score-"+currentWork).find("a[id^=l" + aligns[index]['line'] + "-f]");
-          var sameLine = [];
           curr.each(function(){
     
-            if(parseInt($(this).attr('from')) <= aligns[index]['pos'] && parseInt($(this).attr('to')) > aligns[index]['pos']){
-              if( !($(this) in lastNotes) ){
-                sameLine.push($(this));
-              }   
-            }
+            highlightNote($(this), index);
           });
-          sameLine.sort(function(a, b){return parseInt(a.attr('from'))-parseInt(b.attr('from'))});       
-          if(sameLine.length > 0){
-            highlightNote(sameLine[0], index);
-          }else{
-          console.log(aligns[index]);
-          }
-          if(lastLine != aligns[index]['line']){
-            lastLine = aligns[index]['line'];
-            lastNotes = [];
-          }
         }
     }
 }
@@ -439,68 +422,70 @@ function disableScore(currentTime){
     }
 }
 function highlightNote(note, index){
-      lastNotes.push(note);
-      $("a[highlight='1'").attr('highlight','0');
-     
-      var pos = note.find('path').attr('transform').split("(");
-      var xy = pos[1].replace(") scale","").split(',');
+      if (note.find('path').length){
+        $("a[highlight='1'").attr('highlight','0');
+        var pos = note.find('path').attr('transform').split("(");
+        var xy = pos[1].replace(") scale","").split(',');
 
-      var prev = null;
-      var prevmin= Number.MAX_VALUE;
-      var prevx = 0;
-      var prevy = 0;
-      var next = null;
-      var nextmin= Number.MAX_VALUE;
-      var nextx = 0;
-      var nexty = 0;
-    
-      var page = parseInt(note.closest(".score-page").attr('id').replace("score-"+currentWork+"-",''));
-      var bars = barPages[currentWork][page];
-      for(var i=0;i<bars.length; i++){
-       if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
-           prevmin = parseInt(xy[0]) - bars[i][0];
-           prev = bars[i][2];
-           prevx = bars[i][0];
-           prevy = bars[i][1];
+        var prev = null;
+        var prevmin= Number.MAX_VALUE;
+        var prevx = 0;
+        var prevy = 0;
+        var next = null;
+        var nextmin= Number.MAX_VALUE;
+        var nextx = 0;
+        var nexty = 0;
+      
+        var page = parseInt(note.closest(".score-page").attr('id').replace("score-"+currentWork+"-",''));
+        var bars = barPages[currentWork][page];
+        for(var i=0;i<bars.length; i++){
+         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
+             prevmin = parseInt(xy[0]) - bars[i][0];
+             prev = bars[i][2];
+             prevx = bars[i][0];
+             prevy = bars[i][1];
 
-       }
-       if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (bars[i][0] - parseInt(xy[0])) > 0 && nextmin > (bars[i][0] - parseInt(xy[0]))){
-           nextmin = bars[i][0] - parseInt(xy[0]) ;
-           next = bars[i][2];
-           nextx = bars[i][0];
-           nexty = bars[i][1];
-       }
-      }
-      
-      note.attr('highlight','1');    
-      $(".score-page").hide();
-      var currScore = $("#score-"+currentWork+"-"+page);
-      currScore.show();
-      $("#score-"+currentWork+"-"+(page+1)).each(function(){$(this).show()});
-      
-      var y = -2 * nexty;
-      if (nexty > 15){
-          
-          y = y * 2 ;
-      }
-      if(next && prev){
-         currScore.find('.marker').attr('x',prevx);
-         currScore.find('.marker').attr('y', prevy-4);
-         currScore.find('.marker').attr('width',nextx-prevx);
-         currScore.find('.marker').attr('height',"10");
-         currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
-         $('#score-cont').css("top", y );
-      }else if(next && prev==null){
-         currScore.find('.marker').attr('x', 0);
-         currScore.find('.marker').attr('y', nexty-4);
-         currScore.find('.marker').attr('width',nextx);
-         currScore.find('.marker').attr('height',"10");
-         currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
-         $('#score-cont').css("top", y);
+         }
+         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (bars[i][0] - parseInt(xy[0])) > 0 && nextmin > (bars[i][0] - parseInt(xy[0]))){
+             nextmin = bars[i][0] - parseInt(xy[0]) ;
+             next = bars[i][2];
+             nextx = bars[i][0];
+             nexty = bars[i][1];
+         }
+        }
+        
+        note.attr('highlight','1');    
+        $(".score-page").hide();
+        var currScore = $("#score-"+currentWork+"-"+page);
+        currScore.show();
+        $("#score-"+currentWork+"-"+(page+1)).each(function(){$(this).show()});
+        
+        var y = -2 * nexty;
+        if (nexty > 15){
+            
+            y = y * 2 ;
+        }
+        if(next && prev){
+           currScore.find('.marker').attr('x',prevx);
+           currScore.find('.marker').attr('y', prevy-4);
+           currScore.find('.marker').attr('width',nextx-prevx);
+           currScore.find('.marker').attr('height',"10");
+           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
+           $('#score-cont').css("top", y );
+        }else if(next && prev==null){
+           currScore.find('.marker').attr('x', 0);
+           currScore.find('.marker').attr('y', nexty-4);
+           currScore.find('.marker').attr('width',nextx);
+           currScore.find('.marker').attr('height',"10");
+           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
+           $('#score-cont').css("top", y);
+        }
       }
 }
 function showNoteOnHistogram(note, time){
    if (!note ){
+       showingNote = null;
+       $('#current-note').hide();
        return;
    }
    var histogram = $("#histogram-current-note")[0];
@@ -515,6 +500,7 @@ function showNoteOnHistogram(note, time){
    var pitch = histovals[Math.floor(currPos)];
    if (!pitch){
        ctxNotes.clearRect(0, 0, 900, 900);
+       showingNote = null;
        return ;
    }
    var curr = pitch;
@@ -527,7 +513,7 @@ function showNoteOnHistogram(note, time){
    context.stroke(); 
    context.closePath();
    
-   $('#current-note').show()
+   $('#current-note').show();
 
    if (showingNote!=note){
        histogram.width = 200;
@@ -666,6 +652,8 @@ function loaddata() {
     var indexLoaded= 0;
     var partsDone = false;
     var indexmapDone = false;
+    var notemodelsLoaded = false;
+    var histogramLoaded = false;
     $.ajax(worksurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             numbScore = {};
@@ -699,6 +687,7 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
+                   $('#dialog').html('This recording is not analyzed yet.')
                 }});
                 $.ajax(workDocumentsUrl + indexmapurl, {dataType: "json", type: "GET",
                     context: {work: w},
@@ -712,6 +701,7 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
+                   $('#dialog').html('This recording is not analyzed yet.')
                 }});
 
                 $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
@@ -726,6 +716,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
     }}); 
 
 
@@ -752,32 +743,35 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
     
     $.ajax(histogramurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             histogramdata = data;
-            loadingDone++;
-            dodraw();
+            histogramLoaded = true;
+            dodrawHistogram();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
         
     $.ajax(notemodelsurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             notemodels = data;
-            loadingDone++;
-            dodraw();
+            notemodelsLoaded = true;
+            dodrawHistogram();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
 
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
          for (w in data){
-           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w] + "</span></b>") 
+           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w][0] + "</span></b>") 
 
          }
     }, error: function(xhr, textStatus, errorThrown) {
@@ -808,6 +802,7 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
 
     $.ajax(sectionsurl, {dataType: "json", type: "GET",
@@ -818,10 +813,20 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
     }});
     
+    function dodrawHistogram() {
+        if (histogramLoaded && notemodelsLoaded) {
+            plothistogram();
+        
+            if (loadingDone == 4 && indexmapDone && partsDone) {
+                $('#dialog').dialog('close');
+            }
+        }
+    }
     function dodraw() {
-        if (loadingDone == 6 && indexmapDone && partsDone) {
+        if (loadingDone == 4 && indexmapDone && partsDone) {
             
             endPeriod = 0;
             startPeriod = -1;
@@ -849,6 +854,10 @@ function loaddata() {
            }
            aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
+        
+           if (histogramLoaded && notemodelsLoaded) {
+               $('#dialog').dialog('close');
+           }
         }
     }
 }
@@ -858,7 +867,6 @@ function drawdata(disablePitch) {
     if(disablePitch!=true){
         plotpitch(1);
     }
-    plothistogram();
     plotsmall();
     if (!scoreLoaded ){
       plotscore(1);
@@ -1021,7 +1029,7 @@ function updateCurrentPitch(){
     for (w in worksdata){
         if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
             currentWork = w;
-            //plothistogram();
+            plothistogram();
             break;
         }
     }
@@ -1053,10 +1061,25 @@ function updateCurrentPitch(){
 }
 
 function play_osc(f){
+    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+    var waveArray = new Float32Array(9);
+    waveArray[0] = 0.00001;
+    waveArray[1] = 0.5;
+    waveArray[2] = 0.5;
+    waveArray[3] = 0.5;
+    waveArray[4] = 0.5;
+    waveArray[5] = 0.5;
+    waveArray[6] = 0.5;
+    waveArray[7] = 0.5;
+    waveArray[8] = 0.5;
     oscillator.frequency.value = f; // value in hertz
-    gainNode.gain.value = 0.5;
+    gainNode.gain.setValueCurveAtTime(waveArray, audioCtx.currentTime, 0.5);
     window.setTimeout(function(){
-        gainNode.gain.value = 0;
+      try {
+        gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime);
+      }
+      catch (e) {
+      }
     }, 1000);
 }
 function playNextSection(right){
@@ -1103,6 +1126,7 @@ function hideCurrentPitch(){
   var canvas = $("#overlap-pitch")[0];
   var context = canvas.getContext("2d");
   context.clearRect (0, 0, 900, 900);
+  histovals = new Array(900);
 }
 function getImage(part){
     if (lastLoaded > part && startLoaded < part){

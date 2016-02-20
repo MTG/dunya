@@ -33,16 +33,16 @@ import docserver
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
-def guest_login(request):
-    if not request.user.is_authenticated():
-        user = User.objects.get(username='guest')
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, user)
+def results(request):
+    return render(request, "makam/results.html", {})
+def overview(request):
+    return render(request, "makam/overview.html", {})
 
+def stats(request):
+    return render(request, "makam/stats.html", {})
 def main(request):
-    guest_login(request)
     q = request.GET.get('q', '')
-    
+
     s_artist = request.GET.get('artist', '')
     s_perf = request.GET.get('performer', '')
     s_form = request.GET.get('form', '')
@@ -50,28 +50,31 @@ def main(request):
     s_usul = request.GET.get('usul', '')
 
     artist = ""
-    if s_artist and s_artist != '': 
-        artist = models.Artist.objects.get(id=s_artist)
+    if s_artist and s_artist != '':
+        artist = models.Composer.objects.get(id=s_artist)
     perf = ""
-    if s_perf and s_perf != '': 
+    if s_perf and s_perf != '':
         perf = models.Artist.objects.get(id=s_perf)
     form = ""
     if s_form and s_form != '':
         form = models.Form.objects.get(id=s_form)
     usul = ""
-    if s_usul and s_usul != '': 
+    if s_usul and s_usul != '':
         usul = models.Usul.objects.get(id=s_usul)
     makam = ""
-    if s_makam and s_makam != '': 
+    if s_makam and s_makam != '':
         makam = models.Makam.objects.get(id=s_makam)
-    
+
     url = None
     works = None
     results = None
     if s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
         works, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
+        if q and q!='':
+            url["q"] = "q=" + SafeString(q.encode('utf8'))
+
         results = len(works) != 0
-   
+
         paginator = Paginator(works, 25)
         page = request.GET.get('page')
         try:
@@ -84,19 +87,19 @@ def main(request):
             works = paginator.page(paginator.num_pages)
     if not url:
         url = {
-                "q": "q=%s" % SafeString(q),
-                "usul": "usul=%s" % s_usul, 
-                "form": "form=%s" % s_form, 
-                "artist": "artist=%s" % s_artist, 
-                "makam": "makam=%s" % s_makam, 
-                "perf": "performer=%s" % s_perf 
+                "q": "q=%s" % SafeString(q.encode('utf8')),
+                "usul": "usul=%s" % s_usul,
+                "form": "form=%s" % s_form,
+                "artist": "artist=%s" % s_artist,
+                "makam": "makam=%s" % s_makam,
+                "perf": "performer=%s" % s_perf
                 }
-     
+
     ret = {
-        'artist': artist, 
-        'perf': perf, 
-        'makam': makam, 
-        'usul': usul, 
+        'artist': artist,
+        'perf': perf,
+        'makam': makam,
+        'usul': usul,
         'form': form,
         'works': works,
         'results': results,
@@ -107,63 +110,65 @@ def main(request):
 
 def filter_directory(request):
     elem = request.GET.get('elem', None)
-    
+
     q = request.GET.get('q', None)
-    
+
     artist = request.GET.get('artist', '')
     perf = request.GET.get('performer', '')
     form = request.GET.get('form', '')
     makam = request.GET.get('makam', '')
     usul = request.GET.get('usul', '')
-   
-    works, url = get_works_and_url(artist, form, usul, makam, perf, None, elem)
-    
+
+    works, url = get_works_and_url(artist, form, usul, makam, perf, q, elem)
     if q and q!='':
-        url["q"] = "q=" + q
+        url["q"] = "q=" + SafeString(q.encode('utf8'))
 
     if elem == "makam":
         elems = models.Makam.objects.filter(work__in=works.all()).order_by('name').distinct()
-    elif elem == "form": 
+    elif elem == "form":
         elems = models.Form.objects.filter(work__in=works.all()).order_by('name').distinct()
     elif elem == "usul":
         elems = models.Usul.objects.filter(work__in=works.all()).order_by('name').distinct()
     elif elem == "artist":
-        elems = models.Artist.objects.filter(recording__works__in=works.all()).order_by('name').distinct()
+        elems = models.Composer.objects.filter(works__in=works.all()).order_by('name').distinct() | \
+            models.Composer.objects.filter(lyric_works__in=works.all()).order_by('name').distinct()
     elif elem == "performer":
-        e_perf = models.Artist.objects.filter(instrumentperformance__recording__works__in=works.all()) | \
-                models.Artist.objects.filter(primary_concerts__recordings__works__in=works.all())
+        e_perf = models.Artist.objects.all()
         elems = e_perf.order_by('name').distinct()
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
 def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
     works = models.Work.objects
-    if q and q!='':
-        works = works.unaccent_get(q) | works.filter(recording__title__contains=q)
-    
     url = {}
-    if elem != "artist": 
-        if artist and artist != '': 
-            works = works.filter(composers=artist)
-        url["artist"] = "artist=" + artist 
-    if elem != "form": 
-        if form and form != '': 
-            works = works.filter(form=form) 
-        url["form"] = "form=" + form 
-    if elem != "usul": 
-        if usul and usul != '': 
-            works = works.filter(usul=usul) 
-        url["usul"] = "usul=" + usul 
-    if elem != "makam": 
-        if makam and makam != '': 
-            works = works.filter(makam=makam) 
-        url["makam"] = "makam=" + makam 
-    if elem != "performer": 
+    if q and q!='':
+        ids = list(models.Work.objects.unaccent_get(q).values_list('pk', flat=True))
+        works = works.filter(pk__in=ids) | works.filter(recording__title__contains=q)
+
+    works = works.filter(is_processed=True)
+    
+    if elem != "artist":
+        if artist and artist != '':
+            works = works.filter(composers=artist) | works.filter(lyricists=artist)
+        url["artist"] = "artist=" + artist
+    if elem != "form":
+        if form and form != '':
+            works = works.filter(form=form)
+        url["form"] = "form=" + form
+    if elem != "usul":
+        if usul and usul != '':
+            works = works.filter(usul=usul)
+        url["usul"] = "usul=" + usul
+    if elem != "makam":
+        if makam and makam != '':
+            works = works.filter(makam=makam)
+        url["makam"] = "makam=" + makam
+    if elem != "performer":
         if perf and perf != '':
             works = works.filter(recordingwork__recording__instrumentperformance__artist=perf) | \
                     works.filter(recordingwork__recording__release__artists=perf)
-        url["perf"] = "performer=" + perf 
+        url["perf"] = "performer=" + perf
 
-    works = works.order_by('title')
+    works = works.distinct().order_by('title')
     return works, url
 
 def composer(request, uuid, name=None):
@@ -217,7 +222,6 @@ def release(request, uuid, title=None):
     return render(request, "makam/release.html", ret)
 
 def work_score(request, uuid, title=None):
-    guest_login(request)
     work = None
     works = models.Work.objects.filter(mbid=uuid)
     if len(works):
@@ -236,7 +240,6 @@ def work_score(request, uuid, title=None):
 
 
 def recording(request, uuid, title=None):
-    guest_login(request)
     recording = get_object_or_404(models.Recording, mbid=uuid)
     mbid = recording.mbid
     
@@ -314,6 +317,11 @@ def recording(request, uuid, title=None):
     except docserver.util.NoFileException:
         worksurl = None
 
+    try:
+        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
+    except docserver.util.NoFileException:
+        lyricsalignurl = None
+
     ret = {
            "recording": recording,
            "objecttype": "recording",
@@ -335,6 +343,7 @@ def recording(request, uuid, title=None):
            "documentsurl": documentsurl,
            "histogramurl": histogramurl,
            "notemodelsurl": notemodelsurl,
+           "lyricsalignurl": lyricsalignurl,
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,

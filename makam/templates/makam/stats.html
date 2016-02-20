@@ -179,6 +179,7 @@ margin: 20px;
     display: inline-block;
     margin: 10px 56px;
     border: 1px solid #ddd;
+  vertical-align:top;
 }
   
 .table-front th{
@@ -190,6 +191,7 @@ margin: 20px;
     padding: 15px;
     text-align: left;
 }
+.table-front tr:nth-child(even) {background-color: #f2f2f2}
 .bold-text{
     font-weight: bold;
 }
@@ -215,11 +217,8 @@ $( document ).ready(function() {
        }
        work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
      }
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-       if(jqXHR.status == 401){
-        $("#logindialog").dialog("open");
-       }
-    });
+    }); 
+      
   });
 $(function() {      
     $( "#combo-artist" ).combobox();
@@ -227,10 +226,6 @@ $(function() {
           $( "#combo-artist" ).toggle();
      });
   });
-
-$("#logindialog").dialog({
-  autoOpen: false,
-});
 
 $("#filterdialog").dialog({
   autoOpen: false,
@@ -273,109 +268,59 @@ $(".change-filter").click(function() {
 {% block wrap %}
 <div id="detail"   style="min-height: 850px;">
 
-       <div id="disp-filters">
-         <div class="filter {%if form%}filter-sel{% endif %}">
-           <b><span>Musical Form:</span></b>
-           <span>{{form}}</span>
-          {%if form%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "form" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Select</a>
-         </div>
-         <div class="filter {%if usul%}filter-sel{% endif %}">
-           <b><span>Usul:</span></b>
-           <span>{{usul}}</span>
-           {%if usul%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "usul" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=usul">Select</a>
-         </div>
-         <div class="filter {%if makam%}filter-sel{% endif %}">
-           <b><span>Makam:</span></b>
-           <span>{{makam}}</span>
-           {%if makam %}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "makam" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=makam">Select</a>
-         </div>
-         <div class="filter {%if artist%}filter-sel{% endif %}">
-           <b><span>Lyricist/Composer:</span></b>
-           <span>{{artist}}</span>
-           {%if artist%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "artist" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=artist">Select</a>
-         </div>
-         <div class="filter {%if perf%}filter-sel{% endif %}">
-           <b><span>Performer:</span></b>
-           <span>{{perf}}</span>
-           {%if perf%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "perf" %}{{ v }}&{%endif%}{%endfor%}">x</a>
-           {% endif %}
-           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=performer">Select</a>
-         </div>
-        </div>
+    <div id="initial">
+    <h2> CompMusic Turkish makam music corpus</h2>
 
-    {% if works|length %}
-    <div id="results">
-        <h2>Results</h2>    
-        <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
-        <tr><th scope="col">Work name</th><th scope="col">Composer</th><th scope="col">Recordings</th></tr>
-        {% for w in works %}
-      <tr class="work"><td height="30">{{ w.title }}</td><td >{% for a in w.composers.all %}{{ a.name }}{% endfor %}</td><td><div class="recordings" data-id="{{ w.mbid }}"><a href="#">Show</a></div></td></tr>
-        {% endfor %}
-        </table>
-        {% if works.has_next %}
-            <div id="next">
-              <a id="next-page" href="?q={{q}}&usul={{usul.id}}&form={{form.id}}&artist={{artist.id}}&makam={{makam.id}}&elem=artist&page={{ works.next_page_number }}">next</a>
-            </div>
-        {% endif %}
+        <p class="p1">
+To develop methodologies for the automatic analysis, discovery and exploration of the culture-specific characteristics of a music tradition, we need music collections, which are representative of the studied aspects of that music. For Turkish makam music, there are various resources available such as audio recordings, music scores, lyrics and editorial metadata. However, most of these resources are not typically suited for computational analysis, are hard to access, do not have sufficient quality or do not include adequate descriptive information. 
+        </p>
+
+        <p class="p1">
+To satisfy this need of representative music collections suitable for computational research, we have created a corpus of Turkish makam music. The primary considerations during the creation of this corpus reflect some criteria, namely, purpose, coverage, completeness, quality and reusability.
+        </p>
+
+        <p class="p1">
+The CompMusic Turkish-makam corpus consists of around <strong>6500 audio recordings</strong>, adding up to 412 hours of playback duration; <a href="https://github.com/MTG/SymbTr"><strong>2200 music scores</strong></a> with lyrics encompassing 883,803 notes, 21536 sections and 100 hours of nominal playback duration; and <strong>13500 instances of editorial metadata</strong> in <a href="http://musicbrainz.org">Musicbrainz</a> related to the classical and folk repertoires of Turkish makam music. These statistics make the corpus the biggest corpus of Turkish makam music intended for computational research. 
+        </p>
+
+<img style="margin-left: 339px;width: 432px;"src="{% static 'makam/img/metadata.png'%}"/>
+        <p class="p1" style="font-style: italic; font-size: 13px; text-align: center;">
+The basic statistics of the CompMusic Turkish makam music corpus. <br />
+The nodes represent the metadata stored and the numbers on the arrows indicate the number of relationships between each type of metadata
+        </p>
+
+        <p class="p1">
+We have compiled several test datasets from the corpus, providing a ground truth for specific computational tasks:
+        </p>
+
+        <p class="p1">
+          <ul>
+          <li><a href="https://github.com/MTG/turkish_makam_tonic_dataset">Tonic Identification dataset</a></li>
+          <li><a href="https://github.com/MTG/makam-symbolic-phrase-segmentation-dataset">Symbolic phrase segmentation dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_partial_alignment_dataset">Partial audio alignment dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_section_dataset">Section dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_audio_score_alignment_dataset">Audio-score alignment dataset</a></li>
+          <li><a href="https://github.com/MTG/turkish_makam_recognition_dataset">Makam recognition dataset</a></li>
+          <li><a href="https://github.com/georgid/turkish-makam-lyrics-2-audio-test-data">Audio-lyrics alignment dataset</a></li>
+         </ul>
+         </p>
+
+        <p class="p1">
+We have also started using the corpus to generate a knowledge base for a domain ontology describing Turkish makam music. We hope that this research corpus will facilitate academic studies in several fields such as music information retrieval and computational musicology.
+        </p>
+
+References
+        <p class="p1">
+[1] Uyar, B., Atlı, H. S., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3030">A corpus for computational research of Turkish makam music</a>. In Proceedings of 1st International Digital Libraries for Musicology Workshop, pages 57–63, London, United Kingdom.
+        </p>
+   
+      
+
+
     </div>
-    {% endif%}
-    {% if results == False %}
-    <div id="no-results" >
-        <h3> There are no results for this search. 
-        </h3>
-    </div>
-    {% endif %}
-
-    {% if works|length == 0 %}
-    <div>
-      <img style="width: 100%;height: 260px;"src="{% static 'makam/img/front.png'%}"/>
-    </div>
-    
-    <div id="initial" >
-            <h1>Welcome to Dunya Makam</h1>
-      <p>
-Dunya-makam is a web application for the analysis and discovery of Turkish makam music, aimed to showcase various technologies developed within the CompMusic project.
-</p> 
-
-You can navigate the analyzed collection using <strong>the search bar and the filters</strong> at the top of the page. If you want a quick preview of the application, you can jump to the examples below:
-      </p>
-      <h2>Some Examples</h2>
-      <ul>
-        <li><a href="/makam/recording/dfc16e22-0aae-4bd0-a32c-5c000130e96a">Sevdi Gönlüm Ey Melek Sima Seni</a> by <em>Hafız Kemal Bey</em></li>
-        <li><a href="/makam/recording/727cff89-392f-4d15-926d-63b2697d7f3f">Gel Güzelim Çamlıca'ya</a> by <em>Münir Nurettin Selçuk</em></li>
-        <li><a href="/makam/recording/4948c836-5485-4a69-8bdc-11fe4559e78f">Muhayyer Sazsemaisi</a> by <em>Necati Çelik</em></li>
-        <li><a href="/makam/recording/e72db0ad-2ed9-467b-88ae-1f91edcd2c59">Uşşâk Saz Semâîsi</a> by <em>Murat Aydemir </em>&amp;<em> Derya Türkan</em></li>
-        <li><a href="/makam/recording/37dd6a6a-4c19-4a86-886a-882840d59518">Pençgah Solo</a> by  <em>Niyazi Sayın</em></li>
-      </ul>
- <p>
- In the <a href="/makam/overview">Overview page</a>, we give an explanation of Dunya Makam web application. 
- </p>
- <p>The <a href="/makam/stats">Statistics page</a> describes the corpus we have analysed.
-</p> 
-<p>
-The <a href="/makam/results">Results page</a> provides some of the basic statistics obtained by the analysis.
-
-</p>        
-    {% endif%}
     <div class="clearfix"></div>
 </div>
 <div id="filterdialog" title="Filter">
-</div>
-<div id="logindialog" title="Login required">
-  <p>You need to log in to play a recording</p>
 </div>
 {% endblock %}
 

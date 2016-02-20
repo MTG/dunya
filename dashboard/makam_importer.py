@@ -203,7 +203,9 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 instrument = self._get_instrument(instr_name)
                 attrs = attrs[:-1]
                 attributes = " ".join(attrs)
-
+            else:
+                instrument = makam.models.Instrument.objects.get(mbid=release_importer.RELATION_INSTRUMENT)
+                attributes = ""
         return instrument, attributes
 
     def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):

@@ -175,6 +175,9 @@
       display: inline; 
       margin-left: 0; 
   }
+  .no-close .ui-dialog-titlebar-close {
+      display: none;
+  }
 </style>
 
 <script>
@@ -216,10 +219,15 @@ function playrecord(){
         plButton.addClass("stop");
     }
 }
+$(function() {
+  $( "#dialog" ).dialog({
+      dialogClass: "no-close",
+    });
+  });
 {% else %}
-function playrecord(){
+$(function() {
     $( "#playback_dialog" ).dialog( "open" );
-}
+  });
 {% endif %}
 
 widthOfChildren('.metaContainer');
@@ -246,7 +254,7 @@ widthOfChildren('.metaContainer');
                 <div id="innerSummary">
                     <span>
                         <h1>{{recording.title}}</h1>
-                        <h2> by {% for a in recording.artists.all %}{{ a }}{% endfor %} </h2>
+                        <h2> by {{recording.artists.all|join:", " }} </h2>
                     </span>
                 </div>
                 <div id="summaryBack"></div>
@@ -336,7 +344,7 @@ widthOfChildren('.metaContainer');
                             </div>
                             <div id="score" style="height:300px; width:900px;">
                                 <div id="no-score" style="display:none">
-                                    There is no score to show at this part.
+                                    The score is not performed in this part of the recording. 
                                 </div>
                                 <div id="score-cont">
                                 </div>
@@ -385,7 +393,9 @@ widthOfChildren('.metaContainer');
             </div>
         </div>
     </div>
-
+    <div id="dialog" title="Loading">
+      <p>The page is loading. <img src="{% static 'makam/img/loader.gif' %}" /></p>
+    </div>
     <div class="clearfix"></div>
 </div>
 {% endblock %}
