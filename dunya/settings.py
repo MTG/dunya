@@ -64,6 +64,9 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '_11by(qyct6gy7d0$8t%(#s2l(#w13d+48pc%wchv4v8hn^$+0'
 
+# Header check to see if we are on HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
