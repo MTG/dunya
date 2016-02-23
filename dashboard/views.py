@@ -111,7 +111,7 @@ def addcollection(request):
             if not created:
                 data_coll.name = coll_name
                 data_coll.save()
-            jobs.load_and_import_collection(new_collection.id)
+            jobs.force_load_and_import_collection(new_collection.id)
             return redirect('dashboard-home')
     else:
         form = forms.AddCollectionForm()
