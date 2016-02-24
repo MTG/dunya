@@ -49,7 +49,10 @@
                 {% processed_count_for_collection v collection %}</a></td>
             <td><a href="{% url 'docserver-collectionversion' 'unprocessed' collection.slug v.pk %}">
                 {% unprocessed_count_for_collection v collection %}</a></td>
-            <td></td>
+            <td>
+                <form method="get" action="{% url 'docserver-delete-derived-files' collection.slug v.pk%}">
+                <input type="submit" value="Delete derived files"></form>
+            </td>
         {% endif %}
     </tr>
     {% endfor %}

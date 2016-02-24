@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'manager/addmodule', views.addmodule, name='docserver-addmodule'),
     url(r'manager/(?P<type>(un)?processed)/(?P<slug>[^/]+)/(?P<version>\d+)$', views.collectionversion, name='docserver-collectionversion'),
     url(r'manager/delete_collection/(?P<slug>[^/]+)$', views.delete_collection, name='docserver-delete-collection'),
+    url(r'manager/delete-derived-files/(?P<slug>[^/]+)/(?P<moduleversion>\d+)$', views.delete_derived_files, name='docserver-delete-derived-files'),
     url(r'manager/addcollection$', views.addcollection, name='docserver-addcollection'),
     url(r'manager/collection/(?P<slug>[^/]+)/files$', views.collectionfiles, name='docserver-collectionfiles'),
     url(r'manager/collection/(?P<slug>[^/]+)$', views.collection, name='docserver-collection'),

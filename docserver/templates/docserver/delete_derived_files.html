@@ -1,0 +1,25 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Delete derived files for collection {{collection.name}}{% endblock %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock %}
+
+{% block wrap %}
+
+<ol class="breadcrumbs">Delete derived files from Collection
+    <li>{{collection.name}}</li>
+</ol>
+
+Do you want to delete all derived files this collection and the module {{moduleversion.module.name}}({{moduleversion.version}})?<br>
+
+<form method="post" action="">
+    {% csrf_token %}
+    <input type="submit" name="delete" value="Yes, delete it">
+    <input type="submit" name="delete" value="No, I changed my mind">
+</form>
+
+{% endblock %}
+
