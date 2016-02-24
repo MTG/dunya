@@ -25,7 +25,7 @@
 <table class="table">
     <tr><th>Module</th><th>Latest version</th><th>Processed files</th><th>Unprocessed files</th><th>Process</th></tr>
     {% for m in collection.module_set.all %}
-    <tr><td colspan="4">{{m}}</td>
+    <tr><td colspan="4"><a href="{{m.get_absolute_url}}">{{m}}</a></td>
         <td>
             <form method="post" action="">
                 {% csrf_token %}
@@ -49,7 +49,10 @@
                 {% processed_count_for_collection v collection %}</a></td>
             <td><a href="{% url 'docserver-collectionversion' 'unprocessed' collection.slug v.pk %}">
                 {% unprocessed_count_for_collection v collection %}</a></td>
-            <td></td>
+            <td>
+                <form method="get" action="{% url 'docserver-delete-derived-files' collection.slug v.pk%}">
+                <input type="submit" value="Delete derived files"></form>
+            </td>
         {% endif %}
     </tr>
     {% endfor %}
