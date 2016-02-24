@@ -117,7 +117,7 @@ class CollectionTest(TestCase):
         data = {"collectionid": collid, "path": "/incoming/carnatic"}
 
         mockimport = mock.Mock()
-        views.jobs.load_and_import_collection = mockimport
+        views.jobs.force_load_and_import_collection = mockimport
         resp = self.client.post('/dashboard/addcollection', data)
 
         # dashboard collection
