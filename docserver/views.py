@@ -166,8 +166,12 @@ def download_external(request, uuid, ftype):
 
     # if ftype is a sourcetype and it has streamable set, and
     # referrer is dunya, then has_access is true (but we rate-limit)
+    referrer = request.META.get("HTTP_REFERER")
+    good_referrer = False
+    if referrer and "dunya.compmusic.upf.edu" in referrer:
+        good_referrer = True
 
-    has_access = util.user_has_access(user, doc, ftype)
+    has_access = util.user_has_access(user, doc, ftype, good_referrer)
     if not has_access:
         return HttpResponse("Not logged in", status=401)
 
