@@ -5,8 +5,6 @@ $(document).ready(function() {
      audio = $("#theaudio")[0];
      renders = $('#renders');
      rendersMask = $('#rendersMask');
-     capcal = $('#capcal');
-     capcalTotal = $('#capcalTotal');
      renderTotal = $('#renderTotal');
      zoomFactor = "";
      waveform = $('#renderTotal canvas');
@@ -287,10 +285,6 @@ function updateProgress() {
     leftLargeView = ampleRenders *progress_percent ;
     
     total_progress_frac = (currentTime/recordinglengthseconds);
-    leftSmallView = ampleRenderTotal*total_progress_frac;
-    
-    capcal.css('left', leftLargeView-5);
-    capcalTotal.css('left', leftSmallView-6);
     
     timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
     
