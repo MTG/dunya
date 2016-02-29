@@ -72,7 +72,7 @@ class InstrumentPerformanceInnerSerializer(serializers.ModelSerializer):
     instrument = InstrumentInnerSerializer()
     class Meta:
         model = models.InstrumentPerformance
-        fields = ['artist', 'instrument']
+        fields = ['artist', 'instrument', 'lead', 'attributes']
 
 class TaalaList(generics.ListAPIView):
     queryset = models.Taala.objects.all()
