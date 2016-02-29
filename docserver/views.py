@@ -166,8 +166,13 @@ def download_external(request, uuid, ftype):
 
     # if ftype is a sourcetype and it has streamable set, and
     # referrer is dunya, then has_access is true (but we rate-limit)
-
-    has_access = util.user_has_access(user, doc, ftype)
+    
+    referrer = request.META.get("HTTP_REFERER")
+    good_referrer = False
+    if referrer and "dunya.compmusic.upf.edu" in referrer:
+        good_referrer = True
+        
+    has_access = util.user_has_access(user, doc, ftype, good_referrer)
     if not has_access:
         return HttpResponse("Not logged in", status=401)
 
@@ -185,10 +190,9 @@ def download_external(request, uuid, ftype):
             # 200k
             ratelimit = 200 * 1024
 
-        # TODO: We should ratelimit mp3 requests, but not any others,
-        # so we need a different path for nginx for these ones
         response = sendfile(request, fname, mimetype=mimetype)
-        response['X-Accel-Limit-Rate'] = ratelimit
+        if ftype == "mp3":
+            response['X-Accel-Limit-Rate'] = ratelimit
 
         return response
     except util.TooManyFilesException as e:
