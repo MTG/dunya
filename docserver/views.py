@@ -575,23 +575,6 @@ def editcollection(request, slug):
     return render(request, 'docserver/addcollection.html', ret)
 
 @user_passes_test(is_staff)
-def delete_derived_files(request, slug, moduleversion):
-    c = get_object_or_404(models.Collection, slug=slug)
-    m = get_object_or_404(models.ModuleVersion, pk=moduleversion)
-
-    if request.method == "POST":
-        delete = request.POST.get("delete")
-        if delete.lower().startswith("yes"):
-            models.DerivedFile.objects.filter(document__collections=c, module_version=m).delete()
-            return redirect("docserver-collection", c.slug)
-        elif delete.lower().startswith("no"):
-            return redirect("docserver-collection", c.slug)
-
-
-    ret = {"collection": c, "moduleversion": m}
-    return render(request, 'docserver/delete_derived_files.html', ret)
-
-@user_passes_test(is_staff)
 def collection(request, slug):
     collection = get_object_or_404(models.Collection, slug=slug)
 
