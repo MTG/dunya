@@ -18,7 +18,11 @@ from django.conf.urls import patterns, url
 
 from andalusian import views
 
+uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+title_match = r'(?:/(?P<title>[\w-]+))?'
+
 urlpatterns = patterns('',
     url(r'^$', views.main, name='andalusian-main'),
+    url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='andalusian-recording'),
 )
 

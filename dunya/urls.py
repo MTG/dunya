@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^motifdiscovery/', include('motifdiscovery.urls')),
     url(r'^hindustani/', include('hindustani.urls')),
+    url(r'^andalusian/', include('andalusian.urls')),
     url(r'^makam/', include('makam.urls')),
     url(r'^jingju/', include('jingju.urls')),
     url(r'^document/', include('docserver.urls')),
