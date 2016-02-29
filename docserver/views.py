@@ -166,13 +166,8 @@ def download_external(request, uuid, ftype):
 
     # if ftype is a sourcetype and it has streamable set, and
     # referrer is dunya, then has_access is true (but we rate-limit)
-    
-    referrer = request.META.get("HTTP_REFERER")
-    good_referrer = False
-    if referrer and "dunya.compmusic.upf.edu" in referrer:
-        good_referrer = True
-        
-    has_access = util.user_has_access(user, doc, ftype, good_referrer)
+
+    has_access = util.user_has_access(user, doc, ftype)
     if not has_access:
         return HttpResponse("Not logged in", status=401)
 
@@ -190,9 +185,10 @@ def download_external(request, uuid, ftype):
             # 200k
             ratelimit = 200 * 1024
 
+        # TODO: We should ratelimit mp3 requests, but not any others,
+        # so we need a different path for nginx for these ones
         response = sendfile(request, fname, mimetype=mimetype)
-        if ftype == "mp3":
-            response['X-Accel-Limit-Rate'] = ratelimit
+        response['X-Accel-Limit-Rate'] = ratelimit
 
         return response
     except util.TooManyFilesException as e:
@@ -573,6 +569,23 @@ def editcollection(request, slug):
         permission_form = PermissionFormSet(queryset=models.CollectionPermission.objects.filter(collection=coll))
     ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
     return render(request, 'docserver/addcollection.html', ret)
+
+@user_passes_test(is_staff)
+def delete_derived_files(request, slug, moduleversion):
+    c = get_object_or_404(models.Collection, slug=slug)
+    m = get_object_or_404(models.ModuleVersion, pk=moduleversion)
+
+    if request.method == "POST":
+        delete = request.POST.get("delete")
+        if delete.lower().startswith("yes"):
+            models.DerivedFile.objects.filter(document__collections=c, module_version=m).delete()
+            return redirect("docserver-collection", c.slug)
+        elif delete.lower().startswith("no"):
+            return redirect("docserver-collection", c.slug)
+
+
+    ret = {"collection": c, "moduleversion": m}
+    return render(request, 'docserver/delete_derived_files.html', ret)
 
 @user_passes_test(is_staff)
 def collection(request, slug):

@@ -258,10 +258,10 @@ def get_user_permissions(user):
         permission = ["R", "U"]
     return permission
 
-def user_has_access(user, document, file_type_slug, good_referrer):
+def user_has_access(user, document, file_type_slug):
     '''
     Returns True if the user has access to the source_file, this is made through
-    the related collection, or if the referrer is from dunya web.
+    the related collection.
     If the user is_staff also returns True.
     Also returns True if there is no Source File with that slug but there is a Module.
     file_type_slug is the slug of the file SourceFileType.
@@ -280,11 +280,10 @@ def user_has_access(user, document, file_type_slug, good_referrer):
         except models.Module.DoesNotExist:
             return False
 
-    has_access =  models.CollectionPermission.objects.filter(
+    return models.CollectionPermission.objects.filter(
             collection__in=document.collections.all(),
             source_type=sourcetype,
             permission__in=user_permissions).count() != 0
-    return has_access or good_referrer
 
 def has_rate_limit(user, document, file_type_slug):
     '''
