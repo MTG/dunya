@@ -107,7 +107,7 @@ $(document).ready(function() {
      waveform.mouseleave(function() {
         $("#timepoint").hide();
      });
-
+    plotsmall();
 
 });
 
@@ -168,22 +168,6 @@ function plotsmall() {
         context.drawImage(small, 0, 0, small.width, small.height, 0, 0, 900, 64);
         //smallFill(banshidata, banshicolours);
         //smallFill(luogudata, "#0f0");
-    
-        // Draw sections on smallcanvas
-        var sec = [];
-        for (w in sections){
-            sec = sec.concat(sections[w]['links'])
-        }
-        colorsNames = {};
-        currColor = 0;
-        for (var i = 0; i < sec.length; i++) {
-                var name = sec[i]['name'];
-                if (!(name in colorsNames)){
-                    colorsNames[name]=colors[currColor];
-                    currColor += 1;
-                }
-        }
-        smallFill(sec, "#0ff", colorsNames);
     }
 }
 
