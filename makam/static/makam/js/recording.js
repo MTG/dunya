@@ -488,31 +488,18 @@ function showNoteOnHistogram(note, time){
        $('#current-note').hide();
        return;
    }
-   var histogram = $("#histogram-current-note")[0];
+   var histogram = $("#histogram-current-note")[0]; 
    var ctxNotes = histogram.getContext("2d");
-   var canvas = $('#overlap-histogram')[0];
-   canvas.width = 200;
-   canvas.height = 256;
-   var context = canvas.getContext("2d");
+
    var currPos = (time % 8);
-      
    currPos = (time -beginningOfView) * 900 / secondsPerView ;
    var pitch = histovals[Math.floor(currPos)];
    if (!pitch){
        ctxNotes.clearRect(0, 0, 900, 900);
-       showingNote = null;
        return ;
    }
-   var curr = pitch;
-   context.beginPath(); 
-   context.moveTo(0, curr); 
-   context.lineTo(200, curr); 
-   context.lineWidth = 1; 
-   context.strokeStyle = 'rgba(0,0,0,0.9)';
-   context.fillStyle = 'rgba(0,0,0,0.9)';
-   context.stroke(); 
-   context.closePath();
-   
+
+
    $('#current-note').show();
 
    if (showingNote!=note){
@@ -524,7 +511,37 @@ function showNoteOnHistogram(note, time){
        showingNote=note;
    }
 }
+function updateFrequencyMarker(time){
+   var histogram = $("#histogram-current-note")[0];
+   var ctxNotes = histogram.getContext("2d");
+   var canvas = $('#overlap-histogram')[0];
+   canvas.width = 200;
+   canvas.height = 256;
+   var context = canvas.getContext("2d");
+   var currPos = (time % 8);
+      
+   currPos = (time -beginningOfView) * 900 / secondsPerView ;
+   var pitch = histovals[Math.floor(currPos)];
+   if (!pitch){
+       var pitch = pitchvals[Math.floor(currPos)];
+   }
 
+   if (!pitch){
+       ctxNotes.clearRect(0, 0, 900, 900);
+       return ;
+   }
+
+   var curr = pitch;
+   context.beginPath(); 
+   context.moveTo(0, curr); 
+   context.lineTo(200, curr); 
+   context.lineWidth = 1; 
+   context.strokeStyle = 'rgba(0,0,0,0.9)';
+   context.fillStyle = 'rgba(0,0,0,0.9)';
+   context.stroke(); 
+   context.closePath();
+   
+}
 function updateScoreProgress(currentTime){
     if (currentTime > endPeriod || currentTime < startPeriod)
     {
@@ -1058,6 +1075,7 @@ function updateCurrentPitch(){
         hideCurrentPitch();
     }
     showNoteOnHistogram(lastnote, futureTime);
+    updateFrequencyMarker(futureTime);
 }
 
 function play_osc(f){
