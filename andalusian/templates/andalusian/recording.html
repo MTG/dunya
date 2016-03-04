@@ -58,30 +58,6 @@
       height: 25px;
       margin: 2px;
   }
-  #timecodes {
-      position: relative;
-      height: 20px;
-  }
-  #timecodes span {
-      position: absolute;
-      height: 25px;
-      margin: 2px;
-  }
-  #timecodes .timecode1 {
-      left: 0px;
-  }
-  #timecodes .timecode2 {
-      left: 220px;
-  }
-  #timecodes .timecode3 {
-      left: 445px;
-  }
-  #timecodes .timecode4 {
-      left: 670px;
-  }
-  #timecodes .timecode5 {
-      right: 0px;
-  }
   #excerpt{
       padding-top:0 !important;
   }
@@ -113,14 +89,6 @@
       top: 0px; 
       z-index: 2;
   }
-  #histogramcanvas{
-    filter: alpha(opacity=70);
-      opacity: 0.7;
-  
-  }
-  #overlap-pitch{
-      z-index: 3;
-  }
   .works-info{
       cursor: pointer;
       float: left;
@@ -135,18 +103,6 @@
       display: none;
       border-radius: 5px;
       border-top: 1px solid #ccc;
-  }
-  #freq-info, #current-note{  
-    display: none;
-    position: absolute;
-    z-index: 5;
-    background-color: white;
-    border: thin solid black;
-    padding: 2px;
-  }
-  #current-note{
-    top: 5px;
-    left: 100px;
   }
   .work-box{
       background-color: #f9f6f5;
@@ -178,12 +134,20 @@
   .no-close .ui-dialog-titlebar-close {
       display: none;
   }
+  #next-score, #prev-score{
+      color: #D71F00;
+  }
+  #next-score:hover, #prev-score:hover{
+      cursor: hand;
+      cursor: pointer;
+      opacity: .9;
+  }
 </style>
 
 <script>
 var waveformurl = "{{waveform|safe}}";
 var scoreurl = "{{scoreurl|safe}}";
-var smallurl = "{{smallimage|safe}}";
+var smallurl = "{{smallimageurl|safe}}";
 var audiourl = "{{audio|safe}}";
 var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
 var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
@@ -296,21 +260,10 @@ widthOfChildren('.metaContainer');
             <div class="thedata">
                 <div id="rendersMask" style="height:680px;">
                     <div id="renders">
-
-                        <div id="bigPitch">
-                        </div>
-                        
                         <div>
-                            <div id="timecodes">
-                                <span class="timecode1"></span>
-                                <span class="timecode2"></span>
-                                <span class="timecode3"></span>
-                                <span class="timecode4"></span>
-                                <span class="timecode5"></span>
-                            </div>
-                            <div id="score" style="height:300px; width:900px;">
+                            <div id="score" style="height:577px; width:900px;">
                                 <div id="no-score" style="display:none">
-                                    The score is not performed in this part of the recording. 
+                                    There is no score to show.
                                 </div>
                                 <div id="score-cont">
                                 </div>
@@ -332,6 +285,8 @@ widthOfChildren('.metaContainer');
                       <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
+                      <div><span id="next-score">Next Page</span></div>
+                      <div><span id="prev-score">Previous Page</span></div>
                       <div id="freq-info"></div>
                       <div id="current-note"></div>
                     </div> 

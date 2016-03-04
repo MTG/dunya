@@ -9,9 +9,6 @@ $(document).ready(function() {
      zoomFactor = "";
      waveform = $('#renderTotal canvas');
      plButton = $("#control .plButton");
-     timecode = $("#timecode");
-     currentSymbtrIndex = 1;
-     currentInterval = 1;
      currentPage = 0;
      lastOffset = null;
      lastTime = null;
@@ -23,7 +20,6 @@ $(document).ready(function() {
      contextNames = [];
      lastIndex = -1;
      lastpitch = -1; 
-     scoreLoaded = false;
      barPages = {};
      histogramMax = 0;
      lastnote = null;
@@ -47,7 +43,21 @@ $(document).ready(function() {
          }).load();
 
      });
-
+     plotscore(1);
+     $('#next-score').click(function nextScorePage(){
+        currentPage += 1;
+        if (!plotscore(currentPage)){
+            currentPage -=1;
+        }
+     });
+     $('#prev-score').click(function prevScorePage(){
+        if (currentPage >1){
+            currentPage -= 1;
+            if (!plotscore(currentPage)){
+                currentPage += 1;
+            }
+        }
+     });
      $('.works-info').click(function(e){
         if(e.target.nodeName !="IMG"){
           $('.work-info').hide();
@@ -101,107 +111,32 @@ $(document).ready(function() {
 
 });
 
-function plotscore(index, color) {
-        
-    $("#no-score").hide(); 
-    $("#score-cont").show(); 
-    if (!scoreLoaded ){
-      for (w in worksdata){
-        $("#score-cont").append('<div id="score-'+w+'"></div>');
-        for(var i=1; i<=numbScore[w];i++){
-            $("#score-"+w).append('<div class="score-page" id="score-'+w+'-'+i+'"></div>');
-        }    
-        for(var i=1; i<=numbScore[w];i++){
-            score = documentsurl + w + scoreurl.replace(/part=[0-9]+/, "part="+i);
-            $.ajax(score, {dataType: "text", type: "GET", 
-                context: {work: w, score:i},
-                success: function(data, textStatus, xhr) {
+function plotscore(index) {
+
+    score = scoreurl.replace(/part=[0-9]+/, "part="+index);
+    $.ajax(score, {dataType: "text", type: "GET", 
+        success: function(data, textStatus, xhr) {
                   
-                  data = data.replace('</svg>','<rect class="marker" x="0" y="0" width="0" height="0" ry="0.0000" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9" /></svg>');
-                  
-                  $("#score-"+this.work+"-"+this.score).append(data);
-                  var bars = []
-                  $("#score-"+this.work+"-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
-                      var pos = $(this).attr('transform').split("(");
-                      var xy = pos[1].split(", ");
-                      bars.push([parseInt(xy[0]), parseInt(xy[1]), $(this)]);
-                  });
-                  if (! (this.work in barPages)){
-                      barPages[this.work] = {};
-                  }
-                  barPages[this.work][this.score] = bars;
-   
-                 $('svg').each(function () { 
+            $("#score-cont").html(data);
+            $('svg').each(function () { 
                    
-                   $(this)[0].setAttribute('width', '230mm') ; 
-                   $(this)[0].setAttribute('height', '139mm') ; 
-                   $(this)[0].setAttribute('viewBox', '0 0 115 65') 
-                 }); 
-                if(document.URL.indexOf("show-phrase")>=0){     
-                 
-                 for (var p in phrase[this.work]){
-                   for(var j=0; j<aligns.length;j++){
-                       if (aligns[j]['index'] == phrase[this.work][p][0]){
-                         highlightPhraseSegm(this.work, j);
-                         break;
-                       }
-                   }
-                }
-                }
-            }, error: function(xhr, textStatus, errorThrown) {
-               console.debug("xhr error " + textStatus);
-               console.debug(errorThrown);
-            }});
-        }
-        
-      }
-      scoreLoaded = true;
-    }else{
-      if (aligns[index]){
-          var find = false;
-          var curr = $("#score-"+currentWork).find("a[id^=l" + aligns[index]['line'] + "-f]");
-          curr.each(function(){
-    
-            highlightNote($(this), index);
-          });
-        }
-    }
+            $(this)[0].setAttribute('width', '240mm') ; 
+            $(this)[0].setAttribute('height', '300mm') ; 
+            $(this)[0].setAttribute('viewBox', '0 0 119.4154 154.4822') 
+            });
+            currentPage = index;
+            $("#no-score").hide(); 
+            $("#score-cont").show(); 
+            return true;
+        }, error: function(xhr, textStatus, errorThrown) {
+            disableScore();
+            return false;
+    }});
 }
 
 function disableScore(currentTime){
-    if (currentTime > (endPeriod+1) || currentTime < (startPeriod-1)){
-        $("#no-score").show(); 
-        $("#score-cont").hide(); 
-    }
-}
-function updateScoreProgress(currentTime){
-    if (currentTime > endPeriod || currentTime < startPeriod)
-    {
-        var updated = false;
-        if (lastIndex && aligns.length < (lastIndex + 1)){
-            aligns[lastIndex+1]['starttime'];
-            if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
-                endPeriod = aligns[lastIndex+1]['endtime'];
-                startPeriod = aligns[lastIndex+1]['starttime'];           
-                plotscore(lastIndex)   
-                lastIndex = lastIndex+1;
-                updated = true;
-            }
-        }
-        if(!updated){
-            for (var i=0; i<aligns.length; i++){
-                if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
-                    endPeriod = aligns[i]['endtime'];
-                    startPeriod = aligns[i]['starttime'];
-                    color = aligns[i]['color'];
-                    plotscore(i, color); 
-                    lastIndex = i;
-                    return;
-                }
-            }
-        }
-        disableScore(currentTime); 
-    }
+    $("#no-score").show(); 
+    $("#score-cont").hide(); 
 }
 
 function plotsmall() {
@@ -264,7 +199,6 @@ function mouPlay(desti){
             pagesound.pause();
         }
         pagesound.setPosition(posms);
-        updateView();
         updateProgress();
         if (wasplaying) {
             pagesound.resume();
@@ -285,9 +219,6 @@ function updateProgress() {
     leftLargeView = ampleRenders *progress_percent ;
     
     total_progress_frac = (currentTime/recordinglengthseconds);
-    
-    timecode.html(formattime + "<span>"+recordinglengthfmt+"</span>");
-    
 };
 
 function play() {
