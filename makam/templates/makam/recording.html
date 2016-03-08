@@ -253,7 +253,8 @@ widthOfChildren('.metaContainer');
             <div id="summary">
                 <div id="innerSummary">
                     <span>
-                        <h1>{{recording.title}}</h1>
+                        <a class="work-mb" href="http://musicbrainz.org/recording/{{recording.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                        <h1 style="display: inline;">{{recording.title}}</h1>
                         <h2> by {{recording.artists.all|join:", " }} </h2>
                     </span>
                 </div>
@@ -266,7 +267,9 @@ widthOfChildren('.metaContainer');
                             <div id="excerpt" class="metaDetails recordingDetails">
                                 <span class="list">
                                     {% for w in  recording.releaselist%}
-                                        <label>Album</label><b><span>{{ w }}</span></b>
+                                        <label>Album</label><b><span>
+                                            <a class="work-mb" href="http://musicbrainz.org/release/{{w.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                            {{ w }}</span></b>
                                     {% endfor %}
                                     <label>Compositions</label><b><span>&nbsp;</span></b>
                                     {% for w in recording.works.all %}
@@ -279,10 +282,15 @@ widthOfChildren('.metaContainer');
                                         </span>
                                         <div class="work-info" id="work-{{w.mbid}}" style="display:none">
                                             {% for c in w.composerlist.all %}
-                                            <label>Composer</label><b><span><a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                            <label>Composer</label><b><span>
+                                                
+                                                <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                                <a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
                                             {% endfor %}
                                             {% for c in w.lyricistlist.all %}
-                                            <label>Lyricist</label><b><span><a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                            <label>Lyricist</label><b><span>
+                                                <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                                <a href="{% url "makam-main" %}?artist={{c.id}}">{{c}}</a></span></b>
                                             {% endfor %}
                                             {% for m in w.makam.all %}
                                             <label>Makam</label><b><span><a href="{% url "makam-main" %}?makam={{m.id}}">{{m}}</a></span></b>
