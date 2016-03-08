@@ -1093,9 +1093,11 @@ function play_osc(f){
     gainNode.gain.setValueCurveAtTime(waveArray, audioCtx.currentTime, 0.5);
     window.setTimeout(function(){
       try {
-        gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime);
+        //ExponentialRamp can't handle 0 so we pass 0.00001
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 2);
       }
       catch (e) {
+        console.log(e);
       }
     }, 1000);
 }
