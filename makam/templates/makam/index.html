@@ -211,7 +211,10 @@ $( document ).ready(function() {
        var art=data['recordings'][i]['artists'];
        var artists="";
        for(var j=0;j<art.length;j++){
-         artists += " "+art[j]['name'];
+         artists += art[j]['name'];
+         if (j != (art.length-1)){
+           artists += " ";
+         }
        }
        work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
      }
