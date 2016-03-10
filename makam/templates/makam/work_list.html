@@ -234,7 +234,8 @@ $('.modal-close').click(function(){
 });
 
 $('.change-filter').click(function(){
-    $('.modal-container').addClass('active');
+  $('.change-filter.active').removeClass('active');
+  $('.modal-container').addClass('active');
     $(this).addClass('active'); 
     var url = $(this).attr('href');
      $.ajax(url, {dataType: "html", type: "GET",

@@ -19,6 +19,7 @@ $('.modal-close').click(function(){
   });
 
   $(".change-filter").click(function() {
+    $('.change-filter.active').removeClass('active');
     $(this).addClass('active'); 
     var url = $(this).attr('href');
      $.ajax(url, {dataType: "html", type: "GET",
