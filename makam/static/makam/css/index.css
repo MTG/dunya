@@ -187,6 +187,8 @@
   border: none;
   box-shadow: none;
   color:white;
+  vertical-align: middle;
+  font-size: 16px;
 }
 .search-form input:focus {
   outline: none;
