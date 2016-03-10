@@ -1,30 +1,16 @@
-<h1>Filter by {{elem}}</h1>
-<p>Select the {{elem}} to filter the results.</p>
-
-{% regroup elems by name.0|slugify|upper as letter_list %}
+<div class="modal-alphabet">
+{% regroup elems by name|slugify|slice:":1"|upper as letter_list %}
 {% for letter in letter_list %}
-    <a class="letter" href="#anchor-{{ letter.grouper }}">{{ letter.grouper }}</a>
+  <div><a href="#anchor-{{ letter.grouper }}">{{ letter.grouper }}</a></div>
 {% endfor %}
-
-<div id="letters" style="display:none">
-    <h2>{{elem}}</h2>
-    <div class="row">
-        {% for letter in letter_list %}
-            <div class="item" class="col-md-6" style="display:none" id="anchor-{{ letter.grouper }}" > 
-                {% for item in letter.list %}
-                <li><a href="/makam/?{%for k,v in params.items%}{{v}}&{%endfor%}{{elem}}={{item.id}}">{{item.name}}</a></li>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </div>
 </div>
-<script>
-$('.letter').click(function(){
-    $("#letters").show();
-    $('.item').hide();
-    var letter = $(this).attr('href');
-    $(letter).show();
-    return false;
-})
-</script>
+<div class="modal-content-list">
+    {% for letter in letter_list %}
+        <div class="anchor" class="col-md-6" id="anchor-{{ letter.grouper }}" > 
+          {% for item in letter.list %}
+          <div class="modal-content-list-item" ><a href="{% url 'work-list' %}?{%for k,v in params.items%}{{v}}&{%endfor%}{{elem}}={{item.id}}">{{item.name}}</a></div>
+          {% endfor %}
+        </div>
+    {% endfor %}
+</div>
 

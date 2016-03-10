@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.conf.urls import url
+from django.views.generic import TemplateView
 
 from makam import views
 
@@ -23,10 +24,11 @@ name_match = r'(?:/(?P<name>[\w-]+))?'
 title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
-    url(r'^$', views.main, name='makam-main'),
-    url(r'^stats$', views.stats, name='makam-stats'),
-    url(r'^overview$', views.overview, name='makam-overview'),
-    url(r'^results$', views.results, name='makam-results'),
+    url(r'^$', TemplateView.as_view(template_name='makam/index.html'), name='makam-main'),
+    url(r'^works$', views.main, name='work-list'),
+    url(r'^stats$', TemplateView.as_view(template_name='makam/stats.html'), name='makam-stats'),
+    url(r'^overview$', TemplateView.as_view(template_name='makam/overview.html'), name='makam-overview'),
+    url(r'^results$', TemplateView.as_view(template_name='makam/results.html'), name='makam-results'),
     url(r'^composer/%s%s$' % (uuid_match, name_match), views.composer, name='makam-composer'),
     url(r'^artist/%s%s$' % (uuid_match, name_match), views.artist, name='makam-artist'),
     url(r'^release/%s%s$' % (uuid_match, title_match), views.release, name='makam-release'),

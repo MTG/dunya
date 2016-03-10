@@ -33,13 +33,6 @@ import docserver
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
-def results(request):
-    return render(request, "makam/results.html", {})
-def overview(request):
-    return render(request, "makam/overview.html", {})
-
-def stats(request):
-    return render(request, "makam/stats.html", {})
 def main(request):
     q = request.GET.get('q', '')
 
@@ -106,7 +99,7 @@ def main(request):
         'q': q,
         'params': url,
     }
-    return render(request, "makam/index.html", ret)
+    return render(request, "makam/work_list.html", ret)
 
 def filter_directory(request):
     elem = request.GET.get('elem', None)

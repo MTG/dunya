@@ -1,0 +1,394 @@
+{% extends "makam/base.html" %}
+{% load staticfiles %}
+{% load makam.inline %}
+
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'makam/css/index.css' %}" />
+{% endblock %}
+{% block title %}Makam index | {% endblock %}
+{% block script %}
+<style>
+
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+#one-column-emphasis th
+{
+  font-size: 14px;
+  font-weight: normal;
+  padding: 12px 15px;
+  color: #039;
+}
+#one-column-emphasis td
+{
+  padding: 10px 15px;
+  color: #669;
+  border-top: 1px solid #e8edff;
+  width: 300px;
+vertical-align: top;
+}
+.oce-first
+{
+  background: #d0dafd;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+}
+#one-column-emphasis tr:hover td
+{
+  color: #339;
+  background: #eff2ff;
+}
+#one-column-emphasis
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 12px;
+  margin-left: 45px;
+  width: 480px;
+  text-align: left;
+  border-collapse: collapse;
+}
+#one-column-emphasis th
+{
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 15px;
+  color: #039;
+}
+#one-column-emphasis td a
+{
+  color: #669;
+  text-decoration: none;
+  display:block;
+  height:100%;
+  width:100%;
+} 
+#disp-filters{
+  padding-left: 42px;
+ /* color: #339;*/
+  margin-top: 5px;
+}
+.pagination{
+margin: 10px 0 25px 42px;
+font-size: 14px;
+}
+.step-links{
+border-top: 1px black solid;
+}
+#right-display{
+  position: fixed;
+  top: 100px;
+  right: 100px;
+  border: 1px #ccc solid;
+  padding: 13px;
+  border-radius: 9px;
+  background-color: #FFFFD1;
+}
+#right-display ul{
+list-style-type: none;
+}
+#right-display a{
+  text-decoration: none;
+  color: #339;
+}
+td.recodings{
+width: 400px;
+}
+a:hover{
+  text-decoration: underline !important;
+}
+h2{
+  margin: 30px 0 0 20px;
+  color: #46433a;
+  font-size: 30px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+#results{
+margin-left: 30px;
+}
+#initial, #loading, #no-results{
+  font-family: 'Sintony', sans-serif;
+  font-size: 14px;
+  margin-left: 30px;
+  margin-top: 15px;
+  color: #46433a;
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f9f6f5;
+  border: 1px solid #ebe2df;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+}
+#initial a{
+  color: #46433a;
+}
+#next-page{
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 2px;
+margin: 20px;
+}
+.filter {
+  display: inline-block;    
+    margin-left: 30px;
+    margin-top: 15px;
+    color: #565a5c;
+    min-height: 20px;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #aaa;
+    border-radius: 0px;
+}
+.filter-sel{
+    background-color: #edefed;
+    border: 1px solid #dce0e0;   
+}
+.remove-param{
+    margin-right: 5px;
+    font-weight: bold;
+}
+.filter a{
+    text-decoration: none;
+    color: #039;
+}
+.table-front{
+    display: inline-block;
+    margin: 10px 56px;
+    border: 1px solid #ddd;
+}
+  
+.table-front th{
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.table-front td {
+    padding: 15px;
+    text-align: left;
+}
+.bold-text{
+    font-weight: bold;
+}
+</style>
+<script src="{% static 'makam/js/works.js' %}"></script>
+<script>
+$( document ).ready(function() {
+  // WHEN CLICK SHOW THE RECORDINGS FOR A WORK
+  $('#one-column-emphasis').on('click','div.recordings', function() {
+   var work=$(this);
+   $.ajax({
+    method: "GET",
+    url: "/api/makam/work/" +$(this).attr('data-id'),
+    dataType: "json",
+    }).done(function(data) {
+     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     work.html('<ul></ul>');
+     for(var i=0; i<data['recordings'].length; i++){
+       var art=data['recordings'][i]['artists'];
+       var artists="";
+       for(var j=0;j<art.length;j++){
+         artists += art[j]['name'];
+         if (j != (art.length-1)){
+           artists += " ";
+         }
+       }
+       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
+     }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+       if(jqXHR.status == 401){
+        $("#logindialog").dialog("open");
+       }
+    });
+  });
+$("#logindialog").dialog({
+  autoOpen: false,
+});
+$('.modal-close').click(function(){
+    $('.modal-container').removeClass('active');
+    return false;
+});
+
+$('.change-filter').click(function(){
+    $('.modal-container').addClass('active');
+    $(this).addClass('active'); 
+    var url = $(this).attr('href');
+     $.ajax(url, {dataType: "html", type: "GET",
+       success: function(data, textStatus, xhr) {
+         $(".modal-content").html(data);
+         //$("#filterdialog").dialog("open");
+       }, error: function(xhr, textStatus, errorThrown) {
+         console.debug("xhr error " + textStatus);
+         console.debug(errorThrown);
+       }
+     });
+   return false;
+  });
+
+});
+</script>
+{% endblock%}
+{%block extra-search%}
+<form method="get" action="{% url 'work-list' %}">        
+  <label for="query"></label>
+    <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
+    <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
+    <input type="hidden" name="makam" value="{% if makam %}{{makam.id}}{% endif %}"/>
+    <input type="hidden" name="form" value="{% if form %}{{form.id}}{% endif %}"/>
+    <input type="hidden" name="artist" value="{% if artist %}{{artist.id}}{% endif %}"/>
+</form>
+{% endblock%}
+
+{% block wrap %}
+<div id="detail"   style="min-height: 850px;">
+
+       <div id="disp-filters">
+         <div class="filter {%if form%}filter-sel{% endif %}">
+           <b><span>Musical Form:</span></b>
+           <span>{{form}}</span>
+          {%if form%}
+             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "form" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Select</a>
+         </div>
+         <div class="filter {%if usul%}filter-sel{% endif %}">
+           <b><span>Usul:</span></b>
+           <span>{{usul}}</span>
+           {%if usul%}
+             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "usul" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=usul">Select</a>
+         </div>
+         <div class="filter {%if makam%}filter-sel{% endif %}">
+           <b><span>Makam:</span></b>
+           <span>{{makam}}</span>
+           {%if makam %}
+             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "makam" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=makam">Select</a>
+         </div>
+         <div class="filter {%if artist%}filter-sel{% endif %}">
+           <b><span>Lyricist/Composer:</span></b>
+           <span>{{artist}}</span>
+           {%if artist%}
+             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "artist" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=artist">Select</a>
+         </div>
+         <div class="filter {%if perf%}filter-sel{% endif %}">
+           <b><span>Performer:</span></b>
+           <span>{{perf}}</span>
+           {%if perf%}
+             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "perf" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=performer">Select</a>
+         </div>
+        </div>
+
+    {% if works|length %}
+    <div id="results">
+        <h2>Results</h2>    
+        <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
+        <tr><th scope="col">Work name</th><th scope="col">Composer</th><th scope="col">Recordings</th></tr>
+        {% for w in works %}
+      <tr class="work"><td height="30">{{ w.title }}</td><td >{% for a in w.composers.all %}{{ a.name }}{% endfor %}</td><td><div class="recordings" data-id="{{ w.mbid }}"><a href="#">Show</a></div></td></tr>
+        {% endfor %}
+        </table>
+        {% if works.has_next %}
+            <div id="next">
+              <a id="next-page" href="?q={{q}}&usul={{usul.id}}&form={{form.id}}&artist={{artist.id}}&makam={{makam.id}}&elem=artist&page={{ works.next_page_number }}">next</a>
+            </div>
+        {% endif %}
+    </div>
+    {% endif%}
+    {% if results == False %}
+    <div id="no-results" >
+        <h3> There are no results for this search. 
+        </h3>
+    </div>
+    {% endif %}
+
+    {% if works|length == 0 %}
+    
+    <div id="initial" >
+            <h1>Welcome to Dunya Makam</h1>
+      <p>
+Dunya-makam is a web application for the analysis and discovery of Turkish makam music, aimed to showcase various technologies developed within the CompMusic project.
+</p> 
+
+You can navigate the analyzed collection using <strong>the search bar and the filters</strong> at the top of the page. If you want a quick preview of the application, you can jump to the examples below:
+      </p>
+      <h2>Some Examples</h2>
+      <ul>
+        <li><a href="/makam/recording/dfc16e22-0aae-4bd0-a32c-5c000130e96a">Sevdi Gönlüm Ey Melek Sima Seni</a> by <em>Hafız Kemal Bey</em></li>
+        <li><a href="/makam/recording/727cff89-392f-4d15-926d-63b2697d7f3f">Gel Güzelim Çamlıca'ya</a> by <em>Münir Nurettin Selçuk</em></li>
+        <li><a href="/makam/recording/4948c836-5485-4a69-8bdc-11fe4559e78f">Muhayyer Sazsemaisi</a> by <em>Necati Çelik</em></li>
+        <li><a href="/makam/recording/e72db0ad-2ed9-467b-88ae-1f91edcd2c59">Uşşâk Saz Semâîsi</a> by <em>Murat Aydemir </em>&amp;<em> Derya Türkan</em></li>
+        <li><a href="/makam/recording/37dd6a6a-4c19-4a86-886a-882840d59518">Pençgah Solo</a> by  <em>Niyazi Sayın</em></li>
+      </ul>
+ <p>
+ In the <a href="/makam/overview">Overview page</a>, we give an explanation of Dunya Makam web application. 
+ </p>
+ <p>The <a href="/makam/stats">Statistics page</a> describes the corpus we have analysed.
+</p> 
+<p>
+The <a href="/makam/results">Results page</a> provides some of the basic statistics obtained by the analysis.
+
+</p>        
+    {% endif%}
+    <div class="clearfix"></div>
+</div>
+<div class="modal-container">
+    <div class="modal" >
+      <div class="modal-title" >Advanced filtering</div>
+      <div class="modal-close" >X</div>
+      <div class="modal-nav" >
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=form">Musical form</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=usul">Usul</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=makam">Makam</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=artist">Lyricist/Composer</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=performer">Performer</a>
+        </div>
+      </div>
+      <div class="modal-content">
+      </div>
+    </div>
+</div>
+<div id="logindialog" title="Login required">
+  <p>You need to log in to play a recording</p>
+</div>
+{% endblock %}
+
