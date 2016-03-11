@@ -42,7 +42,7 @@
 }
 
 .modal-container {
-  position: absolute;
+  position: fixed;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
