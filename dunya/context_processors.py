@@ -27,7 +27,7 @@ def style_context(request):
     carnatic_prefix = reverse("carnatic-main")
     makam_prefix = reverse("makam-main")
     jingju_prefix = reverse("jingju-main")
-    # andalusian_prefix = reverse("andalusian-main")
+    andalusian_prefix = reverse("andalusian-main")
     path = request.path
 
     if path.startswith(hindustani_prefix):
@@ -38,6 +38,6 @@ def style_context(request):
         return {"style_root": carnatic_prefix, "style_name": "Carnatic"}
     elif path.startswith(makam_prefix):
         return {"style_root": makam_prefix, "style_name": "Makam"}
-    # elif path.startswith(andalusian_prefix):
-    #     return {"style_root": andalusian_prefix, "style_name": "Andalusian"}
+    elif path.startswith(andalusian_prefix):
+        return {"style_root": andalusian_prefix, "style_name": "Andalusian"}
     return {}
