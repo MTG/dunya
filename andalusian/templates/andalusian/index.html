@@ -204,7 +204,7 @@ $("#logindialog").dialog({
     <div id="results">
         <h2>Results</h2>    
         <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
-        <tr><th scope="col">Recording name</th><th scope="col">Orchestra</th><th scope="col">Recordings</th></tr>
+        <tr><th scope="col">Recording name</th><th scope="col">Orchestra</th><th scope="col">Album</th></tr>
         {% for r in recordings %}
         <tr class="work"><td height="30"><a href="/andalusian/recording/{{r.mbid}}">{{ r.title }}</a></td>
           <td ><a href="/andalusian/recording/{{r.mbid}}">{{ r.album_set.all.0.artists.all.0 }}</a></td>
