@@ -1,3 +1,110 @@
+.examples-container a{
+  text-decoration: none;
+  color: #5f3423;
+}
+.examples-container{
+  text-align: center;
+  color: #5f3423;
+  margin-bottom: 40px;
+}
+.examples-container header {
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.arrow, .examples-carousel .left-arrow, .examples-carousel .right-arrow {
+  display: inline-block;
+  padding: 10px;
+  vertical-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  cursor: pointer;
+}
+.arrow:hover, .examples-carousel .left-arrow:hover, .examples-carousel .right-arrow:hover {
+  color: #1f210f;
+}
+
+.examples-carousel .left-arrow:before {
+  content: '<';
+}
+.examples-carousel .right-arrow:before {
+  content: '>';
+}
+
+.carousel-content {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  height: 100px;
+}
+
+.carousel {
+  position: absolute;
+  width: 3050px;
+  height: 100px;
+  top: 0;
+  left: 0;
+  list-style: none;
+  padding: 0;
+  -webkit-transform: translateX(-5px);
+          transform: translateX(-5px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out;
+  transition: -webkit-transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+}
+.carousel.example-2 {
+  -webkit-transform: translateX(-310px);
+          transform: translateX(-310px);
+}
+.carousel.example-3 {
+  -webkit-transform: translateX(-620px);
+          transform: translateX(-620px);
+}
+.carousel.example-4 {
+  -webkit-transform: translateX(-920px);
+          transform: translateX(-920px);
+}
+.carousel.example-5 {
+  -webkit-transform: translateX(-1226px);
+          transform: translateX(-1226px);
+}
+.carousel.example-6 {
+  -webkit-transform: translateX(-1530px);
+          transform: translateX(-1530px);
+}
+.carousel.example-7 {
+  -webkit-transform: translateX(-1840px);
+          transform: translateX(-1840px);
+}
+.carousel.example-8 {
+  -webkit-transform: translateX(-2140px);
+          transform: translateX(-2140px);
+}
+.carousel.example-9 {
+  -webkit-transform: translateX(-2450px);
+          transform: translateX(-2450px);
+}
+.carousel.example-10 {
+  -webkit-transform: translateX(-2760px);
+          transform: translateX(-2760px);
+}
+.example {
+  width: 300px;
+  height: 100px;
+  display: inline-block;
+}
+.example dt {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.example dd {
+  margin: 10px 0;
+}
+
 .bg-image {
   background-image: url("http://dunya.compmusic.upf.edu/static/makam/img/front.png");
   background-size: cover;
@@ -41,6 +148,19 @@
   width: 100%;
 }
 
+.modal-background {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(44, 22, 45, 0.9);
+  opacity: 0;
+  -webkit-transition: opacity, 0.3s, ease-in-out;
+  transition: opacity, 0.3s, ease-in-out;
+}
+
 .modal-container {
   position: fixed;
   display: -webkit-box;
@@ -52,15 +172,17 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(44, 22, 45, 0.9);
   z-index: -2;
   opacity: 0;
-  -webkit-transition: opacity, 0.3s, ease-in;
-  transition: opacity, 0.3s, ease-in;
+  -webkit-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in;
 }
 .modal-container.active {
   opacity: 1;
   z-index: 1000;
+}
+.modal-container.active .modal-background {
+  opacity: 1;
 }
 .modal-container.active .modal {
   -webkit-transform: translate3d(0, 0, 0);
@@ -69,7 +191,8 @@
 .modal-container .modal {
   width: 80%;
   max-width: 700px;
-  height: 500px;
+  z-index: 1000;
+  height: 520px;
   background-color: white;
   margin: auto;
   -webkit-transform: translate3d(0, -200px, 0);
@@ -126,7 +249,7 @@
   text-align: center;
   border: #5f3423;
   background-color: #ffeaf2;
-  height: 400px;
+  height: 420px;
 }
 .modal-alphabet a{
     color: #222;
@@ -162,6 +285,7 @@
 .modal-content-list-item {
   font-size: 2em;
   line-height: 1.3em;
+  cursor: pointer;
 }
 
 .search-form {
@@ -215,7 +339,7 @@
 }
 
 .hero-description {
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
   font-size: 2em;
   line-height: 1.3em;
@@ -249,4 +373,3 @@ body {
 a {
   cursor: pointer;
 }
-
