@@ -272,7 +272,7 @@ $('.change-filter').click(function(){
            <b><span>Musical Form:</span></b>
            <span>{{form}}</span>
           {%if form%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "form" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "form" %}{{ v }}&{%endif%}{%endfor%}">x</a>
            {% endif %}
            <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Select</a>
          </div>
@@ -280,7 +280,7 @@ $('.change-filter').click(function(){
            <b><span>Usul:</span></b>
            <span>{{usul}}</span>
            {%if usul%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "usul" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "usul" %}{{ v }}&{%endif%}{%endfor%}">x</a>
            {% endif %}
            <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=usul">Select</a>
          </div>
@@ -288,7 +288,7 @@ $('.change-filter').click(function(){
            <b><span>Makam:</span></b>
            <span>{{makam}}</span>
            {%if makam %}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "makam" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "makam" %}{{ v }}&{%endif%}{%endfor%}">x</a>
            {% endif %}
            <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=makam">Select</a>
          </div>
@@ -296,7 +296,7 @@ $('.change-filter').click(function(){
            <b><span>Lyricist/Composer:</span></b>
            <span>{{artist}}</span>
            {%if artist%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "artist" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "artist" %}{{ v }}&{%endif%}{%endfor%}">x</a>
            {% endif %}
            <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=artist">Select</a>
          </div>
@@ -304,7 +304,7 @@ $('.change-filter').click(function(){
            <b><span>Performer:</span></b>
            <span>{{perf}}</span>
            {%if perf%}
-             <a class="remove-param" href="/makam/?{%for k,v in params.items %}{%if k != "perf" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "perf" %}{{ v }}&{%endif%}{%endfor%}">x</a>
            {% endif %}
            <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=performer">Select</a>
          </div>
