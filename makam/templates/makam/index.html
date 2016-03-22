@@ -12,7 +12,7 @@ var examples = 7;
 var exampleShown = 0;
 function changeVisibleExample(newExample) {
   if (newExample < 0) {
-    exampleShown = examples.length - 1;
+    exampleShown = examples - 1;
   } else if (newExample < examples) {
     exampleShown = newExample;
   } else {
