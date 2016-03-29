@@ -206,7 +206,7 @@ $( document ).ready(function() {
     url: "/api/makam/work/" +$(this).attr('data-id'),
     dataType: "json",
     }).done(function(data) {
-     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     $('.recordings .recordings-ret').parent().each(function(){$(this).html('<a href="#"">Show</a>')});; 
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
@@ -217,7 +217,7 @@ $( document ).ready(function() {
            artists += ", ";
          }
        }
-       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>'); 
+       work.parent().find('ul').append('<li class="recordings-ret"><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>'); 
      }
     }).fail(function(jqXHR, textStatus, errorThrown) {
        if(jqXHR.status == 401){
@@ -316,7 +316,17 @@ $('.change-filter').click(function(){
         <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
         <tr><th scope="col">Work name</th><th scope="col">Composer</th><th scope="col">Recordings</th></tr>
         {% for w in works %}
-      <tr class="work"><td height="30">{{ w.title }}</td><td >{% for a in w.composers.all %}{{ a.name }}{% endfor %}</td><td><div class="recordings" data-id="{{ w.mbid }}"><a href="#">Show</a></div></td></tr>
+      <tr class="work"><td height="30">{{ w.title }}</td><td >{% for a in w.composers.all %}{{ a.name }}{% endfor %}</td><td><div class="recordings" data-id="{{ w.mbid }}">
+            {%if w.recording_set.count == 1%}
+              <ul>
+              {% for r in w.recording_set.all %}
+              <li><a href="/makam/recording/{{ r.mbid }}">{{ r.title }} by {% for a in r.artists.all%}{{ a }}{% if not forloop.last %}, {% endif %}{%endfor%}</a></li>
+              {% endfor %}
+              </ul>
+            {% else %}
+              <a href="#">Show</a>
+            {%endif%}
+          </div></td></tr>
         {% endfor %}
         </table>
         {% if works.has_next %}
