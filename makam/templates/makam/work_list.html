@@ -214,10 +214,10 @@ $( document ).ready(function() {
        for(var j=0;j<art.length;j++){
          artists += art[j]['name'];
          if (j != (art.length-1)){
-           artists += " ";
+           artists += ", ";
          }
        }
-       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
+       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>'); 
      }
     }).fail(function(jqXHR, textStatus, errorThrown) {
        if(jqXHR.status == 401){
