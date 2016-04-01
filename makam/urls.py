@@ -47,4 +47,5 @@ urlpatterns = [
 
     url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='makam-instrumentbyid'),
     url(r'^instrument/%s%s$' % (uuid_match, name_match), views.instrument, name='makam-instrument'),
+    url(r'^searchcomplete$', views.searchcomplete, name='makam-searchcomplete'),
 ]
