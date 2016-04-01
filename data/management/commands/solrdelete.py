@@ -21,8 +21,14 @@ import pysolr
 
 class Command(BaseCommand):
     help = 'Load data in the database to solr'
-    solr = pysolr.Solr(settings.SOLR_URL)
+    solr_m = pysolr.Solr(settings.SOLR_URL + "/makam")
+    solr_c = pysolr.Solr(settings.SOLR_URL + "/carnatic")
+    solr_h = pysolr.Solr(settings.SOLR_URL + "/hindustani")
 
     def handle(self, *args, **options):
-        self.solr.delete(q="*:*")
-        self.solr.commit()
+        self.solr_c.delete(q="*:*")
+        self.solr_c.commit()
+        self.solr_m.delete(q="*:*")
+        self.solr_m.commit()
+        self.solr_h.delete(q="*:*")
+        self.solr_h.commit()

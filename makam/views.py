@@ -18,7 +18,7 @@
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -28,10 +28,24 @@ import json
 import data
 from makam import models
 import docserver
+import search
+import pysolr
 
 # Simple player for Georgi/Istanbul musicians
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
+
+def searchcomplete(request):
+    term = request.GET.get("term")
+    ret = []
+    error = False
+    if term:
+        try:
+            suggestions = search.autocomplete(term)
+            ret = [{"id": l['object_id_i'], "label": l['title_t'], "category": l['type_s']} for l in suggestions]
+        except pysolr.SolrError:
+            error = True
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def main(request):
     q = request.GET.get('q', '')

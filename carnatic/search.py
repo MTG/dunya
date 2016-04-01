@@ -21,10 +21,10 @@ import json
 
 import carnatic
 
-solr = pysolr.Solr(settings.SOLR_URL)
+solr = pysolr.Solr(settings.SOLR_URL + "/carnatic")
 def search(name, with_restricted=False):
     name = name.lower()
-    query = "module_s:carnatic AND doctype_s:search AND title_t:(%s)" % name
+    query = "doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
     for d in results.docs:
@@ -48,7 +48,6 @@ def autocomplete(term):
     params = {}
     params['wt'] = 'json'
     params['q'] = term
-    params['fq'] = "module_s:carnatic"
     params['fl'] = "title_t,type_s,object_id_i"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
@@ -84,7 +83,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
         # If we have nothing to search for, return no matches
         return []
 
-    query = "module_s:carnatic AND doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
+    query = "doctype_s:concertsimilar AND (%s)" % (" ".join(searchitems), )
     results = solr.search(query, rows=100)
 
     ret = []
@@ -103,7 +102,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
     return ret
 
 def similar_recordings(mbid, with_bootlegs=False):
-    query = "module_s:carnatic AND doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
+    query = "doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
     results = solr.search(query)
     docs = results.docs
     if len(docs):

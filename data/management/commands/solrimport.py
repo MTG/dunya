@@ -18,21 +18,23 @@ from django.core.management.base import BaseCommand
 
 import carnatic
 import hindustani
+import makam
 
 from django.conf import settings
 import pysolr
 
 class Command(BaseCommand):
     help = 'Load data in the database to solr'
-    solr = pysolr.Solr(settings.SOLR_URL)
+    solr_c = pysolr.Solr(settings.SOLR_URL + "/carnatic")
+    solr_h = pysolr.Solr(settings.SOLR_URL + "/hindustani")
+    solr_m = pysolr.Solr(settings.SOLR_URL + "/makam")
 
-    def make_search_data(self, module, data, etype, namefield):
+    def make_search_data(self, data, etype, namefield):
         insert = []
         for i in data:
             doc = {"id": "%s_%s" % (etype, i.pk),
                    "object_id_i": i.pk,
                    "type_s": etype,
-                   "module_s": module,
                    "title_t": getattr(i, namefield),
                    "doctype_s": "search"
                    }
@@ -48,6 +50,36 @@ class Command(BaseCommand):
             insert.append(doc)
         return insert
 
+    def create_makam_search_index(self):
+        print "Creating makam object index"
+
+        works = makam.models.Work.objects.filter(is_processed=True).all()
+        composers = makam.models.Composer.objects.filter(works__in=works).distinct()
+        lyricists = makam.models.Composer.objects.filter(lyric_works__in=works.all()).distinct()
+        artists = makam.models.Artist.objects.filter(instrumentperformance__recording__works__in=works).distinct() | \
+                  makam.models.Artist.objects.filter(primary_concerts__recordings__works__in=works).distinct()
+
+        makams = makam.models.Makam.objects.filter(work__in=works.all()).distinct()
+        forms = makam.models.Form.objects.filter(work__in=works).distinct()
+        usuls = makam.models.Usul.objects.filter(work__in=works).distinct()
+
+        insertcomposer = self.make_search_data(composers, "composer", "name")
+        insertlyricist = self.make_search_data(lyricists, "lyricist", "name")
+        insertartist = self.make_search_data(artists, "performer", "name")
+        insertwork = self.make_search_data(works, "composition", "title")
+        insertmakam = self.make_search_data(makams, "makam", "name")
+        insertform = self.make_search_data(forms, "form", "name")
+        insertusul = self.make_search_data(usuls, "usul", "name")
+
+        self.solr_m.add(insertartist)
+        self.solr_m.add(insertcomposer)
+        self.solr_m.add(insertlyricist)
+        self.solr_m.add(insertwork)
+        self.solr_m.add(insertmakam)
+        self.solr_m.add(insertform)
+        self.solr_m.add(insertusul)
+        self.solr_m.commit()
+
     def create_carnatic_search_index(self):
         print "Creating carnatic object index"
 
@@ -59,22 +91,22 @@ class Command(BaseCommand):
         raagas = carnatic.models.Raaga.objects.all()
         taalas = carnatic.models.Taala.objects.all()
 
-        insertinstr = self.make_search_data("carnatic", instruments, "instrument", "name")
-        insertartist = self.make_search_data("carnatic", artists, "artist", "name")
-        insertcomposer = self.make_search_data("carnatic", composers, "composer", "name")
-        insertwork = self.make_search_data("carnatic", works, "work", "title")
-        insertconcert = self.make_search_data("carnatic", concerts, "concert", "title")
-        insertraaga = self.make_search_data("carnatic", raagas, "raaga", "name")
-        inserttaala = self.make_search_data("carnatic", taalas, "taala", "name")
+        insertinstr = self.make_search_data(instruments, "instrument", "name")
+        insertartist = self.make_search_data(artists, "artist", "name")
+        insertcomposer = self.make_search_data(composers, "composer", "name")
+        insertwork = self.make_search_data(works, "work", "title")
+        insertconcert = self.make_search_data(concerts, "concert", "title")
+        insertraaga = self.make_search_data(raagas, "raaga", "name")
+        inserttaala = self.make_search_data(taalas, "taala", "name")
 
-        self.solr.add(insertinstr)
-        self.solr.add(insertartist)
-        self.solr.add(insertcomposer)
-        self.solr.add(insertwork)
-        self.solr.add(insertconcert)
-        self.solr.add(insertraaga)
-        self.solr.add(inserttaala)
-        self.solr.commit()
+        self.solr_c.add(insertinstr)
+        self.solr_c.add(insertartist)
+        self.solr_c.add(insertcomposer)
+        self.solr_c.add(insertwork)
+        self.solr_c.add(insertconcert)
+        self.solr_c.add(insertraaga)
+        self.solr_c.add(inserttaala)
+        self.solr_c.commit()
 
     def create_hindustani_search_index(self):
         print "Creating hindustani object index"
@@ -89,26 +121,26 @@ class Command(BaseCommand):
         forms = hindustani.models.Form.objects.all()
         layas = hindustani.models.Laya.objects.all()
 
-        insertinstr = self.make_search_data("hindustani", instruments, "instrument", "name")
-        insertartist = self.make_search_data("hindustani", artists, "artist", "name")
-        insertcomposer = self.make_search_data("hindustani", composers, "composer", "name")
-        insertwork = self.make_search_data("hindustani", works, "work", "title")
-        insertrelease = self.make_search_data("hindustani", releases, "release", "title")
-        insertraag = self.make_search_data("hindustani", raags, "raag", "common_name")
-        inserttaal = self.make_search_data("hindustani", taals, "taal", "common_name")
-        insertform = self.make_search_data("hindustani", forms, "form", "common_name")
-        insertlaya = self.make_search_data("hindustani", layas, "laya", "common_name")
+        insertinstr = self.make_search_data(instruments, "instrument", "name")
+        insertartist = self.make_search_data(artists, "artist", "name")
+        insertcomposer = self.make_search_data(composers, "composer", "name")
+        insertwork = self.make_search_data(works, "work", "title")
+        insertrelease = self.make_search_data(releases, "release", "title")
+        insertraag = self.make_search_data(raags, "raag", "common_name")
+        inserttaal = self.make_search_data(taals, "taal", "common_name")
+        insertform = self.make_search_data(forms, "form", "common_name")
+        insertlaya = self.make_search_data(layas, "laya", "common_name")
 
-        self.solr.add(insertinstr)
-        self.solr.add(insertartist)
-        self.solr.add(insertcomposer)
-        self.solr.add(insertwork)
-        self.solr.add(insertrelease)
-        self.solr.add(insertraag)
-        self.solr.add(inserttaal)
-        self.solr.add(insertform)
-        self.solr.add(insertlaya)
-        self.solr.commit()
+        self.solr_h.add(insertinstr)
+        self.solr_h.add(insertartist)
+        self.solr_h.add(insertcomposer)
+        self.solr_h.add(insertwork)
+        self.solr_h.add(insertrelease)
+        self.solr_h.add(insertraag)
+        self.solr_h.add(inserttaal)
+        self.solr_h.add(insertform)
+        self.solr_h.add(insertlaya)
+        self.solr_h.commit()
 
     def create_carnatic_concert_index(self):
         print "Creating carnatic concert index"
@@ -124,12 +156,12 @@ class Command(BaseCommand):
             for a in c.performers():
                 artists.append(a.id)
             for t in c.recordings.all():
-                if t.work:
-                    works.append(t.work.id)
-                    for ra in t.work.raaga.all():
-                        raagas.append(ra.id)
-                    for ta in t.work.taala.all():
-                        taalas.append(ta.id)
+                for w in t.works.all():
+                    works.append(w.id)
+                for ra in t.raagas.all():
+                    raagas.append(ra.id)
+                for ta in t.taalas.all():
+                    taalas.append(ta.id)
 
             ret.append({"doctype_s": "concertsimilar",
                         "id": "concertsimilar_%s" % c.id,
@@ -138,10 +170,9 @@ class Command(BaseCommand):
                         "taala_is": taalas,
                         "work_is": works,
                         "artist_is": artists,
-                        "module_s": "carnatic"
                         })
-        self.solr.add(ret)
-        self.solr.commit()
+        self.solr_c.add(ret)
+        self.solr_c.commit()
 
     def create_hindustani_release_index(self):
         print "Creating hindustani release index"
@@ -182,12 +213,13 @@ class Command(BaseCommand):
                         "laya_is": layas,
                         "work_is": works,
                         "artist_is": artists,
-                        "module_s": "hindustani",
                         })
-        self.solr.add(ret)
-        self.solr.commit()
+        self.solr_h.add(ret)
+        self.solr_h.commit()
 
     def handle(self, *args, **options):
+        self.create_makam_search_index()
+
         self.create_carnatic_search_index()
         self.create_carnatic_concert_index()
 

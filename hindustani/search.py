@@ -21,10 +21,10 @@ import json
 
 import hindustani
 
-solr = pysolr.Solr(settings.SOLR_URL)
+solr = pysolr.Solr(settings.SOLR_URL + "/hindustani")
 def search(name):
     name = name.lower()
-    query = "module_s:hindustani AND doctype_s:search AND title_t:(%s)" % name
+    query = "doctype_s:search AND title_t:(%s)" % name
     results = solr.search(query, rows=100)
     ret = collections.defaultdict(list)
     for d in results.docs:
@@ -41,7 +41,6 @@ def autocomplete(term):
     params = {}
     params['wt'] = 'json'
     params['q'] = term
-    params['fq'] = "module_s:hindustani"
     params['fl'] = "title_t,type_s,object_id_i"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
@@ -77,7 +76,7 @@ def get_similar_releases(artists, raags, taals, layas):
         # If we have nothing to search for, return no matches
         return []
 
-    query = "module_s:hindustani AND doctype_s:releasesimilar AND (%s)" % (" ".join(searchitems), )
+    query = "doctype_s:releasesimilar AND (%s)" % (" ".join(searchitems), )
     results = solr.search(query, rows=100)
 
     ret = []
