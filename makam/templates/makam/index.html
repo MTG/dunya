@@ -38,7 +38,7 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
     currentCategory = "";
     var allitems = {};
     $.each( items, function( index, item ) {
-      if ( item.category != allitems ) {
+      if ( !(item.category in allitems) ) {
         allitems[item.category] = [];
       }
       allitems[item.category].push(item);
@@ -48,7 +48,7 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
       catitems.forEach(function(i){
         var li;
         li = that._renderItemData( ul, i );
-        li.attr( "aria-label", index + " : " + i.label );   
+        li.attr( "aria-label", index + " : " + i.label );
       });
     });
   },
