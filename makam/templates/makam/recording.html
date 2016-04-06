@@ -307,7 +307,7 @@ widthOfChildren('.metaContainer');
                                 <label>Performers</label><b>
                                     {% for a in recording.instrumentperformance_set.all %}
                                       <span><a class="work-mb" href="http://musicbrainz.org/artist/{{a.artist.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
-                                        {{ a.artist }}{%if a.instrument%} ({{ a.instrument }}){%endif%}</span>
+                                        <a href="{% url "work-list" %}?performer={{a.artist.id}}">{{ a.artist }}{%if a.instrument%} ({{ a.instrument }}){%endif%}</a></span>
                                     {% endfor%}
                                 </b>
                             </div>
