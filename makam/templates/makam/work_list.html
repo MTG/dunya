@@ -213,7 +213,9 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
       if ( !(item.category in allitems) ) {
         allitems[item.category] = [];
       }
-      allitems[item.category].push(item);
+      if(allitems[item.category].length < 5){
+        allitems[item.category].push(item);
+      }
     });
     $.each( allitems, function( index, catitems ) {
       ul.append( "<li class='ui-autocomplete-category " + index + "'><b>" + index + "</b></li>" );
