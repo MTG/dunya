@@ -202,9 +202,6 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
     this._super();
     this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
   },
-  /*_resizeMenu: function() {
-    this.menu.element.outerWidth(470).outerHeight(300);
-  },*/
   _renderMenu: function( ul, items ) {
     var that = this,
     currentCategory = "";

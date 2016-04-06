@@ -1,0 +1,422 @@
+{% extends "makam/base.html" %}
+{% load makam.inline %}
+{% load carnatic.badges %}
+{% load staticfiles %}
+{% block extra_css %}
+{% if debug %}
+{% load less %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/pages.less' %}" />
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/recording.less' %}" />
+{% else %}
+<link rel="stylesheet" type="text/css" href="{% static 'makam/css/pages.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'makam/css/recording.css' %}" />
+{% endif %}
+{% endblock %}
+
+{% block title %}{{recording.title}} - {% endblock %}
+
+{% block script %}
+<style type="text/css">
+#capcal{
+    background: url('/static/carnatic/img/capcal.png') 0 0 repeat-y !important;
+}
+  #capcalTotal {
+      height: 94% !important;
+  }
+  #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
+      width: 14% !important;
+  }
+  #detail.recording #header #scrollrec #summary #innerSummary span h1 {
+      font-size: 14px !important;
+  }
+  #detail.recording .alldata .container .thedata #renderTotal #smallcanvas {
+      opacity: 1;
+  }
+  #detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
+      background: none;
+      height: 64px;
+      z-index: 4;
+  }
+  #banshis {
+      position: relative;
+      height: 25px;
+      font-size: 15px;
+  }
+  #banshis .banshi {
+      position: absolute;
+      height: 25px;
+      margin: 2px;
+  }
+  #percussions {
+      position: relative;
+      height: 25px;
+      font-size: 15px;
+  }
+  #percussions .percussion {
+      position: absolute;
+      height: 25px;
+      margin: 2px;
+  }
+  #timecodes {
+      position: relative;
+      height: 20px;
+  }
+  #timecodes span {
+      position: absolute;
+      height: 25px;
+      margin: 2px;
+  }
+  #timecodes .timecode1 {
+      left: 0px;
+  }
+  #timecodes .timecode2 {
+      left: 220px;
+  }
+  #timecodes .timecode3 {
+      left: 445px;
+  }
+  #timecodes .timecode4 {
+      left: 670px;
+  }
+  #timecodes .timecode5 {
+      right: 0px;
+  }
+  #excerpt{
+      padding-top:0 !important;
+  }
+  svg a {
+      color: #000000 !important;
+  }
+  a[highlight='1']>text {
+      background-color: yellow;
+      color: red;
+      margin: 10px; 
+      box-shadow: 0 0 20px yellow;
+  }
+  a[highlight='1']>path {
+      background-color: yellow;
+      color: red;
+      margin: 10px; 
+      box-shadow: 0 0 20px yellow;
+  }
+  #score{
+      overflow: hidden;
+  }
+  #score-cont{
+      position: relative;
+  }
+  #no-score{
+      margin: 30px 0 0 20px;
+      color: #46433a;
+      font-size: 30px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+  }
+  #overlap-pitch, #overlap-histogram, #histogram-current-note{
+      position: absolute; 
+      left: 0px; 
+      top: 0px; 
+      z-index: 2;
+  }
+  #histogramcanvas{
+    filter: alpha(opacity=70);
+      opacity: 0.7;
+  
+  }
+  #overlap-pitch{
+      z-index: 3;
+  }
+  .works-info{
+      cursor: pointer;
+      float: left;
+  }
+  .work-head{
+     width: 85%; 
+  }
+  .work-name{
+      text-align: center;
+      position: absolute;
+      top: 70;
+      display: none;
+      border-radius: 5px;
+      border-top: 1px solid #ccc;
+  }
+  #freq-info, #current-note{  
+    display: none;
+    position: absolute;
+    z-index: 5;
+    background-color: white;
+    border: thin solid black;
+    padding: 2px;
+  }
+  #current-note{
+    top: 5px;
+    left: 100px;
+  }
+  .work-box{
+      background-color: #f9f6f5;
+      border: 1px solid #ebe2df;
+      border-radius: 2px;
+      float: left;
+      width: 90%;
+  }
+  .work-box a{
+      font-size: 14px;
+      text-decoration: none;
+  }
+  .metaDetails{
+      font-size: 14px !important;
+  }
+  .metaDetails span{
+    margin-top: 16px !important;
+  }
+  .works-info:after {
+      content: "\039e";
+      position: relative;
+      right: -156px;
+      top: -22px;
+  }
+  .work-mb{
+      display: inline; 
+      margin-left: 0; 
+  }
+  .no-close .ui-dialog-titlebar-close {
+      display: none;
+  }
+</style>
+
+<script>
+var pitchMax = "{{max_pitch}}";
+var pitchMin = "{{min_pitch}}";
+var histogramurl = "{{histogramurl|safe}}";
+var notemodelsurl = "{{notemodelsurl|safe}}";
+var pitchtrackurl = "{{pitchtrackurl|safe}}";
+var waveformurl = "{{waveform|safe}}";
+var scoreurl = "{{scoreurl|safe}}";
+var indexmapurl = "{{indexmapurl|safe}}";
+var specurl = "{{spectrogram|safe}}";
+var smallurl = "{{smallimage|safe}}";
+var intervalsurl = "{{intervalsurl|safe}}";
+var notesalignurl = "{{notesalignurl|safe}}";
+var sectionsurl = "{{sectionsurl|safe}}";
+var documentsurl = "{{documentsurl|safe}}";
+var secondsPerView = 8;
+var ratioUsedView = 0.5;
+var pitchtrackdata = null;
+var histogramdata = null;
+var rhythmdata = null;
+var aksharadata = null;
+var audiourl = "{{audio|safe}}";
+var recordinglengthfmt = "{% if recording.length %}{{recording.length_format}}{% endif %}";
+var recordinglengthseconds = "{%if recording.length %}{{recording.length_seconds}}{% endif %}";
+var tonicurl = "{{tonicurl}}";
+var worksurl = "{{worksurl}}";
+var phraseurl = "{{phraseurl}}";
+var ahenkurl = "{{ahenkurl}}";
+
+{% if user.is_authenticated %}
+function playrecord(){
+    if(plButton.hasClass("stop")){
+        pause();
+        plButton.removeClass("stop");
+    }else{
+        play();
+        plButton.addClass("stop");
+    }
+}
+$(function() {
+  $( "#dialog" ).dialog({
+      dialogClass: "no-close",
+    });
+  });
+{% else %}
+$(function() {
+    $( "#playback_dialog" ).dialog( "open" );
+  });
+{% endif %}
+
+widthOfChildren('.metaContainer');
+</script>
+<script src="{% static 'makam/js/lyric_alignment.js' %}"></script>
+{% endblock %}
+
+{% block wrap %}
+{% if bootleg %}
+<div id="bootleg-bar">
+    <div style="float:left">
+        <p>This is a bootleg recording only visible to CompMusic researchers.
+        <br>Do not share.</p>
+    </div>
+    <div style="float:right; margin-top:10px;margin-right:10px;">
+        <button onclick='$("#bootleg-bar").hide()'>Ok</button>
+    </div>
+</div>
+{% endif %}
+<div id="detail" class="recording">
+    <div id="header">
+        <div id="scrollrec">
+            <div id="summary">
+                <div id="innerSummary">
+                    <span>
+                        <a class="work-mb" href="http://musicbrainz.org/recording/{{recording.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                        <h1 style="display: inline;">{{recording.title}}</h1>
+                        <h2> by {{recording.artists.all|join:", " }} </h2>
+                    </span>
+                </div>
+                <div id="summaryBack"></div>
+            </div>
+            <div id="meta">
+                <div class="metaBlock">
+                    <div class="metaMask">
+                        <div class="metaContainer">
+                            <div id="excerpt" class="metaDetails recordingDetails">
+                                <span class="list">
+                                    {% for w in  recording.releaselist%}
+                                        <label>Album</label><b><span>
+                                            <a class="work-mb" href="http://musicbrainz.org/release/{{w.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                            {{ w }}</span></b>
+                                    {% endfor %}
+                                    <label>Compositions</label><b><span>&nbsp;</span></b>
+                                    {% for w in recording.works.all %}
+                                    <div class="work-box">
+                                        <span class="works-info">
+                                          <div class="work-head">
+                                            <a class="work-mb" href="http://musicbrainz.org/work/{{w.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                            <a class="work-ref" href="#" ref="#work-{{w.mbid}}">{{w}}</a>
+                                          </div>
+                                        </span>
+                                        <div class="work-info" id="work-{{w.mbid}}" style="display:none">
+                                            {% for c in w.composerlist.all %}
+                                            <label>Composer</label><b><span>
+                                                
+                                                <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                                <a href="{% url "work-list" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                            {% endfor %}
+                                            {% for c in w.lyricistlist.all %}
+                                            <label>Lyricist</label><b><span>
+                                                <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                                <a href="{% url "work-list" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                            {% endfor %}
+                                            {% for m in w.makam.all %}
+                                            <label>Makam</label><b><span><a href="{% url "work-list" %}?makam={{m.id}}">{{m}}</a></span></b>
+                                            {% endfor %}
+                                            {% for f in w.form.all %}
+                                            <label>Form</label><b><span><a href="{% url "work-list" %}?form={{f.id}}">{{f}}</a></span></b>
+                                            {% endfor %}
+                                            {% for u in w.usul.all %}
+                                            <label>Usul</label><b><span><a href="{% url "work-list" %}?usul={{u.id}}">{{u}}</a></span></b>
+                                            {% endfor %}
+                                        </div>
+                                     </div>
+                                    {% endfor%}
+                                <label>Performers</label><b>
+                                    {% for a in recording.instrumentperformance_set.all %}
+                                      <span><a class="work-mb" href="http://musicbrainz.org/artist/{{a.artist.mbid}}"><img width='16px' src="{% static 'makam/img/mb.png' %}" /></a>
+                                        {{ a.artist }}{%if a.instrument%}({{ a.instrument }}){%endif%}</span>
+                                    {% endfor%}
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="totalcontrol">
+            <div id="control">
+                <div class="revButton"></div>
+                <div class="plButton" onclick="playrecord();"></div>
+                <div class="folButton"></div>
+            </div>
+        </div>
+        <div style="padding-top:6px; margin-right:1em;">
+        </div>
+        <div class="clearfix"></div>
+    </div><!-- HEADER END -->
+
+    <div class="alldata">
+        <div class="container">
+            <div class="thedata">
+                <div id="rendersMask" style="height:680px;">
+                    <div id="renders">
+                        <div id="capcal" style="height:255px;"></div>
+
+                        <div id="bigPitch">
+                            <canvas id="overlap-pitch" style="width:900px; height:256px;"></canvas>
+                            <canvas id="pitchcanvas" style="width:900px; height:256px;"></canvas>
+                            <div id="zooms" style="bottom: 5px;">
+                                <!-- <a class="zoom zoom1 selected" data-length="32" href="#">x1</a>
+                                    <a class="zoom zoom2" data-length="16" href="#">x2</a>
+                                    <a class="zoom zoom3" data-length="8" href="#">x3</a>
+                                    <a class="zoom zoom3" data-length="4" href="#">x4</a>-->
+                            </div>
+                        </div>
+
+
+                        
+                        <div>
+                            <div id="timecodes">
+                                <span class="timecode1"></span>
+                                <span class="timecode2"></span>
+                                <span class="timecode3"></span>
+                                <span class="timecode4"></span>
+                                <span class="timecode5"></span>
+                            </div>
+                            <div id="score" style="height:300px; width:900px;">
+                                <div id="no-score" style="display:none">
+                                    The score is not performed in this part of the recording. 
+                                </div>
+                                <div id="score-cont">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="renderTotal">
+                            <div id="capcalTotal"></div>
+                            <div id="timepoint"></div>
+                            <div id="miniviewHighlight"></div>
+                            <canvas id="smallcanvas"></canvas>
+                            {% for w in recording.works.all %}
+                                <div class="work-name" id="work-name-{{w.mbid}}"><a href="#" class="work-ref" ref="#work-{{w.mbid}}">{{w}}</a></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="container2">
+                    <div class="waveLabel">
+                      <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
+                      <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
+                      <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
+                      <div id="freq-info"></div>
+                      <div id="current-note"></div>
+                    </div> 
+                    <div id="totalcontrol2">
+                        <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="thedata">
+        <div class="leftdata">
+            <!--<h3>Similar recordings</h3>-->
+        </div>
+
+        <div class="rightdata">
+            <div class="innerrightdata scrolldata nopad">
+                <div class="tracklist">
+                    {% for s in similar %}
+                    {% badge_similar_recording s %}
+                    {% endfor %}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div id="dialog" title="Loading">
+      <p>The page is loading. <img src="{% static 'makam/img/loader.gif' %}" /></p>
+    </div>
+    <div class="clearfix"></div>
+</div>
+{% endblock %}
+
