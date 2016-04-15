@@ -26,6 +26,7 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='makam/index.html'), name='makam-main'),
     url(r'^works$', views.main, name='work-list'),
+    url(r'^results$', views.results, name='makam-results'),
     url(r'^stats$', TemplateView.as_view(template_name='makam/stats.html'), name='makam-stats'),
     url(r'^overview$', TemplateView.as_view(template_name='makam/overview.html'), name='makam-overview'),
     url(r'^results$', TemplateView.as_view(template_name='makam/results.html'), name='makam-results'),

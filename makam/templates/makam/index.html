@@ -135,6 +135,9 @@ $( "#work-query" ).catcomplete({
         }else if( cat == "form"){
           url += "form="+oid;
           window.location.href = url;
+        }else{
+          url += "q=" + encodeURIComponent(ui.item.label);
+          window.location.href = url;
         }
       },
     });
@@ -155,7 +158,7 @@ $( "#work-query" ).catcomplete({
       </div>
       <div class="search-form" >
         <img src="http://imgh.us/magnifying-glass.svg" >
-        <form action="{% url 'work-list' %}">
+        <form action="{% url 'makam-results' %}">
           <input type="text" name="q" id="work-query" placeholder="Search for music" >
         </form>
         <a id="display-filters" href="#">

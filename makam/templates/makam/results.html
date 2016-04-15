@@ -10,6 +10,7 @@
     {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'makam/css/index.css' %}" />
 {% endblock %}
 {% block title %}Makam index | {% endblock %}
 {% block script %}
@@ -183,14 +184,12 @@ margin: 20px;
   
 .table-front th{
     padding: 15px;
-    text-align: right;
+    text-align: left;
     border-bottom: 1px solid #ddd;
 }
 .table-front td {
     padding: 15px;
-}
-.right-align{
-    text-align: right;
+    text-align: left;
 }
 .bold-text{
     font-weight: bold;
@@ -198,6 +197,43 @@ margin: 20px;
 </style>
 <script src="{% static 'makam/js/works.js' %}"></script>
 <script>
+$.widget( "custom.catcomplete", $.ui.autocomplete, {
+  _create: function() {
+    this._super();
+    this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+  },
+  _renderMenu: function( ul, items ) {
+    var that = this,
+    currentCategory = "";
+    var allitems = {};
+    $.each( items, function( index, item ) {
+      if ( !(item.category in allitems) ) {
+        allitems[item.category] = [];
+      }
+      if(allitems[item.category].length < 5){
+        allitems[item.category].push(item);
+      }
+    });
+    $.each( allitems, function( index, catitems ) {
+      ul.append( "<li class='ui-autocomplete-category " + index + "'><b>" + index + "</b></li>" );
+      catitems.forEach(function(i){
+        var li;
+        li = that._renderItemData( ul, i );
+        li.attr( "aria-label", index + " : " + i.label );
+      });
+    });
+  },
+  _renderItem: function( ul, item ) {
+   return $( "<li>" )
+   .addClass(item.category)
+   .attr( "data-value", item.value )
+   .append( $( "<a>" ).text( item.label ) )
+   .appendTo( ul );
+  }
+});
+
+
+
 $( document ).ready(function() {
   // WHEN CLICK SHOW THE RECORDINGS FOR A WORK
   $('#one-column-emphasis').on('click','div.recordings', function() {
@@ -207,56 +243,92 @@ $( document ).ready(function() {
     url: "/api/makam/work/" +$(this).attr('data-id'),
     dataType: "json",
     }).done(function(data) {
-     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     $('.recordings .recordings-ret').parent().each(function(){$(this).html('<a href="#"">Show</a>')});; 
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
        var artists="";
        for(var j=0;j<art.length;j++){
-         artists += " "+art[j]['name'];
+         artists += art[j]['name'];
+         if (j != (art.length-1)){
+           artists += ", ";
+         }
        }
-       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
+       work.parent().find('ul').append('<li class="recordings-ret"><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>'); 
      }
-    }); 
-      
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+       if(jqXHR.status == 401){
+        $("#logindialog").dialog("open");
+       }
+    });
   });
-$(function() {      
-    $( "#combo-artist" ).combobox();
-      $( "#toggle" ).click(function() {
-          $( "#combo-artist" ).toggle();
-     });
-  });
-
-$("#filterdialog").dialog({
+$("#logindialog").dialog({
   autoOpen: false,
-  minWidth: 700,
-  position: {
-    my: "center", 
-    at: "center top"
-  } 
 });
-$(".change-filter").click(function() {
+$('.modal-close').click(function(){
+    $('.modal-container').removeClass('active');
+    return false;
+});
+
+$('.change-filter').click(function(){
+  $('.change-filter.active').removeClass('active');
+  $('.modal-container').addClass('active');
+    $(this).addClass('active'); 
     var url = $(this).attr('href');
-    $.ajax(url, {dataType: "html", type: "GET",
-      success: function(data, textStatus, xhr) {
-        $("#filterdialog").html(data);
-        $("#filterdialog").dialog("open");
-      }, error: function(xhr, textStatus, errorThrown) {
-      console.debug("xhr error " + textStatus);
-      console.debug(errorThrown);
-  
-      }});
-
-  return false;
-});
-
+     $.ajax(url, {dataType: "html", type: "GET",
+       success: function(data, textStatus, xhr) {
+         $(".modal-content").html(data);
+         //$("#filterdialog").dialog("open");
+       }, error: function(xhr, textStatus, errorThrown) {
+         console.debug("xhr error " + textStatus);
+         console.debug(errorThrown);
+       }
+     });
+   return false;
+  });
+  $( "#work-query" ).catcomplete({
+        delay: 0,
+        source: function( request, response ) {
+        $.ajax({
+          url: "/makam/searchcomplete",
+          dataType: "json",
+          data: {
+            term: request.term
+          },
+          success: function( data ) {
+            response( data );
+          }
+        });
+      },
+      select: function (e, ui) {
+        var oid = ui.item.id;
+        var cat = ui.item.category;
+        var url = "/makam/works?"
+        if (cat == "lyricist" || cat =="composer"){
+          url += "artist="+oid;
+          window.location.href = url;
+        }else if(cat == "performer"){
+          url += "performer="+oid;
+          window.location.href = url;
+        }else if (cat == "makam"){
+          url += "makam=" + oid;
+          window.location.href = url;
+        }else if (cat =="usul"){
+          url += "usul="+oid;
+          window.location.href = url;
+        }else if( cat == "form"){
+          url += "form="+oid;
+          window.location.href = url;
+        }
+      },
+    });
 
 });
 </script>
 {% endblock%}
 {%block extra-search%}
-<form method="get" action=".">        
-    <label for="query">Work name</label>
+<form method="get" action="{% url 'work-list' %}">        
+  <label for="query"></label>
     <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
     <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
     <input type="hidden" name="makam" value="{% if makam %}{{makam.id}}{% endif %}"/>
@@ -268,98 +340,138 @@ $(".change-filter").click(function() {
 {% block wrap %}
 <div id="detail"   style="min-height: 850px;">
 
-    <div id="initial">
-      <h2>Results of score informed audio analysis</h2>  
-      <p class="p1">
-      In Dunya Makam, we have mostly focused on score informed analysis and description of audio recordings. In the first step, we apply partial audio score alignment to identify the tonic frequency [1] and estimate the tempo [2]. From the tonic frequency, we also obtain the ahenk (transposition) of the performance. We link the sections in the score to the corresponding time-intervals in the audio recording [3] and then obtain a note-level alignment by applying a more precise alignment intra-section [4]. Afterwards, we correct the octave errors in the predominant melody by referring to the symbolic pitch heights of the aligned notes. From the corrected predominant melody, we compute the audio seyir model proposed in [5]. Finally, we aggregate the pitch trajectories for each note symbol from the note-level alignments and compute a pitch distribution based model for each note symbol in the performance. 
-      </p>
-      <p class="p1">
-      So far, we have aligned <strong>1767 audio-score pairs</strong>. From the alignment we have extracted around <strong>18.770 sections</strong> and <strong>745.739 notes</strong>. 
-      Below, we refer to the statistics for some of the results obtained from the whole audio-score collection using the methodology above.
-      </p>
- 
-        <h3>Score informed tonic identification</h3>
-        <table style="text-align:center">
-          <tr>
-            <td>
-              <h4 style="vertical-align: top;" >Distribution of tonic frequencies</h4>
-            </td>
-            <td>
-              <h4 >Distribution of Ahenks</h4>
-            </td>
-          </tr>
-          <tr>
-            <td  valign="top" >
-              <img  style="vertical-align: top;" src="{% static 'makam/img/tonic.png'%}" />
-            </td>
-            <td  valign="top" >
-              <img style="vertical-align: top;" src="{% static 'makam/img/ahenk.png'%}" />
-            </td>
-          </tr>
+       <div id="disp-filters">
+         <div class="filter {%if form%}filter-sel{% endif %}">
+           <b><span>Musical Form:</span></b>
+           <span>{{form}}</span>
+          {%if form%}
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "form" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Select</a>
+         </div>
+         <div class="filter {%if usul%}filter-sel{% endif %}">
+           <b><span>Usul:</span></b>
+           <span>{{usul}}</span>
+           {%if usul%}
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "usul" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=usul">Select</a>
+         </div>
+         <div class="filter {%if makam%}filter-sel{% endif %}">
+           <b><span>Makam:</span></b>
+           <span>{{makam}}</span>
+           {%if makam %}
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "makam" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=makam">Select</a>
+         </div>
+         <div class="filter {%if artist%}filter-sel{% endif %}">
+           <b><span>Lyricist/Composer:</span></b>
+           <span>{{artist}}</span>
+           {%if artist%}
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "artist" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=artist">Select</a>
+         </div>
+         <div class="filter {%if perf%}filter-sel{% endif %}">
+           <b><span>Performer:</span></b>
+           <span>{{perf}}</span>
+           {%if perf%}
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "perf" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+           {% endif %}
+           <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=performer">Select</a>
+         </div>
+        </div>
+    {% if results.items|length %}
+    <div id="results">
+        {% for k,v in results.items %}
+        <h2>{{k}}</h2>    
+          {%for i in v%}
+        <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
+          {% if k == 'performer' %}
+            <tr class="work"><td height="30"><a href='/makam/works?performer={{i.id}}'>{{ i.label }}</a></td>
+          {% elif k == 'makam' %}
+            <tr class="work"><td height="30"><a href='/makam/works?makam={{i.id}}'>{{ i.label }}</a></td>
+          {% elif k == 'form' %}
+            <tr class="work"><td height="30"><a href='/makam/works?form={{i.id}}'>{{ i.label }}</a></td>
+          {% elif k == 'lyricist' or k == 'composer' %}
+            <tr class="work"><td height="30"><a href='/makam/works?artist={{i.id}}'>{{ i.label }}</a></td>
+          {% elif k == 'usul' %}
+            <tr class="work"><td height="30"><a href='/makam/works?usul={{i.id}}'>{{ i.label }}</a></td>
+          {% elif k == 'composition' %}
+            <tr class="work"><td height="30"><a href="/makam/works?q={{i.label|safe}}">{{ i.label }}</a></td>
+          {% elif k == 'recording' %}
+            <tr class="work"><td height="30"><a href="/makam/recording/{{ i.mbid }}">{{ i.label }}</a></td>
+          {% endif %}
         </table>
-        <h3>Score informed tempo estimation</h3>
-        <table style="text-align:center">
-          <tr>
-            <td>
-              <h4 >Distribution of tempo</h4>
-              <img src="{% static 'makam/img/tempo.png'%}" />
-            </td>
-            <td  valign="top" >
-              <h4 >Distribution of tempo relative to the nominal tempo in score</h4>
-              <img src="{% static 'makam/img/rel_tempo.png'%}" />
-            </td>
-          </tr>
-        </table>
- 
-        <h3>Audio-score alignment</h3>
-        <table style="text-align:center">
-          <tr>
-            <td>
-          <h4 >Distribution of number of notes</h4>
-        <img  style="width: 378px;"src="{% static 'makam/img/notes.png'%}" />
-          </td>
-            <td  valign="top" >
-        <h4 >Distribution of number of sections</h4>
-        <img  style="width: 402px;"src="{% static 'makam/img/sections.png'%}" />
-          </td>
-            <td  valign="top" >
-        <h4 >Distribution of number of sections duration</h4>
-        <img style="width: 427px;" src="{% static 'makam/img/durations.png'%}" />
-          </td>
-          </tr>
-          </table>
-<h4>References</h4>
-
-<ol>
-<li>
-
-  <span style="font-weight: 400;">Şentürk, S., Gulati, S., and Serra, X. (2013). <a href="http://mtg.upf.edu/node/2794"><strong>Score informed tonic identification for makam music of Turkey.</strong></a> In Proceedings of 14th International Society for Music Information Retrieval Conference, pages 175–180, Curitiba, Brazil.</span>
-</li><br />
-
-<li>
-
-  <span style="font-weight: 400;">Holzapfel, A., Şimşekli U., Şentürk S., and Cemgil A. T. (2015). <a href="http://mtg.upf.edu/node/3202"><strong>Section-level Modeling of Musical Audio for Linking Performances to Scores in Turkish Makam Music.</strong></a> In Proceedings of IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 141–145, Brisbane, Australia.</span>
-</li><br />
-
-<li>
-
-  <span style="font-weight: 400;">Şentürk, S., Holzapfel, A., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/2877"><strong>Linking scores and audio recordings in makam music of Turkey.</strong></a> Journal of New Music Research, 43:34–52.</span>
-</li><br />
-
-<li>
-
-  <span style="font-weight: 400;">Şentürk, S., Gulati, S., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/2967"><strong>Towards alignment of score and audio recordings of Ottoman-Turkish makam music.</strong></a> In Proceedings of 4th International Workshop on Folk Music Analysis, pages 57–60, Istanbul, Turkey.</span>
-</li><br />
-
-<li>
-
-  <span style="font-weight: 400;">B. Bozkurt (2015). <a href="http://compmusic.upf.edu/system/files/static_files/Bozkurt_SeyirAnalysis_BookChapter_2015.pdf"><strong>Computational analysis of overall melodic progression for Turkish Makam Music.</strong></a> In Penser l’improvisation, pages 289–298, Delatour France, Sampzon.</span>
-</li><br />
-
+          {%endfor%}
+        {%endfor%}
     </div>
+    {% endif%}
+    {% if results == False %}
+    <div id="no-results" >
+        <h3> There are no results for this search. 
+        </h3>
+    </div>
+    {% endif %}
+
+    {% if results|length == 0 %}
+    
+    <div id="initial" >
+            <h1>Welcome to Dunya Makam</h1>
+      <p>
+Dunya-makam is a web application for the analysis and discovery of Turkish makam music, aimed to showcase various technologies developed within the CompMusic project.
+</p> 
+
+You can navigate the analyzed collection using <strong>the search bar and the filters</strong> at the top of the page. If you want a quick preview of the application, you can jump to the examples below:
+      </p>
+      <h2>Some Examples</h2>
+      <ul>
+        <li><a href="/makam/recording/dfc16e22-0aae-4bd0-a32c-5c000130e96a">Sevdi Gönlüm Ey Melek Sima Seni</a> by <em>Hafız Kemal Bey</em></li>
+        <li><a href="/makam/recording/727cff89-392f-4d15-926d-63b2697d7f3f">Gel Güzelim Çamlıca'ya</a> by <em>Münir Nurettin Selçuk</em></li>
+        <li><a href="/makam/recording/4948c836-5485-4a69-8bdc-11fe4559e78f">Muhayyer Sazsemaisi</a> by <em>Necati Çelik</em></li>
+        <li><a href="/makam/recording/e72db0ad-2ed9-467b-88ae-1f91edcd2c59">Uşşâk Saz Semâîsi</a> by <em>Murat Aydemir </em>&amp;<em> Derya Türkan</em></li>
+        <li><a href="/makam/recording/37dd6a6a-4c19-4a86-886a-882840d59518">Pençgah Solo</a> by  <em>Niyazi Sayın</em></li>
+      </ul>
+ <p>
+ In the <a href="/makam/overview">Overview page</a>, we give an explanation of Dunya Makam web application. 
+ </p>
+ <p>The <a href="/makam/stats">Statistics page</a> describes the corpus we have analysed.
+</p> 
+<p>
+The <a href="/makam/results">Results page</a> provides some of the basic statistics obtained by the analysis.
+
+</p>        
+    {% endif%}
     <div class="clearfix"></div>
 </div>
-<div id="filterdialog" title="Filter">
+<div class="modal-container">
+    <div class="modal" >
+      <div class="modal-title" >Advanced filtering</div>
+      <div class="modal-close" >X</div>
+      <div class="modal-nav" >
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=form">Musical form</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=usul">Usul</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=makam">Makam</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=artist">Lyricist/Composer</a>
+        </div>
+        <div class="modal-tab" >
+          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=performer">Performer</a>
+        </div>
+      </div>
+      <div class="modal-content">
+      </div>
+    </div>
+</div>
+<div id="logindialog" title="Login required">
+  <p>You need to log in to play a recording</p>
 </div>
 {% endblock %}
 

@@ -48,7 +48,7 @@ def autocomplete(term):
     params = {}
     params['wt'] = 'json'
     params['q'] = term
-    params['fl'] = "title_t,type_s,object_id_i"
+    params['fl'] = "title_t,type_s,object_id_i,mbid_s"
     path = 'suggest/?%s' % pysolr.safe_urlencode(params, True)
     response = solr._send_request('get', path)
     res = json.loads(response)

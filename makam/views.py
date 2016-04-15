@@ -47,6 +47,25 @@ def searchcomplete(request):
             error = True
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
+def results(request):
+    term = request.GET.get("q")
+    ret = {}
+    error = False
+    if term:
+        try:
+            suggestions = search.autocomplete(term)
+            print suggestions
+            for l in suggestions:
+                if l['type_s'] not in ret:
+                    ret[l['type_s']] = []
+                if 'mbid_s' not in l:
+                    l['mbid_s'] = ''
+                ret[l['type_s']].append({'label': l['title_t'], 'id': l['object_id_i'], 'mbid': l['mbid_s']})
+        except pysolr.SolrError:
+            error = True
+    return render(request, "makam/results.html", {'results': ret, 'error': error})
+
+
 def main(request):
     q = request.GET.get('q', '')
 

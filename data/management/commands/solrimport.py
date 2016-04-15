@@ -47,6 +47,8 @@ class Command(BaseCommand):
                     aliases.append(i.common_name)
                 if aliases:
                     doc["alias_txt"] = aliases
+            if hasattr(i, "mbid"):
+                    doc["mbid_s"] = i.mbid
             insert.append(doc)
         return insert
 
@@ -62,6 +64,7 @@ class Command(BaseCommand):
         makams = makam.models.Makam.objects.filter(work__in=works.all()).distinct()
         forms = makam.models.Form.objects.filter(work__in=works).distinct()
         usuls = makam.models.Usul.objects.filter(work__in=works).distinct()
+        recordings = makam.models.Recording.objects.filter(works__in=works).distinct()
 
         insertcomposer = self.make_search_data(composers, "composer", "name")
         insertlyricist = self.make_search_data(lyricists, "lyricist", "name")
@@ -70,6 +73,7 @@ class Command(BaseCommand):
         insertmakam = self.make_search_data(makams, "makam", "name")
         insertform = self.make_search_data(forms, "form", "name")
         insertusul = self.make_search_data(usuls, "usul", "name")
+        insertrecording = self.make_search_data(recordings, "recording", "title")
 
         self.solr_m.add(insertartist)
         self.solr_m.add(insertcomposer)
@@ -78,6 +82,7 @@ class Command(BaseCommand):
         self.solr_m.add(insertmakam)
         self.solr_m.add(insertform)
         self.solr_m.add(insertusul)
+        self.solr_m.add(insertrecording)
         self.solr_m.commit()
 
     def create_carnatic_search_index(self):
