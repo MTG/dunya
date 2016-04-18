@@ -319,6 +319,9 @@ $('.change-filter').click(function(){
         }else if( cat == "form"){
           url += "form="+oid;
           window.location.href = url;
+        }else{
+          url += "q=" + encodeURIComponent(ui.item.label);
+          window.location.href = url;
         }
       },
     });
@@ -327,7 +330,7 @@ $('.change-filter').click(function(){
 </script>
 {% endblock%}
 {%block extra-search%}
-<form method="get" action="{% url 'work-list' %}">        
+<form method="get" action="{% url 'makam-results' %}">
   <label for="query"></label>
     <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
     <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
