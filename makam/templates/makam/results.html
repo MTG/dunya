@@ -320,7 +320,8 @@ $('.change-filter').click(function(){
           url += "form="+oid;
           window.location.href = url;
         }else{
-          url += "q=" + encodeURIComponent(ui.item.label);
+          var name = ui.item.label.split(' - ')
+          url += "q=" + encodeURIComponent(name[0]);
           window.location.href = url;
         }
       },
@@ -402,9 +403,9 @@ $('.change-filter').click(function(){
           {% elif k == 'usul' %}
             <tr class="work"><td height="30"><a href='/makam/works?usul={{i.id}}'>{{ i.label }}</a></td>
           {% elif k == 'composition' %}
-            <tr class="work"><td height="30"><a href="/makam/works?q={{i.label|safe}}">{{ i.label }}</a></td>
+            <tr class="work"><td height="30"><a href="/makam/works?q={{i.label|safe}}">{{ i.label }} - {{i.composer}}</a></td>
           {% elif k == 'recording' %}
-            <tr class="work"><td height="30"><a href="/makam/recording/{{ i.mbid }}">{{ i.label }}</a></td>
+            <tr class="work"><td height="30"><a href="/makam/recording/{{ i.mbid }}">{{ i.label }} - {{i.artists}}</a></td>
           {% endif %}
         </table>
           {%endfor%}

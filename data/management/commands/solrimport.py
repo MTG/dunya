@@ -29,26 +29,45 @@ class Command(BaseCommand):
     solr_h = pysolr.Solr(settings.SOLR_URL + "/hindustani")
     solr_m = pysolr.Solr(settings.SOLR_URL + "/makam")
 
+    def _create_document(self, elem, etype, namefield):
+        doc = {"id": "%s_%s" % (etype, elem.pk),
+               "object_id_i": elem.pk,
+               "type_s": etype,
+               "title_t": getattr(elem, namefield),
+               "doctype_s": "search"
+               }
+        if hasattr(elem, "aliases"):
+            aliases = []
+            for a in elem.aliases.all():
+                if hasattr(a, "name"):
+                    aliases.append(a.name)
+            if hasattr(elem, "common_name"):
+                aliases.append(elem.common_name)
+            if aliases:
+                doc["alias_txt"] = aliases
+        if hasattr(elem, "mbid"):
+                doc["mbid_s"] = elem.mbid
+        return doc
+
     def make_search_data(self, data, etype, namefield):
         insert = []
         for i in data:
-            doc = {"id": "%s_%s" % (etype, i.pk),
-                   "object_id_i": i.pk,
-                   "type_s": etype,
-                   "title_t": getattr(i, namefield),
-                   "doctype_s": "search"
-                   }
-            if hasattr(i, "aliases"):
-                aliases = []
-                for a in i.aliases.all():
-                    if hasattr(a, "name"):
-                        aliases.append(a.name)
-                if hasattr(i, "common_name"):
-                    aliases.append(i.common_name)
-                if aliases:
-                    doc["alias_txt"] = aliases
-            if hasattr(i, "mbid"):
-                    doc["mbid_s"] = i.mbid
+            insert.append(self._create_document(i, etype, namefield))
+        return insert
+
+    def make_work_search_data(self, data):
+        insert = []
+        for i in data:
+            doc = self._create_document(i, "composition", "title")
+            doc["composer_s"] =  ", ".join([c.name for c in i.composerlist().all()])
+            insert.append(doc)
+        return insert
+
+    def make_recording_search_data(self, data):
+        insert = []
+        for i in data:
+            doc = self._create_document(i, "recording", "title")
+            doc["artists_s"] = ", ".join([c.artist.name for c in i.instrumentperformance_set.all()])
             insert.append(doc)
         return insert
 
@@ -69,11 +88,11 @@ class Command(BaseCommand):
         insertcomposer = self.make_search_data(composers, "composer", "name")
         insertlyricist = self.make_search_data(lyricists, "lyricist", "name")
         insertartist = self.make_search_data(artists, "performer", "name")
-        insertwork = self.make_search_data(works, "composition", "title")
+        insertwork = self.make_work_search_data(works)
         insertmakam = self.make_search_data(makams, "makam", "name")
         insertform = self.make_search_data(forms, "form", "name")
         insertusul = self.make_search_data(usuls, "usul", "name")
-        insertrecording = self.make_search_data(recordings, "recording", "title")
+        insertrecording = self.make_recording_search_data(recordings)
 
         self.solr_m.add(insertartist)
         self.solr_m.add(insertcomposer)

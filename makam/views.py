@@ -42,7 +42,17 @@ def searchcomplete(request):
     if term:
         try:
             suggestions = search.autocomplete(term)
-            ret = [{"id": l['object_id_i'], "label": l['title_t'], "category": l['type_s']} for l in suggestions]
+            ret = []
+            for l in suggestions:
+                label = l['title_t']
+                if 'composer_s' in l:
+                    label += ' - ' +l['composer_s']
+                if 'artists_s' in l:
+                    artists = l['artists_s']
+                    if len(artists) > 40:
+                        artists = artists[:40] + "..."
+                    label += ' - ' + artists
+                ret.append({"id": l['object_id_i'], "label": label, "category": l['type_s']})
         except pysolr.SolrError:
             error = True
     return HttpResponse(json.dumps(ret), content_type="application/json")
@@ -54,13 +64,20 @@ def results(request):
     if term:
         try:
             suggestions = search.autocomplete(term)
-            print suggestions
             for l in suggestions:
+                doc = {'label': l['title_t'], 'id': l['object_id_i'],}
                 if l['type_s'] not in ret:
                     ret[l['type_s']] = []
+
                 if 'mbid_s' not in l:
                     l['mbid_s'] = ''
-                ret[l['type_s']].append({'label': l['title_t'], 'id': l['object_id_i'], 'mbid': l['mbid_s']})
+                if 'composer_s' in l:
+                    doc['composer'] = l['composer_s']
+                if 'artists_s' in l:
+                    doc['artists'] = l['artists_s']
+ 
+                doc['mbid'] = l['mbid_s']
+                ret[l['type_s']].append(doc)
         except pysolr.SolrError:
             error = True
     return render(request, "makam/results.html", {'results': ret, 'error': error})

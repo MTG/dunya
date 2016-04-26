@@ -136,7 +136,8 @@ $( "#work-query" ).catcomplete({
           url += "form="+oid;
           window.location.href = url;
         }else{
-          url += "q=" + encodeURIComponent(ui.item.label);
+          var name = ui.item.label.split(' - ')
+          url += "q=" + encodeURIComponent(name[0]);
           window.location.href = url;
         }
       },
