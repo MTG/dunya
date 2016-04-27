@@ -319,6 +319,9 @@ $('.change-filter').click(function(){
         }else if( cat == "form"){
           url += "form="+oid;
           window.location.href = url;
+        }else if( cat == "recording"){
+          url = "/makam/recording/" + ui.item.mbid;
+          window.location.href = url;
         }else{
           var name = ui.item.label.split(' - ')
           url += "q=" + encodeURIComponent(name[0]);

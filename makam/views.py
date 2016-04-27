@@ -52,7 +52,10 @@ def searchcomplete(request):
                     if len(artists) > 40:
                         artists = artists[:40] + "..."
                     label += ' - ' + artists
-                ret.append({"id": l['object_id_i'], "label": label, "category": l['type_s']})
+                if 'mbid_s' not in l:
+                    l['mbid_s'] = ''
+
+                ret.append({"id": l['object_id_i'], "label": label, "category": l['type_s'], "mbid": l['mbid_s']})
         except pysolr.SolrError:
             error = True
     return HttpResponse(json.dumps(ret), content_type="application/json")
