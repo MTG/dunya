@@ -342,146 +342,15 @@ function spectrogram(context, view, color) {
 }
 
 function plotscore(index, color) {
-        
-    $("#no-score").hide(); 
-    $("#score-cont").show(); 
-    if (!scoreLoaded ){
-      for (w in worksdata){
-        $("#score-cont").append('<div id="score-'+w+'"></div>');
-        for(var i=1; i<=numbScore[w];i++){
-            $("#score-"+w).append('<div class="score-page" id="score-'+w+'-'+i+'"></div>');
-        }    
-        for(var i=1; i<=numbScore[w];i++){
-            score = documentsurl + w + scoreurl.replace(/part=[0-9]+/, "part="+i);
-            $.ajax(score, {dataType: "text", type: "GET", 
-                context: {work: w, score:i},
-                success: function(data, textStatus, xhr) {
-                  
-                  data = data.replace('</svg>','<rect class="marker" x="0" y="0" width="0" height="0" ry="0.0000" style="fill:blue;fill-opacity:0.1;stroke-opacity:0.9" /></svg>');
-                  
-                  $("#score-"+this.work+"-"+this.score).append(data);
-                  var bars = []
-                  $("#score-"+this.work+"-"+this.score).find("rect[width='0.1900'][y='-2.0000'][height='4.0000']").each(function(){
-                      var pos = $(this).attr('transform').split("(");
-                      var xy = pos[1].split(", ");
-                      bars.push([parseInt(xy[0]), parseInt(xy[1]), $(this)]);
-                  });
-                  if (! (this.work in barPages)){
-                      barPages[this.work] = {};
-                  }
-                  barPages[this.work][this.score] = bars;
-   
-                 $('svg').each(function () { 
-                   
-                   $(this)[0].setAttribute('width', '230mm') ; 
-                   $(this)[0].setAttribute('height', '142mm') ; 
-                   $(this)[0].setAttribute('viewBox', '0 0 115 65') 
-                 }); 
-                if(document.URL.indexOf("show-phrase")>=0){     
-                 
-                 for (var p in phrase[this.work]){
-                   for(var j=0; j<aligns.length;j++){
-                       if (aligns[j]['index'] == phrase[this.work][p][0]){
-                         highlightPhraseSegm(this.work, j);
-                         break;
-                       }
-                   }
-                }
-                }
-            }, error: function(xhr, textStatus, errorThrown) {
-               console.debug("xhr error " + textStatus);
-               console.debug(errorThrown);
-            }});
-        }
-        
-      }
-      scoreLoaded = true;
-    }else{
-      if (aligns[index]){
-          var find = false;
-          var curr = $("#score-"+currentWork).find("a[id^=l" + aligns[index]['line'] + "-f]");
-          curr.each(function(){
-    
-            highlightNote($(this), index);
-          });
-        }
-    }
-}
-function highlightPhraseSegm(w, j){
-  $("#score-"+w).find("a[id^=l" + aligns[j]['line'] + "-f]").each( function(){
-     note = $(this); 
-     if(parseInt(note.attr('from')) <= aligns[j]['pos'] && parseInt(note.attr('to')) > aligns[j]['pos']){
-       note.attr('highlight-segm','1');    
-     }
-   });
+    $('.highlight').removeClass('highlight');
+    $('#syllable-'+index).addClass('highlight');
 }
 function disableScore(currentTime){
     if (currentTime > (endPeriod+1) || currentTime < (startPeriod-1)){
+        $('.highlight').removeClass('highlight');
         $("#no-score").show(); 
         $("#score-cont").hide(); 
     }
-}
-function highlightNote(note, index){
-      if (note.find('path').length){
-        $("a[highlight='1'").attr('highlight','0');
-        console.log(note.next().find('text'));
-        var pos = note.find('path').attr('transform').split("(");
-        var xy = pos[1].replace(") scale","").split(',');
-
-        var prev = null;
-        var prevmin= Number.MAX_VALUE;
-        var prevx = 0;
-        var prevy = 0;
-        var next = null;
-        var nextmin= Number.MAX_VALUE;
-        var nextx = 0;
-        var nexty = 0;
-      
-        var page = parseInt(note.closest(".score-page").attr('id').replace("score-"+currentWork+"-",''));
-        var bars = barPages[currentWork][page];
-        for(var i=0;i<bars.length; i++){
-         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (parseInt(xy[0]) - bars[i][0]) > 0 && prevmin > (parseInt(xy[0])- bars[i][0])){
-             prevmin = parseInt(xy[0]) - bars[i][0];
-             prev = bars[i][2];
-             prevx = bars[i][0];
-             prevy = bars[i][1];
-
-         }
-         if(Math.abs(parseInt(xy[1]) - bars[i][1]) <5 &&  (bars[i][0] - parseInt(xy[0])) > 0 && nextmin > (bars[i][0] - parseInt(xy[0]))){
-             nextmin = bars[i][0] - parseInt(xy[0]) ;
-             next = bars[i][2];
-             nextx = bars[i][0];
-             nexty = bars[i][1];
-         }
-        }
-        
-        note.attr('highlight','1');    
-        $(".score-page").hide();
-        var currScore = $("#score-"+currentWork+"-"+page);
-        currScore.show();
-        $("#score-"+currentWork+"-"+(page+1)).each(function(){$(this).show()});
-        
-        var y = -3 * nexty;
-        if (nexty > 15){
-            
-            y = y * 2;
-        }
-        if(next && prev){
-           currScore.find('.marker').attr('x',xy[0]-1);
-           currScore.find('.marker').attr('y', prevy-4);
-           currScore.find('.marker').attr('width','4');
-           currScore.find('.marker').attr('height',"10");
-           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
-           $('#score-cont').css("top", y );
-        }else if(next && prev==null){
-           currScore.find('.marker').attr('x', 0);
-           currScore.find('.marker').attr('y', nexty-4);
-           currScore.find('.marker').attr('width',nextx);
-           currScore.find('.marker').attr('height',"10");
-           currScore.find('.marker').css('fill',colorsNames[aligns[index]['color']]);
-           $('#score-cont').css("top", y);
-        }
-      }
 }
 function showNoteOnHistogram(note, time){
    if (!note ){
@@ -551,7 +420,7 @@ function updateScoreProgress(currentTime){
             if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
                 endPeriod = aligns[lastIndex+1]['endtime'];
                 startPeriod = aligns[lastIndex+1]['starttime'];           
-                plotscore(lastIndex)   
+                plotscore(aligns[lastIndex]['index'])   
                 lastIndex = lastIndex+1;
                 updated = true;
             }
@@ -562,7 +431,7 @@ function updateScoreProgress(currentTime){
                     endPeriod = aligns[i]['endtime'];
                     startPeriod = aligns[i]['starttime'];
                     color = aligns[i]['color'];
-                    plotscore(i, color); 
+                    plotscore(aligns[i]['index'], color); 
                     lastIndex = i;
                     return;
                 }
@@ -846,29 +715,23 @@ function loaddata() {
             startPeriod = -1;
            
             aligns = []
-            for (w in indexmap){
-              for (var i=0; i<indexmap[w].length;i++){
-                  var vals = [];
-                  if (indexmap[w][i][0] in symbtrIndex2time){
-                     vals = symbtrIndex2time[indexmap[w][i][0]];
-                  }
-                  for (var j=0;j<vals.length;j++){
-                      var color = "default";
-                      for (var s = 0; s < sections[w].length; s++) {
-                          var t0 = sections[w][s]['time'][0][0];
-                          var t1 = sections[w][s]['time'][1][0];
-                          if (vals[j]['start'] > t0 && vals[j]['end'] < t1){
-                              color = sections[w][s]['name'];
-                              break;
-                          }
-                       }
-                      aligns.push({'index':indexmap[w][i][0], 'starttime': vals[j]['start'], 'endtime': vals[j]['end'], "color":color, "pos": indexmap[w][i][1], "line": indexmap[w][i][2]});
-                    }
+            alignment = JSON.parse(alignment);
+            for (i in alignment['alignedLyricsSyllables']){
+              var elem = alignment['alignedLyricsSyllables'][i];
+              var html = "<div class='lyric-line'>";
+              for (j in elem){
+                for (k in elem[j]){
+                  html += "<span class='lyric' id=syllable-"+ elem[j][k][3] +">" + elem[j][k][2]+ "</span>";
+                  aligns.push({'index':elem[j][k][3], 'starttime': elem[j][k][0], 'endtime': elem[j][k][1]});
+                } 
               }
-           }
+              html += "</div>";
+              $('#score').append(html)
+
+            }
            aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
-        
+           
            if (histogramLoaded && notemodelsLoaded) {
                $('#dialog').dialog('close');
            }
@@ -883,7 +746,7 @@ function drawdata(disablePitch) {
     }
     plotsmall();
     if (!scoreLoaded ){
-      plotscore(1);
+      //plotscore(1);
     }
     var start = beginningOfView;
     var skip = secondsUsedPerView/ 2;
