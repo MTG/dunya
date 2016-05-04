@@ -181,6 +181,9 @@ def filter_directory(request):
     elif elem == "performer":
         e_perf = models.Artist.objects.all()
         elems = e_perf.order_by('name').distinct()
+        e_perf = models.Artist.objects.filter(instrumentperformance__recording__recordingwork__work__in=works.all()).distinct() | \
+                 models.Artist.objects.filter(recording__recordingwork__work__in=works.all()).distinct()
+ 
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
 def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
