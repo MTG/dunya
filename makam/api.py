@@ -49,11 +49,17 @@ class ReleaseRecordingInnerSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'track']
 
 class RecordingInnerSerializer(serializers.ModelSerializer):
-    artists = ArtistInnerSerializer('artists', many=True)
+    artists = serializers.SerializerMethodField('artists_list')
 
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'artists']
+
+    def artists_list(self, ob):
+        artists = [perf.artist for perf in ob.instrumentperformance_set.all()]
+        for a in ob.artists.all():
+            artists.append(a)
+        return ArtistInnerSerializer(artists, many=True).data
 
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:

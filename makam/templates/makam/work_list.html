@@ -247,15 +247,19 @@ $( document ).ready(function() {
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
+       var added = 0;
        var artists="";
        var filtered = false;
        {% if not perf %}
        filtered = true;
        {% endif %}
        for(var j=0;j<art.length;j++){
-         artists += art[j]['name'];
-         if (j != (art.length-1)){
-           artists += ", ";
+         if (added < 2){
+           added++;
+           artists += art[j]['name'];
+           if (j != (art.length-1)){
+             artists += ", ";
+           }
          }
          {% if perf %}
          if (art[j]['name'].toLowerCase() == '{{perf.name}}'.toLowerCase()){
