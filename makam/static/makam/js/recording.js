@@ -420,7 +420,6 @@ function disableScore(currentTime){
     }
 }
 function highlightNote(note, index){
-    console.log(note)  
     if (note.find('path').length){
         $("a[highlight='1'").attr('highlight','0');
         var pos = note.find('path').attr('transform').split("(");
@@ -549,7 +548,7 @@ function updateScoreProgress(currentTime){
             if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
                 endPeriod = aligns[lastIndex+1]['endtime'];
                 startPeriod = aligns[lastIndex+1]['starttime'];           
-                plotscore(lastIndex)   
+                plotscore(aligns[i]['index'])   
                 lastIndex = lastIndex+1;
                 updated = true;
             }
@@ -560,7 +559,7 @@ function updateScoreProgress(currentTime){
                     endPeriod = aligns[i]['endtime'];
                     startPeriod = aligns[i]['starttime'];
                     color = aligns[i]['color'];
-                    plotscore(i, color); 
+                    plotscore(aligns[i]['index'], color); 
                     lastIndex = i;
                     return;
                 }
