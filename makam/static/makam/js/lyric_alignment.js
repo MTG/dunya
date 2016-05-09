@@ -486,7 +486,7 @@ function plotsmall() {
         context.fillStyle = colour;
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
-            var txt = d['name'];
+            var txt = d['melodicStructure'];
             var s = d['time'][0];
             var e = d['time'][1];
             context.globalAlpha = 0.2;
@@ -511,20 +511,16 @@ function plotsmall() {
         //smallFill(luogudata, "#0f0");
     
         // Draw sections on smallcanvas
-        var sec = [];
-        for (w in sections){
-            sec = sec.concat(sections[w]['links'])
-        }
         colorsNames = {};
         currColor = 0;
-        for (var i = 0; i < sec.length; i++) {
-                var name = sec[i]['name'];
+        for (var i = 0; i < sections.length; i++) {
+                var name = sections[i]['melodicStructure'];
                 if (!(name in colorsNames)){
                     colorsNames[name]=colors[currColor];
                     currColor += 1;
                 }
         }
-        smallFill(sec, "#0ff", colorsNames);
+        smallFill(sections, "#0ff", colorsNames);
     }
 }
 
@@ -688,17 +684,6 @@ function loaddata() {
        $('#dialog').html('This recording is not analyzed yet.')
     }});
 
-    $.ajax(sectionsurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
-            sections = data; 
-            loadingDone++;
-            dodraw();
-    }, error: function(xhr, textStatus, errorThrown) {
-       console.debug("xhr error " + textStatus);
-       console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
-    }});
-    
     function dodrawHistogram() {
         if (histogramLoaded && notemodelsLoaded) {
             plothistogram();
@@ -709,7 +694,7 @@ function loaddata() {
         }
     }
     function dodraw() {
-        if (loadingDone == 4 && indexmapDone && partsDone) {
+        if (loadingDone == 3 && indexmapDone && partsDone) {
             
             endPeriod = 0;
             startPeriod = -1;
@@ -740,6 +725,8 @@ function loaddata() {
 
             }
            aligns.sort(function(a, b){return a['index']-b['index']});
+           sections = alignment['sectionlinks']['section_annotations'];
+           console.log(sections)
            drawdata(false);
            
            if (histogramLoaded && notemodelsLoaded) {
@@ -978,9 +965,9 @@ function playNextSection(right){
   var ends = []
   var currentTime=pagesound.position / 1000 ;
   for (w in sections){
-    for (var s = 0; s < sections[w]['links'].length; s++) {
-       starts.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
-        ends.push(parseFloat(sections[w]['links'][s]['time'][1][0]));
+    for (var s = 0; s < sections['links'].length; s++) {
+       starts.push(parseFloat(sections['links'][s]['time'][0][0]));
+        ends.push(parseFloat(sections['links'][s]['time'][1][0]));
     }  
   }
   starts.sort(function(a, b){ return a - b;});
