@@ -554,6 +554,8 @@ function updateScoreProgress(currentTime){
             }
         }
         if(!updated){
+          console.log(currentTime)
+          console.log(aligns)
             for (var i=0; i<aligns.length; i++){
                 if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
                     endPeriod = aligns[i]['endtime'];
@@ -778,22 +780,20 @@ function loaddata() {
     }});
     $.ajax(notesalignurl, {dataType: "json", type: "GET",
     success: function(data, textStatus, xhr) {
-        var elems = data; 
-        symbtrIndex2time = {};
+        var elems = data;
+
+        color = "default";
+        aligns = []
         pitchintervals = [];
         for (w in elems){
           var n = elems[w];
           for (var i=0; i<n.length;i++){
-              if(! (w in symbtrIndex2time)){
-                  symbtrIndex2time[w] = {};
-              }
-              if (!(n[i].IndexInScore in symbtrIndex2time[w])){
-                  symbtrIndex2time[w][n[i].index_in_score] = [];
-              }
-              symbtrIndex2time[w][n[i].index_in_score].push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1])});
-              pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['Symbol']});
-          }
+            aligns.push({'index': n[i].index_in_score, 'starttime': parseFloat(n[i].interval[0]), 'endtime': parseFloat(n[i].interval[1]), "color":color});
+            pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['Symbol']});
+            }
         }
+        aligns.sort(function(a, b){return a['index']-b['index']});
+
         loadingDone++;
         pitchintervals.sort(function(a, b){return a['end']-b['end']});
         dodraw();
@@ -826,31 +826,9 @@ function loaddata() {
     function dodraw() {
         if (loadingDone == 4 && partsDone) {
             
-            endPeriod = 0;
-            startPeriod = -1;
+           endPeriod = 0;
+           startPeriod = -1;
            
-            aligns = []
-            for (w in symbtrIndex2time){
-              for (var index in symbtrIndex2time[w]) {
-                  if (symbtrIndex2time[w].hasOwnProperty(index)) {
-
-                    var vals = symbtrIndex2time[w][index];
-                    for (var j=0;j<vals.length;j++){
-                        var color = "default";
-                        for (var s = 0; s < sections[w].length; s++) {
-                            var t0 = sections[w][s]['time'][0][0];
-                            var t1 = sections[w][s]['time'][1][0];
-                            if (vals[j]['start'] > t0 && vals[j]['end'] < t1){
-                                color = sections[w][s]['name'];
-                                break;
-                            }
-                         }
-                        aligns.push({'index':index, 'starttime': vals[j]['start'], 'endtime': vals[j]['end'], "color":color});
-                      }
-                    }
-              }
-           }
-           aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
         
            if (histogramLoaded && notemodelsLoaded) {
