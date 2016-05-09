@@ -713,17 +713,27 @@ function loaddata() {
             
             endPeriod = 0;
             startPeriod = -1;
-           
+            addedNotes = {};
+
             aligns = []
             alignment = JSON.parse(alignment);
             for (i in alignment['alignedLyricsSyllables']){
               var elem = alignment['alignedLyricsSyllables'][i];
               var html = "<div class='lyric-line'>";
               for (j in elem){
+                var subHtml = '';
+                var add = false;
                 for (k in elem[j]){
-                  html += "<span class='lyric' id=syllable-"+ elem[j][k][3] +">" + elem[j][k][2]+ "</span>";
+                  if (!(elem[j][k][3] in addedNotes)){
+                    add = true;
+                    addedNotes[elem[j][k][3]] = '';
+                  }
+                  subHtml += "<span id=syllable-"+ elem[j][k][3] +">" + elem[j][k][2]+ "</span>";
                   aligns.push({'index':elem[j][k][3], 'starttime': elem[j][k][0], 'endtime': elem[j][k][1]});
                 } 
+                if (add){
+                  html += "<span class='lyric' >" + subHtml + "</span>"
+                }
               }
               html += "</div>";
               $('#score').append(html)
