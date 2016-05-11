@@ -1,0 +1,359 @@
+{% extends "makam/base.html" %}
+{% load staticfiles %}
+{% load makam.inline %}
+
+{% block extra_css %}
+    {% if debug %}
+    {% load less %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+    {% endif %}
+{% endblock %}
+{% block title %}Makam index | {% endblock %}
+{% block script %}
+<style>
+  .custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
+#one-column-emphasis th
+{
+  font-size: 14px;
+  font-weight: normal;
+  padding: 12px 15px;
+  color: #039;
+}
+#one-column-emphasis td
+{
+  padding: 10px 15px;
+  color: #669;
+  border-top: 1px solid #e8edff;
+  width: 300px;
+vertical-align: top;
+}
+.oce-first
+{
+  background: #d0dafd;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+}
+#one-column-emphasis tr:hover td
+{
+  color: #339;
+  background: #eff2ff;
+}
+#one-column-emphasis
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size: 12px;
+  margin-left: 45px;
+  width: 480px;
+  text-align: left;
+  border-collapse: collapse;
+}
+#one-column-emphasis th
+{
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 15px;
+  color: #039;
+}
+#one-column-emphasis td a
+{
+  color: #669;
+  text-decoration: none;
+  display:block;
+  height:100%;
+  width:100%;
+} 
+#disp-filters{
+  padding-left: 42px;
+ /* color: #339;*/
+  margin-top: 5px;
+}
+.pagination{
+margin: 10px 0 25px 42px;
+font-size: 14px;
+}
+.step-links{
+border-top: 1px black solid;
+}
+#right-display{
+  position: fixed;
+  top: 100px;
+  right: 100px;
+  border: 1px #ccc solid;
+  padding: 13px;
+  border-radius: 9px;
+  background-color: #FFFFD1;
+}
+#right-display ul{
+list-style-type: none;
+}
+#right-display a{
+  text-decoration: none;
+  color: #339;
+}
+td.recodings{
+width: 400px;
+}
+a:hover{
+  text-decoration: underline !important;
+}
+h2{
+  margin: 30px 0 0 20px;
+  color: #46433a;
+  font-size: 30px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+#results{
+margin-left: 30px;
+}
+#initial, #loading, #no-results{
+  font-family: 'Sintony', sans-serif;
+  font-size: 14px;
+  margin-left: 30px;
+  margin-top: 15px;
+  color: #46433a;
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f9f6f5;
+  border: 1px solid #ebe2df;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+}
+#initial a{
+  color: #46433a;
+}
+#next-page{
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 2px;
+margin: 20px;
+}
+.filter {
+  display: inline-block;    
+    margin-left: 30px;
+    margin-top: 15px;
+    color: #565a5c;
+    min-height: 20px;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #aaa;
+    border-radius: 0px;
+}
+.filter-sel{
+    background-color: #edefed;
+    border: 1px solid #dce0e0;   
+}
+.remove-param{
+    margin-right: 5px;
+    font-weight: bold;
+}
+.filter a{
+    text-decoration: none;
+    color: #039;
+}
+.table-front{
+    display: inline-block;
+    margin: 10px 56px;
+    border: 1px solid #ddd;
+}
+  
+.table-front th{
+    padding: 15px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+}
+.table-front td {
+    padding: 15px;
+}
+.right-align{
+    text-align: right;
+}
+.bold-text{
+    font-weight: bold;
+}
+</style>
+<script src="{% static 'makam/js/works.js' %}"></script>
+<script>
+$( document ).ready(function() {
+  // WHEN CLICK SHOW THE RECORDINGS FOR A WORK
+  $('#one-column-emphasis').on('click','div.recordings', function() {
+   var work=$(this);
+   $.ajax({
+    method: "GET",
+    url: "/api/makam/work/" +$(this).attr('data-id'),
+    dataType: "json",
+    }).done(function(data) {
+     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     work.html('<ul></ul>');
+     for(var i=0; i<data['recordings'].length; i++){
+       var art=data['recordings'][i]['artists'];
+       var artists="";
+       for(var j=0;j<art.length;j++){
+         artists += " "+art[j]['name'];
+       }
+       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
+     }
+    }); 
+      
+  });
+$(function() {      
+    $( "#combo-artist" ).combobox();
+      $( "#toggle" ).click(function() {
+          $( "#combo-artist" ).toggle();
+     });
+  });
+$("#filterdialog").dialog({
+  autoOpen: false,
+  minWidth: 700,
+  position: {
+    my: "center", 
+    at: "center top"
+  } 
+});
+$(".change-filter").click(function() {
+    var url = $(this).attr('href');
+    $.ajax(url, {dataType: "html", type: "GET",
+      success: function(data, textStatus, xhr) {
+        $("#filterdialog").html(data);
+        $("#filterdialog").dialog("open");
+      }, error: function(xhr, textStatus, errorThrown) {
+      console.debug("xhr error " + textStatus);
+      console.debug(errorThrown);
+  
+      }});
+  return false;
+});
+});
+</script>
+{% endblock%}
+{%block extra-search%}
+<form method="get" action=".">        
+    <label for="query">Work name</label>
+    <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
+    <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
+    <input type="hidden" name="makam" value="{% if makam %}{{makam.id}}{% endif %}"/>
+    <input type="hidden" name="form" value="{% if form %}{{form.id}}{% endif %}"/>
+    <input type="hidden" name="artist" value="{% if artist %}{{artist.id}}{% endif %}"/>
+</form>
+{% endblock%}
+
+{% block wrap %}
+<div id="detail"   style="min-height: 850px;">
+
+    <div id="initial">
+      <h2>Results of score informed audio analysis</h2>  
+      <p class="p1">
+      In Dunya Makam, we have mostly focused on score informed analysis and description of audio recordings. In the first step, we apply partial audio score alignment to identify the tonic frequency [1] and estimate the tempo [2]. From the tonic frequency, we also obtain the ahenk (transposition) of the performance. We link the sections in the score to the corresponding time-intervals in the audio recording [3] and then obtain a note-level alignment by applying a more precise alignment intra-section [4]. Afterwards, we correct the octave errors in the predominant melody by referring to the symbolic pitch heights of the aligned notes. From the corrected predominant melody, we compute the audio seyir model proposed in [5]. Finally, we aggregate the pitch trajectories for each note symbol from the note-level alignments and compute a pitch distribution based model for each note symbol in the performance. 
+      </p>
+      <p class="p1">
+      So far, we have aligned <strong>1767 audio-score pairs</strong>. From the alignment we have extracted around <strong>18.770 sections</strong> and <strong>745.739 notes</strong>. 
+      Below, we refer to the statistics for some of the results obtained from the whole audio-score collection using the methodology above.
+      </p>
+ 
+        <h3>Score informed tonic identification</h3>
+        <table style="text-align:center">
+          <tr>
+            <td>
+              <h4 style="vertical-align: top;" >Distribution of tonic frequencies</h4>
+            </td>
+            <td>
+              <h4 >Distribution of Ahenks</h4>
+            </td>
+          </tr>
+          <tr>
+            <td  valign="top" >
+              <img  style="vertical-align: top;" src="{% static 'makam/img/tonic.png'%}" />
+            </td>
+            <td  valign="top" >
+              <img style="vertical-align: top;" src="{% static 'makam/img/ahenk.png'%}" />
+            </td>
+          </tr>
+        </table>
+        <h3>Score informed tempo estimation</h3>
+        <table style="text-align:center">
+          <tr>
+            <td>
+              <h4 >Distribution of tempo</h4>
+              <img src="{% static 'makam/img/tempo.png'%}" />
+            </td>
+            <td  valign="top" >
+              <h4 >Distribution of tempo relative to the nominal tempo in score</h4>
+              <img src="{% static 'makam/img/rel_tempo.png'%}" />
+            </td>
+          </tr>
+        </table>
+ 
+        <h3>Audio-score alignment</h3>
+        <table style="text-align:center">
+          <tr>
+            <td>
+          <h4 >Distribution of number of notes</h4>
+        <img  style="width: 378px;"src="{% static 'makam/img/notes.png'%}" />
+          </td>
+            <td  valign="top" >
+        <h4 >Distribution of number of sections</h4>
+        <img  style="width: 402px;"src="{% static 'makam/img/sections.png'%}" />
+          </td>
+            <td  valign="top" >
+        <h4 >Distribution of number of sections duration</h4>
+        <img style="width: 427px;" src="{% static 'makam/img/durations.png'%}" />
+          </td>
+          </tr>
+          </table>
+<h4>References</h4>
+
+<ol>
+<li>
+
+  <span style="font-weight: 400;">Şentürk, S., Gulati, S., and Serra, X. (2013). <a href="http://mtg.upf.edu/node/2794"><strong>Score informed tonic identification for makam music of Turkey.</strong></a> In Proceedings of 14th International Society for Music Information Retrieval Conference, pages 175–180, Curitiba, Brazil.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Holzapfel, A., Şimşekli U., Şentürk S., and Cemgil A. T. (2015). <a href="http://mtg.upf.edu/node/3202"><strong>Section-level Modeling of Musical Audio for Linking Performances to Scores in Turkish Makam Music.</strong></a> In Proceedings of IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), pages 141–145, Brisbane, Australia.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Şentürk, S., Holzapfel, A., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/2877"><strong>Linking scores and audio recordings in makam music of Turkey.</strong></a> Journal of New Music Research, 43:34–52.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">Şentürk, S., Gulati, S., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/2967"><strong>Towards alignment of score and audio recordings of Ottoman-Turkish makam music.</strong></a> In Proceedings of 4th International Workshop on Folk Music Analysis, pages 57–60, Istanbul, Turkey.</span>
+</li><br />
+
+<li>
+
+  <span style="font-weight: 400;">B. Bozkurt (2015). <a href="http://compmusic.upf.edu/system/files/static_files/Bozkurt_SeyirAnalysis_BookChapter_2015.pdf"><strong>Computational analysis of overall melodic progression for Turkish Makam Music.</strong></a> In Penser l’improvisation, pages 289–298, Delatour France, Sampzon.</span>
+</li><br />
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div id="filterdialog" title="Filter">
+</div>
+{% endblock %}
