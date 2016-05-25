@@ -56,7 +56,9 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'artists']
 
     def artists_list(self, ob):
-        artists = [perf.artist for perf in ob.instrumentperformance_set.all()]
+        artists = []
+        if hasattr(ob, 'instrumentperformance_set'):
+            artists = [perf.artist for perf in ob.instrumentperformance_set.all()]
         for a in ob.artists.all():
             artists.append(a)
         return ArtistInnerSerializer(artists, many=True).data
