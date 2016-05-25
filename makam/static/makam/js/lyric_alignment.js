@@ -662,21 +662,10 @@ function loaddata() {
     }});
     $.ajax(notesalignurl, {dataType: "json", type: "GET",
     success: function(data, textStatus, xhr) {
-        var elems = data; 
+        var elems = data;
+        alignment = data;
         symbtrIndex2time = {};
-        pitchintervals = [];
-        for (var i=0; i<elems.length;i++){
-          var start = elems[i][0];
-          var end = elems[i][1];
-          var sid = elems[i][3];
-          if(! (sid in symbtrIndex2time)){
-            symbtrIndex2time[sid] = [];
-          }
-          symbtrIndex2time[sid].push({'start': start, 'end': end});
-          pitchintervals.push({'start': start, 'end': end});
-        }
         loadingDone++;
-        pitchintervals.sort(function(a, b){return a['end']-b['end']});
         dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -701,7 +690,6 @@ function loaddata() {
             addedNotes = {};
 
             aligns = []
-            alignment = JSON.parse(alignment);
             for (i in alignment['alignedLyricsSyllables']){
               var elem = alignment['alignedLyricsSyllables'][i];
               var html = "<div class='lyric-line'>";
@@ -726,7 +714,6 @@ function loaddata() {
             }
            aligns.sort(function(a, b){return a['index']-b['index']});
            sections = alignment['sectionlinks']['section_annotations'];
-           console.log(sections)
            drawdata(false);
            
            if (histogramLoaded && notemodelsLoaded) {
@@ -906,30 +893,6 @@ function updateCurrentPitch(){
             plothistogram();
             break;
         }
-    }
-    if(!loading && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
-        var updated = false;
-        if( pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
-            drawCurrentPitch(pitchintervals[lastpitch + 1]['start'], pitchintervals[lastpitch + 1]['end'], pitchintervals[lastpitch + 1]['note'])
-            lastnote = pitchintervals[lastpitch + 1]['note'];
-            lastpitch = lastpitch+1;
-            updated = true;
-            lastTime = futureTime;
-        }
-        if(!updated){
-            for (var i=0; i<pitchintervals.length; i++){
-                if (pitchintervals[i]['start'] < futureTime && pitchintervals[i]['end'] > futureTime){
-                    drawCurrentPitch(pitchintervals[i]['start'], pitchintervals[i]['end'], pitchintervals[i]['note'])
-                    lastnote = pitchintervals[lastpitch + 1]['note'];
-                    lastpitch = i;
-            lastTime = futureTime;
-                    return;
-                }
-            }
-        }
-    }else if(lastTime+1 < futureTime ){
-        // If no update since last second then hide current pitch
-        hideCurrentPitch();
     }
     showNoteOnHistogram(lastnote, futureTime);
     updateFrequencyMarker(futureTime);
