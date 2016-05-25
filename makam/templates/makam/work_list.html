@@ -475,19 +475,19 @@ The <a href="/makam/results">Results page</a> provides some of the basic statist
       <div class="modal-close" >X</div>
       <div class="modal-nav" >
         <div class="modal-tab" >
-          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=form">Musical form</a>
+          <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Musical form</a>
         </div>
         <div class="modal-tab" >
-          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=usul">Usul</a>
+          <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=usul">Usul</a>
         </div>
         <div class="modal-tab" >
-          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=makam">Makam</a>
+          <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=makam">Makam</a>
         </div>
         <div class="modal-tab" >
-          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=artist">Lyricist/Composer</a>
+          <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=artist">Lyricist/Composer</a>
         </div>
         <div class="modal-tab" >
-          <a class="change-filter" href="/makam/filter/popup?performer=&form=&artist=&q=&makam=&usul=&elem=performer">Performer</a>
+          <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=performer">Performer</a>
         </div>
       </div>
       <div class="modal-content">
