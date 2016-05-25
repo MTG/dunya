@@ -243,7 +243,7 @@ $( document ).ready(function() {
     url: "/api/makam/work/" +$(this).attr('data-id'),
     dataType: "json",
     }).done(function(data) {
-     $('.recordings .recordings-ret').parent().each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     $('.recordings .recordings-ret').parent().parent().each(function(){$(this).html('<a href="#"">Show</a>')});; 
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
