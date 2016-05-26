@@ -317,9 +317,9 @@ def lyric_alignment(request, uuid, title=None):
     except docserver.util.NoFileException:
         akshara = None
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(mbid, "dunyapitchmakam", "pitch", version="0.2")
+        pitchtrackurl = docserver.util.docserver_get_url(mbid, "tomatodunya", "pitch", version="0.1")
     except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "dunyapitchmakam", "pitch", "0.2")
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "tomatodunya", "pitch", "0.1")
      
     try:
         notesalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
