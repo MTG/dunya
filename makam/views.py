@@ -295,15 +295,15 @@ def lyric_alignment(request, uuid, title=None):
     phraseurl = "/segmentphraseseg?v=0.1&subtype=segments"
 
     try:
-        wave = docserver.util.docserver_get_url(mbid, "makamaudioimages", "waveform8", 1, version=0.2)
+        wave = docserver.util.docserver_get_url(mbid, "makamaudioimages", "waveform8", 1, version=0.3)
     except docserver.util.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(mbid, "makamaudioimages", "spectrum8", 1, version=0.2)
+        spec = docserver.util.docserver_get_url(mbid, "makamaudioimages", "spectrum8", 1, version=0.3)
     except docserver.util.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(mbid, "makamaudioimages", "smallfull", version=0.2)
+        small = docserver.util.docserver_get_url(mbid, "makamaudioimages", "smallfull", version=0.3)
     except docserver.util.NoFileException:
         small = None
     try:
