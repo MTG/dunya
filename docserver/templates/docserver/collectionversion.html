@@ -13,6 +13,9 @@
 <h3>{{type|title}} files</h3>
 
 <ul>
+
+{%if unprocessedfiles %}
+  
 {% for f in unprocessedfiles %}
 <li><a href="{% url 'docserver-file' collection.slug f.external_identifier modulever.pk %}">{{f}}</a> (<a href="?run={{f.external_identifier}}">Process</a>)</li>
   <ul>
@@ -24,10 +27,46 @@
 </ul>
 {% endfor %}
 
-{% for f in processedfiles %}
-<li><a href="{% url 'docserver-file' collection.slug f.external_identifier modulever.pk %}">{{f}}</a></li>
-{% endfor %}
-</ul>
+<div class="pagination">
+    <span class="step-links">
+        {% if unprocessedfiles.has_previous %}
+            <a href="?page={{ unprocessedfiles.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ unprocessedfiles.number }} of {{ unprocessedfiles.paginator.num_pages }}.
+        </span>
+
+        {% if unprocessedfiles.has_next %}
+            <a href="?page={{ unprocessedfiles.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{%endif%}
+
+
+{%if processedfiles %}
+  {% for f in processedfiles %}
+  <li><a href="{% url 'docserver-file' collection.slug f.external_identifier modulever.pk %}">{{f}}</a></li>
+  {% endfor %}
+  </ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if processedfiles.has_previous %}
+            <a href="?page={{ processedfiles.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ processedfiles.number }} of {{ processedfiles.paginator.num_pages }}.
+        </span>
+
+        {% if processedfiles.has_next %}
+            <a href="?page={{ processedfiles.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{%endif%}
 
 {% endblock %}
 

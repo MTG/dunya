@@ -628,6 +628,7 @@ def collectionfiles(request, slug):
 def collectionversion(request, slug, version, type):
     collection = get_object_or_404(models.Collection, slug=slug)
     mversion = get_object_or_404(models.ModuleVersion, pk=version)
+    page = request.GET.get('page')
 
     run = request.GET.get("run")
     if run:
@@ -639,8 +640,22 @@ def collectionversion(request, slug, version, type):
     unprocessedfiles = []
     if type == "processed":
         processedfiles = mversion.processed_files(collection)
+        paginator = Paginator(processedfiles, 25)
+        try:
+            processedfiles = paginator.page(page)
+        except PageNotAnInteger:
+            processedfiles = paginator.page(1)
+        except EmptyPage:
+            processedfiles = paginator.page(paginator.num_pages)
     elif type == "unprocessed":
         unprocessedfiles = mversion.unprocessed_files(collection)
+        paginator = Paginator(unprocessedfiles, 25)
+        try:
+            unprocessedfiles = paginator.page(page)
+        except PageNotAnInteger:
+            unprocessedfiles = paginator.page(1)
+        except EmptyPage:
+            unprocessedfiles = paginator.page(paginator.num_pages)
     ret = {"collection": collection,
            "modulever": mversion,
            "type": type,
