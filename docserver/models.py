@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.db import models
+from django.db import models, connection
 from django.conf import settings
 from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
@@ -445,6 +445,32 @@ class ModuleVersion(models.Model):
                 sourcefiles__file_type=self.module.source_type)
             qs = qs.exclude(derivedfiles__module_version=self)
             return qs.distinct()
+
+    def processed_files_count(self):
+        q = '''SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d''' % (self.id)
+        cursor = connection.cursor()
+        cursor.execute(q)
+        row = cursor.fetchone()
+        return row[0]
+
+    def unprocessed_files_count(self):
+        collections = self.module.collections.all()
+        coll_ids = [str(c.id) for c in collections]
+        q = '''
+SELECT COUNT(DISTINCT "docserver_document"."id") 
+FROM "docserver_document" 
+INNER JOIN "docserver_sourcefile" ON ( "docserver_document"."id" = "docserver_sourcefile"."document_id" )
+INNER JOIN "docserver_document_collections" ON ( "docserver_document"."id" = "docserver_document_collections"."document_id" ) 
+WHERE ("docserver_sourcefile"."file_type_id" = %d 
+AND "docserver_document_collections"."collection_id" IN (%s)
+AND NOT ("docserver_document"."id" IN (
+    SELECT U1."document_id" AS Col1 FROM "docserver_derivedfile" U1 WHERE U1."module_version_id" = %d
+)))''' % (self.module.source_type.id, ', '.join(coll_ids), self.id)
+        cursor = connection.cursor()
+        cursor.execute(q)
+        row = cursor.fetchone()
+        return row[0]
+
 
     def __unicode__(self):
         return u"v%s for %s" % (self.version, self.module)
