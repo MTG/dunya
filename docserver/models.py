@@ -424,8 +424,9 @@ class ModuleVersion(models.Model):
             qs = Document.objects.filter(external_identifier__in=coll_ids)
         else:
             qs = Document.objects.filter(
-                collections__in=collections,
                 sourcefiles__file_type=self.module.source_type)
+            if collection:
+               qs.filter(collections__in=collections)
         qs = qs.filter(derivedfiles__module_version=self)
 
         return qs.distinct()
@@ -440,8 +441,9 @@ class ModuleVersion(models.Model):
             return range(total)
         else:
             qs = Document.objects.filter(
-                collections__in=collections,
                 sourcefiles__file_type=self.module.source_type)
+            if collection:
+                qs = qs.filter(collections__in=collections)
             qs = qs.exclude(derivedfiles__module_version=self)
             return qs.distinct()
 
