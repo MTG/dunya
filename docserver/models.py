@@ -446,11 +446,7 @@ class ModuleVersion(models.Model):
             return qs.distinct()
 
     def processed_files_count(self):
-        collections = self.module.collections.all()
-        coll_ids = [str(c.id) for c in collections]
-        q = '''SELECT count(distinct document_id)
-FROM "docserver_derivedfile" WHERE module_version_id = %d
-AND "docserver_document_collections"."collection_id" IN (%s)''' % (self.id)
+        q = '''SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d''' % (self.id)
         cursor = connection.cursor()
         cursor.execute(q)
         row = cursor.fetchone()
