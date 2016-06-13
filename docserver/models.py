@@ -424,9 +424,8 @@ class ModuleVersion(models.Model):
             qs = Document.objects.filter(external_identifier__in=coll_ids)
         else:
             qs = Document.objects.filter(
+                collections__in=collections,
                 sourcefiles__file_type=self.module.source_type)
-            if collection:
-               qs.filter(collections__in=collections)
         qs = qs.filter(derivedfiles__module_version=self)
 
         return qs.distinct()
@@ -447,7 +446,11 @@ class ModuleVersion(models.Model):
             return qs.distinct()
 
     def processed_files_count(self):
-        q = '''SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d''' % (self.id)
+        collections = self.module.collections.all()
+        coll_ids = [str(c.id) for c in collections]
+        q = '''SELECT count(distinct document_id)
+FROM "docserver_derivedfile" WHERE module_version_id = %d
+AND "docserver_document_collections"."collection_id" IN (%s)''' % (self.id)
         cursor = connection.cursor()
         cursor.execute(q)
         row = cursor.fetchone()
@@ -457,11 +460,11 @@ class ModuleVersion(models.Model):
         collections = self.module.collections.all()
         coll_ids = [str(c.id) for c in collections]
         q = '''
-SELECT COUNT(DISTINCT "docserver_document"."id") 
-FROM "docserver_document" 
+SELECT COUNT(DISTINCT "docserver_document"."id")
+FROM "docserver_document"
 INNER JOIN "docserver_sourcefile" ON ( "docserver_document"."id" = "docserver_sourcefile"."document_id" )
-INNER JOIN "docserver_document_collections" ON ( "docserver_document"."id" = "docserver_document_collections"."document_id" ) 
-WHERE ("docserver_sourcefile"."file_type_id" = %d 
+INNER JOIN "docserver_document_collections" ON ( "docserver_document"."id" = "docserver_document_collections"."document_id" )
+WHERE ("docserver_sourcefile"."file_type_id" = %d
 AND "docserver_document_collections"."collection_id" IN (%s)
 AND NOT ("docserver_document"."id" IN (
     SELECT U1."document_id" AS Col1 FROM "docserver_derivedfile" U1 WHERE U1."module_version_id" = %d
