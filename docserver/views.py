@@ -277,7 +277,8 @@ def workers_status(request):
             neww.append({"host": host,
                          "number": num_proc,
                          "state": state,
-                         "worker": {'essentia': {'version': essentia.sha1, 'link': essentia.short_link()}, 'pyc': {'version': pyc.sha1, 'link': essentia.short_link()}}})
+                         "worker": {'essentia': {'version': essentia.sha1,
+                             'link': essentia.short_link()}, 'pyc': {'version': pyc.sha1, 'link': pyc.short_link()}}})
 
         workers = neww
         newworkers = list(set(hostkeys) - set(workerkeys))
