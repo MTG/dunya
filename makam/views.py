@@ -306,8 +306,8 @@ def basic_lyric_alignment(request, uuid, title=None):
            "audio": audio,
            "mbid": mbid,
            "lyricsalignurl": lyricsalignurl,
-           "recordinglengthfmt": "03:16",
-           "recordinglengthseconds": "196",
+           "recordinglengthfmt": "5:29",
+           "recordinglengthseconds": "329",
     }
     return render(request, "makam/basic_lyric_alignment.html", ret)
 
