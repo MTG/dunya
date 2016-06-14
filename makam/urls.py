@@ -35,6 +35,8 @@ urlpatterns = [
     url(r'^release/%s%s$' % (uuid_match, title_match), views.release, name='makam-release'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
     url(r'^lyric-align/%s%s$' % (uuid_match, title_match), views.lyric_alignment, name='makam-lyric-alignment'),
+    url(r'^basic-lyric-align/%s%s$' % (uuid_match, title_match),
+        views.basic_lyric_alignment, name='makam-basic-lyric-alignment'),
     url(r'^score/%s$' % (uuid_match), views.work_score, name='makam-score'),
     url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='makam-work'),
     url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),

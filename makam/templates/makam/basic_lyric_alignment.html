@@ -1,0 +1,329 @@
+{% extends "makam/base.html" %}
+{% load makam.inline %}
+{% load carnatic.badges %}
+{% load staticfiles %}
+{% block extra_css %}
+{% if debug %}
+{% load less %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less "makam/css/pages.less" %}" />
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less "makam/css/recording.less" %}" />
+{% else %}
+<link rel="stylesheet" type="text/css" href="{% static "makam/css/pages.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "makam/css/recording.css" %}" />
+{% endif %}
+{% endblock %}
+
+{% block title %}{{recording.title}} - {% endblock %}
+
+{% block script %}
+<style type="text/css">
+#capcal{
+    background: url("/static/carnatic/img/capcal.png") 0 0 repeat-y !important;
+}
+  #capcalTotal {
+      height: 94% !important;
+  }
+  #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
+      width: 14% !important;
+  }
+  #detail.recording #header #scrollrec #summary #innerSummary span h1 {
+      font-size: 14px !important;
+  }
+  #detail.recording .alldata .container .thedata #renderTotal #smallcanvas {
+      opacity: 1;
+  }
+  #detail.recording .alldata .container .thedata #renderTotal #miniviewHighlight {
+      background: none;
+      height: 64px;
+      z-index: 4;
+  }
+  #banshis {
+      position: relative;
+      height: 25px;
+      font-size: 15px;
+  }
+  #banshis .banshi {
+      position: absolute;
+      height: 25px;
+      margin: 2px;
+  }
+  #percussions {
+      position: relative;
+      height: 25px;
+      font-size: 15px;
+  }
+  #percussions .percussion {
+      position: absolute;
+      height: 25px;
+      margin: 2px;
+  }
+  #timecodes {
+      position: relative;
+      height: 20px;
+  }
+  #timecodes span {
+      position: absolute;
+      height: 25px;
+      margin: 2px;
+  }
+  #timecodes .timecode1 {
+      left: 0px;
+  }
+  #timecodes .timecode2 {
+      left: 220px;
+  }
+  #timecodes .timecode3 {
+      left: 445px;
+  }
+  #timecodes .timecode4 {
+      left: 670px;
+  }
+  #timecodes .timecode5 {
+      right: 0px;
+  }
+  #excerpt{
+      padding-top:0 !important;
+  }
+  svg a {
+      color: #000000 !important;
+  }
+  #score{
+      overflow: hidden;
+  }
+  #score-cont{
+      position: relative;
+  }
+  #no-score{
+      margin: 30px 0 0 20px;
+      color: #46433a;
+      font-size: 30px;
+      font-family: "Roboto", sans-serif;
+      font-weight: 300;
+  }
+  #overlap-pitch, #overlap-histogram, #histogram-current-note{
+      position: absolute; 
+      left: 0px; 
+      top: 0px; 
+      z-index: 2;
+  }
+  #histogramcanvas{
+    filter: alpha(opacity=70);
+      opacity: 0.7;
+  
+  }
+  #overlap-pitch{
+      z-index: 3;
+  }
+  .works-info{
+      cursor: pointer;
+      float: left;
+  }
+  .work-head{
+     width: 85%; 
+  }
+  .work-name{
+      text-align: center;
+      position: absolute;
+      top: 70;
+      display: none;
+      border-radius: 5px;
+      border-top: 1px solid #ccc;
+  }
+  #freq-info, #current-note{  
+    display: none;
+    position: absolute;
+    z-index: 5;
+    background-color: white;
+    border: thin solid black;
+    padding: 2px;
+  }
+  #current-note{
+    top: 5px;
+    left: 100px;
+  }
+  .work-box{
+      background-color: #f9f6f5;
+      border: 1px solid #ebe2df;
+      border-radius: 2px;
+      float: left;
+      width: 90%;
+  }
+  .work-box a{
+      font-size: 14px;
+      text-decoration: none;
+  }
+  .metaDetails{
+      font-size: 14px !important;
+  }
+  .metaDetails span{
+    margin-top: 16px !important;
+  }
+  .works-info:after {
+      content: "\039e";
+      position: relative;
+      right: -156px;
+      top: -22px;
+  }
+  .work-mb{
+      display: inline; 
+      margin-left: 0; 
+  }
+  .no-close .ui-dialog-titlebar-close {
+      display: none;
+  }
+  #score .lyric{
+      margin-left: 5px;
+  }
+  .highlight{
+      color: red;
+      font-weight: bold;
+  }
+  .lyric{
+      font-size: 22px;
+  }
+  .lyric-line{
+      width: 50%;
+      margin: auto;
+  }
+</style>
+
+<script>
+var notesalignurl = "{{lyricsalignurl|safe}}";
+var documentsurl = "{{documentsurl|safe}}";
+var secondsPerView = 8;
+var ratioUsedView = 0.5;
+var pitchtrackdata = null;
+var histogramdata = null;
+var rhythmdata = null;
+var aksharadata = null;
+var audiourl = "{{audio|safe}}";
+var recordinglengthfmt = "{{recordinglengthfmt}}";
+var recordinglengthseconds = "{{recordinglengthseconds}}";
+
+{% if user.is_authenticated %}
+function playrecord(){
+    if(plButton.hasClass("stop")){
+        pause();
+        plButton.removeClass("stop");
+    }else{
+        play();
+        plButton.addClass("stop");
+    }
+}
+{% else %}
+$(function() {
+    $( "#playback_dialog" ).dialog( "open" );
+  });
+{% endif %}
+
+widthOfChildren(".metaContainer");
+</script>
+<script src="{% static "makam/js/basic_lyric_alignment.js" %}"></script>
+{% endblock %}
+
+{% block wrap %}
+{% if bootleg %}
+<div id="bootleg-bar">
+    <div style="float:left">
+        <p>This is a bootleg recording only visible to CompMusic researchers.
+        <br>Do not share.</p>
+    </div>
+    <div style="float:right; margin-top:10px;margin-right:10px;">
+        <button onclick="$("#bootleg-bar").hide()">Ok</button>
+    </div>
+</div>
+{% endif %}
+<div id="detail" class="recording">
+    <div id="header">
+        <div id="scrollrec">
+            <div id="summary">
+                <div id="innerSummary">
+                    <span>
+                        <a class="work-mb" href="http://musicbrainz.org/recording/{{recording.mbid}}"><img width="16px" src="{% static "makam/img/mb.png" %}" /></a>
+                        <h1 style="display: inline;">{{recording.title}}</h1>
+                    </span>
+                </div>
+                <div id="summaryBack"></div>
+            </div>
+            <div id="meta">
+                <div class="metaBlock">
+                    <div class="metaMask">
+                        <div class="metaContainer">
+                            <div id="excerpt" class="metaDetails recordingDetails">
+                                <span class="list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="totalcontrol">
+            <div id="control">
+                <div class="revButton"></div>
+                <div class="plButton" onclick="playrecord();"></div>
+                <div class="folButton"></div>
+            </div>
+        </div>
+        <div style="padding-top:6px; margin-right:1em;">
+        </div>
+        <div class="clearfix"></div>
+    </div><!-- HEADER END -->
+
+    <div class="alldata">
+        <div class="container">
+            <div class="thedata">
+                <div id="rendersMask" style="height:680px;">
+                    <div id="renders">
+
+                        
+                        
+                        <div>
+                            
+                            <div id="score" style="height:576px; width:900px;">
+                            </div>
+                        </div>
+                        <div id="renderTotal">
+                            <div id="capcalTotal"></div>
+                            <div id="timepoint"></div>
+                            <div id="miniviewHighlight"></div>
+                            <canvas id="smallcanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="container2">
+                    <div class="waveLabel">
+                      <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
+                      <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
+                      <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
+                      <div id="freq-info"></div>
+                      <div id="current-note"></div>
+                    </div> 
+                    <div id="totalcontrol2">
+                        <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="thedata">
+        <div class="leftdata">
+            <!--<h3>Similar recordings</h3>-->
+        </div>
+
+        <div class="rightdata">
+            <div class="innerrightdata scrolldata nopad">
+                <div class="tracklist">
+                    {% for s in similar %}
+                    {% badge_similar_recording s %}
+                    {% endfor %}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+{% endblock %}
+

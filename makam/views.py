@@ -275,17 +275,44 @@ def work_score(request, uuid, title=None):
     works = models.Work.objects.filter(mbid=uuid)
     if len(works):
         work = works[0]
-    
+
     scoreurl = "/document/by-id/%s/score?v=0.1&subtype=score&part=1" % uuid
     phraseurl = "/document/by-id/%s/segmentphraseseg?v=0.1&subtype=segments" % uuid
     indexmapurl = "/document/by-id/%s/score?v=0.1&subtype=indexmap" % uuid
 
     return render(request, "makam/work_score.html", {
             "work": work,
-            "phraseurl": phraseurl, 
+            "phraseurl": phraseurl,
             "scoreurl": scoreurl,
-            "indexmapurl": indexmapurl
+            "indexmapurl": indexmapurl,
         })
+
+def basic_lyric_alignment(request, uuid, title=None):
+    recording = models.Recording()
+    recording.title = "碧云天黄花地西风紧” 《西厢记》（崔莺莺）"
+    recordingmbid = uuid
+    mbid = uuid
+    try:
+        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
+    except docserver.util.NoFileException:
+        lyricsalignurl = None
+    try:
+        audio = docserver.util.docserver_get_mp3_url(mbid)
+    except docserver.util.NoFileException:
+        audio = None
+    ret = {
+           "recording": recording,
+           "objecttype": "recording",
+           "audio": audio,
+           "mbid": mbid,
+           "lyricsalignurl": lyricsalignurl,
+           "recordinglengthfmt": "03:16",
+           "recordinglengthseconds": "196",
+    }
+    return render(request, "makam/basic_lyric_alignment.html", ret)
+
+
+
 
 def lyric_alignment(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
@@ -365,11 +392,6 @@ def lyric_alignment(request, uuid, title=None):
     except docserver.util.NoFileException:
         worksurl = None
 
-    try:
-        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
-    except docserver.util.NoFileException:
-        lyricsalignurl = None
-
     ret = {
            "recording": recording,
            "objecttype": "recording",
@@ -391,7 +413,6 @@ def lyric_alignment(request, uuid, title=None):
            "documentsurl": documentsurl,
            "histogramurl": histogramurl,
            "notemodelsurl": notemodelsurl,
-           "lyricsalignurl": lyricsalignurl,
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
