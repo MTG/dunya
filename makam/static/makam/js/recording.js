@@ -119,9 +119,9 @@ function plothistogram() {
     var context = histogram.getContext("2d");
     histogramMax = 0;
     var data = histogramdata;
-    for (var i = 0; i < data['vals'].length; i++) {
-        if (data['vals'][i] > histogramMax) {
-            histogramMax = data['vals'][i];
+    for (var i = 0; i < data[currentWork]['vals'].length; i++) {
+        if (data[currentWork]['vals'][i] > histogramMax) {
+            histogramMax = data[currentWork]['vals'][i];
         }
     }
     
@@ -133,7 +133,7 @@ function plothistogram() {
                 histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
             }
         }
-        lastStables.push([notemodels[currentWork][key]['stablepitch']['Value'], key, notemodels[currentWork][key]['interval']['Value']]);
+        lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
     }
     plotRefFreq(context, lastStables); 
     plothistogrampart(context, data);
@@ -242,9 +242,9 @@ function plothistogrampart(context, data, color){
     context.beginPath();
     var lastv = [];
     var lastj = 0;
-    for (var i = 0; i < data['vals'].length; i++) {
-        var v = (data['vals'][i]) * 200/histogramMax;
-        var j = (data['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
+    for (var i = 0; i < data[currentWork]['vals'].length; i++) {
+        var v = (data[currentWork]['vals'][i]) * 200/histogramMax;
+        var j = (data[currentWork]['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
         curr = 255-Math.round(j*255);
         lastv.push(v);
         if (curr != lastj){
@@ -272,7 +272,7 @@ function plottonic(context) {
     // Sa and sa+1 line.
     context.beginPath();
     // sa+1, dotted
-    var tonic = Math.floor(tonicdata[currentWork]['scoreInformed']['Value']);
+    var tonic = Math.floor(tonicdata[currentWork]['value']);
     var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
     context.moveTo(0, tonicval);
     context.lineWidth = 2;
@@ -397,18 +397,16 @@ function plotscore(index, color) {
       }
       scoreLoaded = true;
     }else{
-      if (aligns[index]){
-          var find = false;
-          var curr = $("#score-"+currentWork).find("a[id^=l" + aligns[index]['line'] + "-f]");
-          curr.each(function(){
+       var find = false;
+       var curr = $("#score-"+currentWork).find("#note-" + index);
+       curr.each(function(){
     
-            highlightNote($(this), index);
-          });
-        }
+        highlightNote($(this), index);
+      });
     }
 }
 function highlightPhraseSegm(w, j){
-  $("#score-"+w).find("a[id^=l" + aligns[j]['line'] + "-f]").each( function(){
+  $("#score-"+w).find("#note-"+j).each( function(){
      note = $(this); 
      if(parseInt(note.attr('from')) <= aligns[j]['pos'] && parseInt(note.attr('to')) > aligns[j]['pos']){
        note.attr('highlight-segm','1');    
@@ -422,7 +420,7 @@ function disableScore(currentTime){
     }
 }
 function highlightNote(note, index){
-      if (note.find('path').length){
+    if (note.find('path').length){
         $("a[highlight='1'").attr('highlight','0');
         var pos = note.find('path').attr('transform').split("(");
         var xy = pos[1].replace(") scale","").split(',');
@@ -550,18 +548,20 @@ function updateScoreProgress(currentTime){
             if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
                 endPeriod = aligns[lastIndex+1]['endtime'];
                 startPeriod = aligns[lastIndex+1]['starttime'];           
-                plotscore(lastIndex)   
+                plotscore(aligns[i]['index'])   
                 lastIndex = lastIndex+1;
                 updated = true;
             }
         }
         if(!updated){
+          console.log(currentTime)
+          console.log(aligns)
             for (var i=0; i<aligns.length; i++){
                 if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
                     endPeriod = aligns[i]['endtime'];
                     startPeriod = aligns[i]['starttime'];
                     color = aligns[i]['color'];
-                    plotscore(i, color); 
+                    plotscore(aligns[i]['index'], color); 
                     lastIndex = i;
                     return;
                 }
@@ -639,11 +639,11 @@ function plotsmall() {
         context.drawImage(small, 0, 0, small.width, small.height, 0, 0, 900, 64);
         //smallFill(banshidata, banshicolours);
         //smallFill(luogudata, "#0f0");
-    
+        
         // Draw sections on smallcanvas
         var sec = [];
         for (w in sections){
-            sec = sec.concat(sections[w]['links'])
+            sec = sec.concat(sections[w])
         }
         colorsNames = {};
         currColor = 0;
@@ -667,14 +667,12 @@ function loaddata() {
     var partsLoaded= 0;
     var indexLoaded= 0;
     var partsDone = false;
-    var indexmapDone = false;
     var notemodelsLoaded = false;
     var histogramLoaded = false;
     $.ajax(worksurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             numbScore = {};
             phrase = {};
-            indexmap = {};
             worksdata = data;
             minInterval = 9999;
             for (w in worksdata){
@@ -698,20 +696,6 @@ function loaddata() {
                         partsLoaded++;
                         if (partsLoaded == Object.keys(worksdata).length ){  
                            partsDone = true;
-                        }
-                        dodraw();
-                }, error: function(xhr, textStatus, errorThrown) {
-                   console.debug("xhr error " + textStatus);
-                   console.debug(errorThrown);
-                   $('#dialog').html('This recording is not analyzed yet.')
-                }});
-                $.ajax(workDocumentsUrl + indexmapurl, {dataType: "json", type: "GET",
-                    context: {work: w},
-                    success: function(data, textStatus, xhr) {
-                        indexmap[this.work] = data;
-                        indexLoaded++;
-                        if (indexLoaded == Object.keys(worksdata).length){  
-                            indexmapDone = true;
                         }
                         dodraw();
                 }, error: function(xhr, textStatus, errorThrown) {
@@ -774,12 +758,12 @@ function loaddata() {
     }});
         
     $.ajax(notemodelsurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
+        success: function(data, textStatus, xhr) {  
             notemodels = data;
             notemodelsLoaded = true;
             dodrawHistogram();
     }, error: function(xhr, textStatus, errorThrown) {
-       console.debug("xhr error " + textStatus);
+      console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
        $('#dialog').html('This recording is not analyzed yet.')
     }});
@@ -796,22 +780,20 @@ function loaddata() {
     }});
     $.ajax(notesalignurl, {dataType: "json", type: "GET",
     success: function(data, textStatus, xhr) {
-        var elems = data; 
-        symbtrIndex2time = {};
+        var elems = data;
+
+        color = "default";
+        aligns = []
         pitchintervals = [];
         for (w in elems){
-          var n = elems[w].notes;
+          var n = elems[w];
           for (var i=0; i<n.length;i++){
-              if(! (w in symbtrIndex2time)){
-                  symbtrIndex2time[w] = {};
-              }
-              if (!(n[i].IndexInScore in symbtrIndex2time[w])){
-                  symbtrIndex2time[w][n[i].IndexInScore] = [];
-              }
-              symbtrIndex2time[w][n[i].IndexInScore].push({'start': parseFloat(n[i].Interval[0]), 'end': parseFloat(n[i].Interval[1])});
-              pitchintervals.push({'start': parseFloat(n[i].Interval[0]), 'end': parseFloat(n[i].Interval[1]), 'note': n[i]['Symbol']});
-          }
+            aligns.push({'index': n[i].index_in_score, 'starttime': parseFloat(n[i].interval[0]), 'endtime': parseFloat(n[i].interval[1]), "color":color});
+            pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['Symbol']});
+            }
         }
+        aligns.sort(function(a, b){return a['index']-b['index']});
+
         loadingDone++;
         pitchintervals.sort(function(a, b){return a['end']-b['end']});
         dodraw();
@@ -836,39 +818,17 @@ function loaddata() {
         if (histogramLoaded && notemodelsLoaded) {
             plothistogram();
         
-            if (loadingDone == 4 && indexmapDone && partsDone) {
+            if (loadingDone == 4 && partsDone) {
                 $('#dialog').dialog('close');
             }
         }
     }
     function dodraw() {
-        if (loadingDone == 4 && indexmapDone && partsDone) {
+        if (loadingDone == 4 && partsDone) {
             
-            endPeriod = 0;
-            startPeriod = -1;
+           endPeriod = 0;
+           startPeriod = -1;
            
-            aligns = []
-            for (w in indexmap){
-              for (var i=0; i<indexmap[w].length;i++){
-                  var vals = [];
-                  if (indexmap[w][i][0] in symbtrIndex2time[w]){
-                     vals = symbtrIndex2time[w][indexmap[w][i][0]];
-                  }
-                  for (var j=0;j<vals.length;j++){
-                      var color = "default";
-                      for (var s = 0; s < sections[w].length; s++) {
-                          var t0 = sections[w][s]['time'][0][0];
-                          var t1 = sections[w][s]['time'][1][0];
-                          if (vals[j]['start'] > t0 && vals[j]['end'] < t1){
-                              color = sections[w][s]['name'];
-                              break;
-                          }
-                       }
-                      aligns.push({'index':indexmap[w][i][0], 'starttime': vals[j]['start'], 'endtime': vals[j]['end'], "color":color, "pos": indexmap[w][i][1], "line": indexmap[w][i][2]});
-                    }
-              }
-           }
-           aligns.sort(function(a, b){return a['index']-b['index']});
            drawdata(false);
         
            if (histogramLoaded && notemodelsLoaded) {

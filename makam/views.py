@@ -347,9 +347,9 @@ def lyric_alignment(request, uuid, title=None):
     except docserver.util.NoFileException:
         akshara = None
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(mbid, "dunyapitchmakam", "pitch", version="0.2")
+        pitchtrackurl = docserver.util.docserver_get_url(mbid, "tomatodunya", "pitch", version="0.1")
     except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "dunyapitchmakam", "pitch", "0.2")
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "tomatodunya", "pitch", "0.1")
      
     try:
         notesalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
@@ -426,84 +426,74 @@ def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
     mbid = recording.mbid
     
-    intervalsurl = "/score?v=0.1&subtype=intervals" 
-    scoreurl = "/score?v=0.1&subtype=score&part=1"
-    indexmapurl = "/score?v=0.1&subtype=indexmap"
+    intervalsurl = "/score?v=0.2&subtype=intervals" 
+    scoreurl = "/score?v=0.2&subtype=score&part=1"
     documentsurl = "/document/by-id/"
     phraseurl = "/segmentphraseseg?v=0.1&subtype=segments"
 
     try:
-        wave = docserver.util.docserver_get_url(mbid, "makamaudioimages", "waveform8", 1, version=0.2)
+        wave = docserver.util.docserver_get_url(mbid, "makamaudioimages", "waveform8", 1, version=0.3)
     except docserver.util.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(mbid, "makamaudioimages", "spectrum8", 1, version=0.2)
+        spec = docserver.util.docserver_get_url(mbid, "makamaudioimages", "spectrum8", 1, version=0.3)
     except docserver.util.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(mbid, "makamaudioimages", "smallfull", version=0.2)
+        small = docserver.util.docserver_get_url(mbid, "makamaudioimages", "smallfull", version=0.3)
     except docserver.util.NoFileException:
         small = None
     try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
     except docserver.util.NoFileException:
         audio = None
-    
-    try:
-        akshara = docserver.util.docserver_get_contents(mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
-        akshara = str(round(float(akshara), 3) * 1000)
-    except docserver.util.NoFileException:
-        akshara = None
-    try:
-        pitchtrackurl = docserver.util.docserver_get_url(mbid, "dunyapitchmakam", "pitch", version="0.2")
-    except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "dunyapitchmakam", "pitch", "0.2")
      
     try:
-        notesalignurl = docserver.util.docserver_get_url(mbid, "scorealign", "notesalign", 1, version="0.2")
+        pitchtrackurl = docserver.util.docserver_get_url(mbid, "tomatodunya", "pitch", version="0.1")
+    except docserver.util.NoFileException:
+        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "tomatodunya", "pitch", "0.1")
+     
+    try:
+        notesalignurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "notes", 1, version="0.1")
     except docserver.util.NoFileException:
         notesalignurl = None 
    
     try:
-        histogramurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "histogram", 1, version="0.2")
+        histogramurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "pitch_distribution", 1, version="0.1")
     except docserver.util.NoFileException:
         histogramurl = None 
 
     try:
-        notemodelsurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "notemodels", 1, version="0.2")
+        notemodelsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "note_models", 1, version="0.1")
     except docserver.util.NoFileException:
         notemodelsurl = None 
 
     try:
-        sectionsurl = docserver.util.docserver_get_url(mbid, "scorealign", "sectionlinks", 1, version="0.2")
+        sectionsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "sections", 1, version="0.1")
     except docserver.util.NoFileException:
         sectionsurl = None 
      
     try:
-        max_pitch = docserver.util.docserver_get_json(mbid, "dunyapitchmakam", "pitchmax", 1, version="0.2")
+        max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
         min_pitch = max_pitch['min']
         max_pitch = max_pitch['max']
     except docserver.util.NoFileException:
         max_pitch = None
         min_pitch = None
     try:
-        tonicurl = docserver.util.docserver_get_url(mbid, "tonictempotuning", "tonic", 1, version="0.1")
+        tonicurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "tonic", 1, version="0.1")
     except docserver.util.NoFileException:
         tonicurl = None
     try:
-        ahenkurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "ahenk", 1, version="0.2")
+        ahenkurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "transposition", 1, version="0.1")
     except docserver.util.NoFileException:
         ahenkurl = None
 
     try:
-        worksurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "works_intervals", 1, version="0.2")
+        worksurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "works_intervals", 1, version="0.1")
     except docserver.util.NoFileException:
         worksurl = None
 
-    try:
-        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
-    except docserver.util.NoFileException:
-        lyricsalignurl = None
 
     ret = {
            "recording": recording,
@@ -514,19 +504,16 @@ def recording(request, uuid, title=None):
            "smallimage": small,
            "audio": audio,
            "tonicurl": tonicurl,
-           "akshara": akshara,
            "mbid": mbid,
            "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
            "scoreurl": scoreurl,
-           "indexmapurl": indexmapurl,
            "sectionsurl": sectionsurl, 
            "notesalignurl": notesalignurl,
            "intervalsurl": intervalsurl,
            "documentsurl": documentsurl,
            "histogramurl": histogramurl,
            "notemodelsurl": notemodelsurl,
-           "lyricsalignurl": lyricsalignurl,
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
