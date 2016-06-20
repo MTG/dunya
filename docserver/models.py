@@ -126,9 +126,9 @@ class Document(models.Model):
             for i in v:
                 name = i['outputname']
                 if name in items:
-                    is_last_version = False
+                    is_last_version = True
                     for curr in items[name]["versions"]:
-                         is_last_version &= curr > i["version"]
+                         is_last_version &= curr < i["version"]
                     if is_last_version:
                         items[name]["numparts"] = i["numparts"]
                     items[name]["versions"].append(i["version"])
