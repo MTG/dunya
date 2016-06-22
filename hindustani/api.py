@@ -215,8 +215,15 @@ class WorkDetail(generics.RetrieveAPIView):
     queryset = models.Work.objects.all()
     serializer_class = WorkDetailSerializer
 
+class InstrumentPerformanceInnerSerializer(serializers.ModelSerializer):
+    artist = ArtistInnerSerializer()
+    instrument = InstrumentInnerSerializer()
+
+    class Meta:
+        model = models.InstrumentPerformance
+        fields = ['artist', 'instrument', 'lead', 'attributes']
+
 class RecordingList(generics.ListAPIView):
-    queryset = models.Recording.objects.all()
     serializer_class = RecordingInnerSerializer
 
     def get_queryset(self):
@@ -226,16 +233,18 @@ class RecordingList(generics.ListAPIView):
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     release = serializers.SerializerMethodField('release_list')
-    artists = ArtistInnerSerializer(source='all_artists', many=True)
+    artists = InstrumentPerformanceInnerSerializer(source='instrumentperformance_set.all', many=True)
     raags = RaagInnerSerializer(many=True)
     taals = TaalInnerSerializer(many=True)
     layas = LayaInnerSerializer(many=True)
     forms = FormInnerSerializer(many=True)
     works = WorkInnerSerializer(many=True)
+    album_artists = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'length', 'artists', 'raags', 'taals', 'layas', 'forms', 'works', 'release']
+        fields = ['mbid', 'title', 'length', 'artists', 'raags', 'taals',
+                'layas', 'forms', 'works', 'release', 'album_artists']
 
     def release_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
@@ -243,6 +252,16 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
         releases = ob.release_set.with_permissions(collection_ids, permission)
         rs = ReleaseInnerSerializer(releases, many=True)
         return rs.data
+
+    def get_album_artists(self, ob):
+        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        permission = utils.get_user_permissions(self.context['request'].user)
+        releases = ob.release_set.with_permissions(collection_ids, permission)
+        ret = []
+        if len(releases):
+            ret = releases[0].artists
+        arts = ArtistInnerSerializer(ret, many=True)
+        return arts.data
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
