@@ -136,7 +136,7 @@ function plothistogram() {
         lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
     }
     plotRefFreq(context, lastStables); 
-    plothistogrampart(context, data);
+    plothistogrampart(context, data[currentWork]);
 }
 /*
  * Sets the event for showing the frequency at the mouse position, 
@@ -238,13 +238,13 @@ function plotRefFreq(context, lastStables){
 /*
  * Given data and color, plots histogram of frequencies. Used por current note and whole histogram.
  */
-function plothistogrampart(context, data, color){
+function plothistogrampart(context, histData, color){
     context.beginPath();
     var lastv = [];
     var lastj = 0;
-    for (var i = 0; i < data[currentWork]['vals'].length; i++) {
-        var v = (data[currentWork]['vals'][i]) * 200/histogramMax;
-        var j = (data[currentWork]['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
+    for (var i = 0; i < histData['vals'].length; i++) {
+        var v = (histData['vals'][i]) * 200/histogramMax;
+        var j = (histData['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
         curr = 255-Math.round(j*255);
         lastv.push(v);
         if (curr != lastj){
@@ -554,8 +554,6 @@ function updateScoreProgress(currentTime){
             }
         }
         if(!updated){
-          console.log(currentTime)
-          console.log(aligns)
             for (var i=0; i<aligns.length; i++){
                 if (aligns[i]['starttime']<currentTime && aligns[i]['endtime']>currentTime){
                     endPeriod = aligns[i]['endtime'];
@@ -701,7 +699,6 @@ function loaddata() {
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
-                   $('#dialog').html('This recording is not analyzed yet.')
                 }});
 
                 $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
@@ -716,7 +713,6 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
     }}); 
 
 
@@ -743,7 +739,6 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
     }});
     
     $.ajax(histogramurl, {dataType: "json", type: "GET",
@@ -754,7 +749,6 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
     }});
         
     $.ajax(notemodelsurl, {dataType: "json", type: "GET",
@@ -765,7 +759,6 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
       console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
     }});
 
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
@@ -789,7 +782,7 @@ function loaddata() {
           var n = elems[w];
           for (var i=0; i<n.length;i++){
             aligns.push({'index': n[i].index_in_score, 'starttime': parseFloat(n[i].interval[0]), 'endtime': parseFloat(n[i].interval[1]), "color":color});
-            pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['Symbol']});
+            pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['symbol']});
             }
         }
         aligns.sort(function(a, b){return a['index']-b['index']});
@@ -800,7 +793,6 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
     }});
 
     $.ajax(sectionsurl, {dataType: "json", type: "GET",
@@ -811,7 +803,6 @@ function loaddata() {
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
     }});
     
     function dodrawHistogram() {
@@ -1033,6 +1024,7 @@ function updateCurrentPitch(){
         // If no update since last second then hide current pitch
         hideCurrentPitch();
     }
+
     showNoteOnHistogram(lastnote, futureTime);
     updateFrequencyMarker(futureTime);
 }
