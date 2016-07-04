@@ -245,6 +245,16 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         for rec in concert.recordings.all():
             self._add_recording_performance(rec.mbid, artistid, perf_type, attrs)
 
+    def _add_release_artists_as_relationship(self, release, artist_credit):
+        """ Convert release artists to lead performers on InstrumentPerformances """
+        artists = release.artists.all()
+        recordings = release.recordings.all()
+        for r in recordings:
+            for ip in r.instrumentperformance_set.all():
+                if ip.artist in artists:
+                    ip.lead = True
+                    ip.save()
+
     def _clear_work_composers(self, work):
         work.composers.clear()
         work.lyricists.clear()
