@@ -159,14 +159,14 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_raaga_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['type'] == u'Rāga (Carnatic)':
-                return a['attribute']
+            if a['attribute'] == u'Rāga (Carnatic)':
+                return a['value']
         return None
 
     def _get_taala_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['type'] == u'Tāla (Carnatic)':
-                return a['attribute']
+            if a['attribute'] == u'Tāla (Carnatic)':
+                return a['value']
         return None
 
     def _get_raaga_tags(self, taglist):
