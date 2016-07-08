@@ -38,7 +38,7 @@ mechanize==0.2.5
 mimeparse==0.1.3
 mock==1.0.1
 -e git+https://github.com/hsercanatli/makam-musicxml2lilypond.git@master#egg=makam-musicxml2lilypond-dev
--e git+https://github.com/alastair/python-musicbrainz-ngs.git@master#egg=musicbrainzngs-dev
+musicbrainzngs==0.6
 -e git+https://github.com/burakuyar/MusicXMLConverter.git@master#egg=music-xml-converter-dev
 mwparserfromhell==0.3.2
 -e git+https://github.com/miracatici/note_model.git@master#egg=note-model-dev

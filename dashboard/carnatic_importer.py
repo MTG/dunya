@@ -159,14 +159,14 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_raaga_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['type'] == u'Rāga (Carnatic)':
-                return a['attribute']
+            if a['attribute'] == u'Rāga (Carnatic)':
+                return a['value']
         return None
 
     def _get_taala_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['type'] == u'Tāla (Carnatic)':
-                return a['attribute']
+            if a['attribute'] == u'Tāla (Carnatic)':
+                return a['value']
         return None
 
     def _get_raaga_tags(self, taglist):
@@ -244,6 +244,16 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         concert = carnatic.models.Concert.objects.get(mbid=releaseid)
         for rec in concert.recordings.all():
             self._add_recording_performance(rec.mbid, artistid, perf_type, attrs)
+
+    def _add_release_artists_as_relationship(self, release, artist_credit):
+        """ Convert release artists to lead performers on InstrumentPerformances """
+        artists = release.artists.all()
+        recordings = release.recordings.all()
+        for r in recordings:
+            for ip in r.instrumentperformance_set.all():
+                if ip.artist in artists:
+                    ip.lead = True
+                    ip.save()
 
     def _clear_work_composers(self, work):
         work.composers.clear()
