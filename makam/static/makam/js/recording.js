@@ -46,8 +46,10 @@ $(document).ready(function() {
                autoLoad: true,
                onload: function(bSuccess) {
                  if (startTime>0) {
-                   console.log(startTime)
                      pagesound.setPosition(parseInt(startTime));
+                     updateView();
+                     updateProgress();
+
                  }                
                }
          })
