@@ -424,9 +424,10 @@ def lyric_alignment(request, uuid, title=None):
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
+    start_time = request.GET.get("start", 0)
     mbid = recording.mbid
-    
-    intervalsurl = "/score?v=0.2&subtype=intervals" 
+
+    intervalsurl = "/score?v=0.2&subtype=intervals"
     scoreurl = "/score?v=0.2&subtype=score&part=1"
     documentsurl = "/document/by-id/"
     phraseurl = "/segmentphraseseg?v=0.1&subtype=segments"
@@ -508,7 +509,7 @@ def recording(request, uuid, title=None):
            "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
            "scoreurl": scoreurl,
-           "sectionsurl": sectionsurl, 
+           "sectionsurl": sectionsurl,
            "notesalignurl": notesalignurl,
            "intervalsurl": intervalsurl,
            "documentsurl": documentsurl,
@@ -518,7 +519,8 @@ def recording(request, uuid, title=None):
            "min_pitch": min_pitch,
            "worksurl": worksurl,
            "phraseurl": phraseurl,
-           "ahenkurl": ahenkurl
+           "ahenkurl": ahenkurl,
+           "start_time": start_time
     }
     return render(request, "makam/recording.html", ret)
 

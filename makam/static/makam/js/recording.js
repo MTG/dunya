@@ -12,10 +12,6 @@ $(document).ready(function() {
      waveform = $('#renderTotal canvas');
      plButton = $("#control .plButton");
      timecode = $("#timecode");
-     currentSymbtrIndex = 1;
-     currentInterval = 1;
-     currentPage = 0;
-     lastOffset = null;
      lastTime = null;
      showingNote = null;
      colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
@@ -47,8 +43,15 @@ $(document).ready(function() {
      soundManager.onready(function() {
        pagesound = soundManager.createSound({
                url: audiourl,
-         }).load();
-
+               autoLoad: true,
+               onload: function(bSuccess) {
+                 if (startTime>0) {
+                   console.log(startTime)
+                     pagesound.setPosition(parseInt(startTime));
+                 }                
+               }
+         })
+       
      });
 
      $('.folButton').click(function(e){
