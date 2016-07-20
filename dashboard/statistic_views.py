@@ -96,7 +96,7 @@ def carnatic_recordings(request):
         got_works = True
         got_track_perf = True
         for t in c.recordings.all():
-            if not len(t.works):
+            if not len(t.works.all()):
                 got_works = False
             if t.performance.count() == 0:
                 got_track_perf = False
