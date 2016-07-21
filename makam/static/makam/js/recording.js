@@ -748,9 +748,16 @@ function loaddata() {
     
     $.ajax(tempourl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
-           for (w in data){
-               $("#work-" + w).append("<label>Tempo:</label><b><span>" + data[w][0] + "</span></b>") 
-           }
+          for (w in data){
+            var fastOrSlow = parseFloat(data[w]['relative']['value']);
+            var display = "";
+            if (fastOrSlow > 1) {
+                display = " (+" + Math.round((fastOrSlow - 1) * 100) + "%)";
+            }else{
+                display = " (-" + Math.round(fastOrSlow  * 100) + "%)";
+            }
+            $("#work-" + w).append("<label>Tempo:</label><b><span>" + parseInt(data[w]['average']['value']) + display + "</span></b>") 
+          }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
@@ -779,7 +786,7 @@ function loaddata() {
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
          for (w in data){
-           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w][0] + "</span></b>") 
+           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w]['name'] + "</span></b>") 
 
          }
     }, error: function(xhr, textStatus, errorThrown) {
