@@ -114,7 +114,6 @@ $(document).ready(function() {
      });
 
      loaddata();
-
 });
 
 function plothistogram() {
@@ -749,14 +748,14 @@ function loaddata() {
     $.ajax(tempourl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
           for (w in data){
-            var fastOrSlow = parseFloat(data[w]['relative']['value']);
+            var fastOrSlow = Math.round((parseFloat(data[w]['relative']['value']) -1) * 100);
             var display = "";
-            if (fastOrSlow > 1) {
-                display = " (+" + Math.round((fastOrSlow - 1) * 100) + "%)";
+            if (fastOrSlow > 0) {
+                display = " (" + fastOrSlow  + "% faster)";
             }else{
-                display = " (-" + Math.round(fastOrSlow  * 100) + "%)";
+                display = " (" + Math.abs(fastOrSlow)  + "% slower)";
             }
-            $("#work-" + w).append("<label>Tempo:</label><b><span>" + parseInt(data[w]['average']['value']) + display + "</span></b>") 
+            $("#work-" + w).append("<label>Tempo:</label><b><span>" + parseInt(data[w]['average']['value']) + " bpm "+ display + "</span></b>") 
           }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
