@@ -746,6 +746,16 @@ function loaddata() {
        console.debug(errorThrown);
     }});
     
+    $.ajax(tempourl, {dataType: "json", type: "GET",
+        success: function(data, textStatus, xhr) {
+           for (w in data){
+               $("#work-" + w).append("<label>Tempo:</label><b><span>" + data[w][0] + "</span></b>") 
+           }
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+    }});
+
     $.ajax(histogramurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             histogramdata = data;

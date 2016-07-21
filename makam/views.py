@@ -78,7 +78,7 @@ def results(request):
                     doc['composer'] = l['composer_s']
                 if 'artists_s' in l:
                     doc['artists'] = l['artists_s']
- 
+
                 doc['mbid'] = l['mbid_s']
                 ret[l['type_s']].append(doc)
         except pysolr.SolrError:
@@ -448,32 +448,37 @@ def recording(request, uuid, title=None):
         audio = docserver.util.docserver_get_mp3_url(mbid)
     except docserver.util.NoFileException:
         audio = None
-     
+
     try:
         pitchtrackurl = docserver.util.docserver_get_url(mbid, "tomatodunya", "pitch", version="0.1")
     except docserver.util.NoFileException:
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "tomatodunya", "pitch", "0.1")
-     
+
     try:
         notesalignurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "notes", 1, version="0.1")
     except docserver.util.NoFileException:
-        notesalignurl = None 
-   
+        notesalignurl = None
+
+    try:
+        tempourl = docserver.util.docserver_get_url(mbid, "jointanalysis", "tempo", 1, version="0.1")
+    except docserver.util.NoFileException:
+        tempourl = None
+
     try:
         histogramurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "pitch_distribution", 1, version="0.1")
     except docserver.util.NoFileException:
-        histogramurl = None 
+        histogramurl = None
 
     try:
         notemodelsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "note_models", 1, version="0.1")
     except docserver.util.NoFileException:
-        notemodelsurl = None 
+        notemodelsurl = None
 
     try:
         sectionsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "sections", 1, version="0.1")
     except docserver.util.NoFileException:
-        sectionsurl = None 
-     
+        sectionsurl = None
+
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
         min_pitch = max_pitch['min']
@@ -515,6 +520,7 @@ def recording(request, uuid, title=None):
            "documentsurl": documentsurl,
            "histogramurl": histogramurl,
            "notemodelsurl": notemodelsurl,
+           "tempourl": tempourl,
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
