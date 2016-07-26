@@ -9,8 +9,7 @@ import makam
 
 urlpatterns = [
     # Examples:
-    url(r'^$', RedirectView.as_view(pattern_name="carnatic-main", permanent=True), name="main"),
-    url(r'^/', RedirectView.as_view(pattern_name="carnatic-main", permanent=True)),
+    url(r'^$', dunya.views.main, name="main"),
     url(r'^about/terms', dunya.views.terms, name="terms"),
     url(r'^about/cookies', dunya.views.cookies, name="cookies"),
     url(r'^about/contact', dunya.views.contact, name="contact"),

@@ -1,0 +1,68 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+    <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+    <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+    <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+    <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}{% endblock %}Dunya</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <meta name="google" content="notranslate" />
+        <meta http-equiv="Content-Language" content="en_US" />
+        <link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+        <link href='{% static 'carnatic/css/index.css' %}' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="middle">
+                    <div class="header-centered">
+                        <span id="logo">dunya</span>
+                        <div class="menu">
+                            <ul>
+                                <li><a href="{% url 'contact' %}">Contact</a></li>
+                                <li><a href="{% url 'terms' %}">About</a></li>
+                                <li><a href="/social/register">Register</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rainbow">
+            </div>
+            <div class="middle">
+                <p>Dunya is a research prototype for studying several music traditions. As part of the rearch project CompMusic, it allows to evaluate its results with the feedback coming from the community. Our collections feaure curated data coming from different sources.</p>
+                <h2>Explore our collections</h2>
+                <div class="traditions">
+                    <a href="{% url 'carnatic-main' %}"><div class="home carnatic">
+                    <span>Carnatic</span>
+
+                    </div></a>
+                    <a href="{% url 'hindustani-main' %}"><div class="home hindustani">
+                    <span>Hindustani</span>
+                    </div></a>
+                    <a href="{% url 'makam-main' %}"><div class="home makam">
+                    <span>Makam</span>
+                    </div></a>
+                    <a href="{% url 'jingju-main' %}"><div class="home jingju">
+                    <span>Jingju</span>
+                    </div></a>
+                    <a href="{% url 'andalusian-main' %}"><div class="home andalusi">
+                    <span>Andalusian</span>
+                    </div></a>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="middle">
+                
+                <img id="erc-logo" src="{% static 'carnatic/img/ERC-logo.png' %}">
+                <a href="http://mtg.upf.edu/"><img id="mtg-logo" src="{% static 'carnatic/img/mtg.png' %}"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+ 

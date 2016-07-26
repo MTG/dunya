@@ -26,3 +26,6 @@ def cookies(request):
 
 def contact(request):
     return render(request, "carnatic/contact.html")
+
+def main(request):
+    return render(request, "carnatic/index_dunya.html")
