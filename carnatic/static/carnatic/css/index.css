@@ -122,37 +122,37 @@ body {
 }
 
 .carnatic{
-    background-color: #f1ab39;
-    background-blend-mode: multiply;
+    background-color: rgba(241,171,57,0.9);
+    background-blend-mode: soft-light;
     background-position: 30% 20%; 
     background-size: 148%;
     background-image: url(/static/carnatic/img/carnatic.png);
 }
 .hindustani{
-    background-color: #6d9a1a;
-    background-blend-mode: multiply;
+    background-color: rgba(109,154,26,0.9);
+    background-blend-mode: soft-light;
     background-position: -6px 39%; 
     background-size: 119%;
     background-image: url(/static/carnatic/img/hindustani.png);
 }
 .makam{
-    background-color: #3a8b8b;
-    background-blend-mode: multiply;
+    background-color: rgba(58,139,139,0.9);
+    background-blend-mode: soft-light;
     background-position: 44% 55%; 
     background-size: 95%;
     background-image: url(/static/carnatic/img/makam.png);
 }
 .jingju{
-    background-color: #b3411e;
-    background-blend-mode: multiply;
+    background-color: rgba(179,65,30,0.9);
+    background-blend-mode: soft-light;
     background-position: 96% 73%; 
     background-size: 94%;
     background-image: url(/static/carnatic/img/jingju.png);
     
 }
 .andalusi{
-    background-color: #0e213d;
-    background-blend-mode: multiply;
+    background-color: rgba(14,33,61,0.9);
+    background-blend-mode: soft-light;
     background-position: 19% 27%;
     background-size: 191%;
     background-image: url(/static/carnatic/img/andalusi.png);
