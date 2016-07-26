@@ -118,15 +118,21 @@ body {
     font-weight: bold;
 }
 .traditions{
-    padding-bottom: 250px;
+    padding-bottom: 350px;
 }
 
+.carnatic:hover{
+    background-color: rgba(241,171,57,1);
+}
 .carnatic{
     background-color: rgba(241,171,57,0.9);
     background-blend-mode: soft-light;
     background-position: 30% 20%; 
     background-size: 148%;
     background-image: url(/static/carnatic/img/carnatic.png);
+}
+.hindustani:hover{
+    background-color: rgba(109,154,26,1);
 }
 .hindustani{
     background-color: rgba(109,154,26,0.9);
@@ -135,12 +141,18 @@ body {
     background-size: 119%;
     background-image: url(/static/carnatic/img/hindustani.png);
 }
+.makam:hover{
+    background-color: rgba(58,139,139,1);
+}
 .makam{
     background-color: rgba(58,139,139,0.9);
     background-blend-mode: soft-light;
     background-position: 44% 55%; 
     background-size: 95%;
     background-image: url(/static/carnatic/img/makam.png);
+}
+.jingju:hover{
+    background-color: rgba(179,65,30,1);
 }
 .jingju{
     background-color: rgba(179,65,30,0.9);
@@ -149,6 +161,9 @@ body {
     background-size: 94%;
     background-image: url(/static/carnatic/img/jingju.png);
     
+}
+.andalusi:hover{
+    background-color: rgba(14,33,61,1);
 }
 .andalusi{
     background-color: rgba(14,33,61,0.9);
