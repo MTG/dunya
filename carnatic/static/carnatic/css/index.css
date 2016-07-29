@@ -52,9 +52,8 @@ body {
     font-size: 20px;
 }
 #logo{
-    font-size: 99px;
-    color: #b3411e;
-    letter-spacing: -7px;
+    width: 145px;
+    margin-left: 40px;
 }
 .menu ul {
     list-style-type: none;
@@ -80,7 +79,7 @@ body {
 }
 .header-centered{
     display: inline-block;
-    margin-top: 35px;
+    margin-top: 23px;
     width: 100%;
 }
 .middle h2{
