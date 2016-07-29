@@ -196,7 +196,7 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/hindustani/recording/dcf14452-e13e-450f-82c2-8ae705a58971")
-        expected = ['artists', 'forms', 'layas', 'length', 'mbid', 'raags', 'release', 'taals', 'title', 'works']
+        expected = ['album_artists', 'artists', 'forms', 'layas', 'length', 'mbid', 'raags', 'release', 'taals', 'title', 'works']
         self.assertEqual(expected, sorted(resp.data.keys()))
 
     def test_recording_detail_url(self):
