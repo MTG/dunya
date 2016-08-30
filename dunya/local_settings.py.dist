@@ -1,5 +1,5 @@
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+TEMPLATES['OPTIONS']['debug'] = True
 
 import settings
 INSTALLED_APPS = settings.INSTALLED_APPS
