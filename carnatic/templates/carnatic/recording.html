@@ -3,15 +3,8 @@
 {% load carnatic.badges %}
 {% load staticfiles %}
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/recording.less' %}" />
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/recording.css' %}" />
-    {% endif %}
 {% endblock %}
 
 {% block title %}{{recording.title}} - {% endblock %}

@@ -8,15 +8,6 @@ INSTALLED_APPS = settings.INSTALLED_APPS
 # available in templates
 # INTERNAL_IPS = ('127.0.0.1', )
 
-# For development this is needed to automatically compile less files
-# on page access
-# pip install django-less
-#
-# INSTALLED_APPS = INSTALLED_APPS + ('less', )
-# STATICFILES_FILTERS = settings.STATICFILES_FINDERS + ('less.finders.LessFinder', )
-# LESS_OPTIONS = ["--source-map-map-inline", "--source-map-rootpath=/static/carnatic/css"]
-# LESS_ROOT = "carnatic/static/"
-
 # For development this sets up a dummy email server
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # EMAIL_FILE_PATH = '/tmp/app-messages'
