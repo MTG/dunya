@@ -171,10 +171,10 @@ class RecordingTest(TestCase):
 
         response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd3'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
         response = client.get("/api/carnatic/recording")
         data = response.data
-        self.assertEqual(3, len(data["results"]))
+        self.assertEqual(3, len(data))
 
         # A restricted user passing a restricted collection over the header parameter will
         # get 1 recording
@@ -182,7 +182,7 @@ class RecordingTest(TestCase):
 
         response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd2'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
 
         # A normal user passing a collection over the header parameter will still only
@@ -190,7 +190,7 @@ class RecordingTest(TestCase):
         client.force_authenticate(user=self.normaluser)
         response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd1'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
     def test_render_recording_detail(self):
         client = APIClient()
@@ -467,12 +467,12 @@ class ConcertTest(TestCase):
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2'})
 
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
         data = response.data
 
-        self.assertEqual(2, len(data["results"]))
+        self.assertEqual(2, len(data))
 
 
         # A normal user passing a collection over header parameter will still only
@@ -480,14 +480,14 @@ class ConcertTest(TestCase):
         client.force_authenticate(user=self.normaluser)
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
         # A restricted user using will get the concert associated
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3, afd4'})
         data = response.data
-        self.assertEqual(2, len(data["results"]))
+        self.assertEqual(2, len(data))
 
     def test_concert_detail_collection(self):
         """ Only staff can access a concert from a restricted collection"""
