@@ -45,7 +45,6 @@ oauthlib==1.1.2
 paramiko==1.12.0
 Pillow==2.4.0
 -e git+https://github.com/hsercanatli/pitch-post-filter.git@master#egg=pitch-post-filter-dev
-pkg-resources==0.0.0
 ply==3.8
 psycopg2==2.5.1
 -e git+https://github.com/MTG/pycompmusic.git@master#egg=pycompmusic-dev
