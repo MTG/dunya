@@ -16,11 +16,13 @@ input[disabled] {
 </style>
 <script>
 function renderWork(dat){
+  var anyActive = false;
   var html = '';
   for(var i=0;i<dat.workers.length;i++){
     var w = dat.workers[i];  
     html += '<div class="col-xs-6 col-sm-3 placeholder"><div class="info img-thumbnail">';
     if( w.number){
+      anyActive = true;
       html += '<span class="h1 activenumber">' +  w.number + '</span><br><span class="h3">' + w.state + '</span>';
     }else{
       html += '<span class="h3">' + w.state + '</span>';
@@ -62,16 +64,24 @@ function renderWork(dat){
     html += '</ul></div>';
     $(html).insertAfter('#workers');
   }
-
+  return anyActive;
 }
-$( document ).ready(function() {
-  $.ajax({
+function updateWorkers(){
+ $.ajax({
       method: "GET",
       url: "/document/manager/workers",
       dataType: "json"
   }).done(function(dat) {
-      renderWork(dat);
+      $('.topbox').remove();
+      return renderWork(dat);
   });
+  return false;                        
+}
+$( document ).ready(function() {
+  var anyActive = updateWorkers();
+  if (anyActive) {
+    setInterval(updateWorkers, 30000);
+  }
 });
 </script>
 {% endblock %}
