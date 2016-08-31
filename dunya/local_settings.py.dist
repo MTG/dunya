@@ -1,8 +1,9 @@
 DEBUG = True
-TEMPLATES['OPTIONS']['debug'] = True
 
 import settings
 INSTALLED_APPS = settings.INSTALLED_APPS
+TEMPLATES = settings.TEMPLATES
+TEMPLATES['OPTIONS']['debug'] = True
 
 # For development this needs to be set for the {{debug}} variable to be
 # available in templates
