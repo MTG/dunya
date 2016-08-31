@@ -3,13 +3,7 @@
 {% load makam.inline %}
 
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
-    {% endif %}
 {% endblock %}
 {% block title %}Makam index | {% endblock %}
 {% block script %}
@@ -79,7 +73,7 @@ vertical-align: top;
   display:block;
   height:100%;
   width:100%;
-} 
+}
 #disp-filters{
   padding-left: 42px;
  /* color: #339;*/
@@ -152,7 +146,7 @@ margin-left: 30px;
 margin: 20px;
 }
 .filter {
-  display: inline-block;    
+  display: inline-block;
     margin-left: 30px;
     margin-top: 15px;
     color: #565a5c;
@@ -165,7 +159,7 @@ margin: 20px;
 }
 .filter-sel{
     background-color: #edefed;
-    border: 1px solid #dce0e0;   
+    border: 1px solid #dce0e0;
 }
 .remove-param{
     margin-right: 5px;
@@ -181,7 +175,7 @@ margin: 20px;
     border: 1px solid #ddd;
   vertical-align:top;
 }
-  
+
 .table-front th{
     padding: 15px;
     text-align: left;
@@ -207,7 +201,7 @@ $( document ).ready(function() {
     url: "/api/makam/work/" +$(this).attr('data-id'),
     dataType: "json",
     }).done(function(data) {
-     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});;
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
@@ -215,12 +209,12 @@ $( document ).ready(function() {
        for(var j=0;j<art.length;j++){
          artists += " "+art[j]['name'];
        }
-       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
+       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>');
      }
-    }); 
-      
+    });
+
   });
-$(function() {      
+$(function() {
     $( "#combo-artist" ).combobox();
       $( "#toggle" ).click(function() {
           $( "#combo-artist" ).toggle();
@@ -231,9 +225,9 @@ $("#filterdialog").dialog({
   autoOpen: false,
   minWidth: 700,
   position: {
-    my: "center", 
+    my: "center",
     at: "center top"
-  } 
+  }
 });
 $(".change-filter").click(function() {
     var url = $(this).attr('href');
@@ -244,7 +238,7 @@ $(".change-filter").click(function() {
       }, error: function(xhr, textStatus, errorThrown) {
       console.debug("xhr error " + textStatus);
       console.debug(errorThrown);
-  
+
       }});
 
   return false;
@@ -255,7 +249,7 @@ $(".change-filter").click(function() {
 </script>
 {% endblock%}
 {%block extra-search%}
-<form method="get" action=".">        
+<form method="get" action=".">
     <label for="query">Work name</label>
     <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
     <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
@@ -272,7 +266,7 @@ $(".change-filter").click(function() {
     <h2> CompMusic Turkish makam music corpus</h2>
 
         <p class="p1">
-To develop methodologies for the automatic analysis, discovery and exploration of the culture-specific characteristics of a music tradition, we need music collections, which are representative of the studied aspects of that music. For Turkish makam music, there are various resources available such as audio recordings, music scores, lyrics and editorial metadata. However, most of these resources are not typically suited for computational analysis, are hard to access, do not have sufficient quality or do not include adequate descriptive information. 
+To develop methodologies for the automatic analysis, discovery and exploration of the culture-specific characteristics of a music tradition, we need music collections, which are representative of the studied aspects of that music. For Turkish makam music, there are various resources available such as audio recordings, music scores, lyrics and editorial metadata. However, most of these resources are not typically suited for computational analysis, are hard to access, do not have sufficient quality or do not include adequate descriptive information.
         </p>
 
         <p class="p1">
@@ -280,7 +274,7 @@ To satisfy this need of representative music collections suitable for computatio
         </p>
 
         <p class="p1">
-The CompMusic Turkish-makam corpus consists of around <strong>6500 audio recordings</strong>, adding up to 412 hours of playback duration; <a href="https://github.com/MTG/SymbTr"><strong>2200 music scores</strong></a> with lyrics encompassing 883,803 notes, 21536 sections and 100 hours of nominal playback duration; and <strong>13500 instances of editorial metadata</strong> in <a href="http://musicbrainz.org">Musicbrainz</a> related to the classical and folk repertoires of Turkish makam music. These statistics make the corpus the biggest corpus of Turkish makam music intended for computational research. 
+The CompMusic Turkish-makam corpus consists of around <strong>6500 audio recordings</strong>, adding up to 412 hours of playback duration; <a href="https://github.com/MTG/SymbTr"><strong>2200 music scores</strong></a> with lyrics encompassing 883,803 notes, 21536 sections and 100 hours of nominal playback duration; and <strong>13500 instances of editorial metadata</strong> in <a href="http://musicbrainz.org">Musicbrainz</a> related to the classical and folk repertoires of Turkish makam music. These statistics make the corpus the biggest corpus of Turkish makam music intended for computational research.
         </p>
 
 <img style="margin-left: 339px;width: 432px;"src="{% static 'makam/img/metadata.png'%}"/>
@@ -313,8 +307,8 @@ References
         <p class="p1">
 [1] Uyar, B., Atlı, H. S., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3030">A corpus for computational research of Turkish makam music</a>. In Proceedings of 1st International Digital Libraries for Musicology Workshop, pages 57–63, London, United Kingdom.
         </p>
-   
-      
+
+
 
 
     </div>

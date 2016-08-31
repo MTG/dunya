@@ -154,17 +154,9 @@ $(document).ready(function() {
 {% endblock %}
 {% block extra_css %}
     {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/browse.less' %}" />
-    {% if request.COOKIES.presentationMode == "on" %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/presentation.less' %}" />
-    {% endif %}
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/browse.css' %}" />
     {% if request.COOKIES.presentationMode == "on" %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/presentation.css' %}" />
-    {% endif %}
     {% endif %}
 {% endblock %}
 

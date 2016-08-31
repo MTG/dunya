@@ -3,13 +3,7 @@
 {% load makam.inline %}
 
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
-    {% endif %}
 {% endblock %}
 {% block title %}Makam index | {% endblock %}
 {% block script %}
@@ -78,7 +72,7 @@ vertical-align: top;
   display:block;
   height:100%;
   width:100%;
-} 
+}
 #disp-filters{
   padding-left: 42px;
  /* color: #339;*/
@@ -151,7 +145,7 @@ margin-left: 30px;
 margin: 20px;
 }
 .filter {
-  display: inline-block;    
+  display: inline-block;
     margin-left: 30px;
     margin-top: 15px;
     color: #565a5c;
@@ -164,7 +158,7 @@ margin: 20px;
 }
 .filter-sel{
     background-color: #edefed;
-    border: 1px solid #dce0e0;   
+    border: 1px solid #dce0e0;
 }
 .remove-param{
     margin-right: 5px;
@@ -179,7 +173,7 @@ margin: 20px;
     margin: 10px 56px;
     border: 1px solid #ddd;
 }
-  
+
 .table-front th{
     padding: 15px;
     text-align: right;
@@ -206,7 +200,7 @@ $( document ).ready(function() {
     url: "/api/makam/work/" +$(this).attr('data-id'),
     dataType: "json",
     }).done(function(data) {
-     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});;
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
@@ -214,12 +208,12 @@ $( document ).ready(function() {
        for(var j=0;j<art.length;j++){
          artists += " "+art[j]['name'];
        }
-       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>'); 
+       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>');
      }
-    }); 
-      
+    });
+
   });
-$(function() {      
+$(function() {
     $( "#combo-artist" ).combobox();
       $( "#toggle" ).click(function() {
           $( "#combo-artist" ).toggle();
@@ -229,9 +223,9 @@ $("#filterdialog").dialog({
   autoOpen: false,
   minWidth: 700,
   position: {
-    my: "center", 
+    my: "center",
     at: "center top"
-  } 
+  }
 });
 $(".change-filter").click(function() {
     var url = $(this).attr('href');
@@ -242,7 +236,7 @@ $(".change-filter").click(function() {
       }, error: function(xhr, textStatus, errorThrown) {
       console.debug("xhr error " + textStatus);
       console.debug(errorThrown);
-  
+
       }});
   return false;
 });
@@ -250,7 +244,7 @@ $(".change-filter").click(function() {
 </script>
 {% endblock%}
 {%block extra-search%}
-<form method="get" action=".">        
+<form method="get" action=".">
     <label for="query">Work name</label>
     <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
     <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
@@ -264,15 +258,15 @@ $(".change-filter").click(function() {
 <div id="detail"   style="min-height: 850px;">
 
     <div id="initial">
-      <h2>Results of score informed audio analysis</h2>  
+      <h2>Results of score informed audio analysis</h2>
       <p class="p1">
-      In Dunya Makam, we have mostly focused on score informed analysis and description of audio recordings. In the first step, we apply partial audio score alignment to identify the tonic frequency [1] and estimate the tempo [2]. From the tonic frequency, we also obtain the ahenk (transposition) of the performance. We link the sections in the score to the corresponding time-intervals in the audio recording [3] and then obtain a note-level alignment by applying a more precise alignment intra-section [4]. Afterwards, we correct the octave errors in the predominant melody by referring to the symbolic pitch heights of the aligned notes. From the corrected predominant melody, we compute the audio seyir model proposed in [5]. Finally, we aggregate the pitch trajectories for each note symbol from the note-level alignments and compute a pitch distribution based model for each note symbol in the performance. 
+      In Dunya Makam, we have mostly focused on score informed analysis and description of audio recordings. In the first step, we apply partial audio score alignment to identify the tonic frequency [1] and estimate the tempo [2]. From the tonic frequency, we also obtain the ahenk (transposition) of the performance. We link the sections in the score to the corresponding time-intervals in the audio recording [3] and then obtain a note-level alignment by applying a more precise alignment intra-section [4]. Afterwards, we correct the octave errors in the predominant melody by referring to the symbolic pitch heights of the aligned notes. From the corrected predominant melody, we compute the audio seyir model proposed in [5]. Finally, we aggregate the pitch trajectories for each note symbol from the note-level alignments and compute a pitch distribution based model for each note symbol in the performance.
       </p>
       <p class="p1">
-      So far, we have aligned <strong>1767 audio-score pairs</strong>. From the alignment we have extracted around <strong>18.770 sections</strong> and <strong>745.739 notes</strong>. 
+      So far, we have aligned <strong>1767 audio-score pairs</strong>. From the alignment we have extracted around <strong>18.770 sections</strong> and <strong>745.739 notes</strong>.
       Below, we refer to the statistics for some of the results obtained from the whole audio-score collection using the methodology above.
       </p>
- 
+
         <h3>Score informed tonic identification</h3>
         <table style="text-align:center">
           <tr>
@@ -305,7 +299,7 @@ $(".change-filter").click(function() {
             </td>
           </tr>
         </table>
- 
+
         <h3>Audio-score alignment</h3>
         <table style="text-align:center">
           <tr>

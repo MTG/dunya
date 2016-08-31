@@ -3,13 +3,7 @@
 {% load makam.inline %}
 
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
-    {% endif %}
 {% endblock %}
 {% block title %}Andalusian index | {% endblock %}
 {% block script %}
@@ -63,7 +57,7 @@ vertical-align: top;
   display:block;
   height:100%;
   width:100%;
-} 
+}
 #disp-filters{
   padding-left: 42px;
  /* color: #339;*/
@@ -121,7 +115,7 @@ margin: 20px;
 }
 .filter {
   position: relative;
-  display: inline-block;    
+  display: inline-block;
     margin-left: 30px;
     margin-top: 15px;
     color: #565a5c;
@@ -135,7 +129,7 @@ margin: 20px;
 }
 .filter-sel{
     background-color: #edefed;
-    border: 1px solid #dce0e0;   
+    border: 1px solid #dce0e0;
 }
 .remove-param{
     margin-right: 5px;
@@ -150,7 +144,7 @@ margin: 20px;
     margin: 10px 56px;
     border: 1px solid #ddd;
 }
-  
+
 .table-front th{
     padding: 15px;
     text-align: left;
@@ -202,7 +196,7 @@ $("#logindialog").dialog({
 
     {% if recordings|length %}
     <div id="results">
-        <h2>Results</h2>    
+        <h2>Results</h2>
         <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
         <tr><th scope="col">Recording name</th><th scope="col">Orchestra</th><th scope="col">Album</th></tr>
         {% for r in recordings %}
@@ -220,18 +214,18 @@ $("#logindialog").dialog({
     {% endif%}
     {% if results == False %}
     <div id="no-results" >
-        <h3> There are no results for this search. 
+        <h3> There are no results for this search.
         </h3>
     </div>
     {% endif %}
 
     {% if recordings|length == 0 %}
-    
+
     <div id="initial" >
             <h1>Welcome to Dunya Andalusí</h1>
       <p>
 Dunya is a web application for the analysis and discovery of traditional music, aimed to showcase various technologies developed within the CompMusic project.
-</p> 
+</p>
 
 You can navigate the analyzed collection using <strong>the search bar and the filters</strong> at the top of the page. If you want a quick preview of the application, you can jump to the examples below:
       </p>
@@ -240,7 +234,7 @@ You can navigate the analyzed collection using <strong>the search bar and the fi
         <li><a href="/andalusian/recording/8361317d-2b4e-438f-9b73-d1daaa200a3e">بطايحي رمل الماية</a> by <em>...</em></li>
       </ul>
 
-</p>        
+</p>
     {% endif%}
     <div class="clearfix"></div>
 </div>

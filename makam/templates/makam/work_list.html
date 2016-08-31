@@ -3,13 +3,7 @@
 {% load makam.inline %}
 
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
-    {% endif %}
     <link rel="stylesheet" type="text/css" href="{% static 'makam/css/index.css' %}" />
 {% endblock %}
 {% block title %}Makam index | {% endblock %}
@@ -80,7 +74,7 @@ vertical-align: top;
   display:block;
   height:100%;
   width:100%;
-} 
+}
 #disp-filters{
   padding-left: 42px;
  /* color: #339;*/
@@ -153,7 +147,7 @@ margin-left: 30px;
 margin: 20px;
 }
 .filter {
-  display: inline-block;    
+  display: inline-block;
     margin-left: 30px;
     margin-top: 15px;
     color: #565a5c;
@@ -166,7 +160,7 @@ margin: 20px;
 }
 .filter-sel{
     background-color: #edefed;
-    border: 1px solid #dce0e0;   
+    border: 1px solid #dce0e0;
 }
 .remove-param{
     margin-right: 5px;
@@ -181,7 +175,7 @@ margin: 20px;
     margin: 10px 56px;
     border: 1px solid #ddd;
 }
-  
+
 .table-front th{
     padding: 15px;
     text-align: left;
@@ -243,7 +237,7 @@ $( document ).ready(function() {
     url: "/api/makam/work/" +$(this).attr('data-id'),
     dataType: "json",
     }).done(function(data) {
-     $('.recordings .recordings-ret').parent().parent().each(function(){$(this).html('<a href="#"">Show</a>')});; 
+     $('.recordings .recordings-ret').parent().parent().each(function(){$(this).html('<a href="#"">Show</a>')});;
      work.html('<ul></ul>');
      for(var i=0; i<data['recordings'].length; i++){
        var art=data['recordings'][i]['artists'];
@@ -268,7 +262,7 @@ $( document ).ready(function() {
          {% endif %}
        }
        if(filtered){
-         work.parent().find('ul').append('<li class="recordings-ret"><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>'); 
+         work.parent().find('ul').append('<li class="recordings-ret"><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>');
        }
      }
     }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -288,7 +282,7 @@ $('.modal-close').click(function(){
 $('.change-filter').click(function(){
   $('.change-filter.active').removeClass('active');
   $('.modal-container').addClass('active');
-    $(this).addClass('active'); 
+    $(this).addClass('active');
     var url = $(this).attr('href');
      $.ajax(url, {dataType: "html", type: "GET",
        success: function(data, textStatus, xhr) {
@@ -408,7 +402,7 @@ $('.change-filter').click(function(){
 
     {% if works|length %}
     <div id="results">
-        <h2>Results</h2>    
+        <h2>Results</h2>
         <table  style="margin-left:30px;  min-width: 1200px;" id="one-column-emphasis">
         <tr><th scope="col">Work name</th><th scope="col">Composer</th><th scope="col">Recordings</th></tr>
         {% for w in works %}
@@ -434,18 +428,18 @@ $('.change-filter').click(function(){
     {% endif%}
     {% if results == False %}
     <div id="no-results" >
-        <h3> There are no results for this search. 
+        <h3> There are no results for this search.
         </h3>
     </div>
     {% endif %}
 
     {% if works|length == 0 %}
-    
+
     <div id="initial" >
             <h1>Welcome to Dunya Makam</h1>
       <p>
 Dunya-makam is a web application for the analysis and discovery of Turkish makam music, aimed to showcase various technologies developed within the CompMusic project.
-</p> 
+</p>
 
 You can navigate the analyzed collection using <strong>the search bar and the filters</strong> at the top of the page. If you want a quick preview of the application, you can jump to the examples below:
       </p>
@@ -458,14 +452,14 @@ You can navigate the analyzed collection using <strong>the search bar and the fi
         <li><a href="/makam/recording/37dd6a6a-4c19-4a86-886a-882840d59518">Pençgah Solo</a> by  <em>Niyazi Sayın</em></li>
       </ul>
  <p>
- In the <a href="/makam/overview">Overview page</a>, we give an explanation of Dunya Makam web application. 
+ In the <a href="/makam/overview">Overview page</a>, we give an explanation of Dunya Makam web application.
  </p>
  <p>The <a href="/makam/stats">Statistics page</a> describes the corpus we have analysed.
-</p> 
+</p>
 <p>
 The <a href="/makam/results">Results page</a> provides some of the basic statistics obtained by the analysis.
 
-</p>        
+</p>
     {% endif%}
     <div class="clearfix"></div>
 </div>

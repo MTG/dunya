@@ -3,15 +3,8 @@
 {% load carnatic.badges %}
 {% load staticfiles %}
 {% block extra_css %}
-{% if debug %}
-{% load less %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/pages.less' %}" />
-<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'makam/css/recording.less' %}" />
-{% else %}
 <link rel="stylesheet" type="text/css" href="{% static 'makam/css/pages.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'makam/css/recording.css' %}" />
-{% endif %}
 {% endblock %}
 
 {% block title %}{{recording.title}} - {% endblock %}
@@ -67,7 +60,7 @@
   a[highlight='1']>path {
       background-color: yellow;
       color: red;
-      margin: 10px; 
+      margin: 10px;
       box-shadow: 0 0 20px yellow;
   }
   #score{
@@ -84,9 +77,9 @@
       font-weight: 300;
   }
   #overlap-pitch, #overlap-histogram, #histogram-current-note{
-      position: absolute; 
-      left: 0px; 
-      top: 0px; 
+      position: absolute;
+      left: 0px;
+      top: 0px;
       z-index: 2;
   }
   .works-info{
@@ -94,7 +87,7 @@
       float: left;
   }
   .work-head{
-     width: 85%; 
+     width: 85%;
   }
   .work-name{
       text-align: center;
@@ -128,8 +121,8 @@
       top: -22px;
   }
   .work-mb{
-      display: inline; 
-      margin-left: 0; 
+      display: inline;
+      margin-left: 0;
   }
   .no-close .ui-dialog-titlebar-close {
       display: none;
@@ -289,7 +282,7 @@ widthOfChildren('.metaContainer');
                       <div><span id="prev-score">Previous Page</span></div>
                       <div id="freq-info"></div>
                       <div id="current-note"></div>
-                    </div> 
+                    </div>
                     <div id="totalcontrol2">
                         <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
                     </div>

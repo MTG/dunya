@@ -16,14 +16,11 @@
         {% if debug %}
         <link href="{% static 'carnatic/css/font.css' %}" rel="stylesheet" type="text/css">
         <link href="{% static 'carnatic/css/ui-lightness/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
-        {% load less %}
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/main.less' %}" />
         {% else %}
         <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css">
-        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
         {% endif %}
+        <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
         {% block extra_css %}
         {% endblock %}
 

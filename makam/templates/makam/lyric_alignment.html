@@ -3,15 +3,8 @@
 {% load carnatic.badges %}
 {% load staticfiles %}
 {% block extra_css %}
-{% if debug %}
-{% load less %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less "makam/css/pages.less" %}" />
-<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less "makam/css/recording.less" %}" />
-{% else %}
 <link rel="stylesheet" type="text/css" href="{% static "makam/css/pages.css" %}" />
 <link rel="stylesheet" type="text/css" href="{% static "makam/css/recording.css" %}" />
-{% endif %}
 {% endblock %}
 
 {% block title %}{{recording.title}} - {% endblock %}
@@ -102,15 +95,15 @@
       font-weight: 300;
   }
   #overlap-pitch, #overlap-histogram, #histogram-current-note{
-      position: absolute; 
-      left: 0px; 
-      top: 0px; 
+      position: absolute;
+      left: 0px;
+      top: 0px;
       z-index: 2;
   }
   #histogramcanvas{
     filter: alpha(opacity=70);
       opacity: 0.7;
-  
+
   }
   #overlap-pitch{
       z-index: 3;
@@ -120,7 +113,7 @@
       float: left;
   }
   .work-head{
-     width: 85%; 
+     width: 85%;
   }
   .work-name{
       text-align: center;
@@ -130,7 +123,7 @@
       border-radius: 5px;
       border-top: 1px solid #ccc;
   }
-  #freq-info, #current-note{  
+  #freq-info, #current-note{
     display: none;
     position: absolute;
     z-index: 5;
@@ -166,8 +159,8 @@
       top: -22px;
   }
   .work-mb{
-      display: inline; 
-      margin-left: 0; 
+      display: inline;
+      margin-left: 0;
   }
   .no-close .ui-dialog-titlebar-close {
       display: none;
@@ -286,7 +279,7 @@ widthOfChildren(".metaContainer");
                                         <div class="work-info" id="work-{{w.mbid}}" style="display:none">
                                             {% for c in w.composerlist.all %}
                                             <label>Composer</label><b><span>
-                                                
+
                                                 <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width="16px" src="{% static "makam/img/mb.png" %}" /></a>
                                                 <a href="{% url "work-list" %}?artist={{c.id}}">{{c}}</a></span></b>
                                             {% endfor %}
@@ -350,7 +343,7 @@ widthOfChildren(".metaContainer");
                         </div>
 
 
-                        
+
                         <div>
                             <div id="timecodes">
                                 <span class="timecode1"></span>
@@ -380,7 +373,7 @@ widthOfChildren(".metaContainer");
                       <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
                       <div id="freq-info"></div>
                       <div id="current-note"></div>
-                    </div> 
+                    </div>
                     <div id="totalcontrol2">
                         <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
                     </div>
