@@ -68,7 +68,7 @@ class ArtistTest(ApiTestCase):
     def test_artist_list_url(self):
         resp = self.apiclient.get("/api/makam/artist")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
     def test_artist_normal_collection(self):
         client = APIClient()
@@ -137,7 +137,7 @@ class ComposerTest(ApiTestCase):
     def test_composer_list_url(self):
         resp = self.apiclient.get("/api/makam/composer")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
 class ReleaseTest(ApiTestCase):
 
@@ -156,7 +156,7 @@ class ReleaseTest(ApiTestCase):
     def test_release_list_url(self):
         resp = self.apiclient.get("/api/makam/release")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(3, len(resp.data["results"]))
+        self.assertEqual(3, len(resp.data))
 
     def test_release_list_collection(self):
         """ Staff members will see releases from restricted collections in
@@ -167,12 +167,12 @@ class ReleaseTest(ApiTestCase):
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION':'f44f4f73'})
 
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f22f2f73'})
         data = response.data
 
-        self.assertEqual(2, len(data["results"]))
+        self.assertEqual(2, len(data))
 
 
         # A normal user passing a collection over header parameter will still only
@@ -180,14 +180,14 @@ class ReleaseTest(ApiTestCase):
         client.force_authenticate(user=self.normaluser)
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f33f3f73'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
         # A restricted user using collection header will get the release associated
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f33f3f73, f22f2f73'})
         data = response.data
-        self.assertEqual(2, len(data["results"]))
+        self.assertEqual(2, len(data))
 
 class RecordingTest(ApiTestCase):
     def setUp(self):
@@ -210,7 +210,7 @@ class RecordingTest(ApiTestCase):
     def test_recording_list_url(self):
         resp = self.apiclient.get("/api/makam/recording")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(3, len(resp.data["results"]))
+        self.assertEqual(3, len(resp.data))
 
     def test_recording_list_collection(self):
         """ Staff members will see recordings from restricted collections in
@@ -220,10 +220,10 @@ class RecordingTest(ApiTestCase):
 
         response = client.get("/api/makam/recording", **{'HTTP_DUNYA_COLLECTION':'f33f3f73'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
         response = client.get("/api/makam/recording")
         data = response.data
-        self.assertEqual(3, len(data["results"]))
+        self.assertEqual(3, len(data))
 
         # A restricted user passing a restricted collection over the header parameter will
         # get 1 recording
@@ -231,7 +231,7 @@ class RecordingTest(ApiTestCase):
 
         response = client.get("/api/makam/recording", **{'HTTP_DUNYA_COLLECTION':'f22f2f73'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
 
         # A normal user passing a collection over the header parameter will still only
@@ -239,7 +239,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.normaluser)
         response = client.get("/api/makam/recording", **{'HTTP_DUNYA_COLLECTION':'f33f3f73'})
         data = response.data
-        self.assertEqual(1, len(data["results"]))
+        self.assertEqual(1, len(data))
 
 class WorkTest(ApiTestCase):
     def setUp(self):
@@ -262,7 +262,7 @@ class WorkTest(ApiTestCase):
     def test_recording_list_url(self):
         resp = self.apiclient.get("/api/makam/work")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
 
 class InstrumentTest(ApiTestCase):
@@ -290,7 +290,7 @@ class InstrumentTest(ApiTestCase):
     def test_instrument_list_url(self):
         resp = self.apiclient.get("/api/makam/instrument")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
 
 class MakamTest(ApiTestCase):
@@ -313,7 +313,7 @@ class MakamTest(ApiTestCase):
     def test_instrument_list_url(self):
         resp = self.apiclient.get("/api/makam/makam")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
 class FormTest(ApiTestCase):
     def setUp(self):
@@ -335,7 +335,7 @@ class FormTest(ApiTestCase):
     def test_instrument_list_url(self):
         resp = self.apiclient.get("/api/makam/form")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
 class UsulTest(ApiTestCase):
     def setUp(self):
@@ -357,7 +357,7 @@ class UsulTest(ApiTestCase):
     def test_instrument_list_url(self):
         resp = self.apiclient.get("/api/makam/usul")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
 
 class SymbTrTest(ApiTestCase):
@@ -376,5 +376,5 @@ class SymbTrTest(ApiTestCase):
     def test_symbtr_list_url(self):
         resp = self.apiclient.get("/api/makam/symbtr")
         self.assertEqual(200, resp.status_code)
-        self.assertEqual(1, len(resp.data["results"]))
+        self.assertEqual(1, len(resp.data))
 
