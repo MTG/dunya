@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import template
+from django.utils.html import format_html, format_html_join, mark_safe
 
 import collections
 import carnatic
@@ -56,25 +57,19 @@ def inline_artist(artist):
 @register.simple_tag
 def inline_artist_list(artists):
     artists = list(artists)
-    if len(artists) > 1:
-        firsts = artists[:-1]
-        last = artists[-1]
-        firsturls = [inline_artist_part(a) for a in firsts]
-        lasturl = inline_artist_part(last)
-        firststr = ", ".join(firsturls)
-        return "%s & %s" % (firststr, lasturl)
+    if len(artists) == 1:
+        return inline_artist_part(artists[0])
+    elif len(artists) > 1:
+        return mark_safe(u", ".join([inline_artist_part(a) for a in artists]))
     else:
-        if len(artists):
-            return inline_artist_part(artists[0])
-        else:
-            return "(unknown)"
+        return u"(unknown)"
 
 def inline_artist_part(artist):
     if isinstance(artist, carnatic.models.Artist):
         if artist.dummy:
-            return '<span class="title">%s</span>' % artist.name
+            return format_html(u'<span class="title">{}</span>', artist.name)
         else:
-            return '<a href="%s" class="title">%s</a>' % (artist.get_absolute_url(), artist.name)
+            return format_html(u'<a href="{}" class="title">{}</a>', artist.get_absolute_url(), artist.name)
     else:
         return artist.name
 
@@ -85,15 +80,15 @@ def inline_concert(concert, bold=False):
     if bold:
         sb = "<b>"
         eb = "</b>"
-    return '<a href="%s">%s%s%s</a>' % (concert.get_absolute_url(), sb, concert.title, eb)
+    return format_html(u'<a href="{}">%s{}%s</a>' % (sb, eb), concert.get_absolute_url(), concert.title)
 
 @register.simple_tag
 def inline_composer(composer):
-    return '<a href="%s">%s</a>' % (composer.get_absolute_url(), composer.name)
+    return format_html(u'<a href="{}">{}</a>', composer.get_absolute_url(), composer.name)
 
 @register.simple_tag
 def inline_recording(recording):
-    return '<a href="%s">%s</a>' % (recording.get_absolute_url(), recording.title)
+    return format_html(u'<a href="{}">{}</a>', recording.get_absolute_url(), recording.title)
 
 @register.simple_tag
 def inline_recording_artist(recording):
@@ -103,46 +98,33 @@ def inline_recording_artist(recording):
 
 @register.simple_tag
 def inline_work(work):
-    # TODO: Disable work links for now
     return work.title
-    # return '<a href="%s">%s</a>' % (work.get_absolute_url(), work.title)
 
 @register.simple_tag
 def inline_raaga_list(raagas):
-    return ", ".join([inline_raaga(r) for r in raagas])
+    return mark_safe(u", ".join([inline_raaga(r) for r in raagas]))
 
 @register.simple_tag
 def inline_raaga(raaga):
     if raaga:
-        return '<span title="%s">%s</span>' % (raaga.common_name.title(), raaga.name.title())
+        return format_html(u'<span title="{}">{}</span>', raaga.common_name.title(), raaga.name.title())
     else:
         return '(unknown)'
 
 @register.simple_tag
-def inline_raaga_link(raaga):
-    return '<a href="%s" title="%s">%s</a>' % (raaga.get_absolute_url(), raaga.common_name.title(), raaga.name.title())
-
-@register.simple_tag
 def inline_taala_list(taalas):
-    return ", ".join([inline_taala(t) for t in taalas])
+    return mark_safe(u", ".join(inline_taala(t) for t in taalas))
 
 @register.simple_tag
 def inline_taala(taala):
     if taala:
-        return '<span title="%s">%s</span>' % (taala.common_name.title(), taala.name.title())
+        return format_html(u'<span title="{}">{}</span>', taala.common_name.title(), taala.name.title())
     else:
         return '(unknown)'
-
-@register.simple_tag
-def inline_taala_link(taala):
-    return '<a href="%s" title="%s">%s</a>' % (taala.get_absolute_url(), taala.common_name.title(), taala.name.title())
 
 @register.simple_tag
 def inline_instrument(instrument):
     if not isinstance(instrument, collections.Iterable):
         instrument = [instrument]
     ret = []
-    for i in instrument:
-        if i:
-            ret.append('<a href="%s">%s</a>' % (i.get_absolute_url(), i.name))
-    return ", ".join(ret)
+    return format_html_join(u", ", u'<a href="{}">{}</a>', ((i.get_absolute_url(), i.name) for i in instrument if i))
