@@ -467,12 +467,13 @@ def recording(request, uuid, title=None):
     try:
         histogramurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "pitch_distribution", 1, version="0.1")
     except docserver.util.NoFileException:
+        histogramurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "pitch_distribution", 1, version="0.1")
         histogramurl = None
 
     try:
         notemodelsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "note_models", 1, version="0.1")
     except docserver.util.NoFileException:
-        notemodelsurl = None
+        notemodelsurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "note_models", 1, version="0.1")
 
     try:
         sectionsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "sections", 1, version="0.1")
@@ -489,11 +490,11 @@ def recording(request, uuid, title=None):
     try:
         tonicurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "tonic", 1, version="0.1")
     except docserver.util.NoFileException:
-        tonicurl = None
+        tonicurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "tonic", 1, version="0.1")
     try:
         ahenkurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "transposition", 1, version="0.1")
     except docserver.util.NoFileException:
-        ahenkurl = None
+        ahenkurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "transposition", 1, version="0.1")
 
     try:
         worksurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "works_intervals", 1, version="0.1")
@@ -524,7 +525,6 @@ def recording(request, uuid, title=None):
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
-           "phraseurl": phraseurl,
            "ahenkurl": ahenkurl,
            "start_time": start_time
     }

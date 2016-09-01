@@ -381,17 +381,6 @@ function plotscore(index, color) {
                    $(this)[0].setAttribute('height', '139mm') ; 
                    $(this)[0].setAttribute('viewBox', '0 0 115 65') 
                  }); 
-                if(document.URL.indexOf("show-phrase")>=0){     
-                 
-                 for (var p in phrase[this.work]){
-                   for(var j=0; j<aligns.length;j++){
-                       if (aligns[j]['index'] == phrase[this.work][p][0]){
-                         highlightPhraseSegm(this.work, j);
-                         break;
-                       }
-                   }
-                }
-                }
             }, error: function(xhr, textStatus, errorThrown) {
                console.debug("xhr error " + textStatus);
                console.debug(errorThrown);
@@ -674,7 +663,6 @@ function loaddata() {
     $.ajax(worksurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             numbScore = {};
-            phrase = {};
             worksdata = data;
             minInterval = 9999;
             for (w in worksdata){
@@ -705,14 +693,6 @@ function loaddata() {
                    console.debug(errorThrown);
                 }});
 
-                $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
-                    context: {work: w},
-                    success: function(data, textStatus, xhr) {
-                        phrase[this.work] = data[0]["boundary_noteIdx"];
-                }, error: function(xhr, textStatus, errorThrown) {
-                   console.debug("xhr error " + textStatus);
-                   console.debug(errorThrown);
-                }});
             }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
