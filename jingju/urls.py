@@ -24,5 +24,8 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
     url(r'^$', views.main, name='jingju-main'),
-    url(r'^recording/%s$' % uuid_match, views.recording, name='jingju-recording')
-]
+    url(r'^recording/%s$' % uuid_match, views.recording,
+        name='jingju-recording'),
+    url(r'^basic-lyric-align/%s%s$' % (uuid_match, title_match),
+            views.basic_lyric_alignment, name='jingju-basic-lyric-alignment'),
+    ]
