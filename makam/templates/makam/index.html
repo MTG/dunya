@@ -1,6 +1,5 @@
 {% extends "makam/base.html" %}
 {% load staticfiles %}
-{% load makam.inline %}
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'makam/css/index.css' %}" />
@@ -77,7 +76,7 @@ $('.modal-close').click(function(){
 
   $(".change-filter").click(function() {
     $('.change-filter.active').removeClass('active');
-    $(this).addClass('active'); 
+    $(this).addClass('active');
     var url = $(this).attr('href');
      $.ajax(url, {dataType: "html", type: "GET",
        success: function(data, textStatus, xhr) {
@@ -86,7 +85,7 @@ $('.modal-close').click(function(){
        }, error: function(xhr, textStatus, errorThrown) {
          console.debug("xhr error " + textStatus);
          console.debug(errorThrown);
-   
+
        }
      });
 
@@ -101,7 +100,7 @@ $('.modal-close').click(function(){
   $('.right-arrow').click(function() {
     changeVisibleExample(exampleShown + 1);
   });
-  
+
 $( "#work-query" ).catcomplete({
         delay: 0,
         source: function( request, response ) {

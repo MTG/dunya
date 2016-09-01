@@ -1,15 +1,8 @@
 {% extends "carnatic/base.html" %}
 {% load staticfiles %}
 {% block extra_css %}
-    {% if debug %}
-    {% load less %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/pages.less' %}" />
-    <link rel="stylesheet" type="text/css" href="{% get_static_prefix %}{% less 'carnatic/css/recording.less' %}" />
-    {% else %}
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/recording.css' %}" />
-    {% endif %}
     <style type="text/css">
         #detail.recording #header #scrollrec #meta .metaBlock .metaMask .metaContainer .metaDetails span label {
           width: 14% !important;
