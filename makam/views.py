@@ -183,7 +183,7 @@ def filter_directory(request):
         elems = e_perf.order_by('name').distinct()
         e_perf = models.Artist.objects.filter(instrumentperformance__recording__recordingwork__work__in=works.all()).distinct() | \
                  models.Artist.objects.filter(recording__recordingwork__work__in=works.all()).distinct()
- 
+
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
 def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
@@ -194,7 +194,7 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
         works = works.filter(pk__in=ids) | works.filter(recording__title__contains=q)
 
     works = works.filter(is_processed=True)
-    
+
     if elem != "artist":
         if artist and artist != '':
             works = works.filter(composers=artist) | works.filter(lyricists=artist)
@@ -220,55 +220,6 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
     works = works.distinct().order_by('title')
     return works, url
 
-def composer(request, uuid, name=None):
-    composer = get_object_or_404(models.Composer, mbid=uuid)
-
-    ret = {"composer": composer
-           }
-    return render(request, "makam/composer.html", ret)
-
-def artist(request, uuid, name=None):
-    artist = get_object_or_404(models.Artist, mbid=uuid)
-
-    instruments = artist.instruments()
-    permission = data.utils.get_user_permissions(request.user)
-    main_releases = artist.primary_concerts.with_permissions(False, permission).all()
-    other_releases = artist.accompanying_releases()
-
-    collaborating_artists = artist.collaborating_artists()
-
-    main_release_d = {}
-    for r in main_releases:
-        instruments = r.instruments_for_artist(artist)
-        main_release_d[r] = instruments
-
-    other_release_d = {}
-    for r in other_releases:
-        instruments = r.instruments_for_artist(artist)
-        other_release_d[r] = instruments
-
-    ret = {"artist": artist,
-           "instruments": instruments,
-           "main_releases": main_release_d,
-           "other_releases": other_release_d,
-           "collaborating_artists": collaborating_artists
-           }
-    return render(request, "makam/artist.html", ret)
-
-def release(request, uuid, title=None):
-    release = get_object_or_404(models.Release, mbid=uuid)
-
-    tracklist = release.tracklist()
-    performers = release.performers()
-    perfinst = []
-    for p in performers:
-        perfinst.append((p, release.instruments_for_artist(p)))
-
-    ret = {"release": release,
-           "tracklist": tracklist,
-           "performers": perfinst
-           }
-    return render(request, "makam/release.html", ret)
 
 def work_score(request, uuid, title=None):
     work = None
@@ -317,8 +268,8 @@ def basic_lyric_alignment(request, uuid, title=None):
 def lyric_alignment(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
     mbid = recording.mbid
-    
-    intervalsurl = "/score?v=0.1&subtype=intervals" 
+
+    intervalsurl = "/score?v=0.1&subtype=intervals"
     scoreurl = "/score?v=0.1&subtype=score&part=1"
     indexmapurl = "/score?v=0.1&subtype=indexmap"
     documentsurl = "/document/by-id/"
@@ -340,7 +291,7 @@ def lyric_alignment(request, uuid, title=None):
         audio = docserver.util.docserver_get_mp3_url(mbid)
     except docserver.util.NoFileException:
         audio = None
-    
+
     try:
         akshara = docserver.util.docserver_get_contents(mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
         akshara = str(round(float(akshara), 3) * 1000)
@@ -350,27 +301,27 @@ def lyric_alignment(request, uuid, title=None):
         pitchtrackurl = docserver.util.docserver_get_url(mbid, "tomatodunya", "pitch", version="0.1")
     except docserver.util.NoFileException:
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "tomatodunya", "pitch", "0.1")
-     
+
     try:
         notesalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
     except docserver.util.NoFileException:
         notesalignurl = None
-   
+
     try:
         histogramurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "histogram", 1, version="0.2")
     except docserver.util.NoFileException:
-        histogramurl = None 
+        histogramurl = None
 
     try:
         notemodelsurl = docserver.util.docserver_get_url(mbid, "correctedpitchmakam", "notemodels", 1, version="0.2")
     except docserver.util.NoFileException:
-        notemodelsurl = None 
+        notemodelsurl = None
 
     try:
         sectionsurl = docserver.util.docserver_get_url(mbid, "scorealign", "sectionlinks", 1, version="0.2")
     except docserver.util.NoFileException:
-        sectionsurl = None 
-     
+        sectionsurl = None
+
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "dunyapitchmakam", "pitchmax", 1, version="0.2")
         min_pitch = max_pitch['min']
@@ -407,7 +358,7 @@ def lyric_alignment(request, uuid, title=None):
            "worklist": recording.worklist(),
            "scoreurl": scoreurl,
            "indexmapurl": indexmapurl,
-           "sectionsurl": sectionsurl, 
+           "sectionsurl": sectionsurl,
            "notesalignurl": notesalignurl,
            "intervalsurl": intervalsurl,
            "documentsurl": documentsurl,
@@ -530,56 +481,6 @@ def recording(request, uuid, title=None):
     }
     return render(request, "makam/recording.html", ret)
 
-def work(request, uuid, title=None):
-    work = get_object_or_404(models.Work, mbid=uuid)
-
-    ret = {"work": work
-           }
-    return render(request, "makam/work.html", ret)
-
-def makambyid(request, makamid, name=None):
-    makam = get_object_or_404(models.Makam, pk=makamid)
-    return redirect(makam.get_absolute_url(), permanent=True)
-
-def makam(request, uuid, name=None):
-    makam = get_object_or_404(models.Makam, uuid=uuid)
-
-    ret = {"makam": makam
-           }
-    return render(request, "makam/makam.html", ret)
-
-def usulbyid(request, usulid, name=None):
-    usul = get_object_or_404(models.Usul, pk=usulid)
-    return redirect(usul.get_absolute_url(), permanent=True)
-
-def usul(request, uuid, name=None):
-    usul = get_object_or_404(models.Usul, uuid=uuid)
-
-    ret = {"usul": usul
-           }
-    return render(request, "makam/usul.html", ret)
-
-def formbyid(request, formid, name=None):
-    form = get_object_or_404(models.Form, pk=formid)
-    return redirect(form.get_absolute_url(), permanent=True)
-
-def form(request, uuid, name=None):
-    form = get_object_or_404(models.Form, uuid=uuid)
-
-    ret = {"form": form
-           }
-    return render(request, "makam/form.html", ret)
-
-def instrumentbyid(request, instrumentid, name=None):
-    instrument = get_object_or_404(models.Instrument, pk=instrumentid)
-    return redirect(instrument.get_absolute_url(), permanent=True)
-
-def instrument(request, uuid, name=None):
-    instrument = get_object_or_404(models.Instrument, mbid=uuid, hidden=False)
-
-    ret = {"instrument": instrument
-           }
-    return render(request, "makam/instrument.html", ret)
 
 def symbtr(request, uuid):
     """ The symbtr view returns the data of this item from

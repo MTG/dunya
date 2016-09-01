@@ -20,7 +20,6 @@ from django.views.generic import TemplateView
 from makam import views
 
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-name_match = r'(?:/(?P<name>[\w-]+))?'
 title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
@@ -32,24 +31,11 @@ urlpatterns = [
     url(r'^results-stats$',
         TemplateView.as_view(template_name='makam/results_stats.html'),
         name='makam-res-stats'),
-    url(r'^composer/%s%s$' % (uuid_match, name_match), views.composer, name='makam-composer'),
-    url(r'^artist/%s%s$' % (uuid_match, name_match), views.artist, name='makam-artist'),
-    url(r'^release/%s%s$' % (uuid_match, title_match), views.release, name='makam-release'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
     url(r'^lyric-align/%s%s$' % (uuid_match, title_match), views.lyric_alignment, name='makam-lyric-alignment'),
     url(r'^score/%s$' % (uuid_match), views.work_score, name='makam-score'),
-    url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='makam-work'),
     url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),
 
     url(r'^filter/popup$', views.filter_directory, name='makam-directory'),
-    url(r'^makam/(?P<makamid>\d+)%s$' % (name_match, ), views.makambyid, name='makam-makambyid'),
-    url(r'^makam/%s%s$' % (uuid_match, name_match, ), views.makam, name='makam-makam'),
-    url(r'^form/(?P<formid>\d+)%s$' % (name_match, ), views.formbyid, name='makam-formbyid'),
-    url(r'^form/%s%s$' % (uuid_match, name_match, ), views.form, name='makam-form'),
-    url(r'^usul/(?P<usulid>\d+)%s$' % (name_match, ), views.usulbyid, name='makam-usulbyid'),
-    url(r'^usul/%s%s$' % (uuid_match, name_match, ), views.usul, name='makam-usul'),
-
-    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='makam-instrumentbyid'),
-    url(r'^instrument/%s%s$' % (uuid_match, name_match), views.instrument, name='makam-instrument'),
     url(r'^searchcomplete$', views.searchcomplete, name='makam-searchcomplete'),
 ]
