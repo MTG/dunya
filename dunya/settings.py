@@ -174,8 +174,6 @@ SENDFILE_URL = '/serve'
 # Django rest framework
 REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
-    'PAGINATE_BY_PARAM': 'count',  # Allow client to override default
-    'MAX_PAGINATE_BY': 200,         # Maximum limit allowed to override
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
