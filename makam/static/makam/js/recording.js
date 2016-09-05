@@ -1060,9 +1060,9 @@ function playNextSection(right){
   var ends = []
   var currentTime=pagesound.position / 1000 ;
   for (w in sections){
-    for (var s = 0; s < sections[w]['links'].length; s++) {
-       starts.push(parseFloat(sections[w]['links'][s]['time'][0][0]));
-        ends.push(parseFloat(sections[w]['links'][s]['time'][1][0]));
+    for (var s = 0; s < sections[w].length; s++) {
+       starts.push(parseFloat(sections[w][s]['time'][0][0]));
+        ends.push(parseFloat(sections[w][s]['time'][1][0]));
     }  
   }
   starts.sort(function(a, b){ return a - b;});
