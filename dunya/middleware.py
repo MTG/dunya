@@ -11,7 +11,7 @@ class PageLoggerMiddleware(object):
             uname = user.username
         else:
             uname = None
-        ip = request.META["REMOTE_ADDR"]
+        ip = request.META.get("HTTP_X_FORWARDED_FOR")
         data.models.VisitLog.objects.create(user=uname, ip=ip, path=path)
 
         # Continue processing
