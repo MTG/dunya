@@ -476,6 +476,7 @@ def recording(request, uuid, title=None):
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "worksurl": worksurl,
+           "phraseurl": phraseurl,
            "ahenkurl": ahenkurl,
            "start_time": start_time
     }
