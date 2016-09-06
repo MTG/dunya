@@ -688,12 +688,18 @@ function loaddata() {
                 $.ajax(workDocumentsUrl, {dataType: "json", type: "GET",
                     context: {work: w},
                     success: function(data, textStatus, xhr) {
-                        numbScore[this.work] = data['derivedfiles']['score']['score']['numparts'];
-                        partsLoaded++;
-                        if (partsLoaded == Object.keys(worksdata).length ){  
-                           partsDone = true;
+                        if ('score' in data['derivedfiles']) {
+                          numbScore[this.work] = data['derivedfiles']['score']['score']['numparts'];
+                          partsLoaded++;
+                          if (partsLoaded == Object.keys(worksdata).length ){  
+                             partsDone = true;
+                          }
+                          dodraw();
+                        }else{
+                          partsLoaded++;
+                          partsDone = true;
+                          dodraw();
                         }
-                        dodraw();
                 }, error: function(xhr, textStatus, errorThrown) {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
