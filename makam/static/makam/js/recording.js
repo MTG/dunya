@@ -123,12 +123,14 @@ function plothistogram() {
     var context = histogram.getContext("2d");
     histogramMax = 0;
     var data = histogramdata;
-    for (var i = 0; i < data[currentWork]['vals'].length; i++) {
-        if (data[currentWork]['vals'][i] > histogramMax) {
-            histogramMax = data[currentWork]['vals'][i];
-        }
+    if (data[currentWork]) {
+      for (var i = 0; i < data[currentWork]['vals'].length; i++) {
+          if (data[currentWork]['vals'][i] > histogramMax) {
+              histogramMax = data[currentWork]['vals'][i];
+          }
+      }
     }
-    
+
     var lastStables = [];
     for (key in notemodels[currentWork]){
         var currMax = 0;
@@ -246,7 +248,8 @@ function plothistogrampart(context, histData, color){
     context.beginPath();
     var lastv = [];
     var lastj = 0;
-    for (var i = 0; i < histData['vals'].length; i++) {
+    if (histData) {
+      for (var i = 0; i < histData['vals'].length; i++) {
         var v = (histData['vals'][i]) * 200/histogramMax;
         var j = (histData['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
         curr = 255-Math.round(j*255);
@@ -261,6 +264,7 @@ function plothistogrampart(context, histData, color){
         }
         lastj = curr;
         
+      }
     }
     context.lineWidth = 2;
     if(color){
@@ -665,14 +669,16 @@ function loaddata() {
             numbScore = {};
             worksdata = data;
             minInterval = 9999;
-            for (w in worksdata){
-              if(Object.keys(worksdata).length > 1){ 
-                var position = 900*(worksdata[w]["from"]/recordinglengthseconds) ;
-                var width = 900*((worksdata[w]["to"]- worksdata[w]["from"])/recordinglengthseconds) ;
-                $('#work-name-' + w).show();  
-                $('#work-name-' + w).css("margin-left",position+"px");
-                $('#work-name-' + w).css("width",width+"px");
-              }
+            
+            if(Object.keys(worksdata).length > 0){ 
+              for (w in worksdata){
+                if(Object.keys(worksdata).length > 1){ 
+                  var position = 900*(worksdata[w]["from"]/recordinglengthseconds) ;
+                  var width = 900*((worksdata[w]["to"]- worksdata[w]["from"])/recordinglengthseconds) ;
+                  $('#work-name-' + w).show();  
+                  $('#work-name-' + w).css("margin-left",position+"px");
+                  $('#work-name-' + w).css("width",width+"px");
+                }
                 if (minInterval > worksdata[w]["from"]){
                     minInterval = worksdata[w]["from"];
                     currentWork = w;
@@ -692,7 +698,11 @@ function loaddata() {
                    console.debug("xhr error " + textStatus);
                    console.debug(errorThrown);
                 }});
-
+              }
+            }else{
+              var w = $('.works-info').find('.work-ref').attr('ref').replace('#work-','');
+              currentWork = w;
+              partsDone = true;
             }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -728,14 +738,16 @@ function loaddata() {
     $.ajax(tempourl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
           for (w in data){
-            var fastOrSlow = Math.round((parseFloat(data[w]['relative']['value']) -1) * 100);
-            var display = "";
-            if (fastOrSlow > 0) {
-                display = " (" + fastOrSlow  + "% faster)";
-            }else{
-                display = " (" + Math.abs(fastOrSlow)  + "% slower)";
+            if (data[w]) {
+              var fastOrSlow = Math.round((parseFloat(data[w]['relative']['value']) -1) * 100);
+              var display = "";
+              if (fastOrSlow > 0) {
+                  display = " (" + fastOrSlow  + "% faster)";
+              }else{
+                  display = " (" + Math.abs(fastOrSlow)  + "% slower)";
+              }
+              $("#work-" + w).append("<label>Tempo:</label><b><span>" + parseInt(data[w]['average']['value']) + " bpm "+ display + "</span></b>") 
             }
-            $("#work-" + w).append("<label>Tempo:</label><b><span>" + parseInt(data[w]['average']['value']) + " bpm "+ display + "</span></b>") 
           }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -765,8 +777,9 @@ function loaddata() {
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
          for (w in data){
-           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w]['name'] + "</span></b>") 
-
+           if (data[w]) {
+             $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w]['name'] + "</span></b>") 
+           }
          }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
@@ -781,10 +794,12 @@ function loaddata() {
         pitchintervals = [];
         for (w in elems){
           var n = elems[w];
-          for (var i=0; i<n.length;i++){
-            aligns.push({'index': n[i].index_in_score, 'starttime': parseFloat(n[i].interval[0]), 'endtime': parseFloat(n[i].interval[1]), "color":color});
-            pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['symbol']});
+          if (n) {
+            for (var i=0; i<n.length;i++){
+              aligns.push({'index': n[i].index_in_score, 'starttime': parseFloat(n[i].interval[0]), 'endtime': parseFloat(n[i].interval[1]), "color":color});
+              pitchintervals.push({'start': parseFloat(n[i].interval[0]), 'end': parseFloat(n[i].interval[1]), 'note': n[i]['symbol']});
             }
+          }
         }
         aligns.sort(function(a, b){return a['index']-b['index']});
 
