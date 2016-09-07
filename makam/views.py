@@ -16,6 +16,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+import os
+import json
+import data
+import docserver
+import search
+import pysolr
+import zipfile
+import StringIO
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
@@ -23,13 +32,7 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
-
-import json
-import data
 from makam import models
-import docserver
-import search
-import pysolr
 
 # Simple player for Georgi/Istanbul musicians
 def makamplayer(request):
@@ -372,6 +375,24 @@ def lyric_alignment(request, uuid, title=None):
     }
     return render(request, "makam/lyric_alignment.html", ret)
 
+def recordings_urls():
+    return {
+            "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
+            "spectrogram": [("makamaudioimages", "spectrum8", 1, 0.3)],
+            "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
+            "pitchtrackurl": [("tomatodunya", "pitch", 1, "0.1")],
+            "notesalignurl": [("jointanalysis", "notes", 1, "0.1")],
+            "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
+            "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1"),
+                ("audioanalysis", "pitch_distribution", 1, "0.1")],
+            "notemodelsurl": [("jointanalysis", "note_models", 1, "0.1"),
+                ("audioanalysis", "note_models", 1, "0.1")],
+            "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
+            "tonicurl": [( "jointanalysis", "tonic", 1, "0.1")],
+            "ahenkurl": [("jointanalysis", "transposition", 1, "0.1")],
+            "worksurl": [("jointanalysis", "works_intervals", 1, "0.1")]
+            }
+
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
@@ -384,52 +405,9 @@ def recording(request, uuid, title=None):
     phraseurl = "/segmentphraseseg?v=0.1&subtype=segments"
 
     try:
-        wave = docserver.util.docserver_get_url(mbid, "makamaudioimages", "waveform8", 1, version=0.3)
-    except docserver.util.NoFileException:
-        wave = None
-    try:
-        spec = docserver.util.docserver_get_url(mbid, "makamaudioimages", "spectrum8", 1, version=0.3)
-    except docserver.util.NoFileException:
-        spec = None
-    try:
-        small = docserver.util.docserver_get_url(mbid, "makamaudioimages", "smallfull", version=0.3)
-    except docserver.util.NoFileException:
-        small = None
-    try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
     except docserver.util.NoFileException:
         audio = None
-
-    try:
-        pitchtrackurl = docserver.util.docserver_get_url(mbid, "tomatodunya", "pitch", version="0.1")
-    except docserver.util.NoFileException:
-        pitchtrackurl = "/document/by-id/%s/%s?subtype=%s&v=%s" % (mbid, "tomatodunya", "pitch", "0.1")
-
-    try:
-        notesalignurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "notes", 1, version="0.1")
-    except docserver.util.NoFileException:
-        notesalignurl = None
-
-    try:
-        tempourl = docserver.util.docserver_get_url(mbid, "jointanalysis", "tempo", 1, version="0.1")
-    except docserver.util.NoFileException:
-        tempourl = None
-
-    try:
-        histogramurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "pitch_distribution", 1, version="0.1")
-    except docserver.util.NoFileException:
-        histogramurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "pitch_distribution", 1, version="0.1")
-        histogramurl = None
-
-    try:
-        notemodelsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "note_models", 1, version="0.1")
-    except docserver.util.NoFileException:
-        notemodelsurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "note_models", 1, version="0.1")
-
-    try:
-        sectionsurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "sections", 1, version="0.1")
-    except docserver.util.NoFileException:
-        sectionsurl = None
 
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
@@ -438,49 +416,71 @@ def recording(request, uuid, title=None):
     except docserver.util.NoFileException:
         max_pitch = None
         min_pitch = None
-    try:
-        tonicurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "tonic", 1, version="0.1")
-    except docserver.util.NoFileException:
-        tonicurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "tonic", 1, version="0.1")
-    try:
-        ahenkurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "transposition", 1, version="0.1")
-    except docserver.util.NoFileException:
-        ahenkurl = docserver.util.docserver_get_url(mbid, "audioanalysis", "transposition", 1, version="0.1")
-
-    try:
-        worksurl = docserver.util.docserver_get_url(mbid, "jointanalysis", "works_intervals", 1, version="0.1")
-    except docserver.util.NoFileException:
-        worksurl = None
-
 
     ret = {
            "recording": recording,
            "objecttype": "recording",
            "objectid": recording.id,
-           "waveform": wave,
-           "spectrogram": spec,
-           "smallimage": small,
            "audio": audio,
-           "tonicurl": tonicurl,
            "mbid": mbid,
-           "pitchtrackurl": pitchtrackurl,
            "worklist": recording.worklist(),
            "scoreurl": scoreurl,
-           "sectionsurl": sectionsurl,
-           "notesalignurl": notesalignurl,
            "intervalsurl": intervalsurl,
            "documentsurl": documentsurl,
-           "histogramurl": histogramurl,
-           "notemodelsurl": notemodelsurl,
-           "tempourl": tempourl,
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
-           "worksurl": worksurl,
            "phraseurl": phraseurl,
-           "ahenkurl": ahenkurl,
            "start_time": start_time
     }
+
+    urls = recordings_urls()
+    for u in urls.keys():
+        for option in urls[u]:
+            try:
+                ret[u] = docserver.util.docserver_get_url(mbid, option[0], option[1],
+                        option[2], version=option[3])
+                break
+            except docserver.util.NoFileException:
+                ret[u] = None
+
     return render(request, "makam/recording.html", ret)
+
+def download_derived_files(request, uuid, title=None):
+    recording = get_object_or_404(models.Recording, mbid=uuid)
+    mbid = recording.mbid
+
+    filenames = []
+
+    urls = recordings_urls()
+    for u in urls.keys():
+        for option in urls[u]:
+            try:
+                filenames.append(docserver.util.docserver_get_filename(mbid, option[0], option[1],
+                        option[2], version=option[3]))
+                break
+            except docserver.util.NoFileException:
+                pass
+
+    zip_subdir = "derivedfiles_%s" % mbid
+    zip_filename = "%s.zip" % zip_subdir
+
+    s = StringIO.StringIO()
+    zf = zipfile.ZipFile(s, "w")
+    for fpath in filenames:
+        # Calculate path for file in zip
+        fdir, fname = os.path.split(fpath)
+        zip_path = os.path.join(zip_subdir, fname)
+
+        # Add file, at correct path
+        zf.write(fpath, zip_path)
+    zf.close()
+
+    # Grab ZIP file from in-memory, make response with correct MIME-type
+    resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
+    # ..and correct content-disposition
+    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+    return resp
 
 
 def symbtr(request, uuid):

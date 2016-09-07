@@ -32,6 +32,8 @@ urlpatterns = [
         TemplateView.as_view(template_name='makam/results_stats.html'),
         name='makam-res-stats'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
+    url(r'^download-files/%s%s$' % (uuid_match, title_match),
+        views.download_derived_files, name='makam-download-derived'),
     url(r'^lyric-align/%s%s$' % (uuid_match, title_match), views.lyric_alignment, name='makam-lyric-alignment'),
     url(r'^score/%s$' % (uuid_match), views.work_score, name='makam-score'),
     url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),
