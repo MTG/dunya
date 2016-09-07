@@ -13,13 +13,16 @@ class ArtistTest(TestCase):
 
     def setUp(self):
         self.a = models.Artist.objects.create(name="Foo", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85")
-        self.col1 = data.models.Collection.objects.create(mbid="f44f4f73", name="collection 1", permission="U")
+        self.coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1", permission="U")
 
         self.cnormal = models.Concert.objects.create(collection=self.col1, title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
-        self.col2 = data.models.Collection.objects.create(mbid="f55f5f73", name="collection 2", permission="R")
+        self.coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2", permission="R")
         self.crestricted = models.Concert.objects.create(collection=self.col2, title="restricted concert", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
 
-        self.col3 = data.models.Collection.objects.create(mbid="f33f3f73", name="collection 3", permission="S")
+        self.coll3id = str(uuid.uuid4())
+        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3", permission="S")
         self.cstaff = models.Concert.objects.create(collection=self.col3, title="staff concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
 
         self.cnormal.artists.add(self.a)
@@ -64,7 +67,8 @@ class ArtistTest(TestCase):
 
         # With the normal user we only get the unrestricted collection's
         # concerts and recordings
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION':'f44f4f73'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
@@ -72,7 +76,8 @@ class ArtistTest(TestCase):
         self.assertEqual("dcf14452-e13e-450f-82c2-8ae705a58971", data["recordings"][0]["mbid"])
 
         # Even if they ask for restricted collection, only the normal ones
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION':'f44f4f73'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
@@ -82,13 +87,15 @@ class ArtistTest(TestCase):
         # a staff user can choose if they see normal releases
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION':'f44f4f73'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
 
         # or restricted collections too
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f33f3f73'})
+        collections = "%s, %s" % (self.coll1id, self.coll3id)
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(2, len(data["concerts"]))
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
@@ -102,13 +109,15 @@ class ArtistTest(TestCase):
         # a restricted user can choose if they see normal releases
         client = APIClient()
         client.force_authenticate(user=self.restricteduser)
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION':'f44f4f73'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
 
         # or restricted collections too
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION':'f44f4f73, f55f5f73'})
+        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(2, len(data["concerts"]))
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
@@ -127,13 +136,16 @@ class ComposerTest(TestCase):
 
 class RecordingTest(TestCase):
     def setUp(self):
-        self.col1 = data.models.Collection.objects.create(mbid="afd1", name="collection 1", permission="U")
-
+        self.coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1", permission="U")
         self.cnormal = models.Concert.objects.create(collection=self.col1, title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
-        self.col2 = data.models.Collection.objects.create(mbid="afd2", name="collection 2", permission="R")
+
+        self.coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2", permission="R")
         self.crestricted = models.Concert.objects.create(collection=self.col2, title="restricted concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
 
-        self.col3 = data.models.Collection.objects.create(mbid="afd3", name="collection 3", permission="S")
+        self.coll3id = str(uuid.uuid4())
+        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3", permission="S")
         self.cstaff = models.Concert.objects.create(collection=self.col3, title="staff concert", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
@@ -169,7 +181,8 @@ class RecordingTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd3'})
+        collections = self.coll3id
+        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/carnatic/recording")
@@ -180,7 +193,8 @@ class RecordingTest(TestCase):
         # get 1 recording
         client.force_authenticate(user=self.restricteduser)
 
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd2'})
+        collections = self.coll2id
+        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -188,7 +202,8 @@ class RecordingTest(TestCase):
         # A normal user passing a collection over the header parameter will still only
         # get 1 recording
         client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION':'afd1'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -220,13 +235,16 @@ class RecordingTest(TestCase):
 
 class WorkTest(TestCase):
     def setUp(self):
-        self.col1 = data.models.Collection.objects.create(mbid="afd1", name="collection 1", permission="U")
+        self.coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1", permission="U")
 
         self.cnormal = models.Concert.objects.create(collection=self.col1, title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
-        self.col2 = data.models.Collection.objects.create(mbid="afd2", name="collection 2", permission="R")
+        self.coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2", permission="R")
         self.crestricted = models.Concert.objects.create(collection=self.col2, title="restricted concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
 
-        self.col3 = data.models.Collection.objects.create(mbid="afd3", name="collection 3", permission="S")
+        self.coll3id = str(uuid.uuid4())
+        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3", permission="S")
         self.cstaff = models.Concert.objects.create(collection=self.col3, title="staff concert", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
@@ -270,15 +288,19 @@ class WorkTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{'HTTP_DUNYA_COLLECTION':'afd1'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION':'afd9'})
+        # unknown id
+        collections = str(uuid.uuid4())
+        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION':'afd1, afd2'})
+        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -286,15 +308,18 @@ class WorkTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.restricteduser)
 
-        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{'HTTP_DUNYA_COLLECTION':'afd1'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION':'afd3'})
+        collections = self.coll3id
+        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION':'afd2'})
+        collections = self.coll2id
+        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -303,7 +328,8 @@ class WorkTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.normaluser)
 
-        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{'HTTP_DUNYA_COLLECTION':'afd1'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -311,7 +337,8 @@ class WorkTest(TestCase):
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION':'afd1, afd3, afd2'})
+        collections = "%s, %s, %s" % (self.coll1id, self.coll3id, self.coll2id)
+        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
@@ -418,12 +445,14 @@ class TaalaTest(TestCase):
 class ConcertTest(TestCase):
     def setUp(self):
         permission = Permission.objects.get(codename='access_restricted')
-        self.col1 = data.models.Collection.objects.create(name="collection 1", mbid="afd2", permission="U")
+        self.coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=self.coll1id, permission="U")
         self.col1.save()
         self.cnormal = models.Concert.objects.create(title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
         self.cnormal.collection = self.col1
         self.cnormal.save()
-        self.col2 = data.models.Collection.objects.create(mbid="afd3", name="collection 2", permission="S")
+        self.coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2", permission="S")
         self.col2.save()
         self.cbootleg = models.Concert.objects.create(title="bootleg concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
         self.cbootleg.collection = self.col2
@@ -431,7 +460,8 @@ class ConcertTest(TestCase):
         self.rnormal = models.Recording.objects.create(title="normal recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
         models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1)
 
-        self.col3 = data.models.Collection.objects.create(mbid="afd4", name="collection 3", permission="R")
+        self.coll3id = str(uuid.uuid4())
+        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3", permission="R")
         self.restricted = models.Concert.objects.create(collection=self.col3, title="restricted concert", mbid="abe1ba35-8758-4a7d-9811-70bc48f41734")
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
@@ -464,12 +494,14 @@ class ConcertTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2'})
+        collections = self.coll1id
+        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
+        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
 
         self.assertEqual(2, len(data["results"]))
@@ -478,14 +510,16 @@ class ConcertTest(TestCase):
         # A normal user passing a collection over header parameter will still only
         # get 1 concert
         client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3'})
+        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
         # A restricted user using will get the concert associated
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION':'afd2, afd3, afd4'})
+        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(2, len(data["results"]))
 

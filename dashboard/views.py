@@ -106,7 +106,7 @@ def addcollection(request):
                 docserver_coll.name = coll_name
                 docserver_coll.save()
             data_coll, created = data.models.Collection.objects.get_or_create(
-                mbid=coll_id,
+                collectionid=coll_id,
                 defaults={"name": coll_name})
             if not created:
                 data_coll.name = coll_name
@@ -751,7 +751,7 @@ def list_access_collections(request):
 
 def edit_access_collections(request, uuid):
     message = ""
-    collection = get_object_or_404(data.models.Collection, mbid=uuid)
+    collection = get_object_or_404(data.models.Collection, collectionid=uuid)
     if request.method == 'POST':
         form = forms.AccessCollectionForm(request.POST, instance=collection)
         if form.is_valid():

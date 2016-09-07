@@ -120,7 +120,7 @@ class Artist(CarnaticStyle, data.models.Artist):
             # `Artist a performed with b on these concerts and n more`
             for p in concert.performers():
                 if p.id != self.id:
-                    if collection_ids and concert.collection and concert.collection.mbid in rcollections and concert.collection.permission in permission:
+                    if collection_ids and concert.collection and str(concert.collection.collectionid) in rcollections and concert.collection.permission in permission:
                         concerts[p.id].add(concert)
                     else:
                         restr_concerts[p.id] += 1
@@ -142,9 +142,9 @@ class Artist(CarnaticStyle, data.models.Artist):
         By defaul permissions are restricted to universal
         accesible collections.
         """
-        rcollections=[]
+        rcollections = []
         if collection_ids:
-            rcollections = collection_ids.replace(' ','').split(",")
+            rcollections = collection_ids.replace(' ', '').split(",")
         if not permission:
             permission = ["U"]
 
@@ -158,12 +158,12 @@ class Artist(CarnaticStyle, data.models.Artist):
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
                 if c not in ret and c.collection \
-                        and (collection_ids == False or c.collection.mbid in rcollections) \
+                        and (collection_ids == False or str(c.collection.collectionid) in rcollections) \
                         and c.collection.permission in permission:
                     ret.append(c)
         for concert, perf in self.performances(raagas, taalas):
             if concert not in ret and concert.collection \
-                    and (collection_ids == False or concert.collection.mbid in rcollections) \
+                    and (collection_ids == False or str(concert.collection.collectionid) in rcollections) \
                     and concert.collection.permission in permission:
                 ret.append(concert)
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)

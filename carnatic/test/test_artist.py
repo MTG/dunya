@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from carnatic import models
 import data
+import uuid
 
 class ArtistCountTest(TestCase):
     """ Test the artists for a recording, or a concert,
@@ -14,8 +15,9 @@ class ArtistCountTest(TestCase):
         self.a1 = models.Artist.objects.create(name="Artist1", main_instrument=self.i)
         self.a2 = models.Artist.objects.create(name="Artist2", main_instrument=self.i)
         self.a3 = models.Artist.objects.create(name="Artist3", main_instrument=self.i)
-        
-        self.col1 = data.models.Collection.objects.create(name="collection 1", mbid='f44f4f73', permission="U") 
+
+        self.coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=self.coll1id, permission="U")
         self.c1 = models.Concert.objects.create(collection=self.col1, title="Concert1")
         self.r1 = models.Recording.objects.create(title="Recording1")
         models.ConcertRecording.objects.create(concert=self.c1, recording=self.r1, track=1, disc=1, disctrack=1)
@@ -25,7 +27,8 @@ class ArtistCountTest(TestCase):
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a2, recording=self.r1)
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a3, recording=self.r1)
 
-        self.col2 = data.models.Collection.objects.create(name="collection 2", mbid='f55f5f73', permission="R") 
+        self.coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(name="collection 2", collectionid=self.coll2id, permission="R")
         self.c2 = models.Concert.objects.create(collection=self.col2, title="Concert2")
         self.r2 = models.Recording.objects.create(title="Recording2")
         self.r3 = models.Recording.objects.create(title="Recording3")
@@ -39,7 +42,8 @@ class ArtistCountTest(TestCase):
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a1, recording=self.r3)
 
         # A concert from restricted collection, with a2
-        self.col3 = data.models.Collection.objects.create(name="collection 3", mbid='f66f6f73', permission="S") 
+        self.coll3id = str(uuid.uuid4())
+        self.col3 = data.models.Collection.objects.create(name="collection 3", collectionid=self.coll3id, permission="S")
         self.c3 = models.Concert.objects.create(collection=self.col3, title="Concert3")
         self.r4 = models.Recording.objects.create(title="Recording4")
         models.ConcertRecording.objects.create(concert=self.c3, recording=self.r4, track=1, disc=1, disctrack=1)
@@ -82,7 +86,7 @@ class ArtistCountTest(TestCase):
         c = self.a3.concerts()
         self.assertEqual(1, len(c))
 
-        col = data.models.Collection.objects.create(name="collection 4", mbid='f77f7f73', permission="U") 
+        col = data.models.Collection.objects.create(name="collection 4", collectionid=uuid.uuid4(), permission="U")
         concert = models.Concert.objects.create(collection=col, title="Other concert")
         concert.artists.add(self.a3)
         c = self.a3.concerts()
@@ -93,7 +97,7 @@ class ArtistCountTest(TestCase):
         grp = models.Artist.objects.create(name="Group")
         art = models.Artist.objects.create(name="Artist")
         grp.group_members.add(art)
-        col = data.models.Collection.objects.create(name="collection 4", mbid='f77f7f73', permission="U") 
+        col = data.models.Collection.objects.create(name="collection 4", collectionid=uuid.uuid4(), permission="U")
         concert = models.Concert.objects.create(collection=col, title="Other concert")
         c = art.concerts()
         self.assertEqual(0, len(c))
@@ -103,7 +107,8 @@ class ArtistCountTest(TestCase):
 
     def test_artist_restr_collection_concerts(self):
         """ If you ask for a restricted collection you get an extra concert"""
-        c = self.a2.concerts(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
+        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        c = self.a2.concerts(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(3, len(c))
 
     def test_artist_get_recordings(self):
@@ -111,16 +116,18 @@ class ArtistCountTest(TestCase):
          - explicit recording relationships
          - Also if they're a concert primary artist or have a rel
         """
-        recs = self.a1.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
+        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        recs = self.a1.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(3, len(recs))
-        recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
+        recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(4, len(recs))
         # A3 is not on recording3
-        recs = self.a3.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
+        recs = self.a3.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(2, len(recs))
 
     def test_artist_collection_recordings(self):
-        recs = self.a2.recordings(collection_ids='f44f4f73, f55f5f73, f66f6f73', permission=['U', 'R', 'S'])
+        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(4, len(recs))
 
 class CollaboratingArtistsTest(TestCase):
@@ -131,21 +138,29 @@ class CollaboratingArtistsTest(TestCase):
         self.a4 = models.Artist.objects.create(name="a4")
         self.a5 = models.Artist.objects.create(name="a5")
 
-        self.col1 = data.models.Collection.objects.create(name="collection 1", mbid='f11f1f73', permission="U") 
+        self.coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=self.coll1id, permission="U")
         self.c1 = models.Concert.objects.create(collection=self.col1, title="c1")
         self.c1.artists.add(self.a1, self.a2, self.a3, self.a5)
-        self.col2 = data.models.Collection.objects.create(name="collection 2", mbid='f22f2f73', permission="U") 
+
+        self.coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(name="collection 2", collectionid=self.coll2id, permission="U")
         self.c2 = models.Concert.objects.create(collection=self.col2, title="c2")
         self.c2.artists.add(self.a1, self.a2, self.a3)
-        self.col3 = data.models.Collection.objects.create(name="collection 3", mbid='f33f3f73', permission="S") 
+
+        self.coll3id = str(uuid.uuid4())
+        self.col3 = data.models.Collection.objects.create(name="collection 3", collectionid=self.coll3id, permission="S")
         self.c3 = models.Concert.objects.create(collection=self.col3, title="c3")
         self.c3.artists.add(self.a1, self.a2, self.a3, self.a4)
-        self.col4 = data.models.Collection.objects.create(name="collection 4", mbid='f44f4f73', permission="S") 
+
+        self.coll4id = str(uuid.uuid4())
+        self.col4 = data.models.Collection.objects.create(name="collection 4", collectionid=self.coll4id, permission="S")
         self.c4 = models.Concert.objects.create(collection=self.col4, title="c4")
         self.c4.artists.add(self.a1, self.a2, self.a4)
 
     def test_show_collectionss(self):
-        coll = self.a1.collaborating_artists(collection_ids='f11f1f73, f22f2f73, f33f3f73, f44f4f73', permission=['U','R','S'])
+        collections = "%s, %s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id, self.coll4id)
+        coll = self.a1.collaborating_artists(collection_ids=collections, permission=['U','R','S'])
         self.assertEqual(4, len(coll))
         self.assertEqual( (self.a2, [self.c1, self.c2, self.c3, self.c4], 0), coll[0])
         self.assertEqual( (self.a3, [self.c1, self.c2, self.c3], 0), coll[1])
@@ -153,7 +168,8 @@ class CollaboratingArtistsTest(TestCase):
         self.assertEqual( (self.a5, [self.c1], 0), coll[3])
 
     def test_dont_show_collections(self):
-        coll = self.a1.collaborating_artists(collection_ids='f11f1f73, f22f2f73, f33f3f73, f44f4f73', permission=['U'])
+        collections = "%s, %s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id, self.coll4id)
+        coll = self.a1.collaborating_artists(collection_ids=collections, permission=['U'])
         self.assertEqual(4, len(coll))
         self.assertEqual( (self.a2, [self.c1, self.c2], 2), coll[0])
         self.assertEqual( (self.a3, [self.c1, self.c2], 1), coll[1])

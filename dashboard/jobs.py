@@ -155,7 +155,7 @@ def import_release(releasepk, ri):
 def get_release_importer(collection):
     name = collection.name.lower()
     name = name.lower()
-    data_coll = data.models.Collection.objects.get(mbid=collection.id)
+    data_coll = data.models.Collection.objects.get(collectionid=collection.id)
     ri = None
     if "hindustani" in name:
         ri = hindustani_importer.HindustaniReleaseImporter(data_coll)

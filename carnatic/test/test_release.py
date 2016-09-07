@@ -4,6 +4,7 @@ from django.contrib.auth.models import Permission
 
 from carnatic.models import Concert
 import data
+import uuid
 
 class ReleaseTest(TestCase):
     def test_performers(self):
@@ -24,13 +25,15 @@ class ReleaseViewsTest(TestCase):
         self.user2.user_permissions.add(permission)
         self.user2.save()
 
-        self.col1 = data.models.Collection.objects.create(name="collection 1", permission="R")
+        coll1id = str(uuid.uuid4())
+        self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=coll1id, permission="R")
         self.col1.save()
         self.rel1 = Concert.objects.create(mbid="d89a53a7-ad04-4608-9328-9de2d38dae85", title="Carnatic Instrumental - Violin")
         self.rel1.collection = self.col1
         self.rel1.source = data.models.Source.objects.create(title="xx", uri="http://musicbrainz.org/release/d89a53a7-ad04-4608-9328-9de2d38dae85", source_name=data.models.SourceName.objects.get(name="MusicBrainz"))
         self.rel1.save()
-        self.col2 = data.models.Collection.objects.create(name="collection 2", permission="S")
+        coll2id = str(uuid.uuid4())
+        self.col2 = data.models.Collection.objects.create(name="collection 2", collectionid=coll2id, permission="S")
         self.rel2 = Concert.objects.create(collection=self.col2, mbid="692f0429-ad82-4d98-ae99-debbd17defa3", title="Alathur Brothers concert")
         self.rel2.source = data.models.Source.objects.create(title="xx", uri="http://musicbrainz.org/release/692f0429-ad82-4d98-ae99-debbd17defa3", source_name=data.models.SourceName.objects.get(name="MusicBrainz"))
         self.rel2.save()

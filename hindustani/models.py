@@ -158,7 +158,7 @@ class Artist(HindustaniStyle, data.models.Artist):
             rcollections = collection_ids.replace(' ','').split(",")
         if not permission:
             permission = ["U"]
-        
+
         # Releases in which we were the primary artist
         ret = []
         ret.extend([r for r in self.primary_concerts.with_permissions(collection_ids, permission).all()])
@@ -167,10 +167,10 @@ class Artist(HindustaniStyle, data.models.Artist):
         for a in self.groups.all():
             for c in a.releases():
                 if c not in ret and c.collection \
-                        and (collection_ids == False or c.collection.mbid in rcollections) \
+                        and (collection_ids == False or str(c.collection.collectionid) in rcollections) \
                         and c.collection.permission in permission:
                     ret.append(c)
-     
+
         # Releases in which we performed
         ret.extend([r for r in Release.objects.with_permissions(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
@@ -215,7 +215,7 @@ class ReleaseRecording(models.Model):
     disc = models.IntegerField()
     # The track number within this disc. 1-n
     disctrack = models.IntegerField()
-    
+
     class Meta:
         ordering = ("track", )
 
@@ -225,9 +225,9 @@ class ReleaseRecording(models.Model):
 class Release(HindustaniStyle, data.models.Release):
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases")
-    
+
     objects = managers.HindustaniReleaseManager()
-    
+
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
         return self.recordings.order_by('releaserecording')
@@ -363,7 +363,7 @@ class Recording(HindustaniStyle, data.models.Recording):
     sections = models.ManyToManyField("Section", through="RecordingSection")
     forms = models.ManyToManyField("Form", through="RecordingForm")
     works = models.ManyToManyField("Work", through="WorkTime")
-    
+
     objects = managers.HindustaniRecordingManager()
 class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
     pass

@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import forms
-from django.contrib import admin
 from django.contrib.auth.models import User
 import re
 import os
@@ -123,11 +122,16 @@ OPTIONS = (
             ("forms", "Forms"),
             ("mizans", "Mizans"),
           )
+
+
 class CsvAndalusianForm(forms.Form):
     csv_file = forms.FileField()
     elem_type = forms.ChoiceField(choices=OPTIONS)
+
+
 class CsvAndalusianCatalogForm(forms.Form):
     csv_file = forms.FileField()
+
 
 class DashUUIDField(forms.UUIDField):
     """A UUIDField which returns uuids with dashes """
@@ -136,8 +140,10 @@ class DashUUIDField(forms.UUIDField):
             return str(value)
         return value
 
+
 class SymbTrForm(forms.ModelForm):
     uuid = DashUUIDField()
+
     class Meta:
         import makam
         model = makam.models.SymbTr

@@ -9,7 +9,7 @@ import data
 class CarnaticImporterTest(TestCase):
 
     def setUp(self):
-        self.coll1 = data.models.Collection.objects.create()
+        self.coll1 = data.models.Collection.objects.create(name="A collection", collectionid=uuid.uuid4())
 
         # Artists
         self.artist1id = str(uuid.uuid4())

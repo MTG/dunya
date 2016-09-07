@@ -24,15 +24,15 @@ class CollectionReleaseManager(models.Manager):
         qs = self.get_queryset()
         if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-            qs = qs.filter(collection__mbid__in=ids)
+            qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
 class CollectionRecordingManager(models.Manager):
-    def with_permissions(self, ids, permission): 
+    def with_permissions(self, ids, permission):
         qs = self.get_queryset()
         if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-            qs = qs.filter(release__collection__mbid__in=ids)
+            qs = qs.filter(release__collection__collectionid__in=ids)
         return qs.filter(release__collection__permission__in=permission)
 
 class UnaccentManager(models.Manager):
@@ -40,7 +40,7 @@ class UnaccentManager(models.Manager):
     with a specified `name` field """
     def unaccent_get(self, name):
         return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name]).get()
-    
+
     def unaccent_all(self, name):
             return super(UnaccentManager, self).get_queryset().extra(where=["unaccent(lower(name)) = unaccent(lower(%s))"], params=[name])
 
@@ -49,7 +49,7 @@ class MakamWorkManager(models.Manager):
     with a specified `name` field """
     def unaccent_get(self, name):
         return super(MakamWorkManager, self).get_queryset().extra(where=["unaccent(lower(makam_work.title)) like unaccent(lower(%s))"], params=["%"+name+"%"])
- 
+
 class MakamFormManager(UnaccentManager):
     def fuzzy(self, name):
         try:

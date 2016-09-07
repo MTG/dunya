@@ -230,12 +230,12 @@ class Collection(models.Model):
         ('U', 'Unrestricted')
     )
 
-    mbid = UUIDField(blank=True, null=True)
+    collectionid = models.UUIDField()
     permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
-        return u"data/%s (%s)" % (self.name, self.permission)
+        return u"data/%s[%s] (%s)" % (self.name, self.collectionid, self.permission)
 
 class Work(BaseModel):
     class Meta:

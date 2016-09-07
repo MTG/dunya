@@ -26,7 +26,7 @@ class CollectionConcertManager(models.Manager):
         qs = self.get_queryset()
         if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-            qs = qs.filter(collection__mbid__in=ids)
+            qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
 class CollectionRecordingManager(models.Manager):
@@ -36,7 +36,7 @@ class CollectionRecordingManager(models.Manager):
         qs = self.get_queryset()
         if ids and ids != "":
             ids = ids.replace(' ','').split(",")
-            qs = qs.filter(concert__collection__mbid__in=ids)
+            qs = qs.filter(concert__collection__collectionid__in=ids)
         return qs.filter(concert__collection__permission__in=permission)
 
 class CarnaticRaagaManager(models.Manager):
