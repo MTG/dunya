@@ -375,11 +375,8 @@ def lyric_alignment(request, uuid, title=None):
     }
     return render(request, "makam/lyric_alignment.html", ret)
 
-def recordings_urls():
-    return {
-            "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
-            "spectrogram": [("makamaudioimages", "spectrum8", 1, 0.3)],
-            "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
+def recordings_urls(include_img=True):
+    ret = {
             "pitchtrackurl": [("tomatodunya", "pitch", 1, "0.1")],
             "notesalignurl": [("jointanalysis", "notes", 1, "0.1")],
             "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
@@ -390,9 +387,16 @@ def recordings_urls():
             "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
             "tonicurl": [( "jointanalysis", "tonic", 1, "0.1")],
             "ahenkurl": [("jointanalysis", "transposition", 1, "0.1")],
-            "worksurl": [("jointanalysis", "works_intervals", 1, "0.1")]
-            }
+            "worksurl": [("jointanalysis", "works_intervals", 1, "0.1")],
+            "melodic_progression": [("jointanalysis", "melodic_progression", 1,
+                "0.1")],
+            "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
+            "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
+ }
+    if include_img:
+        ret["spectrogram"] = [("makamaudioimages", "spectrum8", 1, 0.3)]
 
+    return ret
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
@@ -451,7 +455,16 @@ def download_derived_files(request, uuid, title=None):
 
     filenames = []
 
-    urls = recordings_urls()
+    urls = recordings_urls(False)
+
+    for w in recording.works.all():
+        files = docserver.models.DerivedFile.objects.filter(document__external_identifier=w.mbid,
+                outputname='score', module_version__version="0.2")
+        if len(files) == 1:
+            for n in range(files[0].numparts):
+                filenames.append(docserver.util.docserver_get_filename(w.mbid,
+                    'score', 'score', n+1, '0.2'))
+
     for u in urls.keys():
         for option in urls[u]:
             try:
