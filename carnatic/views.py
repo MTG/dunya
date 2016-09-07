@@ -289,7 +289,7 @@ def artist(request, uuid, name=None):
     artist = get_object_or_404(Artist, mbid=uuid)
 
     inst = artist.instruments()
-    ips = InstrumentPerformance.objects.filter(instrument=inst)
+    ips = InstrumentPerformance.objects.filter(instrument__in=inst)
     similar_artists = []
     for i in ips:
         if i.artist not in similar_artists:

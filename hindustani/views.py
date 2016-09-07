@@ -278,7 +278,7 @@ def composer(request, uuid, name=None):
     musicbrainz = composer.get_musicbrainz_url()
     w = data.models.SourceName.objects.get(name="Wikipedia")
     wikipedia = None
-    wr = composer.references.filter(hindustani_composer_source_set=w)
+    wr = composer.references.filter(source_name=w)
     if wr.count():
         wikipedia = wr[0].uri
     desc = composer.description
