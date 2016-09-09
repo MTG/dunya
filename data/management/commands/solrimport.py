@@ -74,7 +74,7 @@ class Command(BaseCommand):
     def create_makam_search_index(self):
         print "Creating makam object index"
 
-        works = makam.models.Work.objects.filter(is_processed=True).all()
+        works = makam.models.Work.objects.all()
         composers = makam.models.Composer.objects.filter(works__in=works).distinct()
         lyricists = makam.models.Composer.objects.filter(lyric_works__in=works.all()).distinct()
         artists = makam.models.Artist.objects.filter(instrumentperformance__recording__works__in=works).distinct() | \
