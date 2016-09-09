@@ -447,7 +447,7 @@ def recording(request, uuid, title=None):
                 #hack to check the output of jointanalysis
                 if option[1] in ['pitch_distribution']:
                     ignore = True
-                    content = docserver.utils.docserver_get_json(mbid, option[0],
+                    content = docserver.util.docserver_get_json(mbid, option[0],
                             option[1], option[2], version=option[3])
                     if content[content.keys()[0]]:
                         ignore = False
