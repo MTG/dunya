@@ -228,55 +228,10 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
 
 
 $( document ).ready(function() {
-  // WHEN CLICK SHOW THE RECORDINGS FOR A WORK
-  $('#one-column-emphasis').on('click','div.recordings', function() {
-   var work=$(this);
-   $.ajax({
-    method: "GET",
-    url: "/api/makam/work/" +$(this).attr('data-id'),
-    dataType: "json",
-    }).done(function(data) {
-     $('.recordings .recordings-ret').parent().parent().each(function(){$(this).html('<a href="#"">Show</a>')});;
-     work.html('<ul></ul>');
-     for(var i=0; i<data['recordings'].length; i++){
-       var art=data['recordings'][i]['artists'];
-       var added = 0;
-       var artists="";
-       var filtered = false;
-       {% if not perf %}
-       filtered = true;
-       {% endif %}
-       for(var j=0;j<art.length;j++){
-         if (added < 2){
-           added++;
-           artists += art[j]['name'];
-           if (j != (art.length-1)){
-             artists += ", ";
-           }
-         }
-         {% if perf %}
-         if (art[j]['name'].toLowerCase() == '{{perf.name}}'.toLowerCase()){
-           filtered = true;
-         }
-         {% endif %}
-       }
-       if(filtered){
-         work.parent().find('ul').append('<li class="recordings-ret"><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' by '+ artists +'</li>');
-       }
-     }
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-       if(jqXHR.status == 401){
-        $("#logindialog").dialog("open");
-       }
-    });
-  });
-$("#logindialog").dialog({
-  autoOpen: false,
-});
-$('.modal-close').click(function(){
+  $('.modal-close').click(function(){
     $('.modal-container').removeClass('active');
     return false;
-});
+  });
 
 $('.change-filter').click(function(){
   $('.change-filter.active').removeClass('active');
@@ -406,15 +361,11 @@ $('.change-filter').click(function(){
         <tr><th scope="col">Work name</th><th scope="col">Composer</th><th scope="col">Recordings</th></tr>
         {% for w in works %}
       <tr class="work"><td height="30">{{ w.title }}</td><td >{% for a in w.composers.all %}{{ a.name }}{% endfor %}</td><td><div class="recordings" data-id="{{ w.mbid }}">
-            {%if w.recording_set.count == 1%}
-              <ul>
-              {% for r in w.recording_set.all %}
-              <li><a href="/makam/recording/{{ r.mbid }}">{{ r.title }} by {% for a in r.artists.all%}{{ a }}{% if not forloop.last %}, {% endif %}{%endfor%}</a></li>
-              {% endfor %}
-              </ul>
-            {% else %}
-              <a href="#">Show</a>
-            {%endif%}
+          <ul>
+          {% for r in w.recording_set.all %}
+          <li><a href="/makam/recording/{{ r.mbid }}">{{ r.title }} by {% for a in r.artists.all%}{{ a }}{% if not forloop.last %}, {% endif %}{%endfor%}</a></li>
+          {% endfor %}
+          </ul>
           </div></td></tr>
         {% endfor %}
         </table>
@@ -486,9 +437,6 @@ The <a href="/makam/results">Results page</a> provides some of the basic statist
       <div class="modal-content">
       </div>
     </div>
-</div>
-<div id="logindialog" title="Login required">
-  <p>You need to log in to play a recording</p>
 </div>
 {% endblock %}
 
