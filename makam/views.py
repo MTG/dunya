@@ -441,8 +441,18 @@ def recording(request, uuid, title=None):
     for u in urls.keys():
         for option in urls[u]:
             try:
-                ret[u] = docserver.util.docserver_get_url(mbid, option[0], option[1],
+                success_content = docserver.util.docserver_get_url(mbid, option[0], option[1],
                         option[2], version=option[3])
+                ignore = False
+                #hack to check the output of jointanalysis
+                if option[1] in ['pitch_distribution']:
+                    ignore = True
+                    content = docserver.utils.docserver_get_json(mbid, option[0],
+                            option[1], option[2], version=option[3])
+                    if content[content.keys()[0]]:
+                        ignore = False
+                if not ignore:
+                    ret[u] = success_content
                 break
             except docserver.util.NoFileException:
                 ret[u] = None
