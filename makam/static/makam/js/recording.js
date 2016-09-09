@@ -133,11 +133,12 @@ function plothistogram() {
 
     var lastStables = [];
     for (key in notemodels[currentWork]){
-        var currMax = 0;
-        for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
-            if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
-                histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
-            }
+        if (notemodels[currentWork][key]['distribution'] != null){
+          for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
+              if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
+                  histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
+              }
+          }
         }
         lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
     }
