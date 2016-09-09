@@ -449,7 +449,7 @@ def recording(request, uuid, title=None):
                     ignore = True
                     content = docserver.util.docserver_get_json(mbid, option[0],
                             option[1], option[2], version=option[3])
-                    if content[content.keys()[0]]:
+                    if len(content.keys()) and content[content.keys()[0]]:
                         ignore = False
                 if not ignore:
                     ret[u] = success_content
