@@ -453,7 +453,7 @@ def recording(request, uuid, title=None):
                         ignore = False
                 if not ignore:
                     ret[u] = success_content
-                break
+                    break
             except docserver.util.NoFileException:
                 ret[u] = None
 
