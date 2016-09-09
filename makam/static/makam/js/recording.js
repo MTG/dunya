@@ -76,9 +76,9 @@ $(document).ready(function() {
         return false;
      });    
      waveform.click(function(e) {
-		var offset_l = $(this).offset().left - $(window).scrollLeft();
-		var left = Math.round( (e.clientX - offset_l) );
-	    mouPlay(left);
+	var offset_l = $(this).offset().left - $(window).scrollLeft();
+        var left = Math.round( (e.clientX - offset_l) );
+        mouPlay(left);
      });
      waveform.mouseenter(function(e) {
              waveform.css("cursor", "pointer");
@@ -897,6 +897,10 @@ function mouPlay(desti){
         if (wasplaying) {
             pagesound.resume();
         }
+        var currurl = window.location.href;
+        history.replaceState('data to be passed', 'Title of the page', currurl.split('?')[0]+"?start="+posms);
+        
+
     }
 }
 
