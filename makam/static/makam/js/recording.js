@@ -122,13 +122,14 @@ function plothistogram() {
     histogram.height = 256;
     var context = histogram.getContext("2d");
     histogramMax = 0;
-    var data = histogramdata;
-    if (data[currentWork]) {
-      for (var i = 0; i < data[currentWork]['vals'].length; i++) {
-          if (data[currentWork]['vals'][i] > histogramMax) {
-              histogramMax = data[currentWork]['vals'][i];
-          }
-      }
+    var data = histogramdata[currentWork];
+    if (!data) { 
+      data = pitchDistributionData;
+    }
+    for (var i = 0; i < data['vals'].length; i++) {
+        if (data['vals'][i] > histogramMax) {
+            histogramMax = data['vals'][i];
+        }
     }
 
     var lastStables = [];
@@ -143,7 +144,7 @@ function plothistogram() {
         lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
     }
     plotRefFreq(context, lastStables); 
-    plothistogrampart(context, data[currentWork]);
+    plothistogrampart(context, data);
 }
 /*
  * Sets the event for showing the frequency at the mouse position, 
@@ -281,16 +282,18 @@ function plottonic(context) {
     // Sa and sa+1 line.
     context.beginPath();
     // sa+1, dotted
-    var tonic = Math.floor(tonicdata[currentWork]['value']);
-    var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
-    context.moveTo(0, tonicval);
-    context.lineWidth = 2;
-    for (var i = 0; i < 900; i+=10) {
-        context.moveTo(i, tonicval);
-        context.lineTo(i+5, tonicval);
+    if (tonicdata[currentWork] != null){
+      var tonic = Math.floor(tonicdata[currentWork]['value']);
+      var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
+      context.moveTo(0, tonicval);
+      context.lineWidth = 2;
+      for (var i = 0; i < 900; i+=10) {
+          context.moveTo(i, tonicval);
+          context.lineTo(i+5, tonicval);
+      }
+      context.strokeStyle = "#ffffff";
+      context.stroke();
     }
-    context.strokeStyle = "#ffffff";
-    context.stroke();
 }
 
 function spectrogram(context, view, color) {
@@ -764,8 +767,16 @@ function loaddata() {
     $.ajax(histogramurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             histogramdata = data;
-            histogramLoaded = true;
-            dodrawHistogram();
+            $.ajax(pitch_distributionurl, {dataType: "json", type: "GET",
+                success: function(data, textStatus, xhr) {
+                    pitchDistributionData = data;
+                    histogramLoaded = true;
+                    dodrawHistogram();
+
+            }, error: function(xhr, textStatus, errorThrown) {
+               console.debug("xhr error " + textStatus);
+               console.debug(errorThrown);
+            }});
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);

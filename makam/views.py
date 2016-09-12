@@ -379,8 +379,8 @@ def recordings_urls(include_img_and_bin=True):
             "pitchtrack": [("jointanalysis", "pitch", 1, "0.1"),
                 ('audioanalysis', 'pitch', 1, '0.1')],
             "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
-            "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1"),
-                ("audioanalysis", "pitch_distribution", 1, "0.1")],
+            "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1")],
+            "pitch_distributionurl": [("audioanalysis", "pitch_distribution", 1, "0.1")],
             "notemodelsurl": [("jointanalysis", "note_models", 1, "0.1"),
                 ("audioanalysis", "note_models", 1, "0.1")],
             "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
@@ -443,17 +443,8 @@ def recording(request, uuid, title=None):
             try:
                 success_content = docserver.util.docserver_get_url(mbid, option[0], option[1],
                         option[2], version=option[3])
-                ignore = False
-                #hack to check the output of jointanalysis
-                if option[0] == 'jointanalysis' and option[1] in ['pitch_distribution']:
-                    ignore = True
-                    content = docserver.util.docserver_get_json(mbid, option[0],
-                            option[1], option[2], version=option[3])
-                    if len(content.keys()) and content[content.keys()[0]]:
-                        ignore = False
-                if not ignore:
-                    ret[u] = success_content
-                    break
+                ret[u] = success_content
+                break
             except docserver.util.NoFileException:
                 ret[u] = None
 
