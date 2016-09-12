@@ -76,9 +76,9 @@ $(document).ready(function() {
         return false;
      });    
      waveform.click(function(e) {
-		var offset_l = $(this).offset().left - $(window).scrollLeft();
-		var left = Math.round( (e.clientX - offset_l) );
-	    mouPlay(left);
+	var offset_l = $(this).offset().left - $(window).scrollLeft();
+        var left = Math.round( (e.clientX - offset_l) );
+        mouPlay(left);
      });
      waveform.mouseenter(function(e) {
              waveform.css("cursor", "pointer");
@@ -133,11 +133,12 @@ function plothistogram() {
 
     var lastStables = [];
     for (key in notemodels[currentWork]){
-        var currMax = 0;
-        for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
-            if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
-                histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
-            }
+        if (notemodels[currentWork][key]['distribution'] != null){
+          for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
+              if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
+                  histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
+              }
+          }
         }
         lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
     }
@@ -896,6 +897,10 @@ function mouPlay(desti){
         if (wasplaying) {
             pagesound.resume();
         }
+        var currurl = window.location.href;
+        history.replaceState('data to be passed', 'Title of the page', currurl.split('?')[0]+"?start="+posms);
+        
+
     }
 }
 

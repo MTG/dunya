@@ -196,8 +196,6 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
         ids = list(models.Work.objects.unaccent_get(q).values_list('pk', flat=True))
         works = works.filter(pk__in=ids) | works.filter(recording__title__contains=q)
 
-    works = works.filter(is_processed=True)
-
     if elem != "artist":
         if artist and artist != '':
             works = works.filter(composers=artist) | works.filter(lyricists=artist)
@@ -375,13 +373,11 @@ def lyric_alignment(request, uuid, title=None):
     }
     return render(request, "makam/lyric_alignment.html", ret)
 
-def recordings_urls():
-    return {
-            "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
-            "spectrogram": [("makamaudioimages", "spectrum8", 1, 0.3)],
-            "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
-            "pitchtrackurl": [("tomatodunya", "pitch", 1, "0.1")],
+def recordings_urls(include_img_and_bin=True):
+    ret = {
             "notesalignurl": [("jointanalysis", "notes", 1, "0.1")],
+            "pitchtrack": [("jointanalysis", "pitch", 1, "0.1"),
+                ('audioanalysis', 'pitch', 1, '0.1')],
             "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
             "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1"),
                 ("audioanalysis", "pitch_distribution", 1, "0.1")],
@@ -390,9 +386,17 @@ def recordings_urls():
             "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
             "tonicurl": [( "jointanalysis", "tonic", 1, "0.1")],
             "ahenkurl": [("jointanalysis", "transposition", 1, "0.1")],
-            "worksurl": [("jointanalysis", "works_intervals", 1, "0.1")]
-            }
+            "worksurl": [("jointanalysis", "works_intervals", 1, "0.1")],
+            "melodic_progression": [("jointanalysis", "melodic_progression", 1,
+                "0.1")],
+            "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
+            "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
+ }
+    if include_img_and_bin:
+        ret["spectrogram"] = [("makamaudioimages", "spectrum8", 1, 0.3)]
+        ret["pitchtrackurl"] = [("tomatodunya", "pitch", 1, "0.1")]
 
+    return ret
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
@@ -437,9 +441,19 @@ def recording(request, uuid, title=None):
     for u in urls.keys():
         for option in urls[u]:
             try:
-                ret[u] = docserver.util.docserver_get_url(mbid, option[0], option[1],
+                success_content = docserver.util.docserver_get_url(mbid, option[0], option[1],
                         option[2], version=option[3])
-                break
+                ignore = False
+                #hack to check the output of jointanalysis
+                if option[0] == 'jointanalysis' and option[1] in ['pitch_distribution']:
+                    ignore = True
+                    content = docserver.util.docserver_get_json(mbid, option[0],
+                            option[1], option[2], version=option[3])
+                    if len(content.keys()) and content[content.keys()[0]]:
+                        ignore = False
+                if not ignore:
+                    ret[u] = success_content
+                    break
             except docserver.util.NoFileException:
                 ret[u] = None
 
@@ -451,7 +465,22 @@ def download_derived_files(request, uuid, title=None):
 
     filenames = []
 
-    urls = recordings_urls()
+    urls = recordings_urls(False)
+
+    for w in recording.works.all():
+        document = docserver.models.Document.objects.filter(external_identifier=w.mbid)
+        if len(document) == 1:
+            files = document[0].derivedfiles.filter(outputname='score',
+                    module_version__version="0.2")
+
+            if len(files) == 1:
+                for n in range(files[0].numparts):
+                    filenames.append(docserver.util.docserver_get_filename(w.mbid,
+                        'score', 'score', n+1, '0.2'))
+            score = document[0].sourcefiles.filter(file_type__extension='xml')
+            if len(score) == 1:
+                filenames.append(score[0].fullpath)
+
     for u in urls.keys():
         for option in urls[u]:
             try:
@@ -469,7 +498,9 @@ def download_derived_files(request, uuid, title=None):
     for fpath in filenames:
         # Calculate path for file in zip
         fdir, fname = os.path.split(fpath)
-        zip_path = os.path.join(zip_subdir, fname)
+        # Replace name fonly for smallfull case
+        zip_path = os.path.join(zip_subdir, fname.replace('smallfull',
+            'melodic_progression'))
 
         # Add file, at correct path
         zf.write(fpath, zip_path)
