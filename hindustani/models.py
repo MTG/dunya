@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
@@ -411,7 +410,7 @@ class Raag(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -501,7 +500,7 @@ class Taal(data.models.BaseModel):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     num_maatras = models.IntegerField(null=True)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -589,7 +588,7 @@ class Laya(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -641,7 +640,7 @@ class Form(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     def artists(self):
         """ Artists who are the lead artist of a release and

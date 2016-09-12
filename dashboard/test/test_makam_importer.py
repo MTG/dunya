@@ -3,6 +3,7 @@ from django.test import TestCase
 
 from dashboard import makam_importer
 from makam import models
+import uuid
 
 class MakamImporterTest(TestCase):
     def setUp(self):
@@ -10,7 +11,7 @@ class MakamImporterTest(TestCase):
 
     def test_get_makam(self):
         # Makam that exists
-        m = models.Makam.objects.create(name="A makam")
+        m = models.Makam.objects.create(name="A makam", uuid=str(uuid.uuid4()))
         get_m = self.mi._get_makam("a makam")
         self.assertEqual(m, get_m)
 
@@ -20,7 +21,7 @@ class MakamImporterTest(TestCase):
         self.assertEqual(m, get_m)
 
         # 2 aliases with the same unaccent() representation
-        hm = models.Makam.objects.create(name=u"Hicaz Hümayun")
+        hm = models.Makam.objects.create(name=u"Hicaz Hümayun", uuid=str(uuid.uuid4()))
         hma1 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümayun")
         hma2 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümâyûn")
 

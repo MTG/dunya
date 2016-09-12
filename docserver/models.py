@@ -16,7 +16,6 @@
 
 from django.db import models, connection
 from django.conf import settings
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
@@ -30,7 +29,7 @@ class Collection(models.Model):
     class Meta:
         permissions = (('read_restricted', "Can read files in restricted collections"), )
 
-    collectionid = UUIDField()
+    collectionid = models.UUIDField()
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     description = models.CharField(max_length=200)

@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
@@ -192,12 +191,12 @@ class MakamAlias(models.Model):
 class Makam(models.Model):
     name = models.CharField(max_length=100)
     tonic_symbol = models.CharField(max_length=50, null=True, blank=True)
-    
+
     #name in the mu2 files in symtr collection
     mu2_name = models.CharField(max_length=250, null=True, blank=True)
     # string used to identify a makam in the symtr filename
     symtr_key = models.CharField(max_length=250, null=True, blank=True)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     objects = managers.MakamFuzzyManager()
 
@@ -231,7 +230,7 @@ class UsulAlias(models.Model):
 
 class Usul(models.Model):
     name = models.CharField(max_length=100)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     objects = managers.MakamUsulManager()
 
@@ -269,7 +268,7 @@ class FormAlias(models.Model):
 
 class Form(models.Model):
     name = models.CharField(max_length=100)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     objects = managers.MakamFormManager()
 

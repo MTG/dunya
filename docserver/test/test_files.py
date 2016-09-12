@@ -7,6 +7,8 @@ from docserver import forms
 from docserver import models
 from docserver import util
 
+import uuid
+
 class SourceFileTest(TestCase):
     def setUp(self):
         permission = Permission.objects.get(codename='read_restricted')
@@ -20,9 +22,12 @@ class SourceFileTest(TestCase):
         self.ruser.user_permissions.add(permission)
         self.ruser.save()
 
-        self.col1 = models.Collection.objects.create(collectionid="f33f3f73", name="collection 1", slug="col")
-        self.col2 = models.Collection.objects.create(collectionid="f22f2f73", name="collection 2", slug="col2")
-        self.col3 = models.Collection.objects.create(collectionid="f33f3f73", name="collection 3", slug="col3")
+        coll1id = uuid.uuid4()
+        self.col1 = models.Collection.objects.create(collectionid=coll1id, name="collection 1", slug="col")
+        coll2id = uuid.uuid4()
+        self.col2 = models.Collection.objects.create(collectionid=coll2id, name="collection 2", slug="col2")
+        coll3id = uuid.uuid4()
+        self.col3 = models.Collection.objects.create(collectionid=coll3id, name="collection 3", slug="col3")
 
         self.file_type = models.SourceFileType.objects.create(extension="mp3", name="mp3_file_type", slug="mp3")
         self.file_type2 = models.SourceFileType.objects.create(extension="pdf", name="pdf_file", slug="application/pdf")
@@ -56,7 +61,7 @@ class SourceFileTest(TestCase):
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, 'somthing-else', True))
         self.assertTrue(util.user_has_access(self.nuser, self.doc2, 'svg', False))
         self.assertTrue(util.user_has_access(self.nuser, self.doc2, 'svg', True))
-     
+
 
     def test_regular_user_access(self):
         # Regular user can access only mp3 and pdf of collection 1
@@ -68,7 +73,7 @@ class SourceFileTest(TestCase):
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, self.file_type.slug, False))
         self.assertFalse(util.user_has_access(self.nuser, self.doc2, self.file_type2.slug, False))
         self.assertFalse(util.user_has_access(self.nuser, self.doc3, self.file_type2.slug, False))
-       
+
     def test_restricted_user_access(self):
         # Restricted users can access only to mp3 of collection 2 and mp3 and pdf of collection 1
         self.assertTrue(util.user_has_access(self.ruser, self.doc2, self.file_type.slug, False))
@@ -78,14 +83,14 @@ class SourceFileTest(TestCase):
         self.assertFalse(util.user_has_access(self.ruser, self.doc2, self.file_type2.slug, False))
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type.slug, False))
         self.assertFalse(util.user_has_access(self.ruser, self.doc3, self.file_type2.slug, False))
-        
+
     def test_regular_user_access_from_dunya(self):
         # Regular user can access only pdf of collection 1 but can also access mp3 and pdf from dunya
         self.assertTrue(util.user_has_access(self.nuser, self.doc4, self.file_type2.slug, True))
         self.assertTrue(util.user_has_access(self.nuser, self.doc2, self.file_type.slug, True))
         self.assertTrue(util.user_has_access(self.nuser, self.doc2, self.file_type2.slug, True))
         self.assertTrue(util.user_has_access(self.nuser, self.doc1, self.file_type.slug, True))
-       
+
     def test_staff_user_access(self):
         # Staff users access to mp3 of collection 3 and collection 2 and mp3 and pdf of collection 1,
         # even if theres in no Permission created they have access too
@@ -95,7 +100,7 @@ class SourceFileTest(TestCase):
         self.assertTrue(util.user_has_access(self.suser, self.doc3, self.file_type2.slug, False))
         self.assertTrue(util.user_has_access(self.suser, self.doc4, self.file_type2.slug, False))
         self.assertTrue(util.user_has_access(self.suser, self.doc1, self.file_type2.slug, False))
-    
+
     def test_rate_limit(self):
         # Return rate limit, if user is staff always return False
         self.assertFalse(util.has_rate_limit(self.suser, self.doc3, self.file_type.slug))

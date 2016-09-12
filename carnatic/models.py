@@ -16,7 +16,6 @@
 
 from django.db import models
 from django.db.models import Count
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
@@ -502,7 +501,7 @@ class Raaga(data.models.BaseModel):
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -591,7 +590,7 @@ class Taala(data.models.BaseModel):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
-    uuid = UUIDField(db_index=True, auto=True)
+    uuid = models.UUIDField(db_index=True)
 
     objects = managers.CarnaticTaalaManager()
     fuzzymanager = managers.FuzzySearchManager()

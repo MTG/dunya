@@ -4,6 +4,8 @@ from django.contrib.auth.models import Permission
 from django.contrib import auth
 
 import mock
+import uuid
+
 from docserver import forms
 from docserver import models
 from docserver import util
@@ -32,7 +34,8 @@ class Test2Extractor(compmusic.extractors.ExtractorModule):
 
 class AbstractFileTest(TestCase):
     def setUp(self):
-        self.col1 = models.Collection.objects.create(collectionid="f33f3f73", name="collection 1", slug="col", root_directory="/tmp/col1")
+        collid = uuid.uuid4()
+        self.col1 = models.Collection.objects.create(collectionid=collid, name="collection 1", slug="col", root_directory="/tmp/col1")
         self.file_type = models.SourceFileType.objects.create(extension="mp3", name="mp3_file_type", slug="mp3")
         self.doc1 = models.Document.objects.create(title="doc1", external_identifier="111111")
         self.doc1.collections.add(self.col1)

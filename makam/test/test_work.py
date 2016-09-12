@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from makam import models
+import uuid
 
 class WorkTest(TestCase):
     # Work tests are simple because all methods just call foreign keys
@@ -15,19 +16,19 @@ class WorkTest(TestCase):
 
     def test_makamlist(self):
         w = models.Work.objects.create(title="work")
-        m = models.Makam.objects.create(name="m")
+        m = models.Makam.objects.create(name="m", uuid=uuid.uuid4())
         w.makam.add(m)
         self.assertTrue(m in w.makamlist())
 
     def test_usullist(self):
         w = models.Work.objects.create(title="work")
-        u = models.Usul.objects.create(name="u")
+        u = models.Usul.objects.create(name="u", uuid=uuid.uuid4())
         w.usul.add(u)
         self.assertTrue(u in w.usullist())
 
     def test_formlist(self):
         w = models.Work.objects.create(title="work")
-        f = models.Form.objects.create(name="f")
+        f = models.Form.objects.create(name="f", uuid=uuid.uuid4())
         w.form.add(f)
         self.assertTrue(f in w.formlist())
 
