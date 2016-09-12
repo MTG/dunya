@@ -182,10 +182,9 @@ def filter_directory(request):
         elems = models.Composer.objects.filter(works__in=works.all()).order_by('name').distinct() | \
             models.Composer.objects.filter(lyric_works__in=works.all()).order_by('name').distinct()
     elif elem == "performer":
-        e_perf = models.Artist.objects.all()
-        elems = e_perf.order_by('name').distinct()
         e_perf = models.Artist.objects.filter(instrumentperformance__recording__recordingwork__work__in=works.all()).distinct() | \
                  models.Artist.objects.filter(recording__recordingwork__work__in=works.all()).distinct()
+        elems = e_perf.order_by('name').distinct()
 
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
