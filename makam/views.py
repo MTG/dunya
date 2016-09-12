@@ -390,7 +390,8 @@ def recordings_urls(include_img_and_bin=True):
                 "0.1")],
             "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
             "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
- }
+            "audiometadata": [("audioanalysis", "metadata", 1, "0.1")]
+    }
     if include_img_and_bin:
         ret["spectrogram"] = [("makamaudioimages", "spectrum8", 1, 0.3)]
         ret["pitchtrackurl"] = [("tomatodunya", "pitch", 1, "0.1")]
@@ -470,13 +471,25 @@ def download_derived_files(request, uuid, title=None):
             score = document[0].sourcefiles.filter(file_type__extension='xml')
             if len(score) == 1:
                 filenames.append(score[0].fullpath)
+        filenames.append(docserver.util.docserver_get_filename(w.mbid, 'scoreanalysis', 'metadata', 1, '0.1'))
 
-    for u in urls.keys():
+    keys = urls.keys()
+    for u in keys:
         for option in urls[u]:
             try:
-                filenames.append(docserver.util.docserver_get_filename(mbid, option[0], option[1],
+                #hack to check the output of pitch distribution of jointanalysis
+                ignore = False
+                if option[0] == 'jointanalysis' and option[1] in ['pitch_distribution']:
+                    ignore = True
+                    content = docserver.util.docserver_get_json(mbid, option[0],
+                            option[1], option[2], version=option[3])
+                    if len(content.keys()) and content[content.keys()[0]]:
+                        ignore = False
+                        keys.remove("pitch_distributionurl")
+                if not ignore:
+                    filenames.append(docserver.util.docserver_get_filename(mbid, option[0], option[1],
                         option[2], version=option[3]))
-                break
+                    break
             except docserver.util.NoFileException:
                 pass
 
