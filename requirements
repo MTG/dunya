@@ -12,7 +12,6 @@ Cython==0.23.4
 decorator==4.0.10
 Django==1.9.9
 django-celery==3.1.17
-django-extensions==1.7.3
 django-sendfile==0.3.11
 djangorestframework==3.4.6
 ecdsa==0.10

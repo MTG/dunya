@@ -127,7 +127,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_extensions',
     'django.contrib.admin',
     'djcelery',
     'raven.contrib.django.raven_compat',
