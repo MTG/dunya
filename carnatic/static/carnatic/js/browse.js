@@ -94,42 +94,6 @@ function parseAllFilters(data){
         entity.data("filter", element);
 
         $("#entitiesList ul").append(entity);
-        formHTML = "<div class='form_"+(index+1)+"'><form>";
-        $.each(element.data, function(index2, element2) {
-            formType = element2.type;
-            if(formType=="list"){
-                if (element2.multiselect) {
-                    var filtertype = 'multiSelect';
-                } else {
-                    var filtertype = 'select';
-                }
-                formHTML += "<fieldset filtertype='"+filtertype+"' filtername='"+element2.name+"'>";
-                formHTML += "<label class='formSection'>"+element2.name+"</label>";
-                formHTML += "<div class='filterList formFilterItem'><ul>";
-                for( i in element2.data ){
-                    formHTML += "<li the_id='"+(parseInt(i)+1)+"' valor='"+element2.data[i]+"'>"+element2.data[i]+"</li>";
-                }
-                formHTML += "</ul></div></fieldset>";
-            }else if(formType=="rangeslider"){
-                formHTML += "<fieldset filtertype='slideRange' filtername='"+element2.name+"'>";
-                formHTML += "<label class='formSection'>"+element2.name+"</label>";
-                formHTML += "<div class='formFilterItem'>";
-                formHTML += "<span class='output'></span>";
-                if(element2.step){
-                    formHTML += "<div class='slider-range' min='"+element2.data[0]+"' max='"+element2.data[1]+"' step='"+element2.step+"'></div>";
-                }else{
-                    formHTML += "<div class='slider-range' min='"+element2.data[0]+"' max='"+element2.data[1]+"' ></div>";
-                }
-                formHTML += "</div></fieldset>";
-            }else if(formType=="text"){
-                formHTML += "<fieldset filtertype='text' filtername='"+element2.name+"'>";
-                formHTML += "<label class='formSection formSectionText'>"+element2.name+"</label><div class='filterList formFilterItem'><input type='text' /></div>";
-                formHTML += "</fieldset>";
-            }
-        });
-        formHTML += "</form></div>";
-        // TODO: We've removed the middle form for now
-        //$("#footage").append(formHTML);
     });
     loadClicks();
 }
@@ -263,41 +227,8 @@ function loadClicks(){
         }
     });
 
-    $("#tabControl").click(function(){
-        $("#filterMask").toggleClass('querybar');
-        populateBreadcrumbs();
-    });
 }
 
-function populateBreadcrumbs(){
-	entityHTML_bc = "";
-	hay= "no";
-	for( i in filtersArray){
-		entity_name = ("eid"+filtersArray[i]);
-		entity_realName = $("#entitiesList ul li[eid='"+entity_name+"']").text().toLowerCase();
-		entityHTML_bc += "<div class='bread entity_"+entity_name+" "+entity_realName+"'><div class='breadarrow'></div><span><a href='#'>";
-		entityHTML_bc += "<h3>"+entity_realName+"</h3>";
-		if(filtersLiteralOutputArray[entity_name]){
-				$.each(filtersLiteralOutputArray[entity_name], function(key, info) {
-			           entityHTML_bc += key+"- "+info+"<br>";
-				});
-				hay = "yes";
-		}else{
-			hay = "no";
-		};
-		for( i in EspecificOutputArray[entity_name]){
-			especific_name = EspecificOutputArray[entity_name][i];
-			entityHTML_bc += especific_name+" ";
-			hay = "yes";
-		}
-		if(hay == "no"){
-			entityHTML_bc += "Nothing selected";
-		}
-		entityHTML_bc += "</a></span></div>";
-	}
-
-	$("#breadcrumb").html(entityHTML_bc);
-}
 
 function sumarizeFilter(object){
 	entity_name = object.parent().attr("eid");

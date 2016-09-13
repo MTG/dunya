@@ -25,7 +25,6 @@ import collections
 import data.models
 from carnatic import search
 import managers
-import filters
 import random
 import pysolr
 
@@ -44,12 +43,6 @@ class CarnaticStyle(object):
                 }[key]
 
 class GeographicRegion(CarnaticStyle, models.Model):
-    name = models.CharField(max_length=100)
-
-    def __unicode__(self):
-        return self.name
-
-class MusicalSchool(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
@@ -197,33 +190,13 @@ class Artist(CarnaticStyle, data.models.Artist):
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-artist-search'),
                "name": "Artist",
-               "data": [filters.School().object, filters.Region().object, filters.Generation().object]
                }
         return ret
+
 
 class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
     pass
 
-class Language(CarnaticStyle, models.Model):
-    name = models.CharField(max_length=50)
-
-    objects = managers.FuzzySearchManager()
-
-    def __unicode__(self):
-        return self.name
-
-class LanguageAlias(CarnaticStyle, models.Model):
-    name = models.CharField(max_length=50)
-    language = models.ForeignKey(Language, related_name="aliases")
-
-    objects = managers.FuzzySearchManager()
-
-    def __unicode__(self):
-        return self.name
-
-class Sabbah(CarnaticStyle, models.Model):
-    name = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
 
 class ConcertRecording(models.Model):
     """ Links a concert to a recording with an explicit ordering """
@@ -243,7 +216,6 @@ class ConcertRecording(models.Model):
         return u"%s: %s from %s" % (self.track, self.recording, self.concert)
 
 class Concert(CarnaticStyle, data.models.Release):
-    sabbah = models.ForeignKey(Sabbah, blank=True, null=True)
     recordings = models.ManyToManyField('Recording', through="ConcertRecording")
 
     objects = managers.CollectionConcertManager()
@@ -274,7 +246,6 @@ class Concert(CarnaticStyle, data.models.Release):
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-concert-search'),
                "name": "Concert",
-               "data": [filters.Venue().object, filters.Instrument().object]
                }
         return ret
 
@@ -513,7 +484,6 @@ class Raaga(data.models.BaseModel):
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-raaga-search'),
                "name": "Raaga",
-               "data": [filters.Text().object]
                }
         return ret
 
@@ -615,7 +585,6 @@ class Taala(data.models.BaseModel):
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-taala-search'),
                "name": "Taala",
-               "data": [filters.Text().object]
                }
         return ret
 
@@ -659,13 +628,11 @@ class Work(CarnaticStyle, data.models.Work):
     raaga = models.ForeignKey('Raaga', blank=True, null=True)
     taala = models.ForeignKey('Taala', blank=True, null=True)
     form = models.ForeignKey('Form', blank=True, null=True)
-    language = models.ForeignKey('Language', blank=True, null=True)
 
     @classmethod
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-work-search'),
                "name": "Composition",
-               "data": [filters.Form().object, filters.Language().object, filters.WorkDate().object]
                }
         return ret
 
@@ -822,7 +789,6 @@ class Instrument(CarnaticStyle, data.models.Instrument):
     def get_filter_criteria(cls):
         ret = {"url": reverse('carnatic-instrument-search'),
                "name": "Instrument",
-               "data": [filters.Text().object]
                }
         return ret
 
