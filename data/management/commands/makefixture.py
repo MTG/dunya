@@ -12,7 +12,7 @@ from django.core.management.base import CommandError
 from django.core.management.base import LabelCommand
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.related import ManyToManyField
-from django.db.models.loading import get_models
+import django.apps
 
 DEBUG = False
 
@@ -93,7 +93,7 @@ class Command(LabelCommand):
             raise CommandError("Unable to serialize database: %s" % e)
 
     def get_models(self):
-        return [(m, model_name(m)) for m in get_models()]
+        return [(m, model_name(m)) for m in django.apps.apps.get_models()]
 
     def handle_label(self, labels, **options):
         parsed = []
