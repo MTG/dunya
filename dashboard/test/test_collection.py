@@ -123,7 +123,7 @@ class CollectionTest(TestCase):
         # dashboard collection
         dashc = models.Collection.objects.get(pk=collid)
         self.assertEqual("/incoming/carnatic/audio", dashc.root_directory)
-        mockimport.assert_called_once_with(dashc.id)
+        mockimport.assert_called_once_with(collid)
 
 
         # docserver collection

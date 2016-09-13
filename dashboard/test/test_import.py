@@ -57,7 +57,7 @@ class CollectionTest(TestCase):
         jobs._check_existing_directories(self.collection)
 
         cf = models.CollectionFile.objects.get(pk=self.file2.pk)
-        self.assertEqual(cf.recordingid, newuuid)
+        self.assertEqual(str(cf.recordingid), newuuid)
 
     @mock.patch("dashboard.jobs._create_collectionfile")
     @mock.patch("os.listdir")

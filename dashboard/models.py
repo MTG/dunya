@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 import django.utils.timezone
 from django.apps import apps
@@ -93,7 +92,7 @@ class Collection(models.Model):
     AUDIO_DIR = 'audio'
     objects = CollectionManager()
 
-    id = UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True)
     name = models.CharField(max_length=200)
     last_updated = models.DateTimeField(default=django.utils.timezone.now)
     root_directory = models.CharField(max_length=255)
@@ -198,7 +197,7 @@ class MusicbrainzRelease(models.Model):
 
     objects = MusicbrainzReleaseManager()
 
-    mbid = UUIDField()
+    mbid = models.UUIDField()
     collection = models.ForeignKey(Collection)
     title = models.CharField(max_length=200)
     artist = models.CharField(max_length=200, blank=True, null=True)
@@ -327,7 +326,7 @@ class CollectionFile(models.Model):
 
     name = models.CharField(max_length=255)
     directory = models.ForeignKey(CollectionDirectory)
-    recordingid = UUIDField(null=True, blank=True)
+    recordingid = models.UUIDField(null=True, blank=True)
     filesize = models.IntegerField(blank=True, null=True)
 
     @property

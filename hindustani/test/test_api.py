@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.contrib import auth
 from rest_framework.test import APIClient
+from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.models import Permission
 import uuid
+import json
 
 import data
 from hindustani import models
@@ -65,8 +67,9 @@ class ArtistTest(ApiTestCase):
 
     def test_render_artist_inner(self):
         s = api.ArtistInnerSerializer(self.a1)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = {"name": "Artist1", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
-        self.assertEquals(expected, s.data)
+        self.assertEquals(expected, data)
 
     def test_render_artist_detail(self):
         pass
@@ -204,7 +207,8 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_inner(self):
         s = api.RecordingInnerSerializer(self.rnormal)
-        self.assertEqual(['mbid', 'title'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['mbid', 'title'], sorted(data.keys()))
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/hindustani/recording/dcf14452-e13e-450f-82c2-8ae705a58971")
@@ -282,7 +286,8 @@ class WorkTest(ApiTestCase):
 
     def test_render_work_inner(self):
         s = api.WorkInnerSerializer(self.wnormal)
-        self.assertEqual(['mbid', 'title'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['mbid', 'title'], sorted(data.keys()))
 
     def test_render_work_detail(self):
         resp = self.apiclient.get("/api/hindustani/work/7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
@@ -357,12 +362,14 @@ class RaagTest(ApiTestCase):
 
     def test_render_raag_inner(self):
         s = api.RaagInnerSerializer(self.r)
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_raag_detail(self):
         s = api.RaagDetailSerializer(self.r)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(data.keys()))
 
     def test_raag_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/raag/3cecdb8e-2a54-4833-8049-b3d8060f7e32")
@@ -375,12 +382,14 @@ class TaalTest(ApiTestCase):
 
     def test_render_taal_inner(self):
         s = api.TaalInnerSerializer(self.t)
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_taal_detail(self):
         s = api.TaalDetailSerializer(self.t)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = ['aliases', 'common_name', 'composers', 'name', 'uuid']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(data.keys()))
 
     def test_taal_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/taal/4f55fa34-5f77-4570-888c-0596cfc8a81a")
@@ -393,12 +402,14 @@ class FormTest(ApiTestCase):
 
     def test_render_form_inner(self):
         s = api.FormInnerSerializer(self.f)
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = ['aliases', 'artists', 'common_name', 'name', 'recordings', 'uuid']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(data.keys()))
 
     def test_taal_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/form/29847751-350b-4db2-9d18-630769ee2c6c")
@@ -411,12 +422,14 @@ class LayaTest(ApiTestCase):
 
     def test_render_laya_inner(self):
         s = api.LayaInnerSerializer(self.l)
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_laya_detail(self):
         s = api.LayaDetailSerializer(self.l)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = ['aliases', 'common_name', 'name', 'recordings', 'uuid']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(data.keys()))
 
     def test_laya_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/laya/e5d56b8c-f791-430a-ac2b-4c75f81a87c5")
@@ -479,12 +492,14 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_inner(self):
         s = api.ReleaseInnerSerializer(self.r)
-        self.assertEqual(['mbid', 'title'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['mbid', 'title'], sorted(data.keys()))
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = ['artists', 'image', 'mbid', 'recordings', 'release_artists', 'title', 'year']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(data.keys()))
 
     def test_laya_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/release/c8296944-74f6-4277-94c9-9481d7a8ba81")
@@ -498,12 +513,14 @@ class InstrumentTest(ApiTestCase):
 
     def test_render_instrument_inner(self):
         s = api.InstrumentInnerSerializer(self.i)
-        self.assertEqual(['mbid', 'name'], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(['mbid', 'name'], sorted(data.keys()))
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = ['artists', 'mbid', 'name']
-        self.assertEqual(expected, sorted(s.data.keys()))
+        self.assertEqual(expected, sorted(data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/instrument/%s" % self.instmbid)

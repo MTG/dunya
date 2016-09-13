@@ -1,5 +1,4 @@
 from django.db import models
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -35,7 +34,7 @@ class MusicalSchool(AndalusianStyle, data.models.BaseModel):
 
 
 class Orchestra(AndalusianStyle, data.models.BaseModel):
-	mbid = UUIDField(blank=True, null=True)
+	mbid = models.UUIDField(blank=True, null=True)
 	name = models.CharField(max_length=255)
 	transliterated_name = models.CharField(max_length=255, blank=True)
 	school = models.ForeignKey(MusicalSchool, blank=True, null=True)
@@ -78,7 +77,7 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 	)
 	name = models.CharField(max_length=200)
 	transliterated_name = models.CharField(max_length=200, blank=True)
-	mbid = UUIDField(blank=True, null=True)
+	mbid = models.UUIDField(blank=True, null=True)
 	gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
 	begin = models.CharField(max_length=10, blank=True, null=True)
 	end = models.CharField(max_length=10, blank=True, null=True)
@@ -162,7 +161,7 @@ class AlbumRecording(models.Model):
 class Album(AndalusianStyle, data.models.BaseModel):
 	missing_image = "album.jpg"
 
-	mbid = UUIDField(blank=True, null=True)
+	mbid = models.UUIDField(blank=True, null=True)
 	title = models.CharField(max_length=255)
 	transliterated_title = models.CharField(max_length=255, blank=True)
 	album_type = models.ForeignKey(AlbumType, blank=True, null=True)
@@ -190,7 +189,7 @@ class AlbumAlias(models.Model):
 '''
 
 class Work(AndalusianStyle, data.models.BaseModel):
-	mbid = UUIDField(blank=True, null=True)
+	mbid = models.UUIDField(blank=True, null=True)
 	title = models.CharField(max_length=255)
 	transliterated_title = models.CharField(max_length=255, blank=True)
 	def __unicode__(self):
@@ -215,7 +214,7 @@ class RecordingWork(models.Model):
 		return u"%s: %s" % (self.sequence, self.work.title)
 
 class Recording(AndalusianStyle, data.models.BaseModel):
-	mbid = UUIDField(blank=True, null=True)
+	mbid = models.UUIDField(blank=True, null=True)
 	works = models.ManyToManyField("Work", through="RecordingWork")
 	artists = models.ManyToManyField("Artist", through="InstrumentPerformance")
 	title = models.CharField(max_length=255)
@@ -226,7 +225,7 @@ class Recording(AndalusianStyle, data.models.BaseModel):
 	archive_url = models.CharField(max_length=255)
 	musescore_url = models.CharField(max_length=255)
         poems = models.ManyToManyField("Poem", through="RecordingPoem")
-	
+
         def __unicode__(self):
 		#ret = u", ".join([unicode(a) for a in self.performers()])
 		return u"%s" % self.title

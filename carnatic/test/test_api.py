@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib import auth
 from rest_framework.test import APIClient
+from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.models import Permission
 
 import data
@@ -8,6 +9,7 @@ from carnatic import models
 from carnatic import api
 
 import uuid
+import json
 
 class ArtistTest(TestCase):
 
@@ -48,8 +50,9 @@ class ArtistTest(TestCase):
 
     def test_render_artist_inner(self):
         s = api.ArtistInnerSerializer(self.a)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = {"name": "Foo", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
-        self.assertEquals(expected, s.data)
+        self.assertEquals(expected, data)
 
     def test_render_artist_detail(self):
         client = APIClient()
@@ -130,9 +133,11 @@ class ArtistTest(TestCase):
 
 class ComposerTest(TestCase):
     def test_render_composer_inner(self):
-        c = models.Composer.objects.create(name="Composer", mbid="")
+        mbid = uuid.uuid4()
+        c = models.Composer.objects.create(name="Composer", mbid=mbid)
         s = api.ComposerInnerSerializer(c)
-        self.assertEquals(["mbid", "name"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["mbid", "name"], sorted(data.keys()))
 
 class RecordingTest(TestCase):
     def setUp(self):
@@ -173,7 +178,8 @@ class RecordingTest(TestCase):
 
     def test_render_recording_inner(self):
         s = api.RecordingInnerSerializer(self.rnormal)
-        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["mbid", "title"], sorted(data.keys()))
 
     def test_recording_list_collection(self):
         """ Staff members will see recordings from restricted collections in
@@ -273,7 +279,8 @@ class WorkTest(TestCase):
     def test_render_work_inner(self):
         w = models.Work(title="work", mbid="")
         s = api.WorkInnerSerializer(w)
-        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["mbid", "title"], sorted(data.keys()))
 
     def test_render_work_detail(self):
         client = APIClient()
@@ -360,10 +367,11 @@ class RaagaTest(TestCase):
 
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
-        self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(["name", "uuid"], sorted(data.keys()))
 
         try:
-            uuid.UUID(s.data["uuid"])
+            uuid.UUID(data["uuid"])
         except ValueError:
             self.fail("uuid is not correct/present")
 
@@ -411,10 +419,11 @@ class TaalaTest(TestCase):
 
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)
-        self.assertEqual(["name", "uuid"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(["name", "uuid"], sorted(data.keys()))
 
         try:
-            uuid.UUID(s.data["uuid"])
+            uuid.UUID(data["uuid"])
         except ValueError:
             self.fail("uuid is not correct/present")
 
@@ -447,7 +456,6 @@ class ConcertTest(TestCase):
         permission = Permission.objects.get(codename='access_restricted')
         self.coll1id = str(uuid.uuid4())
         self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=self.coll1id, permission="U")
-        self.col1.save()
         self.cnormal = models.Concert.objects.create(title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937")
         self.cnormal.collection = self.col1
         self.cnormal.save()
@@ -475,14 +483,16 @@ class ConcertTest(TestCase):
 
     def test_render_concert_inner(self):
         s = api.ConcertInnerSerializer(self.cnormal)
-        self.assertEqual(["mbid", "title"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_render_concert_detail(self):
         s = api.ConcertDetailSerializer(self.cnormal)
+        data = json.loads(JSONRenderer().render(s.data))
         fields = ['artists', 'concert_artists', 'image', 'mbid','recordings', 'title', 'year']
-        self.assertEqual(fields, sorted(s.data.keys()))
+        self.assertEqual(fields, sorted(data.keys()))
 
-        recordings = s.data["recordings"]
+        recordings = data["recordings"]
         self.assertEqual(1, len(recordings))
         r = recordings[0]
         expected = {"title": "normal recording", "mbid": "34275e18-0aef-4fa5-9618-b5938cb73a24", "disc": 1, "track": 1, "disctrack": 1}
@@ -543,9 +553,11 @@ class InstrumentTest(TestCase):
 
     def test_render_instrument_inner(self):
         s = api.InstrumentInnerSerializer(self.inst)
-        self.assertEqual(["mbid", "name"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(["mbid", "name"], sorted(data.keys()))
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.inst)
+        data = json.loads(JSONRenderer().render(s.data))
         fields = ['artists', 'mbid', 'name']
-        self.assertEqual(fields, sorted(s.data.keys()))
+        self.assertEqual(fields, sorted(data.keys()))

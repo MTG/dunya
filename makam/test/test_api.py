@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.contrib import auth
 from rest_framework.test import APIClient
+from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.models import Permission
 import uuid
+import json
 
 import data
 from makam import models
@@ -62,8 +64,9 @@ class ArtistTest(ApiTestCase):
 
     def test_render_artist_list(self):
         s = api.ArtistInnerSerializer(self.a)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = {"name": "Artist", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
-        self.assertEquals(expected, s.data)
+        self.assertEquals(expected, data)
 
     def test_artist_detail_url(self):
         resp = self.apiclient.get("/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85")
@@ -133,12 +136,14 @@ class ComposerTest(ApiTestCase):
 
     def test_render_composer_detail(self):
         s = api.ComposerDetailSerializer(self.c)
-        self.assertEqual(["lyric_works", "mbid", "name", "works"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEqual(["lyric_works", "mbid", "name", "works"], sorted(data.keys()))
 
     def test_render_composer_list(self):
         s = api.ComposerInnerSerializer(self.c)
+        data = json.loads(JSONRenderer().render(s.data))
         expected = {"name": "Composer", "mbid": "392fa7ab-f87d-4a07-9c83-bd23130e711b"}
-        self.assertEquals(expected, s.data)
+        self.assertEquals(expected, data)
 
     def test_composer_detail_url(self):
         resp = self.apiclient.get("/api/makam/composer/392fa7ab-f87d-4a07-9c83-bd23130e711b")
@@ -153,11 +158,13 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        self.assertEquals(["image", "mbid", "recordings", "release_artists", "title", "year"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["image", "mbid", "recordings", "release_artists", "title", "year"], sorted(data.keys()))
 
     def test_render_release_list(self):
         s = api.ReleaseInnerSerializer(self.r)
-        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["mbid", "title"], sorted(data.keys()))
 
     def test_release_detail_url(self):
         resp = self.apiclient.get("/api/makam/release/805a3604-92e6-482f-a0e3-6620c4523d7a")
@@ -215,7 +222,8 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_list(self):
         s = api.RecordingInnerSerializer(self.r)
-        self.assertEquals(["artists", "mbid", "title"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["artists", "mbid", "title"], sorted(data.keys()))
 
     def test_recording_detail_url(self):
         resp = self.apiclient.get("/api/makam/recording/2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
@@ -270,7 +278,8 @@ class WorkTest(ApiTestCase):
 
     def test_render_work_list(self):
         s = api.WorkInnerSerializer(self.w)
-        self.assertEquals(["mbid", "title"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["mbid", "title"], sorted(data.keys()))
 
     def test_recording_detail_url(self):
         resp = self.apiclient.get("/api/makam/work/5f41f3ed-6c48-403f-ba6c-3e810b58295c")
@@ -293,12 +302,14 @@ class InstrumentTest(ApiTestCase):
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i1)
-        self.assertEquals(["artists", "mbid", "name"], sorted(s.data.keys()))
-        self.assertEquals(1, len(s.data["artists"]))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["artists", "mbid", "name"], sorted(data.keys()))
+        self.assertEquals(1, len(data["artists"]))
 
     def test_render_instrument_list(self):
         s = api.InstrumentInnerSerializer(self.i1)
-        self.assertEquals(["mbid", "name"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["mbid", "name"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/instrument/%s" % self.uuid)
@@ -317,11 +328,13 @@ class MakamTest(ApiTestCase):
 
     def test_render_makam_detail(self):
         s = api.MakamDetailSerializer(self.m)
-        self.assertEquals(["gazels", "name", "symtr_key", "taksims", "uuid", "works"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["gazels", "name", "symtr_key", "taksims", "uuid", "works"], sorted(data.keys()))
 
     def test_render_makam_list(self):
         s = api.MakamInnerSerializer(self.m)
-        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/makam/9c9b77cc-e357-402f-9278-2c5ed49e06b7")
@@ -339,11 +352,13 @@ class FormTest(ApiTestCase):
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
-        self.assertEquals(["name", "uuid", "works"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["name", "uuid", "works"], sorted(data.keys()))
 
     def test_render_form_list(self):
         s = api.FormInnerSerializer(self.f)
-        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/form/1494b665-8b67-430f-b6e6-efdcd42ddd3f")
@@ -361,11 +376,13 @@ class UsulTest(ApiTestCase):
 
     def test_render_usul_detail(self):
         s = api.UsulDetailSerializer(self.u)
-        self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(data.keys()))
 
     def test_render_usul_list(self):
         s = api.UsulInnerSerializer(self.u)
-        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
         resp = self.apiclient.get("/api/makam/usul/d5e15ee7-e6c3-4148-845c-8e7610c619e9")
@@ -384,7 +401,8 @@ class SymbTrTest(ApiTestCase):
 
     def test_render_symbtr_detail(self):
         s = api.SymbtrDetailSerializer(self.s)
-        self.assertEquals(["name", "uuid"], sorted(s.data.keys()))
+        data = json.loads(JSONRenderer().render(s.data))
+        self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_symbtr_detail_url(self):
         resp = self.apiclient.get("/api/makam/symbtr/d5e15ee7-e6c3-4148-4444-8e7610c65555")

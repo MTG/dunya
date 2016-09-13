@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.urlresolvers import reverse
-from django_extensions.db.fields import UUIDField
 
 class MotifManager(models.Manager):
     def get_queryset(self):
@@ -10,7 +9,7 @@ class File(models.Model):
     objects = MotifManager()
 
     filename = models.CharField(max_length=1000)
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     hasseed = models.IntegerField()
 
     def __unicode__(self):

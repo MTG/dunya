@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
-from django_extensions.db.fields import UUIDField
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.text import slugify
@@ -139,7 +138,7 @@ class Artist(BaseModel):
         ('G', 'Group')
     )
     name = models.CharField(max_length=200)
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
@@ -184,7 +183,7 @@ class Release(BaseModel):
 
     class Meta:
         abstract = True
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     title = models.CharField(max_length=100)
     # Main artists on the concert
     artists = models.ManyToManyField('Artist', related_name='primary_concerts')
@@ -241,7 +240,7 @@ class Work(BaseModel):
     class Meta:
         abstract = True
     title = models.CharField(max_length=100)
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     composers = models.ManyToManyField('Composer', blank=True, related_name="works")
     lyricists = models.ManyToManyField('Composer', blank=True, related_name="lyric_works")
 
@@ -263,7 +262,7 @@ class Recording(BaseModel):
     class Meta:
         abstract = True
     title = models.CharField(max_length=200)
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     length = models.IntegerField(blank=True, null=True)
     performance = models.ManyToManyField('Artist', through="InstrumentPerformance")
 
@@ -345,7 +344,7 @@ class Instrument(BaseModel):
     percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
     # Instruments have mbids too
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
 
     # Some instruments exist because they have relationships, but we
     # don't want to show them
@@ -388,7 +387,7 @@ class Composer(BaseModel):
         ('F', 'Female')
     )
     name = models.CharField(max_length=200)
-    mbid = UUIDField(blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
