@@ -99,7 +99,7 @@ $(document).ready(function() {
                             <div class="metaDetails">
                                 <h3>Biography</h3>
                                 <div class="inner">
-                                <span>
+                                <span class="info">
                                     {% if artist.description.description %} {{artist.description.description|safe}} {% else %}Sorry, we have no information for this section{% endif %}
                                     </span>
                                 </div>
@@ -171,7 +171,7 @@ $(document).ready(function() {
                         </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
+                            <span style="font-size: 14px; margin: 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
                     </div>

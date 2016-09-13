@@ -72,7 +72,7 @@ $(document).ready(function() {
                             <div class="metaDetails">
                                 <h3>Biography</h3>
                                 <div class="inner">
-                                <span>
+                                <span class="info">
                                     {% if artist.description.description %} {{artist.description.description|safe}} {% else %}Sorry, we have no information for this section{% endif %}
                                     </span>
                                 </div>
@@ -86,7 +86,7 @@ $(document).ready(function() {
                                     <h3>Common taalas</h3>
                                     {% endif %}
                                 <div class="inner">
-                                    <span>
+                                    <span class="info">
                                     {% for r, count in raagas %}
                                         <li>{% inline_raaga r %}
                                     {% endfor %}
@@ -101,7 +101,7 @@ $(document).ready(function() {
                                 <div class="metaDetails">
                                 <h3>Group members</h3>
                                 <div class="inner">
-                                    <span>
+                                    <span class="info">
                                 {% for member in artist.group_members.all %}
                                 {% badge_mini_artist member %}
                                 {% endfor %}
@@ -114,7 +114,7 @@ $(document).ready(function() {
                                 <div class="metaDetails">
                                 <h3>Part of group</h3>
                                 <div class="inner">
-                                    <span>
+                                    <span class="info">
                                 {% for member in artist.groups.all %}
                                 {% badge_mini_artist member %}
                                 {% endfor %}
@@ -144,7 +144,7 @@ $(document).ready(function() {
                         </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
+                            <span style="font-size: 14px; margin: 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
                     </div>
@@ -165,7 +165,7 @@ $(document).ready(function() {
                         </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
+                            <span style="font-size: 14px; margin: 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
                     </div>
@@ -187,7 +187,7 @@ $(document).ready(function() {
                         </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section</span>
+                            <span style="font-size: 14px; margin: 10px;">Sorry, we have no information for this section</span>
                         </div>
                         {% endif %}
                     </div>

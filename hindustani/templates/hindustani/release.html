@@ -95,7 +95,7 @@ $(document).ready(function() {
 										<span class='list'>
                                             <label>Year:</label><b>{{release.year}}</b>
                                             <label>length:</label><b>{{release.length}}</b>
-                                            <label>Data source:</label><b><a href="{{release.ref.url}}">{{release.ref.title}}</a></b>
+                                            <label>Data source:</label><b><a href="{{release.source.uri}}">{{release.source.source_name.name}}</a></b>
 									</div>
 								</div>
 							</div>
@@ -138,7 +138,7 @@ $(document).ready(function() {
                         </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                            <span style="font-size: 14px; margin: 10px;">Sorry, we have no information for this section yet.</span>
                         </div>
                         {% endif %}
 		     			<div class="clearfix"></div>
@@ -159,7 +159,7 @@ $(document).ready(function() {
 	                    </div>
                         {% else %}
                         <div style="height: 290px;">
-                            <span style="font-size: 14px; margin 10px;">Sorry, we have no information for this section yet.</span>
+                            <span style="font-size: 14px; margin: 10px;">Sorry, we have no information for this section yet.</span>
                         </div>
                         {% endif %}
 	     			</div>
