@@ -37,7 +37,9 @@ class CollectionRecordingManager(models.Manager):
         if ids and ids != "":
             ids = ids.replace(' ','').split(",")
             qs = qs.filter(concert__collection__collectionid__in=ids)
-        return qs.filter(concert__collection__permission__in=permission)
+        if permission:
+            qs = qs.filter(concert__collection__permission__in=permission)
+        return qs
 
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):
