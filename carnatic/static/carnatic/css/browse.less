@@ -6,27 +6,27 @@
    Browse interface
    ================== */
 
-.formSection { 
-    cursor: pointer; 
-    background: url("../img/formSectionClose.png") 98% 4px no-repeat; 
-    padding:5px; 
-    padding-right: 10px; 
-    padding-left: 10px; 
-    position: relative; 
-    display: block; 
-    font-weight: bold; 
+.formSection {
+    cursor: pointer;
+    background: url("../img/formSectionClose.png") 98% 4px no-repeat;
+    padding:5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: relative;
+    display: block;
+    font-weight: bold;
 }
 
-.formSectionText { 
-    cursor: pointer; 
-    background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat; 
-    background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat; 
-    padding:5px; 
-    padding-right: 10px; 
-    padding-left: 10px; 
-    width: 100%; 
-    position: relative; 
-    display: block; 
+.formSectionText {
+    cursor: pointer;
+    background: #000 url("../img/formSectionClose.png") 98% 79% no-repeat;
+    background: rgba(0,0,0,0.5) url("../img/formSectionClose.png") 98% 79% no-repeat;
+    padding:5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 100%;
+    position: relative;
+    display: block;
     border-bottom: 2px solid #ccc;
 }
 
@@ -38,11 +38,11 @@ fieldset { margin-bottom: 6px; }
 .formSectionOpen { -webkit-border-bottom-left-radius:0px; -webkit-border-bottom-right-radius:0px; -moz-border-bottom-left-radius:0px; -moz-border-bottom-right-radius:0px; border-bottom-left-radius:0px; border-bottom-right-radius:0px; }
 .filterList h2 { margin: 8px; font-size: 17px; background: #777; border-radius: 10px; padding: 4px; font-weight: normal; padding-left: 10px; color: #dcdcdc; }
 .ui-slider { margin-bottom: 12px; margin-top: 13px; margin-right:20px; margin-left: 20px; }
-.formFilterClosed { width: 0px !important; padding:0px !important; } 
-.filterListClosed { width: 0px !important; } 
+.formFilterClosed { width: 0px !important; padding:0px !important; }
+.filterListClosed { width: 0px !important; }
 
 .filterBallClosed { top: 6px !important; }
-.filterSummary { 
+.filterSummary {
     position: absolute;
     top: 115px;
     padding: 10px;
@@ -54,7 +54,7 @@ fieldset { margin-bottom: 6px; }
     color: #666;
     width: 174px;
     left: -30px;
-    height: 178px;    
+    height: 178px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -64,37 +64,37 @@ fieldset { margin-bottom: 6px; }
 .artistPopularity {}
 #filterArea>div { position: relative; display: inline-block; }
 
-#filterMask { 
-    position: relative; 
-    width:100%; height: 300px; 
-    overflow: hidden; 
-    overflow-x: auto; 
-    background: url("../img/cloth_alike.png") 0 0 repeat; 
-    #filterArea { 
-        position: relative; 
-        width: 100%; 
-        height: 300px; 
-        
-        .filterList { 
-            position: relative; 
-            float:left; 
-            height: 300px; 
-            overflow-y: auto; 
-            border-left:1px solid #A7A8AC; 
+#filterMask {
+    position: relative;
+    width:100%; height: 300px;
+    overflow: hidden;
+    overflow-x: auto;
+    background: url("../img/cloth_alike.png") 0 0 repeat;
+    #filterArea {
+        position: relative;
+        width: 100%;
+        height: 300px;
+
+        .filterList {
+            position: relative;
+            float:left;
+            height: 300px;
+            overflow-y: auto;
+            border-left:1px solid #A7A8AC;
             border-right:1px solid #A7A8AC;
-            ul { 
-                list-style: none; 
-                margin: 0px; 
-                padding: 0px; 
-                li { 
+            ul {
+                list-style: none;
+                margin: 0px;
+                padding: 0px;
+                li {
                     color: #fff;
                     text-shadow: 1px 1px 1px #555555;
-                    font-weight: bold; 
+                    font-weight: bold;
                     padding: 9px 9px 9px 24px;
-                    text-transform: capitalize; 
-                    cursor:pointer; 
+                    text-transform: capitalize;
+                    cursor:pointer;
                     margin: 0px;
-                    &.selected { 
+                    &.selected {
                         background-image: url("../img/sticker.png");
                         background-repeat: no-repeat;
                         background-position: 0 50%;
@@ -132,79 +132,79 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             }
             ul {
                 li {
-                    .colorCode { 
-                        position: relative; 
-                        display: inline-block; 
-                        width:18px; 
-                        height: 18px; 
+                    .colorCode {
+                        position: relative;
+                        display: inline-block;
+                        width:18px;
+                        height: 18px;
                         .rounded(20px);
-                        background: #fff; 
-                        margin-right: 5px; 
-                        top: 3px; 
-                        opacity: 1; 
+                        background: #fff;
+                        margin-right: 5px;
+                        top: 3px;
+                        opacity: 1;
                         border: 5px solid #f00;
-                    }        
-                }    
+                    }
+                }
             }
         }
-        .filters { 
+        .filters {
             .close {
                 position:absolute;
                 top: 10px;
                 left: 150px;
             }
-            .filterBall { 
-                -webkit-transition: all 0.5s ease 0; 
-                -moz-transition: all 0.5s ease 0; 
-                -o-transition: all 0.5s ease 0; 
-                transition:all 0.5s ease 0; 
-                position: relative; 
-                float: left; 
-                width: 120px; 
-                height: 120px; 
-                .rounded(120px); 
-                display: table; 
-                top: 86px; 
-                margin-left: 30px; 
-                cursor: pointer; 
-                margin-right: 25px; 
-                &:hover { 
+            .filterBall {
+                -webkit-transition: all 0.5s ease 0;
+                -moz-transition: all 0.5s ease 0;
+                -o-transition: all 0.5s ease 0;
+                transition:all 0.5s ease 0;
+                position: relative;
+                float: left;
+                width: 120px;
+                height: 120px;
+                .rounded(120px);
+                display: table;
+                top: 86px;
+                margin-left: 30px;
+                cursor: pointer;
+                margin-right: 25px;
+                &:hover {
                     box-shadow: 0px 0px 10px #000;
                 }
                 &:hover .arrowClosed{ display: block; }
                 &:hover .arrow{ display: block; }
-                & span { 
-                    display: table-cell; 
-                    position: relative; 
-                    top:0px; 
-                    left: 0px; 
-                    width: 100%; 
-                    height: 100%; 
-                    vertical-align: middle; 
-                    text-align: center; 
-                    padding: 0px; 
-                    color:#fff; 
-                    text-shadow: 0px 1px 3px black; 
-                    font-size: 16px; 
-                    text-transform: uppercase; 
+                & span {
+                    display: table-cell;
+                    position: relative;
+                    top:0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    vertical-align: middle;
+                    text-align: center;
+                    padding: 0px;
+                    color:#fff;
+                    text-shadow: 0px 1px 3px black;
+                    font-size: 16px;
+                    text-transform: uppercase;
                 }
-                & .arrow { 
-                    position: absolute; top:50%; 
-                    margin-top:-15px; 
-                    right: -11px; 
-                    background: url("../img/greyTriangle.png") 0 0 no-repeat; 
-                    width: 15px; 
-                    height: 30px; 
-                    display: none; 
+                & .arrow {
+                    position: absolute; top:50%;
+                    margin-top:-15px;
+                    right: -11px;
+                    background: url("../img/greyTriangle.png") 0 0 no-repeat;
+                    width: 15px;
+                    height: 30px;
+                    display: none;
                 }
-                & .arrowClosed { 
-                    position: absolute; 
-                    top:50%; 
-                    margin-top:-15px; 
-                    right: -20px; 
-                    background: url("../img/greyTriangleClosed.png") 0 0 no-repeat; 
-                    width: 15px; 
-                    height: 30px; 
+                & .arrowClosed {
+                    position: absolute;
+                    top:50%;
+                    margin-top:-15px;
+                    right: -20px;
+                    background: url("../img/greyTriangleClosed.png") 0 0 no-repeat;
+                    width: 15px;
+                    height: 30px;
                     display: none;
                 }
                 & .filterSummary {
@@ -212,33 +212,33 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                     & b { color: #000; }
                 }
             }
-            .formFilter { 
-                position: relative; 
-                float:left; 
-                width:240px; 
-                height: 300px; 
-                overflow-y: auto; 
-                padding:15px; 
-                overflow-y: auto; 
-                color:#000; 
-                & fieldset span.output { 
-                    color: #333; 
-                    display: block; 
-                    text-align: center; 
-                    background: #fff; 
-                    position: relative; 
+            .formFilter {
+                position: relative;
+                float:left;
+                width:240px;
+                height: 300px;
+                overflow-y: auto;
+                padding:15px;
+                overflow-y: auto;
+                color:#000;
+                & fieldset span.output {
+                    color: #333;
+                    display: block;
+                    text-align: center;
+                    background: #fff;
+                    position: relative;
                 }
-                & .filterList { 
-                    max-height: 234px; 
-                    height: auto; 
+                & .filterList {
+                    max-height: 234px;
+                    height: auto;
                 }
-                & .formFilterItem { 
-                    display: none; 
-                    background: #fff; 
-                    background: rgba(256,256,256,0.8); 
-                    width: 100%; 
-                    border: 1px solid #ccc; 
-                    overflow: hidden; 
+                & .formFilterItem {
+                    display: none;
+                    background: #fff;
+                    background: rgba(256,256,256,0.8);
+                    width: 100%;
+                    border: 1px solid #ccc;
+                    overflow: hidden;
                     input[type="text"] {
                         padding: 7px;
                         padding-top:8px;
@@ -253,11 +253,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
             h3 { padding:10px; }
         }
     }
-    #breadcrumb { display: none; }
     &.querybar {
-        position: relative; 
+        position: relative;
         width:100%;
-        height: 64px; 
+        height: 64px;
         background: url("../img/compactBar.png") 0 0 repeat-x;
         box-shadow: inset 0px 0px 8px #444;
         .arrowItem {
@@ -265,116 +264,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
         }
         #filterArea {
             #entitiesBall, #entitiesList, .filters {
-                display: none;    
+                display: none;
             }
-        }
-        #breadcrumb {
-            display: block;
-            position: relative;
-            top:0px;
-            left: 0px;
-            .bread {
-                float:left;
-                position: relative;
-                height: 64px;
-                border-left:1px solid @gris;
-                display: table;
-                .breadarrow {
-                    .arrow(20px);
-                    position: absolute;
-                    top:10px;
-                    left:0px;
-                }
-                &.artist .breadarrow { 
-                    border-left-color: darken(@artist_color, 10%); 
-                    &:after { border-left-color: @artist_color; }
-                }
-                &.concert .breadarrow, &.release .breadarrow { 
-                    border-left-color: darken(@concert_color, 10%); 
-                    &:after { border-left-color: @concert_color; }
-                }
-                &.work .breadarrow { 
-                    border-left-color: darken(@work_color, 10%); 
-                    &:after { border-left-color: @work_color; }
-                }
-                &.instrument .breadarrow { 
-                    border-left-color: darken(@instrument_color, 10%); 
-                    &:after { border-left-color: @instrument_color; }
-                }
-                &.raaga .breadarrow, &.raag .breadarrow { 
-                    border-left-color: darken(@raaga_color, 10%); 
-                    &:after { border-left-color: @raaga_color; }
-                }
-                &.taala .breadarrow, &.taal .breadarrow { 
-                    border-left-color: darken(@taala_color, 10%); 
-                    &:after { border-left-color: @taala_color; }
-                }
-                &.recording .breadarrow { 
-                    border-left-color: darken(@recording_color, 10%); 
-                    &:after { border-left-color: @recording_color; }
-                }
-                &.composer .breadarrow { 
-                    border-left-color: darken(@composer_color, 10%); 
-                    &:after { border-left-color: @composer_color; }
-                }
-                &.form .breadarrow { 
-                    border-left-color: darken(@form_color, 10%); 
-                    &:after { border-left-color: @form_color; }
-                }
-                &.laya .breadarrow { 
-                    border-left-color: darken(@laya_color, 10%); 
-                    &:after { border-left-color: @laya_color; }
-                }
-                span {
-                    display: table-cell;
-                    padding-right:10px;
-                    padding-left: 5px;
-                    vertical-align: middle;
-                    a {
-                        text-decoration: none; 
-                        color:#222;
-                        display: inline-block;
-                        padding:2px;
-                        padding-left: 15px;
-                        padding-right: 5px;
-                        .rounded (2px);
-                        float:left;
-                        clear:left;
-                        &:hover {
-                            background:#666;
-                            color:#fff;
-                        }
-                        h3 { margin:0px;}
-                    }
-                }
-            }
-        }
-    }
-}
-
-/* ==========================================================================
-   FILTERS
-   ========================================================================== */
-      
-#tab {  
-    position: absolute;
-    top: 350px;
-    left: 0px;
-    width: 100%;
-    height: 29px;
-    background: url("../img/tabBack.png") 50% 50% repeat-x;
-    z-index: 10;
-    #tabControl {
-        position: absolute;
-        top:0px;
-        left: 50%;
-        width: 65px;
-        height: 22px;
-        margin-left: -32px;
-        cursor: pointer;
-        background: url("../img/tabControl.png") 0 0 repeat-x;
-        &:hover {
-            background: url("../img/tabControl_hover.png")  0 0 repeat-x;
         }
     }
 }
@@ -382,7 +273,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 /* ==========================================================================
    Entities Filters Colors
    ========================================================================== */
-   
+
 #filterMask #filterArea .filterList ul li.artist.selected .colorCode { background: darken( @artist_color, 20% ) !important; }
 #filterMask #filterArea .filterList ul li.concert.selected .colorCode,
 #filterMask #filterArea .filterList ul li.release.selected .colorCode { background: darken( @concert_color, 20% ) !important; }
@@ -423,15 +314,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     #queryCont {
         background: #fff url("../img/icon_search.png") 0 50% no-repeat;
         #query {
-            position: relative; 
-            display: inline-block; 
-            width: 80px; 
-            height: 80px; 
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
             .rounded(40px);
             background: #fff url("../img/playSearch.png") 53% 53% no-repeat;
-            margin-right: 5px; 
-            top: 3px; 
-            opacity: 1; 
+            margin-right: 5px;
+            top: 3px;
+            opacity: 1;
             border: 5px solid #EEEEEE;
             margin-top:8px;
             margin-bottom:5px;
@@ -480,8 +371,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 color:#bbb;
                 .shadow1;
             }
-            b { 
-                font-size: 12px; 
+            b {
+                font-size: 12px;
                 color: #000;
                 text-shadow: none;
                 display: block;
@@ -568,7 +459,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
                 margin: 5px;
                 color: rgba(0,0,0,0.5);
             }
-        } 
+        }
     }
 }
 

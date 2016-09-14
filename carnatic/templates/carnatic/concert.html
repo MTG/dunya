@@ -12,9 +12,6 @@ $(document).ready(function() {
 		$(this).parent().parent().toggleClass("open");
         widthOfChildren('.inforight');
 	});
-	$( ".player" ).click(function() {
-      $( "#playback_dialog" ).dialog( "open" );
-    });
 	$('.item .similarity div').click(function(){
         $('.item .similarity div').removeClass('active');
         theparent = $(this).parent();
@@ -46,35 +43,6 @@ $(document).ready(function() {
        </div>
     </div>
 {% endif %}
-<!--
-    <div id="filterMask">
-	    <div id="filterArea">
-
-	    	<div id="entitiesList" class="filterList">
-	    		<h3>Chose your query</h3>
-	        	<ul>
-
-	        	</ul>
-	    	</div>
-
-	    	<div id="breadcrumb">
-	    		<div class="bread entity_1 artist">
-	    			<div class="breadarrow"></div>
-	    			<span><a href="#">No selection</a></span>
-	    		</div>
-	    		<div class="bread entity_3 work">
-	    			<div class="breadarrow"></div>
-	    			<span><a href="#">No selection</a></span>
-	    		</div>
-	    		<div class="bread entity_4 instrument">
-	    			<div class="breadarrow"></div>
-	    			<span><a href="#">No selection</a></span>
-	    		</div>
-	    	</div>
-
-	    </div>
-     </div>
-     -->
      <div id="detail" class="concert">
      	<div id="header">
      		<div id="summary">
@@ -85,7 +53,6 @@ $(document).ready(function() {
 	     			</span>
      			</div>
 
-     			<div id="summaryBack"></div>
                 {% include "hindustani/sample.html" %}
      		</div>
             <div class="bigImage"><img src="{{image}}" /></div>

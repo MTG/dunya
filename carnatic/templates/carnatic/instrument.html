@@ -31,31 +31,6 @@ $(document).ready(function() {
 {% block title %}{{instrument.name}} - {% endblock %}
 
 {% block wrap %}
-<!--
-<div id="filterMask">
-	<div id="filterArea">
-		<div id="entitiesList" class="filterList">
-	    	<h3>Chose your query</h3>
-        	<ul>
-        	</ul>
-    	</div>
-    	<div id="breadcrumb">
-    		<div class="bread entity_1 artist">
-    			<div class="breadarrow"></div>
-    			<span><a href="#">No selection</a></span>
-    		</div>
-    		<div class="bread entity_3 work">
-    			<div class="breadarrow"></div>
-    			<span><a href="#">No selection</a></span>
-    		</div>
-    		<div class="bread entity_4 instrument">
-    			<div class="breadarrow"></div>
-    			<span><a href="#">No selection</a></span>
-    		</div>
-    	</div>
-    </div>
- </div>
- -->
 
  <div id="detail" class="instrument">
      	<div id="header">
@@ -63,10 +38,8 @@ $(document).ready(function() {
      			<div id="innerSummary">
 	     			<span>
 		     			<h1>{{instrument.name}}</h1>
-                        <!-- <h3>Translated name</h3> -->
 	     			</span>
      			</div>
-     			<div id="summaryBack"></div>
                 {% include "hindustani/sample.html" %}
      		</div>
             <div class="bigImage"><img src="{{instrument.get_image_url}}" /></div>

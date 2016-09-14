@@ -59,7 +59,6 @@
         <script>
             $(document).ready(function() {
                 soundManager.setup({
-                  //useFlashBlock: true,
                   url: "{% static 'carnatic/swf/' %}"
                 });
 
@@ -73,10 +72,6 @@
                     effect: "explode",
                     duration: 100
                   }
-                });
-
-                $(".player").click(function() {
-                    $("#playback_dialog").dialog("open");
                 });
 
                 $("#aboutdialog").dialog({

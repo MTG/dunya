@@ -6,7 +6,7 @@
     BASE ELEMENTS
    ========================================================================== */
 
-* { 
+* {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -73,19 +73,19 @@ textarea {
 }
 
 /* ==========================================================================
-   HEADER 
+   HEADER
    ========================================================================== */
 
 .header-container {
-    position: relative; 
-    width: 100%; 
-    #logo { 
-        position: relative; 
-        top:8px; 
-        left: 0px; 
-        width:57px; 
-        height: 59px; 
-        float: left; 
+    position: relative;
+    width: 100%;
+    #logo {
+        position: relative;
+        top:8px;
+        left: 0px;
+        width:57px;
+        height: 59px;
+        float: left;
         margin-left:15px;
         margin-bottom: 13px;
     }
@@ -94,7 +94,7 @@ textarea {
         top:15px;
         float: left;
         margin-left: 15px;
-        input {  
+        input {
             background: url("../img/searchBackground.png") 0 0 no-repeat;
             border:none;
             width: 411px;
@@ -106,7 +106,7 @@ textarea {
             box-shadow: inset 0px 1px 5px #aaa;
             .rounded(4px);
         }
-        .button {  
+        .button {
             background: url("../img/icon_search.png") 0 0 no-repeat;
             width: 28px;
             height: 29px;
@@ -116,16 +116,16 @@ textarea {
             right: 5px;
         }
     }
-    #globalMusic { 
+    #globalMusic {
         position: relative;
         float:left;
-        top:16px; 
+        top:16px;
         margin-left: 15px;
         label {
             position: relative;
             font-size: 10px;
         }
-        #gmSelected { 
+        #gmSelected {
             position: absolute;
             top:16px;
             left: 0px;
@@ -230,7 +230,7 @@ textarea {
             font-size: 12px;
             box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
             color: #221F1F;
-            background: #eeeded;  
+            background: #eeeded;
             padding:15px;
             z-index:40;
             margin-top:5px;
@@ -253,7 +253,7 @@ textarea {
                 color: #000;
                 display: block;
                 white-space: nowrap;
-            }  
+            }
             #userArrow {
                 position: absolute;
                 width: 27px;
@@ -261,7 +261,7 @@ textarea {
                 background: url("../img/userArrow.png") 0 0 no-repeat;
                 top: -9px;
                 right: 8px;
-            }    
+            }
             &.open {
                 margin-top:0px;
             }
@@ -374,7 +374,7 @@ textarea {
     .disco {
         float: left;
         margin-right: 8px;
-        margin-bottom: 15px; 
+        margin-bottom: 15px;
         img { width: 40px !important; }
         a {
             background: none;
@@ -387,14 +387,14 @@ textarea {
  * Small things inside badges or on page lists
  *****************************/
 
-.miniitem.artist .colorCode { border-color: @artist_color !important; } 
-.miniitem.concert .colorCode { border-color: @concert_color !important; } 
-.miniitem.work .colorCode { border-color: @work_color !important; } 
-.miniitem.instrument .colorCode { border-color: @instrument_color !important; } 
-.miniitem.raaga .colorCode { border-color: @raaga_color !important; } 
-.miniitem.taala .colorCode { border-color: @taala_color !important; } 
-.miniitem.recording .colorCode { border-color: @recording_color !important; } 
-.miniitem.composer .colorCode { border-color: @composer_color !important; } 
+.miniitem.artist .colorCode { border-color: @artist_color !important; }
+.miniitem.concert .colorCode { border-color: @concert_color !important; }
+.miniitem.work .colorCode { border-color: @work_color !important; }
+.miniitem.instrument .colorCode { border-color: @instrument_color !important; }
+.miniitem.raaga .colorCode { border-color: @raaga_color !important; }
+.miniitem.taala .colorCode { border-color: @taala_color !important; }
+.miniitem.recording .colorCode { border-color: @recording_color !important; }
+.miniitem.composer .colorCode { border-color: @composer_color !important; }
 
 /* ==========================================================================
    LOGIN
@@ -416,7 +416,7 @@ textarea {
     color: #333;
     margin-top: 100px;
     text-align: center;
-    h1 { 
+    h1 {
         text-shadow: 1px 2px 2px black;
         color:#ddd;
     }
@@ -428,7 +428,7 @@ textarea {
     }
     &.logCenter label {
         text-align: center;
-    } 
+    }
 }
 
 input[type="button"], input[type="submit"] {
@@ -469,56 +469,15 @@ input[type="text"], input[type="password"], input[type="email"] {
  * Top segment, used for browse interface and also navigation header on other pages
  ************/
 
-#filterMask #filterArea #entitiesList ul li.artist .colorCode { border-color: @artist_color; } 
-#filterMask #filterArea #entitiesList ul li.concert .colorCode { border-color: @concert_color; } 
-#filterMask #filterArea #entitiesList ul li.work .colorCode { border-color: @work_color; } 
-#filterMask #filterArea #entitiesList ul li.instrument .colorCode { border-color: @instrument_color; } 
-#filterMask #filterArea #entitiesList ul li.raaga .colorCode { border-color: @raaga_color; } 
-#filterMask #filterArea #entitiesList ul li.taala .colorCode { border-color: @taala_color; } 
-#filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; } 
-#filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; } 
+#filterMask #filterArea #entitiesList ul li.artist .colorCode { border-color: @artist_color; }
+#filterMask #filterArea #entitiesList ul li.concert .colorCode { border-color: @concert_color; }
+#filterMask #filterArea #entitiesList ul li.work .colorCode { border-color: @work_color; }
+#filterMask #filterArea #entitiesList ul li.instrument .colorCode { border-color: @instrument_color; }
+#filterMask #filterArea #entitiesList ul li.raaga .colorCode { border-color: @raaga_color; }
+#filterMask #filterArea #entitiesList ul li.taala .colorCode { border-color: @taala_color; }
+#filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; }
+#filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; }
 
-#breadcrumb {
-    height: 80px;
-
-    #navigationhistory {
-        .inner {
-            width: 2000px;
-            .microitem {
-                float: left;
-                clear: none;
-                width: 300px !important;
-                height: 69px !important;
-                margin-left: 4px;
-                overflow: hidden;
-
-                .disco img {
-                    width: 15%;
-                    height: auto;
-
-                    float: right;
-                    margin-top: 3px;
-                    margin-right: 3px;
-                }
-            }
-            .microitem.artist {
-                background: #69d2e7;
-            }
-            .microitem.concert {
-                background: #a7dbd8;
-            }
-            .microitem.instrument {
-                background: #f38630;
-            }
-            .microitem.raaga {
-                background: #fa6900;
-            }
-            .microitem.taala {
-                background: #ecd078;
-            }
-        }
-    }
-}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
