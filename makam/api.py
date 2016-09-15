@@ -224,16 +224,15 @@ class WorkList(generics.ListAPIView):
         usul = self.request.GET.get('usul', None)
 
         if artist and artist != '':
-            works = works.filter(composers=artist)
+            works = works.filter(composers__mbid=artist)
         if form and form != '':
-            work = works.filter(form=form)
+            works = works.filter(form__uuid=form)
         if usul and usul != '':
-            works = works.filter(usul=usul)
+            works = works.filter(usul__uuid=usul)
         if makam and makam != '':
-            works = works.filter(makam=makam)
+            works = works.filter(makam__uuid=makam)
         works = works.order_by('title')
         return works.all()
-
 
 class WorkDetailSerializer(serializers.ModelSerializer):
     composers = ComposerInnerSerializer(source='composerlist', many=True)
