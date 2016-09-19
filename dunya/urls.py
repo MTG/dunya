@@ -8,8 +8,8 @@ import dunya.views
 import makam
 
 urlpatterns = [
-    # Examples:
     url(r'^$', dunya.views.main, name="main"),
+    url(r'^developers/$', dunya.views.developers, name="developers"),
     url(r'^about/terms', dunya.views.terms, name="terms"),
     url(r'^about/cookies', dunya.views.cookies, name="cookies"),
     url(r'^about/contact', dunya.views.contact, name="contact"),
@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^jingju/', include('jingju.urls')),
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^social/', include('account.urls')), 
+    url(r'^social/', include('account.urls')),
     url(r'^kvedit/', include('kvedit.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^accounts/login/$', django.contrib.auth.views.login),

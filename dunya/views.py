@@ -29,3 +29,6 @@ def contact(request):
 
 def main(request):
     return render(request, "carnatic/index_dunya.html")
+
+def developers(request):
+    return render(request, "carnatic/developers.html")
