@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.template import loader
 from django.forms.models import modelformset_factory
+from django.core.files import File
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
@@ -793,6 +794,39 @@ def import_andalusian_elements(request):
         form = forms.CsvAndalusianForm()
     params = {"form": form, "message": message}
     return render(request, "dashboard/load_csv.html", params)
+
+def import_andalusian_score(request):
+    param_mbid = request.GET.get("mbid", None)
+    recordings = andalusian.models.Recording.objects
+    try:
+        rec =  andalusian.models.Recording.objects.get(mbid=param_mbid)
+    except andalusian.models.Recording.DoesNotExist:
+        rec = None
+
+    score = None
+    qfiles = docserver.models.SourceFile.objects.filter(
+            document__external_identifier=param_mbid,
+            file_type__slug='symbtrxml')
+    if len(qfiles) == 1:
+        score = qfiles.all()[0]
+    if request.method == 'POST':
+        form = forms.AndalusianScoreForm(request.POST, request.FILES)
+        if form.is_valid():
+            sft = docserver.models.SourceFileType.objects.get(slug='symbtrxml')
+            document, created = docserver.models.Document.objects.get_or_create(
+                    external_identifier=param_mbid)
+            if created:
+                collection = models.Collection.objects.get(
+                        collectionid='142ea0d7-7fdf-4ea5-9b04-219f68023d01')
+                document.collections.add(collection)
+            sf, created = docserver.util.docserver_upload_and_save_file(
+                    document.id,
+                    sft.id, form.cleaned_data['score_file'])
+            return redirect('dashboard-home')
+    else:
+        form = forms.AndalusianScoreForm()
+    params = {"score": score, "form": form, "recordings": recordings, "recording": rec}
+    return render(request, "dashboard/andalusi_load_score.html", params)
 
 def import_andalusian_catalog(request):
     message=""

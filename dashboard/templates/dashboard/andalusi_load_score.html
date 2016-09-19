@@ -1,0 +1,54 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Load Catalog CSV file{% endblock %}
+
+{% block wrap %}
+<script>
+$( document ).ready(function() {
+  $( "#recordings" ).change(function() {
+    this.form.submit();
+  });
+});
+</script>
+
+{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+
+<h3>Load Catalog CSV file</h3>
+
+<span> Select one recording from the list:</span>
+<form method="get" >
+  <select id="recordings" name='mbid'>
+    {%for r in recordings.all%}
+      <option value="{{r.mbid}}" {% if r.mbid == recording.mbid %}selected="selected"{% endif %}>
+        {{r.title}}
+      </option>
+    {%endfor%}
+  </select>
+</form>
+
+{%if recording%}
+  <div>Selected recording: <a href="http://musicbrainz.org/recording/{{recording.mbid}}">{{recording.title}}</a></div>
+  {% with recording.album_set.all|first as album %}
+  <div>Album: {{album}}</div>
+  <div>Orchestra: {%for a in album.artists.all%}{{a}}{%endfor%}</div>
+  {%endwith%}
+  <br>
+  <div>
+    {%if score%}
+    <div>
+      <a href="{{score.get_absolute_url}}">View Score file</a>
+      <span> If you want to change this score, you can upload the new one here:</span>
+    </div>
+    {%else%}
+    <span>There is no score for this recording, please upload one:</span>
+    {%endif%}
+  <form method="post" id="score-form" enctype="multipart/form-data">
+     {% csrf_token %}
+    {{form}}
+  </form>
+  <button type="submit" form="score-form" value="Submit">Save</button>
+  </div>
+{%endif%}
+
+
+{%endblock%}

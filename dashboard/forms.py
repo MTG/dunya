@@ -132,6 +132,8 @@ class CsvAndalusianForm(forms.Form):
 class CsvAndalusianCatalogForm(forms.Form):
     csv_file = forms.FileField()
 
+class AndalusianScoreForm(forms.Form):
+    score_file = forms.FileField()
 
 class DashUUIDField(forms.UUIDField):
     """A UUIDField which returns uuids with dashes """

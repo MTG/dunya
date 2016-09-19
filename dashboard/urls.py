@@ -89,5 +89,6 @@ urlpatterns = [
     url(r'beijing/', statistic_views.beijing_stats, name='dashboard-beijing-stats'),
     url(r'arabandalusian/$', statistic_views.andalusian_stats, name='dashboard-andalusian-stats'),
     url(r'arabandalusian/file', views.import_andalusian_elements, name='dashboard-andalusian-elements'),
+    url(r'arabandalusian/score', views.import_andalusian_score, name='dashboard-andalusian-score'),
     url(r'arabandalusian/catalog', views.import_andalusian_catalog, name='dashboard-andalusian-catalog'),
 ]
