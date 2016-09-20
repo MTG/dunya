@@ -471,7 +471,10 @@ def download_derived_files(request, uuid, title=None):
             score = document[0].sourcefiles.filter(file_type__extension='xml')
             if len(score) == 1:
                 filenames.append(score[0].fullpath)
-        filenames.append(docserver.util.docserver_get_filename(w.mbid, 'scoreanalysis', 'metadata', 1, '0.1'))
+        try:
+            filenames.append(docserver.util.docserver_get_filename(w.mbid, 'scoreanalysis', 'metadata', 1, '0.1'))
+        except docserver.util.NoFileException:
+            pass
 
     keys = urls.keys()
     for u in keys:
