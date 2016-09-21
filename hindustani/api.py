@@ -77,13 +77,13 @@ class TaalList(generics.ListAPIView):
     serializer_class = TaalInnerSerializer
 
 class TaalDetailSerializer(serializers.ModelSerializer):
-    #recordings = RecordingInnerSerializer(source='recordings')
+    recordings = RecordingInnerSerializer(many=True, source='recording_set')
     composers = ComposerInnerSerializer(many=True)
     aliases = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Taal
-        fields = ['uuid', 'name', 'common_name', 'aliases', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'composers', 'recordings']
 
 class TaalDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
@@ -101,13 +101,13 @@ class RaagList(generics.ListAPIView):
 
 class RaagDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(many=True)
-    #recordings = WorkInnerSerializer(source='recordings')
+    recordings = RecordingInnerSerializer(many=True, source='recording_set')
     composers = ComposerInnerSerializer(many=True)
     aliases = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = models.Raag
-        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'composers']
+        fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'composers', 'recordings']
 
 class RaagDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
