@@ -201,7 +201,12 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
         url["artist"] = "artist=" + artist
     if elem != "form":
         if form and form != '':
-            works = works.filter(form=form)
+            if form == '17':
+                works = works.filter(recording__has_gazel=True)
+            if form == '67':
+                works = works.filter(recording__has_taksim=True)
+            else:
+                works = works.filter(form=form)
         url["form"] = "form=" + form
     if elem != "usul":
         if usul and usul != '':
