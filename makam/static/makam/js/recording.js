@@ -710,8 +710,11 @@ function loaddata() {
                 }});
               }
             }else{
-              var w = $('.works-info').find('.work-ref').attr('ref').replace('#work-','');
-              currentWork = w;
+              var wItem = $('.works-info').find('.work-ref').attr('ref');
+              if (wItem != null){
+                 wItem.replace('#work-','');
+                 currentWork = w;
+              }
               partsDone = true;
             }
     }, error: function(xhr, textStatus, errorThrown) {
