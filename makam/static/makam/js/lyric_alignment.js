@@ -12,10 +12,6 @@ $(document).ready(function() {
      waveform = $('#renderTotal canvas');
      plButton = $("#control .plButton");
      timecode = $("#timecode");
-     currentSymbtrIndex = 1;
-     currentInterval = 1;
-     currentPage = 0;
-     lastOffset = null;
      lastTime = null;
      showingNote = null;
      colors = ["#FFC400","#00FFB3","#0099FF","#FF007F","#00FFFF", "#FF000D","#FF9100","#4800FF","#00FF40","#D4D390","#404036","#00FF80","#8471BD","#C47766","#66B3C4","#1627D9","#16D9A2","#D99B16"]
@@ -109,7 +105,6 @@ $(document).ready(function() {
      });
 
      loaddata();
-
 });
 
 function plothistogram() {
@@ -118,7 +113,7 @@ function plothistogram() {
     histogram.height = 256;
     var context = histogram.getContext("2d");
     histogramMax = 0;
-    var data = histogramdata;
+    var data = histogramdata[currentWork];
     for (var i = 0; i < data['vals'].length; i++) {
         if (data['vals'][i] > histogramMax) {
             histogramMax = data['vals'][i];
@@ -133,7 +128,7 @@ function plothistogram() {
                 histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
             }
         }
-        lastStables.push([notemodels[currentWork][key]['stablepitch']['Value'], key, notemodels[currentWork][key]['interval']['Value']]);
+        lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
     }
     plotRefFreq(context, lastStables); 
     plothistogrampart(context, data);
@@ -272,7 +267,7 @@ function plottonic(context) {
     // Sa and sa+1 line.
     context.beginPath();
     // sa+1, dotted
-    var tonic = Math.floor(tonicdata[currentWork]['scoreInformed']['Value']);
+    var tonic = Math.floor(tonicdata[currentWork]['value']);
     var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
     context.moveTo(0, tonicval);
     context.lineWidth = 2;
@@ -420,7 +415,7 @@ function updateScoreProgress(currentTime){
             if (aligns[lastIndex+1]['starttime']<currentTime && aligns[lastIndex+1]['endtime']>currentTime){
                 endPeriod = aligns[lastIndex+1]['endtime'];
                 startPeriod = aligns[lastIndex+1]['starttime'];           
-                plotscore(aligns[lastIndex]['index'])   
+                plotscore(aligns[i]['index'])   
                 lastIndex = lastIndex+1;
                 updated = true;
             }
@@ -486,7 +481,7 @@ function plotsmall() {
         context.fillStyle = colour;
         for (var i = 0; i < data.length; i++) {
             var d = data[i];
-            var txt = d['melodicStructure'];
+            var txt = d['name'];
             var s = d['time'][0];
             var e = d['time'][1];
             context.globalAlpha = 0.2;
@@ -514,7 +509,7 @@ function plotsmall() {
         colorsNames = {};
         currColor = 0;
         for (var i = 0; i < sections.length; i++) {
-                var name = sections[i]['melodicStructure'];
+                var name = sections[i]['name'];
                 if (!(name in colorsNames)){
                     colorsNames[name]=colors[currColor];
                     currColor += 1;
@@ -653,7 +648,7 @@ function loaddata() {
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
          for (w in data){
-           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w][0] + "</span></b>") 
+           $("#work-" + w).append("<label>Ahenk:</label><b><span>" + data[w]['name'] + "</span></b>") 
 
          }
     }, error: function(xhr, textStatus, errorThrown) {
@@ -928,9 +923,9 @@ function playNextSection(right){
   var ends = []
   var currentTime=pagesound.position / 1000 ;
   for (w in sections){
-    for (var s = 0; s < sections['links'].length; s++) {
-       starts.push(parseFloat(sections['links'][s]['time'][0][0]));
-        ends.push(parseFloat(sections['links'][s]['time'][1][0]));
+    for (var s = 0; s < sections[w].length; s++) {
+       starts.push(parseFloat(sections[w][s]['time'][0]));
+        ends.push(parseFloat(sections[w][s]['time'][1]));
     }  
   }
   starts.sort(function(a, b){ return a - b;});
