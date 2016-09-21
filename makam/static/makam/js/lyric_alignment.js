@@ -667,26 +667,35 @@ function loaddata() {
        console.debug(errorThrown);
        $('#dialog').html('This recording is not analyzed yet.')
     }});
-
+    $.ajax(alignsectionsurl, {dataType: "json", type: "GET",
+    success: function(data, textStatus, xhr) {
+        alignmentSections = data;
+        loadingDone++;
+        dodraw();
+    }, error: function(xhr, textStatus, errorThrown) {
+       console.debug("xhr error " + textStatus);
+       console.debug(errorThrown);
+       $('#dialog').html('This recording is not analyzed yet.')
+    }});
     function dodrawHistogram() {
         if (histogramLoaded && notemodelsLoaded) {
             plothistogram();
         
-            if (loadingDone == 4 && indexmapDone && partsDone) {
+            if (loadingDone == 5 && indexmapDone && partsDone) {
                 $('#dialog').dialog('close');
             }
         }
     }
     function dodraw() {
-        if (loadingDone == 3 && indexmapDone && partsDone) {
+        if (loadingDone == 4 && indexmapDone && partsDone) {
             
             endPeriod = 0;
             startPeriod = -1;
             addedNotes = {};
 
             aligns = []
-            for (i in alignment['alignedLyricsSyllables']){
-              var elem = alignment['alignedLyricsSyllables'][i];
+            for (i in alignment){
+              var elem = alignment[i];
               var html = "<div class='lyric-line'>";
               for (j in elem){
                 var subHtml = '';
@@ -708,7 +717,7 @@ function loaddata() {
 
             }
            aligns.sort(function(a, b){return a['index']-b['index']});
-           sections = alignment['sectionlinks']['section_annotations'];
+           sections = alignmentSections['section_annotations'];
            drawdata(false);
            
            if (histogramLoaded && notemodelsLoaded) {
