@@ -368,7 +368,7 @@ class RaagTest(ApiTestCase):
     def test_render_raag_detail(self):
         s = api.RaagDetailSerializer(self.r)
         data = json.loads(JSONRenderer().render(s.data))
-        expected = ['aliases', 'artists', 'common_name', 'composers', 'name', 'uuid']
+        expected = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid']
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_raag_detail_url(self):
@@ -388,7 +388,7 @@ class TaalTest(ApiTestCase):
     def test_render_taal_detail(self):
         s = api.TaalDetailSerializer(self.t)
         data = json.loads(JSONRenderer().render(s.data))
-        expected = ['aliases', 'common_name', 'composers', 'name', 'uuid']
+        expected = ['aliases', 'common_name', 'composers', 'name', 'recordings', 'uuid']
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_taal_detail_url(self):
