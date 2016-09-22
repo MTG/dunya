@@ -372,7 +372,7 @@ $('.change-filter').click(function(){
           </td>
           <td>
             <a href="/makam/recording/{{ r.mbid }}">
-              {% for a in r.artists.all%}{{ a }}{%endfor%}
+              {% for a in r.artists.all%}{{ a }}{% if not forloop.last %}, {% endif %}{%endfor%}
             </a>
           </td>
           <td>
