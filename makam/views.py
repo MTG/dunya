@@ -115,25 +115,25 @@ def main(request):
         makam = models.Makam.objects.get(id=s_makam)
 
     url = None
-    works = None
+    recordings = None
     results = None
     if s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
-        works, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
+        recordings, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
         if q and q!='':
             url["q"] = "q=" + SafeString(q.encode('utf8'))
 
-        results = len(works) != 0
+        results = len(recordings) != 0
 
-        paginator = Paginator(works, 25)
+        paginator = Paginator(recordings, 25)
         page = request.GET.get('page')
         try:
-            works = paginator.page(page)
+            recordings = paginator.page(page)
         except PageNotAnInteger:
             # If page is not an integer, deliver first page.
-            works = paginator.page(1)
+            recordings = paginator.page(1)
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
-            works = paginator.page(paginator.num_pages)
+            recordings = paginator.page(paginator.num_pages)
     if not url:
         url = {
                 "q": "q=%s" % SafeString(q.encode('utf8')),
@@ -150,7 +150,7 @@ def main(request):
         'makam': makam,
         'usul': usul,
         'form': form,
-        'works': works,
+        'recordings': recordings,
         'results': results,
         'q': q,
         'params': url,
@@ -168,62 +168,63 @@ def filter_directory(request):
     makam = request.GET.get('makam', '')
     usul = request.GET.get('usul', '')
 
-    works, url = get_works_and_url(artist, form, usul, makam, perf, q, elem)
+    recordings, url = get_works_and_url(artist, form, usul, makam, perf, q, elem)
     if q and q!='':
         url["q"] = "q=" + SafeString(q.encode('utf8'))
 
+    recording_ids = recordings.values_list('id', flat=True).all()
     if elem == "makam":
-        elems = models.Makam.objects.filter(work__in=works.all()).order_by('name').distinct()
+        elems = models.Makam.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
     elif elem == "form":
-        elems = models.Form.objects.filter(work__in=works.all()).order_by('name').distinct()
+        elems = models.Form.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
     elif elem == "usul":
-        elems = models.Usul.objects.filter(work__in=works.all()).order_by('name').distinct()
+        elems = models.Usul.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
     elif elem == "artist":
-        elems = models.Composer.objects.filter(works__in=works.all()).order_by('name').distinct() | \
-            models.Composer.objects.filter(lyric_works__in=works.all()).order_by('name').distinct()
+        elems = models.Composer.objects.filter(works__recording__id__in=recording_ids).order_by('name').distinct() | \
+            models.Composer.objects.filter(lyric_works__recording__id__in=recording_ids).order_by('name').distinct()
     elif elem == "performer":
-        e_perf = models.Artist.objects.filter(instrumentperformance__recording__recordingwork__work__in=works.all()).distinct() | \
-                 models.Artist.objects.filter(recording__recordingwork__work__in=works.all()).distinct()
+        e_perf = models.Artist.objects.filter(instrumentperformance__recording__id__in=recording_ids).distinct() | \
+                 models.Artist.objects.filter(recording__id__in=recording_ids).distinct()
         elems = e_perf.order_by('name').distinct()
 
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
 def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
-    works = models.Work.objects
+    recordings = models.Recording.objects
     url = {}
     if q and q!='':
         ids = list(models.Work.objects.unaccent_get(q).values_list('pk', flat=True))
-        works = works.filter(pk__in=ids) | works.filter(recording__title__contains=q)
+        recordings = recordings.filter(work__id__in=ids) | recordings.filter(title__contains=q)
 
     if elem != "artist":
         if artist and artist != '':
-            works = works.filter(composers=artist) | works.filter(lyricists=artist)
+            recordings = recordings.filter(works__composers=artist) | recordings.filter(works__lyricists=artist)
         url["artist"] = "artist=" + artist
     if elem != "form":
         if form and form != '':
             if form == '17':
-                works = works.filter(recording__has_gazel=True)
+                recordings = recordings.filter(has_gazel=True)
             if form == '67':
-                works = works.filter(recording__has_taksim=True)
+                recordings = recordings.filter(has_taksim=True)
             else:
-                works = works.filter(form=form)
+                recordings= recordings.filter(works__form=form)
         url["form"] = "form=" + form
     if elem != "usul":
         if usul and usul != '':
-            works = works.filter(usul=usul)
+            recordings = recordings.filter(works__usul=usul)
         url["usul"] = "usul=" + usul
     if elem != "makam":
         if makam and makam != '':
-            works = works.filter(makam=makam)
+            recordings = recordings.filter(works__makam=makam)
         url["makam"] = "makam=" + makam
     if elem != "performer":
         if perf and perf != '':
-            works = works.filter(recordingwork__recording__instrumentperformance__artist=perf) | \
-                    works.filter(recordingwork__recording__release__artists=perf)
+            recordings = recordings.filter(instrumentperformance__artist=perf) | \
+                    recordings.filter(release__artists=perf)
         url["perf"] = "performer=" + perf
 
-    works = works.distinct().order_by('title')
-    return works, url
+    recordings = recordings.distinct().order_by('title')
+    return recordings, url
 
 
 def work_score(request, uuid, title=None):
