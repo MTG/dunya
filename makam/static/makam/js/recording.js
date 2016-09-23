@@ -712,8 +712,7 @@ function loaddata() {
             }else{
               var wItem = $('.works-info').find('.work-ref').attr('ref');
               if (wItem != null){
-                 wItem.replace('#work-','');
-                 currentWork = w;
+                 currentWork = wItem.replace('#work-','');
               }
               partsDone = true;
             }
