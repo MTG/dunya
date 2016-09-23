@@ -1040,6 +1040,9 @@ function updateView(){
 }
 function updateCurrentPitch(){
     var futureTime = pagesound.position / 1000 ;
+    if (pitchintervals == null){
+        updateFrequencyMarker(futureTime);
+    }
     for (w in worksdata){
         if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
             currentWork = w;
