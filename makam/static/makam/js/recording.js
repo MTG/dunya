@@ -156,7 +156,24 @@ function plotRefFreq(context, lastStables){
     });
     lastStables = positiveFreqs;
     lastStables.sort(function(a, b){return a[2]-b[2]}); 
-
+    preloadedData = {};
+    for (var vtop=1; vtop<256; vtop++){
+        var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
+        preloadedData[vtop] = {'freq': freq};
+        var note = null;
+        var cents = null;
+        var hz= null;
+        for (var i=0; i<lastStables.length; i++){
+              var cent = 1200*Math.log2(freq/lastStables[i][0])
+              if( Math.abs(cent) < 50 ){
+              note = lastStables[i][1];
+              hz = lastStables[i][0];
+              cents = Math.floor(lastStables[i][2]);
+              preloadedData[vtop] = {'hz': hz, 'note': note, 'cents': cents, 'freq': freq}
+              break;
+            }
+        }
+    }
     histogramcanvas = $('.waveLabel canvas');
     histogramcanvas.mousemove(function(e) {
         var sectionName = ''; 
@@ -165,26 +182,16 @@ function plotRefFreq(context, lastStables){
         if (lastStables) {
             var offset_t = $(this).offset().top - $(window).scrollTop();
             var vtop = Math.round( (e.clientY - offset_t) );
-            var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
-            var note = null;
-            var cents = null;
-            for (var i=0; i<lastStables.length; i++){
-                  var cent = 1200*Math.log2(freq/lastStables[i][0])
-                  if( Math.abs(cent) < 50 ){
-                  note = lastStables[i][1];
-                  cents = Math.floor(lastStables[i][2]);
-                  break;
-                }
-            }
+            var pre = preloadedData[vtop]; 
             var html = "";
-            if (note != null){
-              html += "<b>" + note + "</b>, ";
+            if (pre['note'] != null){
+              html += "<b>" + pre['note'] + "</b>, ";
             }
-            if(cents){
-              html += Math.floor(lastStables[i][0]) + " Hz";
-              html += ", " + Math.floor(lastStables[i][2]) +" cents";
+            if(pre['cents']){
+              html += Math.floor(pre['hz']) + " Hz";
+              html += ", " + Math.floor(pre['cents']) +" cents";
             }else{
-              html += Math.floor(freq) + " Hz";
+              html += Math.floor(pre['freq']) + " Hz";
             }
             $("#freq-info").html(html);
             $("#freq-info").show();
