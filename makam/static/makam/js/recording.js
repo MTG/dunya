@@ -175,32 +175,51 @@ function plotRefFreq(context, lastStables){
         }
     }
     histogramcanvas = $('.waveLabel canvas');
-    histogramcanvas.mousemove(function(e) {
-        var sectionName = ''; 
-        var rect = histogramcanvas[0].getBoundingClientRect();
-        var mousePos = e.clientY - rect.top;
-        if (lastStables) {
-            var offset_t = $(this).offset().top - $(window).scrollTop();
-            var vtop = Math.round( (e.clientY - offset_t) );
-            var pre = preloadedData[vtop]; 
-            var html = "";
-            if (pre['note'] != null){
-              html += "<b>" + pre['note'] + "</b>, ";
-            }
-            if(pre['cents']){
-              html += Math.floor(pre['hz']) + " Hz";
-              html += ", " + Math.floor(pre['cents']) +" cents";
-            }else{
-              html += Math.floor(pre['freq']) + " Hz";
-            }
-            $("#freq-info").html(html);
-            $("#freq-info").show();
-            $("#freq-info").css({
-                "top" : e.pageY - $(this).offset().top,
-                "left" : e.pageX - $(this).offset().left + 15 
-            });
-        }
-     });
+    histogramcanvas.off( "mousemove", "**" );
+    var offset = histogramcanvas.offset();
+    var lastmove= new Date();
+    histogramcanvas.on('mousemove', function(e) {
+      var currmove = new Date();
+      var timeDiff = currmove -lastmove;
+      if (timeDiff > 100){
+      // trigger the new event on event.target, so that it can bubble appropriately
+            var sectionName = ''; 
+            if (lastStables) {
+                var offset_t = offset.top - $(window).scrollTop();
+                var vtop = Math.round( (e.clientY - offset_t) );
+                var etop = e.pageY - offset.top;
+                var left = e.pageX - offset.left + 15;
+                var pre = preloadedData[vtop]; 
+                var html = [];
+                if(pre != null){
+                  if (pre['note'] != null){
+                    html[0] = "<b>";
+                    html[1] = pre['note'];
+                    html[2] = "</b>, ";
+                  }
+                  if(pre['cents']){
+                    html[3] = Math.floor(pre['hz']);
+                    html[4] = " Hz";
+                    html[5] = ", ";
+                    html[6] = Math.floor(pre['cents']);
+                    html[7] = " cents";
+                  }else{
+                    html[8] = Math.floor(pre['freq']);
+                    html[9] = " Hz";
+                  }
+                  $("#freq-info").html(html.join(''));
+                  $("#freq-info").show();
+                  $("#freq-info").css({
+                      "top" : e.pageY - offset.top,
+                      "left" : e.pageX - offset.left + 15 
+                  });
+                }
+              }
+
+          lastmove = currmove;
+      }
+        
+      });
      histogramcanvas.click(function(e) {
         var sectionName = ''; 
         var rect = histogramcanvas[0].getBoundingClientRect();
@@ -1044,7 +1063,7 @@ function updateCurrentPitch(){
         updateFrequencyMarker(futureTime);
     }
     for (w in worksdata){
-        if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
+        if (currentWork != w && futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
             currentWork = w;
             plothistogram();
             break;
@@ -1075,8 +1094,10 @@ function updateCurrentPitch(){
         hideCurrentPitch();
     }
 
+   if (pagesound.position % 2 == 0){
     showNoteOnHistogram(lastnote, futureTime);
     updateFrequencyMarker(futureTime);
+  }
 }
 
 function play_osc(f){
