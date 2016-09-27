@@ -148,39 +148,6 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 recording.makam.add(makam)
                 recording.save()
 
-        # tags for no taksim
-        notaksimt = [g for g in groups if g.get("form") != "taksim" and g.get("form") != "gazel"]
-
-        # If a recording has two works, it will almost always have two of each
-        # of the makam/form/usul tags. However, if one of the form tags is
-        # Taksim it may only have one work (since the taksim is an improvisation)
-        if len(works) == 1 and len(notaksimt) == 1:
-            # If we have a work from two different recordings and the tags are
-            # different, we'll add them anyway, but we need to check this because
-            # it might be bad data.
-            t = notaksimt[0]
-            makam = self._get_makam(t.get("makam"))
-            form = self._get_form(t.get("form"))
-            usul = self._get_usul(t.get("usul"))
-            w = works[0]
-            if makam and w.makam.count() == 0:
-                w.makam.add(makam)
-            if usul and w.usul.count() == 0:
-                w.usul.add(usul)
-            if form and w.form.count() == 0:
-                w.form.add(form)
-        elif len(works) == len(notaksimt):
-            pass
-            # If a recording has two works and two sets of tags, we don't know which
-            # tags go to which work, because works in musicbrainz are unordered.
-            # In this case, flag them for manual interaction. TODO: How?
-            # There are 2 possibilities:
-            # If we have 2 works, a and b, and this recording x has both,
-            # but y has only a and z has only b, then later in the import
-            # this will be fixed
-            # But, if work a only has this recording x, and z has b, we could
-            # import z->b, and then other tags for x->a would work.
-
     def _get_instrument(self, instname):
         if not instname:
             return None
