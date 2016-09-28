@@ -439,10 +439,8 @@ def download_derived_files(request, uuid, title=None):
                     ignore = True
                     content = docserver.util.docserver_get_json(mbid, option[0],
                             option[1], option[2], version=option[3])
-                    if 'pitch' in content:
-                        ignore = False
-                        keys.remove('audio'+u)
-                    elif len(content.keys()) and content[content.keys()[0]]:
+                    if content and len(content.keys()) and \
+                            ('pitch' in content or content[content.keys()[0]]):
                         ignore = False
                         keys.remove('audio'+u)
                 if not ignore:
