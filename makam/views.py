@@ -326,11 +326,13 @@ def lyric_alignment(request, uuid, title=None):
 def recordings_urls(include_img_and_bin=True):
     ret = {
             "notesalignurl": [("jointanalysis", "notes", 1, "0.1")],
-            "pitchtrack": [("jointanalysis", "pitch", 1, "0.1"),
-                ('audioanalysis', 'pitch', 1, '0.1')],
+            "pitchtrack": [("jointanalysis", "pitch", 1, "0.1")],
+            "audiopitchtrack": [('audioanalysis', 'pitch', 1, '0.1')],
+            "pitchclass": [('jointanalysis', 'pitch_class_distribution', 1, '0.1')],
+            "audiopitchclass": [('audiotanalysis', 'pitch_class_distribution', 1, '0.1')],
             "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
             "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1")],
-            "pitch_distributionurl": [("audioanalysis", "pitch_distribution", 1, "0.1")],
+            "audiohistogramurl": [("audioanalysis", "pitch_distribution", 1, "0.1")],
             "notemodelsurl": [("jointanalysis", "note_models", 1, "0.1"),
                 ("audioanalysis", "note_models", 1, "0.1")],
             "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
@@ -433,13 +435,14 @@ def download_derived_files(request, uuid, title=None):
             try:
                 #hack to check the output of pitch distribution of jointanalysis
                 ignore = False
-                if option[0] == 'jointanalysis' and option[1] in ['pitch_distribution']:
+                if option[0] == 'jointanalysis' and option[1] in \
+                            ['pitch_distribution', 'pitch_class_distribution', 'pitch']:
                     ignore = True
                     content = docserver.util.docserver_get_json(mbid, option[0],
                             option[1], option[2], version=option[3])
                     if len(content.keys()) and content[content.keys()[0]]:
                         ignore = False
-                        keys.remove("pitch_distributionurl")
+                        keys.remove('audio'+u)
                 if not ignore:
                     filenames.append(docserver.util.docserver_get_filename(mbid, option[0], option[1],
                         option[2], version=option[3]))
