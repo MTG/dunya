@@ -429,18 +429,20 @@ def download_derived_files(request, uuid, title=None):
         except docserver.util.NoFileException:
             pass
 
-    keys = urls.keys()
+    keys = sorted(urls.keys(), reverse=True)
     for u in keys:
         for option in urls[u]:
             try:
                 #hack to check the output of pitch distribution of jointanalysis
                 ignore = False
-                if option[0] == 'jointanalysis' and option[1] in \
-                            ['pitch_distribution', 'pitch_class_distribution', 'pitch']:
+                if u in ['histogramurl', 'pitchclass', 'pitchtrack']:
                     ignore = True
                     content = docserver.util.docserver_get_json(mbid, option[0],
                             option[1], option[2], version=option[3])
-                    if len(content.keys()) and (content[content.keys()[0]] or len(content['pitch'])):
+                    if 'pitch' in content:
+                        ignore = False
+                        keys.remove('audio'+u)
+                    elif len(content.keys()) and content[content.keys()[0]]:
                         ignore = False
                         keys.remove('audio'+u)
                 if not ignore:
