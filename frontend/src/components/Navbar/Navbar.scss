@@ -1,0 +1,101 @@
+@import "../../stylesheets/variables.json";
+@import "../../stylesheets/mixins";
+
+$navbarContentVerticalPadding: 10px;
+$navbarDividerHeight: 8px;
+$navbarIconWidthBig: 58px;
+$navbarIconWidthSmall: 40px;
+
+$navbarContentHeightSmall: $navbarHeightSmall - $navbarDividerHeight - 2 * $navbarDividerHeight;
+$navbarContentHeightBig: $navbarHeightBig - $navbarDividerHeight - 2 * $navbarDividerHeight;
+
+
+.dunya-logo {
+  width: $navbarIconWidthSmall;
+  height: $navbarIconWidthSmall;
+  @include respond-to('medium') {
+    width: $navbarIconWidthBig;
+    height: $navbarIconWidthBig;
+  };
+}
+
+.Navbar {
+  width: 100%;
+  border-bottom: 1px solid $softShadowColor;
+  background: white;
+  height: $navbarHeightSmall;
+  @include respond-to('medium') {
+    height: $navbarHeightBig;
+  };
+  box-shadow: 0 20px 20px -20px $softShadowColor;
+  // make the shadow appear over sidebar and results pane
+  z-index: 1;
+}
+
+.Navbar__content {
+  height: $navbarHeightSmall - $navbarDividerHeight;
+  width: 100%;
+  margin: 0 auto;
+  padding: $navbarContentVerticalPadding 30px;
+  box-sizing: border-box;
+  &:before {
+    content: '';
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  @include respond-to('medium') {
+    height: $navbarHeightBig - $navbarDividerHeight;
+    padding: $navbarContentVerticalPadding 0;
+    width: $gridWidth;
+  };
+}
+
+.Navbar__logo-container {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: ($navbarContentHeightSmall - $navbarIconWidthSmall) / 2;
+  @include respond-to('medium') {
+    margin-top: ($navbarContentHeightBig - $navbarIconWidthBig) / 2;
+  };
+}
+
+.Navbar__divider {
+  height: $navbarDividerHeight;
+  width: 100%;
+  background: linear-gradient(90deg, $blue 15%, $green 37%, $yellowRegular 45%, $yellowLight 53%, $orangeRegular 70%);
+}
+
+.NavLinks {
+  display: inline-block;
+  vertical-align: top;
+  line-height: $navbarContentHeightSmall;
+  float: right;
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  li {
+    display: inline-block;
+    margin: 0 25px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  @include respond-to('medium') {
+    line-height: $navbarContentHeightBig;
+  };
+}
+
+.NavLinks__item {
+  font-size: 14px;
+  font-weight: bold;
+  @include styled-link;
+  @include respond-to('medium') {
+    font-size: 18px;
+  };
+}

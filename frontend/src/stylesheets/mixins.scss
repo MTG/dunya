@@ -1,0 +1,83 @@
+@import "variables.json";
+
+@mixin respond-to($breakpoint) {
+  // Retrieves the value from the key
+  $value: map-get($breakpoints, $breakpoint);
+
+  // If the key exists in the map
+  @if $value != null {
+    // Prints a media query based on the value
+    @media (min-width: $value) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+@mixin styled-link {
+  color: $brownDark;
+  text-decoration: none;
+  position: relative;
+  &::after {
+    content: '';
+    width: 0%;
+    position: absolute;
+    transform: translateX(-50%);
+    transition: width 0.2s ease-in-out;
+    left: 50%;
+    top: 105%;
+    height: 2px;
+    @include respond-to('medium') {
+      height: 3px;
+    };
+    background-color: $brownDark;
+  }
+  &:hover {
+    &::after {
+      width: 100%;
+    }
+  }
+}
+
+@mixin styled-section-header {
+  display: block;
+  color: $orangeDark;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@mixin selectedEntry($isActive: false) {
+  $color: $orangeRegular;
+  @if $isActive {
+    $color: $lightBlue;
+    background: transparentize($color, 0.8);
+  }
+  &:hover {
+    background: transparentize($color, 0.8);
+  }
+  &:focus {
+    outline: none;
+    border: 3px solid $color;
+  }
+}
+
+@mixin styleSelectedEntry {
+  cursor: pointer;
+  @include selectedEntry();
+  &.active {
+    &::after {
+      content: '\2713';
+      float: right;
+    }
+    @include selectedEntry(true);
+  }
+}
+
+@mixin soft-shadow {
+  box-shadow: 0 5px 20px $softShadowColor;
+}

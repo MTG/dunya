@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "6"
+script:
+  - npm run test-json
+before_install:
+  - pip install --user codecov
+after_success:
+  - codecov --file coverage/lcov.info --disable search

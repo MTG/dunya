@@ -1,0 +1,84 @@
+@import "../../stylesheets/mixins";
+@import "../../stylesheets/variables.json";
+
+.ResultItem {
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px;
+  background: white;
+  border-radius: $defaultBorderRadius;
+  box-sizing: border-box;
+  position: relative;
+  text-decoration: none;
+  color: $blackText;
+  @include soft-shadow;
+  @include respond-to('medium') {
+    width: 48%;
+  };
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: transparent;
+    box-shadow: 0 5px 20px darken($gray3, 2);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  &:hover:before {
+    opacity: 1;
+  }
+}
+
+.ResultItem__header {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.ResultItem__concert-artwork {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+}
+
+.ResultItem__main-info {
+  font-weight: bold;
+  color: $orangeDark;
+}
+
+.ResultItem__main-artists {
+  color: $blackText;
+}
+
+.ResultItem__name {
+  font-size: 1.6em;
+}
+
+.ResultItem__details__header {
+  color: $orangeDark;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.ResultItem__other-info-list {
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: top;
+}
+
+.ResultItem__collaborators_facts {
+  .fact__artist {
+    text-transform: capitalize;
+  }
+}
+
+.ResultItem__other-info__container {
+  margin-top: 10px 0;
+}
+
+.ResultItem__other-info {
+  margin-bottom: 2px;
+  text-transform: capitalize;
+}

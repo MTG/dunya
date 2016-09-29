@@ -1,0 +1,82 @@
+@import "../../stylesheets/variables.json";
+@import "../../stylesheets/mixins";
+
+.MobileMenu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  &:before {
+    content: '';
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: $blackText;
+    z-index: -1;
+  }
+  opacity: 0;
+  transition: opacity 0.2s linear, z-index 0.2s step-end;
+  pointer-events: none;
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+    transition: opacity 0.2s linear, z-index 0.2s step-start;
+  }
+  @include respond-to('medium') {
+    display: none;
+  };
+}
+
+.MobileMenu__wrapper {
+  width: 80%;
+  min-height: 400px;
+  margin: 80px auto;
+  background-color: $gray2;
+  padding: 20px;
+}
+
+.MobileMenu__close-button {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: white;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  cursor: default;
+  &:before {
+    cursor: pointer;
+    content: '✕';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2em;
+  }
+}
+
+.ShowMobileMenu {
+  width: 100%;
+  background-color: $gray2;
+  border: 1px solid darken($gray2, 4);
+  margin-top: 5px;
+  &:hover {
+    color: $lightBlue;
+  }
+  button {
+    outline: 0;
+    width: 100%;
+    padding: 10px 0;
+    border: 0;
+    cursor: pointer;
+    background: transparent;
+  }
+  i {
+    margin-right: 10px;
+  }
+  @include respond-to('medium') {
+    display: none;
+  };
+}

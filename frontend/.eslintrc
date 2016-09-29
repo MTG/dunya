@@ -1,0 +1,20 @@
+{
+  "extends": "eslint-config-airbnb",
+  "rules": {
+    "import/prefer-default-export": 0,
+    },
+  "env": {
+    "mocha": true,
+    "browser": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "import/resolver": {
+      "babel-module": {
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }
+}

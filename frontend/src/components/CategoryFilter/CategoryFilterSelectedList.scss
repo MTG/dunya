@@ -1,0 +1,10 @@
+.CategoryFilter__category-catalogue-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding-left: 0;
+  .SearchOverviewEntry {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}

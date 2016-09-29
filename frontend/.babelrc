@@ -1,0 +1,13 @@
+{
+  "presets": ["es2015", "react"],
+  "plugins": [
+    "react-hot-loader/babel",
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "test": "./test",
+        "underscore": "lodash"
+      }
+    }]
+  ]
+}

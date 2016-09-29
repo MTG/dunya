@@ -1,0 +1,42 @@
+@import "../../stylesheets/variables.json";
+@import "../../stylesheets/mixins";
+
+.LoadMoreResultsButton {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  width: 50%;
+  margin: 30px auto;
+  padding: 20px 30px;
+  background: white;
+  color: $blackText;
+  border: 3px solid transparent;
+  box-sizing: border-box;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out;
+  border-radius: $defaultBorderRadius;
+  @include soft-shadow;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: $defaultBorderRadius;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    background: transparent;
+    transition: opacity 0.2s ease-in-out;
+  }
+  &:hover:enabled {
+    transform: scale(1.05);
+    &:before {
+      opacity: 1;
+    }
+  }
+  &:focus {
+    outline: none;
+    border: 3px solid darken($lightBlue, 10);
+  }
+}

@@ -1,0 +1,93 @@
+@import "../../stylesheets/variables.json";
+@import "../../stylesheets/mixins";
+
+.Search {
+
+}
+
+.Search__label {
+  header {
+    margin-bottom: 6px;
+    @include styled-section-header;
+  }
+}
+
+.SearchTooltip {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: $midBlack;
+  color: white;
+  padding: 5px;
+  letter-spacing: 0;
+  @include soft-shadow;
+  &.active {
+    opacity: 1;
+  }
+}
+
+.SearchInput {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+  background: white;
+  @include soft-shadow;
+  border: $borderDefaultWidth solid transparent;
+  &.focus {
+    border: $borderDefaultWidth solid $lightBlue;
+  }
+}
+
+.SearchInput__search-button {
+  width: $searchIconWidth;
+  height: $searchIconWidth;
+  background: transparent;
+  text-align: center;
+  vertical-align: top;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  i {
+    transition: color 0.2s ease-in-out;
+  }
+  &:hover, &:focus {
+    outline: 0;
+    i {
+      color: $lightBlue;
+    }
+  }
+}
+
+.SearchInput__input {
+  box-sizing: border-box;
+  height: $searchIconWidth;
+  border: 0;
+  box-shadow: none;
+  font-size: 16px;
+  outline: 0;
+  padding: 0 5px;
+  transition: border 0.2s ease-in-out;
+  &:focus {
+    outline: 0;
+  }
+  @include respond-to('medium') {
+    min-width: 360px;
+  };
+}
+
+.CategoriesFilterOverview__container {
+  top: $borderDefaultWidth;
+  bottom: $borderDefaultWidth;
+  box-shadow: inset -20px 0 20px -20px white;
+}
+
+.SearchOverviewCategory {
+  display: flex;
+}

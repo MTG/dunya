@@ -1,0 +1,82 @@
+{
+  "name": "dunya-frontend",
+  "version": "0.5.0",
+  "description": "Front end code for dunya.compmusic.edu",
+  "main": "src/index.jsx",
+  "scripts": {
+    "build": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js -p",
+    "dev": "node express_server.js",
+    "dev-mobile": "NODE_ENV=production node express_server.js",
+    "eslint": "./node_modules/eslint/bin/eslint.js src/**/**",
+    "test": "./node_modules/jest/bin/jest.js",
+    "test-cov": "./node_modules/jest/bin/jest.js --coverage",
+    "test-json": "./node_modules/jest/bin/jest.js --json --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giuband/dunya-frontend.git"
+  },
+  "keywords": [
+    "dunya",
+    "mir",
+    "india",
+    "turkey",
+    "non-western",
+    "music",
+    "analysis"
+  ],
+  "author": "Giuseppe Bandiera",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/giuband/dunya-frontend/issues"
+  },
+  "homepage": "https://github.com/giuband/dunya-frontend#readme",
+  "dependencies": {
+    "autoprefixer": "^6.5.0",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "css-loader": "^0.25.0",
+    "deep-freeze": "0.0.1",
+    "eslint-plugin-import": "^1.16.0",
+    "expect": "^1.20.2",
+    "express": "^4.14.0",
+    "file-loader": "^0.9.0",
+    "jest": "^15.1.1",
+    "json-loader": "^0.5.4",
+    "loader-utils": "^0.2.16",
+    "node-sass": "^3.10.0",
+    "node-sass-json-importer": "^2.1.1",
+    "normalize.css": "^4.2.0",
+    "pluralize": "^3.0.0",
+    "postcss-loader": "^0.13.0",
+    "precss": "^1.4.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-hot-loader": "^3.0.0-beta.5",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
+    "reselect": "^2.5.4",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.8.2",
+    "webpack-dev-server": "^1.16.1",
+    "webpack-hot-middleware": "^2.12.1"
+  },
+  "devDependencies": {
+    "babel-plugin-module-resolver": "^2.2.0",
+    "eslint": "^3.6.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-config-react": "^1.1.1",
+    "eslint-import-resolver-babel-module": "^2.0.1",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.3.0",
+    "react-hot-loader": "^3.0.0-beta.3",
+    "webpack-dev-middleware": "^1.8.1"
+  }
+}
