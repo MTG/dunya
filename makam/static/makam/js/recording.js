@@ -1071,7 +1071,7 @@ function updateCurrentPitch(){
     }
     if(!loading && !( lastpitch>=0 && pitchintervals[lastpitch]['start'] <= futureTime && pitchintervals[lastpitch]['end'] >= futureTime )){
         var updated = false;
-        if( pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
+        if( (lastpitch+1) < pitchintervals.length && pitchintervals[lastpitch + 1]['start'] <=futureTime   && pitchintervals[lastpitch + 1]['end'] >= futureTime ){
             drawCurrentPitch(pitchintervals[lastpitch + 1]['start'], pitchintervals[lastpitch + 1]['end'], pitchintervals[lastpitch + 1]['note'])
             lastnote = pitchintervals[lastpitch + 1]['note'];
             lastpitch = lastpitch+1;
