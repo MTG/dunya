@@ -1082,7 +1082,7 @@ function updateCurrentPitch(){
             for (var i=0; i<pitchintervals.length; i++){
                 if (pitchintervals[i]['start'] < futureTime && pitchintervals[i]['end'] > futureTime){
                     drawCurrentPitch(pitchintervals[i]['start'], pitchintervals[i]['end'], pitchintervals[i]['note'])
-                    lastnote = pitchintervals[lastpitch + 1]['note'];
+                    lastnote = pitchintervals[i]['note'];
                     lastpitch = i;
             lastTime = futureTime;
                     return;
