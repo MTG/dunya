@@ -1,6 +1,6 @@
 // API address to get data to fill up filters section
 export const FILTERS_DATA_URL = {
-  carnatic: 'https://whatever',
+  carnatic: 'http://dunya.compmusic.upf.edu/new/filters.json',
   hindustani: 'https://whatever',
 };
 

@@ -1,22 +1,24 @@
+import { FILTERS_DATA_URL } from 'settings';
 import makeActionCreator from './makeActionCreator';
 import { GET_FILTERS_DATA_REQUEST, GET_FILTERS_DATA_SUCCESS, GET_FILTERS_DATA_FAILURE,
   TOGGLE_SELECTED_ENTRY, TOGGLE_EXPAND_CATEGORY, RESET_CATEGORY_SELECTIONS,
   SET_SEARCH_CATEGORY, RESET_SEARCH_CATEGORY }
   from './actionTypes';
 import { getSearchResults } from './search';
-import { receivedData } from '../utils/mockFiltersData';
 
 const getFiltersDataRequest = makeActionCreator(GET_FILTERS_DATA_REQUEST);
 const getFiltersDataSuccess = makeActionCreator(GET_FILTERS_DATA_SUCCESS, 'data');
 const getFiltersDataFailure = makeActionCreator(GET_FILTERS_DATA_FAILURE, 'error');
 
-const fetchFiltersData = () => new Promise((resolve) => {
-  resolve(receivedData);
+const fetchFiltersData = () => new Promise((resolve, reject) => {
+  fetch(FILTERS_DATA_URL[window.catalogue])
+    .then(response => response.json())
+    .then(parsedResponse => resolve(parsedResponse))
+    .catch(() => reject());
 });
 
 export const getFiltersData = () => (dispatch) => {
   // TODO: read it from window.catalogueName and use it as param of fetchFiltersData
-  const catalogueName = 'carnatic';
   dispatch(getFiltersDataRequest());
   fetchFiltersData().then(
     data => dispatch(getFiltersDataSuccess(data)),

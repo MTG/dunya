@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'normalize.css';
+import 'whatwg-fetch';
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
