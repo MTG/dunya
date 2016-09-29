@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^social/', include('account.urls')),
     url(r'^kvedit/', include('kvedit.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
+    url(r'^new/', include('frontend.urls')),
     url(r'^accounts/login/$', django.contrib.auth.views.login),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout),
     url(r'^makamplayer/$', makam.views.makamplayer),

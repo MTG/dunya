@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -12,8 +13,8 @@
   <body>
     <div id="app"></div>
       <script>
-        window.catalogue = "{{ dunya_catalogue }}";
+        window.catalogue = "carnatic";
       </script>
-      <script src="dist/bundle.js"></script>
+      <script src="{% static 'frontend/bundle.js' %}"></script>
   </body>
 </html>

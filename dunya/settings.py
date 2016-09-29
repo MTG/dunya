@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'andalusian',
     'jingju',
     'kvedit',
+    'frontend',
     'social.apps.django_app.default',
 )
 AUTHENTICATION_BACKENDS = (
