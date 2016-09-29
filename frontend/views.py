@@ -17,7 +17,57 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.db.models import Q
 
+import carnatic
 
 def main(request):
     return render(request, "frontend/index.html")
+
+def filters(request):
+
+    taalas = carnatic.models.Taala.objects.prefetch_related('aliases').all()
+    taalalist = []
+    for r in taalas:
+        taalalist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
+
+    raagas = carnatic.models.Raaga.objects.prefetch_related('aliases').all()
+    raagalist = []
+    for r in raagas:
+        raagalist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
+
+    concerts = carnatic.models.Concert.objects.all()
+    concertlist = []
+    for c in concerts:
+        concertlist.append({"name": c.title, "mbid": str(c.mbid)})
+
+    artists = carnatic.models.Artist.objects.all()
+    artistlist = []
+    for a in artists:
+        #rr = carnatic.models.Raaga.objects.filter(Q(work__recording__concert__artists=a) | Q(work__recording__instrumentperformance__artist=a)).distinct()
+        #tt = carnatic.models.Taala.objects.filter(Q(work__recording__concert__artists=a) | Q(work__recording__instrumentperformance__artist=a)).distinct()
+        #cc = a.concerts()
+        #ii = a.instruments()
+        rr = []
+        tt = []
+        cc = []
+        ii = []
+
+        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
+
+
+    instruments = carnatic.models.Instrument.objects.all()
+    instrumentlist = []
+    for i in instruments:
+        instrumentlist.append({"name": i.name, "mbid": str(i.mbid)})
+
+
+    ret = {"artists": artistlist,
+           "concerts": concertlist,
+           "instruments": instrumentlist,
+           u"rāgas": raagalist,
+           u"tālas": taalalist,
+           }
+
+    return JsonResponse(ret)

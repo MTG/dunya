@@ -22,4 +22,5 @@ from frontend import views
 
 urlpatterns = [
     url(r'^$', views.main, name='frontend-main'),
+    url(r'filters.json$', views.filters, name='frontend-filters'),
 ]
