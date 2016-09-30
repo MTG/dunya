@@ -4,7 +4,7 @@ import { GET_FILTERS_DATA_REQUEST, GET_FILTERS_DATA_SUCCESS, GET_FILTERS_DATA_FA
   from '../actions/actionTypes';
 import { DATA_FETCH_STATUS } from '../constants';
 
-const selectedDataCategory = (state = [], action, categoryName) => {
+const selectedDataCategory = (state = [], action, categoryName, selectionType) => {
   if (action.category !== categoryName) {
     return state;
   }
@@ -14,6 +14,9 @@ const selectedDataCategory = (state = [], action, categoryName) => {
         // remove entry if already selected ...
         return state.filter(entryID => entryID !== action.entryID);
       }
+      if (selectionType === 'single') {
+        return [action.entryID];
+      }
       // ... otherwise add it to the list of selected items
       return [...state, action.entryID];
     }
@@ -22,19 +25,20 @@ const selectedDataCategory = (state = [], action, categoryName) => {
   }
 };
 
-const selectedData = (state = {}, action) => {
+const selectedData = (state = {}, action, selectionTypes) => {
   switch (action.type) {
     case GET_FILTERS_DATA_SUCCESS:
     case RESET_CATEGORY_SELECTIONS: {
       // data is the receivedData if GET_FILTERS_DATA_SUCCESS, existing stored data otherwise
-      const data = action.data || state;
+      const data = action.receivedData || state;
       return Object.keys(data).reduce((curState, curCategory) =>
         Object.assign(curState, { [curCategory]: [] }), {});
     }
     case TOGGLE_SELECTED_ENTRY: {
       return Object.keys(state).reduce((curState, curCategory) =>
         Object.assign(curState, {
-          [curCategory]: selectedDataCategory(state[curCategory], action, curCategory),
+          [curCategory]: selectedDataCategory(
+            state[curCategory], action, curCategory, selectionTypes[curCategory]),
         }), {});
     }
     default:
@@ -45,7 +49,8 @@ const selectedData = (state = {}, action) => {
 const receivedData = (state = {}, action) => {
   switch (action.type) {
     case GET_FILTERS_DATA_SUCCESS:
-      return action.data;
+      return Object.keys(action.receivedData).reduce((curState, curCategory) =>
+        Object.assign(curState, { [curCategory]: action.receivedData[curCategory].data }), {});
     default:
       return state;
   }
@@ -67,7 +72,7 @@ const expandedCategories = (state = [], action) => {
 const searchedData = (state = '', action) => {
   switch (action.type) {
     case GET_FILTERS_DATA_SUCCESS: {
-      const data = action.data || state;
+      const data = action.receivedData || state;
       return Object.keys(data).reduce((curState, curCategory) =>
         Object.assign(curState, { [curCategory]: '' }), {});
     }
@@ -94,8 +99,19 @@ const status = (state = DATA_FETCH_STATUS.NOT_ASKED, action) => {
   }
 };
 
+const categorySelectionType = (state = {}, action) => {
+  if (action.type !== GET_FILTERS_DATA_SUCCESS) {
+    return state;
+  }
+  return Object.keys(action.receivedData).reduce((curState, curCategory) =>
+    Object.assign(curState, {
+      [curCategory]: action.receivedData[curCategory].selectionType,
+    }), {});
+};
+
 const filtersData = (state = {}, action) => ({
-  selectedData: selectedData(state.selectedData, action),
+  categorySelectionType: categorySelectionType(state.categorySelectionType, action),
+  selectedData: selectedData(state.selectedData, action, state.categorySelectionType),
   receivedData: receivedData(state.receivedData, action),
   expandedCategories: expandedCategories(state.expandedCategories, action),
   searchedData: searchedData(state.searchedData, action),

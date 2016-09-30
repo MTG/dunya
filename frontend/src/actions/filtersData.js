@@ -7,7 +7,7 @@ import { GET_FILTERS_DATA_REQUEST, GET_FILTERS_DATA_SUCCESS, GET_FILTERS_DATA_FA
 import { getSearchResults } from './search';
 
 const getFiltersDataRequest = makeActionCreator(GET_FILTERS_DATA_REQUEST);
-const getFiltersDataSuccess = makeActionCreator(GET_FILTERS_DATA_SUCCESS, 'data');
+const getFiltersDataSuccess = makeActionCreator(GET_FILTERS_DATA_SUCCESS, 'receivedData');
 const getFiltersDataFailure = makeActionCreator(GET_FILTERS_DATA_FAILURE, 'error');
 
 const fetchFiltersData = () => new Promise((resolve, reject) => {
