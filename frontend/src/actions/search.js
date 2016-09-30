@@ -59,7 +59,7 @@ const getQueryResults = () => (dispatch, getStore) => {
   const query = getQuery(getStore);
   getResults(query).then(
     data => dispatch(searchSuccess(data)),
-    error => dispatch(searchFailure(error)));
+    error => { console.log(error); dispatch(searchFailure(error)); });
 };
 
 export const getSearchResults = () => (dispatch) => {
