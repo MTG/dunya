@@ -16,7 +16,7 @@ const searchAppend = makeActionCreator(SEARCH_APPEND);
 
 export const updateSearchInput = makeActionCreator(UPDATE_SEARCH_INPUT, 'input');
 
-let pageIndex = 0;
+let pageIndex = 1;
 
 const getResults = serializedQuery => new Promise((resolve, reject) => {
   const baseSearchURL = SEARCH_URL[window.catalogue];
@@ -41,14 +41,14 @@ const serializeQuery = (query, selectedData) => {
       serializedQuery += `&${encode(category)}=${categoryEntries}`;
     }
   });
-  if (pageIndex) {
+  if (pageIndex - 1 !== 0) {
     serializedQuery += `&page=${pageIndex}`;
   }
   return serializedQuery;
 };
 
 export const getSearchResults = () => (dispatch, getStore) => {
-  pageIndex = 0;
+  pageIndex = 1;
   const state = getStore();
   const query = state.search.input;
   const { selectedData } = state.filtersData;
