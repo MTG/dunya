@@ -45,17 +45,17 @@ def updateweb():
         # compress javascript
         run("env/bin/python manage.py collectstatic --noinput")
 
-        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
-        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
-        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
-        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
-        run("env/bin/node env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
+        run("env/bin/lessc carnatic/static/carnatic/css/main.less static/carnatic/css/main.css")
+        run("env/bin/lessc carnatic/static/carnatic/css/browse.less static/carnatic/css/browse.css")
+        run("env/bin/lessc carnatic/static/carnatic/css/recording.less static/carnatic/css/recording.css")
+        run("env/bin/lessc carnatic/static/carnatic/css/pages.less static/carnatic/css/pages.css")
+        run("env/bin/lessc carnatic/static/carnatic/css/presentation.less static/carnatic/css/presentation.css")
 
-        run("env/bin/node env/bin/lessc makam/static/makam/css/main.less static/makam/css/main.css")
-        run("env/bin/node env/bin/lessc makam/static/makam/css/browse.less static/makam/css/browse.css")
-        run("env/bin/node env/bin/lessc makam/static/makam/css/recording.less static/makam/css/recording.css")
-        run("env/bin/node env/bin/lessc makam/static/makam/css/pages.less static/makam/css/pages.css")
-        run("env/bin/node env/bin/lessc makam/static/makam/css/presentation.less static/makam/css/presentation.css")
+        run("env/bin/lessc makam/static/makam/css/main.less static/makam/css/main.css")
+        run("env/bin/lessc makam/static/makam/css/browse.less static/makam/css/browse.css")
+        run("env/bin/lessc makam/static/makam/css/recording.less static/makam/css/recording.css")
+        run("env/bin/lessc makam/static/makam/css/pages.less static/makam/css/pages.css")
+        run("env/bin/lessc makam/static/makam/css/presentation.less static/makam/css/presentation.css")
 
     with cd("/srv/dunya/env/src/pycompmusic"):
         run("git pull", pty=False)
