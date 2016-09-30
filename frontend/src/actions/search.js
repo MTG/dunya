@@ -69,6 +69,10 @@ export const getMoreResults = () => (dispatch) => {
 };
 
 export const getAutocompleteList = input => (dispatch) => {
+  const autocompleteURL = AUTOCOMPLETE_URL[window.catalogue];
+  if (!autocompleteURL) {
+    return;
+  }
   dispatch({ type: AUTOCOMPLETE_REQUEST });
   mockAutocomplete(input).then(datalist => dispatch({ type: AUTOCOMPLETE_SUCCESS, datalist }));
 };

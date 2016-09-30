@@ -10,8 +10,7 @@ export const SEARCH_URL = {
 };
 
 export const AUTOCOMPLETE_URL = {
-  carnatic: 'https://whatever',
-  hindustani: 'https://whatever',
+  carnatic: undefined,
 };
 
 // whether to show in selected list only entries that fulfill all filters
