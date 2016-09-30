@@ -47,25 +47,31 @@ const serializeQuery = (query, selectedData) => {
   return serializedQuery;
 };
 
-export const getSearchResults = () => (dispatch, getStore) => {
-  pageIndex = 1;
+const getQuery = (getStore) => {
   const state = getStore();
   const query = state.search.input;
   const { selectedData } = state.filtersData;
   const serializedQuery = serializeQuery(query, selectedData);
-  dispatch(searchRequest());
-  getResults(serializedQuery).then(
+  return serializedQuery;
+};
+
+const getQueryResults = () => (dispatch, getStore) => {
+  const query = getQuery(getStore);
+  getResults(query).then(
     data => dispatch(searchSuccess(data)),
     error => dispatch(searchFailure(error)));
+};
+
+export const getSearchResults = () => (dispatch) => {
+  pageIndex = 1;
+  dispatch(searchRequest());
+  dispatch(getQueryResults());
 };
 
 export const getMoreResults = () => (dispatch) => {
   pageIndex += 1;
   dispatch(searchAppend());
-  setTimeout(() => {
-    getResults(pageIndex).then(data => dispatch(searchSuccess(data)),
-    error => dispatch(searchFailure(error)));
-  }, 1000);
+  dispatch(getQueryResults());
 };
 
 export const getAutocompleteList = input => (dispatch) => {
