@@ -1,4 +1,4 @@
-import { SEARCH_URL, AUTOCOMPLETE_URL } from 'constants';
+import { SEARCH_URL, AUTOCOMPLETE_URL } from 'settings';
 import { SHOW_TOOLTIP, HIDE_TOOLTIP, TOGGLE_FOCUS, SEARCH_REQUEST,
   SEARCH_SUCCESS, SEARCH_FAILURE, UPDATE_SEARCH_INPUT, SEARCH_APPEND,
   AUTOCOMPLETE_REQUEST, AUTOCOMPLETE_SUCCESS, AUTOCOMPLETE_FAILURE } from './actionTypes';
@@ -59,7 +59,7 @@ const getQueryResults = () => (dispatch, getStore) => {
   const query = getQuery(getStore);
   getResults(query).then(
     data => dispatch(searchSuccess(data)),
-    error => { console.log(error); dispatch(searchFailure(error)); });
+    error => dispatch(searchFailure(error)));
 };
 
 export const getSearchResults = () => (dispatch) => {
