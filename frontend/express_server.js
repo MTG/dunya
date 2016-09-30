@@ -15,7 +15,7 @@ app.use(webpackHotMiddleware(compiler));
 app.use('/static', express.static('static'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'));
+  res.sendFile(path.join(__dirname, '/templates/frontend/index.html'));
 });
 
 app.listen(port, (error) => {
