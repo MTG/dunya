@@ -9,4 +9,4 @@ dunya_data.json
 media
 /static
 LESS_CACHE
-frontent/node_modules
+node_modules
