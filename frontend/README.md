@@ -71,19 +71,24 @@ Each entry must as well contain an id field, but *this is not required to be nam
 If an entry has an `aliases` field, the values on that field will be used during the search.
 
 ### Serving data for autocomplete
-You might want to send data for autocomplete when the user is typing in the search bar. In this case, start by setting the proper address in `AUTOCOMPLETE_URL[$dunya_catalogue]`. This address should then read the parameter `query` from the incoming request and reply to it with a list of results, in the following shape:
+You might want to send data for autocomplete when the user is typing in the search bar. In this case, start by setting the proper address in `AUTOCOMPLETE_URL[$dunya_catalogue]`. This address should then read the parameter `input` from the incoming request and reply to it with a list of results, in the following shape:
 ```javascript
 [
   {
     "mbid": "8618ff0c-555e-4f3c-90d5-0438aeae4659",
-    "title": "Balagopala"
+    "name": "Balagopala",
+    "category": "Concerts",
+    "matchFor": "balagopala"
   }, {
     "mbid": "33ef2098-d4ba-40ec-b972-dbda5114e3e2",
-    "title": "Koovi Azhaithal"
+    "name": "Koovi Azhaithal",
+    "category": "Artists",
+    "matchFor": "koovi"
   }, // ... other results
 ]
 ```
-**Each result must have the `title` property.**
+**Each result must have an id and the `name`, `category` properties.** The field `matchFor` is optional but highly recommended, and stands for the substring of the search input that matches the given result. In the example above, for instance, the input in the search bar could have been `"balagopala koovi"`: if the user clicks on the first recommended item, the concert `"Balagopala"` will be added to the selection list, while the search input will be transformed to `"koovi"`.
+
 If you don't want to enable autocomplete, just don't set the option `AUTOCOMPLETE_URL[$dunya_catalogue]` (or put it to `undefined`).
 
 ### Serving search results
