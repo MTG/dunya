@@ -10,7 +10,7 @@ const propTypes = {
   searchInput: React.PropTypes.string,
 };
 
-const computeRemainingInputOnClick = (searchInput, matched) => {
+const computeRemainingInputOnClick = (searchInput, matched = '') => {
   const input = searchInput.split(' ');
   const remainingWords = input.filter(word => word !== matched);
   return remainingWords.join(' ');
@@ -32,7 +32,10 @@ const AutoComplete = (props) => {
           >
             <div className="AutoComplete__entry-name">{suggestion.name}</div>
             <div className="AutoComplete__entry-category">{suggestion.category}</div>
-            <div className="AutoComplete__entry-matchFor">{`match for '${suggestion.matchFor}'`}</div>
+            {(suggestion.matchFor) ?
+              <div className="AutoComplete__entry-matchFor">{`match for '${suggestion.matchFor}'`}</div>
+              : null
+            }
           </li>
         )}
       </ul>);
