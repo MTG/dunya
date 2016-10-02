@@ -36,6 +36,7 @@
   margin: 80px auto;
   background-color: $gray2;
   padding: 20px;
+  z-index: 1;
 }
 
 .MobileMenu__close-button {
@@ -47,6 +48,7 @@
   outline: 0;
   background: transparent;
   cursor: default;
+  z-index: -1;
   &:before {
     cursor: pointer;
     content: '✕';
