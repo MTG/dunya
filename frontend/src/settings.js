@@ -29,3 +29,6 @@ export const STORE_APPLICATION_STATE = true;
 
 // possible keys for ids in responses
 export const ID_KEYS = ['mbid', 'uuid', 'id'];
+
+// max number of suggestions with autocomplete
+export const MAX_AUTOCOMPLETE_SUGGESTIONS = 5;

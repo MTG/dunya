@@ -1,9 +1,9 @@
 import { SEARCH_URL, AUTOCOMPLETE_URL } from 'settings';
 import { SHOW_TOOLTIP, HIDE_TOOLTIP, TOGGLE_FOCUS, SEARCH_REQUEST,
   SEARCH_SUCCESS, SEARCH_FAILURE, UPDATE_SEARCH_INPUT, SEARCH_APPEND,
-  AUTOCOMPLETE_REQUEST, AUTOCOMPLETE_SUCCESS, AUTOCOMPLETE_FAILURE } from './actionTypes';
+  AUTOCOMPLETE_REQUEST, AUTOCOMPLETE_SUCCESS, AUTOCOMPLETE_FAILURE,
+  RESET_AUTOCOMPLETE_RESULTS } from './actionTypes';
 import makeActionCreator from './makeActionCreator';
-import mockAutocomplete from '../utils/mockAutocomplete';
 
 export const showSearchTooltip = makeActionCreator(SHOW_TOOLTIP);
 export const hideSearchTooltip = makeActionCreator(HIDE_TOOLTIP);
@@ -15,6 +15,7 @@ const searchFailure = makeActionCreator(SEARCH_FAILURE, 'error');
 const searchAppend = makeActionCreator(SEARCH_APPEND);
 
 export const updateSearchInput = makeActionCreator(UPDATE_SEARCH_INPUT, 'input');
+export const resetAutocompleteResults = makeActionCreator(RESET_AUTOCOMPLETE_RESULTS);
 
 let pageIndex = 1;
 
@@ -74,11 +75,23 @@ export const getMoreResults = () => (dispatch) => {
   dispatch(getQueryResults());
 };
 
+const getAutocompleteResults = searchInput => new Promise((resolve, reject) => {
+  const autocompleteBaseURL = AUTOCOMPLETE_URL[window.catalogue];
+  const autocompleteURL = `${autocompleteBaseURL}?input=${encodeURIComponent(searchInput)}`;
+  fetch(autocompleteURL)
+    .then(response => response.json())
+    .then(parsedResponse => resolve(parsedResponse))
+    .catch(error => reject(error));
+});
+
 export const getAutocompleteList = input => (dispatch) => {
   const autocompleteURL = AUTOCOMPLETE_URL[window.catalogue];
   if (!autocompleteURL) {
     return;
   }
   dispatch({ type: AUTOCOMPLETE_REQUEST });
-  mockAutocomplete(input).then(datalist => dispatch({ type: AUTOCOMPLETE_SUCCESS, datalist }));
+  getAutocompleteResults(input)
+    .then(
+      datalist => dispatch({ type: AUTOCOMPLETE_SUCCESS, datalist }),
+      error => dispatch({ type: AUTOCOMPLETE_FAILURE, error }));
 };

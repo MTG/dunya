@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toggleFocus, updateSearchInput, getAutocompleteList } from 'actions/search';
+import { toggleFocus, updateSearchInput, getAutocompleteList, resetAutocompleteResults }
+  from 'actions/search';
 import { toggleSelectedEntry } from 'actions/filtersData';
 import { getAllSelectedEntries, getEntryId }
   from 'selectors/filtersData';
 import SearchTooltip from './SearchTooltip';
 import SearchOverviewEntry from './SearchOverviewEntry';
+import AutoComplete from './AutoComplete';
 import ShowMobileMenu from '../MobileMenu/ShowMobileMenu';
 import { breakpoints } from '../../stylesheets/variables.json';
 
@@ -13,9 +15,11 @@ const breakpoint = parseInt(breakpoints.medium, 10);
 
 const propTypes = {
   allSelectedItems: React.PropTypes.array,
+  input: React.PropTypes.string,
   toggleSelectedEntry: React.PropTypes.func,
   updateSearchInput: React.PropTypes.func,
   getAutocompleteList: React.PropTypes.func,
+  resetAutocompleteResults: React.PropTypes.func,
   toggleFocus: React.PropTypes.func,
   isFocused: React.PropTypes.bool,
   autocompleteResults: React.PropTypes.array,
@@ -39,6 +43,8 @@ const unselectLatestEntry = (props) => {
   }
 };
 
+const autoCompleteListID = 'recordings-autocomplete';
+
 const SearchInput = (props) => {
   const isFilteredSearch = props.allSelectedItems.length > 0;
   const tooltip = (shouldShowSearchTooltip) ? <SearchTooltip /> : null;
@@ -48,11 +54,6 @@ const SearchInput = (props) => {
   }
   const selectedItems = props.allSelectedItems.map(entry =>
     <SearchOverviewEntry key={getEntryId(entry)} entry={entry} />);
-  const dataList = (props.autocompleteResults) ? (
-    <datalist id="recordings-autocomplete">
-      {props.autocompleteResults.map(recording =>
-        <option value={recording.title} key={getEntryId(recording)} />)}
-    </datalist>) : null;
   return (
     <ol className={`SearchInput${(props.isFocused) ? ' focus' : ''}`}>
       <li>
@@ -62,16 +63,27 @@ const SearchInput = (props) => {
       </li>
       {selectedItems}
       <li>
-        {dataList}
+        <AutoComplete
+          results={props.autocompleteResults}
+          toggleSelectedEntry={props.toggleSelectedEntry}
+          updateSearchInput={props.updateSearchInput}
+          id={autoCompleteListID}
+          searchInput={props.input}
+        />
         <input
           id="search"
           className="SearchInput__input"
           type="search"
-          list={dataList ? 'recordings-autocomplete' : ''}
+          data-list={(props.autocompleteResults.length) ? `#${autoCompleteListID}` : ''}
           placeholder={placeHolder}
+          value={props.input}
           onChange={evt => onInputChange(evt, props)}
           onFocus={props.toggleFocus}
-          onBlur={props.toggleFocus}
+          autoComplete="off"
+          onBlur={() => {
+            props.resetAutocompleteResults();
+            props.toggleFocus();
+          }}
           onKeyDown={(evt) => {
             if (evt.keyCode === 8 && !evt.target.value) {
               // unselect latest entry when user presses delete key
@@ -88,9 +100,9 @@ const SearchInput = (props) => {
 
 const mapStateToProps = (state) => {
   const allSelectedItems = getAllSelectedEntries(state);
-  const { isFocused, autocompleteResults } = state.search;
+  const { isFocused, autocompleteResults, input } = state.search;
   const { windowSize } = state;
-  return { allSelectedItems, autocompleteResults, isFocused, windowSize };
+  return { allSelectedItems, autocompleteResults, input, isFocused, windowSize };
 };
 
 SearchInput.propTypes = propTypes;
@@ -99,4 +111,5 @@ export default connect(mapStateToProps, {
   toggleSelectedEntry,
   updateSearchInput,
   getAutocompleteList,
+  resetAutocompleteResults,
 })(SearchInput);
