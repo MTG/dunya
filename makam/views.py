@@ -460,7 +460,8 @@ def download_derived_files(request, uuid, title=None):
         fdir, fname = os.path.split(fpath)
         # Replace name fonly for smallfull case
         zip_path = os.path.join(zip_subdir, fname.replace('smallfull',
-            'melodic_progression'))
+            'melodic_progression').replace('0.1','01').replace('0.3',
+                '03').replace('0.2', '02'))
 
         # Add file, at correct path
         zf.write(fpath, zip_path)
