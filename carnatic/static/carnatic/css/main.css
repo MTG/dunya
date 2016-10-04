@@ -308,7 +308,7 @@ textarea {
   display: none;
 }
 /* ==========================================================================
-   HEADER 
+   HEADER
    ========================================================================== */
 .header-container {
   position: relative;
@@ -793,42 +793,6 @@ input[type="email"] {
 }
 #filterMask #filterArea #entitiesList ul li.composer .colorCode {
   border-color: #c02942;
-}
-#breadcrumb {
-  height: 80px;
-}
-#breadcrumb #navigationhistory .inner {
-  width: 2000px;
-}
-#breadcrumb #navigationhistory .inner .microitem {
-  float: left;
-  clear: none;
-  width: 300px !important;
-  height: 69px !important;
-  margin-left: 4px;
-  overflow: hidden;
-}
-#breadcrumb #navigationhistory .inner .microitem .disco img {
-  width: 15%;
-  height: auto;
-  float: right;
-  margin-top: 3px;
-  margin-right: 3px;
-}
-#breadcrumb #navigationhistory .inner .microitem.artist {
-  background: #69d2e7;
-}
-#breadcrumb #navigationhistory .inner .microitem.concert {
-  background: #a7dbd8;
-}
-#breadcrumb #navigationhistory .inner .microitem.instrument {
-  background: #f38630;
-}
-#breadcrumb #navigationhistory .inner .microitem.raaga {
-  background: #fa6900;
-}
-#breadcrumb #navigationhistory .inner .microitem.taala {
-  background: #ecd078;
 }
 /* ==========================================================================
    Helper classes

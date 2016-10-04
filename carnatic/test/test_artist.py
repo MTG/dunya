@@ -130,6 +130,51 @@ class ArtistCountTest(TestCase):
         recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(4, len(recs))
 
+    def test_artist_performs_percussion(self):
+        a = models.Artist.objects.create(name="a1")
+        inst = models.Instrument.objects.create(name="perc", percussion=True)
+        noperc_inst = models.Instrument.objects.create(name="noperc", percussion=False)
+
+        self.assertFalse(a.performs_percussion())
+
+        a.main_instrument = noperc_inst
+        a.save()
+        a = models.Artist.objects.get(name="a1")
+        self.assertFalse(a.performs_percussion())
+
+        a.main_instrument = inst
+        a.save()
+        a = models.Artist.objects.get(name="a1")
+        self.assertTrue(a.performs_percussion())
+
+    def test_artist_performs_lead(self):
+        a = models.Artist.objects.create(name="a1")
+
+        # These MBIDs are the ID of the respective instruments in musicbrainz, and should
+        # not change (voice is the mbid of the 'performs vocals' relation)
+        voice = models.Instrument.objects.create(name="voice", mbid="d92884b7-ee0c-46d5-96f3-918196ba8c5b")
+        violin = models.Instrument.objects.create(name="noperc", mbid="089f123c-0f7d-4105-a64e-49de81ca8fa4")
+
+        # Some other instrument
+        otherinst = models.Instrument.objects.create(name="other", mbid="caebdfcd-e3e3-4378-86e1-7c1653e7cf0c")
+
+        self.assertFalse(a.performs_lead())
+        a.main_instrument = otherinst
+        a.save()
+        a = models.Artist.objects.get(name="a1")
+        self.assertFalse(a.performs_lead())
+
+        a.main_instrument = violin
+        a.save()
+        a = models.Artist.objects.get(name="a1")
+        self.assertTrue(a.performs_lead())
+
+        a.main_instrument = voice
+        a.save()
+        a = models.Artist.objects.get(name="a1")
+        self.assertTrue(a.performs_lead())
+
+
 class CollaboratingArtistsTest(TestCase):
     def setUp(self):
         self.a1 = models.Artist.objects.create(name="a1")
