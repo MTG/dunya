@@ -154,7 +154,7 @@
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi! what do you want to do?</h3>
-                        <a href="{% url 'social-auth-logout' %}?next={{ login|safe }}">Login</a>
+                        <a href="{% url 'social-auth-logout' %}?next={% autoescape on %}{{ login }}?next={% firstof request.path %}{% endautoescape %}">Login</a>
                         <a href="{% url 'social-auth-logout' %}?next={{ register|safe }}">Register</a>
                     </div>
             {% elif user.is_authenticated %}
