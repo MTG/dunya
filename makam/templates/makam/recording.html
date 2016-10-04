@@ -339,11 +339,17 @@ widthOfChildren('.metaContainer');
                                 <span class="timecode5"></span>
                             </div>
                             <div id="score" style="height:300px; width:900px;">
-                                <div id="no-score" style="display:none">
-                                    The score is not performed in this part of the recording.
-                                </div>
-                                <div id="score-cont">
-                                </div>
+                                {% if has_score %}
+                                  <div id="no-score" style="display:none">
+                                      The score is not performed in this part of the recording.
+                                  </div>
+                                  <div id="score-cont">
+                                  </div>
+                                {% else %}
+                                  <div id="no-score">
+                                      The score is not available for this recording.
+                                  </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div id="renderTotal">

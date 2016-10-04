@@ -374,6 +374,10 @@ def recording(request, uuid, title=None):
         max_pitch = None
         min_pitch = None
 
+    has_score = docserver.models.Document.objects.filter(
+            external_identifier__in=list(recording.works.values_list('mbid', flat=True).all()),
+            sourcefiles__file_type__extension='xml').count()
+
     ret = {
            "recording": recording,
            "objecttype": "recording",
@@ -387,7 +391,8 @@ def recording(request, uuid, title=None):
            "max_pitch": max_pitch,
            "min_pitch": min_pitch,
            "phraseurl": phraseurl,
-           "start_time": start_time
+           "start_time": start_time,
+           "has_score": has_score
     }
 
     urls = recordings_urls()
