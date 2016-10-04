@@ -49,6 +49,10 @@ class GeographicRegion(CarnaticStyle, models.Model):
         return self.name
 
 class Artist(CarnaticStyle, data.models.Artist):
+
+    # Automatically gets the Artist + the artists' main instrument
+    objects = managers.ArtistManager()
+
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
     gurus = models.ManyToManyField("Artist", related_name="students")
 
@@ -185,6 +189,54 @@ class Artist(CarnaticStyle, data.models.Artist):
                     instruments.append(p.instrument)
             ret.append((c, theperf))
         return ret
+
+    def performs_percussion(self):
+        """Returns True if the artist's main instrument is
+           a percussion instrument"""
+        return self.main_instrument and self.main_instrument.percussion
+
+    def performs_lead(self):
+        """Returns True if the artist's main instrument is
+           a lead instrument (Vocals or Violin)"""
+
+        VIOLIN = "089f123c-0f7d-4105-a64e-49de81ca8fa4"
+        VOICE = "d92884b7-ee0c-46d5-96f3-918196ba8c5b"
+        return self.main_instrument and str(self.main_instrument.mbid) in [VIOLIN, VOICE]
+
+    def get_performed_taalas(self):
+        taalamap = {}
+        taalacount = collections.Counter()
+        taalas = Taala.objects.filter(Q(work__recording__concert__artists=self) | Q(work__recording__instrumentperformance__artist=self))
+        for t in taalas:
+            taalacount[t.name] += 1
+            if t.name not in taalamap:
+                taalamap[t.name] = t
+        taalas = []
+        for t, count in taalacount.most_common():
+            taalas.append((taalamap[t], count))
+        return taalas
+
+    def get_performed_raagas(self):
+        """ Get the raaga of recordings that this artist has performed.
+
+        The raaga comes from the work of recordings. Consider If the Artist
+        has a specific performance relation to a recording/work or if they
+        are a lead artist of the concert that the recording/work appears on.
+
+        Returns:
+          an ordered list of (raaga, count), ordered by count desc
+        """
+        raagamap = {}
+        raagacount = collections.Counter()
+        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=self) | Q(work__recording__instrumentperformance__artist=self))
+        for r in raagas:
+            raagacount[r.name] += 1
+            if r.name not in raagamap:
+                raagamap[r.name] = r
+        raagas = []
+        for r, count in raagacount.most_common():
+            raagas.append((raagamap[r], count))
+        return raagas
 
     @classmethod
     def get_filter_criteria(cls):

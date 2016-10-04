@@ -105,3 +105,7 @@ class FuzzySearchManager(models.Manager):
                 if i.name.lower() == n.lower():
                     return i
             raise self.model.DoesNotExist()
+
+class ArtistManager(models.Manager):
+    def get_queryset(self):
+        return super(ArtistManager, self).get_queryset().select_related('main_instrument')

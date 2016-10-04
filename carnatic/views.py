@@ -288,57 +288,16 @@ def artistbyid(request, artistid, name=None):
 def artist(request, uuid, name=None):
     artist = get_object_or_404(Artist, mbid=uuid)
 
-    inst = artist.instruments()
-    ips = InstrumentPerformance.objects.filter(instrument__in=inst)
-    similar_artists = []
-    for i in ips:
-        if i.artist not in similar_artists:
-            similar_artists.append(i.artist)
-
-    if artist.main_instrument and artist.main_instrument.percussion:
-        taalamap = {}
-        taalacount = collections.Counter()
-        taalas = Taala.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__artist=artist))
-        for t in taalas:
-            taalacount[t.name] += 1
-            if t.name not in taalamap:
-                taalamap[t.name] = t
-        taalas = []
-        for t, count in taalacount.most_common():
-            taalas.append((taalamap[t], count))
+    if artist.performs_percussion():
+        taalas = artist.get_performed_taalas()
     else:
         taalas = []
+
+    if artist.performs_lead():
     # vocalist or violinist
-    if artist.main_instrument and artist.main_instrument.id in [1, 2]:
-        raagamap = {}
-        raagacount = collections.Counter()
-        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=artist) | Q(work__recording__instrumentperformance__artist=artist))
-        for r in raagas:
-            raagacount[r.name] += 1
-            if r.name not in raagamap:
-                raagamap[r.name] = r
-        raagas = []
-        for r, count in raagacount.most_common():
-            raagas.append((raagamap[r], count))
+        raagas = artist.get_performed_raagas()
     else:
         raagas = []
-
-    musicbrainz = artist.get_musicbrainz_url()
-    k = data.models.SourceName.objects.get(name="kutcheris.com")
-    w = data.models.SourceName.objects.get(name="Wikipedia")
-    kutcheris = None
-    wikipedia = None
-    desc = artist.description
-    if desc and desc.source.source_name == k:
-        kutcheris = artist.description.source.uri
-    elif desc and desc.source.source_name == w:
-        wikipedia = artist.description.source.uri
-    kr = artist.references.filter(source_name=k)
-    if kr.count() and not kutcheris:
-        kutcheris = kr[0].uri
-    wr = artist.references.filter(source_name=w)
-    if wr.count() and not wikipedia:
-        wikipedia = wr[0].uri
 
     # Sample is the first recording of any of their concerts (Vignesh, Dec 9)
     permission = utils.get_user_permissions(request.user)
@@ -349,17 +308,23 @@ def artist(request, uuid, name=None):
         if recordings:
             sample = recordings[0]
 
-    ret = {"filter_items": json.dumps(get_filter_items()),
-           "artist": artist,
+    biography = []
+    if artist.artist_type == 'G':
+        for a in artist.group_members.all():
+            s = a.state
+            if s:
+                r = s.name
+            else:
+                r = None
+            biography.append({"name": a.name, "begin": a.begin, "region": r})
+
+    ret = {"artist": artist,
            "objecttype": "artist",
            "objectid": artist.id,
-           "similar_artists": similar_artists,
            "raagas": raagas,
            "taalas": taalas,
            "sample": sample,
-           "mb": musicbrainz,
-           "kutcheris": kutcheris,
-           "wiki": wikipedia
+           "biography": biography,
            }
 
     return render(request, "carnatic/artist.html", ret)
@@ -434,8 +399,7 @@ def concert(request, uuid, title=None):
     similar = concert.get_similar()
 
     # Raaga in
-    ret = {"filter_items": json.dumps(get_filter_items()),
-           "concert": concert,
+    ret = {"concert": concert,
            "objecttype": "concert",
            "objectid": concert.id,
            "image": image,
@@ -545,8 +509,7 @@ def recording(request, uuid, title=None):
         nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
-    ret = {"filter_items": json.dumps(get_filter_items()),
-           "recording": recording,
+    ret = {"recording": recording,
            "objecttype": "recording",
            "objectid": recording.id,
            "waveform": wave,
@@ -591,8 +554,7 @@ def work(request, uuid, title=None):
     else:
         sample = None
 
-    ret = {"filter_items": json.dumps(get_filter_items()),
-           "work": work,
+    ret = {"work": work,
            "objecttype": "work",
            "objectid": work.id,
            "sample": sample,
@@ -669,7 +631,6 @@ def instrument(request, uuid, name=None):
         sample = samples[0]
     ret = {"instrument": instrument,
            "sample": sample,
-           "filter_items": json.dumps(get_filter_items())
            }
 
     return render(request, "carnatic/instrument.html", ret)
