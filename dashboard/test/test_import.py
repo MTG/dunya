@@ -9,7 +9,7 @@ from dashboard import jobs
 class CollectionTest(TestCase):
     def setUp(self):
         u = str(uuid.uuid4())
-        self.collection = models.Collection.objects.create(id=u, name="Test collection", root_directory="/a/directory")
+        self.collection = models.Collection.objects.create(collectionid=u, name="Test collection", root_directory="/a/directory")
         self.directory = models.CollectionDirectory.objects.create(collection=self.collection, path="subdir")
 
         self.file1id = str(uuid.uuid4())
@@ -40,7 +40,7 @@ class CollectionTest(TestCase):
         meta.side_effect = metadata_side
 
         jobs._check_existing_directories(self.collection)
-        match.assert_called_once_with(self.collection.id, "/a/directory/subdir")
+        match.assert_called_once_with(self.collection.collectionid, "/a/directory/subdir")
 
     @mock.patch("os.listdir")
     @mock.patch("compmusic.file_metadata")
@@ -69,7 +69,7 @@ class CollectionTest(TestCase):
         get_mbrel.return_value = [relid]
         listdir.return_value = ["one.mp3", "two.mp3"]
 
-        jobs._match_directory_to_release(self.collection.pk, "/a/directory/sub")
+        jobs._match_directory_to_release(self.collection.collectionid, "/a/directory/sub")
         cd = models.CollectionDirectory.objects.get(collection=self.collection, path="sub")
 
         # Check that we called create_collectionfile
@@ -81,7 +81,7 @@ class CollectionTest(TestCase):
         listdir.return_value = ["one.mp3", "two.mp3", "three.mp3"]
         create_cf.reset_mock()
 
-        jobs._match_directory_to_release(self.collection.pk, "/a/directory/sub")
+        jobs._match_directory_to_release(self.collection.collectionid, "/a/directory/sub")
         calls = [mock.call(cd, "one.mp3"), mock.call(cd, "two.mp3"), mock.call(cd, "three.mp3")]
         self.assertEqual(create_cf.mock_calls, calls)
 

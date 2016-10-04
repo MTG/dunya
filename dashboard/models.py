@@ -92,7 +92,7 @@ class Collection(models.Model):
     AUDIO_DIR = 'audio'
     objects = CollectionManager()
 
-    id = models.UUIDField(primary_key=True)
+    collectionid = models.UUIDField()
     name = models.CharField(max_length=200)
     last_updated = models.DateTimeField(default=django.utils.timezone.now)
     root_directory = models.CharField(max_length=255)
@@ -102,6 +102,10 @@ class Collection(models.Model):
 
     def __unicode__(self):
         return u"%s (%s)" % (self.name, self.id)
+
+    @property
+    def audio_directory(self):
+        return os.path.join(self.root_directory, self.AUDIO_DIR)
 
     def state_colour(self):
         curr = self.get_current_state()
@@ -153,7 +157,7 @@ class Collection(models.Model):
         return True
 
     def get_absolute_url(self):
-        return reverse("dashboard-collection", args=[str(self.id)])
+        return reverse("dashboard-collection", args=[str(self.collectionid)])
 
     def add_log_message(self, message):
         return CollectionLogMessage.objects.create(collection=self, message=message)
@@ -276,7 +280,7 @@ class CollectionDirectory(models.Model):
 
     @property
     def full_path(self):
-        return os.path.join(self.collection.root_directory, self.path)
+        return os.path.join(self.collection.audio_directory, self.path)
 
     def __unicode__(self):
         return u"From collection %s, release %s, path on disk %s" % (
@@ -333,7 +337,7 @@ class CollectionFile(models.Model):
     def path(self):
         """ Absolute path """
         return os.path.join(
-            self.directory.collection.root_directory,
+            self.directory.collection.audio_directory,
             self.directory.path, self.name)
 
     @property

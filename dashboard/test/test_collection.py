@@ -72,7 +72,7 @@ class CollectionTest(TestCase):
 
 
     def test_collection_exists(self):
-        models.Collection.objects.create(pk="55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee", name="test collection")
+        models.Collection.objects.create(collectionid="55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee", name="test collection")
         formdata = "collectionid=55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee&path=%2Fsome%2Fpath"
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)

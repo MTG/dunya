@@ -51,7 +51,7 @@ def is_staff(user):
 
 @user_passes_test(is_staff)
 def editcollection(request, uuid):
-    collection = get_object_or_404(models.Collection, pk=uuid)
+    collection = get_object_or_404(models.Collection, collectionid=uuid)
     if request.method == 'POST':
         data = {'collectionid': uuid,
                 'path': request.POST.get("path"),
@@ -95,10 +95,9 @@ def addcollection(request):
             path = form.cleaned_data['path']
             coll_name = form.cleaned_data['collectionname']
             do_import = form.cleaned_data['do_import']
-            dashboard_root = os.path.join(path, models.Collection.AUDIO_DIR)
             new_collection = models.Collection.objects.create(
-                id=coll_id, name=coll_name,
-                root_directory=dashboard_root, do_import=do_import)
+                collectionid=coll_id, name=coll_name,
+                root_directory=path, do_import=do_import)
             docserver_coll, created = docserver.models.Collection.objects.get_or_create(
                 collectionid=coll_id,
                 defaults={"root_directory": path, "name": coll_name})
@@ -112,7 +111,7 @@ def addcollection(request):
             if not created:
                 data_coll.name = coll_name
                 data_coll.save()
-            jobs.force_load_and_import_collection(new_collection.id)
+            jobs.force_load_and_import_collection(str(new_collection.collectionid))
             return redirect('dashboard-home')
     else:
         form = forms.AddCollectionForm()
@@ -154,7 +153,7 @@ def accounts(request):
 
 @user_passes_test(is_staff)
 def delete_collection(request, uuid):
-    c = get_object_or_404(models.Collection, pk=uuid)
+    c = get_object_or_404(models.Collection, collectionid=uuid)
 
     if request.method == "POST":
         delete = request.POST.get("delete")
@@ -164,14 +163,14 @@ def delete_collection(request, uuid):
             jobs.delete_collection.delay(c.pk)
             return redirect("dashboard-home")
         elif delete.lower().startswith("no"):
-            return redirect("dashboard-collection", c.pk)
+            return redirect("dashboard-collection", c.collectionid)
 
     ret = {"collection": c}
     return render(request, 'dashboard/delete_collection.html', ret)
 
 @user_passes_test(is_staff)
 def delete_database_files(request, uuid):
-    c = get_object_or_404(models.Collection, pk=uuid)
+    c = get_object_or_404(models.Collection, collectionid=uuid)
 
     if request.method == "POST":
         delete = request.POST.get("delete")
@@ -186,11 +185,11 @@ def delete_database_files(request, uuid):
 
 @user_passes_test(is_staff)
 def collection(request, uuid):
-    c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), pk=uuid)
+    c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), collectionid=uuid)
 
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
-        jobs.force_load_and_import_collection(c.id)
+        jobs.force_load_and_import_collection(str(c.collectionid))
         return redirect('dashboard-collection', uuid)
 
     order = request.GET.get("order")
@@ -253,7 +252,7 @@ def release(request, releaseid):
     if delete is not None:
         collection = release.collection
         release.delete()
-        return redirect('dashboard-collection', collection.pk)
+        return redirect('dashboard-collection', collection.collectionid)
 
     ignore = request.GET.get("ignore")
     if ignore is not None:
@@ -288,7 +287,7 @@ def file(request, fileid):
 
     collection = thefile.directory.collection
     docid = thefile.recordingid
-    docsrvcoll = docserver.models.Collection.objects.get(collectionid=collection.id)
+    docsrvcoll = docserver.models.Collection.objects.get(collectionid=collection.collectionid)
     sourcefiles = []
     derivedfiles = []
     docsrvdoc = None

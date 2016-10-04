@@ -20,7 +20,7 @@
 
 
 <ol class="breadcrumbs">Collection
-    <li>{{collection.name}} <small>(<a href="{% url 'dashboard-editcollection' collection.id %}">edit</a>)</small></li>
+    <li>{{collection.name}} <small>(<a href="{% url 'dashboard-editcollection' collection.collectionid %}">edit</a>)</small></li>
 </ol>
 
 <h3>Releases</h3>
@@ -33,10 +33,9 @@
 <div class="topbox">
     <div class="topheader">Actions</div>
     <li><a href="?forcescan">Scan and reimport all existing data</a>
-    <li><a href="{% url 'dashboard-delete-collection-db-files' collection.pk %}">Delete Related Files and Directory from Database</a>
-    <li><a href="{% url 'dashboard-delete-collection' collection.pk %}">Delete collection</a>
+    <li><a href="{% url 'dashboard-delete-collection-db-files' collection.collectionid %}">Delete Related Files and Directory from Database</a>
+    <li><a href="{% url 'dashboard-delete-collection' collection.collectionid %}">Delete collection</a>
     <p>
-    <li><a href="?order=error">Order by errors first</a>
     <li><a href="?order=unmatched">Order by unmatched releases first</a>
     <li><a href="?order=date">Order by last imported date</a>
     <li><a href="?order=ignored">Order by ignored</a>

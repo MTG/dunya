@@ -30,7 +30,7 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 class CollectionForm(forms.Form):
     collectionid = forms.CharField(max_length=100, label="Musicbrainz collection ID")
     path = forms.CharField(max_length=200, label="Path to files on disk")
-    do_import = forms.BooleanField(required=False)
+    do_import = forms.BooleanField(required=False, label="Import metadata into Dunya (in addition to loading into dashboard)")
 
     def __init__(self, *args, **kwargs):
         super(CollectionForm, self).__init__(*args, **kwargs)
@@ -54,7 +54,7 @@ class AddCollectionForm(CollectionForm):
             if not re.match(uuid_match, cid):
                 raise forms.ValidationError("Collection ID needs to be a UUID")
 
-            if models.Collection.objects.filter(id=cid).exists():
+            if models.Collection.objects.filter(collectionid=cid).exists():
                 raise forms.ValidationError("A collection with this ID already exists")
         return cid
 
@@ -84,12 +84,11 @@ class EditCollectionForm(CollectionForm):
         self.fields['collectionid'].widget.attrs['readonly'] = True
 
     def clean(self):
-        """ Check that the collectionid doesn't already exist in the DB """
-        cleaned_data = super(CollectionForm, self).clean()
+        cleaned_data = super(EditCollectionForm, self).clean()
         try:
             coll_name = compmusic.musicbrainz.get_collection_name(self.collectionid)
             cleaned_data['collectionname'] = coll_name
-        except IOError:  # Probably an http 500
+        except IOError:  # Probably an http 500 from MusicBrainz
             # If we had an error, don't worry, we'll just use the old name
             cleaned_data['collectionname'] = None
 
