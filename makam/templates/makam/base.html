@@ -147,7 +147,17 @@
                 <nav id="mainmenu">
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">
-            {% if user.is_authenticated %}
+            {% if user.username == 'guest' %}
+                {% url 'social-auth-login' as login %}
+                {% url 'social-auth-register' as register %}
+                 <a href="#">Login<img src="{% static 'carnatic/img/avatar.png' %}" /></a>
+                    <div id="usermenuoptions">
+                        <div id="userArrow"></div>
+                        <h3>Hi! what do you want to do?</h3>
+                        <a href="{% url 'social-auth-logout' %}?next={{ login|safe }}">Login</a>
+                        <a href="{% url 'social-auth-logout' %}?next={{ register|safe }}">Register</a>
+                    </div>
+            {% elif user.is_authenticated %}
                     <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/avatar.png' %}" /></a>
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>

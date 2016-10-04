@@ -38,6 +38,12 @@ from makam import models
 def makamplayer(request):
     return render(request, "makam/makamplayer.html")
 
+def guest_login(request):
+    if not request.user.is_authenticated():
+        user = User.objects.get(username='guest')
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+
 def searchcomplete(request):
     term = request.GET.get("term")
     ret = []
@@ -353,6 +359,10 @@ def recordings_urls(include_img_and_bin=True):
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
+    recording_doc = docserver.models.Document.objects.filter(
+            external_identifier=recording.mbid, collections__slug='makam-open')
+    if recording_doc.count():
+        guest_login(request)
     start_time = request.GET.get("start", 0)
     mbid = recording.mbid
 
