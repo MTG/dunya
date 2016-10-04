@@ -206,18 +206,6 @@ def collection(request, uuid):
     elif order == "ignored":
         def sortkey(rel):
             return rel.ignore
-    elif order == "error":
-        def sortkey(rel):
-            count = 0
-            for state in rel.get_latest_checker_results():
-                if state.result == 'b':
-                    count += 1
-            for directory in rel.collectiondirectory_set.all():
-                for f in directory.collectionfile_set.all():
-                    for state in f.get_latest_checker_results():
-                        if state.result == 'b':
-                            count += 1
-            return count
     else:
         def sortkey(obj):
             pass
