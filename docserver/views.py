@@ -306,13 +306,13 @@ def understand_task(task):
         thetask["type"] = "loadcollection"
         thetask["nicename"] = "Import musicbrainz collection"
         collectionid = args[0]
-        coll = dashboard.models.Collection.objects.get(pk=collectionid)
+        coll = dashboard.models.Collection.objects.get(collectionid=collectionid)
         thetask["collection"] = coll
     elif tname == "dashboard.jobs.import_all_releases" or tname == "dashboard.jobs.force_import_all_releases":
         thetask["type"] = "importreleases"
         thetask["nicename"] = "Import releases in collection"
         collectionid = args[0]
-        coll = dashboard.models.Collection.objects.get(pk=collectionid)
+        coll = dashboard.models.Collection.objects.get(collectionid=collectionid)
         thetask["collection"] = coll
     elif tname == "dashboard.jobs.import_single_release":
         thetask["type"] = ""
