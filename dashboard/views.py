@@ -309,7 +309,7 @@ def directory(request, dirid):
         return redirect('dashboard-directory', dirid)
 
     collection = directory.collection
-    full_path = os.path.join(collection.root_directory, directory.path)
+    full_path = directory.full_path
     files = os.listdir(full_path)
     releaseids = set()
     releasename = set()
