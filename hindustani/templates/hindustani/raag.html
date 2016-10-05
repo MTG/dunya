@@ -40,23 +40,27 @@ $(document).ready(function() {
 					<div class="metaMask">
 			 			<div class="metaContainer">
 							<div id="artists" class="metaDetails">
-								<div class="inner withpadding">
+								<div class="inner info">
 									<h3>Artists who perform this raag</h3>
+                                    <span class="info">
 									{% for a in raag.artists %}
 									{% badge_mini_artist a %}
                                     {% empty %}
                                         Sorry, we have no information for this section
 									{% endfor %}
+                                    </span>
 								</div>
 							</div>
 							<div id="works" class="metaDetails">
-								<div class="inner withpadding">
+								<div class="inner info">
 									<h3>Compositions</h3>
+                                    <span class="info">
                                     {% for w in raag.works %}
                                     {% badge_mini_work w %}
                                     {% empty %}
                                         Sorry, we have no information for this section
                                     {% endfor %}
+                                        </span>
 								</div>
 							</div>
 			 			</div>

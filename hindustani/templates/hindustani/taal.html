@@ -42,23 +42,27 @@ $(document).ready(function() {
 					<div class="metaMask">
 			 			<div class="metaContainer">
 							<div id="artists" class="metaDetails">
-								<div class="inner withpadding">
+								<div class="inner">
 									<h3>Percussionists who play this taal</h3>
+                                    <span class="info">
 									{% for a in taal.percussion_artists %}
 										{% badge_mini_artist a %}
                                     {% empty %}
                                         Sorry, we have no information for this section
 									{% endfor %}
+                                    </span>
 								</div>
 							</div>
 							<div id="works" class="metaDetails">
-								<div class="inner withpadding">
+								<div class="inner">
 									<h3>Compositions written in this taal</h3>
+                                    <span class="info">
                                     {% for w in taal.works %}
                                     {% badge_mini_work w %}
                                     {% empty %}
                                         Sorry, we have no information for this section
                                     {% endfor %}
+                                    </span>
 								</div>
 							</div>
 			 			</div>

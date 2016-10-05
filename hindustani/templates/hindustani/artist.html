@@ -73,36 +73,32 @@ $(document).ready(function() {
                             <div class="metaContainer">
                             <div class="splitMeta">
                                 <div id="editorial" class="metaDetails">
-                                <h3>Biographical data</h3>
-                                    <div class="inner">
-                                        <span class="list">
-                                            <label>Date of birth:</label><b>{% firstof artist.begin "(unknown)" %}</b>
-                                            <label>Region of birth:</label><b>{% firstof artist.state.name "(unknown)" %}</b>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div id="samples" class="metaDetails">
-                                    <h3>Data sources</h3>
-                                    <div class="inner">
-                                        <span class="list">
-                                            {% if mb %}
-                                            <a href="{{mb}}">Musicbrainz</a>
-                                            {% endif %}
-                                            {% if wiki %}
-                                            <a href="{{wiki}}">Wikipedia</a>
-                                            {% endif %}
-                                        </span>
-                                    </div>
-                                </div>
 
-                            </div>
-                            <div class="metaDetails">
                                 <h3>Biography</h3>
                                 <div class="inner">
-                                <span class="info">
-                                    {% if artist.description.description %} {{artist.description.description|safe}} {% else %}Sorry, we have no information for this section{% endif %}
-                                    </span>
+                                  <span class="info">
+                                    {% if artist.description.description %}
+                                    {{artist.description.description|safe}}
+                                    - <a href="{{artist.description.source.uri}}">{{artist.description.source.source_name.name}}</a>
+
+                                    {% else %}Sorry, we have no information for this section{% endif %}
+
+                                  </span>
+                                        <span class="list info">
+
+                                            <b>Additional info</b><br>
+                                            <span class="title">Data source:</span>
+                                            <span class="data"><a href="{{artist.get_musicbrainz_url}}">Musicbrainz</a></span>
+                                            <span class="title">Date of birth:</span>
+                                            <span class="data">{% firstof artist.begin "(unknown)" %}</span>
+                                            <span class="title">Region of birth:</span>
+                                            <span class="data">{% firstof artist.state.name "(unknown)" %}</span>
+
+                                        </span>
                                 </div>
+
+                                <h3>Biographical data</h3>
+
                             </div>
                             {% if raagas or taalas %}
                                     <div class="metaDetails">

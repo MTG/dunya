@@ -76,10 +76,16 @@ $(document).ready(function() {
 			 			<div class="metaContainer">
 							<div id="excerpt" class="metaDetails">
 								<div class="inner">
+
 									<h3>Description</h3>
-			                        <span>{{instrument.description.description|safe}}
-                                    <p><label>Description from </label>
-                                        <a href="{{instrument.description.source.uri}}">Wikipedia</a>
+                                    <span class="info">
+                                    {% if instrument.description %}
+                                        {{instrument.description.description|safe}}
+                                        <p><label>Description from </label>
+                                            <a href="{{instrument.description.source.uri}}">Wikipedia</a>
+                                    {% else %}
+                                        No description available
+                                    {% endif %}
                                     </span>
 								</div>
 							</div>
