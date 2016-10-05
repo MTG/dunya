@@ -827,9 +827,6 @@ class Instrument(CarnaticStyle, data.models.Instrument):
 
         return ret, artistcount
 
-    def references(self):
-        pass
-
     def samples(self, limit=2):
         IPClass = self.get_object_map("performance")
         performances = list(IPClass.objects.filter(instrument=self).all())

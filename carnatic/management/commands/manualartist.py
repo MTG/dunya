@@ -72,9 +72,3 @@ class Command(BaseCommand):
                 else:
                     print "musicbrainz wp", wikipedia, "and kutcheris wp", wpurl, "are differnt. using mb"
                     theurl = wikipedia
-            if theurl:
-                print "adding wikipedia reference"
-                sn = data.models.SourceName.objects.get(name="Wikipedia")
-                title = theurl.split("/")[-1].replace("_", " ")
-                source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=theurl, defaults={"title": title})
-                a.references.add(source)

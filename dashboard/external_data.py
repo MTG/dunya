@@ -39,40 +39,37 @@ def import_artist_kutcheris(a):
         a.description = description
         a.save()
 
-def import_artist_wikipedia(artist):
+def import_artist_wikipedia(artist, source):
     print "Looking for data on wikipedia"
-    sn = data.models.SourceName.objects.get(name="Wikipedia")
-    refs = artist.references.filter(source_name=sn)
-    if refs.exists():
-        source = refs.all()[0]
-        wikiurl = source.uri
-        name = os.path.basename(wikiurl)
 
-        img, bio = wikipedia.get_artist_details(name)
-        if bio:
-            description = data.models.Description.objects.create(description=bio, source=source)
-            # We call this with Composers too, which don't have `description_edited`
-            # If d_edited is set, never overwrite it.
-            if not getattr(artist, 'description_edited', False):
-                artist.description = description
-                artist.save()
-        if img:
-            try:
-                existingimg = artist.images.get(image__contains="%s" % artist.mbid)
-                if not os.path.exists(existingimg.image.path):
-                    existingimg.delete()
-                elif existingimg.image.size != len(img):
-                    # If the imagesize has changed, remove the image
-                    os.unlink(existingimg.image.path)
-                    existingimg.delete()
-            except data.models.Image.DoesNotExist:
-                pass
-            except data.models.Image.MultipleObjectsReturned:
-                artist.images.filter(image__contains="%s" % artist.mbid).delete()
+    wikipedia_url = source.uri
+    name = os.path.basename(wikipedia_url)
 
-            im = data.models.Image()
-            im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
-            artist.images.add(im)
+    img, bio = wikipedia.get_artist_details(name)
+    if bio:
+        description = data.models.Description.objects.create(description=bio, source=source)
+        # We call this with Composers too, which don't have `description_edited`
+        # If d_edited is set, never overwrite it.
+        if not getattr(artist, 'description_edited', False):
+            artist.description = description
+            artist.save()
+    if img:
+        try:
+            existingimg = artist.images.get(image__contains="%s" % artist.mbid)
+            if not os.path.exists(existingimg.image.path):
+                existingimg.delete()
+            elif existingimg.image.size != len(img):
+                # If the imagesize has changed, remove the image
+                os.unlink(existingimg.image.path)
+                existingimg.delete()
+        except data.models.Image.DoesNotExist:
+            pass
+        except data.models.Image.MultipleObjectsReturned:
+            artist.images.filter(image__contains="%s" % artist.mbid).delete()
+
+        im = data.models.Image()
+        im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
+        artist.images.add(im)
 
 def import_release_image(release, directories=[]):
     for existing in release.images.all():

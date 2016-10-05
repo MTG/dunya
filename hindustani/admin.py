@@ -59,19 +59,19 @@ class RecordingFormInline(admin.TabularInline):
 
 class ArtistAdmin(admin.ModelAdmin):
     inlines = (ArtistAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class ComposerAdmin(admin.ModelAdmin):
     inlines = (ComposerAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class RecordingAdmin(admin.ModelAdmin):
     inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, RecordingSectionInline, WorkTimeInline, RecordingPerformanceInline)
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class ReleaseAdmin(admin.ModelAdmin):
     inlines = (ReleaseRecordingInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class RaagAliasInline(admin.TabularInline):
     model = models.RaagAlias
@@ -79,7 +79,7 @@ class RaagAliasInline(admin.TabularInline):
 
 class RaagAdmin(admin.ModelAdmin):
     inlines = (RaagAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class TaalAliasInline(admin.TabularInline):
     model = models.TaalAlias
@@ -87,7 +87,7 @@ class TaalAliasInline(admin.TabularInline):
 
 class TaalAdmin(admin.ModelAdmin):
     inlines = (TaalAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class SectionAliasInline(admin.TabularInline):
     model = models.SectionAlias
@@ -95,7 +95,7 @@ class SectionAliasInline(admin.TabularInline):
 
 class SectionAdmin(admin.ModelAdmin):
     inlines = (SectionAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class LayaAliasInline(admin.TabularInline):
     model = models.LayaAlias
@@ -103,7 +103,7 @@ class LayaAliasInline(admin.TabularInline):
 
 class LayaAdmin(admin.ModelAdmin):
     inlines = (LayaAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class FormAliasInline(admin.TabularInline):
     model = models.FormAlias
@@ -111,7 +111,7 @@ class FormAliasInline(admin.TabularInline):
 
 class FormAdmin(admin.ModelAdmin):
     inlines = (FormAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 admin.site.register(models.Instrument)
 admin.site.register(models.InstrumentPerformance)

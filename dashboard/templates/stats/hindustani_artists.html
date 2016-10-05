@@ -29,11 +29,6 @@
 <ul>
     {% for a in noimages %}
         <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
-        <ul>
-            {% for r in a.references.all %}
-            <li>{{r.source_name.name}} - <a href="{{r.uri}}">{{r.uri}}</a>
-            {% endfor %}
-        </ul>
     {% endfor %}
 </ul>
 
@@ -42,11 +37,6 @@
 <ul>
     {% for a in nobios %}
         <li><a href="{{a.get_musicbrainz_url}}">{{a}}</a>
-        <ul>
-            {% for r in a.references.all %}
-            <li>{{r.source_name.name}} - <a href="{{r.uri}}">{{r.uri}}</a>
-            {% endfor %}
-        </ul>
     {% endfor %}
 </ul>
 

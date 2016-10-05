@@ -135,8 +135,6 @@ class ReleaseImporter(object):
         release.year = year
         credit_phrase = mbrelease.get("artist-credit-phrase")
         release.artistcredit = credit_phrase
-        source = self.make_mb_source("http://musicbrainz.org/release/%s" % mbrelease["id"])
-        release.source = source
         release.collection = self.collection
         release.save()
 
@@ -150,8 +148,6 @@ class ReleaseImporter(object):
             defaults={"name": mbartist["name"]})
 
         logger.info("  adding artist/composer %s" % (artistid, ))
-        source = self.make_mb_source("http://musicbrainz.org/artist/%s" % artistid)
-        artist.source = source
         artist.name = mbartist["name"]
         if mbartist.get("type") == "Person":
             artist.artist_type = "P"
@@ -168,12 +164,10 @@ class ReleaseImporter(object):
         artist.save()
 
         # add wikipedia references if they exist
-        artist.references.clear()
+        wikipedia_url = None
         for rel in mbartist.get("url-relation-list", []):
             if rel["type-id"] == RELEASE_TYPE_WIKIPEDIA:
-                source = self.make_wikipedia_source(rel["target"])
-                if not artist.references.filter(pk=source.pk).exists():
-                    artist.references.add(source)
+                wikipedia_url = rel["target"]
 
         # We can't 'clear' an alias list from artist because an alias
         # object requires an artist.
@@ -195,7 +189,9 @@ class ReleaseImporter(object):
                 aob.locale = locale
             aob.save()
 
-        external_data.import_artist_wikipedia(artist)
+        if wikipedia_url:
+            source = self.make_wikipedia_source(wikipedia_url)
+            external_data.import_artist_wikipedia(artist, source)
         return artist
 
     def add_and_get_release_artist(self, artistid):
@@ -246,8 +242,6 @@ class ReleaseImporter(object):
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
         logger.info("  adding recording %s" % (recordingid,))
         import_logger.info("importing recording %s", mbrec["title"])
-        source = self.make_mb_source("http://musicbrainz.org/recording/%s" % recordingid)
-        rec.source = source
         rec.length = mbrec.get("length")
         rec.title = mbrec["title"]
         rec.save()
@@ -298,8 +292,6 @@ class ReleaseImporter(object):
             mbid=workid,
             defaults={"title": mbwork["title"]})
 
-        source = self.make_mb_source("http://musicbrainz.org/work/%s" % workid)
-        work.source = source
         work.title = mbwork["title"]
         work.save()
 

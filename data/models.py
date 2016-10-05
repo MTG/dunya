@@ -75,17 +75,8 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    source = models.ForeignKey(Source, blank=True, null=True, related_name="%(app_label)s_%(class)s_source_set")
-    references = models.ManyToManyField(Source, blank=True, related_name="%(app_label)s_%(class)s_reference_set")
     description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
     images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
-
-    def refs(self):
-        ret = []
-        ret.append({"url": self.source.uri, "title": self.source.source_name.name})
-        for r in self.references.all():
-            ret.append({"url": r.uri, "title": r.source_name.name})
-        return ret
 
     def has_image(self):
         return bool(self.images.count())
