@@ -64,10 +64,15 @@ $(document).ready(function() {
 								<div id="editorial" class="metaDetails">
 									<h3>Editorial Metadata</h3>
 									<div class="inner">
-										<span class='list'>
-                                            <label>Year:</label><b>{{concert.year}}</b>
-                                            <label>length:</label><b>{{concert.length}}</b>
-                                            <label>Data source:</label><b><a href="{{concert.source.uri}}">{{concert.source.source_name.name}}</a></b>
+										<span class='list info'>
+                                            {% if concert.year %}
+                                            <span class="title">Year: </span>
+                                            <span class="data">{{concert.year}}</span>
+                                            {% endif %}
+                                            <span class="title">Length: </span>
+                                            <span class="data">{{concert.length}}</span>
+                                            <span class="title">Data source: </span>
+                                            <span class="data"><a href="{{concert.get_musicbrainz_url}}">MusicBrainz</a></span>
 									</div>
 								</div>
 							</div>
