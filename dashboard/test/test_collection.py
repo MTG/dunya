@@ -121,8 +121,8 @@ class CollectionTest(TestCase):
         resp = self.client.post('/dashboard/addcollection', data)
 
         # dashboard collection
-        dashc = models.Collection.objects.get(pk=collid)
-        self.assertEqual("/incoming/carnatic/audio", dashc.root_directory)
+        dashc = models.Collection.objects.get(collectionid=collid)
+        self.assertEqual("/incoming/carnatic", dashc.root_directory)
         mockimport.assert_called_once_with(collid)
 
 
