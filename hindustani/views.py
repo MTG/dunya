@@ -278,15 +278,9 @@ def composer(request, uuid, name=None):
     musicbrainz = composer.get_musicbrainz_url()
     w = data.models.SourceName.objects.get(name="Wikipedia")
     wikipedia = None
-    wr = composer.references.filter(source_name=w)
-    if wr.count():
-        wikipedia = wr[0].uri
     desc = composer.description
     if desc and desc.source.source_name == w:
         wikipedia = composer.description.source.uri
-    wr = composer.references.filter(source_name=w)
-    if wr.count() and not wikipedia:
-        wikipedia = wr[0].uri
 
     ret = {"composer": composer,
            "mb": musicbrainz,
