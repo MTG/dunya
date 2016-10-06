@@ -379,11 +379,12 @@ def concert(request, uuid, title=None):
     elif is_restricted and not request.show_bootlegs:
         raise Http404
 
-    images = concert.images.all()
-    if images:
-        image = images[0].image.url
-    else:
+    image = None
+    if concert.image:
+        image = concert.image.image.url
+    if not image:
         image = "/media/images/noconcert.jpg"
+
     sample = None
     recordings = concert.recordings.all()
     if recordings:

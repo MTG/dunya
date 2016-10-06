@@ -808,9 +808,6 @@ class Instrument(CarnaticStyle, data.models.Instrument):
     fuzzymanager = managers.FuzzySearchManager()
     objects = managers.CarnaticInstrumentManager()
 
-    def description(self):
-        return "The description of an instrument"
-
     def ordered_performers(self):
         artists, counts = self.performers()
         artists = sorted(artists, key=lambda a: counts[a], reverse=True)

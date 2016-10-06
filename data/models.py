@@ -99,8 +99,6 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
-
     def get_style(self):
         raise Exception("need style")
 
