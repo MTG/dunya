@@ -46,10 +46,9 @@ class Command(BaseCommand):
 
             if imgcontent:
                 print "got image"
-                a.images.remove()
                 im = data.models.Image()
                 im.image.save("%s.jpg" % a.mbid, ContentFile(imgcontent))
-                a.images.add(im)
+                a.image = im
                 a.save()
 
             # Check if they're on musicbrainz->wikipedia too

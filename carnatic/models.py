@@ -519,12 +519,13 @@ raaga_similar = {1: [14, 64, 159, 55, 16],
  266: [203, 224, 93, 72, 149],
  285: [141, 16, 159, 1, 14]}
 
-class Raaga(data.models.BaseModel):
+class Raaga(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "raaga.jpg"
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     uuid = models.UUIDField(db_index=True)
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -606,13 +607,14 @@ taala_similar = {1: [5], 3: [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
                  7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4],
                  10: [7, 3], 11: [7, 3]}
 
-class Taala(data.models.BaseModel):
+class Taala(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "taala.jpg"
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
     uuid = models.UUIDField(db_index=True)
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
     objects = managers.CarnaticTaalaManager()
     fuzzymanager = managers.FuzzySearchManager()

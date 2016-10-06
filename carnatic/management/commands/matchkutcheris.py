@@ -59,11 +59,10 @@ class Command(BaseCommand):
                         source = None
                     description = data.models.Description.objects.create(description=bio, source=source)
                     a.description = description
-                    a.images.remove()
 
                     im = data.models.Image()
                     im.image.save("%s.jpg" % a.mbid, ContentFile(open(photo, "rb").read()))
-                    a.images.add(im)
+                    a.image = im
                     a.save()
 
             else:

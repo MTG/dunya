@@ -344,11 +344,6 @@ class RecordingLaya(models.Model):
     laya = models.ForeignKey("Laya")
     sequence = models.IntegerField()
 
-class RecordingSection(models.Model):
-    recording = models.ForeignKey("Recording")
-    section = models.ForeignKey("Section")
-    sequence = models.IntegerField()
-
 class RecordingForm(models.Model):
     recording = models.ForeignKey("Recording")
     form = models.ForeignKey("Form")
@@ -359,7 +354,6 @@ class Recording(HindustaniStyle, data.models.Recording):
     raags = models.ManyToManyField("Raag", through="RecordingRaag")
     taals = models.ManyToManyField("Taal", through="RecordingTaal")
     layas = models.ManyToManyField("Laya", through="RecordingLaya")
-    sections = models.ManyToManyField("Section", through="RecordingSection")
     forms = models.ManyToManyField("Form", through="RecordingForm")
     works = models.ManyToManyField("Work", through="WorkTime")
 
@@ -389,21 +383,8 @@ class WorkTime(models.Model):
     # but its time is optional (we may not have it yet)
     time = models.IntegerField(blank=True, null=True)
 
-class Section(models.Model):
-    name = models.CharField(max_length=50)
-    common_name = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return self.name.capitalize()
-
-class SectionAlias(models.Model):
-    name = models.CharField(max_length=50)
-    section = models.ForeignKey("Section", related_name="aliases")
-
-    def __unicode__(self):
-        return self.name
-
-class Raag(data.models.BaseModel):
+class Raag(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "raag.jpg"
 
     objects = managers.HindustaniRaagManager()
@@ -411,6 +392,7 @@ class Raag(data.models.BaseModel):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     uuid = models.UUIDField(db_index=True)
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -492,7 +474,7 @@ class RaagAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Taal(data.models.BaseModel):
+class Taal(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "taal.jpg"
 
     objects = managers.HindustaniTaalManager()
@@ -501,6 +483,7 @@ class Taal(data.models.BaseModel):
     common_name = models.CharField(max_length=50)
     num_maatras = models.IntegerField(null=True)
     uuid = models.UUIDField(db_index=True)
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
     def __unicode__(self):
         return self.name.capitalize()
@@ -582,7 +565,6 @@ class TaalAlias(models.Model):
         return self.name
 
 class Laya(data.models.BaseModel):
-    missing_image = "laya.jpg"
 
     objects = managers.HindustaniLayaManager()
 
@@ -634,7 +616,6 @@ class LayaAlias(models.Model):
         return self.name
 
 class Form(data.models.BaseModel):
-    missing_image = "form.jpg"
 
     objects = managers.HindustaniFormManager()
 

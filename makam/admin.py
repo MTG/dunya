@@ -39,24 +39,24 @@ class InstrumentPerformanceInline(admin.TabularInline):
 
 class ArtistAdmin(admin.ModelAdmin):
     inlines = (ArtistAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class InstrumentAdmin(admin.ModelAdmin):
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class ComposerAdmin(admin.ModelAdmin):
     inlines = (ComposerAliasInline, )
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', 'description')
 
 class ReleaseAdmin(admin.ModelAdmin):
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', )
 
 class RecordingAdmin(admin.ModelAdmin):
     inlines = (RecordingWorkInline, InstrumentPerformanceInline)
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', )
 
 class WorkAdmin(admin.ModelAdmin):
-    exclude = ('source', 'references', 'images', 'description')
+    exclude = ('images', )
 
 admin.site.register(models.Artist, ArtistAdmin)
 admin.site.register(models.Composer, ComposerAdmin)

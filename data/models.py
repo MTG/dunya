@@ -71,42 +71,35 @@ class Image(models.Model):
             ret = u"%s from %s" % (ret, self.source.uri)
         return ret
 
-class BaseModel(models.Model):
-    class Meta:
-        abstract = True
-
-    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
-    images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
+class ImageMixin(object):
 
     def has_image(self):
-        return bool(self.images.count())
+        return self.image is not None
 
     def get_image_url(self):
         media = settings.MEDIA_URL
-        if self.images.all():
-            image = self.images.all()[0]
-            return os.path.join(media, image.image.name)
+        if self.has_image():
+            return os.path.join(media, self.image.image.name)
         else:
-            if not hasattr(self, "missing_image"):
-                missing_image = "artist.jpg"
-            else:
-                missing_image = self.missing_image
+            missing_image = getattr(self, "missing_image", "artist.jpg")
             return os.path.join(media, "missing", missing_image)
 
     def get_small_image_url(self):
         media = settings.MEDIA_URL
-        if self.images.all():
-            image = self.images.all()[0]
-            if image.small_image:
-                return os.path.join(media, image.small_image.name)
+        if self.has_image():
+            if self.image.small_image:
+                return os.path.join(media, self.image.small_image.name)
             else:
-                return os.path.join(media, image.image.name)
+                return os.path.join(media, self.image.image.name)
         else:
-            if not hasattr(self, "missing_image"):
-                missing_image = "artist.jpg"
-            else:
-                missing_image = self.missing_image
+            missing_image = getattr(self, "missing_image", "artist.jpg")
             return os.path.join(media, "missing", missing_image)
+
+class BaseModel(models.Model):
+    class Meta:
+        abstract = True
+
+    images = models.ManyToManyField(Image, related_name="%(app_label)s_%(class)s_image_set")
 
     def get_style(self):
         raise Exception("need style")
@@ -114,7 +107,7 @@ class BaseModel(models.Model):
     def get_object_map(self, key):
         raise Exception("need map")
 
-class Artist(BaseModel):
+class Artist(BaseModel, ImageMixin):
     missing_image = "artist.jpg"
 
     class Meta:
@@ -137,6 +130,9 @@ class Artist(BaseModel):
     main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups')
     dummy = models.BooleanField(default=False, db_index=True)
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
     description_edited = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -169,7 +165,7 @@ class ArtistAlias(models.Model):
     def __unicode__(self):
         return u"%s (alias for %s)" % (self.alias, self.artist)
 
-class Release(BaseModel):
+class Release(BaseModel, ImageMixin):
     missing_image = "concert.jpg"
 
     class Meta:
@@ -180,6 +176,7 @@ class Release(BaseModel):
     artists = models.ManyToManyField('Artist', related_name='primary_concerts')
     artistcredit = models.CharField(max_length=255)
     year = models.IntegerField(blank=True, null=True)
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
     status = models.CharField(max_length=100, blank=True, null=True)
     rel_type = models.CharField(max_length=100, blank=True, null=True)
@@ -327,7 +324,7 @@ class InstrumentAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Instrument(BaseModel):
+class Instrument(BaseModel, ImageMixin):
     class Meta:
         abstract = True
     missing_image = "instrument.jpg"
@@ -336,6 +333,9 @@ class Instrument(BaseModel):
     name = models.CharField(max_length=50)
     # Instruments have mbids too
     mbid = models.UUIDField(blank=True, null=True)
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
 
     # Some instruments exist because they have relationships, but we
     # don't want to show them
@@ -368,7 +368,7 @@ class InstrumentPerformance(models.Model):
         person += u" on %s" % self.recording
         return person
 
-class Composer(BaseModel):
+class Composer(BaseModel, ImageMixin):
     missing_image = "artist.jpg"
 
     class Meta:
@@ -382,6 +382,9 @@ class Composer(BaseModel):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True, null=True)
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
+
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
 
     def __unicode__(self):
         return self.name

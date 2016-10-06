@@ -28,22 +28,23 @@ class Command(BaseCommand):
 
     def make_small(self, item):
         print item
-        size = 150, 150
-        for img in item.images.all():
-            print "  ", img
-            big = img.image
-            fname = os.path.basename(big.name)
-            smallfname = "small_%s" % fname
-            try:
-                pilimage = Image.open(big.path)
-                out = cStringIO.StringIO()
-                pilimage.thumbnail(size)
-                pilimage.save(out, "JPEG")
+        img = item.image
+        print "  ", img
 
-                img.small_image.save(smallfname, ContentFile(out.getvalue()))
-                img.save()
-            except IOError:
-                pass
+        size = 150, 150
+        big = img.image
+        fname = os.path.basename(big.name)
+        smallfname = "small_%s" % fname
+        try:
+            pilimage = Image.open(big.path)
+            out = cStringIO.StringIO()
+            pilimage.thumbnail(size)
+            pilimage.save(out, "JPEG")
+
+            img.small_image.save(smallfname, ContentFile(out.getvalue()))
+            img.save()
+        except IOError:
+            pass
 
     def handle(self, *args, **options):
         instruments = models.Instrument.objects.all()

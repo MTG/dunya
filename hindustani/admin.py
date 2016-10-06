@@ -49,10 +49,6 @@ class RecordingTaalInline(admin.TabularInline):
     model = models.RecordingTaal
     extra = 1
 
-class RecordingSectionInline(admin.TabularInline):
-    model = models.RecordingSection
-    extra = 1
-
 class RecordingFormInline(admin.TabularInline):
     model = models.RecordingForm
     extra = 1
@@ -66,12 +62,12 @@ class ComposerAdmin(admin.ModelAdmin):
     exclude = ('images', 'description')
 
 class RecordingAdmin(admin.ModelAdmin):
-    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, RecordingSectionInline, WorkTimeInline, RecordingPerformanceInline)
-    exclude = ('images', 'description')
+    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, WorkTimeInline, RecordingPerformanceInline)
+    exclude = ('images', )
 
 class ReleaseAdmin(admin.ModelAdmin):
     inlines = (ReleaseRecordingInline, )
-    exclude = ('images', 'description')
+    exclude = ('images', )
 
 class RaagAliasInline(admin.TabularInline):
     model = models.RaagAlias
@@ -79,7 +75,7 @@ class RaagAliasInline(admin.TabularInline):
 
 class RaagAdmin(admin.ModelAdmin):
     inlines = (RaagAliasInline, )
-    exclude = ('images', 'description')
+    exclude = ('images', )
 
 class TaalAliasInline(admin.TabularInline):
     model = models.TaalAlias
@@ -87,15 +83,7 @@ class TaalAliasInline(admin.TabularInline):
 
 class TaalAdmin(admin.ModelAdmin):
     inlines = (TaalAliasInline, )
-    exclude = ('images', 'description')
-
-class SectionAliasInline(admin.TabularInline):
-    model = models.SectionAlias
-    extra = 1
-
-class SectionAdmin(admin.ModelAdmin):
-    inlines = (SectionAliasInline, )
-    exclude = ('images', 'description')
+    exclude = ('images', )
 
 class LayaAliasInline(admin.TabularInline):
     model = models.LayaAlias
@@ -103,7 +91,7 @@ class LayaAliasInline(admin.TabularInline):
 
 class LayaAdmin(admin.ModelAdmin):
     inlines = (LayaAliasInline, )
-    exclude = ('images', 'description')
+    exclude = ('images', )
 
 class FormAliasInline(admin.TabularInline):
     model = models.FormAlias
@@ -117,7 +105,6 @@ admin.site.register(models.Instrument)
 admin.site.register(models.InstrumentPerformance)
 admin.site.register(models.Artist, ArtistAdmin)
 admin.site.register(models.Release, ReleaseAdmin)
-admin.site.register(models.Section, SectionAdmin)
 admin.site.register(models.Raag, RaagAdmin)
 admin.site.register(models.Taal, TaalAdmin)
 admin.site.register(models.Laya, LayaAdmin)
