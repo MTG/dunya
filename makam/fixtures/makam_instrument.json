@@ -1,962 +1,860 @@
 [
 {
+    "model": "makam.instrument",
+    "pk": 1,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Voice",
         "mbid": "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa",
-        "references": [],
-        "name_tr": "Vokal",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Voice"
-    },
-    "model": "makam.instrument",
-    "pk": 1
+        "name_tr": "Vokal"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 2,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Accordion",
         "mbid": "bdf08ac2-b9c2-4391-85e5-9a7716bdd690",
-        "references": [],
-        "name_tr": "Akordeon",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Accordion"
-    },
-    "model": "makam.instrument",
-    "pk": 2
+        "name_tr": "Akordeon"
+    }
 },
 {
-    "fields": {
-        "description": null,
-        "percussion": false,
-        "source": null,
-        "mbid": "f83c4b45-3584-401a-90bf-4ec80e7add78",
-        "references": [],
-        "name_tr": "Ba\u011flama",
-        "images": [],
-        "hidden": false,
-        "name": "Baglama"
-    },
     "model": "makam.instrument",
-    "pk": 3
-},
-{
+    "pk": 4,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Bass guitar",
         "mbid": "17f9f065-2312-4a24-8309-6f6dd63e2e33",
-        "references": [],
-        "name_tr": "Bas gitar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Bass guitar"
-    },
-    "model": "makam.instrument",
-    "pk": 4
+        "name_tr": "Bas gitar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 5,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Bells",
         "mbid": "c95c7129-d180-4218-afea-4b74ef70e2be",
-        "references": [],
-        "name_tr": "Ziller",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Bells"
-    },
-    "model": "makam.instrument",
-    "pk": 5
+        "name_tr": "Ziller"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 6,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Bendir",
         "mbid": "e9bb7775-e8a7-4daa-8c0f-6ef364f105ee",
-        "references": [],
-        "name_tr": "Bendir",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Bendir"
-    },
-    "model": "makam.instrument",
-    "pk": 6
+        "name_tr": "Bendir"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 7,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Bugle",
         "mbid": "d8afa42b-9287-41a2-82b2-2a96cb6b6fca",
-        "references": [],
-        "name_tr": "Borazan",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Bugle"
-    },
-    "model": "makam.instrument",
-    "pk": 7
+        "name_tr": "Borazan"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 8,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Cello",
         "mbid": "0db03a60-1142-4b25-ab1b-72027d0dc357",
-        "references": [],
-        "name_tr": "\u00c7ello",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Cello"
-    },
-    "model": "makam.instrument",
-    "pk": 8
+        "name_tr": "\u00c7ello"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 9,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Clarinet",
         "mbid": "08028095-6dae-4fe0-9f34-284fde19f29b",
-        "references": [],
-        "name_tr": "Klarnet",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Clarinet"
-    },
-    "model": "makam.instrument",
-    "pk": 9
+        "name_tr": "Klarnet"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 10,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Classical kemen\u00e7e",
         "mbid": "b9692581-c117-47f3-9524-3deeb69c6d3f",
-        "references": [],
-        "name_tr": "Klasik kemen\u00e7e",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Classical kemen\u00e7e"
-    },
-    "model": "makam.instrument",
-    "pk": 10
+        "name_tr": "Klasik kemen\u00e7e"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 11,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Cornamuse",
         "mbid": "28527011-9cf4-4dcd-a70c-22042a92a52c",
-        "references": [],
-        "name_tr": "Cornamuse",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Cornamuse"
-    },
-    "model": "makam.instrument",
-    "pk": 11
+        "name_tr": "Cornamuse"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 12,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Daf",
         "mbid": "182121b7-ecec-4a56-a480-563c895225f9",
-        "references": [],
-        "name_tr": "Tef",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Daf"
-    },
-    "model": "makam.instrument",
-    "pk": 12
+        "name_tr": "Tef"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 13,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Daire",
         "mbid": "a3c58697-eae3-454c-90c5-5f911a24376a",
-        "references": [],
-        "name_tr": "Daire",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Daire"
-    },
-    "model": "makam.instrument",
-    "pk": 13
+        "name_tr": "Daire"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 14,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Darbuka",
         "mbid": "c1002eda-e0b7-48e4-a181-05abddb9b872",
-        "references": [],
-        "name_tr": "Darbuka",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Darbuka"
-    },
-    "model": "makam.instrument",
-    "pk": 14
+        "name_tr": "Darbuka"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 15,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Double bass",
         "mbid": "7bd32b95-416f-4244-a98b-1311ec69c7db",
-        "references": [],
-        "name_tr": "Kontrbas",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Double bass"
-    },
-    "model": "makam.instrument",
-    "pk": 15
+        "name_tr": "Kontrbas"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 16,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Drums",
         "mbid": "3bccb7eb-cbca-42cd-b0ac-a5e959df7221",
-        "references": [],
-        "name_tr": "Davullar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Drums"
-    },
-    "model": "makam.instrument",
-    "pk": 16
+        "name_tr": "Davullar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 17,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Duduk",
         "mbid": "e5e6de9d-bde7-4340-a591-f1c55c658c2c",
-        "references": [],
-        "name_tr": "Duduk",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Duduk"
-    },
-    "model": "makam.instrument",
-    "pk": 17
+        "name_tr": "Duduk"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 18,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Guitar",
         "mbid": "63021302-86cd-4aee-80df-2270d54f4978",
-        "references": [],
-        "name_tr": "Gitar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Guitar"
-    },
-    "model": "makam.instrument",
-    "pk": 18
+        "name_tr": "Gitar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 19,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Harpsichord",
         "mbid": "bfe379dc-1d65-4862-acd8-60d53bb963a2",
-        "references": [],
-        "name_tr": "Klavsen",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Harpsichord"
-    },
-    "model": "makam.instrument",
-    "pk": 19
+        "name_tr": "Klavsen"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 20,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Kanun",
         "mbid": "896a4fc8-d9c2-4e02-9c34-9b6fb135c739",
-        "references": [],
-        "name_tr": "Kanun",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Kanun"
-    },
-    "model": "makam.instrument",
-    "pk": 20
+        "name_tr": "Kanun"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 21,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Kemenche",
         "mbid": "01ba56a2-4306-493d-8088-c7e9b671c74e",
-        "references": [],
-        "name_tr": "Kemen\u00e7e",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Kemenche"
-    },
-    "model": "makam.instrument",
-    "pk": 21
+        "name_tr": "Kemen\u00e7e"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 22,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Keyboard",
         "mbid": "95b0c3d2-9606-4ef5-a019-9b7437f3adda",
-        "references": [],
-        "name_tr": "Klavye",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Keyboard"
-    },
-    "model": "makam.instrument",
-    "pk": 22
+        "name_tr": "Klavye"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 23,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Kud\u00fcm",
         "mbid": "44715139-79f9-4093-a883-dc743d8bb466",
-        "references": [],
-        "name_tr": "Kud\u00fcm",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Kud\u00fcm"
-    },
-    "model": "makam.instrument",
-    "pk": 23
+        "name_tr": "Kud\u00fcm"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 24,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Lute",
         "mbid": "38237fcc-b833-4cd6-8dc1-e5fe2f308a2b",
-        "references": [],
-        "name_tr": "L\u00fct",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Lute"
-    },
-    "model": "makam.instrument",
-    "pk": 24
+        "name_tr": "L\u00fct"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 25,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Ney",
         "mbid": "8460bc93-953f-4a48-9106-485d5703ec6f",
-        "references": [],
-        "name_tr": "Ney",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Ney"
-    },
-    "model": "makam.instrument",
-    "pk": 25
+        "name_tr": "Ney"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 26,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Other drums",
         "mbid": "1da1ca18-9d70-4217-9e3c-9e67c93b834a",
-        "references": [],
-        "name_tr": "Di\u011fer davullar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "Other drums"
-    },
-    "model": "makam.instrument",
-    "pk": 26
+        "name_tr": "Di\u011fer davullar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 27,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Other instruments",
         "mbid": "0a06dd9a-92d6-4891-a699-2b116a3d3f37",
-        "references": [],
-        "name_tr": "Di\u011fer enstr\u00fcmanlar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "Other instruments"
-    },
-    "model": "makam.instrument",
-    "pk": 27
+        "name_tr": "Di\u011fer enstr\u00fcmanlar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 28,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Other percussion",
         "mbid": "7c33a50e-4dbe-4342-a8ba-f2be9a65d233",
-        "references": [],
-        "name_tr": "Di\u011fer perk\u00fcsyonlar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "Other percussion"
-    },
-    "model": "makam.instrument",
-    "pk": 28
+        "name_tr": "Di\u011fer perk\u00fcsyonlar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 29,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Oud",
         "mbid": "758c62c1-39c9-4fe9-8cb0-07398f3cb15a",
-        "references": [],
-        "name_tr": "Ud",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Oud"
-    },
-    "model": "makam.instrument",
-    "pk": 29
+        "name_tr": "Ud"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 30,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Pan flute",
         "mbid": "6b5b72d8-6e9c-4e31-bd21-062d10bcf661",
-        "references": [],
-        "name_tr": "Pan fl\u00fct",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Pan flute"
-    },
-    "model": "makam.instrument",
-    "pk": 30
+        "name_tr": "Pan fl\u00fct"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 31,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Percussion",
         "mbid": "8e9abdf1-0afc-4544-b201-c6fa768d01f4",
-        "references": [],
-        "name_tr": "Perk\u00fcsyon",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "Percussion"
-    },
-    "model": "makam.instrument",
-    "pk": 31
+        "name_tr": "Perk\u00fcsyon"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 32,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Piano",
         "mbid": "b3eac5f9-7859-4416-ac39-7154e2e8d348",
-        "references": [],
-        "name_tr": "Piyano",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Piano"
-    },
-    "model": "makam.instrument",
-    "pk": 32
+        "name_tr": "Piyano"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 33,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Rebab",
         "mbid": "30cb46c6-2694-4348-a7c6-3fb12666d7e5",
-        "references": [],
-        "name_tr": "Rebab",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Rebab"
-    },
-    "model": "makam.instrument",
-    "pk": 33
+        "name_tr": "Rebab"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 34,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Saz",
         "mbid": "ce9452ac-917f-4cab-ab13-75996816202b",
-        "references": [],
-        "name_tr": "Saz",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Saz"
-    },
-    "model": "makam.instrument",
-    "pk": 34
+        "name_tr": "Saz"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 35,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Strings",
         "mbid": "32eca297-dde6-45d0-9305-ae479947c2a8",
-        "references": [],
-        "name_tr": "Yayl\u0131lar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "Strings"
-    },
-    "model": "makam.instrument",
-    "pk": 35
+        "name_tr": "Yayl\u0131lar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 36,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Viola",
         "mbid": "377e007a-33fe-4825-9bef-136cf5cf581a",
-        "references": [],
-        "name_tr": "Viyola",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Viola"
-    },
-    "model": "makam.instrument",
-    "pk": 36
+        "name_tr": "Viyola"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 37,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Viola d'amore",
         "mbid": "b47bdb4e-59ee-42d3-96ef-a1f0fdd61148",
-        "references": [],
-        "name_tr": "Viyola d'amore",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Viola d'amore"
-    },
-    "model": "makam.instrument",
-    "pk": 37
+        "name_tr": "Viyola d'amore"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 38,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Viola da gamba",
         "mbid": "be34e4e5-6e77-46f5-ab56-c9641d3da213",
-        "references": [],
-        "name_tr": "Viyola de gamba",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Viola da gamba"
-    },
-    "model": "makam.instrument",
-    "pk": 38
+        "name_tr": "Viyola de gamba"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 39,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Virginal",
         "mbid": "635db582-10ba-4488-8574-0a616090b599",
-        "references": [],
-        "name_tr": "Virginal",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Virginal"
-    },
-    "model": "makam.instrument",
-    "pk": 39
+        "name_tr": "Virginal"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 40,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Yayl\u0131 tanbur",
         "mbid": "ea37234d-a59b-4823-954f-aa499970ca94",
-        "references": [],
-        "name_tr": "Yayl\u0131 tanbur",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Yayl\u0131 tanbur"
-    },
-    "model": "makam.instrument",
-    "pk": 40
+        "name_tr": "Yayl\u0131 tanbur"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 41,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Zurna",
         "mbid": "0666c718-137e-4cc6-881d-fc6430d7dea4",
-        "references": [],
-        "name_tr": "Zurna",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Zurna"
-    },
-    "model": "makam.instrument",
-    "pk": 41
+        "name_tr": "Zurna"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 48,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Violin",
         "mbid": "089f123c-0f7d-4105-a64e-49de81ca8fa4",
-        "references": [],
-        "name_tr": "Keman",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Violin"
-    },
-    "model": "makam.instrument",
-    "pk": 48
+        "name_tr": "Keman"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 50,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Tanbur",
         "mbid": "16f816ec-9ecf-4236-8006-19a4b27797f1",
-        "references": [],
-        "name_tr": "Tanbur",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Tanbur"
-    },
-    "model": "makam.instrument",
-    "pk": 50
+        "name_tr": "Tanbur"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 51,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Flute",
         "mbid": "540280f1-d6cf-46bf-968b-695e99e216d7",
-        "references": [],
-        "name_tr": "Fl\u00fct",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Flute"
-    },
-    "model": "makam.instrument",
-    "pk": 51
+        "name_tr": "Fl\u00fct"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 52,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Harp",
         "mbid": "f0a6e89d-b828-4b73-885d-8c1560e5e49a",
-        "references": [],
-        "name_tr": "Arp",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Harp"
-    },
-    "model": "makam.instrument",
-    "pk": 52
+        "name_tr": "Arp"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 53,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Davul",
         "mbid": "681639fb-9112-4b94-88b1-f78ef36465c0",
-        "references": [],
-        "name_tr": "Davul",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Davul"
-    },
-    "model": "makam.instrument",
-    "pk": 53
+        "name_tr": "Davul"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 54,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Komuz",
         "mbid": "822083c6-d93d-4b5e-8117-33bf763096e8",
-        "references": [],
-        "name_tr": "Kopuz",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Komuz"
-    },
-    "model": "makam.instrument",
-    "pk": 54
+        "name_tr": "Kopuz"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 55,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Triangle",
         "mbid": "63cfd648-2022-4390-8740-1ea86259574f",
-        "references": [],
-        "name_tr": "\u00dc\u00e7gen",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Triangle"
-    },
-    "model": "makam.instrument",
-    "pk": 55
+        "name_tr": "\u00dc\u00e7gen"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 56,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "Zill",
         "mbid": "8fb042f2-32d1-4ab2-9417-e13c6c78f960",
-        "references": [],
-        "name_tr": "Zil",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Zill"
-    },
-    "model": "makam.instrument",
-    "pk": 56
+        "name_tr": "Zil"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 57,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "santur",
         "mbid": "29480d87-363a-467b-9950-058c0fe86fe6",
-        "references": [],
-        "name_tr": "Santur",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "santur"
-    },
-    "model": "makam.instrument",
-    "pk": 57
+        "name_tr": "Santur"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 58,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "pipe organ",
         "mbid": "39d85868-3476-45cc-94d0-3d43e3135921",
-        "references": [],
-        "name_tr": "Borulu org",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "pipe organ"
-    },
-    "model": "makam.instrument",
-    "pk": 58
+        "name_tr": "Borulu org"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 59,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "End-blown Flute",
         "mbid": "3a4d70ed-7c34-4d50-b6a3-b8ce63a8c234",
-        "references": [],
-        "name_tr": "Kaval",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "End-blown Flute"
-    },
-    "model": "makam.instrument",
-    "pk": 59
+        "name_tr": "Kaval"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 60,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "tambourine",
         "mbid": "4431f7b0-69a4-49ee-b84f-15dda19fb70c",
-        "references": [],
-        "name_tr": "Tef",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "tambourine"
-    },
-    "model": "makam.instrument",
-    "pk": 60
+        "name_tr": "Tef"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 61,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "body percussion",
         "mbid": "6a0a53ab-1e66-45c4-af0d-2ec1e145b84e",
-        "references": [],
-        "name_tr": "V\u00fccut Perk\u00fcsyonu",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "body percussion"
-    },
-    "model": "makam.instrument",
-    "pk": 61
+        "name_tr": "V\u00fccut Perk\u00fcsyonu"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 62,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "timpani",
         "mbid": "7d86c75c-bccd-4c9d-a73d-4bb443e5110b",
-        "references": [],
-        "name_tr": "Timpani",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "timpani"
-    },
-    "model": "makam.instrument",
-    "pk": 62
+        "name_tr": "Timpani"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 63,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "lavta",
         "mbid": "8947e594-91fe-4143-9acd-d567963224aa",
-        "references": [],
-        "name_tr": "Lavta",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "lavta"
-    },
-    "model": "makam.instrument",
-    "pk": 63
+        "name_tr": "Lavta"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 64,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "tef",
         "mbid": "b0acbf59-ffba-4e2f-8104-31aed56fa364",
-        "references": [],
-        "name_tr": "Tef",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "tef"
-    },
-    "model": "makam.instrument",
-    "pk": 64
+        "name_tr": "Tef"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 65,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "instrument",
         "mbid": "59054b12-01ac-43ee-a618-285fd397e461",
-        "references": [],
-        "name_tr": "Enstr\u00fcman",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "instrument"
-    },
-    "model": "makam.instrument",
-    "pk": 65
+        "name_tr": "Enstr\u00fcman"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 66,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "performer",
         "mbid": "628a9658-f54c-4142-b0c0-95f031b544da",
-        "references": [],
-        "name_tr": "\u0130crac\u0131",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "performer"
-    },
-    "model": "makam.instrument",
-    "pk": 66
+        "name_tr": "\u0130crac\u0131"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 67,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "performing orchestra",
         "mbid": "3b6616c5-88ba-4341-b4ee-81ce1e6d7ebb",
-        "references": [],
-        "name_tr": "Orkestra",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": true,
-        "name": "performing orchestra"
-    },
-    "model": "makam.instrument",
-    "pk": 67
+        "name_tr": "Orkestra"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 68,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "Spanish acoustic guitar",
         "mbid": "117dacfc-0ad0-4e90-81a4-a28b4c03929b",
-        "references": [],
-        "name_tr": "Klasik gitar",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "Spanish acoustic guitar"
-    },
-    "model": "makam.instrument",
-    "pk": 68
+        "name_tr": "Klasik gitar"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 69,
     "fields": {
-        "description": null,
         "percussion": false,
-        "source": null,
+        "name": "folk harp",
         "mbid": "34c1af71-f7fc-4e34-a46a-5c29ee4c019b",
-        "references": [],
-        "name_tr": "Halk arp\u0131",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "folk harp"
-    },
-    "model": "makam.instrument",
-    "pk": 69
+        "name_tr": "Halk arp\u0131"
+    }
 },
 {
+    "model": "makam.instrument",
+    "pk": 70,
     "fields": {
-        "description": null,
         "percussion": true,
-        "source": null,
+        "name": "\u00c7evgen",
         "mbid": "6682190e-1ead-40cf-903f-76cbe351c019",
-        "references": [],
-        "name_tr": "\u00c7evgen",
-        "images": [],
+        "image": null,
+        "description": null,
         "hidden": false,
-        "name": "\u00c7evgen"
-    },
-    "model": "makam.instrument",
-    "pk": 70
+        "name_tr": "\u00c7evgen"
+    }
 },
 {
-    "fields": {
-        "description": null,
-        "percussion": true,
-        "source": null,
-        "mbid": "f711b03f-86c6-4e67-86eb-c6716ddbe1c1",
-        "references": [],
-        "name_tr": "K\u00f6s",
-        "images": [],
-        "hidden": false,
-        "name": "K\u00f6s"
-    },
     "model": "makam.instrument",
-    "pk": 71
+    "pk": 71,
+    "fields": {
+        "percussion": true,
+        "name": "K\u00f6s",
+        "mbid": "f711b03f-86c6-4e67-86eb-c6716ddbe1c1",
+        "image": null,
+        "description": null,
+        "hidden": false,
+        "name_tr": "K\u00f6s"
+    }
+},
+{
+    "model": "makam.instrument",
+    "pk": 73,
+    "fields": {
+        "percussion": false,
+        "name": "Kaval",
+        "mbid": "c607a011-06ab-4539-a3a7-de1740403b3d",
+        "image": null,
+        "description": null,
+        "hidden": false,
+        "name_tr": ""
+    }
+},
+{
+    "model": "makam.instrument",
+    "pk": 76,
+    "fields": {
+        "percussion": false,
+        "name": "Ba\u011flama",
+        "mbid": "40604876-3ee7-4bcd-b42d-4da247abb376",
+        "image": null,
+        "description": null,
+        "hidden": false,
+        "name_tr": ""
+    }
+},
+{
+    "model": "makam.instrument",
+    "pk": 77,
+    "fields": {
+        "percussion": false,
+        "name": "Cretan Lyra",
+        "mbid": "d33dc662-74db-49e9-b8b6-be4ab4b22d36",
+        "image": null,
+        "description": null,
+        "hidden": false,
+        "name_tr": ""
+    }
 }
 ]

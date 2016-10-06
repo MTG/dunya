@@ -1,752 +1,788 @@
 [
 {
-    "pk": 1, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 1,
     "fields": {
-        "uuid": "c788c38a-b53a-48cb-b7bf-d11769260c4d", 
-        "images": [
-            4298
-        ], 
-        "name": "\u0100di", 
-        "source": null, 
-        "num_aksharas": 32, 
-        "references": [], 
-        "common_name": "adi", 
-        "description": null
+        "name": "\u0100di",
+        "common_name": "adi",
+        "num_aksharas": 32,
+        "uuid": "c788c38a-b53a-48cb-b7bf-d11769260c4d",
+        "image": 4298
     }
 },
 {
-    "pk": 2, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 2,
     "fields": {
-        "uuid": "8c6c26db-e01a-4eef-ae0b-9f7e31a926e8", 
-        "images": [
-            4299
-        ], 
-        "name": "R\u016bpaka", 
-        "source": null, 
-        "num_aksharas": 12, 
-        "references": [], 
-        "common_name": "rupaka", 
-        "description": null
+        "name": "R\u016bpaka",
+        "common_name": "rupaka",
+        "num_aksharas": 12,
+        "uuid": "8c6c26db-e01a-4eef-ae0b-9f7e31a926e8",
+        "image": 4299
     }
 },
 {
-    "pk": 3, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 3,
     "fields": {
-        "uuid": "7eb02ed9-2dcb-471f-9a8a-a09aa5cea633", 
-        "images": [
-            4300
-        ], 
-        "name": "Mi\u015bra ch\u0101pu", 
-        "source": null, 
-        "num_aksharas": 14, 
-        "references": [], 
-        "common_name": "mishra chapu", 
-        "description": null
+        "name": "Mi\u015bra ch\u0101pu",
+        "common_name": "mishra chapu",
+        "num_aksharas": 14,
+        "uuid": "7eb02ed9-2dcb-471f-9a8a-a09aa5cea633",
+        "image": 4300
     }
 },
 {
-    "pk": 4, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 4,
     "fields": {
-        "uuid": "e22c4e94-47f5-4190-88a3-d1f31ef3a84f", 
-        "images": [
-            4301
-        ], 
-        "name": "Kha\u1e47\u1e0da ch\u0101pu", 
-        "source": null, 
-        "num_aksharas": 10, 
-        "references": [], 
-        "common_name": "khanda chapu", 
-        "description": null
+        "name": "Kha\u1e47\u1e0da ch\u0101pu",
+        "common_name": "khanda chapu",
+        "num_aksharas": 10,
+        "uuid": "e22c4e94-47f5-4190-88a3-d1f31ef3a84f",
+        "image": 4301
     }
 },
 {
-    "pk": 5, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 5,
     "fields": {
-        "uuid": "e16a12c9-c383-4824-b5e0-1799d71799a6", 
-        "images": [
-            4302
-        ], 
-        "name": "\u0112ka", 
-        "source": null, 
-        "num_aksharas": 16, 
-        "references": [], 
-        "common_name": "eka", 
-        "description": null
+        "name": "\u0112ka",
+        "common_name": "eka",
+        "num_aksharas": 16,
+        "uuid": "e16a12c9-c383-4824-b5e0-1799d71799a6",
+        "image": 4302
     }
 },
 {
-    "pk": 6, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 6,
     "fields": {
-        "uuid": "d498f683-5a26-414f-8f00-2319a1fcdae3", 
-        "images": [], 
-        "name": "Ti\u015bra-j\u0101ti \u0113ka", 
-        "source": null, 
-        "num_aksharas": 12, 
-        "references": [], 
-        "common_name": "tishra eka", 
-        "description": null
+        "name": "Ti\u015bra-j\u0101ti \u0113ka",
+        "common_name": "tishra eka",
+        "num_aksharas": 12,
+        "uuid": "d498f683-5a26-414f-8f00-2319a1fcdae3",
+        "image": null
     }
 },
 {
-    "pk": 7, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 7,
     "fields": {
-        "uuid": "5b14bb0e-ecde-448a-90ca-db77650adec4", 
-        "images": [
-            4303
-        ], 
-        "name": "Dhr\u0325va", 
-        "source": null, 
-        "num_aksharas": 56, 
-        "references": [], 
-        "common_name": "dhruva", 
-        "description": null
+        "name": "Dhr\u0325va",
+        "common_name": "dhruva",
+        "num_aksharas": 56,
+        "uuid": "5b14bb0e-ecde-448a-90ca-db77650adec4",
+        "image": 4303
     }
 },
 {
-    "pk": 8, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 8,
     "fields": {
-        "uuid": "d25505fb-6ae1-4194-b04c-e03bf7b3c30b", 
-        "images": [
-            4304
-        ], 
-        "name": "Ma\u1e6dhya", 
-        "source": null, 
-        "num_aksharas": 40, 
-        "references": [], 
-        "common_name": "matya", 
-        "description": null
+        "name": "Ma\u1e6dhya",
+        "common_name": "matya",
+        "num_aksharas": 40,
+        "uuid": "d25505fb-6ae1-4194-b04c-e03bf7b3c30b",
+        "image": 4304
     }
 },
 {
-    "pk": 9, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 9,
     "fields": {
-        "uuid": "776e5549-0457-46e6-806b-358066e9db1c", 
-        "images": [
-            4305
-        ], 
-        "name": "Mi\u015bra-j\u0101ti jha\u1e41pe", 
-        "source": null, 
-        "num_aksharas": 40, 
-        "references": [], 
-        "common_name": "mishra jhampe", 
-        "description": null
+        "name": "Mi\u015bra-j\u0101ti jha\u1e41pe",
+        "common_name": "mishra jhampe",
+        "num_aksharas": 40,
+        "uuid": "776e5549-0457-46e6-806b-358066e9db1c",
+        "image": 4305
     }
 },
 {
-    "pk": 10, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 10,
     "fields": {
-        "uuid": "6e790441-bc9b-4bd4-850a-eee3927324b4", 
-        "images": [
-            4306
-        ], 
-        "name": "Ti\u015bra-j\u0101ti tripu\u1e6da ", 
-        "source": null, 
-        "num_aksharas": 28, 
-        "references": [], 
-        "common_name": "tishra triputa", 
-        "description": null
+        "name": "Ti\u015bra-j\u0101ti tripu\u1e6da ",
+        "common_name": "tishra triputa",
+        "num_aksharas": 28,
+        "uuid": "6e790441-bc9b-4bd4-850a-eee3927324b4",
+        "image": 4306
     }
 },
 {
-    "pk": 11, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 11,
     "fields": {
-        "uuid": "8cbfe57d-06ad-4409-bd8f-18c37595bf8a", 
-        "images": [
-            4307
-        ], 
-        "name": "A\u1e6d\u1e6da", 
-        "source": null, 
-        "num_aksharas": 56, 
-        "references": [], 
-        "common_name": "atta", 
-        "description": null
+        "name": "A\u1e6d\u1e6da",
+        "common_name": "atta",
+        "num_aksharas": 56,
+        "uuid": "8cbfe57d-06ad-4409-bd8f-18c37595bf8a",
+        "image": 4307
     }
 },
 {
-    "pk": 13, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 13,
     "fields": {
-        "uuid": "445602bb-c654-40db-b5f6-0e525dedd0bc", 
-        "images": [
-            4308
-        ], 
-        "name": "Catura\u015bra-j\u0101ti jha\u1e41pe", 
-        "source": null, 
-        "num_aksharas": 28, 
-        "references": [], 
-        "common_name": "chaturashra-jaati jhampe", 
-        "description": null
+        "name": "Catura\u015bra-j\u0101ti jha\u1e41pe",
+        "common_name": "chaturashra-jaati jhampe",
+        "num_aksharas": 28,
+        "uuid": "445602bb-c654-40db-b5f6-0e525dedd0bc",
+        "image": 4308
     }
 },
 {
-    "pk": 14, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 14,
     "fields": {
-        "uuid": "d162ee46-ce69-4c0a-8975-2d4fd82f991d", 
-        "images": [
-            4309
-        ], 
-        "name": "D\u0113\u015b\u0101di", 
-        "source": null, 
-        "num_aksharas": 16, 
-        "references": [], 
-        "common_name": "deshaadi", 
-        "description": null
+        "name": "D\u0113\u015b\u0101di",
+        "common_name": "deshaadi",
+        "num_aksharas": 16,
+        "uuid": "d162ee46-ce69-4c0a-8975-2d4fd82f991d",
+        "image": 4309
     }
 },
 {
-    "pk": 15, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 15,
     "fields": {
-        "uuid": "b4653eac-74e2-4a15-9e92-824862138686", 
-        "images": [
-            4310
-        ], 
-        "name": "Kha\u1e47\u1e0da-j\u0101ti tripu\u1e6da ", 
-        "source": null, 
-        "num_aksharas": 36, 
-        "references": [], 
-        "common_name": "khanda-jaati triputa", 
-        "description": null
+        "name": "Kha\u1e47\u1e0da-j\u0101ti tripu\u1e6da ",
+        "common_name": "khanda-jaati triputa",
+        "num_aksharas": 36,
+        "uuid": "b4653eac-74e2-4a15-9e92-824862138686",
+        "image": 4310
     }
 },
 {
-    "pk": 16, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 16,
     "fields": {
-        "uuid": "d9b897ca-ce43-4b6c-823f-c0110bcaffc2", 
-        "images": [
-            4311
-        ], 
-        "name": "Kha\u1e47\u1e0da-j\u0101ti \u0113ka", 
-        "source": null, 
-        "num_aksharas": 20, 
-        "references": [], 
-        "common_name": "khanda-jaati eka", 
-        "description": null
+        "name": "Kha\u1e47\u1e0da-j\u0101ti \u0113ka",
+        "common_name": "khanda-jaati eka",
+        "num_aksharas": 20,
+        "uuid": "d9b897ca-ce43-4b6c-823f-c0110bcaffc2",
+        "image": 4311
     }
 },
 {
-    "pk": 17, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 17,
     "fields": {
-        "uuid": "f0e02b48-d38b-49e9-a23c-6c9a0e310e4f", 
-        "images": [
-            4312
-        ], 
-        "name": "Madhy\u0101di ", 
-        "source": null, 
-        "num_aksharas": 16, 
-        "references": [], 
-        "common_name": "madhyaadi", 
-        "description": null
+        "name": "Madhy\u0101di ",
+        "common_name": "madhyaadi",
+        "num_aksharas": 16,
+        "uuid": "f0e02b48-d38b-49e9-a23c-6c9a0e310e4f",
+        "image": 4312
     }
 },
 {
-    "pk": 18, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 18,
     "fields": {
-        "uuid": "6471d972-00c7-4eb0-b595-58c477d597f9", 
-        "images": [
-            4313
-        ], 
-        "name": "Mah\u0101lak\u1e63mi ", 
-        "source": null, 
-        "num_aksharas": 76, 
-        "references": [], 
-        "common_name": "mahaalakshmi", 
-        "description": null
+        "name": "Mah\u0101lak\u1e63mi ",
+        "common_name": "mahaalakshmi",
+        "num_aksharas": 76,
+        "uuid": "6471d972-00c7-4eb0-b595-58c477d597f9",
+        "image": 4313
     }
 },
 {
-    "pk": 19, 
-    "model": "carnatic.taala", 
+    "model": "carnatic.taala",
+    "pk": 19,
     "fields": {
-        "uuid": "1bda75bc-ef9d-40fe-80c2-8530d07ee99e", 
-        "images": [
-            4314
-        ], 
-        "name": "Mi\u015bra-j\u0101ti r\u016bpaka", 
-        "source": null, 
-        "num_aksharas": 36, 
-        "references": [], 
-        "common_name": "mishra-jaati rupaka", 
-        "description": null
+        "name": "Mi\u015bra-j\u0101ti r\u016bpaka",
+        "common_name": "mishra-jaati rupaka",
+        "num_aksharas": 36,
+        "uuid": "1bda75bc-ef9d-40fe-80c2-8530d07ee99e",
+        "image": 4314
     }
 },
 {
-    "pk": 1, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taala",
+    "pk": 20,
     "fields": {
-        "name": "khanda ekam", 
+        "name": "Kha\u1e47\u1e0da-j\u0101ti jha\u1e41pe",
+        "common_name": "Khanda Jhampa",
+        "num_aksharas": null,
+        "uuid": "a4486491-332d-4aee-b4d4-471080701edd",
+        "image": null
+    }
+},
+{
+    "model": "carnatic.taala",
+    "pk": 21,
+    "fields": {
+        "name": "Catura\u015bra-j\u0101ti A\u1e6d\u1e6da",
+        "common_name": "Chaturasa Atta",
+        "num_aksharas": null,
+        "uuid": "4fb0442b-a96e-42ef-8048-e995f362054a",
+        "image": null
+    }
+},
+{
+    "model": "carnatic.taala",
+    "pk": 22,
+    "fields": {
+        "name": "Mi\u015bra-j\u0101ti tripu\u1e6da",
+        "common_name": "Mishra Triputa",
+        "num_aksharas": null,
+        "uuid": "b2f419b5-c7d3-4f9a-b9ef-54298131216c",
+        "image": null
+    }
+},
+{
+    "model": "carnatic.taala",
+    "pk": 24,
+    "fields": {
+        "name": "Chanda",
+        "common_name": "Chanda",
+        "num_aksharas": null,
+        "uuid": "a803a41d-ac38-4b78-9fc3-e55f6d6238cc",
+        "image": null
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 1,
+    "fields": {
+        "name": "khanda ekam",
         "taala": 16
     }
 },
 {
-    "pk": 2, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 2,
     "fields": {
-        "name": "adi tisra", 
+        "name": "adi tisra",
         "taala": 1
     }
 },
 {
-    "pk": 3, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 3,
     "fields": {
-        "name": "aadi", 
+        "name": "aadi",
         "taala": 1
     }
 },
 {
-    "pk": 4, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 4,
     "fields": {
-        "name": "adi khanda", 
+        "name": "adi khanda",
         "taala": 1
     }
 },
 {
-    "pk": 5, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 5,
     "fields": {
-        "name": "adi chatusra", 
+        "name": "adi chatusra",
         "taala": 1
     }
 },
 {
-    "pk": 6, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 6,
     "fields": {
-        "name": "adi chaturasra", 
+        "name": "adi chaturasra",
         "taala": 1
     }
 },
 {
-    "pk": 7, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 7,
     "fields": {
-        "name": "adi chaturashra", 
+        "name": "adi chaturashra",
         "taala": 1
     }
 },
 {
-    "pk": 8, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 8,
     "fields": {
-        "name": "chaturasra rupakam", 
+        "name": "chaturasra rupakam",
         "taala": 2
     }
 },
 {
-    "pk": 9, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 9,
     "fields": {
-        "name": "chatusra rupakam", 
+        "name": "chatusra rupakam",
         "taala": 2
     }
 },
 {
-    "pk": 10, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 10,
     "fields": {
-        "name": "chatusra rupakam khanda gathi", 
+        "name": "chatusra rupakam khanda gathi",
         "taala": 2
     }
 },
 {
-    "pk": 11, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 11,
     "fields": {
-        "name": "chapu", 
+        "name": "chapu",
         "taala": 3
     }
 },
 {
-    "pk": 12, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 12,
     "fields": {
-        "name": "misra laghu", 
+        "name": "misra laghu",
         "taala": 3
     }
 },
 {
-    "pk": 13, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 13,
     "fields": {
-        "name": "misram", 
+        "name": "misram",
         "taala": 3
     }
 },
 {
-    "pk": 14, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 14,
     "fields": {
-        "name": "chaturashra eka", 
+        "name": "chaturashra eka",
         "taala": 5
     }
 },
 {
-    "pk": 15, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 15,
     "fields": {
-        "name": "ekam", 
+        "name": "ekam",
         "taala": 5
     }
 },
 {
-    "pk": 16, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 16,
     "fields": {
-        "name": "jampe", 
+        "name": "jampe",
         "taala": 9
     }
 },
 {
-    "pk": 17, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 17,
     "fields": {
-        "name": "jhampa", 
+        "name": "jhampa",
         "taala": 9
     }
 },
 {
-    "pk": 18, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 18,
     "fields": {
-        "name": "jhaptal", 
+        "name": "jhaptal",
         "taala": 9
     }
 },
 {
-    "pk": 19, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 19,
     "fields": {
-        "name": "jampa", 
+        "name": "jampa",
         "taala": 9
     }
 },
 {
-    "pk": 20, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 20,
     "fields": {
-        "name": "tisra triputa tisra gathi", 
+        "name": "tisra triputa tisra gathi",
         "taala": 10
     }
 },
 {
-    "pk": 21, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 21,
     "fields": {
-        "name": "tisra triputa", 
+        "name": "tisra triputa",
         "taala": 10
     }
 },
 {
-    "pk": 22, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 22,
     "fields": {
-        "name": "triputa", 
+        "name": "triputa",
         "taala": 10
     }
 },
 {
-    "pk": 23, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 23,
     "fields": {
-        "name": "ata", 
+        "name": "ata",
         "taala": 11
     }
 },
 {
-    "pk": 24, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 24,
     "fields": {
-        "name": "khanda ata", 
+        "name": "khanda ata",
         "taala": 11
     }
 },
 {
-    "pk": 25, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 25,
     "fields": {
-        "name": "khanda jati ata", 
+        "name": "khanda jati ata",
         "taala": 11
     }
 },
 {
-    "pk": 26, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 26,
     "fields": {
-        "name": "khanda atta", 
+        "name": "khanda atta",
         "taala": 11
     }
 },
 {
-    "pk": 31, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 31,
     "fields": {
-        "name": "chatusra jhampa", 
+        "name": "chatusra jhampa",
         "taala": 13
     }
 },
 {
-    "pk": 32, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 32,
     "fields": {
-        "name": "chatusra jati jhampe", 
+        "name": "chatusra jati jhampe",
         "taala": 13
     }
 },
 {
-    "pk": 33, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 33,
     "fields": {
-        "name": "desadi", 
+        "name": "desadi",
         "taala": 14
     }
 },
 {
-    "pk": 34, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 34,
     "fields": {
-        "name": "khanda triputa", 
+        "name": "khanda triputa",
         "taala": 15
     }
 },
 {
-    "pk": 35, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 35,
     "fields": {
-        "name": "kanda triputa", 
+        "name": "kanda triputa",
         "taala": 15
     }
 },
 {
-    "pk": 37, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 37,
     "fields": {
-        "name": "madhyad", 
+        "name": "madhyad",
         "taala": 17
     }
 },
 {
-    "pk": 38, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 38,
     "fields": {
-        "name": "misra rupakam", 
+        "name": "misra rupakam",
         "taala": 19
     }
 },
 {
-    "pk": 39, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 39,
     "fields": {
-        "name": "chatusrarupakam", 
+        "name": "chatusrarupakam",
         "taala": 2
     }
 },
 {
-    "pk": 40, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 40,
     "fields": {
-        "name": "adi (tishra nade)", 
+        "name": "adi (tishra nade)",
         "taala": 1
     }
 },
 {
-    "pk": 41, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 41,
     "fields": {
-        "name": "adi (tisram)", 
+        "name": "adi (tisram)",
         "taala": 1
     }
 },
 {
-    "pk": 42, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 42,
     "fields": {
-        "name": "tisra gati adi", 
+        "name": "tisra gati adi",
         "taala": 1
     }
 },
 {
-    "pk": 43, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 43,
     "fields": {
-        "name": "tisra nadai", 
+        "name": "tisra nadai",
         "taala": 1
     }
 },
 {
-    "pk": 44, 
-    "model": "carnatic.taalaalias", 
+    "model": "carnatic.taalaalias",
+    "pk": 44,
     "fields": {
-        "name": "rupakam", 
+        "name": "rupakam",
         "taala": 2
     }
 },
 {
-    "pk": 4298, 
-    "model": "data.image", 
+    "model": "carnatic.taalaalias",
+    "pk": 45,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-adi.png", 
+        "name": "adi tisra nade",
+        "taala": 1
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 46,
+    "fields": {
+        "name": "\u0100di (Ti\u015bra na\u1e0de)",
+        "taala": 1
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 47,
+    "fields": {
+        "name": "misra chapu",
+        "taala": 3
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 48,
+    "fields": {
+        "name": "khanda jaati jampa",
+        "taala": 20
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 49,
+    "fields": {
+        "name": "khanda jampa",
+        "taala": 20
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 50,
+    "fields": {
+        "name": "khanda jathi jhampa",
+        "taala": 20
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 51,
+    "fields": {
+        "name": "khanda jathi jampa",
+        "taala": 20
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 53,
+    "fields": {
+        "name": "kanta jampa",
+        "taala": 20
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 54,
+    "fields": {
+        "name": "khanda jaathi jampa",
+        "taala": 20
+    }
+},
+{
+    "model": "carnatic.taalaalias",
+    "pk": 55,
+    "fields": {
+        "name": "khanda jaathi jhampa",
+        "taala": 20
+    }
+},
+{
+    "model": "data.image",
+    "pk": 4298,
+    "fields": {
+        "source": null,
+        "image": "images/carnatic-taala-adi.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4299, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4299,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-rupaka.png", 
+        "source": null,
+        "image": "images/carnatic-taala-rupaka.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4300, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4300,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-mishra_chapu.png", 
+        "source": null,
+        "image": "images/carnatic-taala-mishra_chapu.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4301, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4301,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-khanda_chapu.png", 
+        "source": null,
+        "image": "images/carnatic-taala-khanda_chapu.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4302, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4302,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-eka.png", 
+        "source": null,
+        "image": "images/carnatic-taala-eka.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4303, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4303,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-dhruva.png", 
+        "source": null,
+        "image": "images/carnatic-taala-dhruva.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4304, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4304,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-matya.png", 
+        "source": null,
+        "image": "images/carnatic-taala-matya.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4305, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4305,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-mishra_jhampe.png", 
+        "source": null,
+        "image": "images/carnatic-taala-mishra_jhampe.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4306, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4306,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-tishra_triputa.png", 
+        "source": null,
+        "image": "images/carnatic-taala-tishra_triputa.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4307, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4307,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-atta.png", 
+        "source": null,
+        "image": "images/carnatic-taala-atta.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4308, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4308,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-chaturashra-jaati_jhampe.png", 
+        "source": null,
+        "image": "images/carnatic-taala-chaturashra-jaati_jhampe.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4309, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4309,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-deshaadi.png", 
+        "source": null,
+        "image": "images/carnatic-taala-deshaadi.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4310, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4310,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-khanda-jaati_triputa.png", 
+        "source": null,
+        "image": "images/carnatic-taala-khanda-jaati_triputa.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4311, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4311,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-khanda-jaati_eka.png", 
+        "source": null,
+        "image": "images/carnatic-taala-khanda-jaati_eka.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4312, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4312,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-madhyaadi.png", 
+        "source": null,
+        "image": "images/carnatic-taala-madhyaadi.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4313, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4313,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-mahaalakshmi.png", 
+        "source": null,
+        "image": "images/carnatic-taala-mahaalakshmi.png",
         "small_image": ""
     }
 },
 {
-    "pk": 4314, 
-    "model": "data.image", 
+    "model": "data.image",
+    "pk": 4314,
     "fields": {
-        "source": null, 
-        "image": "images/carnatic-taala-mishra-jaati_rupaka.png", 
+        "source": null,
+        "image": "images/carnatic-taala-mishra-jaati_rupaka.png",
         "small_image": ""
     }
 }

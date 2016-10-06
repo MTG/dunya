@@ -1,65 +1,53 @@
 [
 {
-    "pk": 1, 
-    "model": "hindustani.laya", 
+    "model": "hindustani.laya",
+    "pk": 2,
     "fields": {
-        "uuid": "b555d8f2-994a-4c37-9954-9c6766a599e9", 
-        "images": [], 
-        "name": "Dhr\u0325t", 
-        "source": null, 
-        "references": [], 
-        "common_name": "Dhrut", 
-        "description": null
+        "name": "Madhya",
+        "common_name": "Madhya",
+        "uuid": "c1673b5e-09d8-412f-9256-6c7271e968fa"
     }
 },
 {
-    "pk": 2, 
-    "model": "hindustani.laya", 
+    "model": "hindustani.laya",
+    "pk": 3,
     "fields": {
-        "uuid": "c1673b5e-09d8-412f-9256-6c7271e968fa", 
-        "images": [], 
-        "name": "Madhya", 
-        "source": null, 
-        "references": [], 
-        "common_name": "Madhya", 
-        "description": null
+        "name": "Vila\u1e41bit",
+        "common_name": "Vilambit",
+        "uuid": "ee58d24a-60aa-4b16-bfcf-edd105118738"
     }
 },
 {
-    "pk": 3, 
-    "model": "hindustani.laya", 
+    "model": "hindustani.laya",
+    "pk": 4,
     "fields": {
-        "uuid": "ee58d24a-60aa-4b16-bfcf-edd105118738", 
-        "images": [], 
-        "name": "Vila\u1e41bit", 
-        "source": null, 
-        "references": [], 
-        "common_name": "Vilambit", 
-        "description": null
+        "name": "Dr\u0325t",
+        "common_name": "drut",
+        "uuid": "720a9ec2-cef6-4f9d-ace1-04f20760c3f2"
     }
 },
 {
-    "pk": 8, 
-    "model": "hindustani.layaalias", 
+    "model": "hindustani.layaalias",
+    "pk": 9,
     "fields": {
-        "name": "drut", 
-        "laya": 1
-    }
-},
-{
-    "pk": 9, 
-    "model": "hindustani.layaalias", 
-    "fields": {
-        "name": "madhyalaya", 
+        "name": "madhyalaya",
         "laya": 2
     }
 },
 {
-    "pk": 10, 
-    "model": "hindustani.layaalias", 
+    "model": "hindustani.layaalias",
+    "pk": 10,
     "fields": {
-        "name": "madya", 
+        "name": "madya",
         "laya": 2
+    }
+},
+{
+    "model": "hindustani.layaalias",
+    "pk": 11,
+    "fields": {
+        "name": "dhrut",
+        "laya": 4
     }
 }
 ]
