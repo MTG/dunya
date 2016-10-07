@@ -414,7 +414,7 @@ def recording(request, uuid, title=None):
                 if option[0] not in ('tomatodunya', 'makamaudioimages'):
                     content = docserver.util.docserver_get_json(mbid, option[0],
                         option[1], option[2], version=option[3])
-                    if content.keys() or len(urls[u] != curr_option) :
+                    if len(urls[u] != curr_option) or len(content.keys()):
                         success_content = docserver.util.docserver_get_url(mbid,
                             option[0], option[1], option[2], version=option[3])
                         ret[u] = success_content
@@ -470,7 +470,7 @@ def download_derived_files(request, uuid, title=None):
                     break
                 content = docserver.util.docserver_get_json(mbid, option[0], option[1],
                         option[2], version=option[3])
-                if content and len(content.keys()) and \
+                if content and (type(content) is list or len(content.keys())) and \
                         ('pitch' in content or content[content.keys()[0]]):
                     filenames.append((docserver.util.docserver_get_filename(mbid, option[0],
                         option[1], option[2], version=option[3]), '%s-%s-%d-%d' %
