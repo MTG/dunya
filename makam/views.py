@@ -470,8 +470,9 @@ def download_derived_files(request, uuid, title=None):
                     break
                 content = docserver.util.docserver_get_json(mbid, option[0], option[1],
                         option[2], version=option[3])
-                if content and (type(content) is list or len(content.keys())) and \
-                        ('pitch' in content or content[content.keys()[0]]):
+                if content and (type(content) is list or
+                        (len(content.keys()) and
+                            ('pitch' in content or content[content.keys()[0]]))):
                     filenames.append((docserver.util.docserver_get_filename(mbid, option[0],
                         option[1], option[2], version=option[3]), '%s-%s-%d-%d' %
                         (option[0], option[1], 1, int(float(option[3])*10))))
