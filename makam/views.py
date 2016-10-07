@@ -332,13 +332,13 @@ def lyric_alignment(request, uuid, title=None):
 def recordings_urls(include_img_and_bin=True):
     ret = {
             "notesalignurl": [("jointanalysis", "notes", 1, "0.1")],
-            "pitchtrack": [("jointanalysis", "pitch", 1, "0.1")],
-            "audiopitchtrack": [('audioanalysis', 'pitch', 1, '0.1')],
-            "pitchclass": [('jointanalysis', 'pitch_class_distribution', 1, '0.1')],
-            "audiopitchclass": [('audiotanalysis', 'pitch_class_distribution', 1, '0.1')],
+            "pitchtrack": [("jointanalysis", "pitch", 1, "0.1"),
+                ('audioanalysis', 'pitch', 1, '0.1')],
+            "pitchclass": [('jointanalysis', 'pitch_class_distribution', 1, '0.1'),
+                ('audiotanalysis', 'pitch_class_distribution', 1, '0.1')],
             "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
-            "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1")],
-            "audiohistogramurl": [("audioanalysis", "pitch_distribution", 1, "0.1")],
+            "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1"),
+                ("audioanalysis", "pitch_distribution", 1, "0.1")],
             "notemodelsurl": [("jointanalysis", "note_models", 1, "0.1"),
                 ("audioanalysis", "note_models", 1, "0.1")],
             "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
@@ -407,12 +407,23 @@ def recording(request, uuid, title=None):
 
     urls = recordings_urls()
     for u in urls.keys():
+        curr_option = 0
         for option in urls[u]:
             try:
-                success_content = docserver.util.docserver_get_url(mbid, option[0], option[1],
-                        option[2], version=option[3])
-                ret[u] = success_content
-                break
+                curr_option += 1
+                if option[0] not in ('tomatodunya', 'makamaudioimages'):
+                    content = docserver.util.docserver_get_json(mbid, option[0],
+                        option[1], option[2], version=option[3])
+                    if content.keys() or len(urls[u] != curr_option) :
+                        success_content = docserver.util.docserver_get_url(mbid,
+                            option[0], option[1], option[2], version=option[3])
+                        ret[u] = success_content
+                        break
+                else:
+                    success_content = docserver.util.docserver_get_url(mbid,
+                            option[0], option[1], option[2], version=option[3])
+                    ret[u] = success_content
+
             except docserver.util.NoFileException:
                 ret[u] = None
 
@@ -434,13 +445,17 @@ def download_derived_files(request, uuid, title=None):
 
             if len(files) == 1:
                 for n in range(files[0].numparts):
-                    filenames.append(docserver.util.docserver_get_filename(w.mbid,
-                        'score', 'score', n+1, '0.2'))
+                    filenames.append((docserver.util.docserver_get_filename(w.mbid,
+                        'score', 'score', n+1, '0.2'), '%s-%s-%d-%d' %
+                        ('score', 'score', n+1, 2)))
             score = document[0].sourcefiles.filter(file_type__extension='xml')
             if len(score) == 1:
-                filenames.append(score[0].fullpath)
+                filenames.append((score[0].fullpath, '%s-%s-%d-%d' %
+                        ('score', 'score', 1, 2)))
         try:
-            filenames.append(docserver.util.docserver_get_filename(w.mbid, 'scoreanalysis', 'metadata', 1, '0.1'))
+            filenames.append((docserver.util.docserver_get_filename(w.mbid,
+                'scoreanalysis', 'metadata', 1, '0.1'), '%s-%s-%d-%d' %
+                ('scoreanalysis', 'metadata', 1, 1)))
         except docserver.util.NoFileException:
             pass
 
@@ -448,19 +463,18 @@ def download_derived_files(request, uuid, title=None):
     for u in keys:
         for option in urls[u]:
             try:
-                #hack to check the output of pitch distribution of jointanalysis
-                ignore = False
-                if u in ['histogramurl', 'pitchclass', 'pitchtrack']:
-                    ignore = True
-                    content = docserver.util.docserver_get_json(mbid, option[0],
-                            option[1], option[2], version=option[3])
-                    if content and len(content.keys()) and \
-                            ('pitch' in content or content[content.keys()[0]]):
-                        ignore = False
-                        keys.remove('audio'+u)
-                if not ignore:
-                    filenames.append(docserver.util.docserver_get_filename(mbid, option[0], option[1],
-                        option[2], version=option[3]))
+                if option[0] in ('tomatodunya', 'makamaudioimages'):
+                    filenames.append((docserver.util.docserver_get_filename(mbid, option[0],
+                        option[1], option[2], version=option[3]), '%s-%s-%d-%d' %
+                        (option[0], option[1], 1, int(float(option[3])*10))))
+                    break
+                content = docserver.util.docserver_get_json(mbid, option[0], option[1],
+                        option[2], version=option[3])
+                if content and len(content.keys()) and \
+                        ('pitch' in content or content[content.keys()[0]]):
+                    filenames.append((docserver.util.docserver_get_filename(mbid, option[0],
+                        option[1], option[2], version=option[3]), '%s-%s-%d-%d' %
+                        (option[0], option[1], 1, int(float(option[3])*10))))
                     break
             except docserver.util.NoFileException:
                 pass
@@ -470,13 +484,13 @@ def download_derived_files(request, uuid, title=None):
 
     s = StringIO.StringIO()
     zf = zipfile.ZipFile(s, "w")
-    for fpath in filenames:
-        # Calculate path for file in zip
-        fdir, fname = os.path.split(fpath)
+    for f in filenames:
+        fpath = f[0]
+        filename, file_extension = os.path.splitext(f[0])
+        fname = f[1]
         # Replace name fonly for smallfull case
         zip_path = os.path.join(zip_subdir, fname.replace('smallfull',
-            'melodic_progression').replace('0.1','01').replace('0.3',
-                '03').replace('0.2', '02'))
+            'melodic_progression') + file_extension)
 
         # Add file, at correct path
         zf.write(fpath, zip_path)

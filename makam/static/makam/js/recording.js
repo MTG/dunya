@@ -122,8 +122,10 @@ function plothistogram() {
     histogram.height = 256;
     var context = histogram.getContext("2d");
     histogramMax = 0;
-    var data = histogramdata[currentWork];
-    if (!data) { 
+    var data = null;
+    if (currentWork in histogramdata){
+        data = histogramdata[currentWork];
+    }else { 
       data = pitchDistributionData;
     }
     for (var i = 0; i < data['vals'].length; i++) {
@@ -795,16 +797,8 @@ function loaddata() {
     $.ajax(histogramurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             histogramdata = data;
-            $.ajax(pitch_distributionurl, {dataType: "json", type: "GET",
-                success: function(data, textStatus, xhr) {
-                    pitchDistributionData = data;
-                    histogramLoaded = true;
-                    dodrawHistogram();
-
-            }, error: function(xhr, textStatus, errorThrown) {
-               console.debug("xhr error " + textStatus);
-               console.debug(errorThrown);
-            }});
+            histogramLoaded = true;
+            dodrawHistogram();
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
        console.debug(errorThrown);
