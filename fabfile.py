@@ -98,19 +98,18 @@ def dumpfixture(modname):
     if modname == "data":
         redir = redir_base % "initial_data"
         local("python manage.py dumpdata data.SourceName --indent=4 > %s" % redir)
+        return
     elif modname == "carnatic":
         tablemap = {"instrument": ["Instrument", "InstrumentAlias"],
                   "taala": ["Taala", "TaalaAlias"],
                   "raaga": ["Raaga", "RaagaAlias"],
-                  "form": ["Form", "FormAlias"],
-                  "misc": ["Language", "MusicalSchool"]}
+                  "form": ["Form", "FormAlias"]}
     elif modname == "hindustani":
         tablemap = {"instrument": ["Instrument"],
                   "taal": ["Taal", "TaalAlias"],
                   "raag": ["Raag", "RaagAlias"],
                   "form": ["Form", "FormAlias"],
-                  "laya": ["Laya", "LayaAlias"],
-                  "section": ["Section", "SectionAlias"]}
+                  "laya": ["Laya", "LayaAlias"]}
     elif modname == "makam":
         tablemap = {"instrument": ["Instrument"],
                     "makam": ["Makam", "MakamAlias"],

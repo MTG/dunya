@@ -54,29 +54,22 @@ def import_artist_wikipedia(artist, source):
             artist.description = description
             artist.save()
     if img:
-        try:
-            existingimg = artist.images.get(image__contains="%s" % artist.mbid)
-            if not os.path.exists(existingimg.image.path):
-                existingimg.delete()
-            elif existingimg.image.size != len(img):
+        if artist.image:
+            if not os.path.exists(artist.image.image.path):
+                artist.image.delete()
+            elif artist.image.image.size != len(img):
                 # If the imagesize has changed, remove the image
                 os.unlink(existingimg.image.path)
-                existingimg.delete()
-        except data.models.Image.DoesNotExist:
-            pass
-        except data.models.Image.MultipleObjectsReturned:
-            artist.images.filter(image__contains="%s" % artist.mbid).delete()
+                artist.image.delete()
 
         im = data.models.Image()
         im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
-        artist.images.add(im)
+        artist.image = im
 
 def import_release_image(release, directories=[]):
-    for existing in release.images.all():
-        name = os.path.splitext(os.path.basename(existing.image.name))
-        if name == release.mbid:
-            print "Image for release %s exists, skipping" % release.mbid
-            return
+    if release.image:
+        print "Image for release %s exists, skipping" % release.mbid
+        return
 
     i = image.get_coverart_from_caa(release.mbid)
     caa = True
@@ -96,8 +89,8 @@ def import_release_image(release, directories=[]):
         # If the image is a different size from one that already exists, then
         # replace it. Also remove if we have an item, but can't find the image
         # for it.
-        try:
-            existingimg = release.images.get(image__contains="%s" % release.mbid)
+        if release.image:
+            existingimg = release.image
             haveimage = True
             if not os.path.exists(existingimg.image.path):
                 existingimg.delete()
@@ -105,12 +98,12 @@ def import_release_image(release, directories=[]):
                 # If the imagesize has changed, remove it
                 os.unlink(existingimg.image.path)
                 existingimg.delete()
-        except data.models.Image.DoesNotExist:
+        else:
             haveimage = False
 
         # If we have an image, don't add it
         if not haveimage:
-            release.images.add(im)
+            release.image = im
             release.save()
     else:
         print "Can't find an image for %s" % release.mbid

@@ -72,9 +72,8 @@ def carnatic_coverart(request):
 @user_passes_test(views.is_staff)
 def carnatic_artists(request):
     artists = carnatic.models.Artist.objects
-    image_counted = artists.annotate(Count('images'))
     bio_counted = artists.annotate(Count('description'))
-    noimages = [a for a in image_counted.order_by("name").all() if a.images__count == 0]
+    noimages = [a for a in artists.order_by("name").all() if a.image is None]
     nobiographies = [a for a in bio_counted.order_by("name").all() if a.description__count == 0]
     noinstrument = [a for a in bio_counted.order_by("name").all() if not a.main_instrument]
 
@@ -179,9 +178,8 @@ def hindustani_coverart(request):
 @user_passes_test(views.is_staff)
 def hindustani_artists(request):
     artists = hindustani.models.Artist.objects
-    image_counted = artists.annotate(Count('images'))
     bio_counted = artists.annotate(Count('description'))
-    noimages = [a for a in image_counted.order_by("name").all() if a.images__count == 0]
+    noimages = [a for a in artists.order_by("name").all() if a.image is None]
     nobiographies = [a for a in bio_counted.order_by("name").all() if a.description__count == 0]
     noinstrument = [a for a in bio_counted.order_by("name").all() if not a.main_instrument]
 

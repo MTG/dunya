@@ -1,0 +1,30 @@
+[
+{
+    "model": "data.sourcename",
+    "pk": 1,
+    "fields": {
+        "name": "MusicBrainz"
+    }
+},
+{
+    "model": "data.sourcename",
+    "pk": 2,
+    "fields": {
+        "name": "Wikipedia"
+    }
+},
+{
+    "model": "data.sourcename",
+    "pk": 3,
+    "fields": {
+        "name": "kutcheris.com"
+    }
+},
+{
+    "model": "data.sourcename",
+    "pk": 4,
+    "fields": {
+        "name": "Cover Art Archive"
+    }
+}
+]

@@ -62,9 +62,9 @@ class Command(BaseCommand):
         fname = "%s-%s-%s.png" % (style, entityname, raag.common_name.lower().replace(" ", ""))
         average.generate_image(fname)
         im = data.models.Image()
-        raag.images.remove()
         im.image.save(fname, ContentFile(open(fname, "rb").read()))
-        raag.images.add(im)
+        raag.image = im
+        raag.save()
         os.unlink(fname)
 
     def hindustani(self, delete):
@@ -80,14 +80,15 @@ class Command(BaseCommand):
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
             print "(%s/%s) %s" % (i, numraagas, raag)
             create = True
-            if raag.images.count():
+            if raag.image:
                 if delete:
-                    for i in raag.images.all():
-                        try:
-                            i.image.delete()
-                        except ValueError:
-                            pass
-                        i.delete()
+                    try:
+                        raag.image.image.delete()
+                    except ValueError:
+                        pass
+                    raag.image.delete()
+                    raag.image = None
+                    raag.save()
                     print " - Deleting images and remaking"
                 else:
                     create = False
@@ -109,14 +110,15 @@ class Command(BaseCommand):
         for i, (raaga, recordings) in enumerate(recmap.items(), 1):
             print "(%s/%s) %s" % (i, numraagas, raaga)
             create = True
-            if raaga.images.count():
+            if raaga.image:
                 if delete:
-                    for i in raaga.images.all():
-                        try:
-                            i.image.delete()
-                        except ValueError:
-                            pass
-                        i.delete()
+                    try:
+                        raaga.image.image.delete()
+                    except ValueError:
+                        pass
+                    raaga.image.delete()
+                    raaga.image = None
+                    raaga.save()
                     print " - Deleting images and remaking"
                 else:
                     create = False

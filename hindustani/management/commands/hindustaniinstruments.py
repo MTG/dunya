@@ -64,9 +64,9 @@ class Command(BaseCommand):
                 req = requests.get(picture)
                 piccontents = req.content
                 im = data.models.Image()
-                i.images.remove()
                 im.image.save("%s.jpg" % i.name, ContentFile(piccontents))
-                i.images.add(im)
+                i.image = im
+                im.save()
             if description:
                 if wikipedia:
                     sn = data.models.SourceName.objects.get(name="Wikipedia")

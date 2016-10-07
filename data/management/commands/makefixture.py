@@ -23,14 +23,14 @@ def model_name(m):
 class Command(LabelCommand):
     help = 'Output the contents of the database as a fixture of the given format.'
     args = 'modelname[pk] or modelname[id1:id2] repeated one or more times'
-    option_list = BaseCommand.option_list + (
-        make_option('--skip-related', default=True, action='store_false', dest='propagate',
+
+    def add_arguments(self, parser):
+        parser.add_argument('--skip-related', default=True, action='store_false', dest='propagate',
                     help='Specifies if we shall not add related objects.'),
-        make_option('--format', default='json', dest='format',
+        parser.add_argument('--format', default='json', dest='format',
                     help='Specifies the output serialization format for fixtures.'),
-        make_option('--indent', default=None, dest='indent', type='int',
+        parser.add_argument('--indent', default=None, dest='indent', type='int',
                     help='Specifies the indent level to use when pretty-printing output'),
-    )
 
     def handle_models(self, models, **options):
         format = options.get('format', 'json')
