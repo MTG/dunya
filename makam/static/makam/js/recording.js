@@ -125,8 +125,8 @@ function plothistogram() {
     var data = null;
     if (currentWork in histogramdata){
         data = histogramdata[currentWork];
-    }else { 
-      data = pitchDistributionData;
+    }else {
+        data = histogramdata;
     }
     for (var i = 0; i < data['vals'].length; i++) {
         if (data['vals'][i] > histogramMax) {

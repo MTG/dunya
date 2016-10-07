@@ -414,7 +414,7 @@ def recording(request, uuid, title=None):
                 if option[0] not in ('tomatodunya', 'makamaudioimages'):
                     content = docserver.util.docserver_get_json(mbid, option[0],
                         option[1], option[2], version=option[3])
-                    if len(urls[u]) == curr_option or len(content.keys()):
+                    if content != None and (len(urls[u]) == curr_option or len(content.keys())):
                         success_content = docserver.util.docserver_get_url(mbid,
                             option[0], option[1], option[2], version=option[3])
                         ret[u] = success_content
