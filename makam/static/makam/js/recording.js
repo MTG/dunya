@@ -134,16 +134,21 @@ function plothistogram() {
         }
     }
 
+    if (currentWork in notemodels){
+        currModel = notemodels[currentWork];
+    }else{
+        currModel = notemodels;
+    }
     var lastStables = [];
-    for (key in notemodels[currentWork]){
-        if (notemodels[currentWork][key]['distribution'] != null){
-          for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
-              if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
-                  histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
+    for (key in currModel){
+        if (currModel[key]['distribution'] != null){
+          for (var i = 0; i < currModel[key]['distribution']['vals'].length; i++) {
+              if (currModel[key]['distribution']['vals'][i] > histogramMax) {
+                  histogramMax = currModel[key]['distribution']['vals'][i];
               }
           }
         }
-        lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
+        lastStables.push([currModel[key]['stable_pitch']['value'], key, currModel[key]['performed_interval']['value']]);
     }
     plotRefFreq(context, lastStables); 
     plothistogrampart(context, data);
@@ -310,18 +315,22 @@ function plottonic(context) {
     // Sa and sa+1 line.
     context.beginPath();
     // sa+1, dotted
-    if (tonicdata[currentWork] != null){
-      var tonic = Math.floor(tonicdata[currentWork]['value']);
-      var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
-      context.moveTo(0, tonicval);
-      context.lineWidth = 2;
-      for (var i = 0; i < 900; i+=10) {
-          context.moveTo(i, tonicval);
-          context.lineTo(i+5, tonicval);
-      }
-      context.strokeStyle = "#ffffff";
-      context.stroke();
+    var tonic = null;
+    if (currentWork in tonicdata){
+        tonic = Math.floor(tonicdata[currentWork]['value']);
+    }else {
+        tonic = Math.floor(tonicdata['value']);
     }
+    var tonic = Math.floor(tonicdata[currentWork]['value']);
+    var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
+    context.moveTo(0, tonicval);
+    context.lineWidth = 2;
+    for (var i = 0; i < 900; i+=10) {
+        context.moveTo(i, tonicval);
+        context.lineTo(i+5, tonicval);
+    }
+    context.strokeStyle = "#ffffff";
+    context.stroke();
 }
 
 function spectrogram(context, view, color) {
@@ -530,10 +539,15 @@ function showNoteOnHistogram(note, time){
    $('#current-note').show();
 
    if (showingNote!=note){
+       if (currentWork in noteModels){
+           currModel = notemodels[currentWork];
+       }else{
+           currModel = notemodels;
+       }
        histogram.width = 200;
        histogram.height = 256;
        var ctxNotes = histogram.getContext("2d");
-       plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], "#0099FF");
+       plothistogrampart(ctxNotes, currModel[note]['distribution'], "#0099FF");
        $('#current-note').html("Current Note:<br /><b>" + note + "</b>");
        showingNote=note;
    }
