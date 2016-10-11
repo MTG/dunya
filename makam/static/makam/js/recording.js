@@ -321,7 +321,6 @@ function plottonic(context) {
     }else {
         tonic = Math.floor(tonicdata['value']);
     }
-    var tonic = Math.floor(tonicdata[currentWork]['value']);
     var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
     context.moveTo(0, tonicval);
     context.lineWidth = 2;
@@ -539,7 +538,7 @@ function showNoteOnHistogram(note, time){
    $('#current-note').show();
 
    if (showingNote!=note){
-       if (currentWork in noteModels){
+       if (currentWork in notemodels){
            currModel = notemodels[currentWork];
        }else{
            currModel = notemodels;
