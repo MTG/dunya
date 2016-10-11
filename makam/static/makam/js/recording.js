@@ -159,7 +159,7 @@ function plothistogram() {
  */
 function plotRefFreq(context, lastStables){
   var positiveFreqs = lastStables.filter(function (el) {
-        return el[2] >= 0;
+        return el[0] >= 0;
     });
     lastStables = positiveFreqs;
     lastStables.sort(function(a, b){return a[2]-b[2]}); 
