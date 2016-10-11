@@ -256,7 +256,7 @@ function plotRefFreq(context, lastStables){
      });
 
     for (var i=0; i<lastStables.length; i++){
-      if(lastStables[i][2]==0 ) {
+      if(Math.abs(lastStables[i][2]) < 2 ) {
          var freq = Math.floor(lastStables[i][0]);
          var j = (freq - pitchMin) / ( pitchMax - pitchMin );
          context.font = "Bold 12px Open Sans";
