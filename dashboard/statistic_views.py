@@ -30,7 +30,7 @@ import compmusic
 
 def _common_stats(collectionid):
     """ Get some common statistics for all styles """
-    releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid)
+    releases = models.MusicbrainzRelease.objects.filter(collection__collectionid=collectionid)
     ret = {}
     if releases.count():
         total_releases = releases.count()
@@ -42,7 +42,7 @@ def _common_stats(collectionid):
         ret["releases_missing"] = releases_missing_dir
 
         num_recordings = models.CollectionFile.objects.filter(
-            directory__musicbrainzrelease__collection__id=collectionid).count()
+            directory__musicbrainzrelease__collection__collectionid=collectionid).count()
         ret["recordings"] = num_recordings
     else:
         ret["missing"] = True
@@ -287,7 +287,7 @@ def makam_artists(request):
 def beijing_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
 
-    releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid).all()
+    releases = models.MusicbrainzRelease.objects.filter(collection__collectionid=collectionid).all()
     ret = {}
     if len(releases):
         pass
@@ -300,7 +300,7 @@ def beijing_stats(request):
 def andalusian_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
     ret = _common_stats(collectionid)
-    releases = models.MusicbrainzRelease.objects.filter(collection__id=collectionid).all()
+    releases = models.MusicbrainzRelease.objects.filter(collection__collectionid=collectionid).all()
 
     if len(releases):
         pass
