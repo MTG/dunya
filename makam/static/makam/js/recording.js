@@ -235,16 +235,17 @@ function plotRefFreq(context, lastStables){
         var vtop = Math.round( (e.clientY - offset_t) );
         var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
         if (lastStables) {
-            var fix_freq = null;
+            var minFound = null;
+            var minValue = 999;
             for (var i=0; i<lastStables.length; i++){
                   var cent = 1200*Math.log2(freq/lastStables[i][0])
-                  if( Math.abs(cent) < 50 ){
-                  fix_freq = Math.floor(lastStables[i][0]);
-                  break;
+                  if( Math.abs(cent) < 100 && Math.abs(cent) < minValue ){
+                      minFound = Math.floor(lastStables[i][0]);
+                      minValue = Math.abs(cent);
                 }
             }
-            if(fix_freq){
-              play_osc(Math.floor(lastStables[i][0])); 
+            if(minFound){
+              play_osc(minFound); 
             }else{
               play_osc(Math.floor(freq)); 
             }
