@@ -14,9 +14,9 @@ def delete_mapping():
 def create_mapping():
     import json
     import makam.models
-    data = json.load(open("symbTr_mbid.json"))
+    data = json.load(open("/srv/SymbTr/symbTr_mbid.json"))
     for d in data:
-        uu = d["uuid"]["mbid"]
+        uu = d["uuid"].replace('http://musicbrainz.org/', '').replace('work/', '').replace('recording/', '')
         makam.models.SymbTr.objects.create(name=d["name"], uuid=uu)
 
 # Delete symbtr docserver collection, and rm the files
@@ -29,8 +29,8 @@ def delete_documents():
     collection = docserver.models.Collection.objects.get(slug='makam-symbtr')
     documents = collection.documents.all()
     docids = [d.external_identifier for d in documents]
-    sids = [s["uuid"]["mbid"] for s in data]
-    symbtr = {s["uuid"]["mbid"]: s["name"] for s in data}
+    sids = [s["uuid"].replace('http://musicbrainz.org/', '').replace('work/', '').replace('recording/', '') for s in data]
+    symbtr = {s["uuid"].replace('http://musicbrainz.org/', '').replace('work/', '').replace('recording/', ''): s["name"] for s in data}
 
     new = set(sids)-set(docids)
     toremove = set(docids)-set(sids)
@@ -84,7 +84,7 @@ def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
               , "SymbTr-pdf": "symbtrpdf"}
 
     data = json.load(open(symbtr_file))
-    mbid_file = {s["uuid"]["mbid"]: s["name"] for s in data}
+    mbid_file = {s["uuid"].replace('http://musicbrainz.org/', '').replace('work/', '').replace('recording/', ''): s["name"] for s in data}
 
     for d, sl in dir_slug.items():
         ext = sl.replace("symbtr", "")[:3]
@@ -126,7 +126,7 @@ def retrive_git_changes():
               , "SymbTr-pdf": "symbtrpdf"}
 
     data = json.load(open(os.path.join(git_dir, "symbTr_mbid.json")))
-    mbid_file = {s["name"]: s["uuid"]["mbid"] for s in data}
+    mbid_file = {s["name"]: s["uuid"].replace('http://musicbrainz.org/', '').replace('work/', '').replace('recording/', '') for s in data}
 
     g = git.cmd.Git(git_dir)
     differ = g.diff(last, '--name-only').split("\n")
@@ -137,8 +137,7 @@ def retrive_git_changes():
         if score[0] in dir_slug.keys() and len(score)>1:
             name = score[1].replace(dir_slug[score[0]],"").split(".")[0]
             if name in mbid_file:
-                to_add.append({'name': name, 'uuid': {'mbid': mbid_file[name], 
-                    'type': 'work'}})
+                to_add.append({'name': name, 'uuid': mbid_file[name]})
     with open("/tmp/tmpsymbtr.json", "w") as outfile:
             json.dump(to_add, outfile, indent=4)
     
