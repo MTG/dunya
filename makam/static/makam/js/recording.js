@@ -224,11 +224,12 @@ function plotRefFreq(context, lastStables){
                     html[5] = ", ";
                     html[6] = Math.floor(pre['cents']);
                     html[7] = " cents";
+                    showDotOnHistogram(pre['peak']);
                   }else{
                     html[8] = Math.floor(pre['hz']);
                     html[9] = " Hz";
+                    showDotOnHistogram(vtop);
                   }
-                  showDotOnHistogram(pre['peak']);
                   $("#freq-info").html(html.join(''));
                   $("#freq-info").show();
                   $("#freq-info").css({
