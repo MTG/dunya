@@ -324,7 +324,9 @@ function plothistogrampart(context, histData, color){
             for (var r=0;r<lastv.length;r++){
                 sum+=lastv[r];
             }
-            histMap[curr] = sum/lastv.length;
+            if (!color){
+                histMap[curr] = sum/lastv.length;
+            }
             context.lineTo(sum/lastv.length, curr);
             lastv = [];
         }
