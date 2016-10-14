@@ -209,7 +209,7 @@ function plotRefFreq(context, lastStables){
                 var offset_t = offset.top - $(window).scrollTop();
                 var vtop = Math.round( (e.clientY - offset_t) );
                 var etop = e.pageY - offset.top;
-                var left = e.pageX - offset.left + 15;
+                var left = histMap[vtop] + 5;
                 var pre = preloadedData[vtop]; 
                 var html = [];
                 if(pre != null){
@@ -224,6 +224,7 @@ function plotRefFreq(context, lastStables){
                     html[5] = ", ";
                     html[6] = Math.floor(pre['cents']);
                     html[7] = " cents";
+                    left = histMap[pre['peak']] + 5;
                     showDotOnHistogram(pre['peak']);
                   }else{
                     html[8] = Math.floor(pre['hz']);
@@ -233,8 +234,8 @@ function plotRefFreq(context, lastStables){
                   $("#freq-info").html(html.join(''));
                   $("#freq-info").show();
                   $("#freq-info").css({
-                      "top" : e.pageY - offset.top,
-                      "left" : e.pageX - offset.left + 15 
+                      "top" : etop,
+                      "left" : left 
                   });
                 }
               }
