@@ -99,7 +99,7 @@
       font-family: 'Roboto', sans-serif;
       font-weight: 300;
   }
-  #overlap-pitch, #overlap-histogram, #histogram-current-note{
+  #overlap-pitch, #overlap-histogram-dot, #overlap-histogram, #histogram-current-note{
       position: absolute;
       left: 0px;
       top: 0px;
@@ -364,6 +364,7 @@ widthOfChildren('.metaContainer');
                 </div>
                 <div class="container2">
                     <div class="waveLabel">
+                      <canvas id="overlap-histogram-dot" style="width:200px; height:256px;"></canvas>
                       <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>

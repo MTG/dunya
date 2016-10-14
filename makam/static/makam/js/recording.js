@@ -23,6 +23,7 @@ $(document).ready(function() {
      lastpitch = -1; 
      scoreLoaded = false;
      barPages = {};
+     histMap= {};
      histogramMax = 0;
      lastnote = null;
      // What point in seconds the left-hand side of the
@@ -153,6 +154,27 @@ function plothistogram() {
     plotRefFreq(context, lastStables); 
     plothistogrampart(context, data);
 }
+
+function getFreqWithMouse(lastStables, freq){
+  var minFound = null;
+  var minValue = 999;
+  for (var i=0; i<lastStables.length; i++){
+        var cent = 1200*Math.log2(freq/lastStables[i][0])
+        if( Math.abs(cent) < 100 && Math.abs(cent) < minValue ){
+            minValue = Math.abs(cent);
+            var hz = Math.floor(lastStables[i][0]);
+            var peak = Math.floor(255 - ((hz - parseInt(pitchMin)) * 255 / (parseInt(pitchMax) - parseInt(pitchMin))));
+            minFound = {
+              'cents': Math.floor(lastStables[i][2]), 
+              'peak': peak, 
+              'note': lastStables[i][1], 
+              'hz': hz
+            };
+        }
+  }
+  return minFound;
+}
+
 /*
  * Sets the event for showing the frequency at the mouse position, 
  * also draws tonic on canvas
@@ -166,19 +188,11 @@ function plotRefFreq(context, lastStables){
     preloadedData = {};
     for (var vtop=1; vtop<256; vtop++){
         var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
-        preloadedData[vtop] = {'freq': freq};
-        var note = null;
-        var cents = null;
-        var hz= null;
-        for (var i=0; i<lastStables.length; i++){
-              var cent = 1200*Math.log2(freq/lastStables[i][0])
-              if( Math.abs(cent) < 50 ){
-              note = lastStables[i][1];
-              hz = lastStables[i][0];
-              cents = Math.floor(lastStables[i][2]);
-              preloadedData[vtop] = {'hz': hz, 'note': note, 'cents': cents, 'freq': freq}
-              break;
-            }
+        var pre = getFreqWithMouse(lastStables, freq);
+        if (pre != null){
+          preloadedData[vtop] = pre;
+        }else{
+          preloadedData[vtop] = {'hz': freq};
         }
     }
     histogramcanvas = $('.waveLabel canvas');
@@ -211,9 +225,10 @@ function plotRefFreq(context, lastStables){
                     html[6] = Math.floor(pre['cents']);
                     html[7] = " cents";
                   }else{
-                    html[8] = Math.floor(pre['freq']);
+                    html[8] = Math.floor(pre['hz']);
                     html[9] = " Hz";
                   }
+                  showDotOnHistogram(pre['peak']);
                   $("#freq-info").html(html.join(''));
                   $("#freq-info").show();
                   $("#freq-info").css({
@@ -235,17 +250,9 @@ function plotRefFreq(context, lastStables){
         var vtop = Math.round( (e.clientY - offset_t) );
         var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
         if (lastStables) {
-            var minFound = null;
-            var minValue = 999;
-            for (var i=0; i<lastStables.length; i++){
-                  var cent = 1200*Math.log2(freq/lastStables[i][0])
-                  if( Math.abs(cent) < 100 && Math.abs(cent) < minValue ){
-                      minFound = Math.floor(lastStables[i][0]);
-                      minValue = Math.abs(cent);
-                }
-            }
+            var minFound = getFreqWithMouse(lastStables, freq);
             if(minFound){
-              play_osc(minFound); 
+              play_osc(minFound['hz']); 
             }else{
               play_osc(Math.floor(freq)); 
             }
@@ -254,6 +261,7 @@ function plotRefFreq(context, lastStables){
      
      histogramcanvas.mouseleave(function() {
         $("#freq-info").hide();
+        showDotOnHistogram(null);
      });
 
     for (var i=0; i<lastStables.length; i++){
@@ -277,6 +285,25 @@ function plotRefFreq(context, lastStables){
       context.closePath();
     }
 }
+
+function showDotOnHistogram(peak){
+   var canvas = $('#overlap-histogram-dot')[0];
+   canvas.width = 200;
+   canvas.height = 256;
+   var context = canvas.getContext("2d");
+   if (!peak || peak>250){
+         context.clearRect(0, 0, 900, 900);
+         return ;
+   }
+     
+   context.beginPath(); 
+   var histVal = histMap[peak];
+   context.strokeStyle = 'rgba(244, 217, 66, 0.9)';
+   context.fillStyle = 'rgba(244, 217, 66, 0.9)';
+   context.arc(histVal, peak, 5, 0, 2 * Math.PI, true);
+   context.fill(); 
+   context.closePath();
+}
 /*
  * Given data and color, plots histogram of frequencies. Used por current note and whole histogram.
  */
@@ -295,6 +322,7 @@ function plothistogrampart(context, histData, color){
             for (var r=0;r<lastv.length;r++){
                 sum+=lastv[r];
             }
+            histMap[curr] = sum/lastv.length;
             context.lineTo(sum/lastv.length, curr);
             lastv = [];
         }
