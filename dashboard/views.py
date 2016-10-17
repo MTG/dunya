@@ -803,7 +803,7 @@ def import_andalusian_score(request):
             document, created = docserver.models.Document.objects.get_or_create(
                     external_identifier=param_mbid)
             if created:
-                collection = models.Collection.objects.get(
+                collection = docserver.models.Collection.objects.get(
                         collectionid='142ea0d7-7fdf-4ea5-9b04-219f68023d01')
                 document.collections.add(collection)
             sf, created = docserver.util.docserver_upload_and_save_file(
