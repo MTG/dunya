@@ -33,6 +33,7 @@ $(document).ready(function() {
      // The 900 pitch values currently on screen
      pitchvals = new Array(900);
      histovals = new Array(900);
+     countPendingOsc = 0;
      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
      oscillator = audioCtx.createOscillator();
      gainNode = audioCtx.createGain();
@@ -1139,29 +1140,22 @@ function updateCurrentPitch(){
     updateFrequencyMarker(futureTime);
   }
 }
-
 function play_osc(f){
-    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-    var waveArray = new Float32Array(9);
-    waveArray[0] = 0.00001;
-    waveArray[1] = 0.5;
-    waveArray[2] = 0.5;
-    waveArray[3] = 0.5;
-    waveArray[4] = 0.5;
-    waveArray[5] = 0.5;
-    waveArray[6] = 0.5;
-    waveArray[7] = 0.5;
-    waveArray[8] = 0.5;
-    oscillator.frequency.value = f; // value in hertz
-    gainNode.gain.setValueCurveAtTime(waveArray, audioCtx.currentTime, 0.5);
+    // Use setValueAtTime as workaround of bug in webaudio which use glide
+    oscillator.frequency.setValueAtTime( f, audioCtx.currentTime);
+    countPendingOsc += 1;
+    // ise linearRamp as otherwise 'click' sound is played
+    gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime+0.01);
     window.setTimeout(function(){
       try {
-        //ExponentialRamp can't handle 0 so we pass 0.00001
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 2);
+        if (countPendingOsc == 1){
+          gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime+0.1);
+        }
       }
       catch (e) {
         console.log(e);
       }
+      countPendingOsc -= 1; 
     }, 1000);
 }
 function playNextSection(right){
