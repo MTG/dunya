@@ -137,6 +137,9 @@ $( "#work-query" ).catcomplete({
         }else if( cat == "recording"){
           url = "/makam/recording/"+ui.item.mbid;
           window.location.href = url;
+        }else if( cat == "composition"){
+          url += "work="+oid;
+          window.location.href = url;
         }else{
           var name = ui.item.label.split(' - ')
           url += "q=" + encodeURIComponent(name[0]);

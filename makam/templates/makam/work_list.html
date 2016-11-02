@@ -283,6 +283,9 @@ $('.change-filter').click(function(){
         }else if (cat =="usul"){
           url += "usul="+oid;
           window.location.href = url;
+        }else if( cat == "composition"){
+          url += "work="+oid;
+          window.location.href = url;
         }else if( cat == "form"){
           url += "form="+oid;
           window.location.href = url;
@@ -306,6 +309,7 @@ $('.change-filter').click(function(){
   <label for="query"></label>
     <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
     <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
+    <input type="hidden" name="work" value="{% if work %}{{work.id}}{% endif %}"/>
     <input type="hidden" name="makam" value="{% if makam %}{{makam.id}}{% endif %}"/>
     <input type="hidden" name="form" value="{% if form %}{{form.id}}{% endif %}"/>
     <input type="hidden" name="artist" value="{% if artist %}{{artist.id}}{% endif %}"/>
@@ -324,6 +328,13 @@ $('.change-filter').click(function(){
            {% endif %}
            <a class="change-filter" href="/makam/filter/popup?{%for k,v in params.items %}{{ v }}&{%endfor%}elem=form">Select</a>
          </div>
+         {%if work%}
+         <div class="filter {%if work%}filter-sel{% endif %}">
+           <b><span>Work:</span></b>
+           <span>{{work}}</span>
+             <a class="remove-param" href="/makam/works?{%for k,v in params.items %}{%if k != "work" %}{{ v }}&{%endif%}{%endfor%}">x</a>
+         </div>
+         {% endif %}
          <div class="filter {%if usul%}filter-sel{% endif %}">
            <b><span>Usul:</span></b>
            <span>{{usul}}</span>
@@ -391,7 +402,7 @@ $('.change-filter').click(function(){
         </table>
         {% if recordings.has_next %}
             <div id="next">
-              <a id="next-page" href="?q={{q}}&usul={{usul.id}}&form={{form.id}}&artist={{artist.id}}&makam={{makam.id}}&elem=artist&performer={{perf.id}}&page={{ recordings.next_page_number }}">next</a>
+              <a id="next-page" href="?q={{q}}&work={{work.id}}&usul={{usul.id}}&form={{form.id}}&artist={{artist.id}}&makam={{makam.id}}&elem=artist&performer={{perf.id}}&page={{ recordings.next_page_number }}">next</a>
             </div>
         {% endif %}
     </div>

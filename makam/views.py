@@ -103,6 +103,7 @@ def main(request):
     s_form = request.GET.get('form', '')
     s_makam = request.GET.get('makam', '')
     s_usul = request.GET.get('usul', '')
+    s_work= request.GET.get('work', '')
 
     artist = ""
     if s_artist and s_artist != '':
@@ -119,12 +120,16 @@ def main(request):
     makam = ""
     if s_makam and s_makam != '':
         makam = models.Makam.objects.get(id=s_makam)
+    work = ""
+    if s_work and s_work != '':
+        work = models.Work.objects.get(id=s_work)
+
 
     url = None
     recordings = None
     results = None
-    if s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
-        recordings, url = get_works_and_url(s_artist, s_form, s_usul, s_makam, s_perf, q)
+    if s_work != '' or s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
+        recordings, url = get_works_and_url(s_work, s_artist, s_form, s_usul, s_makam, s_perf, q)
         if q and q!='':
             url["q"] = "q=" + SafeString(q.encode('utf8'))
 
@@ -144,6 +149,7 @@ def main(request):
         url = {
                 "q": "q=%s" % SafeString(q.encode('utf8')),
                 "usul": "usul=%s" % s_usul,
+                "work": "work=%s" % s_work,
                 "form": "form=%s" % s_form,
                 "artist": "artist=%s" % s_artist,
                 "makam": "makam=%s" % s_makam,
@@ -156,6 +162,7 @@ def main(request):
         'makam': makam,
         'usul': usul,
         'form': form,
+        'work': work,
         'recordings': recordings,
         'results': results,
         'q': q,
@@ -173,8 +180,9 @@ def filter_directory(request):
     form = request.GET.get('form', '')
     makam = request.GET.get('makam', '')
     usul = request.GET.get('usul', '')
+    work= request.GET.get('work', '')
 
-    recordings, url = get_works_and_url(artist, form, usul, makam, perf, q, elem)
+    recordings, url = get_works_and_url(work, artist, form, usul, makam, perf, q, elem)
     if q and q!='':
         url["q"] = "q=" + SafeString(q.encode('utf8'))
 
@@ -195,7 +203,7 @@ def filter_directory(request):
 
     return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
-def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
+def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
     recordings = models.Recording.objects
     url = {}
     if q and q!='':
@@ -215,6 +223,10 @@ def get_works_and_url(artist, form, usul, makam, perf, q, elem=None):
             else:
                 recordings= recordings.filter(works__form=form)
         url["form"] = "form=" + form
+    if elem != "work":
+        if work and work != '':
+            recordings = recordings.filter(works=work)
+        url["work"] = "work=" + work
     if elem != "usul":
         if usul and usul != '':
             recordings = recordings.filter(works__usul=usul)
