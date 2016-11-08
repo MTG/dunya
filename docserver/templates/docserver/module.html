@@ -93,7 +93,11 @@ Are you sure you want to delete this module? ({{module.name}}, and all {{module.
             <td>{{l.datetime}}</td>
             <td>{{l.moduleversion.module.name}} ({{l.moduleversion.version}})</td>
             <td>{{l.level}}</td>
-            <td><a href="{% url 'docserver-file' l.document.collections.all.0.slug l.document.external_identifier l.moduleversion.pk %}">{{l.document}}</a></td>
+            <td>
+            {% if l.document.external_identifier %}
+              <a href="{% url 'docserver-file' l.document.collections.all.0.slug l.document.external_identifier l.moduleversion.pk %}">{{l.document}}</a>i
+            {% endif %}
+            </td>
         </tr>
         <tr>
             <td style="padding-bottom: 15px;" colspan="4">
