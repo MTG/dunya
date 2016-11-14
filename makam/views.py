@@ -29,7 +29,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
 from makam import models
@@ -43,6 +43,11 @@ def guest_login(request):
         user = User.objects.get(username='guest')
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
+
+def guest_logout(request):
+    if request.user.is_authenticated() and request.user.username == 'guest':
+        logout(request)
+
 
 def searchcomplete(request):
     term = request.GET.get("term")
@@ -376,6 +381,8 @@ def recording(request, uuid, title=None):
             external_identifier=recording.mbid, collections__slug='makam-open')
     if recording_doc.count():
         guest_login(request)
+    else:
+        guest_logout(request)
     start_time = request.GET.get("start", 0)
     mbid = recording.mbid
 
