@@ -19,8 +19,8 @@ body {
         rgba(179, 65, 30, 1) 65%,
         rgba(179, 65, 30, 1) 80%,
         rgba(179, 65, 30, 1) 100%);
-    background: -webkit-gradient(linear,  left top,  right top, 
-        color-stop(0%, rgba(58, 139, 138, 1)), 
+    background: -webkit-gradient(linear,  left top,  right top,
+        color-stop(0%, rgba(58, 139, 138, 1)),
         color-stop(15%, rgba(106, 153, 32, 1)),
         color-stop(30%, rgba(250, 239, 46, 1)),
         color-stop(50%, rgba(233, 178, 89, 1)),
@@ -34,7 +34,7 @@ body {
 }
 .footer{
     position:absolute;
-    bottom:0;    
+    bottom:0;
     width:100%;
     height:200px;   /* Height of the footer */
     background:#0e213d;
@@ -95,18 +95,18 @@ body {
     height: 150px;
     display: inline-block;
     margin: 2px;
-    
-    
+
+
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    
+
 }
 .home span{
 
     z-index: 2;
     color: #fff;
-    
+
     margin: 0;
     position: absolute;
     top: 50%;
@@ -126,7 +126,7 @@ body {
 .carnatic{
     background-color: rgba(241,171,57,0.9);
     background-blend-mode: soft-light;
-    background-position: 30% 20%; 
+    background-position: 30% 20%;
     background-size: 148%;
     background-image: url(/static/carnatic/img/carnatic.png);
 }
@@ -136,7 +136,7 @@ body {
 .hindustani{
     background-color: rgba(109,154,26,0.9);
     background-blend-mode: soft-light;
-    background-position: -6px 39%; 
+    background-position: -6px 39%;
     background-size: 119%;
     background-image: url(/static/carnatic/img/hindustani.png);
 }
@@ -146,7 +146,7 @@ body {
 .makam{
     background-color: rgba(58,139,139,0.9);
     background-blend-mode: soft-light;
-    background-position: 44% 55%; 
+    background-position: 44% 55%;
     background-size: 95%;
     background-image: url(/static/carnatic/img/makam.png);
 }
@@ -156,10 +156,10 @@ body {
 .jingju{
     background-color: rgba(179,65,30,0.9);
     background-blend-mode: soft-light;
-    background-position: 96% 73%; 
     background-size: 94%;
+    background-repeat: no-repeat;
     background-image: url(/static/carnatic/img/jingju.png);
-    
+
 }
 .andalusi:hover{
     background-color: rgba(14,33,61,1);
