@@ -1,134 +1,178 @@
 [
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 1,
   "fields": {
-    "mimetype": "",
-    "stype": "data",
     "slug": "csv",
     "extension": "csv",
-    "name": "csv_file_type"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 1
+    "name": "csv_file_type",
+    "mimetype": "",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 2,
   "fields": {
-    "mimetype": "",
-    "stype": "audio",
     "slug": "mp3",
     "extension": "mp3",
-    "name": "mp3_file_type"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 2
+    "name": "mp3_file_type",
+    "mimetype": "audio/mpeg",
+    "stype": "audio"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 3,
   "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
     "slug": "symbtrtxt",
     "extension": "txt",
-    "name": "SymbTr text files"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 3
+    "name": "SymbTr text files",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 4,
   "fields": {
-    "mimetype": "audio/midi",
-    "stype": "data",
     "slug": "symbtrmidi",
     "extension": "mid",
-    "name": "SymbTr midi files"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 4
+    "name": "SymbTr midi files",
+    "mimetype": "audio/midi",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 5,
   "fields": {
-    "mimetype": "application/pdf",
-    "stype": "data",
     "slug": "symbtrpdf",
     "extension": "pdf",
-    "name": "SymbTr pdf files"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 5
+    "name": "SymbTr pdf files",
+    "mimetype": "application/pdf",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 6,
   "fields": {
-    "mimetype": "application/vnd.recordare.musicxml+xml",
-    "stype": "data",
     "slug": "symbtrxml",
     "extension": "xml",
-    "name": "SymbTr musicxml files"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 6
+    "name": "SymbTr musicxml files",
+    "mimetype": "application/vnd.recordare.musicxml+xml",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 7,
   "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
     "slug": "symbtrmu2",
     "extension": "mu2",
-    "name": "SymbTr mu2 files"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 7
+    "name": "SymbTr mu2 files",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 8,
   "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
     "slug": "sama-manual",
     "extension": "sama",
-    "name": "Semi automatically extracted sama locations"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 8
+    "name": "Semi automatically extracted sama locations",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 9,
   "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
     "slug": "tempo-manual",
     "extension": "tempo",
-    "name": "Semi-automatically Extracted tempo"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 9
+    "name": "Semi-automatically Extracted tempo",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 10,
   "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
     "slug": "mphrases-manual",
     "extension": "mphrases",
-    "name": "Manually extracted melodic phrases"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 10
+    "name": "Manually extracted melodic phrases",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
 },
 {
+  "model": "docserver.sourcefiletype",
+  "pk": 11,
   "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
     "slug": "sections-manual",
     "extension": "sections",
-    "name": "Manually annotated sections"
-  },
-  "model": "docserver.sourcefiletype",
-  "pk": 11
+    "name": "Manually annotated sections",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
 },
 {
-  "fields": {
-    "mimetype": "text/plain",
-    "stype": "data",
-    "slug": "pitch-vocal",
-    "extension": "vpitch",
-    "name": "Pitch extracted using only vocal track "
-  },
   "model": "docserver.sourcefiletype",
-  "pk": 12
+  "pk": 12,
+  "fields": {
+    "slug": "pitch-vocal",
+    "extension": "mpitch",
+    "name": "Pitch extracted using only vocal track ",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
+},
+{
+  "model": "docserver.sourcefiletype",
+  "pk": 13,
+  "fields": {
+    "slug": "makam-phase-v1",
+    "extension": "txt",
+    "name": "Symbtr text files - Phrase Segm",
+    "mimetype": "text/plain",
+    "stype": "data"
+  }
+},
+{
+  "model": "docserver.sourcefiletype",
+  "pk": 14,
+  "fields": {
+    "slug": "zip",
+    "extension": "zip",
+    "name": "zip",
+    "mimetype": "application/zip",
+    "stype": ""
+  }
+},
+{
+  "model": "docserver.sourcefiletype",
+  "pk": 15,
+  "fields": {
+    "slug": "bpm-manual",
+    "extension": "bpm",
+    "name": "Semi-automatically extracted BPM",
+    "mimetype": "text/plain",
+    "stype": ""
+  }
+},
+{
+  "model": "docserver.sourcefiletype",
+  "pk": 16,
+  "fields": {
+    "slug": "sections-manual-p",
+    "extension": "sections_p",
+    "name": "Post processed variant of manually annotated sections",
+    "mimetype": "text/plain",
+    "stype": ""
+  }
 }
 ]
