@@ -1,4 +1,4 @@
-# Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
+# Copyright 2013-2016 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
 #
@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from docserver import models
-from django.contrib import admin
+# Raised in Document.get_file
+class NoFileException(Exception):
+    pass
 
-admin.site.register(models.Collection)
-admin.site.register(models.Document)
-admin.site.register(models.SourceFileType)
-admin.site.register(models.SourceFile)
-admin.site.register(models.DerivedFile)
-admin.site.register(models.EssentiaVersion)
-admin.site.register(models.Module)
-admin.site.register(models.ModuleVersion)
+# Raised in Document.get_file
+class TooManyFilesException(Exception):
+    pass
+
+# Raised in Document.get_root_dir
+class NoRootDirectoryException(Exception):
+    pass

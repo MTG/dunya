@@ -178,11 +178,15 @@ def download_external(request, uuid, ftype):
         version = request.GET.get("v")
         subtype = request.GET.get("subtype")
         part = request.GET.get("part")
-        filepart = util._docserver_get_part(uuid, ftype, subtype, part, version)
 
-        fname = filepart.fullpath
-        mimetype = filepart.mimetype
+        # This could be a SourceFile, or DerivedFile
+        result = doc.get_file(ftype, subtype, part, version)
+        if isinstance(result, models.SourceFile):
+            fname = result.fullpath
+        else:
+            fname = result.full_path_for_part(part)
 
+        mimetype = file.mimetype
         ratelimit = "off"
         if util.has_rate_limit(user, doc, ftype):
             # 200k
@@ -674,7 +678,7 @@ def collectionversion(request, slug, version, type):
 def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
 
-    doc = models.Document.objects.get(external_identifier=uuid, collections=collection)
+    doc = get_object_or_404(models.Document, external_identifier=uuid, collections=collection)
 
     runmodule = request.GET.get("runmodule")
     if runmodule:

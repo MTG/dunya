@@ -65,21 +65,21 @@ def recording(request, uuid):
 
     try:
         spec = docserver.util.docserver_get_url(mbid, "audioimages", "spectrum32", 1)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         spec = None
     try:
         small = docserver.util.docserver_get_url(mbid, "audioimages", "smallfull")
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         small = None
     try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
 
     try:
         pitchtrackurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "packedpitch")
         histogramurl = docserver.util.docserver_get_url(mbid, "normalisedpitch", "drawhistogram")
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         pitchtrackurl = "/document/by-id/%s/%s?subtype=%s" % (mbid, "normalisedpitch", "packedpitch")
         histogramurl = "/document/by-id/%s/%s?subtype=%s" % (mbid, "normalisedpitch", "drawhistogram")
 
@@ -106,11 +106,11 @@ def basic_lyric_alignment(request, uuid, title=None):
     mbid = uuid
     try:
         lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         lyricsalignurl = None
     try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
     ret = {
            "recording": recording,

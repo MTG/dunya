@@ -23,6 +23,8 @@ import django.utils.timezone
 import collections
 import os
 
+from docserver import exceptions
+
 class Collection(models.Model):
     """A set of related documents"""
 
@@ -55,6 +57,7 @@ class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
         return self.get_queryset().get(external_identifier=external_id)
 
+
 class Document(models.Model):
     """An item in the collection.
     It has a known title and is part of a collection.
@@ -72,8 +75,10 @@ class Document(models.Model):
         root_directory = None
         for c in self.collections.all():
             if root_directory and root_directory != c.root_directory:
-                raise Exception("If a document is in more than one collection they must have the same root_directory")
+                raise exceptions.NoRootDirectoryException("If a document is in more than one collection they must have the same root_directory")
             root_directory = c.root_directory
+        if not root_directory:
+            raise exceptions.NoRootDirectoryException("This document is in no collection and so has no root directory")
         return root_directory
 
     def get_absolute_url(self):
@@ -110,13 +115,13 @@ class Document(models.Model):
 
         This makes an assumption that the number of parts and extension
         are the same for all versions. At the moment they are, but
-        I'm not sure what to do if
+        I'm not sure what to do if not
         """
         ret = collections.defaultdict(list)
         derived = self.derivedfiles.all()
         for d in derived:
             item = {"extension": d.extension, "version": d.module_version.version,
-                    "outputname": d.outputname, "numparts": d.numparts,
+                    "outputname": d.outputname, "numparts": d.num_parts,
                     "mimetype": d.mimetype}
             ret[d.module_version.module.slug].append(item)
         newret = {}
@@ -139,6 +144,80 @@ class Document(models.Model):
 
             newret[k] = items
         return newret
+
+    def get_file(self, slug, subtype=None, part=None, version=None):
+        try:
+            sourcetype = SourceFileType.objects.get_by_slug(slug)
+        except SourceFileType.DoesNotExist:
+            sourcetype = None
+
+        if sourcetype:
+            files = self.sourcefiles.filter(file_type=sourcetype)
+            if len(files) == 0:
+                raise exceptions.NoFileException("Looks like a sourcefile, but I can't find one")
+            else:
+                return files[0]
+
+        try:
+            module = Module.objects.get(slug=slug)
+        except Module.DoesNotExist:
+            raise exceptions.NoFileException("Cannot find a module with type %s" % slug)
+        moduleversions = module.versions
+        if version:
+            moduleversions = moduleversions.filter(version=version)
+        else:
+            moduleversions = moduleversions.order_by("-date_added")
+        if len(moduleversions) == 0:
+            raise exceptions.NoFileException("No known versions for this module")
+
+        dfs = None
+        for mv in moduleversions:
+            # go through all the versions until we find a file of that version
+            # If we have a more recent version, but only a derived file for an older
+            # version, return the older version.
+            dfs = self.derivedfiles.filter(module_version=mv).all()
+            if subtype:
+                dfs = dfs.filter(outputname=subtype)
+            if dfs.count() > 0:
+                # We found some files, break
+                break
+        if dfs.count() > 1:
+            raise exceptions.TooManyFilesException(
+                "Found more than 1 subtype for this module but you haven't specified what you want")
+        elif dfs.count() == 1:
+            # Double-check if subtypes match. This is to catch the case where we
+            # have only one subtype for a type but we don't specify it in the
+            # query. By 'luck' we will get the right subtype, but this doesn't
+            # preclude the default subtype changing in a future version.
+            # Explicit is better than implicit
+            derived = dfs.get()
+            if derived.outputname != subtype:
+                raise exceptions.NoFileException(
+                    "This module has only one subtype which you must specify (%s)" % (derived.outputname,))
+            # Select the part.
+            # If the file has many parts and ?part is not set then it's an error
+            if part:
+                try:
+                    part = int(part)
+                except ValueError:
+                    raise exceptions.NoFileException("Invalid part")
+                if part > derived.num_parts:
+                    raise exceptions.NoFileException("Invalid part")
+
+            if derived.num_parts == 0:
+                raise exceptions.NoFileException("No parts on this file")
+            elif derived.num_parts > 1 and not part:
+                raise exceptions.TooManyFilesException("Found more than 1 part without part set")
+            else:
+                return derived
+        else:
+            # If no files, or none with this version
+            msg = "No derived files with this type/subtype"
+            if version:
+                msg += " or version"
+            raise exceptions.NoFileException(msg)
+
+
 
 class FileTypeManager(models.Manager):
     def get_by_slug(self, slug):
@@ -184,7 +263,8 @@ class SourceFile(models.Model):
     def slug(self):
         return self.file_type.slug
 
-    def get_absolute_url(self, url_slug='ds-download-external'):
+    def get_absolute_url(self, url_slug='ds-download-external', partnumber=None):
+        # partnumber is ignored here, it is added so that the DerivedFile one works
         return reverse(
             url_slug,
             args=[self.document.external_identifier, self.file_type.slug])
@@ -246,36 +326,59 @@ class DerivedFile(models.Model):
     mimetype = models.CharField(max_length=100)
     computation_time = models.IntegerField(blank=True, null=True)
 
+    # How many parts this DerivedFile is made up of
+    num_parts = models.IntegerField()
+
     # The version of essentia and pycompmusic we used to compute this file
     essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
     pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
 
     date = models.DateTimeField(default=django.utils.timezone.now)
 
-    def save_part(self, part_order, path, size):
-        """Add a part to this file"""
-        dfp, created = DerivedFilePart.objects.get_or_create(derivedfile=self, part_order=part_order, path=path, defaults={'size':size})
-        if not created:
-            dfp.size = size
-            dfp.save()
-
     @property
     def versions(self):
-        # TODO: This is only the versions of the module, not the versions of files we have
         versions = self.module_version.module.versions.all()
         return [v.version for v in versions]
 
-    @property
-    def numparts(self):
-        return self.parts.count()
+    def directory(self):
+        root_directory = self.document.get_root_dir()
+        recordingid = self.document.external_identifier
+        version = self.module_version.version
+        slug = self.module_version.module.slug
 
-    def get_absolute_url(self):
+        recordingstub = recordingid[:2]
+        reldir = os.path.join(recordingstub, recordingid, slug, version)
+        fdir = os.path.join(root_directory, settings.DERIVED_FOLDER, reldir)
+        return fdir
+
+    def full_path_for_part(self, partnumber):
+        try:
+            partnumber = int(partnumber)
+        except ValueError:
+            raise exceptions.NoFileException("Invalid part")
+        if partnumber > self.num_parts:
+            raise exceptions.NoFileException("partnumber is greater than number of parts")
+        return os.path.join(self.directory(), self.filename_for_part(partnumber))
+
+    def filename_for_part(self, partnumber):
+        recordingid = self.document.external_identifier
+        slug = self.module_version.module.slug
+        version = self.module_version.version
+        partslug = self.outputname
+        extension = self.extension
+
+        fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
+        return fname
+
+    def get_absolute_url(self, partnumber=None):
         url = reverse(
             "ds-download-external",
             args=[self.document.external_identifier, self.module_version.module.slug])
         v = self.module_version.version
         sub = self.outputname
         url = "%s?v=%s&subtype=%s" % (url, v, sub)
+        if partnumber:
+            url = "%s&part=%s" % (url, partnumber)
         return url
 
     def __unicode__(self):

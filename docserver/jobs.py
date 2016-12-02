@@ -189,25 +189,25 @@ def delete_collection(cid):
         os.remove(f)
     collection.delete()
 
+
 class NumPyArangeEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
             return obj.tolist()  # or map(int, obj)
         return json.JSONEncoder.default(self, obj)
 
-def _save_file(root_directory, recordingid, version, slug, partslug, partnumber, extension, data):
-    recordingstub = recordingid[:2]
-    reldir = os.path.join(recordingstub, recordingid, slug, version)
-    fdir = os.path.join(root_directory, settings.DERIVED_FOLDER, reldir)
+
+def _save_file(derivedfile, partnumber, extension, data):
+    fdir = derivedfile.directory()
     try:
         os.makedirs(fdir)
     except OSError:
         logger.warn("Error making directory %s" % fdir)
         pass
-    fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
+
+    fname = derivedfile.filename_for_part(partnumber)
 
     fullname = os.path.join(fdir, fname)
-    fullrelname = os.path.join(reldir, fname)
     try:
         fp = open(fullname, "wb")
         if extension == "json":
@@ -220,10 +220,7 @@ def _save_file(root_directory, recordingid, version, slug, partslug, partnumber,
     except OSError:
         logger.warn("Error writing to file %s" % fullname)
         logger.warn("Probably a permissions error")
-        return None, None, None
-    if not isinstance(data, basestring):
-        data = str(data)
-    return fullname, fullrelname, len(data)
+
 
 def _get_worker_from_hostname(hostname):
     if hostname and "@" in hostname:
@@ -250,26 +247,24 @@ def _save_process_results(version, instance, document, worker, results, starttim
             multipart = outputdata.get("parts", False)
             logger.info("data %s (%s)" % (dataslug, type(contents)))
             logger.info("multiparts %s" % multipart)
+
+            if not multipart:
+                contents = [contents]
             df, created = models.DerivedFile.objects.get_or_create(
                 document=document,
                 module_version=version, outputname=dataslug, extension=extension,
-                mimetype=mimetype, defaults={'computation_time':total_time})
+                mimetype=mimetype, defaults={'computation_time':total_time, 'num_parts': len(contents)})
             if not created:
                 df.date = django.utils.timezone.now()
+                df.num_parts = len(contents)
                 df.save()
             if worker:
                 df.essentia = worker.essentia
                 df.pycompmusic = worker.pycompmusic
                 df.save()
 
-            if not multipart:
-                contents = [contents]
             for i, partdata in enumerate(contents, 1):
-                saved_name, rel_path, saved_size = _save_file(
-                    document.get_root_dir(), document.external_identifier,
-                    version.version, moduleslug, dataslug, i, extension, partdata)
-                if saved_name:
-                    df.save_part(i, rel_path, saved_size)
+                _save_file(df, i, extension, partdata)
 
     # When we've finished, log that we processed the file. If this throws an
     # exception, we won't do the log.

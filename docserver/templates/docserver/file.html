@@ -37,7 +37,7 @@ pre.stacktrace {
     Pycompmusic version {{modulederived.0.pycompmusic.short_link|safe}} ({{modulederived.0.pycompmusic.commit_date|date:"DATETIME_FORMAT"}})
     {% for d in modulederived %}
     <li><a href="{{d.get_absolute_url}}">{{d.document.title}} ({{d.module_version.module.slug}}/{{d.outputname}})</a><br>
-    <code>docserver.file_for_document("{{d.document.external_identifier}}", "{{d.module_version.module.slug}}", "{{d.outputname}}", {% if d.numparts > 1 %}[part], {% endif %}version="{{d.module_version.version}}")</code>
+    <code>docserver.file_for_document("{{d.document.external_identifier}}", "{{d.module_version.module.slug}}", "{{d.outputname}}", {% if d.num_parts > 1 %}[part], {% endif %}version="{{d.module_version.version}}")</code>
     {% endfor %}
     {% elif showderived %}
     No files for this extractor

@@ -268,7 +268,7 @@ class Recording(BaseModel):
     def absolute_mp3_url(self):
         try:
             url = docserver.util.docserver_get_mp3_url(self.mbid)
-        except docserver.util.NoFileException:
+        except docserver.exceptions.NoFileException:
             url = None
         return url
 
@@ -306,10 +306,10 @@ class Recording(BaseModel):
             # we return "4", because it might be more interesting than 1, but if it fails
             # (e.g. only 3?) then just return 1
             return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 4)
-        except docserver.util.NoFileException:
+        except docserver.exceptions.NoFileException:
             try:
                 return docserver.util.docserver_get_url(self.mbid, "audioimages", "waveform32", 1)
-            except docserver.util.NoFileException:
+            except docserver.exceptions.NoFileException:
                 return ""
 
 

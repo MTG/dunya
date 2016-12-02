@@ -274,11 +274,11 @@ def basic_lyric_alignment(request, uuid, title=None):
     mbid = uuid
     try:
         lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         lyricsalignurl = None
     try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
     ret = {
            "recording": recording,
@@ -305,14 +305,14 @@ def lyric_alignment(request, uuid, title=None):
 
     try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
 
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
         min_pitch = max_pitch['min']
         max_pitch = max_pitch['max']
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         max_pitch = None
         min_pitch = None
 
@@ -341,7 +341,7 @@ def lyric_alignment(request, uuid, title=None):
                         option[2], version=option[3])
                 ret[u] = success_content
                 break
-            except docserver.util.NoFileException:
+            except docserver.exceptions.NoFileException:
                 ret[u] = None
 
     return render(request, "makam/lyric_alignment.html", ret)
@@ -393,14 +393,14 @@ def recording(request, uuid, title=None):
 
     try:
         audio = docserver.util.docserver_get_mp3_url(mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
 
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
         min_pitch = max_pitch['min']
         max_pitch = max_pitch['max']
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         max_pitch = None
         min_pitch = None
 
@@ -444,7 +444,7 @@ def recording(request, uuid, title=None):
                             option[0], option[1], option[2], version=option[3])
                     ret[u] = success_content
 
-            except docserver.util.NoFileException:
+            except docserver.exceptions.NoFileException:
                 ret[u] = None
 
     return render(request, "makam/recording.html", ret)
@@ -464,7 +464,7 @@ def download_derived_files(request, uuid, title=None):
                     module_version__version="0.2")
 
             if len(files) == 1:
-                for n in range(files[0].numparts):
+                for n in range(files[0].num_parts):
                     filenames.append((docserver.util.docserver_get_filename(w.mbid,
                         'score', 'score', n+1, '0.2'), '%s-%s-%d-%d' %
                         ('score', 'score', n+1, 2)))
@@ -476,7 +476,7 @@ def download_derived_files(request, uuid, title=None):
             filenames.append((docserver.util.docserver_get_filename(w.mbid,
                 'scoreanalysis', 'metadata', 1, '0.1'), '%s-%s-%d-%d' %
                 ('scoreanalysis', 'metadata', 1, 1)))
-        except docserver.util.NoFileException:
+        except docserver.exceptions.NoFileException:
             pass
 
     keys = sorted(urls.keys(), reverse=True)
@@ -497,7 +497,7 @@ def download_derived_files(request, uuid, title=None):
                         option[1], option[2], version=option[3]), '%s-%s-%d-%d' %
                         (option[0], option[1], 1, int(float(option[3])*10))))
                     break
-            except docserver.util.NoFileException:
+            except docserver.exceptions.NoFileException:
                 pass
 
     zip_subdir = "derivedfiles_%s" % mbid

@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from docserver import models
+from docserver import exceptions
 import compmusic
 import tempfile
 import os
@@ -23,11 +24,6 @@ import json
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 
-class NoFileException(Exception):
-    pass
-
-class TooManyFilesException(Exception):
-    pass
 
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
     meta = compmusic.file_metadata(fpath)
@@ -135,92 +131,36 @@ def docserver_get_wav_filename(documentid):
         p.communicate()
         return tmpname, True
 
+
 def docserver_get_url(documentid, slug, subtype=None, part=None, version=None):
-    part = _docserver_get_part(documentid, slug, subtype, part, version)
-    url = part.get_absolute_url()
-    return url
+    try:
+        document = models.Document.objects.get(external_identifier=documentid)
+    except models.Document.DoesNotExist:
+        raise exceptions.NoFileException()
+    part = document.get_file(slug, subtype, part, version)
+    return part.get_absolute_url(partnumber=part)
+
 
 def docserver_get_mp3_url(documentid):
-    part = _docserver_get_part(documentid, "mp3")
-    url = part.get_absolute_url("ds-download-mp3")
-    return url
+    try:
+        document = models.Document.objects.get(external_identifier=documentid)
+    except models.Document.DoesNotExist:
+        raise exceptions.NoFileException()
+    part = document.get_file("mp3")
+    return part.get_absolute_url("ds-download-mp3")
+
 
 def docserver_get_filename(documentid, slug, subtype=None, part=None, version=None):
-    part = _docserver_get_part(documentid, slug, subtype, part, version)
-    full_path = part.fullpath
-    return full_path
-
-def _docserver_get_part(documentid, slug, subtype=None, part=None, version=None):
     try:
-        doc = models.Document.objects.get(external_identifier=documentid)
+        document = models.Document.objects.get(external_identifier=documentid)
     except models.Document.DoesNotExist:
-        raise NoFileException("Cannot find a document with id %s" % documentid)
-    try:
-        sourcetype = models.SourceFileType.objects.get_by_slug(slug)
-    except models.SourceFileType.DoesNotExist:
-        sourcetype = None
-    if doc and sourcetype:
-        files = doc.sourcefiles.filter(file_type=sourcetype)
-        if len(files) == 0:
-            raise NoFileException("Looks like a sourcefile, but I can't find one")
-        else:
-            return files[0]
+        raise exceptions.NoFileException()
+    result = document.get_file(slug, subtype, part, version)
+    if isinstance(result, models.SourceFile):
+        return result.fullpath
+    else:
+        return result.full_path_for_part(part)
 
-    try:
-        module = models.Module.objects.get(slug=slug)
-    except models.Module.DoesNotExist:
-        raise NoFileException("Cannot find a module with type %s" % slug)
-    moduleversions = module.versions
-    if version:
-        moduleversions = moduleversions.filter(version=version)
-    else:
-        moduleversions = moduleversions.order_by("-date_added")
-    if len(moduleversions):
-        dfs = None
-        for mv in moduleversions:
-            # go through all the versions until we find a file of that version
-            dfs = doc.derivedfiles.filter(module_version=mv).all()
-            if subtype:
-                dfs = dfs.filter(outputname=subtype)
-            if dfs.count() > 0:
-                # We found some files, break
-                break
-        if dfs.count() > 1:
-            raise TooManyFilesException("Found more than 1 subtype for this module but you haven't specified what you want")
-        elif dfs.count() == 1:
-            # Double-check if subtypes match. This is to catch the case where we
-            # have only one subtype for a type but we don't specify it in the
-            # query. By 'luck' we will get the right subtype, but this doesn't
-            # preclude the default subtype changing in a future version.
-            # Explicit is better than implicit
-            derived = dfs.get()
-            if derived.outputname != subtype:
-                raise NoFileException("This module has only one subtype which you must specify (%s)" % (derived.outputname, ))
-            # Select the part.
-            # If the file has many parts and ?part is not set then it's an error
-            parts = derived.parts
-            if part:
-                try:
-                    part = int(part)
-                    parts = parts.filter(part_order=part)
-                except ValueError:
-                    raise NoFileException("Invalid part")
-            else:
-                parts = parts.all()
-            if parts.count() > 1:
-                raise TooManyFilesException("Found more than 1 part without part set")
-            elif parts.count() == 1:
-                return parts[0]
-            else:
-                raise NoFileException("No parts on this file")
-        else:
-            # If no files, or none with this version
-            msg = "No derived files with this type/subtype"
-            if version:
-                msg += " or version"
-            raise NoFileException(msg)
-    else:
-        raise NoFileException("No known versions for this module")
 
 def docserver_get_symbtrtxt(documentid):
     try:
@@ -228,6 +168,7 @@ def docserver_get_symbtrtxt(documentid):
     except ObjectDoesNotExist:
         return None
     return sf.fullpath
+
 
 def docserver_get_symbtrmu2(documentid):
     try:
@@ -243,12 +184,14 @@ def docserver_get_contents(documentid, slug, subtype=None, part=None, version=No
     except IOError:
         raise NoFileException
 
+
 def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
     try:
         contents = open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
         return json.loads(contents)
     except IOError:
         raise NoFileException
+
 
 def get_user_permissions(user):
     permission = ["U"]
@@ -258,14 +201,15 @@ def get_user_permissions(user):
         permission = ["R", "U"]
     return permission
 
+
 def user_has_access(user, document, file_type_slug, good_referrer):
-    '''
+    """
     Returns True if the user has access to the source_file, this is made through
     the related collection, or if the referrer is from dunya web.
     If the user is_staff also returns True.
     Also returns True if there is no Source File with that slug but there is a Module.
     file_type_slug is the slug of the file SourceFileType.
-    '''
+    """
     user_permissions = get_user_permissions(user)
     if user.is_staff:
         return True
@@ -286,14 +230,15 @@ def user_has_access(user, document, file_type_slug, good_referrer):
             permission__in=user_permissions).count() != 0
     return has_access or good_referrer
 
+
 def has_rate_limit(user, document, file_type_slug):
-    '''
+    """
     Returns True if the user has access to the source_file with rate limit,
     but if the user is staff always returns False
     file_type_slug is the slug of the file SourceFileType.
     In the case where there is no CollectionPermission element we return
     False, because it corresponds to a Module slug
-    '''
+    """
     user_permissions = get_user_permissions(user)
     if user.is_staff:
         return False
@@ -306,6 +251,6 @@ def has_rate_limit(user, document, file_type_slug):
             if not p.streamable:
                 return False
         return True
-    except ObjectDoesNotExist, e:
-         return False
+    except ObjectDoesNotExist:
+        return False
 

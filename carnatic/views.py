@@ -421,19 +421,19 @@ def recording(request, uuid, title=None):
 
     try:
         wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         wave = None
     try:
         spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         spec = None
     try:
         small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         small = None
     try:
         audio = docserver.util.docserver_get_mp3_url(recording.mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
     try:
         tonic = docserver.util.docserver_get_contents(recording.mbid, "carnaticvotedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
@@ -446,13 +446,13 @@ def recording(request, uuid, title=None):
             tonicname = notenames[thebin]
         else:
             tonicname = ""
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         tonic = None
         tonicname = None
     try:
         akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
         akshara = str(round(float(akshara), 3) * 1000)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         akshara = None
 
     try:
@@ -460,7 +460,7 @@ def recording(request, uuid, title=None):
         pitchtrackurl = request.build_absolute_uri(pitchtrackurl)
         histogramurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
         histogramurl = request.build_absolute_uri(histogramurl)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         pitchtrackurl = ""
         histogramurl = ""
 
@@ -469,7 +469,7 @@ def recording(request, uuid, title=None):
         rhythmurl = request.build_absolute_uri(rhythmurl)
         aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
         aksharaurl = request.build_absolute_uri(aksharaurl)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         rhythmurl = ""
         aksharaurl = ""
 

@@ -343,19 +343,19 @@ def recording(request, uuid, title=None):
 
     try:
         wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         wave = None
     try:
         spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         spec = None
     try:
         small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         small = None
     try:
         audio = docserver.util.docserver_get_mp3_url(recording.mbid)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         audio = None
     try:
         tonic = docserver.util.docserver_get_contents(recording.mbid, "hindustanivotedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
@@ -368,7 +368,7 @@ def recording(request, uuid, title=None):
             tonicname = notenames[thebin]
         else:
             tonicname = ""
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         tonic = None
         tonicname = None
 
@@ -379,7 +379,7 @@ def recording(request, uuid, title=None):
             aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
             akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
             akshara = str(round(float(akshara), 3) * 1000)
-        except docserver.util.NoFileException:
+        except docserver.exceptions.NoFileException:
             akshara = None
             aksharaurl = None
     else:
@@ -390,7 +390,7 @@ def recording(request, uuid, title=None):
         pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "packedpitch", version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
         histogramurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
         rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
-    except docserver.util.NoFileException:
+    except docserver.exceptions.NoFileException:
         pitchtrackurl = None
         histogramurl = None
         rhythmurl = None
