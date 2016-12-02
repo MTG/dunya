@@ -113,7 +113,7 @@ class InactiveUserForm(forms.ModelForm):
 class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
-        exclude = ['name']
+        exclude = ['name', 'collectionid']
 
 OPTIONS = (
             ("tabs", "Tabs"),

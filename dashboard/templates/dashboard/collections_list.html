@@ -19,7 +19,7 @@
             <a name="anchor-{{ letter.grouper }}"></a>
             <h3>{{ letter.grouper }}</h3>    
             {% for item in letter.list %}
-                <li><a href="{% url 'dashboard-access-collections-edit' item.mbid %}">{{item.name}}</a></li>
+                <li><a href="{% url 'dashboard-access-collections-edit' item.collectionid %}">{{item.name}}</a></li>
             {% endfor %}
         </div>
     {% endfor %}

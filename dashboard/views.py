@@ -734,7 +734,7 @@ def _edit_artist_desc(request, artist, entityurl):
 
 def list_access_collections(request):
     """ List of data.Collection for edition """
-    params = {"collections": data.models.Collection.objects.all()}
+    params = {"collections": data.models.Collection.objects.order_by('name').all()}
     return render(request, "dashboard/collections_list.html", params)
 
 def edit_access_collections(request, uuid):
