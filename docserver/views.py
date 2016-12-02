@@ -19,9 +19,8 @@ import datetime
 import inspect
 import pkgutil
 import imp
-import os
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
@@ -274,11 +273,18 @@ def workers_status(request):
                 state = "Active"
             else:
                 state = "Idle"
+            if essentia:
+                e = {'version': essentia.sha1, 'link': essentia.short_link()}
+            else:
+                e = {}
+            if pyc:
+                p = {'version': pyc.sha1, 'link': pyc.short_link()}
+            else:
+                p = {}
             neww.append({"host": host,
                          "number": num_proc,
                          "state": state,
-                         "worker": {'essentia': {'version': essentia.sha1,
-                             'link': essentia.short_link()}, 'pyc': {'version': pyc.sha1, 'link': pyc.short_link()}}})
+                         "worker": {'essentia': e, 'pyc': p}})
 
         workers = neww
         newworkers = list(set(hostkeys) - set(workerkeys))

@@ -131,6 +131,7 @@ def get_latest_module_version(themod_id=None):
             m.disabled = True
             m.save()
 
+
 @app.task
 def delete_moduleversion(vid):
     version = models.ModuleVersion.objects.get(pk=vid)
@@ -157,6 +158,7 @@ def delete_moduleversion(vid):
         logger.info(" .. module deleted")
     logger.info("done")
 
+
 @app.task
 def delete_module(mid):
     module = models.Module.objects.get(pk=mid)
@@ -164,6 +166,7 @@ def delete_module(mid):
     for v in module.versions.all():
         delete_moduleversion(v.pk)
     logger.info("done")
+
 
 @app.task
 def delete_collection(cid):
@@ -232,6 +235,7 @@ def _get_worker_from_hostname(hostname):
         # Worker object for all our hosts
         worker = None
     return worker
+
 
 def _save_process_results(version, instance, document, worker, results, starttime, endtime):
     total_time = int(endtime - starttime)
@@ -377,6 +381,15 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
 ESSENTIA_DIR = "/srv/essentia"
 COMPMUSIC_DIR = "/srv/dunya/env/src/pycompmusic"
 
+def get_compmusic_dir():
+    try:
+        import compmusic
+        d = os.path.dirname(compmusic.__file__)
+        d = os.path.abspath(os.path.join(d, ".."))
+        return d
+    except ImportError:
+        return None
+
 def get_git_hash(cwd):
     proc = subprocess.Popen("git rev-parse HEAD", cwd=cwd, stdout=subprocess.PIPE, shell=True)
     version = proc.communicate()[0].strip()
@@ -386,27 +399,44 @@ def get_git_hash(cwd):
     date = date.replace(" +", "+").replace(" -", "-")
     return version, date
 
+
 def get_pycompmusic_hash():
-    return get_git_hash(COMPMUSIC_DIR)
+    d = get_compmusic_dir()
+    if d:
+        return get_git_hash(d)
+    else:
+        return None, None
+
 
 def get_essentia_hash():
-    return get_git_hash(ESSENTIA_DIR)
+    if os.path.exists(ESSENTIA_DIR):
+        return get_git_hash(ESSENTIA_DIR)
+    else:
+        return None, None
+
 
 def get_essentia_version():
-    import essentia
-    return essentia.__version__
+    try:
+        import essentia
+        return essentia.__version__
+    except ImportError:
+        return None
+
 
 @app.task
 def register_host(hostname):
-    try:
-        # Some machines don't have essentia
-        ever = get_essentia_version()
+    # Some machines don't have essentia
+    ever = get_essentia_version()
+    if ever:
         ehash, edate = get_essentia_hash()
         essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
-    except OSError:
+    else:
         essentia = None
     phash, pdate = get_pycompmusic_hash()
-    pycompmusic, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
+    if phash and pdate:
+        pycompmusic, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
+    else:
+        pycompmusic = None
 
     worker, created = models.Worker.objects.get_or_create(hostname=hostname)
     worker.essentia = essentia

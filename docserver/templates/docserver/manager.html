@@ -18,26 +18,28 @@ input[disabled] {
 function renderWork(dat){
   var anyActive = false;
   var html = '';
-  for(var i=0;i<dat.workers.length;i++){
+  for(var i = 0; i < dat.workers.length; i++){
     var w = dat.workers[i];  
     html += '<div class="col-xs-6 col-sm-3 placeholder"><div class="info img-thumbnail">';
-    if( w.number){
+    if (w.number) {
       anyActive = true;
       html += '<span class="h1 activenumber">' +  w.number + '</span><br><span class="h3">' + w.state + '</span>';
-    }else{
+    } else {
       html += '<span class="h3">' + w.state + '</span>';
     }
     html += '<p class="text-left">';
-    if(w.worker.essentia.version != dat.latestessentia){
-      html += '<span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of essentia is older than the most recent in the cluster"> Essentia: ' + w.worker.essentia.link + '</span>';
-    } else if (w.worker.essentia){
-      html += '<span class="label label-default">Ess: ' + w.worker.essentia.link + '</span>';
+    if (!$.isEmptyObject(w.worker.essentia)) {
+      if (w.worker.essentia.version != dat.latestessentia) {
+        html += '<span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of essentia is older than the most recent in the cluster"> Essentia: ' + w.worker.essentia.link + '</span>';
+      } else {
+        html += '<span class="label label-default">Ess: ' + w.worker.essentia.link + '</span>';
+      }
     } else {
       html += '<br>';
     }
-    if(w.worker.pyc.version != dat.latestpycm){
+    if (w.worker.pyc.version != dat.latestpycm){
       html += '<span data-toggle="tooltip" data-placement="right" class="label label-danger" title="This version of pycompmusic is older than the most recent in the cluster"> Pcm: ' + w.worker.pyc.link + '</span>';
-    } else if (w.worker.pyc ){
+    } else if (w.worker.pyc) {
      html += ' <span class="label label-default">Pcm: ' + w.worker.pyc.link + '</span>';
     } 
     html += '</p></div><h4><a href="/document/manager/worker/' + w.host + '">' + w.host + '</a></h4></div>';
