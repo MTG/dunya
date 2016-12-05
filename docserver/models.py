@@ -380,6 +380,10 @@ class DerivedFile(models.Model):
         sub = self.outputname
         url = "%s?v=%s&subtype=%s" % (url, v, sub)
         if partnumber:
+            try:
+                partnumber = int(partnumber)
+            except ValueError:
+                raise exceptions.NoFileException("Invalid part")
             url = "%s&part=%s" % (url, partnumber)
         return url
 

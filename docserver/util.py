@@ -140,8 +140,8 @@ def docserver_get_url(documentid, slug, subtype=None, part=None, version=None):
         document = models.Document.objects.get(external_identifier=documentid)
     except models.Document.DoesNotExist:
         raise exceptions.NoFileException()
-    part = document.get_file(slug, subtype, part, version)
-    return part.get_absolute_url(partnumber=part)
+    thefile = document.get_file(slug, subtype, part, version)
+    return thefile.get_absolute_url(partnumber=part)
 
 
 def docserver_get_mp3_url(documentid):
