@@ -231,8 +231,9 @@ def manager(request):
             return redirect('docserver-manager')
 
     collections = models.Collection.objects.all()
+    modules = models.Module.objects.order_by('name').all()
 
-    ret = {"collections": collections}
+    ret = {"collections": collections, "modules": modules}
     return render(request, 'docserver/manager.html', ret)
 
 @user_passes_test(is_staff)
