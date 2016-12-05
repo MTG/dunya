@@ -32,6 +32,9 @@ def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
 
     try:
         document = models.Document.objects.get_by_external_id(recordingid)
+        collection = models.Collection.objects.get(collectionid=collectionid)
+        if collection not in document.collections.all():
+            document.collections.add(collection)
     except models.Document.DoesNotExist:
         document = docserver_create_document(collectionid, recordingid, title)
 

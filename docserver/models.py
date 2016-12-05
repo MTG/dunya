@@ -352,6 +352,8 @@ class DerivedFile(models.Model):
         return fdir
 
     def full_path_for_part(self, partnumber):
+        if not partnumber:
+            raise exceptions.NoFileException("Invalid part")
         try:
             partnumber = int(partnumber)
         except ValueError:
@@ -561,6 +563,8 @@ class ModuleVersion(models.Model):
 
     def unprocessed_files_count(self):
         collections = self.module.collections.all()
+        if len(collections) == 0:
+            return 0
         coll_ids = [str(c.id) for c in collections]
         q = '''
 SELECT COUNT(DISTINCT "docserver_document"."id")

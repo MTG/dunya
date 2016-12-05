@@ -29,6 +29,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms.models import modelformset_factory
 
+import docserver
 from docserver import models
 from docserver import forms
 from docserver import jobs
@@ -184,9 +185,11 @@ def download_external(request, uuid, ftype):
         if isinstance(result, models.SourceFile):
             fname = result.fullpath
         else:
+            if part is None:
+                part = 1
             fname = result.full_path_for_part(part)
 
-        mimetype = file.mimetype
+        mimetype = result.mimetype
         ratelimit = "off"
         if util.has_rate_limit(user, doc, ftype):
             # 200k
@@ -198,9 +201,9 @@ def download_external(request, uuid, ftype):
         response['X-Accel-Limit-Rate'] = ratelimit
 
         return response
-    except util.TooManyFilesException as e:
+    except docserver.exceptions.TooManyFilesException as e:
         return HttpResponseBadRequest(e)
-    except util.NoFileException as e:
+    except docserver.exceptions.NoFileException as e:
         return HttpResponseNotFound(e)
 
 #### Essentia manager
