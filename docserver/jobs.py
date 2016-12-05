@@ -152,10 +152,6 @@ def delete_moduleversion(vid):
         f.delete()
     module = version.module
     version.delete()
-    if module.versions.count() == 0:
-        logger.info("No more moduleversions for this module, deleting the module")
-        module.delete()
-        logger.info(" .. module deleted")
     logger.info("done")
 
 
