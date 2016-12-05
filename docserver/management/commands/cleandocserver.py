@@ -21,15 +21,57 @@ import os
 
 import docserver.models
 
+def rmderived(d):
+    """Remove all file parts from a derived file, and then
+       remove the common directory tree in one step"""
+    paths = []
+    for p in range(1, d.num_parts+1):
+        paths.append(d.full_path_for_part(p))
+    if not paths:
+        return
+    for pth in paths:
+        if os.path.exists(pth):
+            os.unlink(pth)
+    # Check if all derived parts appear in the same directory (they should)
+    dirs = []
+    for pth in paths:
+        parts = pth.split("/")
+        pth = "/" + os.path.join(*parts[:-1])
+        dirs.append(pth)
+    if os.path.commonprefix(dirs) == dirs[0]:
+        rmtree(dirs[0])
+    else:
+        for d in dirs:
+            rmtree(d)
+
+
 def rmtree(path):
+    # Delete file
     if os.path.exists(path):
         os.unlink(path)
+
+    # Path of containing directory
     parts = path.split("/")
     path = "/" + os.path.join(*parts[:-1])
-    while len(os.listdir(path)) == 0:
-        os.rmdir(path)
+    if os.path.exists(path):
+        exists = True
+        numfiles = len(os.listdir(path))
+    else:
+        exists = False
+        numfiles = 0
+    while not exists or numfiles == 0:
+        # Keep moving up the directory tree if the dir is empty
+        # or it does not exist
+        if exists:
+            os.rmdir(path)
         parts = path.split("/")
         path = "/" + os.path.join(*parts[:-1])
+        if os.path.exists(path):
+            exists = True
+            numfiles = len(os.listdir(path))
+        else:
+            exists = False
+            numfiles = 0
 
 class Command(BaseCommand):
     help = 'Delete derivedfiles for all SourceFile entries with no associated file'
@@ -51,9 +93,11 @@ class Command(BaseCommand):
             if not os.path.exists(s.fullpath):
                 print "%s/%s" % (i, len(sourcefiles)), s
                 bad.append(s)
+        print "got %s item%s to remove" % (len(bad), "" if len(bad)==1 else "s")
         if not delete:
             print "Run again with `-d` flag to delete all DerivedFiles associated with these SourceFiles"
         if delete:
+            print "removing..."
             for b in bad:
                 filetype = b.file_type
                 modules = docserver.models.Module.objects.filter(source_type=filetype)
@@ -62,9 +106,7 @@ class Command(BaseCommand):
                 # TODO: This only deletes DerivedFiles directly related
                 # to the source file, and does not chain through to others
                 for d in derived:
-                    for p in d.parts.all():
-                        rmtree(p.fullpath)
-                        p.delete()
+                    rmderived(d)
                     d.delete()
                 b.delete()
                 if document.sourcefiles.count() == 0 and document.derivedfiles.count() == 0:

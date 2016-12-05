@@ -138,8 +138,8 @@ def delete_moduleversion(vid):
     logger.info("deleting moduleversion %s" % version)
     files = version.derivedfile_set.all()
     for f in files:
-        for p in f.parts.all():
-            path = p.fullpath
+        for pn in range(1, f.num_parts+1):
+            path = f.full_path_for_part(pn)
             try:
                 os.unlink(path)
                 dirname = os.path.dirname(path)
@@ -179,8 +179,12 @@ def delete_collection(cid):
         else:
             collections.add(d)
 
-    dfparts = models.DerivedFilePart.objects.filter(derivedfile__document__collections__in=collections)
-    paths = [f.fullpath for f in dfparts]
+    dfs = models.DerivedFile.objects.filter(document__collections__in=collections)
+    paths = []
+    for df in dfs:
+        for pn in range(1, df.num_parts+1):
+            path = f.full_path_for_part(pn)
+            paths.append(path)
     for f in paths:
         os.remove(f)
     collection.delete()
