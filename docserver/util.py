@@ -122,7 +122,7 @@ def docserver_get_wav_filename(documentid):
     try:
         filename = docserver_get_filename(documentid, "wav", "wave")
         if not os.path.exists(filename):
-            raise NoFileException("Wave file doesn't exist")
+            raise exceptions.NoFileException("Wave file doesn't exist")
         return filename, False
     except:  # Error getting file because it's not in the db or it doesn't exist
         print "Error getting file, calculating again"
@@ -185,7 +185,7 @@ def docserver_get_contents(documentid, slug, subtype=None, part=None, version=No
     try:
         return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
     except IOError:
-        raise NoFileException
+        raise exceptions.NoFileException
 
 
 def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
@@ -193,7 +193,7 @@ def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
         contents = open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
         return json.loads(contents)
     except IOError:
-        raise NoFileException
+        raise exceptions.NoFileException
 
 
 def get_user_permissions(user):
