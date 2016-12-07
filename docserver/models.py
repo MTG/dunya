@@ -369,7 +369,12 @@ class DerivedFile(models.Model):
         partslug = self.outputname
         extension = self.extension
 
-        fname = "%s-%s-%s.%s" % (slug, partslug, partnumber, extension)
+        # TODO: This filename originally did not include the recordingid or version,
+        #       so we should first check if this file exists and if not, return
+        #       the short one.  Remove this check once old filenames are renamed
+        fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
+        if not os.path.exists(os.path.join(self.directory(), fname)):
+            fname = "%s-%s-%s.%s" % (slug, partslug, partnumber, extension)
         return fname
 
     def get_absolute_url(self, partnumber=None):
