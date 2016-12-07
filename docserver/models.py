@@ -369,7 +369,7 @@ class DerivedFile(models.Model):
         partslug = self.outputname
         extension = self.extension
 
-        fname = "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
+        fname = "%s-%s-%s.%s" % (slug, partslug, partnumber, extension)
         return fname
 
     def get_absolute_url(self, partnumber=None):

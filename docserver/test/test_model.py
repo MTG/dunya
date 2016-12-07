@@ -188,11 +188,11 @@ class TestUrlsAndPaths(TestCase):
 
     def test_derived_file_path(self):
         pathder = self.df.full_path_for_part(1)
-        self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/f522f7c6-8299-44e9-889f-063d37526801-derived-0.1-meta-1.json", pathder)
+        self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/derived-meta-1.json", pathder)
 
         with self.assertRaises(exceptions.NoFileException) as cm:
             pathder = self.df.full_path_for_part(3)
         self.assertEqual(cm.exception.message, "partnumber is greater than number of parts")
 
         pathder2 = util.docserver_get_filename("f522f7c6-8299-44e9-889f-063d37526801", "derived", "meta", "2")
-        self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/f522f7c6-8299-44e9-889f-063d37526801-derived-0.1-meta-2.json", pathder2)
+        self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/derived-meta-2.json", pathder2)
