@@ -192,6 +192,7 @@ def filter_directory(request):
         url["q"] = "q=" + SafeString(q.encode('utf8'))
 
     recording_ids = recordings.values_list('id', flat=True).all()
+    elems = []
     if elem == "makam":
         elems = models.Makam.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
     elif elem == "form":
