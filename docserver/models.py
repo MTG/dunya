@@ -281,38 +281,13 @@ class SourceFile(models.Model):
     def __unicode__(self):
         return u"%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
-class DerivedFilePart(models.Model):
-    derivedfile = models.ForeignKey("DerivedFile", related_name='parts')
-    part_order = models.IntegerField()
-    path = models.CharField(max_length=500)
-    size = models.IntegerField()
-
-    @property
-    def mimetype(self):
-        return self.derivedfile.mimetype
-
-    @property
-    def fullpath(self):
-        return os.path.join(self.derivedfile.document.get_root_dir(), settings.DERIVED_FOLDER, self.path)
-
-    def get_absolute_url(self, url_slug='ds-download-external'):
-        url = reverse(
-            url_slug,
-            args=[self.derivedfile.document.external_identifier, self.derivedfile.module_version.module.slug])
-        v = self.derivedfile.module_version.version
-        sub = self.derivedfile.outputname
-        part = self.part_order
-        url = "%s?part=%s&v=%s&subtype=%s" % (url, part, v, sub)
-        return url
-
-    def __unicode__(self):
-        ret = u"%s: path %s" % (self.derivedfile, self.path)
-        if self.part_order:
-            ret = u"%s - part %s" % (ret, self.part_order)
-        return ret
 
 class DerivedFile(models.Model):
-    """An actual file. References a document"""
+    """A file which is the result of processing a SourceFile with an algorithm"""
+
+    class Meta:
+        unique_together = ("document", "module_version", "outputname")
+
 
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
