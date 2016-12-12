@@ -6,8 +6,6 @@ from docserver import util
 
 import uuid
 
-import mock
-
 class TestDocument(TestCase):
 
     fixtures = ['docserver_sourcefiletype']
@@ -188,9 +186,7 @@ class TestUrlsAndPaths(TestCase):
         self.assertEqual("/document/by-id/f522f7c6-8299-44e9-889f-063d37526801/derived?v=0.1&subtype=meta&part=2", urlder)
 
 
-    @mock.patch("os.path.exists")
-    def test_derived_file_path(self, exists):
-        exists.side_effect = [True, True, False]
+    def test_derived_file_path(self):
         pathder = self.df.full_path_for_part(1)
         self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/f522f7c6-8299-44e9-889f-063d37526801-derived-0.1-meta-1.json", pathder)
 
@@ -200,8 +196,3 @@ class TestUrlsAndPaths(TestCase):
 
         pathder2 = util.docserver_get_filename("f522f7c6-8299-44e9-889f-063d37526801", "derived", "meta", "2")
         self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/f522f7c6-8299-44e9-889f-063d37526801-derived-0.1-meta-2.json", pathder2)
-
-        # Check that if the full file doesn't exist, it tries the short one
-        # TODO: Remove once this check is no longer done, when files are renamed
-        pathder2 = util.docserver_get_filename("f522f7c6-8299-44e9-889f-063d37526801", "derived", "meta", "2")
-        self.assertEqual("/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/derived-meta-2.json", pathder2)
