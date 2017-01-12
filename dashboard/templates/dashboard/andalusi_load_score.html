@@ -36,13 +36,14 @@ $( document ).ready(function() {
   <div>
     {%if score%}
     <div>
-      <a href="{{score.get_absolute_url}}">View Score file</a>
-      <span> If you want to change this score, you can upload the new one here:</span>
+      <h3> Ya existe una transcripci&oacute;n: <a href="{{score.get_absolute_url}}">Descargar</a></h3>
+      
+      <h3> Para sustituirla, se puede cargar una nueva a continuaci&oacute;n:</h3>
     </div>
     {%else%}
     <span>There is no score for this recording, please upload one:</span>
     {%endif%}
-  <form method="post" id="score-form" enctype="multipart/form-data">
+      <form method="post" id="score-form" enctype="multipart/form-data">
      {% csrf_token %}
     {{form}}
   </form>
