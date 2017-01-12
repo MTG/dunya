@@ -153,7 +153,7 @@ def docserver_get_mp3_url(documentid):
     return part.get_absolute_url("ds-download-mp3")
 
 
-def docserver_get_filename(documentid, slug, subtype=None, part=0, version=None):
+def docserver_get_filename(documentid, slug, subtype=None, part=1, version=None):
     try:
         document = models.Document.objects.get(external_identifier=documentid)
     except models.Document.DoesNotExist:
