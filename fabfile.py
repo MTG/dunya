@@ -2,7 +2,7 @@ from fabric.api import local, settings, env, roles, run, cd, hide, shell_env
 import os
 
 env.roledefs["web"] = ["sitar.s.upf.edu"]
-env.roledefs["workers"] = ["itri.s.upf.edu", "devaraya.s.upf.edu", "amirkhusro.s.upf.edu", "kora.s.upf.edu", "guqin.s.upf.edu", "ziryab.s.upf.edu"]
+env.roledefs["workers"] = ["itri.s.upf.edu", "devaraya.s.upf.edu", "kora.s.upf.edu", "guqin.s.upf.edu"]
 env.use_ssh_config = True
 env.forward_agent = True
 
