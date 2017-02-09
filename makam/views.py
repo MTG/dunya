@@ -335,6 +335,7 @@ def lyric_alignment(request, uuid, title=None):
     urls = recordings_urls()
     urls["notesalignurl"] = [("lyrics-align", "alignedLyricsSyllables", 1, "0.1")]
     urls["alignsectionsurl"] = [("lyrics-align", "sectionlinks", 1, "0.1")]
+    urls["waveform"] = [("makamaudioimages", "inv_mfcc_spectrum8", 1, 0.3)],
     for u in urls.keys():
         for option in urls[u]:
             try:
