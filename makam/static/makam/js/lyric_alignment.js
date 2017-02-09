@@ -30,8 +30,6 @@ $(document).ready(function() {
      beginningOfView = 0;
      secondsUsedPerView = ratioUsedView * secondsPerView;
      // The 900 pitch values currently on screen
-     pitchvals = new Array(900);
-     histovals = new Array(900);
      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
      oscillator = audioCtx.createOscillator();
      gainNode = audioCtx.createGain();
@@ -107,235 +105,6 @@ $(document).ready(function() {
      loaddata();
 });
 
-function plothistogram() {
-    var histogram = $("#histogramcanvas")[0];
-    histogram.width = 200;
-    histogram.height = 256;
-    var context = histogram.getContext("2d");
-    histogramMax = 0;
-    var data = histogramdata[currentWork];
-    for (var i = 0; i < data['vals'].length; i++) {
-        if (data['vals'][i] > histogramMax) {
-            histogramMax = data['vals'][i];
-        }
-    }
-    
-    var lastStables = [];
-    for (key in notemodels[currentWork]){
-        var currMax = 0;
-        for (var i = 0; i < notemodels[currentWork][key]['distribution']['vals'].length; i++) {
-            if (notemodels[currentWork][key]['distribution']['vals'][i] > histogramMax) {
-                histogramMax = notemodels[currentWork][key]['distribution']['vals'][i];
-            }
-        }
-        lastStables.push([notemodels[currentWork][key]['stable_pitch']['value'], key, notemodels[currentWork][key]['performed_interval']['value']]);
-    }
-    plotRefFreq(context, lastStables); 
-    plothistogrampart(context, data);
-}
-/*
- * Sets the event for showing the frequency at the mouse position, 
- * also draws tonic on canvas
- */
-function plotRefFreq(context, lastStables){
-  var positiveFreqs = lastStables.filter(function (el) {
-        return el[2] >= 0;
-    });
-    lastStables = positiveFreqs;
-    lastStables.sort(function(a, b){return a[2]-b[2]}); 
-
-    histogramcanvas = $('.waveLabel canvas');
-    histogramcanvas.mousemove(function(e) {
-        var sectionName = ''; 
-        var rect = histogramcanvas[0].getBoundingClientRect();
-        var mousePos = e.clientY - rect.top;
-        if (lastStables) {
-            var offset_t = $(this).offset().top - $(window).scrollTop();
-            var vtop = Math.round( (e.clientY - offset_t) );
-            var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
-            var note = null;
-            var cents = null;
-            for (var i=0; i<lastStables.length; i++){
-                  var cent = 1200*Math.log2(freq/lastStables[i][0])
-                  if( Math.abs(cent) < 50 ){
-                  note = lastStables[i][1];
-                  cents = Math.floor(lastStables[i][2]);
-                  break;
-                }
-            }
-            var html = "";
-            if (note != null){
-              html += "<b>" + note + "</b>, ";
-            }
-            if(cents){
-              html += Math.floor(lastStables[i][0]) + " Hz";
-              html += ", " + Math.floor(lastStables[i][2]) +" cents";
-            }else{
-              html += Math.floor(freq) + " Hz";
-            }
-            $("#freq-info").html(html);
-            $("#freq-info").show();
-            $("#freq-info").css({
-                "top" : e.pageY - $(this).offset().top,
-                "left" : e.pageX - $(this).offset().left + 15 
-            });
-        }
-     });
-     histogramcanvas.click(function(e) {
-        var sectionName = ''; 
-        var rect = histogramcanvas[0].getBoundingClientRect();
-        var mousePos = e.clientY - rect.top;
-        var offset_t = $(this).offset().top - $(window).scrollTop();
-        var vtop = Math.round( (e.clientY - offset_t) );
-        var freq = ( (parseInt(pitchMax) - parseInt(pitchMin)) * (255-parseInt(vtop)))/255 + parseInt(pitchMin);
-        if (lastStables) {
-            var fix_freq = null;
-            for (var i=0; i<lastStables.length; i++){
-                  var cent = 1200*Math.log2(freq/lastStables[i][0])
-                  if( Math.abs(cent) < 50 ){
-                  fix_freq = Math.floor(lastStables[i][0]);
-                  break;
-                }
-            }
-            if(fix_freq){
-              play_osc(Math.floor(lastStables[i][0])); 
-            }else{
-              play_osc(Math.floor(freq)); 
-            }
-        }
-     });
-     
-     histogramcanvas.mouseleave(function() {
-        $("#freq-info").hide();
-     });
-
-    for (var i=0; i<lastStables.length; i++){
-      if(lastStables[i][2]==0 ) {
-         var freq = Math.floor(lastStables[i][0]);
-         var j = (freq - pitchMin) / ( pitchMax - pitchMin );
-         context.font = "Bold 12px Open Sans";
-         context.fillText(lastStables[i][1]+": ", 120 ,265-Math.round(j*255));
-         context.font = "12px Open Sans";
-         context.fillText(freq + " Hz", 150 ,265-Math.round(j*255));
-         context.beginPath();
-         context.moveTo(0, 255-Math.round(j*255));
-         for (k=0;k<130;k+=10){
-             context.lineTo(k, 255-Math.round(j*255));
-             context.moveTo(k+5, 255-Math.round(j*255));
-         }
-      }
-      context.lineWidth = 1;
-      context.strokeStyle = "#000";
-      context.stroke();
-      context.closePath();
-    }
-}
-/*
- * Given data and color, plots histogram of frequencies. Used por current note and whole histogram.
- */
-function plothistogrampart(context, data, color){
-    context.beginPath();
-    var lastv = [];
-    var lastj = 0;
-    for (var i = 0; i < data['vals'].length; i++) {
-        var v = (data['vals'][i]) * 200/histogramMax;
-        var j = (data['bins'][i] - pitchMin) / ( pitchMax - pitchMin );
-        curr = 255-Math.round(j*255);
-        lastv.push(v);
-        if (curr != lastj){
-            sum = 0;
-            for (var r=0;r<lastv.length;r++){
-                sum+=lastv[r];
-            }
-            context.lineTo(sum/lastv.length, curr);
-            lastv = [];
-        }
-        lastj = curr;
-        
-    }
-    context.lineWidth = 2;
-    if(color){
-        context.strokeStyle = color;
-    }else{
-        context.strokeStyle = "#e71d25";
-    }
-    context.stroke();
-    context.closePath();
-
-}
-function plottonic(context) {
-    // Sa and sa+1 line.
-    context.beginPath();
-    // sa+1, dotted
-    var tonic = Math.floor(tonicdata[currentWork]['value']);
-    var tonicval = 255-(255 *(tonic - pitchMin) / (pitchMax - pitchMin));
-    context.moveTo(0, tonicval);
-    context.lineWidth = 2;
-    for (var i = 0; i < 900; i+=10) {
-        context.moveTo(i, tonicval);
-        context.lineTo(i+5, tonicval);
-    }
-    context.strokeStyle = "#ffffff";
-    context.stroke();
-}
-
-function spectrogram(context, view, color) {
-    var waszero = false;
-    //context.moveTo(0, 10);
-    //context.moveTo(0, 10);
-    //context.lineTo(10, 10);
-    //context.moveTo(0,0);
-    var skip = secondsPerView / 4 ;
-    // Start is in samples
-    var start = beginningOfView * 900 * skip / secondsPerView;
-    // Number of pixels we draw
-    var end = Math.min(900+start, start+(view.length-start)/skip);
-    var remaining = view.length-start;
-    //console.debug("length " + view.length);
-    //console.debug(remaining + " samples remaining");
-    //console.debug("with skip, " + (remaining/skip) + " rem");
-    //console.debug("skip " + skip);
-    //console.debug("draw from " + start + " to " + end);
-    context.beginPath();
-    for (var i = start; i < end; i++) {
-        // Find our point
-        var xpos = i-start;
-        var dataindex = start + xpos*skip;
-        var data = view[dataindex];
-        // Invert on canvas
-        var tmp = 255-data;
-        //console.debug(" at ("+xpos+","+tmp+") data " + dataindex);
-        // We choose 0 if the pitch is unknown, or 255 if it's
-        // higher than the 3 octaves above tonic. If so, we don't
-        // want to draw something, just skip until the next value
-        if (tmp == 0 || tmp == 255) {
-            waszero = true;
-            context.moveTo(xpos, tmp);
-        } else {
-            if (waszero) {
-                waszero = false;
-                context.moveTo(xpos, tmp);
-            } else {
-                context.lineTo(xpos, tmp);
-            }
-        }
-        // Set the pitchvals so we can draw the histogram
-        pitchvals[xpos] = tmp;
-    
-    }
-
-    //context.strokeStyle = "#e71d25";
-    context.strokeStyle = color[0];
-    context.lineWidth = 3;
-    context.stroke();
-    context.strokeStyle = color[1];
-    context.lineWidth = 2;
-    context.stroke();
-    
-    context.closePath();
-    plottonic(context);
-}
-
 function plotscore(index, color) {
     $('.highlight').removeClass('highlight');
     $('#syllable-'+index).addClass('highlight');
@@ -346,65 +115,6 @@ function disableScore(currentTime){
         $("#no-score").show(); 
         $("#score-cont").hide(); 
     }
-}
-function showNoteOnHistogram(note, time){
-   if (!note ){
-       showingNote = null;
-       $('#current-note').hide();
-       return;
-   }
-   var histogram = $("#histogram-current-note")[0]; 
-   var ctxNotes = histogram.getContext("2d");
-
-   var currPos = (time % 8);
-   currPos = (time -beginningOfView) * 900 / secondsPerView ;
-   var pitch = histovals[Math.floor(currPos)];
-   if (!pitch){
-       ctxNotes.clearRect(0, 0, 900, 900);
-       return ;
-   }
-
-
-   $('#current-note').show();
-
-   if (showingNote!=note){
-       histogram.width = 200;
-       histogram.height = 256;
-       var ctxNotes = histogram.getContext("2d");
-       plothistogrampart(ctxNotes, notemodels[currentWork][note]['distribution'], "#0099FF");
-       $('#current-note').html("Current Note:<br /><b>" + note + "</b>");
-       showingNote=note;
-   }
-}
-function updateFrequencyMarker(time){
-   var canvas = $('#overlap-histogram')[0];
-   canvas.width = 200;
-   canvas.height = 256;
-   var context = canvas.getContext("2d");
-   if (time % 2){
-     var currPos = (time % 8);
-        
-     currPos = (time -beginningOfView) * 900 / secondsPerView ;
-     var pitch = histovals[Math.floor(currPos)];
-     if (!pitch){
-         var pitch = pitchvals[Math.floor(currPos)];
-     }
-     
-     if (!pitch || pitch>250){
-         context.clearRect(0, 0, 900, 900);
-         return ;
-     }
-     
-     var curr = pitch;
-     context.beginPath(); 
-     context.moveTo(0, curr); 
-     context.lineTo(200, curr); 
-     context.lineWidth = 1; 
-     context.strokeStyle = 'rgba(0,0,0,0.9)';
-     context.fillStyle = 'rgba(0,0,0,0.9)';
-     context.stroke(); 
-     context.closePath();
-   }  
 }
 function updateScoreProgress(currentTime){
     if (currentTime > endPeriod || currentTime < startPeriod)
@@ -461,7 +171,6 @@ function plotpitch(pnum) {
             }else{
                 context.drawImage(spec, 0, 0);
             }
-            spectrogram(context, view, ["#8A8A8A", "#FFFFFF"]);
             loading = false;
         }
     }
@@ -529,8 +238,6 @@ function loaddata() {
     var indexLoaded= 0;
     var partsDone = false;
     var indexmapDone = false;
-    var notemodelsLoaded = false;
-    var histogramLoaded = false;
     $.ajax(worksurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             numbScore = {};
@@ -623,28 +330,6 @@ function loaddata() {
        $('#dialog').html('This recording is not analyzed yet.')
     }});
     
-    $.ajax(histogramurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
-            histogramdata = data;
-            histogramLoaded = true;
-            dodrawHistogram();
-    }, error: function(xhr, textStatus, errorThrown) {
-       console.debug("xhr error " + textStatus);
-       console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
-    }});
-        
-    $.ajax(notemodelsurl, {dataType: "json", type: "GET",
-        success: function(data, textStatus, xhr) {
-            notemodels = data;
-            notemodelsLoaded = true;
-            dodrawHistogram();
-    }, error: function(xhr, textStatus, errorThrown) {
-       console.debug("xhr error " + textStatus);
-       console.debug(errorThrown);
-       $('#dialog').html('This recording is not analyzed yet.')
-    }});
-
     $.ajax(ahenkurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
          for (w in data){
@@ -677,15 +362,6 @@ function loaddata() {
        console.debug(errorThrown);
        $('#dialog').html('This recording is not analyzed yet.')
     }});
-    function dodrawHistogram() {
-        if (histogramLoaded && notemodelsLoaded) {
-            plothistogram();
-        
-            if (loadingDone == 5 && indexmapDone && partsDone) {
-                $('#dialog').dialog('close');
-            }
-        }
-    }
     function dodraw() {
         if (loadingDone == 4 && indexmapDone && partsDone) {
             
@@ -720,9 +396,6 @@ function loaddata() {
            sections = alignmentSections['section_annotations'];
            drawdata(false);
            
-           if (histogramLoaded && notemodelsLoaded) {
-               $('#dialog').dialog('close');
-           }
         }
     }
 }
@@ -813,47 +486,6 @@ function formatseconds(seconds) {
     return timecodeHtml;
 }
 
-function drawCurrentPitch(start, end, note){
-    startPx = (start - beginningOfView) * 900 / secondsPerView ;
-    endPx = (end - beginningOfView) * 900 / secondsPerView ;
-    var canvas = $("#overlap-pitch")[0];
-    var context = canvas.getContext("2d");
-    canvas.width = 900;
-    canvas.height = 256;
-    context.globalAlpha = 0.5;
-
-    context.clearRect (0, 0, 900, 900);
-    context.beginPath();
-    waszero = false; 
-    histovals = new Array(900);
-    for(var i=Math.floor(startPx); i< endPx; i++){
-        var pos = i;
-        if ( i in pitchvals){
-            var tmp = pitchvals[i] ;
-            histovals[i] = tmp ;
-            if (tmp == 0 || tmp == 255) {
-                waszero = true;
-                context.moveTo(pos, tmp);
-            } else {
-                if (waszero) {
-                    waszero = false;
-                    context.moveTo(pos, tmp);
-                } else {
-                    context.lineTo(pos, tmp);
-                }
-            }
-        }
-    }
-
-    context.strokeStyle = "#DB4D4D";
-    context.lineWidth = 3;
-    context.stroke();
-    context.strokeStyle = "#CC0000";
-    context.lineWidth = 2;
-    context.stroke();
-    context.closePath();
-
-}
 function updateProgress() {
     ampleMask = rendersMask.width();
     ampleRenders = renders.width();
@@ -883,7 +515,6 @@ function updateProgress() {
 };
 function updateView(){
     var currentTime = pagesound.position / 1000 ;
-    hideCurrentPitch();
     beginningOfView = Math.floor(currentTime / secondsUsedPerView ) * secondsUsedPerView ;
     pnum = Math.floor(beginningOfView / secondsUsedPerView + 1) ;
     plotpitch(pnum);
@@ -894,38 +525,11 @@ function updateCurrentPitch(){
     for (w in worksdata){
         if (futureTime < worksdata[w]["to"] && futureTime > worksdata[w]["from"]){
             currentWork = w;
-            plothistogram();
             break;
         }
     }
-    showNoteOnHistogram(lastnote, futureTime);
-    updateFrequencyMarker(futureTime);
 }
 
-function play_osc(f){
-    gainNode.gain.cancelScheduledValues(audioCtx.currentTime);
-    var waveArray = new Float32Array(9);
-    waveArray[0] = 0.00001;
-    waveArray[1] = 0.5;
-    waveArray[2] = 0.5;
-    waveArray[3] = 0.5;
-    waveArray[4] = 0.5;
-    waveArray[5] = 0.5;
-    waveArray[6] = 0.5;
-    waveArray[7] = 0.5;
-    waveArray[8] = 0.5;
-    oscillator.frequency.value = f; // value in hertz
-    gainNode.gain.setValueCurveAtTime(waveArray, audioCtx.currentTime, 0.5);
-    window.setTimeout(function(){
-      try {
-        //ExponentialRamp can't handle 0 so we pass 0.00001
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 2);
-      }
-      catch (e) {
-        console.log(e);
-      }
-    }, 1000);
-}
 function playNextSection(right){
   var changepos = null;
   var starts= []
@@ -964,13 +568,6 @@ function playNextSection(right){
       //updateView();
   }
   updateProgress();
-}
-function hideCurrentPitch(){
-  $("#current-note").hide();
-  var canvas = $("#overlap-pitch")[0];
-  var context = canvas.getContext("2d");
-  context.clearRect (0, 0, 900, 900);
-  histovals = new Array(900);
 }
 function getImage(part){
     if (lastLoaded > part && startLoaded < part){
