@@ -371,6 +371,7 @@ widthOfChildren('.metaContainer');
                       <div id="freq-info"></div>
                       <div id="current-note"></div>
                       <div style="margin-top: 16px;"><a href="{% url 'makam-download-derived' recording.mbid %}">Download data used on this page</a></div>
+                      <div style="margin-top: 16px;"><a href="{% url 'makam-lyric-alignment' recording.mbid %}">Access player Lyrics Player</a></div>
                     </div>
                     <div id="totalcontrol2">
                         <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>

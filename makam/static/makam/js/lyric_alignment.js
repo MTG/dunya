@@ -364,7 +364,9 @@ function loaddata() {
     }});
     function dodraw() {
         if (loadingDone == 4 && indexmapDone && partsDone) {
-            
+            if (alignment.length == 0) {
+              $('#score').html('<div id="no-score">There is no score to show.</div>');
+            } 
             endPeriod = 0;
             startPeriod = -1;
             addedNotes = {};

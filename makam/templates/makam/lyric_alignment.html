@@ -193,7 +193,7 @@ var specurl = "{{spectrogram|safe}}";
 var smallurl = "{{smallimage|safe}}";
 var intervalsurl = "{{intervalsurl|safe}}";
 var notesalignurl = "{{notesalignurl|safe}}";
-var alignsectionsurl = "{{alignsectionsurl|safe}}";
+var alignsectionsurl = "{{sectionsurl|safe}}";
 var documentsurl = "{{documentsurl|safe}}";
 var secondsPerView = 8;
 var ratioUsedView = 0.5;
@@ -367,11 +367,14 @@ widthOfChildren(".metaContainer");
                 </div>
                 <div class="container2">
                     <div class="waveLabel">
+                        <div style="margin-top: 16px;"><a href="{% url 'makam-recording' recording.mbid %}">Return to scores player</a></div>
                       <canvas id="overlap-histogram" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogram-current-note" style="width:200px; height:256px;"></canvas>
                       <canvas id="histogramcanvas" style="height:256px; width:200px;"></canvas>
                       <div id="freq-info"></div>
-                      <div id="current-note"></div>
+                      <div id="current-note">
+                      
+                      </div>
                     </div>
                     <div id="totalcontrol2">
                         <div id="timecode">00:00<span>{% if recording.length %}{{recording.length_format}}{% endif %}</span></div>
