@@ -215,16 +215,21 @@ function plotsmall() {
         //smallFill(luogudata, "#0f0");
     
         // Draw sections on smallcanvas
+        var sec = [];
+        for (w in sections){
+          sec = sec.concat(sections[w])
+        }
+        
         colorsNames = {};
         currColor = 0;
-        for (var i = 0; i < sections.length; i++) {
-                var name = sections[i]['name'];
+        for (var i = 0; i < sec.length; i++) {
+                var name = sec[i]['name'];
                 if (!(name in colorsNames)){
                     colorsNames[name]=colors[currColor];
                     currColor += 1;
                 }
         }
-        smallFill(sections, "#0ff", colorsNames);
+        smallFill(sec, "#0ff", colorsNames);
     }
 }
 
