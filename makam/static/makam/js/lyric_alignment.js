@@ -241,7 +241,6 @@ function loaddata() {
     $.ajax(worksurl, {dataType: "json", type: "GET",
         success: function(data, textStatus, xhr) {
             numbScore = {};
-            phrase = {};
             indexmap = {};
             worksdata = data;
             minInterval = 9999;
@@ -288,14 +287,6 @@ function loaddata() {
                    $('#dialog').html('This recording is not analyzed yet.')
                 }});
 
-                $.ajax(workDocumentsUrl + phraseurl, {dataType: "json", type: "GET",
-                    context: {work: w},
-                    success: function(data, textStatus, xhr) {
-                        phrase[this.work] = data[0]["boundary_noteIdx"];
-                }, error: function(xhr, textStatus, errorThrown) {
-                   console.debug("xhr error " + textStatus);
-                   console.debug(errorThrown);
-                }});
             }
     }, error: function(xhr, textStatus, errorThrown) {
        console.debug("xhr error " + textStatus);
