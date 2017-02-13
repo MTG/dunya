@@ -354,7 +354,7 @@ function loaddata() {
     }});
     $.ajax(alignsectionsurl, {dataType: "json", type: "GET",
     success: function(data, textStatus, xhr) {
-        alignmentSections = data;
+        sections = data;
         loadingDone++;
         dodraw();
     }, error: function(xhr, textStatus, errorThrown) {
@@ -395,7 +395,6 @@ function loaddata() {
 
             }
            aligns.sort(function(a, b){return a['index']-b['index']});
-           sections = alignmentSections['section_annotations'];
            drawdata(false);
            
         }
