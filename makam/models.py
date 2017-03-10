@@ -132,6 +132,7 @@ class Recording(MakamStyle, data.models.Recording):
     # if one of the above two flags are set.
     makam = models.ManyToManyField("Makam", blank=True)
     analyse = models.BooleanField(default=True)
+    has_lyrics = models.BooleanField(default=False)
 
     objects = managers.CollectionRecordingManager()
 
