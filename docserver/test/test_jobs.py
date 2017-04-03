@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.http import QueryDict
 from django.contrib.auth.models import Permission
 from django.contrib import auth
@@ -19,7 +19,10 @@ class TestExtractor(compmusic.extractors.ExtractorModule):
     _many_files = True
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
-    def run(self, fname):
+    def run_many(self, fname):
+       return {'pitch': '{"test": "0.1"}'}
+
+    def run(self,mb, fname):
        return {'pitch': '{"test": "0.1"}'}
 
 class Test2Extractor(compmusic.extractors.ExtractorModule):
@@ -30,7 +33,7 @@ class Test2Extractor(compmusic.extractors.ExtractorModule):
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
     def run(self,mb, fname):
-       return {'pitch': '{"test": "0.1"}'}
+        return {'pitch': '{"test": "0.1"}'}
 
 class AbstractFileTest(TestCase):
     def setUp(self):
@@ -60,6 +63,7 @@ class SourceFileTest(AbstractFileTest):
         self.assertEqual(len(models.Document.objects.all()), 2)
 
 
+    """
     @mock.patch('docserver.log.log_processed_file')
     def test_process_document(self, log):
         modulepath = "compmusic.extractors.TestExtractor"
@@ -73,9 +77,10 @@ class SourceFileTest(AbstractFileTest):
 
         doc = models.Document.objects.get(pk=self.col1.pk)
         self.assertEqual(len(doc.derivedfiles.all()), 1)
-
+    """
     @mock.patch('os.makedirs')
     @mock.patch('__builtin__.open')
+    @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_process_document(self, mock_open, makedir):
         #/tmp/col1/incoming/11/111111/asd2/0.1
         modulepath = "compmusic.extractors.Test2Extractor"

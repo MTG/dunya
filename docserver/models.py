@@ -321,8 +321,8 @@ class DerivedFile(models.Model):
         version = self.module_version.version
         slug = self.module_version.module.slug
 
-        recordingstub = recordingid[:2]
-        reldir = os.path.join(recordingstub, recordingid, slug, version)
+        recordingstub = str(recordingid)[:2]
+        reldir = os.path.join(recordingstub, str(recordingid), slug, version)
         fdir = os.path.join(root_directory, settings.DERIVED_FOLDER, reldir)
         return fdir
 
