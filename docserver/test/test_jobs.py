@@ -22,9 +22,6 @@ class TestExtractor(compmusic.extractors.ExtractorModule):
     def run_many(self, fname):
        return {'pitch': '{"test": "0.1"}'}
 
-    def run(self,mb, fname):
-       return {'pitch': '{"test": "0.1"}'}
-
 class Test2Extractor(compmusic.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
@@ -51,7 +48,9 @@ class AbstractFileTest(TestCase):
 
 class SourceFileTest(AbstractFileTest):
 
-    def test_run_module_on_collection(self):
+    @mock.patch('os.makedirs')
+    @mock.patch('__builtin__.open')
+    def test_run_module_on_collection(self, mock_open, makedir):
         modulepath = "compmusic.extractors.TestExtractor"
         instance = TestExtractor()
         self.get_m.return_value = instance

@@ -50,10 +50,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             sequence += 1
 
     def _get_makam(self, makamname):
-        try:
-            return makam.models.Makam.objects.unaccent_get(makamname)
-        except makam.models.Makam.DoesNotExist:
-            malias = makam.models.MakamAlias.objects.unaccent_all(makamname)
+        filtered = makam.models.Makam.objects.filter(name__unaccent__iexact=makamname)
+        if filtered.count() == 1:
+            return filtered.all()[0]
+        else:
+            malias = makam.models.MakamAlias.objects.filter(name__unaccent__iexact=makamname)
             if malias.count():
                 return malias[0].makam
             else:
@@ -61,24 +62,26 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 return None
 
     def _get_usul(self, usul):
-        try:
-            return makam.models.Usul.objects.unaccent_get(usul)
-        except makam.models.Usul.DoesNotExist:
-            try:
-                ualias = makam.models.UsulAlias.objects.unaccent_get(usul)
-                return ualias.usul
-            except makam.models.UsulAlias.DoesNotExist:
+        filtered = makam.models.Usul.objects.filter(name__unaccent__iexact=usul)
+        if filtered.count() == 1:
+            return filtered.all()[0]
+        else:
+            ualias = makam.models.UsulAlias.filter(name__unaccent__iexact=usul)
+            if ualias.count() == 1:
+                return ualias.all()[0].usul
+            else:
                 import_logger.warning("Cannot find usul '%s' in database", usul)
                 return None
 
     def _get_form(self, form):
-        try:
-            return makam.models.Form.objects.unaccent_get(form)
-        except makam.models.Form.DoesNotExist:
-            try:
-                falias = makam.models.FormAlias.objects.unaccent_get(form)
-                return falias.form
-            except makam.models.FormAlias.DoesNotExist:
+        filtered = makam.models.Form.objects.filter(name__unaccent__iexact=form)
+        if filtered.count() == 1:
+            return filtered.all()[0]
+        else:
+            falias = makam.models.FormAlias.objects.filter(name__unaccent__iexact=form)
+            if falias.count() == 1:
+                return falias.all()[0].form
+            else:
                 import_logger.warning("Cannot find form '%s' in database", form)
                 return None
 

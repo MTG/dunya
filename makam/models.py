@@ -184,8 +184,6 @@ class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
     makam = models.ForeignKey("Makam", related_name="aliases")
 
-    objects = managers.UnaccentManager()
-
     def __unicode__(self):
         return self.name
 
@@ -224,8 +222,6 @@ class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
 
-    objects = managers.UnaccentManager()
-
     def __unicode__(self):
         return self.name
 
@@ -262,8 +258,6 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=100)
     form = models.ForeignKey("Form", related_name="aliases")
 
-    objects = managers.UnaccentManager()
-
     def __unicode__(self):
         return self.name
 
@@ -287,7 +281,6 @@ class Form(models.Model):
         return self.work_set.all()
 
 class Work(MakamStyle, data.models.Work):
-    objects = managers.MakamWorkManager()
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
     makam = models.ManyToManyField(Makam, blank=True)
