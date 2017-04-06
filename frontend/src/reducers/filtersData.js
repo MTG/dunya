@@ -50,7 +50,7 @@ const receivedData = (state = {}, action) => {
   switch (action.type) {
     case GET_FILTERS_DATA_SUCCESS:
       return Object.keys(action.receivedData).reduce((curState, curCategory) =>
-        Object.assign(curState, { [curCategory]: action.receivedData[curCategory].data }), {});
+        Object.assign(curState, { [curCategory]: action.receivedData[curCategory] }), {});
     default:
       return state;
   }
