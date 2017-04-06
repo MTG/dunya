@@ -120,6 +120,15 @@ The following one is an example of a correct response:
 ```
 The client makes no assumption on the keys other than `concert`, `image`, `linkToRecording`, `mainArtists`, `name` and `collaborators`. If the response contain any other key, the value for that key will be displayed in the final UI. This means that the UI will correctly work with non-carnatic results without any change in the code.
 
+The search endpoint should return:
+```javascript
+{
+  "result": [ // The results in the format described above
+  ],
+  "moreResults": // Link to get more results
+}
+```
+
 ## User session information
 The UI changes whether the user is logged in or not. When rendering the template `index.html`, the server should use the template tag `user_name` whose value is the username of the current user. If the user is not logged in, it should be an empty string. Moreover, the settings `LOGIN_URL`, `LOGOUT_URL` and `USER_PROFILE_BASE_URL` have to be customized. The user profile url is intended to be in the shape `USER_PROFILE_BASE_URL/{userName}`.
 

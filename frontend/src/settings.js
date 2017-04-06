@@ -1,20 +1,21 @@
 // API address to get data to fill up filters section
 export const FILTERS_DATA_URL = {
-  carnatic: 'http://aporter.ca.upf.edu:8001/new/filters.json',
-  hindustani: 'https://whatever',
+  carnatic: 'http://dunya.compmusic.upf.edu/new/filters.json',
+  //hindustani: 'https://whatever',
 };
 
 export const SEARCH_URL = {
-  carnatic: 'http://aporter.ca.upf.edu:8001/new/carnatic/search',
-  hindustani: 'https://whatever',
+  //carnatic: 'http://localhost:8001/new/carnatic/search',
+  carnatic: 'http://dunya.compmusic.upf.edu/carnatic/search',
+  //hindustani: 'https://whatever',
 };
 
 export const AUTOCOMPLETE_URL = {
-  carnatic: 'tests',
+  carnatic: 'http://dunya.compmusic.upf.edu/carnatic/searchcomplete',
 };
 
-export const LOGIN_URL = '';
-export const LOGOUT_URL = '';
+export const LOGIN_URL = '/social/login';
+export const LOGOUT_URL = '/social/logout';
 export const USER_PROFILE_BASE_URL = '';
 
 // whether to show in selected list only entries that fulfill all filters

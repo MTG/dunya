@@ -14,7 +14,7 @@
     <div id="app"></div>
       <script>
         window.catalogue = "carnatic";
-        window.username = "{% user_name %}";
+        window.username = "{{ user.username }}";
       </script>
       <script src="{% static 'frontend/bundle.js' %}"></script>
   </body>

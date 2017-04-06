@@ -213,7 +213,7 @@ def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
     recordings = models.Recording.objects
     url = {}
     if q and q!='':
-        ids = list(models.Work.objects.filter(title__unaccent=q).values_list('pk', flat=True))
+        ids = list(models.Work.objects.filter(title__unaccent__iexact=q).values_list('pk', flat=True))
         recordings = recordings.filter(works__id__in=ids) | recordings.filter(title__contains=q)
 
     if elem != "artist":

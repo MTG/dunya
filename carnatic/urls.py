@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^formedit/%s$' % (uuid_match, ), views.formconcert, name='carnatic-formconcert'),
     url(r'^formedit$', views.formedit, name='carnatic-formedit'),
     url(r'^searchcomplete$', views.searchcomplete, name='carnatic-searchcomplete'),
+    url(r'^search$', views.search, name='carnatic-search'),
 
     url(r'^composer/(?P<composerid>\d+)%s$' % (name_match, ), views.composerbyid, name='carnatic-composerbyid'),
     url(r'^composer/%s%s$' % (uuid_match, name_match), views.composer, name='carnatic-composer'),

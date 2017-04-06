@@ -17,6 +17,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.http import HttpResponse, Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
@@ -46,16 +47,49 @@ def get_filter_items():
     return filter_items
 
 def searchcomplete(request):
-    term = request.GET.get("term")
+    term = request.GET.get("input")
     ret = []
-    error = False
     if term:
-        try:
-            suggestions = search.autocomplete(term)
-            ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
-        except pysolr.SolrError:
-            error = True
+        suggestions = Concert.objects.filter(title__istartswith=term)[:3]
+        ret = [{"id": i, "category": "concert", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        suggestions = Artist.objects.filter(name__istartswith=term)[:3]
+        ret += [{"id": i, "category": "artist", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
+
+def search(request):
+    q = request.GET.get('recording', '')
+
+    s_artists = request.GET.get('artists', '')
+    s_instruments = request.GET.get('instruments', '')
+    s_concerts = request.GET.get('concerts', '')
+
+    recordings = None
+    if s_artists != '' or s_concerts != '' or q:
+        recordings = Recording.objects
+        if q and q!='':
+            ids = list(Concert.objects.filter(title__unaccent__iexact=q).values_list('pk', flat=True))
+            recordings = recordings.filter(concert__id__in=ids) | recordings.filter(title__unaccent__contains=q)
+
+            if s_artists and s_artists != '':
+                recordings = recordings.filter(concert__composers__mbid=s_artists) | recordings.filter(concert__lyricists__mbid=artists)
+            if s_concerts and s_concerts != '':
+                recordings = recordings.filter(concert__mbid=s_concerts)
+
+        paginator = Paginator(recordings, 25)
+        page = request.GET.get('page')
+        try:
+            recordings = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            recordings = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            recordings = paginator.page(paginator.num_pages)
+        results = {
+                "results": [item.get_dict() for item in recordings.object_list],
+                "moreResults": None
+        }
+        return HttpResponse(json.dumps(results), content_type='application/json')
 
 def main(request):
     qartist = []

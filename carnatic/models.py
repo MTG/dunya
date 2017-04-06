@@ -800,6 +800,24 @@ class Recording(CarnaticStyle, data.models.Recording):
             return True
         return False
 
+    def get_dict(self):
+        concert = Concert.objects.filter(recordings=self).all()[0]
+        image = None
+        if concert.image:
+            image = concert.image.image.url
+        if not image:
+            image = "/media/images/noconcert.jpg"
+        artists = Artist.objects.filter(primary_concerts__recordings=self).values_list('name').all()
+        return {
+                "concert": concert.title,
+                "mainArtists": [item for sublist in artists for item in sublist],
+                "name": self.title,
+                "image": image,
+                "linkToRecording": reverse("carnatic-recordingbyid", args=[self.id]),
+                "collaborators": [],
+                "selectedArtists": ""
+        }
+
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
