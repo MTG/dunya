@@ -56,7 +56,7 @@ def searchcomplete(request):
         ret += [{"id": i, "category": "artist", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def search(request):
+def recordings_search(request):
     q = request.GET.get('recording', '')
 
     s_artists = request.GET.get('artists', '')
