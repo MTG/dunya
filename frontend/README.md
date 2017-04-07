@@ -125,7 +125,7 @@ The search endpoint should return:
 {
   "result": [ // The results in the format described above
   ],
-  "moreResults": // Link to get more results
+  "moreResults": // Number of the next
 }
 ```
 
