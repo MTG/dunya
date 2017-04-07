@@ -65,10 +65,9 @@ def recordings_search(request):
     s_raga = request.GET.get('ragas', '')
     s_tala = request.GET.get('talas', '')
 
-    recordings = None
+    recordings = Recording.objects
     if s_artists != '' or s_concerts != '' or q\
             or s_instruments != '' or s_raga != '' or s_tala != '':
-        recordings = Recording.objects
         if q and q!='':
             ids = list(Work.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
             recordings = recordings.filter(works__id__in=ids)\
@@ -94,26 +93,26 @@ def recordings_search(request):
             recordings = recordings.filter(works__taala__uuid__in=s_tala.split())
 
 
-        paginator = Paginator(recordings.all(), 25)
-        page = request.GET.get('page')
-        next_page = None
-        try:
-            recordings = paginator.page(page)
-            if recordings.has_next():
-                next_page = recordings.next_page_number()
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            recordings = paginator.page(1)
-            if recordings.has_next():
-                next_page = recordings.next_page_number()
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            recordings = paginator.page(paginator.num_pages)
-        results = {
-                "results": [item.get_dict() for item in recordings.object_list],
-                "moreResults": next_page
-        }
-        return HttpResponse(json.dumps(results), content_type='application/json')
+    paginator = Paginator(recordings.all(), 25)
+    page = request.GET.get('page')
+    next_page = None
+    try:
+        recordings = paginator.page(page)
+        if recordings.has_next():
+            next_page = recordings.next_page_number()
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        recordings = paginator.page(1)
+        if recordings.has_next():
+            next_page = recordings.next_page_number()
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        recordings = paginator.page(paginator.num_pages)
+    results = {
+            "results": [item.get_dict() for item in recordings.object_list],
+            "moreResults": next_page
+    }
+    return HttpResponse(json.dumps(results), content_type='application/json')
 
 def main(request):
     qartist = []
