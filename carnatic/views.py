@@ -60,34 +60,58 @@ def recordings_search(request):
     q = request.GET.get('recording', '')
 
     s_artists = request.GET.get('artists', '')
-    s_instruments = request.GET.get('instruments', '')
     s_concerts = request.GET.get('concerts', '')
+    s_instruments = request.GET.get('instruments', '')
+    s_raga = request.GET.get('ragas', '')
+    s_tala = request.GET.get('talas', '')
 
     recordings = None
-    if s_artists != '' or s_concerts != '' or q:
+    if s_artists != '' or s_concerts != '' or q\
+            or s_instruments != '' or s_raga != '' or s_tala != '':
         recordings = Recording.objects
         if q and q!='':
-            ids = list(Concert.objects.filter(title__unaccent__iexact=q).values_list('pk', flat=True))
-            recordings = recordings.filter(concert__id__in=ids) | recordings.filter(title__unaccent__contains=q)
+            ids = list(Work.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
+            recordings = recordings.filter(works__id__in=ids)\
+                    | recordings.filter(title__unaccent__icontains=q)\
+                    | recordings.filter(concert__title__unaccent__icontains=q)
 
-            if s_artists and s_artists != '':
-                recordings = recordings.filter(concert__composers__mbid=s_artists) | recordings.filter(concert__lyricists__mbid=artists)
-            if s_concerts and s_concerts != '':
-                recordings = recordings.filter(concert__mbid=s_concerts)
+        if s_artists and s_artists != '':
+            artists = s_artists.split()
+            recordings = recordings.filter(works__composers__mbid__in=artists)\
+                    | recordings.filter(works__lyricists__mbid__in=artists)\
+                    | recordings.filter(concert__artists__mbid__in=artists)
 
-        paginator = Paginator(recordings, 25)
+        if s_concerts and s_concerts != '':
+            recordings = recordings.filter(concert__mbid__in=s_concerts.split())
+
+        if s_instruments and s_instruments != '':
+            recordings = recordings.filter(instrumentperformance__instrument__mbid__in=s_instruments.split())
+
+        if s_raga and s_raga != '':
+            recordings = recordings.filter(works__raaga__uuid__in=s_raga.split())
+
+        if s_tala and s_tala != '':
+            recordings = recordings.filter(works__taala__uuid__in=s_tala.split())
+
+
+        paginator = Paginator(recordings.all(), 25)
         page = request.GET.get('page')
+        next_page = None
         try:
             recordings = paginator.page(page)
+            if recordings.has_next():
+                next_page = recordings.next_page_number()
         except PageNotAnInteger:
             # If page is not an integer, deliver first page.
             recordings = paginator.page(1)
+            if recordings.has_next():
+                next_page = recordings.next_page_number()
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             recordings = paginator.page(paginator.num_pages)
         results = {
                 "results": [item.get_dict() for item in recordings.object_list],
-                "moreResults": None
+                "moreResults": next_page
         }
         return HttpResponse(json.dumps(results), content_type='application/json')
 

@@ -801,15 +801,18 @@ class Recording(CarnaticStyle, data.models.Recording):
         return False
 
     def get_dict(self):
-        concert = Concert.objects.filter(recordings=self).all()[0]
+        concert = Concert.objects.filter(recordings=self).first()
+        title = None
+        if concert:
+            title = concert.title
         image = None
-        if concert.image:
+        if concert and concert.image:
             image = concert.image.image.url
         if not image:
             image = "/media/images/noconcert.jpg"
         artists = Artist.objects.filter(primary_concerts__recordings=self).values_list('name').all()
         return {
-                "concert": concert.title,
+                "concert": title,
                 "mainArtists": [item for sublist in artists for item in sublist],
                 "name": self.title,
                 "image": image,

@@ -66,8 +66,8 @@ def filters(request):
     ret = {"artists": artistlist,
            "concerts": concertlist,
            "instruments": instrumentlist,
-           u"rāgas": raagalist,
-           u"tālas": taalalist,
+           u"ragas": raagalist,
+           u"talas": taalalist,
            }
 
     return JsonResponse(ret)
