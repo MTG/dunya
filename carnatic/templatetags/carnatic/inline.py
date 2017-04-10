@@ -81,11 +81,11 @@ def inline_concert(concert, bold=False):
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html(u'<a href="{}">{}</a>', composer.get_absolute_url(), composer.name)
+    return format_html(u'<span>{}</span>', composer.name)
 
 @register.simple_tag
 def inline_recording(recording):
-    return format_html(u'<a href="{}">{}</a>', recording.get_absolute_url(), recording.title)
+    return format_html(u'<span>{}</span>', recording.title)
 
 @register.simple_tag
 def inline_recording_artist(recording):
@@ -124,4 +124,4 @@ def inline_instrument(instrument):
     if not isinstance(instrument, collections.Iterable):
         instrument = [instrument]
     ret = []
-    return format_html_join(u", ", u'<a href="{}">{}</a>', ((i.get_absolute_url(), i.name) for i in instrument if i))
+    return format_html_join(u", ", u'<span>{}</span>', (i.name for i in instrument if i))

@@ -46,10 +46,7 @@ def inline_artist_list(artists):
 
 def inline_artist_part(artist):
     if isinstance(artist, hindustani.models.Artist):
-        if artist.dummy:
-            return format_html(u'<span class="title">{}</span>', artist.name)
-        else:
-            return format_html(u'<a href="{}" class="title">{}</a>', artist.get_absolute_url(), artist.name)
+        return format_html(u'<span class="title">{}</span>', artist.name)
     else:
         return artist.name
 
@@ -61,17 +58,17 @@ def inline_release(release, bold=False):
     if bold:
         sb = "<b>"
         eb = "</b>"
-    return format_html(u'<a href="{}">%s{}%s</a>' % (sb, eb), release.get_absolute_url(), release.title)
+    return format_html(u'<span>%s{}%s</span>' % (sb, eb), release.title)
 
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html(u'<a href="{}">{}</a>', composer.get_absolute_url(), composer.name)
+    return format_html(u'<span>{}</span>',composer.name)
 
 
 @register.simple_tag
 def inline_recording(recording):
-    return format_html(u'<a href="{}">{}</a>', recording.get_absolute_url(), recording.title)
+    return format_html(u'<span>{}</span>', recording.title)
 
 
 @register.simple_tag
@@ -121,4 +118,4 @@ def inline_taal(taal):
 def inline_instrument(instrument):
     if not isinstance(instrument, collections.Iterable):
         instrument = [instrument]
-    return format_html_join(u", ", u'<a href="{}">{}</a>', ((i.get_absolute_url(), i.name) for i in instrument if i))
+    return format_html_join(u", ", u'<span>{}</span>', (i.name for i in instrument if i))
