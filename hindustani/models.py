@@ -358,6 +358,30 @@ class Recording(HindustaniStyle, data.models.Recording):
     works = models.ManyToManyField("Work", through="WorkTime")
 
     objects = managers.HindustaniRecordingManager()
+
+    def get_dict(self):
+        release = Release.objects.filter(recordings=self).first()
+        title = None
+        if release:
+            title = release.title
+        image = None
+        if release and release.image:
+            image = release.image.image.url
+        if not image:
+            image = "/media/images/noconcert.jpg"
+        artists = Artist.objects.filter(primary_concerts__recordings=self).values_list('name').all()
+        return {
+                "concert": title,
+                "mainArtists": [item for sublist in artists for item in sublist],
+                "name": self.title,
+                "image": image,
+                "linkToRecording": reverse("hindustani-recordingbyid", args=[self.id]),
+                "collaborators": [],
+                "selectedArtists": ""
+        }
+
+
+
 class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
     pass
 

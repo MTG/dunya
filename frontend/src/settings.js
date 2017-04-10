@@ -1,17 +1,17 @@
 // API address to get data to fill up filters section
 export const FILTERS_DATA_URL = {
-  carnatic: 'http://dunya.compmusic.upf.edu/new/filters.json',
-  //hindustani: 'https://whatever',
+  carnatic: '/carnatic/filters.json',
+  hindustani: '/hindustani/filters.json',
 };
 
 export const SEARCH_URL = {
-  //carnatic: 'http://localhost:8001/new/carnatic/search',
-  carnatic: 'http://dunya.compmusic.upf.edu/carnatic/search',
-  //hindustani: 'https://whatever',
+  carnatic: '/carnatic/search',
+  hindustani: '/hindustani/search',
 };
 
 export const AUTOCOMPLETE_URL = {
-  carnatic: 'http://dunya.compmusic.upf.edu/carnatic/searchcomplete',
+  carnatic: '/carnatic/searchcomplete',
+  hindustani: '/hindustani/searchcomplete',
 };
 
 export const LOGIN_URL = '/social/login';

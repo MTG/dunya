@@ -16,9 +16,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 
 import json
@@ -57,216 +58,120 @@ def searchcomplete(request):
             error = True
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def main(request):
-    qartist = []
-    qinstr = []
-    qraag = []
-    qtaal = []
-    qrelease = []
-    qform = []
-    qlaya = []
+def searchcomplete(request):
+    term = request.GET.get("input")
+    ret = []
+    if term:
+        suggestions = models.Release.objects.filter(title__istartswith=term)[:3]
+        ret = [{"id": i, "category": "release", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        suggestions = models.Artist.objects.filter(name__istartswith=term)[:3]
+        ret += [{"id": i, "category": "artist", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
-    if len(request.GET) == 0:
-        # We have a 'default' query. If there's no other query we pre-seed it
-        # Bhimsen Joshi
-        qartist = [126]
-        # Miya Malhar raag
-        qraag = [147]
-        return redirect("%s?a=126&g=147" % reverse('hindustani-main'))
+def recordings_search(request):
+    q = request.GET.get('recording', '')
 
-    if "a" in request.GET:
-        for i in request.GET.getlist("a"):
-            qartist.append(int(i))
-    if "i" in request.GET:
-        for i in request.GET.getlist("i"):
-            qinstr.append(int(i))
-    if "r" in request.GET:
-        for i in request.GET.getlist("r"):
-            qrelease.append(int(i))
-    if "g" in request.GET:
-        for i in request.GET.getlist("g"):
-            qraag.append(int(i))
-    if "t" in request.GET:
-        for i in request.GET.getlist("t"):
-            qtaal.append(int(i))
-    if "l" in request.GET:
-        for i in request.GET.getlist("l"):
-            qlaya.append(int(i))
-    if "f" in request.GET:
-        for i in request.GET.getlist("f"):
-            qform.append(int(i))
-    if "q" in request.GET:
-        query = request.GET.get("q")
-    else:
-        query = None
+    s_artists = request.GET.get('artists', '')
+    s_releases = request.GET.get('releases', '')
+    s_instruments = request.GET.get('instruments', '')
+    s_rags = request.GET.get('rags', '')
+    s_tals = request.GET.get('tals', '')
 
-    numartists = models.Artist.objects.filter(dummy=False).count()
-    numcomposers = models.Composer.objects.count()
-    numraags = models.Raag.objects.count()
-    numtaals = models.Taal.objects.count()
-    numreleases = models.Release.objects.count()
-    numinstruments = models.Instrument.objects.filter(hidden=False).count()
-    numworks = models.Work.objects.count()
-    numforms = models.Form.objects.count()
-    numlayas = models.Laya.objects.count()
+    recordings = models.Recording.objects
+    if s_artists != '' or s_releases != '' or q\
+            or s_instruments != '' or s_rags != '' or s_tals != '':
+        if q and q!='':
+            ids = list(models.Work.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
+            recordings = recordings.filter(works__id__in=ids)\
+                    | recordings.filter(title__unaccent__icontains=q)\
+                    | recordings.filter(release__title__unaccent__icontains=q)
 
-    displayres = []
-    querybrowse = False
-    searcherror = False
+        if s_artists and s_artists != '':
+            artists = s_artists.split()
+            recordings = recordings.filter(works__composers__mbid__in=artists)\
+                    | recordings.filter(works__lyricists__mbid__in=artists)\
+                    | recordings.filter(release__artists__mbid__in=artists)
 
-    if qartist:
-        raags = None
-        if qraag:
-            raags = [models.Raag.objects.get(pk=r) for r in qraag]
-        taals = None
-        if qtaal:
-            taals = [models.Taal.objects.get(pk=t) for t in qtaal]
-        forms = None
-        if qform:
-            forms = [models.Form.objects.get(pk=f) for f in qform]
+        if s_releases and s_releases != '':
+            recordings = recordings.filter(releases__mbid__in=s_releases.split())
 
-        allartists = []
-        for a in qartist:
-            try:
-                artist = models.Artist.objects.get(pk=a)
-                allartists.append(artist)
-                displayres.extend(artist.related_items())
-            except models.Artist.DoesNotExist:
-                pass
+        if s_instruments and s_instruments != '':
+            recordings = recordings.filter(instrumentperformance__instrument__mbid__in=s_instruments.split())
 
-        thea = allartists[0]
-        if len(allartists) > 1:
-            othera = allartists[1:]
-        else:
-            othera = None
-        displayres.extend(thea.combined_related_items(artists=othera, raags=raags, taals=taals, forms=forms))
+        if s_rags and s_rags != '':
+            recordings = recordings.filter(raags__uuid__in=s_rags.split())
 
-    elif qinstr:
-        for i in qinstr:
-            try:
-                instrument = models.Instrument.objects.get(pk=i)
-                displayres.extend(instrument.related_items())
-            except models.Instrument.DoesNotExist:
-                pass
-    elif qraag:
-        forms = None
-        if qform:
-            forms = [models.Form.objects.get(pk=f) for f in qform]
-        instrs = None
-        if qinstr:
-            instrs = [models.Instrument.objects.get(pk=i) for i in qinstr]
-        for r in qraag:
-            try:
-                raag = models.Raag.objects.get(pk=r)
-                displayres.extend(raag.related_items(instruments=instrs, forms=forms))
-            except models.Raag.DoesNotExist:
-                pass
-    elif qtaal:
-        forms = None
-        if qform:
-            forms = [models.Form.objects.get(pk=f) for f in qform]
-        instrs = None
-        if qinstr:
-            instrs = [models.Instrument.objects.get(pk=i) for i in qinstr]
-        layas = None
-        if qlaya:
-            layas = [models.Laya.objects.get(pk=l) for l in qlaya]
-        for t in qtaal:
-            try:
-                taal = models.Taal.objects.get(pk=t)
-                displayres.extend(taal.related_items(layas=layas, instruments=instrs, forms=forms))
-            except models.Taal.objects.DoesNotExist:
-                pass
-    elif qrelease:
-        for r in qrelease:
-            try:
-                permission = data.utils.get_user_permissions(request.user)
-                release = models.Release.objects.with_permissions(False, permission).get(pk=r)
-                displayres.extend(release.related_items())
-            except models.Release.DoesNotExist:
-                pass
+        if s_tals and s_tals != '':
+            recordings = recordings.filter(taals__uuid__in=s_tals.split())
 
-    elif qform:
-        layas = None
-        if qlaya:
-            layas = [models.Laya.objects.get(pk=l) for l in qlaya]
-        for f in qform:
-            form = models.Form.objects.get(pk=f)
-            displayres.extend(form.related_items(layas=layas))
 
-    if query:
-        try:
-            results = search.search(query)
-        except pysolr.SolrError:
-            searcherror = True
-            results = {}
-        artists = results.get("artist", [])
-        instruments = results.get("instrument", [])
-        releases = results.get("release", [])
-        raags = results.get("raag", [])
-        taals = results.get("taal", [])
-        forms = results.get("form", [])
-        layas = results.get("laya", [])
+    paginator = Paginator(recordings.all(), 25)
+    page = request.GET.get('page')
+    next_page = None
+    try:
+        recordings = paginator.page(page)
+        if recordings.has_next():
+            next_page = recordings.next_page_number()
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        recordings = paginator.page(1)
+        if recordings.has_next():
+            next_page = recordings.next_page_number()
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        recordings = paginator.page(paginator.num_pages)
+    results = {
+            "results": [item.get_dict() for item in recordings.object_list],
+            "moreResults": next_page
+    }
+    return HttpResponse(json.dumps(results), content_type='application/json')
 
-        for a in artists:
-            displayres.append(("artist", a))
-        for i in instruments:
-            displayres.append(("instrument", i))
-        for c in releases:
-            displayres.append(("release", c))
-        for r in raags:
-            displayres.append(("raag", r))
-        for t in taals:
-            displayres.append(("taal", t))
-        for f in forms:
-            displayres.append(("form", f))
-        for l in layas:
-            displayres.append(("laya", l))
 
-        numartists = len(artists)
-        numraags = len(raags)
-        numtaals = len(taals)
-        numreleases = len(releases)
-        numinstruments = len(instruments)
-        numforms = len(forms)
-        numlayas = len(layas)
-        results = True
+def filters(request):
 
-    if displayres:
-        numartists = len([i for i in displayres if i[0] == "artist"])
-        numraags = len([i for i in displayres if i[0] == "raag"])
-        numtaals = len([i for i in displayres if i[0] == "taal"])
-        numreleases = len([i for i in displayres if i[0] == "release"])
-        numinstruments = len([i for i in displayres if i[0] == "instrument"])
-        numforms = len([i for i in displayres if i[0] == "form"])
-        numlayas = len([i for i in displayres if i[0] == "laya"])
+    taals = models.Taal.objects.prefetch_related('aliases').all()
+    taallist = []
+    for r in taals:
+        taallist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
 
-    ret = {"numartists": numartists,
-           "filter_items": json.dumps(get_filter_items()),
-           "numcomposers": numcomposers,
-           "numraags": numraags,
-           "numtaals": numtaals,
-           "numreleases": numreleases,
-           "numworks": numworks,
-           "numinstruments": numinstruments,
-           "numforms": numforms,
-           "numlayas": numlayas,
+    raags = models.Raag.objects.prefetch_related('aliases').all()
+    raaglist = []
+    for r in raags:
+        raaglist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
 
-           "results": displayres,
+    releases = models.Release.objects.all()
+    releaselist = []
+    for r in releases:
+        releaselist.append({"name": r.title, "mbid": str(r.mbid)})
 
-           "querytext": query,
-           "querybrowse": querybrowse,
-           "qartist": json.dumps(qartist),
-           "qinstr": json.dumps(qinstr),
-           "qraag": json.dumps(qraag),
-           "qtaal": json.dumps(qtaal),
-           "qlaya": json.dumps(qlaya),
-           "qform": json.dumps(qform),
-           "qrelease": json.dumps(qrelease),
-           "searcherror": searcherror
+    artists = models.Artist.objects.all()
+    artistlist = []
+    for a in artists:
+        rr = []
+        tt = []
+        cc = []
+        ii = []
+
+        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
+
+
+    instruments = models.Instrument.objects.all()
+    instrumentlist = []
+    for i in instruments:
+        instrumentlist.append({"name": i.name, "mbid": str(i.mbid)})
+
+
+    ret = {"artists": artistlist,
+           "releases": releaselist,
+           "instruments": instrumentlist,
+           u"rags": raaglist,
+           u"tals": taallist,
            }
 
-    return render(request, "hindustani/index.html", ret)
+    return JsonResponse(ret)
+
+def main(request):
+    return render(request, "hindustani/index.html")
 
 def composer(request, uuid, name=None):
     composer = get_object_or_404(models.Composer, mbid=uuid)
@@ -337,6 +242,11 @@ def release(request, uuid, title=None):
            "similar": similar
            }
     return render(request, "hindustani/release.html", ret)
+
+def recordingbyid(request, recordingid, title=None):
+    recording = get_object_or_404(models.Recording, pk=recordingid)
+    return redirect(recording.get_absolute_url(), permanent=True)
+
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)

@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import user_passes_test
@@ -26,6 +26,7 @@ from django.conf import settings
 from django.templatetags.static import static
 
 from data import utils
+from data.models import SourceName
 from carnatic.models import *
 from carnatic import search
 import json
@@ -115,221 +116,50 @@ def recordings_search(request):
     return HttpResponse(json.dumps(results), content_type='application/json')
 
 def main(request):
-    qartist = []
-    qinstr = []
-    qraaga = []
-    qtaala = []
-    qconcert = []
-    if len(request.GET) == 0:
-        # We have a 'default' query. If there's no other query we pre-seed it
-        # G. N. Balasubramaniam
-        qartist = [10]
-        # thodi raaga
-        qraaga = [55]
-        return redirect("%s?a=10&r=55" % reverse('carnatic-main'))
-    if "a" in request.GET:
-        for i in request.GET.getlist("a"):
-            qartist.append(int(i))
-    if "i" in request.GET:
-        for i in request.GET.getlist("i"):
-            qinstr.append(int(i))
-    if "c" in request.GET:
-        for i in request.GET.getlist("c"):
-            qconcert.append(int(i))
-    if "r" in request.GET:
-        for i in request.GET.getlist("r"):
-            qraaga.append(int(i))
-    if "t" in request.GET:
-        for i in request.GET.getlist("t"):
-            qtaala.append(int(i))
-    if "q" in request.GET:
-        query = request.GET.get("q")
-    else:
-        query = None
+    return render(request, "carnatic/index.html")
 
-    numartists = Artist.objects.filter(dummy=False).count()
-    numcomposers = Composer.objects.count()
-    numraagas = Raaga.objects.count()
-    numtaalas = Taala.objects.count()
-    numconcerts = Concert.objects.count()
-    numinstruments = Instrument.objects.count()
-    numworks = Work.objects.count()
+def filters(request):
 
-    displayres = []
-    querybrowse = False
-    searcherror = False
+    taalas = Taala.objects.prefetch_related('aliases').all()
+    taalalist = []
+    for r in taalas:
+        taalalist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
 
-    permission = utils.get_user_permissions(request.user)
-    show_restricted = request.show_bootlegs
+    raagas = Raaga.objects.prefetch_related('aliases').all()
+    raagalist = []
+    for r in raagas:
+        raagalist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
 
-    if qartist:
-        # TODO: If instrument set, only show artists who perform this instrument
-        querybrowse = True
+    concerts = Concert.objects.all()
+    concertlist = []
+    for c in concerts:
+        concertlist.append({"name": c.title, "mbid": str(c.mbid)})
 
-        # If raaga or taala is set, make a list to filter concerts by
-        rlist = []
-        tlist = []
-        if qraaga:
-            for rid in qraaga:
-                ra = Raaga.objects.get(pk=rid)
-                rlist.append(ra)
-        if qtaala:
-            for tid in qtaala:
-                ta = Taala.objects.get(pk=tid)
-                tlist.append(ta)
+    artists = Artist.objects.all()
+    artistlist = []
+    for a in artists:
+        rr = []
+        tt = []
+        cc = []
+        ii = []
 
-        if len(qartist) == 1:
-            # If there is one artist selected, show their concerts
-            # (optionally filtered by raaga or taala)
-            aid = qartist[0]
-            art = Artist.objects.get(pk=aid)
-            displayres.append(("artist", art))
-            if art.main_instrument:
-                displayres.append(("instrument", art.main_instrument))
-            for ra in rlist:
-                displayres.append(("raaga", ra))
-            for ta in tlist:
-                displayres.append(("taala", ta))
-            for c in art.concerts(raagas=rlist, taalas=tlist, collection_ids=False, permission=permission):
-                displayres.append(("concert", c))
-        else:
-            # Otherwise if more than one artist is selected,
-            # show only concerts that all artists perform in
-            allconcerts = []
-            for aid in qartist:
-                art = Artist.objects.get(pk=aid)
-                displayres.append(("artist", art))
-                if art.main_instrument:
-                    displayres.append(("instrument", art.main_instrument))
-                thisconcerts = set(art.concerts(raagas=rlist, taalas=tlist, collection_ids=False, permission=permission))
-                allconcerts.append(thisconcerts)
-            combinedconcerts = reduce(lambda x, y: x & y, allconcerts)
+        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
 
-            for ra in rlist:
-                displayres.append(("raaga", ra))
-            for ta in tlist:
-                displayres.append(("taala", ta))
 
-            for c in list(combinedconcerts):
-                displayres.append(("concert", c))
+    instruments = Instrument.objects.all()
+    instrumentlist = []
+    for i in instruments:
+        instrumentlist.append({"name": i.name, "mbid": str(i.mbid)})
 
-    elif qinstr:  # instrument query, but no artist
-        querybrowse = True
-        # instrument, people
-        for iid in qinstr:
-            instr = Instrument.objects.get(pk=iid)
-            displayres.append(("instrument", instr))
-            for p in instr.ordered_performers()[:5]:
-                displayres.append(("artist", p))
 
-    elif qraaga:
-        querybrowse = True
-        # raaga, people
-        for rid in qraaga:
-            ra = Raaga.objects.get(pk=rid)
-            displayres.append(("raaga", ra))
-            artists = ra.artists()
-            if qinstr:
-                # if instrument, only people who play that
-                artists = artists.filter(main_instrument__in=qinstr)
-            for a in artists[:5]:
-                displayres.append(("artist", a))
-    elif qtaala:
-        querybrowse = True
-        # taala, people
-        for tid in qtaala[:5]:
-            ta = Taala.objects.get(pk=tid)
-            displayres.append(("taala", ta))
-            percussionists = ta.percussion_artists()
-            for a in ta.artists():
-                if a not in percussionists:
-                    percussionists.append(a)
-            # TODO: We could order by percussionists, or by number of times they've
-            # performed this taala, or by people with images
-            artists = percussionists[:5]
-            if qinstr:
-                # if instrument, only people who play that
-                artists = artists.filter(main_instrument__in=qinstr)
-            for a in artists:
-                displayres.append(("artist", a))
-    elif qconcert:
-        querybrowse = True
-        # concert, people
-        for cid in qconcert:
-            try:
-                permission = utils.get_user_permissions(request.user)
-                con = Concert.objects.with_permissions(None, permission).get(pk=cid)
-                displayres.append(("concert", con))
-                artists = con.performers()
-                for a in artists:
-                    displayres.append(("artist", a))
-                    # if instrument, only people who play that?
-            except Concert.DoesNotExist:
-                pass
-    elif query:
-        try:
-            results = search.search(query, with_restricted=show_restricted)
-        except pysolr.SolrError:
-            searcherror = True
-            results = {}
-        artists = results.get("artist", [])
-        instruments = results.get("instrument", [])
-        concerts = results.get("concert", [])
-        raagas = results.get("raaga", [])
-        taalas = results.get("taala", [])
-
-        displayres = []
-        for a in artists:
-            displayres.append(("artist", a))
-        for i in instruments:
-            displayres.append(("instrument", i))
-        for c in concerts:
-            displayres.append(("concert", c))
-        for r in raagas:
-            displayres.append(("raaga", r))
-        for t in taalas:
-            displayres.append(("taala", t))
-
-        numartists = len(artists)
-        numraagas = len(raagas)
-        numtaalas = len(taalas)
-        numconcerts = len(concerts)
-        numinstruments = len(instruments)
-        results = True
-    else:
-        results = None
-
-        displayres = []
-
-    if displayres:
-        numartists = len([i for i in displayres if i[0] == "artist"])
-        numraagas = len([i for i in displayres if i[0] == "raaga"])
-        numtaalas = len([i for i in displayres if i[0] == "taala"])
-        numconcerts = len([i for i in displayres if i[0] == "concert"])
-        numinstruments = len([i for i in displayres if i[0] == "instrument"])
-
-    ret = {"numartists": numartists,
-           "filter_items": json.dumps(get_filter_items()),
-           "numcomposers": numcomposers,
-           "numraagas": numraagas,
-           "numtaalas": numtaalas,
-           "numconcerts": numconcerts,
-           "numworks": numworks,
-           "numinstruments": numinstruments,
-
-           "results": displayres,
-
-           "querytext": query,
-           "querybrowse": querybrowse,
-           "qartist": json.dumps(qartist),
-           "qinstr": json.dumps(qinstr),
-           "qraaga": json.dumps(qraaga),
-           "qtaala": json.dumps(qtaala),
-           "qconcert": json.dumps(qconcert),
-           "searcherror": searcherror
+    ret = {"artists": artistlist,
+           "concerts": concertlist,
+           "instruments": instrumentlist,
+           u"ragas": raagalist,
+           u"talas": taalalist,
            }
 
-    return render(request, "carnatic/index.html", ret)
+    return JsonResponse(ret)
 
 def artistsearch(request):
     artists = Artist.objects.filter(dummy=False).order_by('name')
@@ -398,7 +228,7 @@ def composer(request, uuid, name=None):
     works = sorted(works, key=lambda w: w.recording_set.count(), reverse=True)
 
     musicbrainz = composer.get_musicbrainz_url()
-    w = data.models.SourceName.objects.get(name="Wikipedia")
+    w = SourceName.objects.get(name="Wikipedia")
     wikipedia = None
     desc = composer.description
     if desc and desc.source.source_name == w:

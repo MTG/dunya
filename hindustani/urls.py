@@ -25,11 +25,13 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 urlpatterns = [
     url(r'^$', views.main, name='hindustani-main'),
     url(r'^searchcomplete$', views.searchcomplete, name='hindustani-searchcomplete'),
+    url(r'^search$', views.recordings_search, name='hindustani-search'),
     url(r'^composer/%s%s$' % (uuid_match, name_match), views.composer, name='hindustani-composer'),
     url(r'^artist/%s%s$' % (uuid_match, name_match), views.artist, name='hindustani-artist'),
     url(r'^artist/search$', views.artistsearch, name='hindustani-artist-search'),
     url(r'^release/%s%s$' % (uuid_match, title_match), views.release, name='hindustani-release'),
     url(r'^release/search$', views.releasesearch, name='hindustani-release-search'),
+    url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='hindustani-recordingbyid'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='hindustani-recording'),
     url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='hindustani-work'),
 
@@ -52,4 +54,6 @@ urlpatterns = [
     url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='hindustani-instrumentbyid'),
     url(r'^instrument/%s%s$' % (uuid_match, name_match), views.instrument, name='hindustani-instrument'),
     url(r'^instrument/search$', views.instrumentsearch, name='hindustani-instrument-search'),
+
+    url(r'filters.json$', views.filters, name='hindustani-filters'),
 ]

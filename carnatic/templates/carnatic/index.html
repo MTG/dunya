@@ -1,179 +1,21 @@
-{% extends "carnatic/base.html" %}
-{% load carnatic.inline %}
-{% load carnatic.badges %}
-{% load staticfiles %}
-
-{% block script %}
-<script>
-var qartist = {{qartist}};
-var qinstr = {{qinstr}};
-var qraaga = {{qraaga}};
-var qtaala = {{qtaala}};
-var qconcert = {{qconcert}};
-$(document).ready(function() {
-    parseAllFilters({{ filter_items|safe }});
-
-    // If we made a query, re-fill out the search
-    if (qartist.length) {
-        toggleCategory($("div#entitiesList .artist"), function() {
-            var thelist = $("div.entity_1 div.filterList ul li");
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = $(thelist[i]);
-                if (qartist.indexOf(theitem.data("id")) !== -1) {
-                    theitem.toggleClass("selected");
-                    getResults2(theitem, "eid1");
-                }
-            }
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = thelist[i];
-                if ($(theitem).hasClass("selected")) {
-                    theitem.offsetParent.scrollTop=theitem.offsetTop;
-                }
-            }
-        });
-        // Show artist bubble (minimised)
-    }
-    if (qconcert.length) {
-        toggleCategory($("div#entitiesList .concert"), function() {
-            var thelist = $("div.entity_2 div.filterList ul li");
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = $(thelist[i]);
-                if (qconcert.indexOf(theitem.data("id")) !== -1) {
-                    theitem.toggleClass("selected");
-                    getResults2(theitem, "eid2");
-                }
-            }
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = thelist[i];
-                if ($(theitem).hasClass("selected")) {
-                    theitem.offsetParent.scrollTop=theitem.offsetTop;
-                }
-            }
-        });
-    }
-    if (qinstr.length) {
-        toggleCategory($("div#entitiesList .instrument"), function() {
-            var thelist = $("div.entity_3 div.filterList ul li");
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = $(thelist[i]);
-                if (qinstr.indexOf(theitem.data("id")) !== -1) {
-                    theitem.toggleClass("selected");
-                    getResults2(theitem, "eid3");
-                }
-            }
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = thelist[i];
-                if ($(theitem).hasClass("selected")) {
-                    theitem.offsetParent.scrollTop=theitem.offsetTop;
-                }
-            }
-        });
-    }
-    if (qraaga.length) {
-        toggleCategory($("div#entitiesList .raaga"), function() {
-            var thelist = $("div.entity_4 div.filterList ul li");
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = $(thelist[i]);
-                if (qraaga.indexOf(theitem.data("id")) !== -1) {
-                    theitem.toggleClass("selected");
-                    getResults2(theitem, "eid4");
-                }
-            }
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = thelist[i];
-                if ($(theitem).hasClass("selected")) {
-                    theitem.offsetParent.scrollTop=theitem.offsetTop;
-                }
-            }
-        });
-    }
-    if (qtaala.length) {
-        toggleCategory($("div#entitiesList .taala"), function() {
-            var thelist = $("div.entity_5 div.filterList ul li");
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = $(thelist[i]);
-                if (qtaala.indexOf(theitem.data("id")) !== -1) {
-                    theitem.toggleClass("selected");
-                    getResults2(theitem, "eid5");
-                }
-            }
-            for (var i = 0; i < thelist.length; i++) {
-                var theitem = thelist[i];
-                if ($(theitem).hasClass("selected")) {
-                    theitem.offsetParent.scrollTop=theitem.offsetTop;
-                }
-            }
-        });
-    }
-});
-</script>
-
-<script src="{% static 'carnatic/js/browse.js' %}"></script>
-{% endblock %}
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/browse.css' %}" />
-    {% if request.COOKIES.presentationMode == "on" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/presentation.css' %}" />
-    {% endif %}
-{% endblock %}
-
-{% block title %}{% if querytext %}{{querytext}} - {% elif querybrowse %}Browsing - {% endif %}{% endblock %}
-
-{% block wrap %}
-
-<div class="main-container">
-
-    <div id="filterMask">
-        <div id="filterArea">
-
-            <div id="entitiesList" class="filterList">
-                <ul></ul>
-            </div>
-
-        </div>
-
-     </div>
-
-     <div id="resultsstats">
-        <table>
-            <tbody><tr>
-                <td>
-                    <div id="queryCont">
-                            <span>Query</span>
-                        <div id="query" class="shadow1">
-                        </div>
-                     </div>
-                 </td>
-                 <td class="artist" onClick="filterPackery('.artist');"><span>{{numartists}}</span> <b>Artist{{numartists|pluralize}}</b></td>
-                 <td class="concert" onClick="filterPackery('.concert');"><span>{{numconcerts}}</span> <b>Concert{{numconcerts|pluralize}}</b></td>
-                 <td class="instrument" onClick="filterPackery('.instrument');"><span>{{numinstruments}}</span> <b>Instrument{{numinstruments|pluralize}}</b></td>
-                 <td class="raaga" onClick="filterPackery('.raaga');"><span>{{numraagas}}</span> <b>Raaga{{numraagas|pluralize}}</b></td>
-                 <td class="taala" onClick="filterPackery('.taala');"><span>{{numtaalas}}</span> <b>Taala{{numtaalas|pluralize}}</b></td>
-            </tr>
-        </tbody></table>
-     </div>
-     {% if searcherror %}
-        <h2 class="resultsTitle">Sorry, we are having trouble searching. Please try again.</h2>
-     {% elif query %}
-        <h2 class="resultsTitle">Query results:</h2>
-     {% else %}
-         <h2 class="resultsTitle">Some items from our collection:</h2>
-     {% endif %}
-     <div id="searchresults">
-        {% for type, item in results %}
-            {% if type == "concert" %}
-                {% badge_concert item %}
-            {% elif type == "artist" %}
-                {% badge_artist item %}
-            {% elif type == "instrument" %}
-                {% badge_instrument item %}
-            {% elif type == "raaga" %}
-                {% badge_raaga item %}
-            {% elif type == "taala" %}
-                {% badge_taala item %}
-            {% endif %}
-        {% endfor %}
-     </div>
-    </div>
-
-{% endblock %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Dunya</title>
+    <meta name="description" content="Dunya search page">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,700" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app"></div>
+      <script>
+        window.catalogue = "carnatic";
+        window.username = "{{ user.username }}";
+      </script>
+      <script src="{% static 'frontend/bundle.js' %}"></script>
+  </body>
+</html>
