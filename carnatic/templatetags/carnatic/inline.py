@@ -66,10 +66,7 @@ def inline_artist_list(artists):
 
 def inline_artist_part(artist):
     if isinstance(artist, carnatic.models.Artist):
-        if artist.dummy:
-            return format_html(u'<span class="title">{}</span>', artist.name)
-        else:
-            return format_html(u'<a href="{}" class="title">{}</a>', artist.get_absolute_url(), artist.name)
+        return format_html(u'<span class="title">{}</span>', artist.name)
     else:
         return artist.name
 
@@ -80,7 +77,7 @@ def inline_concert(concert, bold=False):
     if bold:
         sb = "<b>"
         eb = "</b>"
-    return format_html(u'<a href="{}">%s{}%s</a>' % (sb, eb), concert.get_absolute_url(), concert.title)
+    return format_html(u'<span>%s{}%s</span>' % (sb, eb), concert.title)
 
 @register.simple_tag
 def inline_composer(composer):

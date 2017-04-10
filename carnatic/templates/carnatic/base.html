@@ -133,23 +133,6 @@
                 <img src="{% static 'carnatic/img/logoDunya.png' %}">
             </a>
             </div>
-                <div id="globalsearch">
-                    <form method="get" action="{{style_root}}">
-                        <input id="searchbox" type="text" name="q" value="{% if query %}{{query}}{% endif %}" />
-                    <button type="submit" class="button"/>
-                </form>
-            </div>
-                <div id="globalMusic" class="upperMenu">
-                    <label>Exploring music style</label>
-                    <span id="gmSelected">{{style_name}}</span>
-                    <ul id="gmDropDown">
-
-                        <li><a href="{% url 'carnatic-main' %}">Carnatic</a></li>
-                        <li><a href="{% url 'hindustani-main' %}">Hindustani</a></li>
-                        <li><a href="{% url 'makam-main' %}">Makam</a></li>
-                        <li><a href="{% url 'jingju-main' %}">Jingju</a></li>
-                    </ul>
-                </div>
                 <nav id="mainmenu">
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">

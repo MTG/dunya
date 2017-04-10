@@ -27,38 +27,12 @@ urlpatterns = [
 
     url(r'^formedit/%s$' % (uuid_match, ), views.formconcert, name='carnatic-formconcert'),
     url(r'^formedit$', views.formedit, name='carnatic-formedit'),
+
     url(r'^searchcomplete$', views.searchcomplete, name='carnatic-searchcomplete'),
     url(r'^search$', views.recordings_search, name='carnatic-search'),
 
-    url(r'^composer/(?P<composerid>\d+)%s$' % (name_match, ), views.composerbyid, name='carnatic-composerbyid'),
-    url(r'^composer/%s%s$' % (uuid_match, name_match), views.composer, name='carnatic-composer'),
-
-    url(r'^artist/search$', views.artistsearch, name='carnatic-artist-search'),
-    url(r'^artist/(?P<artistid>\d+)%s$' % (name_match, ), views.artistbyid, name='carnatic-artistbyid'),
-    url(r'^artist/%s%s$' % (uuid_match, name_match), views.artist, name='carnatic-artist'),
-
-    url(r'^concert/search$', views.concertsearch, name='carnatic-concert-search'),
-    url(r'^concert/(?P<concertid>\d+)%s$' % (title_match), views.concertbyid, name='carnatic-concertbyid'),
-    url(r'^concert/%s%s$' % (uuid_match, title_match), views.concert, name='carnatic-concert'),
-
     url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='carnatic-recordingbyid'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='carnatic-recording'),
-
-    url(r'^work/(?P<workid>\d+)%s$' % (title_match, ), views.workbyid, name='carnatic-workbyid'),
-    url(r'^work/%s%s$' % (uuid_match, title_match), views.work, name='carnatic-work'),
-    url(r'^work/search$', views.worksearch, name='carnatic-work-search'),
-
-    url(r'^raaga/(?P<raagaid>\d+)%s$' % (name_match, ), views.raagabyid, name='carnatic-raagabyid'),
-    url(r'^raaga/%s%s$' % (uuid_match, name_match), views.raaga, name='carnatic-raaga'),
-    url(r'^raaga/search$', views.raagasearch, name='carnatic-raaga-search'),
-
-    url(r'^taala/(?P<taalaid>\d+)%s$' % (name_match, ), views.taalabyid, name='carnatic-taalabyid'),
-    url(r'^taala/%s%s$' % (uuid_match, name_match), views.taala, name='carnatic-taala'),
-    url(r'^taala/search$', views.taalasearch, name='carnatic-taala-search'),
-
-    url(r'^instrument/(?P<instrumentid>\d+)%s$' % (name_match, ), views.instrumentbyid, name='carnatic-instrumentbyid'),
-    url(r'^instrument/%s%s$' % (uuid_match, name_match, ), views.instrument, name='carnatic-instrument'),
-    url(r'^instrument/search$', views.instrumentsearch, name='carnatic-instrument-search'),
 
     url(r'filters.json$', views.filters, name='carnatic-filters'),
 ]
