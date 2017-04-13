@@ -16,7 +16,7 @@ export const AUTOCOMPLETE_URL = {
 
 export const LOGIN_URL = '/social/login';
 export const LOGOUT_URL = '/social/logout';
-export const USER_PROFILE_BASE_URL = '';
+export const USER_PROFILE_BASE_URL = '/social/profile';
 
 // whether to show in selected list only entries that fulfill all filters
 export const SHOW_ONLY_VISIBLE_SELECTED = false;

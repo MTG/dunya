@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^user/reset/complete$', django.contrib.auth.views.password_reset_complete, name='social-pwreset-complete'),
     url(r'^user/reset/$', django.contrib.auth.views.password_reset, {'post_reset_redirect': 'social-pwreset-done', 'template_name': 'registration/pwreset.html', 'email_template_name': 'registration/pwreset_email.html'}, name='social-pwreset'),
 
+    url(r'^profile/(?P<username>[^/]+)/$', views.user_profile_username, name='social-user-profile-username'),
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^delete/$', views.delete_account, name='social-delete-account'),
     url(r'^login/$', django.contrib.auth.views.login,

@@ -100,6 +100,10 @@ def delete_account(request):
 
 
 @login_required
+def user_profile_username(request, username):
+    return user_profile(request)
+
+@login_required
 def user_profile(request):
     if request.user.username == "guest":
         raise Http404
