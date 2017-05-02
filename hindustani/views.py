@@ -34,19 +34,6 @@ from hindustani import search
 import docserver
 
 def searchcomplete(request):
-    # TODO: Hindustani-specific search
-    term = request.GET.get("term")
-    ret = []
-    error = False
-    if term:
-        try:
-            suggestions = search.autocomplete(term)
-            ret = [{"id": i, "label": l, "value": l} for i, l in enumerate(suggestions, 1)]
-        except pysolr.SolrError:
-            error = True
-    return HttpResponse(json.dumps(ret), content_type="application/json")
-
-def searchcomplete(request):
     term = request.GET.get("input")
     ret = []
     if term:
@@ -81,7 +68,7 @@ def recordings_search(request):
                     | recordings.filter(release__artists__mbid__in=artists)
 
         if s_releases and s_releases != '':
-            recordings = recordings.filter(releases__mbid__in=s_releases.split())
+            recordings = recordings.filter(release__mbid__in=s_releases.split())
 
         if s_instruments and s_instruments != '':
             recordings = recordings.filter(instrumentperformance__instrument__mbid__in=s_instruments.split())
