@@ -10,7 +10,7 @@
   &:first-child {
     border-top: 1px solid transparentize($orangeDark, 0.84);
   }
-  .fa-plus-circle {
+  .fa-plus-circle, .fa-minus-circle {
     float: right;
     color: transparentize($orangeDark, 0.84);
   }

@@ -36,7 +36,7 @@ const CategoryFilter = (props) => {
         className="CategoryFilter__title"
       >
         {props.category}
-        <i className="fa fa-lg fa-plus-circle" aria-hidden />
+        <i className={`${(props.isExpanded) ? ' fa fa-lg fa-minus-circle' : ' fa fa-lg fa-plus-circle'}`} aria-hidden />
         <span className="CategoryFilter__selected-counter">
           {(props.selectedItemsCount) ? props.selectedItemsCount : null}
         </span>
