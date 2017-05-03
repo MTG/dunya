@@ -1,0 +1,56 @@
+{% extends "carnatic/base.html" %}
+{% block title %}Terms and Conditions | {% endblock %}
+
+{% block extra_head %}
+<style type="text/css">
+.centering {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+table{
+  font-weight: bold;
+  margin: 0 auto;
+  width: 300px;
+}
+</style>
+{% endblock %}
+
+
+{% block wrap %}
+
+<div class="centering">
+<h2>Carnatic collection information</h2>
+
+<h3>Corpus Statistics</h3>
+    <p class="p1">
+    The CompMusic Carnatic corpus is organised in terms of concerts, recordings (songs), artists, ragas, thalas, and composers. The following table shows some numbers of this corpus:
+    </p>
+    <table>
+      <tr><td>Concerts (releases)</td><td>248</td></tr>
+      <tr><td>Recordings</td><td>1889</td></tr>
+      <tr><td>Lead artists</td><td>80</td></tr>
+      <tr><td>Violin artists</td><td>31</td></tr>
+      <tr><td>mridangam artists</td><td>32</td></tr>
+      <tr><td>ragas</td><td>249</td></tr>
+      <tr><td>thalas</td><td>20</td></tr>
+      <tr><td>Composers</td><td>152</td></tr>
+      <tr><td>Total duration</td><td>397h 10m</td></tr>
+    </table>
+<h3>Public datasets</h3>
+<p>Public datasets had been created from this corpus. These datasets are useful for various MIR related tasks on the music cultures under study in CompMusic. Please visit the <a href="http://compmusic.upf.edu/datasets">respective pages</a> for more details. </p>
+  
+<h3>API</h3>
+    <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">deveopers page</a>.</p>
+
+
+<h3>Contact us</h3>
+
+    <p>You can learn more information about the CompMusic project and its researchers
+    at our website, <a href="http://compmusic.upf.edu/">compmusic.upf.edu</a>.</p>
+    <p>To contact a specific researcher, see their <a href="http://compmusic.upf.edu/node/3">contact information</a>.</p>
+    <p>For information about Dunya, contact Alastair Porter: alastair.porter@upf.edu.</p>
+    <p>For general information about the CompMusic project, contact mtg@upf.edu.</p>
+</div>
+
+{% endblock %}

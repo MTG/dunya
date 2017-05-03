@@ -23,10 +23,15 @@
                       <img id="logo" src="{% static 'carnatic/img/logo.svg' %}">  
                         <div class="menu">
                             <ul>
-                                <li><a href="{% url 'contact' %}">Contact</a></li>
-                                <li><a href="{% url 'terms' %}">About</a></li>
+                                <li><a href="{% url 'general-info' %}">Info</a></li>
+                                <li><a href="{% url 'terms' %}">Legal</a></li>
+                                {% if user.is_authenticated %}
+                                <li><a href="/social/profile">{{ user.username }}</a></li>
+                                <li><a href="/social/logout">Logout</a></li>
+                                {% else %}
                                 <li><a href="/social/register">Register</a></li>
-                                <li><a href="{% url 'developers' %}">Developers</a></li>
+                                <li><a href="/social/login">Login</a></li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>

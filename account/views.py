@@ -36,7 +36,7 @@ def logout_page(request):
     logout(request)
     if "next" in request.GET:
         return HttpResponseRedirect(request.GET['next'])
-    return HttpResponseRedirect(reverse('carnatic-main'))
+    return HttpResponseRedirect(reverse('main'))
 
 def token_login(request):
     token = request.GET.get('token',None)

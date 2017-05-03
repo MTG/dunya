@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.conf.urls import url
+from django.views.generic.base import TemplateView
 
 from hindustani import views
 
@@ -24,6 +25,9 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
     url(r'^$', views.main, name='hindustani-main'),
+    url(r'^info$',
+        TemplateView.as_view(template_name="hindustani/info.html"), name='hindustani-info'),
+
     url(r'^searchcomplete$', views.searchcomplete, name='hindustani-searchcomplete'),
     url(r'^search$', views.recordings_search, name='hindustani-search'),
     url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='hindustani-recordingbyid'),

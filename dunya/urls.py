@@ -1,7 +1,7 @@
 from django.conf.urls import include, url, static
 from django.conf import settings
 from django.contrib import admin
-from django.views.generic.base import RedirectView
+from django.views.generic.base import TemplateView
 import django.contrib.auth.views
 
 import dunya.views
@@ -12,6 +12,9 @@ urlpatterns = [
     url(r'^developers/$', dunya.views.developers, name="developers"),
     url(r'^about/terms', dunya.views.terms, name="terms"),
     url(r'^about/cookies', dunya.views.cookies, name="cookies"),
+    url(r'^about/general-info',
+        TemplateView.as_view(template_name="carnatic/general_info.html"),
+        name="general-info"),
     url(r'^about/contact', dunya.views.contact, name="contact"),
     url(r'^api/carnatic/', include('carnatic.api_urls')),
     url(r'^api/hindustani/', include('hindustani.api_urls')),

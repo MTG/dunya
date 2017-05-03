@@ -9,7 +9,7 @@ const Navbar = () => (
       <div className="Navbar__logo-container">
         <a href="https://dunya.compmusic.upf.edu" style={{ verticalAlign: 'top' }}>
           <Logo />
-        </a>
+        </a><span style={{ verticalAlign: 'top', top: '20px', margin: '10px'}} className="NavLinks__item">{window.catalogue}</span>
       </div>
       <NavLinks />
     </div>

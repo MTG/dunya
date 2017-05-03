@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.conf.urls import url
+from django.views.generic.base import TemplateView
 
 from carnatic import views
 
@@ -24,6 +25,8 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
     url(r'^$', views.main, name='carnatic-main'),
+    url(r'^info$',
+        TemplateView.as_view(template_name="carnatic/info.html"), name='carnatic-info'),
 
     url(r'^formedit/%s$' % (uuid_match, ), views.formconcert, name='carnatic-formconcert'),
     url(r'^formedit$', views.formedit, name='carnatic-formedit'),
