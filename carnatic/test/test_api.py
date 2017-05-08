@@ -236,7 +236,7 @@ class RecordingTest(TestCase):
         # If we request another collection over the header parameter
         # we get a 404
         client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24", **{'HTTP_DUNYA_COLLECTION':'afd6'})
+        response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24", **{'HTTP_DUNYA_COLLECTION':str(uuid.uuid4())})
         self.assertEqual(404, response.status_code)
 
 class WorkTest(TestCase):
