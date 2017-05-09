@@ -7,7 +7,7 @@ const propTypes = {
 
 const LoadMoreResultsButton = props =>
   <button className="LoadMoreResultsButton" type="submit">
-    Load More ({props.moreResults})
+    Load More
   </button>;
 
 LoadMoreResultsButton.propTypes = propTypes;
