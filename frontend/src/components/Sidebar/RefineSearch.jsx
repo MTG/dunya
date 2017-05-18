@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { DATA_FETCH_STATUS } from 'constants';
 import CategoryFilter from '../CategoryFilter';
 import { getFiltersData } from '../../actions/filtersData';
+import { toggleSelectedEntry } from '../../actions/filtersData';
 import './RefineSearch.scss';
 
 const sortCategories = (catA, catB) => {
@@ -19,6 +20,7 @@ const propTypes = {
   receivedData: React.PropTypes.object,
   status: React.PropTypes.string,
   getFiltersData: React.PropTypes.func,
+  toggleSelectedEntry: React.PropTypes.func,
 };
 
 const renderRefineSection = (receivedData) => {
@@ -56,11 +58,17 @@ class RefineSearch extends React.Component {
     if (this.props.status !== DATA_FETCH_STATUS.SUCCESS) {
       // retrieve data to fill up the "refine" section (if not already fetched)
       this.props.getFiltersData();
+    }else{
+      var props = this.props;
+      location.search.substr(1).split("&").forEach(function (item) {
+        var tmp = item.split("=");
+        props.toggleSelectedEntry(tmp[1], tmp[0]);
+      }); 
     }
   }
 
   render() {
-    const { receivedData, status } = this.props;
+    const { receivedData, status,  } = this.props;
     switch (status) {
       case DATA_FETCH_STATUS.SUCCESS:
         return renderRefineSection(receivedData);
@@ -76,4 +84,4 @@ const mapStateToProps = state => state.filtersData;
 
 RefineSearch.propTypes = propTypes;
 
-export default connect(mapStateToProps, { getFiltersData })(RefineSearch);
+export default connect(mapStateToProps, { getFiltersData, toggleSelectedEntry })(RefineSearch);

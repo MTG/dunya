@@ -27,7 +27,7 @@ import StringIO
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, Http404, HttpResponseBadRequest
+from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonResponse
 from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
@@ -50,61 +50,21 @@ def guest_logout(request):
 
 
 def searchcomplete(request):
-    term = request.GET.get("term")
+    term = request.GET.get("input")
     ret = []
-    error = False
     if term:
-        try:
-            suggestions = search.autocomplete(term)
-            ret = []
-            for l in suggestions:
-                label = l['title_t']
-                if 'composer_s' in l:
-                    label += ' - ' +l['composer_s']
-                if 'artists_s' in l:
-                    artists = l['artists_s']
-                    if len(artists) > 40:
-                        artists = artists[:40] + "..."
-                    label += ' - ' + artists
-                if 'mbid_s' not in l:
-                    l['mbid_s'] = ''
-
-                ret.append({"id": l['object_id_i'], "label": label, "category": l['type_s'], "mbid": l['mbid_s']})
-        except pysolr.SolrError:
-            error = True
+        suggestions = models.Recording.objects.filter(title__istartswith=term)[:3]
+        ret = [{"id": i, "category": "recording", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        suggestions = models.Artist.objects.filter(name__istartswith=term)[:3]
+        ret += [{"id": i, "category": "artist", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
-def results(request):
-    term = request.GET.get("q")
-    ret = {}
-    error = False
-    if term:
-        try:
-            suggestions = search.autocomplete(term)
-            for l in suggestions:
-                doc = {'label': l['title_t'], 'id': l['object_id_i'],}
-                if l['type_s'] not in ret:
-                    ret[l['type_s']] = []
 
-                if 'mbid_s' not in l:
-                    l['mbid_s'] = ''
-                if 'composer_s' in l:
-                    doc['composer'] = l['composer_s']
-                if 'artists_s' in l:
-                    doc['artists'] = l['artists_s']
+def recordings_search(request):
+    q = request.GET.get('recording', '')
 
-                doc['mbid'] = l['mbid_s']
-                ret[l['type_s']].append(doc)
-        except pysolr.SolrError:
-            error = True
-    return render(request, "makam/results.html", {'results': ret, 'error': error})
-
-
-def main(request):
-    q = request.GET.get('q', '')
-
-    s_artist = request.GET.get('artist', '')
-    s_perf = request.GET.get('performer', '')
+    s_artist = request.GET.get('composer', '')
+    s_perf = request.GET.get('artist', '')
     s_form = request.GET.get('form', '')
     s_makam = request.GET.get('makam', '')
     s_usul = request.GET.get('usul', '')
@@ -131,49 +91,30 @@ def main(request):
 
 
     url = None
-    recordings = None
-    results = None
+    recordings = models.Recording.objects
+    next_page = None
     if s_work != '' or s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
         recordings, url = get_works_and_url(s_work, s_artist, s_form, s_usul, s_makam, s_perf, q)
-        if q and q!='':
-            url["q"] = "q=" + SafeString(q.encode('utf8'))
 
-        results = len(recordings) != 0
-
-        paginator = Paginator(recordings, 25)
-        page = request.GET.get('page')
-        try:
-            recordings = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            recordings = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            recordings = paginator.page(paginator.num_pages)
-    if not url:
-        url = {
-                "q": "q=%s" % SafeString(q.encode('utf8')),
-                "usul": "usul=%s" % s_usul,
-                "work": "work=%s" % s_work,
-                "form": "form=%s" % s_form,
-                "artist": "artist=%s" % s_artist,
-                "makam": "makam=%s" % s_makam,
-                "perf": "performer=%s" % s_perf
-                }
-
-    ret = {
-        'artist': artist,
-        'perf': perf,
-        'makam': makam,
-        'usul': usul,
-        'form': form,
-        'work': work,
-        'recordings': recordings,
-        'results': results,
-        'q': q,
-        'params': url,
+    paginator = Paginator(recordings.all(), 25)
+    page = request.GET.get('page')
+    try:
+        recordings = paginator.page(page)
+        if recordings.has_next():
+            next_page = recordings.next_page_number()
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        recordings = paginator.page(1)
+        if recordings.has_next():
+            next_page = recordings.next_page_number()
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        recordings = paginator.page(paginator.num_pages)
+    results = {
+        'results': [item.get_dict() for item in recordings.object_list],
+        "moreResults": next_page
     }
-    return render(request, "makam/work_list.html", ret)
+    return HttpResponse(json.dumps(results), content_type='application/json')
 
 def filter_directory(request):
     elem = request.GET.get('elem', None)
@@ -214,7 +155,9 @@ def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
     url = {}
     if q and q!='':
         ids = list(models.Work.objects.filter(title__unaccent__iexact=q).values_list('pk', flat=True))
-        recordings = recordings.filter(works__id__in=ids) | recordings.filter(title__contains=q)
+        rel_ids = list(models.Release.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
+        recordings = recordings.filter(works__id__in=ids) | recordings.filter(title__contains=q) |\
+                recordings.filter(release__id__in=rel_ids)
 
     if elem != "artist":
         if artist and artist != '':
@@ -376,6 +319,12 @@ def recordings_urls(include_img_and_bin=True):
         ret["pitchtrackurl"] = [("tomatodunya", "pitch", 1, "0.1")]
 
     return ret
+
+
+def recordingbyid(request, recordingid, title=None):
+    recording = get_object_or_404(models.Recording, pk=recordingid)
+    return redirect(recording.get_absolute_url(), permanent=True)
+
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
@@ -545,3 +494,49 @@ def symbtr(request, uuid):
     response['Content-Disposition'] = 'attachment; filename="%s"' % filename
 
     return response
+
+
+def filters(request):
+
+    makams = models.Makam.objects.prefetch_related('aliases').distinct()
+    forms = models.Form.objects.prefetch_related('aliases').distinct()
+    usuls = models.Usul.objects.prefetch_related('aliases').distinct()
+    composers = models.Composer.objects.all()
+    artists = models.Artist.objects.all()
+
+    makamlist = []
+    for r in makams:
+        makamlist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
+
+    formlist = []
+    for r in forms:
+        formlist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
+
+    usullist = []
+    for r in usuls:
+        usullist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
+
+    composerlist = []
+    for r in composers:
+        composerlist.append({"name": r.name, "mbid": str(r.mbid)})
+
+    artistlist = []
+    for a in artists:
+        rr = []
+        tt = []
+        cc = []
+        ii = []
+
+        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
+
+
+    ret = {"artists": artistlist,
+           "makams": makamlist,
+           "forms": formlist,
+           "usuls": usullist,
+           "composers": composerlist,
+           }
+
+    return JsonResponse(ret)
+
+

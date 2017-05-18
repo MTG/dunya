@@ -189,75 +189,7 @@ margin: 20px;
     font-weight: bold;
 }
 </style>
-<script src="{% static 'makam/js/works.js' %}"></script>
-<script>
-$( document ).ready(function() {
-  // WHEN CLICK SHOW THE RECORDINGS FOR A WORK
-  $('#one-column-emphasis').on('click','div.recordings', function() {
-   var work=$(this);
-   $.ajax({
-    method: "GET",
-    url: "/api/makam/work/" +$(this).attr('data-id'),
-    dataType: "json",
-    }).done(function(data) {
-     $('.recordings').each(function(){$(this).html('<a href="#"">Show</a>')});;
-     work.html('<ul></ul>');
-     for(var i=0; i<data['recordings'].length; i++){
-       var art=data['recordings'][i]['artists'];
-       var artists="";
-       for(var j=0;j<art.length;j++){
-         artists += " "+art[j]['name'];
-       }
-       work.parent().find('ul').append('<li><a href="/makam/recording/'+data['recordings'][i]['mbid'] +'">'+data['recordings'][i]['title'] + ' ('+ artists +')</li>');
-     }
-    });
-
-  });
-$(function() {
-    $( "#combo-artist" ).combobox();
-      $( "#toggle" ).click(function() {
-          $( "#combo-artist" ).toggle();
-     });
-  });
-
-$("#filterdialog").dialog({
-  autoOpen: false,
-  minWidth: 700,
-  position: {
-    my: "center",
-    at: "center top"
-  }
-});
-$(".change-filter").click(function() {
-    var url = $(this).attr('href');
-    $.ajax(url, {dataType: "html", type: "GET",
-      success: function(data, textStatus, xhr) {
-        $("#filterdialog").html(data);
-        $("#filterdialog").dialog("open");
-      }, error: function(xhr, textStatus, errorThrown) {
-      console.debug("xhr error " + textStatus);
-      console.debug(errorThrown);
-
-      }});
-
-  return false;
-});
-
-
-});
-</script>
 {% endblock%}
-{%block extra-search%}
-<form method="get" action=".">
-    <label for="query">Work name</label>
-    <input type="text" name="q" id="work-query" value="{% if q %}{{q}}{% endif %}"/>
-    <input type="hidden" name="usul" value="{% if usul %}{{usul.id}}{% endif %}"/>
-    <input type="hidden" name="makam" value="{% if makam %}{{makam.id}}{% endif %}"/>
-    <input type="hidden" name="form" value="{% if form %}{{form.id}}{% endif %}"/>
-    <input type="hidden" name="artist" value="{% if artist %}{{artist.id}}{% endif %}"/>
-</form>
-{% endblock%}
-
 {% block wrap %}
 <div id="detail"   style="min-height: 850px;">
 

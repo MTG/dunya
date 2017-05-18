@@ -159,6 +159,28 @@ class Recording(MakamStyle, data.models.Recording):
         performers = Artist.objects.filter(instrumentperformance__recording=self).exclude(id__in=artists).distinct()
         return list(artists) + list(performers)
 
+    def get_dict(self):
+        release = self.release_set.first()
+        title = None
+        if release:
+            title = release.title
+        image = None
+        if release and release.image:
+            image = release.image.image.url
+        if not image:
+            image = "/static/makam/img/disc1.png"
+        artists = Artist.objects.filter(primary_concerts__recordings=self).values_list('name').all()
+        return {
+                "concert": title,
+                "mainArtists": [item for sublist in artists for item in sublist],
+                "name": self.title,
+                "image": image,
+                "linkToRecording": reverse("makam-recordingbyid", args=[self.id]),
+                "collaborators": [],
+                "selectedArtists": ""
+        }
+
+
 class InstrumentPerformance(MakamStyle, data.models.InstrumentPerformance):
     pass
 
