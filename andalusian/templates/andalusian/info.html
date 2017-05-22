@@ -1,0 +1,59 @@
+{% extends "carnatic/base.html" %}
+{% block title %}Terms and Conditions | {% endblock %}
+
+{% block extra_head %}
+<style type="text/css">
+.centering {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+table{
+  font-weight: bold;
+  margin: 0 auto;
+  width: 400px;
+}
+</style>
+{% endblock %}
+
+
+{% block wrap %}
+
+<div class="centering">
+<h2>Andalusian collection information</h2>
+
+<h3>Corpus Statistics</h3>
+    <p class="p1">
+    The CompMusic Andalusian corpus contains <b>167 recordings</b> (songs) of <b>11 mizans</b> and <b>13 nawbas</b> played by <b>3 different orchestras</b>. The following table shows the distribution of the Andalusian music recordings:
+    </p>
+    <table>
+      <tr><th>Nawba/Mizān</th><th>Basit</th><th>Qāʾim wa Nisf</th><th>Btayhi</th><th>Darj</th><th>Quddām</th></tr>
+      <tr><td>Raml al-Māya</td><td>3</td><td>2</td><td>5</td><td>0</td><td>4</td></tr>
+      <tr><td>al-Isbahān</td><td>1</td><td>3</td><td>4</td><td>0</td><td>5</td></tr>
+      <tr><td>al-Māya</td><td>4</td><td>1</td><td>3</td><td>1</td><td>10</td></tr>
+      <tr><td>Rasd al-Dayl</td><td>6</td><td>3</td><td>3</td><td>0</td><td>6</td></tr>
+      <tr><td>al-Istihlāl</td><td>3</td><td>6</td><td>5</td><td>3</td><td>4</td></tr>
+      <tr><td>al-Rasd</td><td>3</td><td>0</td><td>3</td><td>0</td><td>6</td></tr>
+      <tr><td>Gharībat al-Husayn</td><td>5</td><td>3</td><td>1</td><td>0</td><td>3</td></tr>
+      <tr><td>al-Hijaz al-Kabir</td><td>3</td><td>1</td><td>3</td><td>1</td><td>2</td></tr>
+      <tr><td>al-Hijaz al-Msharqi</td><td>4</td><td>0</td><td>5</td><td>0</td><td>5</td></tr>
+      <tr><td>Irāq al-Ajam</td><td>1</td><td>0</td><td>4</td><td>0</td><td>7</td></tr>
+      <tr><td>al-Uššāq</td><td>3</td><td>3</td><td>1</td><td>0</td><td>4</td></tr>
+    </table>
+<h3>Public datasets</h3>
+<p>Public datasets had been created from this corpus. These datasets are useful for various MIR related tasks on the music cultures under study in CompMusic. Please visit the <a href="http://compmusic.upf.edu/datasets">respective pages</a> for more details. </p>
+  
+<h3>API</h3>
+    <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">deveopers page</a>.</p>
+
+
+<h3>Contact us</h3>
+
+    <p>You can learn more information about the CompMusic project and its researchers
+    at our website, <a href="http://compmusic.upf.edu/">compmusic.upf.edu</a>.</p>
+    <p>To contact a specific researcher, see their <a href="http://compmusic.upf.edu/node/3">contact information</a>.</p>
+    <p>For information about Dunya, contact Alastair Porter: alastair.porter@upf.edu.</p>
+    <p>For general information about the CompMusic project, contact mtg@upf.edu.</p>
+</div>
+
+{% endblock %}
