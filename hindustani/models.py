@@ -375,7 +375,7 @@ class Recording(HindustaniStyle, data.models.Recording):
                 "mainArtists": [item for sublist in artists for item in sublist],
                 "name": self.title,
                 "image": image,
-                "linkToRecording": reverse("hindustani-recordingbyid", args=[self.id]),
+                "linkToRecording": reverse("hindustani-recording", args=[self.mbid]),
                 "collaborators": [],
                 "selectedArtists": ""
         }

@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.conf.urls import url
+from django.views.generic.base import TemplateView
 
 from andalusian import views
 
@@ -22,7 +23,14 @@ uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]
 title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
-    url(r'^$', views.main, name='andalusian-main'),
+    url(r'^$',
+        TemplateView.as_view(template_name="andalusian/index.html"), name='andalusian-main'),
+    url(r'^info$',
+        TemplateView.as_view(template_name="andalusian/info.html"), name='andalusian-info'),
+    url(r'^search$', views.search, name='andalusian-search'),
+    url(r'^searchcomplete$', views.searchcomplete, name='andalusian-searchcomplete'),
+    url(r'filters.json$', views.filters, name='andalusian-filters'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='andalusian-recording'),
+    url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='andalusian-recordingbyid'),
 ]
 

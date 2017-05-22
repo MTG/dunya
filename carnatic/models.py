@@ -816,7 +816,7 @@ class Recording(CarnaticStyle, data.models.Recording):
                 "mainArtists": [item for sublist in artists for item in sublist],
                 "name": self.title,
                 "image": image,
-                "linkToRecording": reverse("carnatic-recordingbyid", args=[self.id]),
+                "linkToRecording": reverse("carnatic-recording", args=[self.mbid]),
                 "collaborators": [],
                 "selectedArtists": ""
         }

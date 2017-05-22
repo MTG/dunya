@@ -3,18 +3,21 @@ export const FILTERS_DATA_URL = {
   carnatic: '/carnatic/filters.json',
   hindustani: '/hindustani/filters.json',
   makam: '/makam/filters.json',
+  andalusian: '/andalusian/filters.json',
 };
 
 export const SEARCH_URL = {
   carnatic: '/carnatic/search',
   hindustani: '/hindustani/search',
   makam: '/makam/search',
+  andalusian: '/andalusian/search',
 };
 
 export const AUTOCOMPLETE_URL = {
   carnatic: '/carnatic/searchcomplete',
   hindustani: '/hindustani/searchcomplete',
   makam: '/makam/searchcomplete',
+  andalusian: '/andalusian/searchcomplete',
 };
 
 export const LOGIN_URL = '/social/login';
