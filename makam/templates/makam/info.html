@@ -1,0 +1,90 @@
+{% extends "makam/base.html" %}
+{% load staticfiles %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
+{% endblock %}
+{% block title %}Makam index | {% endblock %}
+{% block script %}
+<style>
+a:hover{
+  text-decoration: underline !important;
+}
+h2{
+  margin: 30px 0 0 20px;
+  color: #46433a;
+  font-size: 30px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+#initial, #loading, #no-results{
+  font-family: 'Sintony', sans-serif;
+  font-size: 14px;
+  margin-left: 30px;
+  margin-top: 15px;
+  color: #46433a;
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f9f6f5;
+  border: 1px solid #ebe2df;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+}
+#initial a{
+  color: #46433a;
+}
+
+.bold-text{
+    font-weight: bold;
+}
+</style>
+
+{% endblock %}
+{% block wrap %}
+<div id="detail"   style="min-height: 850px;">
+
+    <div id="initial">
+    <h1>Dunya Turkish makam general information</h1>
+
+    <h2>Overview</h2>
+      <p class="p1">
+      Dunya-makam stores and processes musical data such as audio recordings, music scores and relevant metadata...[<a href='{% url 'makam-overview' %}'>See more</a>]
+      </p>
+
+    <h2>Corpus Statistics</h2>
+        <p class="p1">
+        For detailed statistics about the makam corpus refer to the page <a href="{% url 'makam-stats' %}">Corpus Statistics</a>.
+        </p>
+
+    <h2>Results</h2>
+        <p class="p1">
+          For results of score informed audio analysis refer to the <a href="{% url 'makam-res-stats' %}">Results Page</a>.
+        </p>
+
+  <h2>Public datasets</h2>
+  <p>Public datasets had been created from this corpus. These datasets are useful for various MIR related tasks on the music cultures under study in CompMusic. Please visit the <a href="http://compmusic.upf.edu/datasets">respective pages</a> for more details. </p>
+    
+  <h2>API</h2>
+      <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">deveopers page</a>.</p>
+
+
+  <h2>Contact us</h2>
+
+    <p>You can learn more information about the CompMusic project and its researchers
+    at our website, <a href="http://compmusic.upf.edu/">compmusic.upf.edu</a>.</p>
+    <p>To contact a specific researcher, see their <a href="http://compmusic.upf.edu/node/3">contact information</a>.</p>
+    <p>For information about Dunya, contact Alastair Porter: alastair.porter@upf.edu.</p>
+    <p>For general information about the CompMusic project, contact mtg@upf.edu.</p>
+</div>
+
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div id="filterdialog" title="Filter">
+</div>
+{% endblock %}
+
