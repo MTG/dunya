@@ -32,7 +32,7 @@ def search(request):
         ids = list(models.Work.objects.filter(title__icontains=q).values_list('pk', flat=True))
         recordings = recordings.filter(works__id__in=ids)\
                 | recordings.filter(title__icontains=q)\
-                | recordings.filter(concert__title__icontains=q)
+                | recordings.filter(album__title__icontains=q)
     if s_nawba and s_nawba != '':
         recordings = recordings.filter(section__nawba=s_nawba)
     if s_mizan and s_mizan != '':
