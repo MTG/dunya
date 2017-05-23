@@ -70,31 +70,10 @@ def recordings_search(request):
     s_usul = request.GET.get('usuls', '')
     s_work= request.GET.get('works', '')
 
-    artist = ""
-    if s_artist and s_artist != '':
-        artist = models.Composer.objects.get(id=s_artist)
-    perf = ""
-    if s_perf and s_perf != '':
-        perf = models.Artist.objects.get(id=s_perf)
-    form = ""
-    if s_form and s_form != '':
-        form = models.Form.objects.get(id=s_form)
-    usul = ""
-    if s_usul and s_usul != '':
-        usul = models.Usul.objects.get(id=s_usul)
-    makam = ""
-    if s_makam and s_makam != '':
-        makam = models.Makam.objects.get(id=s_makam)
-    work = ""
-    if s_work and s_work != '':
-        work = models.Work.objects.get(id=s_work)
-
-
-    url = None
     recordings = models.Recording.objects
     next_page = None
     if s_work != '' or s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
-        recordings, url = get_works_and_url(s_work, s_artist, s_form, s_usul, s_makam, s_perf, q)
+        recordings = get_works(s_work, s_artist, s_form, s_usul, s_makam, s_perf, q)
 
     paginator = Paginator(recordings.all(), 25)
     page = request.GET.get('page')
@@ -117,9 +96,8 @@ def recordings_search(request):
     return HttpResponse(json.dumps(results), content_type='application/json')
 
 
-def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
+def get_works(work, artist, form, usul, makam, perf, q, elem=None):
     recordings = models.Recording.objects
-    url = {}
     if q and q!='':
         ids = list(models.Work.objects.filter(title__unaccent__iexact=q).values_list('pk', flat=True))
         rel_ids = list(models.Release.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
@@ -128,8 +106,8 @@ def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
 
     if elem != "artist":
         if artist and artist != '':
-            recordings = recordings.filter(works__composers=artist) | recordings.filter(works__lyricists=artist)
-        url["artist"] = "artist=" + artist
+            recordings = recordings.filter(works__composers__mbid__in=artist.split())\
+                    | recordings.filter(works__lyricists__mbid__in=artist.split())
     if elem != "form":
         if form and form != '':
             if form == '17':
@@ -137,28 +115,23 @@ def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
             if form == '67':
                 recordings = recordings.filter(has_taksim=True)
             else:
-                recordings= recordings.filter(works__form=form)
-        url["form"] = "form=" + form
+                recordings= recordings.filter(works__form__uuid__in=form.split())
     if elem != "work":
         if work and work != '':
-            recordings = recordings.filter(works=work)
-        url["work"] = "work=" + work
+            recordings = recordings.filter(works__mbid__in=work.split())
     if elem != "usul":
         if usul and usul != '':
-            recordings = recordings.filter(works__usul=usul)
-        url["usul"] = "usul=" + usul
+            recordings = recordings.filter(works__usul__uuid__in=usul.split())
     if elem != "makam":
         if makam and makam != '':
-            recordings = recordings.filter(works__makam=makam)
-        url["makam"] = "makam=" + makam
+            recordings = recordings.filter(works__makam__uuid__in=makam.split())
     if elem != "performer":
         if perf and perf != '':
-            recordings = recordings.filter(instrumentperformance__artist=perf) | \
-                    recordings.filter(release__artists=perf)
-        url["perf"] = "performer=" + perf
+            recordings = recordings.filter(instrumentperformance__artist__mbid__in=perf.split()) | \
+                    recordings.filter(release__artists__mbid__in=perf.split())
 
     recordings = recordings.distinct().order_by('title')
-    return recordings, url
+    return recordings
 
 
 def work_score(request, uuid, title=None):
