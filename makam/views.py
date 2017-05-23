@@ -63,12 +63,12 @@ def searchcomplete(request):
 def recordings_search(request):
     q = request.GET.get('recording', '')
 
-    s_artist = request.GET.get('composer', '')
-    s_perf = request.GET.get('artist', '')
-    s_form = request.GET.get('form', '')
-    s_makam = request.GET.get('makam', '')
-    s_usul = request.GET.get('usul', '')
-    s_work= request.GET.get('work', '')
+    s_artist = request.GET.get('composers', '')
+    s_perf = request.GET.get('artists', '')
+    s_form = request.GET.get('forms', '')
+    s_makam = request.GET.get('makams', '')
+    s_usul = request.GET.get('usuls', '')
+    s_work= request.GET.get('works', '')
 
     artist = ""
     if s_artist and s_artist != '':
