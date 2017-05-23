@@ -283,21 +283,21 @@ widthOfChildren(".metaContainer");
                                             <label>Composer</label><b><span>
 
                                                 <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width="16px" src="{% static "makam/img/mb.png" %}" /></a>
-                                                <a href="{% url "work-list" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                                <a href="{% url "makam-main" %}?composers={{c.mbid}}">{{c}}</a></span></b>
                                             {% endfor %}
                                             {% for c in w.lyricistlist.all %}
                                             <label>Lyricist</label><b><span>
                                                 <a class="work-mb" href="http://musicbrainz.org/artist/{{c.mbid}}"><img width="16px" src="{% static "makam/img/mb.png" %}" /></a>
-                                                <a href="{% url "work-list" %}?artist={{c.id}}">{{c}}</a></span></b>
+                                                <a href="{% url "makam-main" %}?composers={{c.mbid}}">{{c}}</a></span></b>
                                             {% endfor %}
                                             {% for m in w.makam.all %}
-                                            <label>Makam</label><b><span><a href="{% url "work-list" %}?makam={{m.id}}">{{m}}</a></span></b>
+                                            <label>Makam</label><b><span><a href="{% url "makam-main" %}?makams={{m.uuid}}">{{m}}</a></span></b>
                                             {% endfor %}
                                             {% for f in w.form.all %}
-                                            <label>Form</label><b><span><a href="{% url "work-list" %}?form={{f.id}}">{{f}}</a></span></b>
+                                            <label>Form</label><b><span><a href="{% url "makam-main" %}?forms={{f.uuid}}">{{f}}</a></span></b>
                                             {% endfor %}
                                             {% for u in w.usul.all %}
-                                            <label>Usul</label><b><span><a href="{% url "work-list" %}?usul={{u.id}}">{{u}}</a></span></b>
+                                            <label>Usul</label><b><span><a href="{% url "makam-main" %}?usuls={{u.uuid}}">{{u}}</a></span></b>
                                             {% endfor %}
                                         </div>
                                      </div>
