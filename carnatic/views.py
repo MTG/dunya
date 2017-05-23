@@ -42,9 +42,9 @@ def searchcomplete(request):
     ret = []
     if term:
         suggestions = Concert.objects.filter(title__istartswith=term)[:3]
-        ret = [{"id": i, "category": "concert", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        ret = [{"id": i, "category": "concerts", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
         suggestions = Artist.objects.filter(name__istartswith=term)[:3]
-        ret += [{"id": i, "category": "artist", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
+        ret += [{"id": i, "category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 def recordings_search(request):

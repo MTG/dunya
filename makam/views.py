@@ -54,9 +54,9 @@ def searchcomplete(request):
     ret = []
     if term:
         suggestions = models.Recording.objects.filter(title__istartswith=term)[:3]
-        ret = [{"id": i, "category": "recording", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        ret = [{"id": i, "category": "recordings", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
         suggestions = models.Artist.objects.filter(name__istartswith=term)[:3]
-        ret += [{"id": i, "category": "artist", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
+        ret += [{"id": i, "category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
