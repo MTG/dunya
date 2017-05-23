@@ -116,39 +116,6 @@ def recordings_search(request):
     }
     return HttpResponse(json.dumps(results), content_type='application/json')
 
-def filter_directory(request):
-    elem = request.GET.get('elem', None)
-
-    q = request.GET.get('q', None)
-
-    artist = request.GET.get('artist', '')
-    perf = request.GET.get('performer', '')
-    form = request.GET.get('form', '')
-    makam = request.GET.get('makam', '')
-    usul = request.GET.get('usul', '')
-    work= request.GET.get('work', '')
-
-    recordings, url = get_works_and_url(work, artist, form, usul, makam, perf, q, elem)
-    if q and q!='':
-        url["q"] = "q=" + SafeString(q.encode('utf8'))
-
-    recording_ids = recordings.values_list('id', flat=True).all()
-    elems = []
-    if elem == "makam":
-        elems = models.Makam.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
-    elif elem == "form":
-        elems = models.Form.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
-    elif elem == "usul":
-        elems = models.Usul.objects.filter(work__recording__id__in=recording_ids).order_by('name').distinct()
-    elif elem == "artist":
-        elems = models.Composer.objects.filter(works__recording__id__in=recording_ids).order_by('name').distinct() | \
-            models.Composer.objects.filter(lyric_works__recording__id__in=recording_ids).order_by('name').distinct()
-    elif elem == "performer":
-        e_perf = models.Artist.objects.filter(instrumentperformance__recording__id__in=recording_ids).distinct() | \
-                 models.Artist.objects.filter(recording__id__in=recording_ids).distinct()
-        elems = e_perf.order_by('name').distinct()
-
-    return  render(request, "makam/display_directory.html", {"elem": elem, "elems": elems, "params": url})
 
 def get_works_and_url(work, artist, form, usul, makam, perf, q, elem=None):
     recordings = models.Recording.objects

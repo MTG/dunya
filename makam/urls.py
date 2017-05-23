@@ -42,7 +42,6 @@ urlpatterns = [
     url(r'^score/%s$' % (uuid_match), views.work_score, name='makam-score'),
     url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),
 
-    url(r'^filter/popup$', views.filter_directory, name='makam-directory'),
     url(r'^searchcomplete$', views.searchcomplete, name='makam-searchcomplete'),
     url(r'filters.json$', views.filters, name='makam-filters'),
 ]
