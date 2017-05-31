@@ -1,4 +1,4 @@
-{% extends "makam/base.html" %}
+{% extends "carnatic/base.html" %}
 {% load staticfiles %}
 
 {% block extra_css %}
@@ -7,36 +7,16 @@
 {% block title %}Makam index | {% endblock %}
 {% block script %}
 <style>
-a:hover{
-  text-decoration: underline !important;
+.centering {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
 }
-h2{
-  margin: 30px 0 0 20px;
-  color: #46433a;
-  font-size: 30px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+table{
+  font-weight: bold;
+  margin: 0 auto;
+  width: 400px;
 }
-#initial, #loading, #no-results{
-  font-family: 'Sintony', sans-serif;
-  font-size: 14px;
-  margin-left: 30px;
-  margin-top: 15px;
-  color: #46433a;
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: #f9f6f5;
-  border: 1px solid #ebe2df;
-  border-radius: 2px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  max-width: 1200px;
-}
-#initial a{
-  color: #46433a;
-}
-
 .bold-text{
     font-weight: bold;
 }
@@ -44,7 +24,7 @@ h2{
 
 {% endblock %}
 {% block wrap %}
-<div id="detail"   style="min-height: 850px;">
+<div class="centering">
 
     <div id="initial">
     <h1>Dunya Turkish makam general information</h1>
@@ -64,7 +44,7 @@ h2{
           For results of score informed audio analysis refer to the <a href="{% url 'makam-res-stats' %}">Results Page</a>.
         </p>
 
-  <h2>Public datasets</h2>
+  <h2>Complementary datasets</h2>
   <p>Public datasets had been created from this corpus. These datasets are useful for various MIR related tasks on the music cultures under study in CompMusic. Please visit the <a href="http://compmusic.upf.edu/datasets">respective pages</a> for more details. </p>
     
   <h2>API</h2>
@@ -83,8 +63,6 @@ h2{
 
     </div>
     <div class="clearfix"></div>
-</div>
-<div id="filterdialog" title="Filter">
 </div>
 {% endblock %}
 
