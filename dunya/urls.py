@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^developers/$', dunya.views.developers, name="developers"),
     url(r'^about/terms', dunya.views.terms, name="terms"),
     url(r'^about/cookies', dunya.views.cookies, name="cookies"),
-    url(r'^about/general-info',
+    url(r'^about/info',
         TemplateView.as_view(template_name="carnatic/general_info.html"),
         name="general-info"),
     url(r'^about/contact', dunya.views.contact, name="contact"),

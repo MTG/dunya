@@ -289,6 +289,11 @@ fieldset {
 textarea {
   resize: vertical;
 }
+.centering {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
 .nopad {
   padding: 0px !important;
 }
@@ -310,10 +315,6 @@ textarea {
 /* ==========================================================================
    HEADER
    ========================================================================== */
-.header-container {
-  position: relative;
-  width: 100%;
-}
 .header-container #logo {
   position: relative;
   top: 8px;
@@ -422,108 +423,12 @@ textarea {
   margin-top: 24px;
   margin-right: 10px;
 }
-.header-container nav#mainmenu > a {
-  float: left;
-  margin: 0;
-  margin-left: 5px;
-  padding: 4px 7px 3px 7px;
-  display: block;
-  text-align: center;
+.header-container nav#mainmenu a {
+  font-size: 18px;
+  font-weight: 700;
+  color: #41322d;
   text-decoration: none;
-  font-size: 14px;
-  color: #221F1F;
-  background: #eeeded;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  font-size: 12px;
-  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-}
-.header-container nav#mainmenu #usermenu {
-  float: left;
-  display: block;
   position: relative;
-  width: auto;
-  height: auto;
-  padding-right: 5px;
-}
-.header-container nav#mainmenu #usermenu > a {
-  margin: 0;
-  margin-left: 5px;
-  padding: 4px 7px 3px 7px;
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  font-size: 14px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  font-size: 12px;
-  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-  background: #666;
-  background-size: 177px 157px;
-  color: #fff;
-  cursor: pointer;
-}
-.header-container nav#mainmenu #usermenu > a img {
-  width: 20px;
-}
-.header-container nav#mainmenu #usermenu > a.loggedin {
-  background: url("../img/texturelogo.png") 21% 42% no-repeat;
-}
-.header-container nav#mainmenu #usermenuoptions {
-  display: none;
-  position: absolute;
-  right: 9px;
-  top: 30px;
-  font-size: 14px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  font-size: 12px;
-  box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
-  color: #221F1F;
-  background: #eeeded;
-  padding: 15px;
-  z-index: 40;
-  margin-top: 5px;
-}
-.header-container nav#mainmenu #usermenuoptions > img {
-  width: 150px;
-}
-.header-container nav#mainmenu #usermenuoptions > a {
-  color: #000;
-  text-decoration: none;
-  display: block;
-  white-space: nowrap;
-}
-.header-container nav#mainmenu #usermenuoptions > a:hover {
-  text-decoration: underline;
-}
-.header-container nav#mainmenu #usermenuoptions > h3 {
-  color: #000;
-  display: block;
-  white-space: nowrap;
-}
-.header-container nav#mainmenu #usermenuoptions > h3 b {
-  color: #600;
-}
-.header-container nav#mainmenu #usermenuoptions #userArrow {
-  position: absolute;
-  width: 27px;
-  height: 15px;
-  background: url("../img/userArrow.png") 0 0 no-repeat;
-  top: -9px;
-  right: 8px;
-}
-.header-container nav#mainmenu #usermenuoptions.open {
-  margin-top: 0px;
 }
 .header-container nav#mainmenu li:first-child a {
   margin-left: 0;
@@ -532,10 +437,24 @@ textarea {
   margin-right: 0;
 }
 .header-container nav#mainmenu ul li {
-  display: inline;
+  display: inline-block;
+  margin: 0 25px;
 }
-.header-container nav#mainmenu .oldie nav a {
-  margin: 0 0.7%;
+.header-container nav#mainmenu a:after {
+  content: '';
+  width: 0;
+  position: absolute;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-transition: width 0.2s ease-in-out;
+  transition: width 0.2s ease-in-out;
+  left: 50%;
+  top: 105%;
+  height: 3px;
+  background-color: #41322d;
+}
+.header-container nav#mainmenu a:hover:after {
+  width: 100%;
 }
 #uncompatibleIE-bar {
   position: relative;

@@ -58,7 +58,11 @@ fieldset {
 textarea {
     resize: vertical;
 }
-
+.centering {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
 .nopad { padding: 0px !important; }
 .header-container, .main-container { min-width: 1024px; }
 #entitiesList.filterListClosed, #entitiesList { width: 150px !important; }
@@ -77,8 +81,6 @@ textarea {
    ========================================================================== */
 
 .header-container {
-    position: relative;
-    width: 100%;
     #logo {
         position: relative;
         top:8px;
@@ -175,109 +177,39 @@ textarea {
         float: right;
         margin-top:24px;
         margin-right: 10px;
-        >a {
-            float: left;
-            margin: 0;
-            margin-left: 5px;
-            padding: 4px 7px 3px 7px;
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            font-size: 14px;
-            color: #221F1F;
-            background: #eeeded;
-            .rounded (4px);
-            font-size: 12px;
-            box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-        }
-        #usermenu {
-            float: left;
-            display: block;
-            position: relative;
-            width:auto;
-            height: auto;
-            padding-right: 5px;
-            >a {
-                margin: 0;
-                margin-left: 5px;
-                padding: 4px 7px 3px 7px;
-                display: block;
-                text-align: center;
-                text-decoration: none;
-                font-size: 14px;
-                .rounded (4px);
-                font-size: 12px;
-                box-shadow: inset 0px 1px 5px #ddd, 2px 2px 2px #888;
-                background: #666;
-                background-size: 177px 157px;
-                color: #fff;
-                cursor: pointer;
-                img {
-                    width: 20px;
-                }
-                &.loggedin {
-                    background: url("../img/texturelogo.png") 21% 42% no-repeat;
-                }
-            }
-        }
-        #usermenuoptions {
-            display: none;
-            position: absolute;
-            right: 9px;
-            top: 30px;
-            font-size: 14px;
-            .rounded (4px);
-            font-size: 12px;
-            box-shadow: inset 0px 1px 5px #ddd, 2px 2px 4px #666;
-            color: #221F1F;
-            background: #eeeded;
-            padding:15px;
-            z-index:40;
-            margin-top:5px;
-            >img {
-                width: 150px;
-            }
-            >a {
-                color: #000;
-                text-decoration: none;
-                display: block;
-                white-space: nowrap;
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-            >h3 {
-                b {
-                    color:#600;
-                }
-                color: #000;
-                display: block;
-                white-space: nowrap;
-            }
-            #userArrow {
-                position: absolute;
-                width: 27px;
-                height: 15px;
-                background: url("../img/userArrow.png") 0 0 no-repeat;
-                top: -9px;
-                right: 8px;
-            }
-            &.open {
-                margin-top:0px;
-            }
+        a {
+          font-size: 18px;
+          font-weight: 700;
+          color: #41322d;
+          text-decoration: none;
+          position: relative;
         }
         li:first-child a {
-               margin-left: 0;
-           }
+          margin-left: 0;
+        }
         li:last-child a {
-            margin-right: 0;
+          margin-right: 0;
         }
         ul li {
-            display: inline;
+          display: inline-block;
+          margin: 0 25px;
         }
-        .oldie nav a {
-            margin: 0 0.7%;
+        a:after {
+          content:'';
+          width:0;
+          position:absolute;
+          -webkit-transform:translateX(-50%);
+          transform:translateX(-50%);
+          -webkit-transition:width .2s ease-in-out;
+          transition:width .2s ease-in-out;
+          left:50%;
+          top:105%;
+          height:3px;
+          background-color:#41322d
         }
+        a:hover:after{
+          width:100%;
+        }  
     }
 }
 

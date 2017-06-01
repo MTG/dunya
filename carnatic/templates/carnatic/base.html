@@ -127,41 +127,27 @@
 	    </div>
         <!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
-            <header>
+            <header class="centering">
             <div id="logo">
                 <a href="/">
-                <img src="{% static 'carnatic/img/logoDunya.png' %}">
+                <img src="{% static 'carnatic/img/logo.svg' %}">
             </a>
             </div>
                 <nav id="mainmenu">
-            <a href="#" id="aboutbutton">About</a>
-            <div href="#" id="usermenu">
-            {% if user.is_authenticated %}
-                    <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/avatar.png' %}" /></a>
-                    <div id="usermenuoptions">
-                        <div id="userArrow"></div>
-                        <h3>Hi <b>{{ user.username }}!</b></h3>
-                        {% if user.username != 'guest' %}
-                        <a href="{% url 'social-user-profile' %}">View profile</a>
-                        <a href="{% url 'social-user-changepw' %}">Change password</a>
-                        {% endif %}
-                        <a href="{% url 'social-auth-logout' %}?next={% firstof request.path|safe '/' %}">Logout</a>
-                    </div>
-
-            {% else %}
-                    <a href="#">Login<img src="{% static 'carnatic/img/avatar.png' %}" /></a>
-                    <div id="usermenuoptions">
-                        <div id="userArrow"></div>
-                        <h3>Hi! what do you want to do?</h3>
-                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path|safe '/' %}">Login</a>
-                        <a href="{% url 'social-auth-register' %}">Register</a>
-                    </div>
-            {% endif %}
-                </div>
+                  <ul>
+                    <li><a class="" href="./info">Info</a></li>
+                    <li><a class="" href="https://dunya.compmusic.upf.edu/about/terms">Legal</a></li>
+                    {% if user.is_authenticated %}
+                      {% if user.username != 'guest' %}
+                        <li><a class="" id="mainmenu_a" href="{% url 'social-user-profile' %}">{{ user.username }}</a></li>
+                      {% endif %}
+                      <li><a class="" href="/social/logout">Logout</a></li>
+                      {% else %}
+                      <li><a href="{% url 'social-auth-login' %}">Login</a></li>
+                      <li><a href="{% url 'social-auth-register' %}">Register</a></li>
+                    {% endif %}
+                  </ul>
                 </nav>
-               <div id="erclogo">
-                   <div><span>Funded by the</span><span>European Research Council</span></div>
-                <img src="{% static 'carnatic/img/erclogo.jpg' %}" />
             </div>
                 <div class="clearfix"></div>
             </header>
