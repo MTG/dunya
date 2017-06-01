@@ -1,6 +1,6 @@
-export const loadState = () => {
+export const loadState = (appName) => {
   try {
-    const serializedState = sessionStorage.getItem('state');
+    const serializedState = sessionStorage.getItem('state_'+appName);
     if (serializedState === null) {
       return undefined;
     }
@@ -10,10 +10,10 @@ export const loadState = () => {
   }
 };
 
-export const saveState = (state) => {
+export const saveState = (state, appName) => {
   try {
     const serializedState = JSON.stringify(state);
-    sessionStorage.setItem('state', serializedState);
+    sessionStorage.setItem('state_'+appName, serializedState);
   } catch (err) {
     // ignore for now
   }

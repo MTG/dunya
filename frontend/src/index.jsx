@@ -9,12 +9,12 @@ import { STORE_APPLICATION_STATE } from 'settings';
 import App from 'components/App';
 import configureStore from 'store';
 
-const persistedStore = (STORE_APPLICATION_STATE) ? loadState() : undefined;
+const persistedStore = (STORE_APPLICATION_STATE) ? loadState(window.catalogue) : undefined;
 const store = configureStore(persistedStore);
 
 if (STORE_APPLICATION_STATE) {
   store.subscribe(() => {
-    saveState(store.getState());
+    saveState(store.getState(), window.catalogue);
   });
 }
 
