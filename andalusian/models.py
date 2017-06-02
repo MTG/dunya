@@ -2,6 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
+import math
 import data.models
 import os
 import collections
@@ -231,6 +232,18 @@ class Recording(AndalusianStyle, data.models.BaseModel):
 
     def performers(self):
         return self.artists.all()
+
+    def length_format(self):
+        numsecs = self.length / 1000
+        minutes = math.floor(numsecs / 60.0)
+        hours = math.floor(minutes / 60.0)
+        minutes = math.floor(minutes - hours * 60)
+        seconds = math.floor(numsecs - hours * 3600 - minutes * 60)
+        if hours:
+            val = "%02d:%02d:%02d" % (hours, minutes, seconds)
+        else:
+            val = "%02d:%02d" % (minutes, seconds)
+        return val
 
     def get_dict(self):
         release = self.album_set.first()
