@@ -62,22 +62,15 @@
             <header class="centering">
             <div id="logo">
                 <a href="/">
-                <img src="{% static 'carnatic/img/logo.svg' %}">
+                <img src="/static/carnatic/img/logo.svg">
             </a>
             </div>
                 <nav id="mainmenu">
                   <ul>
-                    <li><a class="" href="./info">Info</a></li>
+                    <li><a class="" href="/info">Info</a></li>
                     <li><a class="" href="https://dunya.compmusic.upf.edu/about/terms">Legal</a></li>
-                    {% if user.is_authenticated %}
-                      {% if user.username != 'guest' %}
-                        <li><a class="" id="mainmenu_a" href="{% url 'social-user-profile' %}">{{ user.username }}</a></li>
-                      {% endif %}
-                      <li><a class="" href="/social/logout">Logout</a></li>
-                      {% else %}
-                      <li><a href="{% url 'social-auth-login' %}">Login</a></li>
-                      <li><a href="{% url 'social-auth-register' %}">Register</a></li>
-                    {% endif %}
+                      <li><a href="/social/login">Login</a></li>
+                      <li><a href="/social/login">Register</a></li>
                   </ul>
                 </nav>
             </div>
@@ -85,8 +78,7 @@
             </header>
         </div>
         <!-- //////  HEADER BLOCK end ////// -->
-
-
+ 
         <div class="main-container">
 
  <div id="detail">
