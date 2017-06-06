@@ -57,44 +57,35 @@
             <p>Use of Dunya is governed by our <a href="/about/terms">Terms and Conditions</a></p>
 	    </div>
 
-    	<!-- //////  HEADER BLOCK  ////// -->
+        <!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
-            <header>
+            <header class="centering">
             <div id="logo">
-                <a href="/carnatic">
-                <img src="/static/carnatic/img/logoDunya.png">
+                <a href="/">
+                <img src="{% static 'carnatic/img/logo.svg' %}">
             </a>
             </div>
-            	<div id="globalsearch">
-                    <form method="get" action="/carnatic">
-                        <input id="searchbox" type="text" name="q" value="" />
-	            	<button type="submit" class="button"/>
-                </form>
-            	</div><!-- globalserach -->
-            	<div id="globalMusic">
-            		<label>Exploring music style</label>
-            		<span id="gmSelected">Click to select</span>
-                    <ul id="gmDropDown">
-                        <li><a href="/carnatic">Carnatic</a></li>
-                        <li><a href="/hindustani">Hindustani</a></li>
-                    </ul>
-            	</div><!-- globalmusic -->
                 <nav id="mainmenu">
-			<a href="#" id="aboutbutton">About</a>
-				<div href="#" id="usermenu">
-					<a href="#">Login<img src="/static/carnatic/img/avatar.png" /></a>
-				    <div id="usermenuoptions">
-				    	<div id="userArrow"></div>
-				    	<h3>Hi! what do you want to do?</h3>
-                        <a href="/social/login">Login</a>
-					    <a href="/social/register">Register</a>
-				    </div>
-				</div>
+                  <ul>
+                    <li><a class="" href="./info">Info</a></li>
+                    <li><a class="" href="https://dunya.compmusic.upf.edu/about/terms">Legal</a></li>
+                    {% if user.is_authenticated %}
+                      {% if user.username != 'guest' %}
+                        <li><a class="" id="mainmenu_a" href="{% url 'social-user-profile' %}">{{ user.username }}</a></li>
+                      {% endif %}
+                      <li><a class="" href="/social/logout">Logout</a></li>
+                      {% else %}
+                      <li><a href="{% url 'social-auth-login' %}">Login</a></li>
+                      <li><a href="{% url 'social-auth-register' %}">Register</a></li>
+                    {% endif %}
+                  </ul>
                 </nav>
+            </div>
                 <div class="clearfix"></div>
             </header>
         </div>
         <!-- //////  HEADER BLOCK end ////// -->
+
 
         <div class="main-container">
 
