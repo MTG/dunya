@@ -21,7 +21,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -38,8 +38,8 @@ def logout_page(request):
     return HttpResponseRedirect(reverse('main'))
 
 def token_login(request):
-    token = request.GET.get('token',None)
-    t = Token.objects.get(key=token)
+    token = request.GET.get('token')
+    t = get_object_or_404(Token, key=token)
     t.user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, t.user)
     return HttpResponse("")
@@ -115,7 +115,6 @@ def user_profile(request):
     if request.method == "POST":
         form = forms.UserEditForm(request.POST, initial=initial)
         if form.is_valid() and form.has_changed():
-            print form.cleaned_data
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.email = form.cleaned_data["email"]
