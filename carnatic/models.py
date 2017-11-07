@@ -261,6 +261,7 @@ class ConcertRecording(models.Model):
     # The track number within this disc. 1-n
     disctrack = models.IntegerField()
 
+
     class Meta:
         ordering = ("track", )
 

@@ -89,18 +89,18 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Log every page that people go to
     'dunya.middleware.PageLoggerMiddleware',
     'dunya.middleware.ShowBootlegMiddleware',
-)
+]
 
 ROOT_URLCONF = 'dunya.urls'
 
@@ -127,7 +127,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
-    'djcelery',
     'raven.contrib.django.raven_compat',
     'data',
     'carnatic',
@@ -141,12 +140,10 @@ INSTALLED_APPS = (
     'andalusian',
     'jingju',
     'frontend',
-    'social.apps.django_app.default',
+    'social_django',
 )
 AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 )
 INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'

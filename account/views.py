@@ -26,8 +26,7 @@ from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 
-from social.apps.django_app.utils import psa
-from rest_framework.authtoken.models import Token
+from social_django.utils import psa
 
 from account import forms
 from rest_framework.authtoken.models import Token

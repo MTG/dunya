@@ -34,8 +34,12 @@ urlpatterns = [
     url(r'^accounts/login/$', django.contrib.auth.views.login),
     url(r'^accounts/logout/$', django.contrib.auth.views.logout),
     url(r'^makamplayer/$', makam.views.makamplayer),
-    url('', include('social.apps.django_app.urls', namespace='social'))
+    url('', include('social_django.urls', namespace='social'))
 ]
 
 if settings.DEBUG:
     urlpatterns += static.static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
