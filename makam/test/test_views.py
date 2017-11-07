@@ -38,7 +38,7 @@ class SymbTrTest(TestCase):
         self.assertEqual(resp.status_code, 404)
         calls = [mock.call(models.SymbTr, uuid=self.test_uuid),
                  mock.call(docserver.models.SourceFileType, slug="symbtrpdf")]
-        obj404.assert_has_call(calls)
+        obj404.assert_has_calls(calls)
 
     @mock.patch('makam.views.get_object_or_404')
     def test_no_symbtr(self, obj404):
@@ -46,8 +46,8 @@ class SymbTrTest(TestCase):
         other_uuid = "721ae3da-ed63-4ad7-86d9-ac2c9a4aaaaa"
         resp = self.client.get("/makam/symbtr/%s" % other_uuid)
         self.assertEqual(resp.status_code, 404)
-        calls = [mock.call(models.SymbTr, uuid=self.test_uuid)]
-        obj404.assert_has_call(calls)
+        calls = [mock.call(models.SymbTr, uuid=other_uuid)]
+        obj404.assert_has_calls(calls)
 
     @mock.patch('docserver.views.download_external')
     def test_no_doc(self, download):
