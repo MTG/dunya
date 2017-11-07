@@ -140,7 +140,6 @@ INSTALLED_APPS = (
     'motifdiscovery',
     'andalusian',
     'jingju',
-    'kvedit',
     'frontend',
     'social.apps.django_app.default',
 )

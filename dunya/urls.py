@@ -29,7 +29,6 @@ urlpatterns = [
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^social/', include('account.urls')),
-    url(r'^kvedit/', include('kvedit.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^new/', include('frontend.urls')),
     url(r'^accounts/login/$', django.contrib.auth.views.login),
