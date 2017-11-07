@@ -14,75 +14,90 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
-from andalusian import models
 
 from rest_framework import generics
 from rest_framework import serializers
+
+from andalusian import models
+
 
 class MusicalSchoolInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MusicalSchool
         fields = ['name', 'transliterated_name']
 
+
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name', 'transliterated_name']
+
 
 class OrchestraInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Orchestra
         fields = ['mbid', 'name', 'transliterated_name']
 
+
 class WorkInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Work
         fields = ['mbid', 'title', 'transliterated_title']
+
 
 class AlbumInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Album
         fields = ['mbid', 'title', 'transliterated_title']
 
+
 class GenreInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Genre
         fields = ['id', 'name', 'transliterated_name']
+
 
 class RecordingInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'transliterated_title']
 
+
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
         fields = ['id', 'name', 'original_name']
+
 
 class TabInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tab
         fields = ['id', 'name', 'transliterated_name']
 
+
 class MizanInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mizan
         fields = ['id', 'name', 'transliterated_name']
+
 
 class NawbaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nawba
         fields = ['id', 'name', 'transliterated_name']
 
+
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
         fields = ['id', 'name', 'transliterated_name']
 
+
 class SanaaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Sanaa
         fields = ['id', 'title', 'transliterated_title']
+
 
 class PoemInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -97,10 +112,12 @@ class MusicalSchoolDetailSerializer(serializers.ModelSerializer):
         model = models.MusicalSchool
         fields = ['id', 'name', 'transliterated_name']
 
+
 class MusicalSchoolDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.MusicalSchool.objects.all()
     serializer_class = MusicalSchoolDetailSerializer
+
 
 class MusicalSchoolList(generics.ListAPIView):
     queryset = models.MusicalSchool.objects.all()
@@ -112,10 +129,12 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
         model = models.Artist
         fields = ['mbid', 'name', 'transliterated_name']
 
+
 class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Artist.objects.all()
     serializer_class = ArtistDetailSerializer
+
 
 class ArtistList(generics.ListAPIView):
     queryset = models.Artist.objects.all()
@@ -127,10 +146,12 @@ class OrchestraDetailSerializer(serializers.ModelSerializer):
         model = models.Orchestra
         fields = ['mbid', 'name', 'transliterated_name']
 
+
 class OrchestraDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Orchestra.objects.all()
     serializer_class = OrchestraDetailSerializer
+
 
 class OrchestraList(generics.ListAPIView):
     queryset = models.Orchestra.objects.all()
@@ -142,10 +163,12 @@ class WorkDetailSerializer(serializers.ModelSerializer):
         model = models.Work
         fields = ['mbid', 'title', 'transliterated_title']
 
+
 class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Work.objects.all()
     serializer_class = WorkDetailSerializer
+
 
 class WorkList(generics.ListAPIView):
     queryset = models.Work.objects.all()
@@ -157,10 +180,12 @@ class AlbumDetailSerializer(serializers.ModelSerializer):
         model = models.Album
         fields = ['mbid', 'title', 'transliterated_title']
 
+
 class AlbumDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Album.objects.all()
     serializer_class = AlbumDetailSerializer
+
 
 class AlbumList(generics.ListAPIView):
     queryset = models.Album.objects.all()
@@ -172,24 +197,29 @@ class GenreDetailSerializer(serializers.ModelSerializer):
         model = models.Genre
         fields = ['id', 'name', 'transliterated_name']
 
+
 class GenreDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Genre.objects.all()
     serializer_class = GenreDetailSerializer
 
+
 class GenreList(generics.ListAPIView):
     queryset = models.Genre.objects.all()
     serializer_class = GenreInnerSerializer
+
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
         fields = ['id', 'name', 'original_name']
 
+
 class InstrumentDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Instrument.objects.all()
     serializer_class = InstrumentDetailSerializer
+
 
 class InstrumentList(generics.ListAPIView):
     queryset = models.Instrument.objects.all()
@@ -201,10 +231,12 @@ class TabDetailSerializer(serializers.ModelSerializer):
         model = models.Tab
         fields = ['id', 'name', 'transliterated_name']
 
+
 class TabDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Tab.objects.all()
     serializer_class = TabDetailSerializer
+
 
 class TabList(generics.ListAPIView):
     queryset = models.Tab.objects.all()
@@ -216,10 +248,12 @@ class MizanDetailSerializer(serializers.ModelSerializer):
         model = models.Mizan
         fields = ['id', 'name', 'transliterated_name']
 
+
 class MizanDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Mizan.objects.all()
     serializer_class = MizanDetailSerializer
+
 
 class MizanList(generics.ListAPIView):
     queryset = models.Mizan.objects.all()
@@ -231,10 +265,12 @@ class NawbaDetailSerializer(serializers.ModelSerializer):
         model = models.Nawba
         fields = ['id', 'name', 'transliterated_name']
 
+
 class NawbaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Nawba.objects.all()
     serializer_class = NawbaDetailSerializer
+
 
 class NawbaList(generics.ListAPIView):
     queryset = models.Nawba.objects.all()
@@ -246,14 +282,17 @@ class FormDetailSerializer(serializers.ModelSerializer):
         model = models.Form
         fields = ['id', 'name', 'transliterated_name']
 
+
 class FormDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
+
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
     serializer_class = FormInnerSerializer
+
 
 class SectionDetailSerializer(serializers.ModelSerializer):
     tab = TabDetailSerializer()
@@ -265,30 +304,37 @@ class SectionDetailSerializer(serializers.ModelSerializer):
         model = models.Section
         fields = ['start_time', 'end_time', 'tab', 'nawba', 'mizan', 'form']
 
+
 class RecordingDetailSerializer(serializers.ModelSerializer):
-    sections = SectionDetailSerializer(source='section_set.all', many=True) 
+    sections = SectionDetailSerializer(source='section_set.all', many=True)
+
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'transliterated_title', 'musescore_url', 'archive_url', 'sections']
+
 
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     queryset = models.Recording.objects.all()
     serializer_class = RecordingDetailSerializer
 
+
 class RecordingList(generics.ListAPIView):
     queryset = models.Recording.objects.all()
     serializer_class = RecordingInnerSerializer
+
 
 class SanaaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Sanaa
         fields = ['id', 'title', 'transliterated_title']
 
+
 class SanaaDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Sanaa.objects.all()
     serializer_class = SanaaDetailSerializer
+
 
 class SanaaList(generics.ListAPIView):
     queryset = models.Sanaa.objects.all()
@@ -311,20 +357,25 @@ class PoemDetailSerializer(serializers.ModelSerializer):
         text = json.loads(ob.transliterated_text)
         return text
 
+
 class PoemDetail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = models.Poem.objects.all()
     serializer_class = PoemDetailSerializer
 
+
 class PoemList(generics.ListAPIView):
     queryset = models.Poem.objects.all()
     serializer_class = PoemInnerSerializer
-     
+
+
 class RecordingPoemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.Poem
-        fields = ['text','transliterated_text','title', 'transliterated_title', 'first_words', 'transliterated_first_words']
+        fields = ['text', 'transliterated_text', 'title', 'transliterated_title', 'first_words',
+                  'transliterated_first_words']
+
 
 class LyricDetail(generics.ListAPIView):
     serializer_class = PoemDetailSerializer

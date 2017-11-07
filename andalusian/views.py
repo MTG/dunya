@@ -15,12 +15,13 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
 
-from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 
-from andalusian import models
 import docserver
+from andalusian import models
+
 
 def search(request):
     q = request.GET.get('recording', '')
@@ -28,11 +29,11 @@ def search(request):
     s_nawba = request.GET.get('nawbas', '')
 
     recordings = models.Recording.objects
-    if q and q!='':
+    if q and q != '':
         ids = list(models.Work.objects.filter(title__icontains=q).values_list('pk', flat=True))
-        recordings = recordings.filter(works__id__in=ids)\
-                | recordings.filter(title__icontains=q)\
-                | recordings.filter(album__title__icontains=q)
+        recordings = recordings.filter(works__id__in=ids) \
+                     | recordings.filter(title__icontains=q) \
+                     | recordings.filter(album__title__icontains=q)
     if s_nawba and s_nawba != '':
         recordings = recordings.filter(section__nawba=s_nawba)
     if s_mizan and s_mizan != '':
@@ -94,13 +95,12 @@ def recording(request, uuid, title=None):
     except docserver.exceptions.NoFileException:
         smallimage = None
 
-
-    ret={
+    ret = {
          "recording": recording,
          "audio": audio,
          "scoreurl": score,
          "smallimageurl": smallimage,
-        }
+    }
     return render(request, "andalusian/recording.html", ret)
 
 
@@ -120,18 +120,13 @@ def filters(request):
 
     artistlist = []
     for a in artists:
-        rr = []
-        tt = []
-        cc = []
-        ii = []
-
         artistlist.append({"name": a.name, "mbid": str(a.mbid), })
 
-
-    ret = {"artists": artistlist,
-           "nawbas": nawbalist,
-           "mizans": mizanlist,
-           }
+    ret = {
+        "artists": artistlist,
+        "nawbas": nawbalist,
+        "mizans": mizanlist,
+    }
 
     return JsonResponse(ret)
 

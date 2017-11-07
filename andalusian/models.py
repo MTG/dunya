@@ -1,12 +1,10 @@
-from django.db import models
-from django.core.urlresolvers import reverse
-from django.conf import settings
-
-import math
-import data.models
-import os
 import collections
-import filters
+import math
+
+from django.core.urlresolvers import reverse
+from django.db import models
+
+import data.models
 
 
 class AndalusianStyle(object):
@@ -28,37 +26,38 @@ class AndalusianStyle(object):
 
 
 class MusicalSchool(AndalusianStyle, data.models.BaseModel):
-	name = models.CharField(max_length=100)
-	transliterated_name = models.CharField(max_length=100, blank=True)
-	def __unicode__(self):
-		return self.name
+    name = models.CharField(max_length=100)
+    transliterated_name = models.CharField(max_length=100, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Orchestra(AndalusianStyle, data.models.BaseModel):
-	mbid = models.UUIDField(blank=True, null=True)
-	name = models.CharField(max_length=255)
-	transliterated_name = models.CharField(max_length=255, blank=True)
-	school = models.ForeignKey(MusicalSchool, blank=True, null=True)
-	group_members = models.ManyToManyField('Artist', blank=True, related_name='groups', through="OrchestraPerformer")
+    mbid = models.UUIDField(blank=True, null=True)
+    name = models.CharField(max_length=255)
+    transliterated_name = models.CharField(max_length=255, blank=True)
+    school = models.ForeignKey(MusicalSchool, blank=True, null=True)
+    group_members = models.ManyToManyField('Artist', blank=True, related_name='groups', through="OrchestraPerformer")
 
-	def __unicode__(self):
-		return self.name
+    def __unicode__(self):
+        return self.name
 
-	def get_absolute_url(self):
-		viewname = "%s-orchestra" % (self.get_style(), )
-		return reverse(viewname, args=[self.mbid])
+    def get_absolute_url(self):
+        viewname = "%s-orchestra" % (self.get_style(), )
+        return reverse(viewname, args=[self.mbid])
 
-	def get_musicbrainz_url(self):
-		return "http://musicbrainz.org/artist/%s" % self.mbid
+    def get_musicbrainz_url(self):
+        return "http://musicbrainz.org/artist/%s" % self.mbid
 
-	def performers(self):
-		IPClass = self.get_object_map("orchestraperformer")
-		performances = IPClass.objects.filter(orchestra=self)
-		perfs = [p.performer for p in performances]
-		return perfs
+    def performers(self):
+        IPClass = self.get_object_map("orchestraperformer")
+        performances = IPClass.objects.filter(orchestra=self)
+        perfs = [p.performer for p in performances]
+        return perfs
 
-	def recordings(self):
-		return self.recording_set.all()
+    def recordings(self):
+        return self.recording_set.all()
 
 
 class OrchestraAlias(models.Model):
@@ -128,23 +127,18 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 
         return [(Artist.objects.get(pk=pk), list(recordings[pk])) for pk, count in c.most_common()]
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('andalusian-artist-search'),
-                   "name": "Artist",
-                   "data": [filters.School().object, filters.Generation().object]
-                   }
-        return ret
-
 
 class ArtistAlias(data.models.ArtistAlias):
     pass
 
+
 class AlbumType(models.Model):
     type = models.CharField(max_length=255)
     transliterated_type = models.CharField(max_length=255, blank=True)
+
     def __unicode__(self):
         return self.type
+
 
 class AlbumRecording(models.Model):
     """ Links a album to a recording with an explicit ordering """
@@ -158,6 +152,7 @@ class AlbumRecording(models.Model):
 
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.album)
+
 
 class Album(AndalusianStyle, data.models.BaseModel):
     missing_image = "album.jpg"
@@ -180,19 +175,12 @@ class Album(AndalusianStyle, data.models.BaseModel):
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
 
-'''
-class AlbumAlias(models.Model):
-    title = models.CharField(max_length=255)
-    album = models.ForeignKey("Album", related_name="aliases")
-
-    def __unicode__(self):
-        return self.title
-'''
 
 class Work(AndalusianStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
+
     def __unicode__(self):
         return self.title
 
@@ -200,8 +188,10 @@ class Work(AndalusianStyle, data.models.BaseModel):
 class Genre(AndalusianStyle, data.models.BaseModel):
     name = models.CharField(max_length=100, blank=True)
     transliterated_name = models.CharField(max_length=100, blank=True)
+
     def __unicode__(self):
         return self.name
+
 
 class RecordingWork(models.Model):
     work = models.ForeignKey('Work')
@@ -213,6 +203,7 @@ class RecordingWork(models.Model):
 
     def __unicode__(self):
         return u"%s: %s" % (self.sequence, self.work.title)
+
 
 class Recording(AndalusianStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
@@ -263,31 +254,14 @@ class Recording(AndalusianStyle, data.models.BaseModel):
         }
 
 
-
-'''
-class RecordingAlias(models.Model):
-    title = models.CharField(max_length=255)
-    recording = models.ForeignKey("Recording", related_name="aliases")
-
-    def __unicode__(self):
-        return self.title
-'''
-
 class Instrument(AndalusianStyle, data.models.BaseModel):
-	percussion = models.BooleanField(default=False)
-	name = models.CharField(max_length=50)
-	original_name = models.CharField(max_length=50, blank=True)
-	def __unicode__(self):
-		return self.name
-
-'''
-class InstrumentAlias(models.Model):
+    percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
-    instrument = models.ForeignKey("Instrument", related_name="aliases")
+    original_name = models.CharField(max_length=50, blank=True)
 
     def __unicode__(self):
         return self.name
-'''
+
 
 class InstrumentPerformance(models.Model):
     recording = models.ForeignKey('Recording')
@@ -300,68 +274,47 @@ class InstrumentPerformance(models.Model):
 
 
 class OrchestraPerformer(models.Model):
-	orchestra = models.ForeignKey('Orchestra')
-	performer = models.ForeignKey('Artist')
-	instruments = models.ManyToManyField('Instrument')
-	director = models.BooleanField(default=False)
-	begin = models.CharField(max_length=10, blank=True, null=True)
-	end = models.CharField(max_length=10, blank=True, null=True)
+    orchestra = models.ForeignKey('Orchestra')
+    performer = models.ForeignKey('Artist')
+    instruments = models.ManyToManyField('Instrument')
+    director = models.BooleanField(default=False)
+    begin = models.CharField(max_length=10, blank=True, null=True)
+    end = models.CharField(max_length=10, blank=True, null=True)
 
-	def __unicode__(self):
-		ret = u"%s played %s on %s" % (self.performer, u", ".join([unicode(i) for i in self.instruments.all()]), self.orchestra)
-		if self.director:
-			ret += u". Moreover, %s acted as the director of this orchestra" % self.performer
-			if self.begin:
-				ret += u" from %s" % self.begin
-			if self.end:
-				ret += u" until %s" % self.end
-		return ret
+    def __unicode__(self):
+        ret = u"%s played %s on %s" % (self.performer, u", ".join([unicode(i) for i in self.instruments.all()]), self.orchestra)
+        if self.director:
+            ret += u". Moreover, %s acted as the director of this orchestra" % self.performer
+            if self.begin:
+                ret += u" from %s" % self.begin
+            if self.end:
+                ret += u" until %s" % self.end
+        return ret
 
 
 class Tab(data.models.BaseModel):
-	name = models.CharField(max_length=50)
-	transliterated_name = models.CharField(max_length=50, blank=True)
-	def __unicode__(self):
-		return self.name
+    name = models.CharField(max_length=50)
+    transliterated_name = models.CharField(max_length=50, blank=True)
 
-'''
-class TabAlias(models.Model):
-	name = models.CharField(max_length=50)
-	tab = models.ForeignKey("Tab", related_name="aliases")
+    def __unicode__(self):
+        return self.name
 
-	def __unicode__(self):
-		return self.name
-'''
 
 class Nawba(data.models.BaseModel):
-	name = models.CharField(max_length=50, blank=True)
-	transliterated_name = models.CharField(max_length=50, blank=True)
-	def __unicode__(self):
-		return self.name
-
-'''
-class NawbaAlias(models.Model):
-    name = models.CharField(max_length=50)
-    nawba = models.ForeignKey("Nawba", related_name="aliases")
+    name = models.CharField(max_length=50, blank=True)
+    transliterated_name = models.CharField(max_length=50, blank=True)
 
     def __unicode__(self):
         return self.name
-'''
+
 
 class Mizan(data.models.BaseModel):
-	name = models.CharField(max_length=50, blank=True)
-	transliterated_name = models.CharField(max_length=50, blank=True)
-	def __unicode__(self):
-		return self.name
-
-'''
-class MizanAlias(models.Model):
-    name = models.CharField(max_length=50)
-    mizan = models.ForeignKey("Mizan", related_name="aliases")
+    name = models.CharField(max_length=50, blank=True)
+    transliterated_name = models.CharField(max_length=50, blank=True)
 
     def __unicode__(self):
         return self.name
-'''
+
 
 class FormType(models.Model):
     type = models.CharField(max_length=50)
@@ -371,26 +324,16 @@ class FormType(models.Model):
 
 
 class Form(data.models.BaseModel):
-	name = models.CharField(max_length=50)
-	transliterated_name = models.CharField(max_length=50, blank=True)
-	form_type = models.ForeignKey(FormType, blank=True, null=True)
-
-	def __unicode__(self):
-		return self.name
-
-'''
-class FormAlias(models.Model):
     name = models.CharField(max_length=50)
-    form = models.ForeignKey("Form", related_name="aliases")
+    transliterated_name = models.CharField(max_length=50, blank=True)
+    form_type = models.ForeignKey(FormType, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
-'''
+
 
 class Section(AndalusianStyle, data.models.BaseModel):
     recording = models.ForeignKey('Recording')
-    # order_number may not be necessary if start_time and end_time are known
-    #order_number = models.IntegerField(blank=True, null=True)
     start_time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
     tab = models.ForeignKey('Tab', blank=True, null=True)
@@ -416,19 +359,12 @@ class InstrumentSectionPerformance(models.Model):
 
 
 class Sanaa(data.models.BaseModel):
-	title = models.CharField(max_length=255)
-	transliterated_title = models.CharField(max_length=255, blank=True)
-	def __unicode__(self):
-		return self.title
-
-'''
-class SanaaAlias(models.Model):
     title = models.CharField(max_length=255)
-    sanaa = models.ForeignKey("Sanaa", related_name="aliases")
+    transliterated_title = models.CharField(max_length=255, blank=True)
 
     def __unicode__(self):
         return self.title
-'''
+
 
 class PoemType(models.Model):
     type = models.CharField(max_length=50)
@@ -436,39 +372,22 @@ class PoemType(models.Model):
     def __unicode__(self):
         return self.type
 
-class Poem(data.models.BaseModel):
-	identifier = models.CharField(max_length=100, blank=True, null=True)
-	first_words = models.CharField(max_length=255, blank=True, null=True)
-	transliterated_first_words = models.CharField(max_length=255, blank=True, null=True)
-	type = models.ForeignKey(PoemType, blank=True, null=True)
-	text = models.TextField()
-	transliterated_text = models.TextField(blank=True)
-	title = models.CharField(max_length=255, blank=True, null=True)
-	transliterated_title = models.CharField(max_length=255, blank=True, null=True)
 
-	def __unicode__(self):
-		return self.identifier
+class Poem(data.models.BaseModel):
+    identifier = models.CharField(max_length=100, blank=True, null=True)
+    first_words = models.CharField(max_length=255, blank=True, null=True)
+    transliterated_first_words = models.CharField(max_length=255, blank=True, null=True)
+    type = models.ForeignKey(PoemType, blank=True, null=True)
+    text = models.TextField()
+    transliterated_text = models.TextField(blank=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    transliterated_title = models.CharField(max_length=255, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.identifier
+
 
 class RecordingPoem(models.Model):
     recording = models.ForeignKey('Recording')
     poem = models.ForeignKey('Poem')
     order_number = models.IntegerField(blank=True, null=True)
-
-'''
-class PoemAlias(models.Model):
-    identifier = models.CharField(max_length=100, blank=True, null=True)
-    poem = models.ForeignKey("Poem", related_name="aliases")
-
-    def __unicode__(self):
-        return self.identifier
-
-class SectionSanaaPoem(models.Model):
-    section = models.ForeignKey('Section')
-    sanaa = models.ForeignKey('Sanaa')
-    poem = models.ForeignKey('Poem')
-    order_number = models.IntegerField(blank=True, null=True)
-
-    def __unicode__(self):
-        return u"Poem %s from san'a %s in section %s of recording %s" % \
-               (self.poem, self.sanaa, self.section.order_number, self.section.recording)
-'''

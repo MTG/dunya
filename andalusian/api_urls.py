@@ -63,6 +63,4 @@ urlpatterns = [
     url(r'^poem/(?P<pk>\d+)$', andalusian.api.PoemDetail.as_view(), name='api-andalusian-poem-detail'),
 ]
 
-
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])
-
