@@ -22,14 +22,12 @@ cycler==0.10.0
 Cython==0.27.3
 decorator==4.1.2
 Django==1.11.7
-django-debug-toolbar==1.8
 django-sendfile==0.3.11
 djangorestframework==3.7.3
 ecdsa==0.13
 enum34==1.1.6
 eyeD3==0.8.3
 Fabric==1.14.0
-flake8==3.5.0
 flup==1.0.3.dev20110405
 funcsigs==1.0.2
 functools32==3.2.3.post2
@@ -78,7 +76,6 @@ pycrypto==2.6.1
 pyflakes==1.6.0
 Pygments==2.2.0
 PyJWT==1.5.3
-pylint==1.7.4
 PyNaCl==1.2.0
 pyparsing==2.2.0
 pypeaks==0.2.7
@@ -108,7 +105,6 @@ subprocess32==3.2.7
 -e git+https://github.com/sertansenturk/tomato.git@master#egg=tomato-dev
 traitlets==4.3.2
 Unidecode==0.4.21
-unittest-xml-reporting==2.1.0
 urllib3==1.22
 vine==1.1.4
 Wand==0.4.4
