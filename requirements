@@ -1,6 +1,6 @@
 amqp==2.2.2
 anyjson==0.3.3
--e git+https://github.com/CompMusic/ArabicTransliterator.git@master#egg=arabictransliterator
+-e git+https://github.com/CompMusic/ArabicTransliterator.git@ac7109fb1ca4b4bc17f38e6740d671b695e4ea87#egg=arabictransliterator
 argh==0.26.2
 asn1crypto==0.23.0
 astroid==1.5.3
@@ -63,14 +63,13 @@ pep8==1.7.1
 pexpect==4.2.1
 pickleshare==0.7.4
 Pillow==4.3.0
-pkg-resources==0.0.0
 ply==3.10
 prompt-toolkit==1.0.15
 psycopg2==2.7.3.2
 ptyprocess==0.5.2
 pyasn1==0.3.7
 pycodestyle==2.3.1
--e git+https://github.com/MTG/pycompmusic.git@master#egg=pycompmusic-dev
+-e git+https://github.com/MTG/pycompmusic.git@ace7f66f057078d9be51f0aa1f51cb7d10e974d8#egg=pycompmusic
 pycparser==2.18
 pycrypto==2.6.1
 pyflakes==1.6.0
@@ -102,7 +101,7 @@ solrpy==0.9.7
 sqlparse==0.2.4
 ssh==1.8.0
 subprocess32==3.2.7
--e git+https://github.com/sertansenturk/tomato.git@master#egg=tomato-dev
+-e git+https://github.com/sertansenturk/tomato.git@14afdc4591aabee66e77b76895220603a09efc3e#egg=tomato
 traitlets==4.3.2
 Unidecode==0.4.21
 urllib3==1.22
