@@ -15,9 +15,11 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import re
+
+from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django import forms
+
 
 class RegistrationForm(forms.Form):
     required_css_class = 'required'
@@ -53,8 +55,10 @@ class RegistrationForm(forms.Form):
             return username
         raise forms.ValidationError('Username is already taken.')
 
+
 class DeleteAccountForm(forms.Form):
     delete = forms.BooleanField(required=False, label="Yes, delete my account")
+
 
 class UserEditForm(forms.Form):
     email = forms.CharField(label=u'Email address', max_length=200)

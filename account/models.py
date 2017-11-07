@@ -27,6 +27,7 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return unicode(self.user)
 
+
 def user_post_save(sender, instance, created, **kwargs):
     """Create a user profile when a new user account is created"""
     if created:
@@ -34,6 +35,7 @@ def user_post_save(sender, instance, created, **kwargs):
         p.user = instance
         p.save()
         Token.objects.create(user=instance)
+
 
 post_save.connect(user_post_save, sender=User)
 

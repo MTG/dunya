@@ -1,11 +1,9 @@
-import os
-
-from django.conf.urls import include, url
-from django.conf import settings
-from django.views.generic import TemplateView
 import django.contrib.auth.views
-from account import views
+from django.conf import settings
+from django.conf.urls import url
+from django.views.generic import TemplateView
 
+from account import views
 
 urlpatterns = [
     # Change password
@@ -20,8 +18,8 @@ urlpatterns = [
     url(r'^profile/$', views.user_profile, name='social-user-profile'),
     url(r'^delete/$', views.delete_account, name='social-delete-account'),
     url(r'^login/$', django.contrib.auth.views.login,
-            {'extra_context': {'api_login': settings.EXTERNAL_OAUTH_LOGIN }, 
-             'template_name': 'registration/login.html'}, name='social-auth-login'),
+        {'extra_context': {'api_login': settings.EXTERNAL_OAUTH_LOGIN},
+         'template_name': 'registration/login.html'}, name='social-auth-login'),
     url(r'^logout/$', views.logout_page, name='social-auth-logout'),
     url(r'^register/$', views.register_page, name='social-auth-register'),
     url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),

@@ -15,21 +15,21 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
 
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import loader
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404
-from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
-
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import render, get_object_or_404
+from django.template import loader
+from rest_framework.authtoken.models import Token
 from social_django.utils import psa
 
 from account import forms
-from rest_framework.authtoken.models import Token
+
 
 def logout_page(request):
     logout(request)
@@ -37,12 +37,14 @@ def logout_page(request):
         return HttpResponseRedirect(request.GET['next'])
     return HttpResponseRedirect(reverse('main'))
 
+
 def token_login(request):
     token = request.GET.get('token')
     t = get_object_or_404(Token, key=token)
     t.user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, t.user)
     return HttpResponse("")
+
 
 def register_page(request):
     if request.method == 'POST':
@@ -78,6 +80,7 @@ def register_page(request):
     }
     return render(request, 'registration/register.html', ret)
 
+
 @login_required
 def delete_account(request):
     if request.user.username == "guest":
@@ -102,6 +105,7 @@ def delete_account(request):
 def user_profile_username(request, username):
     return user_profile(request)
 
+
 @login_required
 def user_profile(request):
     if request.user.username == "guest":
@@ -110,7 +114,7 @@ def user_profile(request):
     profile = user.userprofile
     token = Token.objects.get(user=request.user)
     initial = {"email": user.email, "first_name": user.first_name,
-            "last_name": user.last_name, "affiliation": profile.affiliation}
+               "last_name": user.last_name, "affiliation": profile.affiliation}
 
     if request.method == "POST":
         form = forms.UserEditForm(request.POST, initial=initial)
@@ -131,6 +135,7 @@ def user_profile(request):
     }
     return render(request, 'account/user_profile.html', ret)
 
+
 @psa('social:complete')
 def register_by_access_token(request, backend):
     # log in using external OAuth access Token
@@ -138,7 +143,7 @@ def register_by_access_token(request, backend):
     user = request.backend.do_auth(token)
     if user:
         login(request, user)
-        ret_token,created = Token.objects.get_or_create(user=user)
-        return HttpResponse(json.dumps({"result":"Sucess", "token": ret_token.key}))
+        ret_token, created = Token.objects.get_or_create(user=user)
+        return HttpResponse(json.dumps({"result": "Success", "token": ret_token.key}))
     else:
-        return HttpResponse(json.dumps({"result":"error"}))
+        return HttpResponse(json.dumps({"result": "error"}))
