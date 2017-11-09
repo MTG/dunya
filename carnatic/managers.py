@@ -19,15 +19,17 @@ from django.db.models import Q
 
 import carnatic
 
+
 class CollectionConcertManager(models.Manager):
     use_for_related_fields = True
 
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
         if ids and ids != "":
-            ids = ids.replace(' ','').split(",")
+            ids = ids.replace(' ', '').split(",")
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
+
 
 class CollectionRecordingManager(models.Manager):
     use_for_related_fields = True
@@ -41,6 +43,7 @@ class CollectionRecordingManager(models.Manager):
             qs = qs.filter(concert__collection__permission__in=permission)
         return qs
 
+
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -51,6 +54,7 @@ class CarnaticRaagaManager(models.Manager):
                 return alias.raaga
             except carnatic.models.RaagaAlias.DoesNotExist:
                 raise e
+
 
 class CarnaticTaalaManager(models.Manager):
     def fuzzy(self, name):
@@ -63,6 +67,7 @@ class CarnaticTaalaManager(models.Manager):
             except carnatic.models.TaalaAlias.DoesNotExist:
                 raise e
 
+
 class CarnaticFormManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -74,6 +79,7 @@ class CarnaticFormManager(models.Manager):
             except carnatic.models.FormAlias.DoesNotExist:
                 raise e
 
+
 class CarnaticInstrumentManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -84,6 +90,7 @@ class CarnaticInstrumentManager(models.Manager):
                 return alias.instrument
             except carnatic.models.InstrumentAlias.DoesNotExist:
                 raise e
+
 
 class FuzzySearchManager(models.Manager):
     def fuzzy(self, name):
@@ -105,6 +112,7 @@ class FuzzySearchManager(models.Manager):
                 if i.name.lower() == n.lower():
                     return i
             raise self.model.DoesNotExist()
+
 
 class ArtistManager(models.Manager):
     def get_queryset(self):

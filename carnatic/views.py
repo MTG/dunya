@@ -16,26 +16,23 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, Http404, JsonResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import user_passes_test
-from django.core.urlresolvers import reverse
-from django.db.models import Q
-from django.conf import settings
-from django.templatetags.static import static
-
-from data import utils
-from data.models import SourceName
-from carnatic.models import *
-from carnatic import search
 import json
-import docserver
-import dashboard.views
-import collections
 import math
-import random
-import pysolr
+
+from django.conf import settings
+from django.contrib.auth.decorators import user_passes_test
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, Http404, JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+
+import dashboard.models
+import dashboard.views
+import docserver
+import docserver.exceptions
+import docserver.util
+from carnatic.models import *
+from data import utils
+
 
 def searchcomplete(request):
     term = request.GET.get("input")
@@ -46,6 +43,7 @@ def searchcomplete(request):
         suggestions = Artist.objects.filter(name__istartswith=term)[:3]
         ret += [{"category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
+
 
 def recordings_search(request):
     q = request.GET.get('recording', '')
@@ -83,7 +81,6 @@ def recordings_search(request):
         if s_tala and s_tala != '':
             recordings = recordings.filter(works__taala__uuid__in=s_tala.split())
 
-
     paginator = Paginator(recordings.all(), 25)
     page = request.GET.get('page')
     next_page = None
@@ -105,8 +102,10 @@ def recordings_search(request):
     }
     return HttpResponse(json.dumps(results), content_type='application/json')
 
+
 def main(request):
     return render(request, "carnatic/index.html")
+
 
 def filters(request):
 
@@ -135,12 +134,10 @@ def filters(request):
 
         artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
 
-
     instruments = Instrument.objects.all()
     instrumentlist = []
     for i in instruments:
         instrumentlist.append({"name": i.name, "mbid": str(i.mbid)})
-
 
     ret = {"artists": artistlist,
            "concerts": concertlist,
@@ -151,9 +148,11 @@ def filters(request):
 
     return JsonResponse(ret)
 
+
 def recordingbyid(request, recordingid, title=None):
     recording = get_object_or_404(Recording, pk=recordingid)
     return redirect(recording.get_absolute_url(), permanent=True)
+
 
 def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
@@ -273,14 +272,14 @@ def recording(request, uuid, title=None):
 
     return render(request, "carnatic/recording.html", ret)
 
+
 @user_passes_test(dashboard.views.is_staff)
 def formedit(request):
     concerts = Concert.objects.all().prefetch_related('artists')
-    concerts = sorted(concerts, key=lambda c:sum([r.forms.count() for r in c.recordings.all().prefetch_related('forms')])*1.0/c.recordings.count())
+    concerts = sorted(concerts, key=lambda c: sum([r.forms.count() for r in c.recordings.all().prefetch_related('forms')])*1.0/c.recordings.count())
     ret = {"concerts": concerts}
     return render(request, "carnatic/formedit.html", ret)
 
-from django import forms
 
 @user_passes_test(dashboard.views.is_staff)
 def formconcert(request, uuid):
@@ -311,10 +310,9 @@ def formconcert(request, uuid):
                     t.forms.clear()
                 # Otherwise, do nothing
 
-
     tracks = []
     for i, t in enumerate(concert.tracklist()):
         tracks.append((i, t))
     ret = {"concert": concert, "tracks": tracks,
-            "dashrelease": dashrelease, "forms": forms}
+           "dashrelease": dashrelease, "forms": forms}
     return render(request, "carnatic/formconcert.html", ret)

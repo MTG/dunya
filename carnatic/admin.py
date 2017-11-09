@@ -17,32 +17,40 @@
 from carnatic import models
 from django.contrib import admin
 
+
 class WorkRaagaInline(admin.TabularInline):
     model = models.WorkRaaga
     extra = 1
+
 
 class ArtistAliasInline(admin.TabularInline):
     model = models.ArtistAlias
     extra = 1
 
+
 class WorkTaalaInline(admin.TabularInline):
     model = models.WorkTaala
     extra = 1
+
 
 class ConcertRecordingInline(admin.TabularInline):
     model = models.ConcertRecording
     extra = 1
 
+
 class InstrumentPerformanceInline(admin.TabularInline):
     model = models.InstrumentPerformance
     extra = 1
 
+
 class WorkAdmin(admin.ModelAdmin):
     inlines = (WorkRaagaInline, WorkTaalaInline)
+
 
 class ConcertAdmin(admin.ModelAdmin):
     inlines = (ConcertRecordingInline, )
     exclude = ('image', )
+
 
 class RaagaAdmin(admin.ModelAdmin):
     exclude = ('image', )
@@ -50,15 +58,19 @@ class RaagaAdmin(admin.ModelAdmin):
 class TaalaAdmin(admin.ModelAdmin):
     exclude = ('image', )
 
+
 class ArtistAdmin(admin.ModelAdmin):
     inlines = (ArtistAliasInline, )
     exclude = ('image', 'description')
 
+
 class InstrumentAdmin(admin.ModelAdmin):
     exclude = ('image', 'description')
 
+
 class RecordingAdmin(admin.ModelAdmin):
     inlines = (InstrumentPerformanceInline, )
+
 
 admin.site.register(models.GeographicRegion)
 admin.site.register(models.Artist, ArtistAdmin)

@@ -14,19 +14,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+import collections
+import random
+
+import pysolr
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Count
-from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.utils.text import slugify
 
-import collections
-
 import data.models
-from carnatic import search
 import managers
-import random
-import pysolr
+from carnatic import search
+
 
 class CarnaticStyle(object):
     def get_style(self):
@@ -42,11 +43,13 @@ class CarnaticStyle(object):
                 "instrument": Instrument
                 }[key]
 
+
 class GeographicRegion(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
+
 
 class Artist(CarnaticStyle, data.models.Artist):
 
@@ -101,16 +104,16 @@ class Artist(CarnaticStyle, data.models.Artist):
         # Get all concerts
         # For each artist on the concerts (both types), add a counter
         # top artist ids + the concerts they collaborate on
-        rcollections=[]
+        rcollections = []
         if collection_ids:
-            rcollections = collection_ids.replace(' ','').split(",")
+            rcollections = collection_ids.replace(' ', '').split(",")
         if not permission:
             permission = ["U"]
 
         c = collections.Counter()
         concerts = collections.defaultdict(set)
         restr_concerts = collections.Counter()
-        for concert in self.concerts(collection_ids=False, permission=['U','R','S']):
+        for concert in self.concerts(collection_ids=False, permission=['U', 'R', 'S']):
             # We always use collections to see if an artist is similar
             # However, if the user can't see collections, we need to say
             # `Artist a performed with b on these concerts and n more`
@@ -122,7 +125,7 @@ class Artist(CarnaticStyle, data.models.Artist):
                         restr_concerts[p.id] += 1
                     c[p.id] += 1
 
-        collaborators =  [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), restr_concerts[pk]) for pk, count in c.most_common()]
+        collaborators = [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), restr_concerts[pk]) for pk, count in c.most_common()]
         collaborators = sorted(collaborators, key=lambda c: (len(c[1])+c[2], len(c[1])), reverse=True)
         return collaborators
 
@@ -154,12 +157,12 @@ class Artist(CarnaticStyle, data.models.Artist):
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
                 if c not in ret and c.collection \
-                        and (collection_ids == False or str(c.collection.collectionid) in rcollections) \
+                        and (collection_ids is False or str(c.collection.collectionid) in rcollections) \
                         and c.collection.permission in permission:
                     ret.append(c)
         for concert, perf in self.performances(raagas, taalas):
             if concert not in ret and concert.collection \
-                    and (collection_ids == False or str(concert.collection.collectionid) in rcollections) \
+                    and (collection_ids is False or str(concert.collection.collectionid) in rcollections) \
                     and concert.collection.permission in permission:
                 ret.append(concert)
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
@@ -261,12 +264,12 @@ class ConcertRecording(models.Model):
     # The track number within this disc. 1-n
     disctrack = models.IntegerField()
 
-
     class Meta:
         ordering = ("track", )
 
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.concert)
+
 
 class Concert(CarnaticStyle, data.models.Release):
     recordings = models.ManyToManyField('Recording', through="ConcertRecording")
@@ -347,6 +350,7 @@ class Concert(CarnaticStyle, data.models.Release):
 
         return ret
 
+
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
     raaga = models.ForeignKey("Raaga", related_name="aliases")
@@ -356,6 +360,7 @@ class RaagaAlias(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class RecordingForm(models.Model):
     """ Links a Form and a Recording with a sequence (if there is more than
@@ -371,6 +376,7 @@ class RecordingForm(models.Model):
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.form)
 
+
 class Form(models.Model):
     name = models.CharField(max_length=50)
     attrfromrecording = models.BooleanField(default=False)
@@ -380,6 +386,7 @@ class Form(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -520,6 +527,7 @@ raaga_similar = {1: [14, 64, 159, 55, 16],
  266: [203, 224, 93, 72, 149],
  285: [141, 16, 159, 1, 14]}
 
+
 class Raaga(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "raaga.jpg"
 
@@ -591,6 +599,7 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
             ret = ret.filter(forms__name=form)
         return ret.all()
 
+
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
     taala = models.ForeignKey("Taala", related_name="aliases")
@@ -607,6 +616,7 @@ class TaalaAlias(models.Model):
 taala_similar = {1: [5], 3: [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
                  7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4],
                  10: [7, 3], 11: [7, 3]}
+
 
 class Taala(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "taala.jpg"
@@ -677,6 +687,7 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
             ret = ret.filter(forms__name=form)
         return ret.all()
 
+
 class Work(CarnaticStyle, data.models.Work):
 
     # (raaga, taala)
@@ -694,6 +705,7 @@ class Work(CarnaticStyle, data.models.Work):
     def recordings(self):
         return self.recording_set.all()
 
+
 class RecordingRaaga(models.Model):
     recording = models.ForeignKey('Recording')
     raaga = models.ForeignKey('Raaga')
@@ -701,6 +713,7 @@ class RecordingRaaga(models.Model):
 
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.raaga)
+
 
 class RecordingTaala(models.Model):
     recording = models.ForeignKey('Recording')
@@ -710,6 +723,7 @@ class RecordingTaala(models.Model):
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.taala)
 
+
 class WorkRaaga(models.Model):
     work = models.ForeignKey('Work')
     raaga = models.ForeignKey('Raaga')
@@ -717,6 +731,7 @@ class WorkRaaga(models.Model):
 
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.raaga)
+
 
 class WorkTaala(models.Model):
     work = models.ForeignKey('Work')
@@ -726,6 +741,7 @@ class WorkTaala(models.Model):
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
+
 class RecordingWork(models.Model):
     recording = models.ForeignKey('Recording')
     work = models.ForeignKey('Work')
@@ -733,6 +749,7 @@ class RecordingWork(models.Model):
 
     def __unicode__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
+
 
 class Recording(CarnaticStyle, data.models.Recording):
     works = models.ManyToManyField('Work', through='RecordingWork')
@@ -822,9 +839,11 @@ class Recording(CarnaticStyle, data.models.Recording):
                 "selectedArtists": ""
         }
 
+
 class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
+
 
 class Instrument(CarnaticStyle, data.models.Instrument):
     fuzzymanager = managers.FuzzySearchManager()
@@ -862,8 +881,10 @@ class Instrument(CarnaticStyle, data.models.Instrument):
                }
         return ret
 
+
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
     pass
+
 
 class Composer(CarnaticStyle, data.models.Composer):
     state = models.ForeignKey(GeographicRegion, blank=True, null=True)
@@ -873,6 +894,7 @@ class Composer(CarnaticStyle, data.models.Composer):
 
     def taalas(self):
         return Taala.objects.filter(work__composer=self).all()
+
 
 class ComposerAlias(CarnaticStyle, data.models.ComposerAlias):
     pass

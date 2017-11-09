@@ -22,6 +22,7 @@ import json
 import carnatic
 
 solr = pysolr.Solr(settings.SOLR_URL + "/carnatic")
+
 def search(name, with_restricted=False):
     name = name.lower()
     query = "doctype_s:search AND title_t:(%s)" % name
@@ -44,6 +45,7 @@ def search(name, with_restricted=False):
                 pass
     return dict(ret)
 
+
 def autocomplete(term):
     params = {}
     params['wt'] = 'json'
@@ -58,6 +60,7 @@ def autocomplete(term):
     for d in docs:
         ret.append(d["title_t"])
     return ret[:5]
+
 
 def get_similar_concerts(works, raagas, taalas, artists):
     workids = set(works)
@@ -101,6 +104,7 @@ def get_similar_concerts(works, raagas, taalas, artists):
         ret.append((concertid, {"works": commonw, "raagas": commonr, "taalas": commont, "artists": commona}))
     return ret
 
+
 def similar_recordings(mbid, with_bootlegs=False):
     query = "doctype_s:recordingsimilarity AND mbid_t:%s" % (mbid, )
     results = solr.search(query)
@@ -110,6 +114,7 @@ def similar_recordings(mbid, with_bootlegs=False):
         return json.loads(similar)
     else:
         return []
+
 
 def get_klassmap():
     return {"instrument": carnatic.models.Instrument,
