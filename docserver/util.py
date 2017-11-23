@@ -250,10 +250,16 @@ def has_rate_limit(user, document, file_type_slug):
             collection__in=document.collections.all(),
             source_type__slug=file_type_slug,
             permission__in=user_permissions)
+        # If all permissions for this user say that the filetype is to be streamed,
+        # we limit them. Otherwise if just some a streamable and others are not limited
+        # in this way, we don't give them a ratelimit
+        streamables = []
         for p in c.all():
-            if not p.streamable:
-                return False
-        return True
+            streamables.append(p.streamable)
+        if all(streamables):
+            return True
+        else:
+            return False
     except ObjectDoesNotExist:
         return False
 
