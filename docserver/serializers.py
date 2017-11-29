@@ -14,10 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from docserver import models
-from rest_framework import serializers
-from rest_framework import fields
 from django.shortcuts import get_object_or_404
+from rest_framework import fields
+from rest_framework import serializers
+
+from docserver import models
+
 
 class CollectionListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,15 +40,17 @@ class DocumentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         args = self.context["view"].kwargs
         collection = validated_data.pop('collection')
-        rel_collection = get_object_or_404(models.Collection, **collection)
+        get_object_or_404(models.Collection, **collection)
         external = args["external_identifier"]
         document, created = models.Document.objects.get_or_create(collections=collection, external_identifier=external, defaults=validated_data)
         return document
+
 
 class DocumentIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Document
         fields = ['external_identifier', 'title']
+
 
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
     documents = DocumentIdSerializer(many=True)

@@ -14,15 +14,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from docserver import models
-from docserver import exceptions
-import compmusic
-import tempfile
+import json
 import os
 import subprocess
-import json
-from django.conf import settings
+import tempfile
+
+import compmusic
 from django.core.exceptions import ObjectDoesNotExist
+
+from docserver import exceptions
+from docserver import models
 
 
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
@@ -40,16 +41,18 @@ def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
 
     docserver_add_sourcefile(document.pk, mp3type.pk, fpath)
 
+
 def docserver_create_document(collection_id, external_identifier, title):
     """ Create a document and add it to the specified collection. If the
         document already exists, add it to the collection.
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
     document, created = models.Document.objects.get_or_create(
-            external_identifier=external_identifier,
-            defaults={"title": title})
+        external_identifier=external_identifier,
+        defaults={"title": title})
     document.collections.add(collection)
     return document
+
 
 def _write_to_disk(file, filepath):
     """ write the file object `file` to disk at `filepath'"""
@@ -63,6 +66,7 @@ def _write_to_disk(file, filepath):
     except IOError as e:
         raise
     return size
+
 
 def docserver_upload_and_save_file(document_id, sft_id, file):
     document = models.Document.objects.get(id=document_id)
@@ -91,6 +95,7 @@ def docserver_upload_and_save_file(document_id, sft_id, file):
 
     return docserver_add_sourcefile(document_id, sft_id, filepath)
 
+
 def docserver_add_sourcefile(document_id, sft_id, path):
     """ Add a file to the given document. If a file with the given filetype
         already exists for the document just update the path and size. """
@@ -106,12 +111,13 @@ def docserver_add_sourcefile(document_id, sft_id, path):
         path = path[1:]
 
     sf, created = models.SourceFile.objects.get_or_create(document=document, file_type=sft,
-            defaults={"path":path, "size": size})
+                                                          defaults={"path": path, "size": size})
     if not created:
         sf.path = path
         sf.size = size
         sf.save()
     return sf, created
+
 
 def docserver_get_wav_filename(documentid):
     """ Return a tuple (filename, created) containing the filename
@@ -167,7 +173,7 @@ def docserver_get_filename(documentid, slug, subtype=None, part=1, version=None)
 
 def docserver_get_symbtrtxt(documentid):
     try:
-        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug = 'symbtrtxt')
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug='symbtrtxt')
     except ObjectDoesNotExist:
         return None
     return sf.fullpath
@@ -175,7 +181,7 @@ def docserver_get_symbtrtxt(documentid):
 
 def docserver_get_symbtrmu2(documentid):
     try:
-        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug = 'symbtrmu2')
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug='symbtrmu2')
     except ObjectDoesNotExist:
         return None
     return sf.fullpath
@@ -227,10 +233,10 @@ def user_has_access(user, document, file_type_slug, good_referrer):
         except models.Module.DoesNotExist:
             return False
 
-    has_access =  models.CollectionPermission.objects.filter(
-            collection__in=document.collections.all(),
-            source_type=sourcetype,
-            permission__in=user_permissions).count() != 0
+    has_access = models.CollectionPermission.objects.filter(
+        collection__in=document.collections.all(),
+        source_type=sourcetype,
+        permission__in=user_permissions).count() != 0
     return has_access or good_referrer
 
 
@@ -262,4 +268,3 @@ def has_rate_limit(user, document, file_type_slug):
             return False
     except ObjectDoesNotExist:
         return False
-

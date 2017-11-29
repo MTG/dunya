@@ -1,0 +1,4 @@
+find uses of .fullpath and replace with either the derivedfile or sourcefile version
+find places that use derivedfile.files() to get a list of parts
+tests for full path & url of sf, df
+test sf url/path with part param

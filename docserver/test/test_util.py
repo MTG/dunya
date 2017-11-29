@@ -1,13 +1,14 @@
-from django.test import TestCase
-import mock
 import uuid
 from StringIO import StringIO
 
-from docserver import util
+import mock
+from django.test import TestCase
+
 from docserver import models
+from docserver import util
+
 
 class UtilTest(TestCase):
-
     fixtures = ['docserver_sourcefiletype']
 
     def setUp(self):
@@ -15,7 +16,7 @@ class UtilTest(TestCase):
         self.root = "/root/directory"
 
         self.coll = models.Collection.objects.create(collectionid=self.u, name='test collection',
-                slug='test-collection', description='', root_directory=self.root)
+                                                     slug='test-collection', description='', root_directory=self.root)
         self.doc = models.Document.objects.create(external_identifier="1122-3333-4444")
         self.doc.collections.add(self.coll)
         self.sft = models.SourceFileType.objects.get_by_slug("mp3")
@@ -23,12 +24,10 @@ class UtilTest(TestCase):
     def test_get_root_dir(self):
         self.assertEqual(self.doc.get_root_dir(), "/root/directory")
 
-
     @mock.patch('os.makedirs')
     @mock.patch('docserver.util._write_to_disk')
     @mock.patch('docserver.util.docserver_add_sourcefile')
     def test_upload_and_save_file_audio(self, add_sourcefile, write, makedirs):
-
         thefile = StringIO()
 
         util.docserver_upload_and_save_file(self.doc.id, self.sft.id, thefile)
@@ -41,7 +40,6 @@ class UtilTest(TestCase):
     @mock.patch('docserver.util._write_to_disk')
     @mock.patch('docserver.util.docserver_add_sourcefile')
     def test_upload_and_save_file_data(self, add_sourcefile, write, makedirs):
-
         thefile = StringIO()
 
         othersft = models.SourceFileType.objects.get_by_slug("csv")
@@ -79,7 +77,6 @@ class UtilTest(TestCase):
 
     @mock.patch('os.stat')
     def test_add_sourcefile_already_exists(self, stat):
-
         final_filename = "audio/11/1122-3333-4444/mp3/1122-3333-4444-mp3.mp3"
         sf = models.SourceFile.objects.create(path=final_filename, size=100, document=self.doc, file_type=self.sft)
         sfid = sf.id
@@ -108,7 +105,7 @@ class UtilTest(TestCase):
         u = str(uuid.uuid4())
         root = "/other/root/directory"
         othercoll = models.Collection.objects.create(collectionid=u, name='second collection',
-                slug='second-collection', description='', root_directory=root)
+                                                     slug='second-collection', description='', root_directory=root)
 
         docuuid = self.doc.external_identifier
         util.docserver_create_document(u, docuuid, "some title")

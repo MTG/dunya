@@ -15,24 +15,24 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from __future__ import absolute_import
-from django.db import transaction
-import django.utils.timezone
 
 import importlib
-import os
 import json
-import shutil
 import logging
-import time
+import os
 import subprocess
+import time
+
+import django.utils.timezone
+import numpy as np
+from django.conf import settings
+from django.db import transaction
 
 from dashboard.log import logger
-from docserver import models
 from docserver import log
-import numpy as np
-
-from django.conf import settings
+from docserver import models
 from dunya.celery import app
+
 
 class DatabaseLogHandler(logging.Handler):
     def handle(self, record):
@@ -59,15 +59,18 @@ class DatabaseLogHandler(logging.Handler):
         if documentid:
             try:
                 doc = models.Document.objects.get(pk=int(documentid))
-                models.DocumentLogMessage.objects.create(document=doc, moduleversion=modv, sourcefile=sourcef, level=record.levelname, message=record.getMessage())
+                models.DocumentLogMessage.objects.create(document=doc, moduleversion=modv, sourcefile=sourcef,
+                                                         level=record.levelname, message=record.getMessage())
             except models.Document.DoesNotExist:
                 logger.error("no document, can't create a log file")
         else:
             logger.error("no document, can't create a log file")
 
+
 extractor_logger = logging.getLogger("extractor")
 extractor_logger.setLevel(logging.DEBUG)
 extractor_logger.addHandler(DatabaseLogHandler())
+
 
 def _get_module_instance_by_path(modulepath):
     args = {}
@@ -76,14 +79,14 @@ def _get_module_instance_by_path(modulepath):
         args = {"redis_host": redis_host}
     except AttributeError:
         pass
-    #try:
+    # try:
     mod, clsname = modulepath.rsplit(".", 1)
-    print mod, clsname
     package = importlib.import_module(mod)
     cls = getattr(package, clsname)
     return cls(**args)
-    #except ImportError:
+    # except ImportError:
     #    return None
+
 
 def create_module(modulepath, collections):
     instance = _get_module_instance_by_path(modulepath)
@@ -105,6 +108,7 @@ def create_module(modulepath, collections):
     get_latest_module_version(module.pk)
     return module
 
+
 def get_latest_module_version(themod_id=None):
     """ Create a new ModuleVersion if this module has been
         updated.
@@ -118,7 +122,7 @@ def get_latest_module_version(themod_id=None):
         instance = _get_module_instance_by_path(m.module)
         logger.info("instance %s" % instance)
         if instance:
-            if m.disabled: # if we were disabled and exist again, reenable.
+            if m.disabled:  # if we were disabled and exist again, reenable.
                 m.disabled = False
                 m.save()
             version = instance._version
@@ -138,7 +142,7 @@ def delete_moduleversion(vid):
     logger.info("deleting moduleversion %s" % version)
     files = version.derivedfile_set.all()
     for f in files:
-        for pn in range(1, f.num_parts+1):
+        for pn in range(1, f.num_parts + 1):
             path = f.full_path_for_part(pn)
             try:
                 os.unlink(path)
@@ -182,7 +186,7 @@ def delete_collection(cid):
     dfs = models.DerivedFile.objects.filter(document__collections__in=collections)
     paths = []
     for df in dfs:
-        for pn in range(1, df.num_parts+1):
+        for pn in range(1, df.num_parts + 1):
             path = f.full_path_for_part(pn)
             paths.append(path)
     for f in paths:
@@ -238,7 +242,6 @@ def _save_process_results(version, instance, document, worker, results, starttim
     total_time = int(endtime - starttime)
 
     module = version.module
-    moduleslug = module.slug
     with transaction.atomic():
         for dataslug, contents in results.items():
             outputdata = instance._output[dataslug]
@@ -253,7 +256,7 @@ def _save_process_results(version, instance, document, worker, results, starttim
             df, created = models.DerivedFile.objects.get_or_create(
                 document=document,
                 module_version=version, outputname=dataslug, extension=extension,
-                mimetype=mimetype, defaults={'computation_time':total_time, 'num_parts': len(contents)})
+                mimetype=mimetype, defaults={'computation_time': total_time, 'num_parts': len(contents)})
             if not created:
                 df.date = django.utils.timezone.now()
                 df.num_parts = len(contents)
@@ -290,10 +293,11 @@ def process_collection(collectionid, moduleversionid):
     sfiles = models.SourceFile.objects.filter(document__collections=collection, file_type=module.source_type)
 
     document, created = models.Document.objects.get_or_create(
-                        title=collection.name,
-                        external_identifier=collection.collectionid)
+        title=collection.name,
+        external_identifier=collection.collectionid)
     if created:
         document.collections.add(collection)
+
     if len(sfiles):
         id_fnames = [(s.document.external_identifier, s.fullpath.encode("utf8")) for s in sfiles]
         starttime = time.time()
@@ -327,11 +331,13 @@ def process_document(documentid, moduleversionid):
     if results:
         _save_process_results(version, instance, document, worker, results, starttime, endtime)
 
+
 def run_module(moduleid, versionid=None):
     module = models.Module.objects.get(pk=moduleid)
     collections = module.collections.all()
     for c in collections:
         run_module_on_collection(c.pk, module.pk, versionid)
+
 
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
@@ -348,6 +354,7 @@ def run_module_on_recordings(moduleid, recids):
             logger.info("  document %s" % d)
             logger.info("  docid %s" % d.pk)
             process_document.delay(d.pk, version.pk)
+
 
 @app.task
 def run_module_on_collection(collectionid, moduleid, versionid=None):
@@ -376,6 +383,7 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
 ESSENTIA_DIR = "/srv/essentia"
 COMPMUSIC_DIR = "/srv/dunya/env/src/pycompmusic"
 
+
 def get_compmusic_dir():
     try:
         import compmusic
@@ -384,6 +392,7 @@ def get_compmusic_dir():
         return d
     except ImportError:
         return None
+
 
 def get_git_hash(cwd):
     proc = subprocess.Popen("git rev-parse HEAD", cwd=cwd, stdout=subprocess.PIPE, shell=True)
@@ -439,6 +448,7 @@ def register_host(hostname):
     worker.set_state_updated()
     worker.save()
 
+
 def git_update_and_compile_essentia():
     subprocess.call("git checkout deploy", cwd=ESSENTIA_DIR, shell=True)
     subprocess.call("git fetch --all", cwd=ESSENTIA_DIR, shell=True)
@@ -446,9 +456,11 @@ def git_update_and_compile_essentia():
     subprocess.call("./waf -v", cwd=ESSENTIA_DIR, shell=True)
     subprocess.call("./waf install", cwd=ESSENTIA_DIR, shell=True)
 
+
 def git_update_pycompmusic():
     subprocess.call("git fetch --all", cwd=COMPMUSIC_DIR, shell=True)
     subprocess.call("git reset --hard origin/master", cwd=COMPMUSIC_DIR, shell=True)
+
 
 @app.task
 def update_essentia(hostname):
@@ -461,6 +473,7 @@ def update_essentia(hostname):
     worker.essentia = version
     worker.set_state_updated()
     worker.save()
+
 
 @app.task
 def update_pycompmusic(hostname):
@@ -478,9 +491,11 @@ def update_pycompmusic(hostname):
         # make sure we scan for new versions of all extractors.
         get_latest_module_version()
 
+
 def shutdown_celery(hostname):
     name = "celery@%s" % hostname
     app.control.broadcast("shutdown", destination=[name])
+
 
 @app.task
 def update_single_worker(hostname):
@@ -491,6 +506,7 @@ def update_single_worker(hostname):
         pass
     update_pycompmusic(hostname)
     shutdown_celery(hostname)
+
 
 def update_all_workers(user=None):
     workers = models.Worker.objects.all()

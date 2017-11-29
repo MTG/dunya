@@ -1,11 +1,11 @@
-from django.test import TestCase
 from django.http import QueryDict
+from django.test import TestCase
 
 from docserver import forms
 from docserver import models
 
-class SourceFileTypeTest(TestCase):
 
+class SourceFileTypeTest(TestCase):
     def test_add_filetype(self):
         self.assertEqual(0, models.SourceFileType.objects.all().count())
         formdata = "slug=myslug&extension=ext&mimetype=application%2Ffoo&name=thename"

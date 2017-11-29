@@ -14,13 +14,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+
 # Raised in Document.get_file
 class NoFileException(Exception):
     pass
 
+
 # Raised in Document.get_file
 class TooManyFilesException(Exception):
     pass
+
 
 # Raised in Document.get_root_dir
 class NoRootDirectoryException(Exception):

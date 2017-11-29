@@ -18,17 +18,21 @@ from django import template
 
 register = template.Library()
 
+
 @register.simple_tag
 def unprocessed_for_collection(moduleversion, collection):
     return moduleversion.unprocessed_files(collection)
+
 
 @register.simple_tag
 def processed_for_collection(moduleversion, collection):
     return moduleversion.processed_files(collection)
 
+
 @register.simple_tag
 def unprocessed_count_for_collection(moduleversion, collection):
     return len(unprocessed_for_collection(moduleversion, collection))
+
 
 @register.simple_tag
 def processed_count_for_collection(moduleversion, collection):

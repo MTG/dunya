@@ -14,18 +14,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand
+from __future__ import print_function
 
-import sys
 import os
 
+from django.core.management.base import BaseCommand
+
 import docserver.models
+
 
 def rmderived(d):
     """Remove all file parts from a derived file, and then
        remove the common directory tree in one step"""
     paths = []
-    for p in range(1, d.num_parts+1):
+    for p in range(1, d.num_parts + 1):
         paths.append(d.full_path_for_part(p))
     if not paths:
         return
@@ -73,16 +75,16 @@ def rmtree(path):
             exists = False
             numfiles = 0
 
+
 class Command(BaseCommand):
     help = 'Delete derivedfiles for all SourceFile entries with no associated file'
 
     def add_arguments(self, parser):
         parser.add_argument('-d',
-            action='store_true',
-            dest='delete',
-            default=False,
-            help='Actually delete items')
-
+                            action='store_true',
+                            dest='delete',
+                            default=False,
+                            help='Actually delete items')
 
     def handle(self, *args, **options):
         delete = options["delete"]
@@ -91,13 +93,13 @@ class Command(BaseCommand):
         sourcefiles = docserver.models.SourceFile.objects.all()
         for i, s in enumerate(sourcefiles):
             if not os.path.exists(s.fullpath):
-                print "%s/%s" % (i, len(sourcefiles)), s
+                print("%s/%s %s" % (i, len(sourcefiles), s))
                 bad.append(s)
-        print "got %s item%s to remove" % (len(bad), "" if len(bad)==1 else "s")
+        print("got %s item%s to remove" % (len(bad), "" if len(bad) == 1 else "s"))
         if not delete:
-            print "Run again with `-d` flag to delete all DerivedFiles associated with these SourceFiles"
+            print("Run again with `-d` flag to delete all DerivedFiles associated with these SourceFiles")
         if delete:
-            print "removing..."
+            print("removing...")
             for b in bad:
                 filetype = b.file_type
                 modules = docserver.models.Module.objects.filter(source_type=filetype)
@@ -111,4 +113,3 @@ class Command(BaseCommand):
                 b.delete()
                 if document.sourcefiles.count() == 0 and document.derivedfiles.count() == 0:
                     document.delete()
-

@@ -14,22 +14,24 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.db import models, connection
-from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.core.validators import RegexValidator
-from django.template.defaultfilters import slugify
-import django.utils.timezone
 import collections
 import os
 
+import django.utils.timezone
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.core.validators import RegexValidator
+from django.db import models, connection
+from django.template.defaultfilters import slugify
+
 from docserver import exceptions
+
 
 class Collection(models.Model):
     """A set of related documents"""
 
     class Meta:
-        permissions = (('read_restricted', "Can read files in restricted collections"), )
+        permissions = (('read_restricted', "Can read files in restricted collections"),)
 
     collectionid = models.UUIDField()
     name = models.CharField(max_length=200)
@@ -42,7 +44,7 @@ class Collection(models.Model):
     def __unicode__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
         if self.description:
-            desc += u" - %s" % (self.description, )
+            desc += u" - %s" % (self.description,)
         return desc
 
     def save(self, *args, **kwargs):
@@ -52,6 +54,7 @@ class Collection(models.Model):
 
     def get_absolute_url(self):
         return reverse("docserver-collection", args=[self.slug])
+
 
 class DocumentManager(models.Manager):
     def get_by_external_id(self, external_id):
@@ -75,7 +78,8 @@ class Document(models.Model):
         root_directory = None
         for c in self.collections.all():
             if root_directory and root_directory != c.root_directory:
-                raise exceptions.NoRootDirectoryException("If a document is in more than one collection they must have the same root_directory")
+                raise exceptions.NoRootDirectoryException(
+                    "If a document is in more than one collection they must have the same root_directory")
             root_directory = c.root_directory
         if not root_directory:
             raise exceptions.NoRootDirectoryException("This document is in no collection and so has no root directory")
@@ -132,7 +136,7 @@ class Document(models.Model):
                 if name in items:
                     is_last_version = True
                     for curr in items[name]["versions"]:
-                         is_last_version &= curr < i["version"]
+                        is_last_version &= curr < i["version"]
                     if is_last_version:
                         items[name]["numparts"] = i["numparts"]
                     items[name]["versions"].append(i["version"])
@@ -218,11 +222,11 @@ class Document(models.Model):
             raise exceptions.NoFileException(msg)
 
 
-
 class FileTypeManager(models.Manager):
     def get_by_slug(self, slug):
         slug = slug.lower()
         return self.get_queryset().get(slug=slug)
+
 
 class SourceFileType(models.Model):
     FILE_TYPE_CHOICES = (
@@ -231,7 +235,8 @@ class SourceFileType(models.Model):
     )
     objects = FileTypeManager()
 
-    slug = models.SlugField(db_index=True, validators=[RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")])
+    slug = models.SlugField(db_index=True, validators=[
+        RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")])
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
@@ -243,6 +248,7 @@ class SourceFileType(models.Model):
 
     def get_absolute_url(self):
         return reverse("docserver-filetype", args=[self.slug])
+
 
 class SourceFile(models.Model):
     """An actual file. References a document"""
@@ -287,7 +293,6 @@ class DerivedFile(models.Model):
 
     class Meta:
         unique_together = ("document", "module_version", "outputname")
-
 
     """The document this file is part of"""
     document = models.ForeignKey("Document", related_name='derivedfiles')
@@ -364,6 +369,7 @@ class DerivedFile(models.Model):
     def __unicode__(self):
         return u"%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
 
+
 class CollectionPermission(models.Model):
     class Meta:
         permissions = (
@@ -380,6 +386,7 @@ class CollectionPermission(models.Model):
     collection = models.ForeignKey(Collection)
     source_type = models.ForeignKey(SourceFileType)
     streamable = models.BooleanField(default=False)
+
 
 # Essentia management stuff
 
@@ -409,6 +416,7 @@ class Worker(models.Model):
     def __unicode__(self):
         return u"%s with Essentia %s and Compmusic %s" % (self.hostname, self.essentia, self.pycompmusic)
 
+
 class PyCompmusicVersion(models.Model):
     sha1 = models.CharField(max_length=200)
     commit_date = models.DateTimeField(default=django.utils.timezone.now)
@@ -425,7 +433,8 @@ class PyCompmusicVersion(models.Model):
         return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
 
     def __unicode__(self):
-        return u"%s" % (self.sha1, )
+        return u"%s" % (self.sha1,)
+
 
 class EssentiaVersion(models.Model):
     version = models.CharField(max_length=200)
@@ -445,6 +454,7 @@ class EssentiaVersion(models.Model):
 
     def __unicode__(self):
         return u"%s (%s)" % (self.version, self.sha1)
+
 
 class Module(models.Model):
     name = models.CharField(max_length=200)
@@ -493,6 +503,7 @@ class Module(models.Model):
     def get_absolute_url(self):
         return reverse("docserver-module", args=[self.pk])
 
+
 class ModuleVersion(models.Model):
     module = models.ForeignKey(Module, related_name="versions")
     version = models.CharField(max_length=10)
@@ -533,7 +544,8 @@ class ModuleVersion(models.Model):
             return qs.distinct()
 
     def processed_files_count(self):
-        q = '''SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d''' % (self.id)
+        q = '''SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d''' % (
+        self.id)
         cursor = connection.cursor()
         cursor.execute(q)
         row = cursor.fetchone()
@@ -559,9 +571,9 @@ AND NOT ("docserver_document"."id" IN (
         row = cursor.fetchone()
         return row[0]
 
-
     def __unicode__(self):
         return u"v%s for %s" % (self.version, self.module)
+
 
 class DocumentLogMessage(models.Model):
     """ A log message about a document. Normally the log message refers to ModuleVersion

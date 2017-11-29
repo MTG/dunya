@@ -14,60 +14,62 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import json
 import datetime
-import inspect
-import pkgutil
 import imp
-
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.forms.models import modelformset_factory
-
-import docserver
-from docserver import models
-from docserver import forms
-from docserver import jobs
-from docserver import serializers
-from docserver import util
-from docserver import log
-from dunya.celery import app
-import dashboard
+import inspect
+import json
+import pkgutil
 
 from compmusic import extractors
-
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.forms.models import modelformset_factory
+from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
+from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import authentication
 from rest_framework import exceptions
 from rest_framework import generics
 from rest_framework import parsers
+from rest_framework import permissions
 from rest_framework import response
 from rest_framework import status
-from rest_framework import permissions
-
 from sendfile import sendfile
 
+import dashboard.models
+import docserver
+from docserver import forms
+from docserver import jobs
+from docserver import log
+from docserver import models
+from docserver import serializers
+from docserver import util
+from dunya.celery import app
+
 auther = authentication.TokenAuthentication()
+
 
 def index(request):
     return HttpResponse("Hello docserver")
 
+
 class CollectionList(generics.ListAPIView):
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionListSerializer
+
 
 class CollectionDetail(generics.RetrieveAPIView):
     lookup_field = 'slug'
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionDetailSerializer
 
+
 class StaffWritePermission(permissions.IsAuthenticated):
     """ An extension of the IsAuthenticated permission which only lets
         staff members perform POST methods """
+
     def has_permission(self, request, view):
         perm = super(StaffWritePermission, self).has_permission(request, view)
         if request.method == "POST":
@@ -75,10 +77,11 @@ class StaffWritePermission(permissions.IsAuthenticated):
         else:
             return perm
 
+
 class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
     lookup_field = 'external_identifier'
     serializer_class = serializers.DocumentSerializer
-    permission_classes = (StaffWritePermission, )
+    permission_classes = (StaffWritePermission,)
 
     def get_queryset(self):
         if "slug" in self.kwargs:
@@ -99,16 +102,17 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
         serialized = serializers.DocumentSerializer(doc)
         return response.Response(serialized.data, status=status.HTTP_201_CREATED)
 
+
 class SourceFileException(Exception):
     def __init__(self, status_code, message):
         super(SourceFileException, self).__init__(self)
         self.status_code = status_code
         self.message = message
 
+
 class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     parser_classes = (parsers.MultiPartParser,)
-    permission_classes = (StaffWritePermission, )
-
+    permission_classes = (StaffWritePermission,)
 
     def _save_file(self, external_identifier, file_type, file):
         try:
@@ -147,6 +151,7 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     def update(self, request, external_identifier, file_type):
         file = request.data.get("file")
         return self._save_file(external_identifier, file_type, file)
+
 
 def download_external(request, uuid, ftype):
     # Test authentication. We support a rest-framework token
@@ -206,10 +211,11 @@ def download_external(request, uuid, ftype):
     except docserver.exceptions.NoFileException as e:
         return HttpResponseNotFound(e)
 
-#### Essentia manager
 
+# Essentia manager
 def is_staff(user):
     return user.is_staff
+
 
 @user_passes_test(is_staff)
 def manager(request):
@@ -236,22 +242,24 @@ def manager(request):
     ret = {"collections": collections, "modules": modules}
     return render(request, 'docserver/manager.html', ret)
 
+
 @user_passes_test(is_staff)
 def modules_status(request):
     modules = []
     for m in models.Module.objects.all().order_by('name'):
         modules.append({'disabled': m.disabled,
-            'abs_url': m.get_absolute_url(),
-            'name': m.name,
-            'module': m.module,
-            'latest_version_number': m.latest_version_number(),
-            'processed_files': len(m.processed_files()),
-            'unprocessed_files': len(m.unprocessed_files()),
-            'pk': m.pk,
-            'collections': [c.name for c in m.collections.all()]
-            })
+                        'abs_url': m.get_absolute_url(),
+                        'name': m.name,
+                        'module': m.module,
+                        'latest_version_number': m.latest_version_number(),
+                        'processed_files': len(m.processed_files()),
+                        'unprocessed_files': len(m.unprocessed_files()),
+                        'pk': m.pk,
+                        'collections': [c.name for c in m.collections.all()]
+                        })
     ret = {"modules": modules}
     return HttpResponse(json.dumps(ret), content_type='application/json')
+
 
 @user_passes_test(is_staff)
 def workers_status(request):
@@ -308,6 +316,7 @@ def workers_status(request):
 
     return HttpResponse(json.dumps(ret), content_type='application/json')
 
+
 def understand_task(task):
     tname = task["name"]
     try:
@@ -348,6 +357,7 @@ def understand_task(task):
         thetask["moduleversion"] = version
         thetask["document"] = document
     return thetask
+
 
 @user_passes_test(is_staff)
 def worker(request, hostname):
@@ -433,6 +443,7 @@ def update_all_workers(request):
     jobs.update_all_workers()
     return redirect('docserver-manager')
 
+
 def get_module_source(modulename):
     """ Given a module dotted path (string), see how it can be
     imported (.py or .pyc)
@@ -440,10 +451,10 @@ def get_module_source(modulename):
     pkgname, modname = modulename.rsplit(".", 1)
     # easiest way to get the path of the module
     package = __import__(pkgname, fromlist="dummy")
-    print "package path", package.__path__
     moddata = imp.find_module(modname, package.__path__)
     desc = moddata[2]
     return desc[2]
+
 
 def extractor_modules():
     ret = []
@@ -464,6 +475,7 @@ def extractor_modules():
                     errors.append(modname)
     return ret, errors
 
+
 @user_passes_test(is_staff)
 def addmodule(request):
     if request.method == "POST":
@@ -480,6 +492,7 @@ def addmodule(request):
     newmodules, errors = extractor_modules()
     ret = {"form": form, "newmodules": newmodules, "errormodules": errors}
     return render(request, 'docserver/addmodule.html', ret)
+
 
 @user_passes_test(is_staff)
 def module(request, module):
@@ -530,6 +543,7 @@ def module(request, module):
            "logs": logmessages}
     return render(request, 'docserver/module.html', ret)
 
+
 @user_passes_test(is_staff)
 def delete_collection(request, slug):
     c = get_object_or_404(models.Collection, slug=slug)
@@ -549,9 +563,11 @@ def delete_collection(request, slug):
     ret = {"collection": c, "modules": modules}
     return render(request, 'docserver/delete_collection.html', ret)
 
+
 @user_passes_test(is_staff)
 def addcollection(request):
-    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
+    PermissionFormSet = modelformset_factory(models.CollectionPermission,
+                                             fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.CollectionForm(request.POST)
         permission_form = PermissionFormSet(request.POST)
@@ -568,11 +584,13 @@ def addcollection(request):
     ret = {"form": form, "permission_form": permission_form, "mode": "add"}
     return render(request, 'docserver/addcollection.html', ret)
 
+
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
     file_types = models.SourceFileType.objects.filter(sourcefile__document__collections=coll).distinct()
-    PermissionFormSet = modelformset_factory(models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2)
+    PermissionFormSet = modelformset_factory(models.CollectionPermission,
+                                             fields=("permission", "source_type", "streamable"), extra=2)
     if request.method == 'POST':
         form = forms.EditCollectionForm(request.POST, instance=coll)
         permission_form = PermissionFormSet(request.POST)
@@ -589,6 +607,7 @@ def editcollection(request, slug):
     ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
     return render(request, 'docserver/addcollection.html', ret)
 
+
 @user_passes_test(is_staff)
 def delete_derived_files(request, slug, moduleversion):
     c = get_object_or_404(models.Collection, slug=slug)
@@ -602,9 +621,9 @@ def delete_derived_files(request, slug, moduleversion):
         elif delete.lower().startswith("no"):
             return redirect("docserver-collection", c.slug)
 
-
     ret = {"collection": c, "moduleversion": m}
     return render(request, 'docserver/delete_derived_files.html', ret)
+
 
 @user_passes_test(is_staff)
 def collection(request, slug):
@@ -620,6 +639,7 @@ def collection(request, slug):
 
     ret = {"collection": collection}
     return render(request, 'docserver/collection.html', ret)
+
 
 @user_passes_test(is_staff)
 def collectionfiles(request, slug):
@@ -638,6 +658,7 @@ def collectionfiles(request, slug):
 
     ret = {"collection": collection, "documents": documents}
     return render(request, 'docserver/collectionfiles.html', ret)
+
 
 @user_passes_test(is_staff)
 def collectionversion(request, slug, version, type):
@@ -678,6 +699,7 @@ def collectionversion(request, slug, version, type):
            "processedfiles": processedfiles}
     return render(request, 'docserver/collectionversion.html', ret)
 
+
 @user_passes_test(is_staff)
 def file(request, slug, uuid, version=None):
     collection = get_object_or_404(models.Collection, slug=slug)
@@ -709,6 +731,7 @@ def file(request, slug, uuid, version=None):
            "showderived": showderived}
     return render(request, 'docserver/file.html', ret)
 
+
 @user_passes_test(is_staff)
 def addfiletype(request):
     if request.method == 'POST':
@@ -721,17 +744,20 @@ def addfiletype(request):
     ret = {"form": form, "mode": "add"}
     return render(request, 'docserver/addfiletype.html', ret)
 
+
 @user_passes_test(is_staff)
 def filetypes(request):
     filetypes = models.SourceFileType.objects.all()
     ret = {"filetypes": filetypes}
     return render(request, 'docserver/filetypes.html', ret)
 
+
 @user_passes_test(is_staff)
 def filetype(request, slug):
     ft = get_object_or_404(models.SourceFileType, slug=slug)
     ret = {"filetype": ft}
     return render(request, 'docserver/filetype.html', ret)
+
 
 @user_passes_test(is_staff)
 def editfiletype(request, slug):

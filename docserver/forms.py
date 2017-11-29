@@ -16,18 +16,21 @@
 
 from django import forms
 
-from docserver import models
 from docserver import jobs
+from docserver import models
+
 
 class CollectionForm(forms.ModelForm):
     class Meta:
         model = models.Collection
         fields = ["name", "slug", "description", "root_directory"]
 
+
 class EditCollectionForm(forms.ModelForm):
     class Meta:
         model = models.Collection
         fields = ["name", "slug", "description", "root_directory"]
+
 
 class SourceFileTypeForm(forms.ModelForm):
     class Meta:
@@ -42,11 +45,13 @@ class SourceFileTypeForm(forms.ModelForm):
                 raise forms.ValidationError("Slug already exists")
         return slug
 
+
 class ModuleEditForm(forms.ModelForm):
     class Meta:
         model = models.Module
         fields = ["collections"]
         widgets = {'collections': forms.CheckboxSelectMultiple()}
+
 
 class ModuleForm(forms.Form):
     module = forms.CharField()

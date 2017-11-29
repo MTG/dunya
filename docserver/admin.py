@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from docserver import models
 from django.contrib import admin
+
+from docserver import models
 
 admin.site.register(models.Collection)
 admin.site.register(models.Document)

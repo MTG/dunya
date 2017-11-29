@@ -1,16 +1,12 @@
-from django.test import TestCase, override_settings
-from django.http import QueryDict
-from django.contrib.auth.models import Permission
-from django.contrib import auth
-
-import mock
 import uuid
 
-from docserver import forms
-from docserver import models
-from docserver import util
-from docserver import jobs
 import compmusic.extractors
+import mock
+from django.test import TestCase, override_settings
+
+from docserver import jobs
+from docserver import models
+
 
 class TestExtractor(compmusic.extractors.ExtractorModule):
     _version = "0.1"
@@ -20,7 +16,8 @@ class TestExtractor(compmusic.extractors.ExtractorModule):
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
     def run_many(self, fname):
-       return {'pitch': '{"test": "0.1"}'}
+        return {'pitch': '{"test": "0.1"}'}
+
 
 class Test2Extractor(compmusic.extractors.ExtractorModule):
     _version = "0.1"
@@ -29,13 +26,15 @@ class Test2Extractor(compmusic.extractors.ExtractorModule):
     _many_files = False
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
-    def run(self,mb, fname):
+    def run(self, mb, fname):
         return {'pitch': '{"test": "0.1"}'}
+
 
 class AbstractFileTest(TestCase):
     def setUp(self):
         collid = uuid.uuid4()
-        self.col1 = models.Collection.objects.create(collectionid=collid, name="collection 1", slug="col", root_directory="/tmp/col1")
+        self.col1 = models.Collection.objects.create(collectionid=collid, name="collection 1", slug="col",
+                                                     root_directory="/tmp/col1")
         self.file_type = models.SourceFileType.objects.create(extension="mp3", name="mp3_file_type", slug="mp3")
         self.doc1 = models.Document.objects.create(title="doc1", external_identifier="111111")
         self.doc1.collections.add(self.col1)
@@ -46,8 +45,8 @@ class AbstractFileTest(TestCase):
         jobs.log = self.log
         jobs._get_module_instance_by_path = self.get_m
 
-class SourceFileTest(AbstractFileTest):
 
+class SourceFileTest(AbstractFileTest):
     @mock.patch('os.makedirs')
     @mock.patch('__builtin__.open')
     def test_run_module_on_collection(self, mock_open, makedir):
@@ -60,7 +59,6 @@ class SourceFileTest(AbstractFileTest):
 
         jobs.process_collection(self.col1.pk, mod.versions.all()[0].pk)
         self.assertEqual(len(models.Document.objects.all()), 2)
-
 
     """
     @mock.patch('docserver.log.log_processed_file')
@@ -77,11 +75,12 @@ class SourceFileTest(AbstractFileTest):
         doc = models.Document.objects.get(pk=self.col1.pk)
         self.assertEqual(len(doc.derivedfiles.all()), 1)
     """
+
     @mock.patch('os.makedirs')
     @mock.patch('__builtin__.open')
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_process_document(self, mock_open, makedir):
-        #/tmp/col1/incoming/11/111111/asd2/0.1
+        # /tmp/col1/incoming/11/111111/asd2/0.1
         modulepath = "compmusic.extractors.Test2Extractor"
         instance = Test2Extractor()
         self.get_m.return_value = instance
@@ -92,4 +91,3 @@ class SourceFileTest(AbstractFileTest):
         jobs.run_module_on_collection(self.col1.pk, mod.pk)
 
         self.assertEqual(len(self.doc1.derivedfiles.all()), 1)
-
