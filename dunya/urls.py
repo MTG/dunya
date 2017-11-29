@@ -1,8 +1,8 @@
-from django.conf.urls import include, url, static
+import django.contrib.auth.views
 from django.conf import settings
+from django.conf.urls import include, url, static
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-import django.contrib.auth.views
 
 import dunya.views
 import makam
