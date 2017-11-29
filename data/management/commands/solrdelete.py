@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+import pysolr
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from django.conf import settings
-import pysolr
 
 class Command(BaseCommand):
     help = 'Load data in the database to solr'

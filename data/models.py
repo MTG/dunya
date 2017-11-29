@@ -14,29 +14,31 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.db import models
-from django.core.urlresolvers import reverse
-from django.conf import settings
-from django.utils.text import slugify
-from django.contrib.sites.models import Site
+import math
+import os
+import time
 
+import unidecode
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.utils.text import slugify
 
 import docserver
 
-import os
-import time
-import math
-import unidecode
 
 class ClassProperty(property):
     def __get__(self, cls, owner):
         return self.fget.__get__(None, owner)()
+
 
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
+
 
 class Source(models.Model):
     # The source type that we got this data from (wikipedia, musicbrainz, etc)
@@ -50,6 +52,7 @@ class Source(models.Model):
     def __unicode__(self):
         return u"From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
 
+
 class Description(models.Model):
     """ A short description of a thing in the database.
     It could be a biography, or a description """
@@ -58,6 +61,7 @@ class Description(models.Model):
 
     def __unicode__(self):
         return u"%s - %s" % (self.source, self.description[:100])
+
 
 class Image(models.Model):
     """ An image of a thing in the database """
@@ -70,6 +74,7 @@ class Image(models.Model):
         if self.source:
             ret = u"%s from %s" % (ret, self.source.uri)
         return ret
+
 
 class ImageMixin(object):
 
@@ -95,6 +100,7 @@ class ImageMixin(object):
             missing_image = getattr(self, "missing_image", "artist.jpg")
             return os.path.join(media, "missing", missing_image)
 
+
 class BaseModel(models.Model):
     class Meta:
         abstract = True
@@ -104,6 +110,7 @@ class BaseModel(models.Model):
 
     def get_object_map(self, key):
         raise Exception("need map")
+
 
 class Artist(BaseModel, ImageMixin):
     missing_image = "artist.jpg"
@@ -163,6 +170,7 @@ class ArtistAlias(models.Model):
     def __unicode__(self):
         return u"%s (alias for %s)" % (self.alias, self.artist)
 
+
 class Release(BaseModel, ImageMixin):
     missing_image = "concert.jpg"
 
@@ -203,6 +211,7 @@ class Release(BaseModel, ImageMixin):
     def artistnames(self):
         return self.artists.all()
 
+
 class Collection(models.Model):
     class Meta:
         permissions = (
@@ -221,6 +230,7 @@ class Collection(models.Model):
 
     def __unicode__(self):
         return u"data/%s[%s] (%s)" % (self.name, self.collectionid, self.permission)
+
 
 class Work(BaseModel):
     class Meta:
@@ -243,6 +253,7 @@ class Work(BaseModel):
     def artists(self):
         ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(primary_concerts__recordings__work=self).distinct()
+
 
 class Recording(BaseModel):
     class Meta:
@@ -322,6 +333,7 @@ class InstrumentAlias(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class Instrument(BaseModel, ImageMixin):
     class Meta:
         abstract = True
@@ -350,6 +362,7 @@ class Instrument(BaseModel, ImageMixin):
         ArtistClass = self.get_object_map("artist")
         return ArtistClass.objects.filter(instrumentperformance__instrument=self).distinct().all()
 
+
 class InstrumentPerformance(models.Model):
     class Meta:
         abstract = True
@@ -365,6 +378,7 @@ class InstrumentPerformance(models.Model):
             person += u" playing %s" % self.instrument
         person += u" on %s" % self.recording
         return person
+
 
 class Composer(BaseModel, ImageMixin):
     missing_image = "artist.jpg"
@@ -402,6 +416,7 @@ class Composer(BaseModel, ImageMixin):
             args.append(slug)
         return reverse(viewname, args=args)
 
+
 class ComposerAlias(models.Model):
     class Meta:
         abstract = True
@@ -413,6 +428,7 @@ class ComposerAlias(models.Model):
     def __unicode__(self):
         return u"%s (alias for %s)" % (self.alias, self.composer)
 
+
 class VisitLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     user = models.CharField(max_length=100, blank=True, null=True)
@@ -422,6 +438,7 @@ class VisitLog(models.Model):
 
     def __unicode__(self):
         return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
+
 
 # This mixin needs to be used with ModelSerializable
 # to generate the image absolute url

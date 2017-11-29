@@ -14,14 +14,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
+
+import pysolr
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
-import carnatic
-import hindustani
-import makam
+import carnatic.models
+import hindustani.models
+import makam.models
 
-from django.conf import settings
-import pysolr
 
 class Command(BaseCommand):
     help = 'Load data in the database to solr'
@@ -72,7 +74,7 @@ class Command(BaseCommand):
         return insert
 
     def create_makam_search_index(self):
-        print "Creating makam object index"
+        print("Creating makam object index")
 
         works = makam.models.Work.objects.all()
         composers = makam.models.Composer.objects.filter(works__in=works).distinct()
@@ -105,7 +107,7 @@ class Command(BaseCommand):
         self.solr_m.commit()
 
     def create_carnatic_search_index(self):
-        print "Creating carnatic object index"
+        print("Creating carnatic object index")
 
         instruments = carnatic.models.Instrument.objects.all()
         artists = carnatic.models.Artist.objects.filter(dummy=False)
@@ -133,7 +135,7 @@ class Command(BaseCommand):
         self.solr_c.commit()
 
     def create_hindustani_search_index(self):
-        print "Creating hindustani object index"
+        print("Creating hindustani object index")
 
         instruments = hindustani.models.Instrument.objects.all()
         artists = hindustani.models.Artist.objects.filter(dummy=False)
@@ -167,7 +169,7 @@ class Command(BaseCommand):
         self.solr_h.commit()
 
     def create_carnatic_concert_index(self):
-        print "Creating carnatic concert index"
+        print("Creating carnatic concert index")
         concerts = carnatic.models.Concert.objects.all()
         ret = []
         for c in concerts:
@@ -199,7 +201,7 @@ class Command(BaseCommand):
         self.solr_c.commit()
 
     def create_hindustani_release_index(self):
-        print "Creating hindustani release index"
+        print("Creating hindustani release index")
 
         releases = hindustani.models.Release.objects.all()
         ret = []

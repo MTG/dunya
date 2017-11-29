@@ -1,24 +1,24 @@
 # From http://www.djangosnippets.org/snippets/918/
 # copied to dunya from https://github.com/ericholscher/django-test-utils
 
+import django.apps
 # v0.1 -- current version
 # known issues:
 # no support for generic relations
 # no support for one-to-one relations
-from optparse import make_option
 from django.core import serializers
-from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 from django.core.management.base import LabelCommand
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.related import ManyToManyField
-import django.apps
 
 DEBUG = False
+
 
 def model_name(m):
     module = m.__module__.split('.')[:-1]  # remove .models
     return ".".join(module + [m._meta.object_name])
+
 
 class Command(LabelCommand):
     help = 'Output the contents of the database as a fixture of the given format.'
@@ -87,7 +87,7 @@ class Command(LabelCommand):
 
         try:
             return serializers.serialize(format, all, indent=indent)
-        except Exception, e:
+        except Exception as e:
             if show_traceback:
                 raise
             raise CommandError("Unable to serialize database: %s" % e)
