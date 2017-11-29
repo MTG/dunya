@@ -135,7 +135,9 @@
             </div>
                 <nav id="mainmenu">
                   <ul>
+                    {% block info_link %}
                     <li><a class="" href="./info">Info</a></li>
+                    {% endblock %}
                     <li><a class="" href="https://dunya.compmusic.upf.edu/about/terms">Legal</a></li>
                     {% if user.is_authenticated %}
                       {% if user.username != 'guest' %}

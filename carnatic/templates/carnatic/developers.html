@@ -26,6 +26,9 @@ table td, table tr {
 </style>
 {% endblock %}
 
+{% block info_link %}
+<li><a href="/about/info">Info</a></li>
+{% endblock %}
 {% block wrap %}
 
 <div class="centering">
@@ -46,6 +49,9 @@ recordings = dunya.makam.get_recordings()<br>
 In order to get your API token you have to <a href='http://dunya.compmusic.upf.edu/social/login/'>log in</a> to dunya and then go to your <a href='http://dunya.compmusic.upf.edu/social/profile/'>profile</a> where you will find your token.
 </p>
 
+<p>
+Some resources require special access that will be granted for research purpose, if you need this permission please contact <a href="mailto:alastair.porter@upf.edu">Alastair Porter</a> or <a href="mailto:andres.ferraro@upf.edu">Andr&eacure; Ferraro</a>
+</p>
 </div>
 
 {% endblock %}
