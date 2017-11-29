@@ -14,15 +14,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from dashboard.log import logger
-from dashboard.log import import_logger
-from dashboard import release_importer
+import compmusic
 
 import makam
 import makam.models
-import compmusic
+from dashboard import release_importer
+from dashboard.log import import_logger
+from dashboard.log import logger
 
 DIALOGUE_ARTIST = "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc"
+
 
 class MakamReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = makam.models.Artist
@@ -66,7 +67,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         if filtered.count() == 1:
             return filtered.all()[0]
         else:
-            ualias = makam.models.UsulAlias.filter(name__unaccent__iexact=usul)
+            ualias = makam.models.UsulAlias.objects.filter(name__unaccent__iexact=usul)
             if ualias.count() == 1:
                 return ualias.all()[0].usul
             else:
@@ -182,7 +183,6 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
 
-        instrument = None
         is_lead = False
         if "lead" in attrs:
             is_lead = True
@@ -190,7 +190,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         instrument, attributes = self._performance_type_to_instrument(perf_type, attrs)
 
         recording = makam.models.Recording.objects.get(mbid=recordingid)
-        perf = makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, attributes=attributes, lead=is_lead)
+        makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, attributes=attributes, lead=is_lead)
 
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         # We don't expect to see any release-level performance relationships, so we

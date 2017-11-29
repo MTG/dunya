@@ -14,14 +14,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.db import models
-from django.core.urlresolvers import reverse
+import os
+
 import django.utils.timezone
 from django.apps import apps
+from django.core.urlresolvers import reverse
+from django.db import models
 
-import os
-import importlib
-import json
 
 class StateCarryingManager(models.Manager):
     """ A model manager that also creates a state entry when a
@@ -59,17 +58,21 @@ class StateCarryingManager(models.Manager):
             cls.objects.create(**{self.linkname: baseobject})
         return baseobject, created
 
+
 class CollectionManager(StateCarryingManager):
     stateclass = "CollectionState"
     linkname = "collection"
+
 
 class CollectionFileManager(StateCarryingManager):
     stateclass = "CollectionFileState"
     linkname = "collectionfile"
 
+
 class MusicbrainzReleaseManager(StateCarryingManager):
     stateclass = "MusicbrainzReleaseState"
     linkname = "musicbrainzrelease"
+
 
 class CollectionState(models.Model):
 
@@ -87,6 +90,7 @@ class CollectionState(models.Model):
 
     def __unicode__(self):
         return u"%s (%s)" % (self.state_name, self.state_date)
+
 
 class Collection(models.Model):
     AUDIO_DIR = 'audio'
@@ -162,6 +166,7 @@ class Collection(models.Model):
     def add_log_message(self, message):
         return CollectionLogMessage.objects.create(collection=self, message=message)
 
+
 class CollectionLogMessage(models.Model):
     """ A message about a collection """
 
@@ -174,6 +179,7 @@ class CollectionLogMessage(models.Model):
 
     def __unicode__(self):
         return u"%s - %s" % (self.collection.name, self.datetime)
+
 
 class MusicbrainzReleaseState(models.Model):
     """ Indicates the procesing state of a release. A release has finished
@@ -194,6 +200,7 @@ class MusicbrainzReleaseState(models.Model):
 
     def __unicode__(self):
         return u"%s (%s)" % (self.state_name, self.state_date)
+
 
 class MusicbrainzRelease(models.Model):
     class Meta:
@@ -256,6 +263,7 @@ class MusicbrainzRelease(models.Model):
     def add_log_message(self, message):
         return MusicbrainzReleaseLogMessage.objects.create(musicbrainzrelease=self, message=message)
 
+
 class MusicbrainzReleaseLogMessage(models.Model):
     """ A message about a MusicbrainzRelease """
 
@@ -268,6 +276,7 @@ class MusicbrainzReleaseLogMessage(models.Model):
 
     def __unicode__(self):
         return u"%s: %s" % (self.datetime, self.message)
+
 
 class CollectionDirectory(models.Model):
     """ A directory inside the file tree for a collection that has releases
@@ -299,6 +308,7 @@ class CollectionDirectory(models.Model):
     def get_file_list(self):
         return self.collectionfile_set.order_by('name').all()
 
+
 class CollectionFileState(models.Model):
     """ Indicates the processing state of a single file.
     a file has finished processing when all `file' consistency
@@ -318,6 +328,7 @@ class CollectionFileState(models.Model):
 
     def __unicode__(self):
         return u"%s (%s)" % (self.state_name, self.state_date)
+
 
 class CollectionFile(models.Model):
     """ A single audio file in the collection. A file is part of a
@@ -371,4 +382,3 @@ class CollectionFile(models.Model):
 
     def get_absolute_url(self):
         return reverse('dashboard-file', args=[int(self.id)])
-

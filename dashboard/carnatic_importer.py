@@ -14,16 +14,13 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
-import json
-import musicbrainzngs
-
-from dashboard.log import logger
-from dashboard.log import import_logger
-from dashboard import release_importer
-import carnatic.models
 
 import compmusic
-from compmusic import mb
+
+import carnatic.models
+from dashboard import release_importer
+from dashboard.log import logger
+
 
 class CarnaticReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = carnatic.models.Artist
@@ -144,7 +141,6 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             # we should add these tags to the recording anyway.
             pass
 
-
     def _get_form_tag(self, tags):
         for t in tags:
             name = t["name"].lower()
@@ -155,7 +151,6 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
                 form = self._get_form(form_tag[1])
                 return form
         return None
-
 
     def _get_raaga_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
@@ -189,7 +184,6 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         except carnatic.models.Form.DoesNotExist:
             logger.warn("Cannot find form: %s" % form)
             return None
-
 
     def _get_raaga(self, raaganame):
         try:

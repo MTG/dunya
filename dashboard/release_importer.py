@@ -14,15 +14,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+import compmusic
 import django.utils.timezone
 
-from dashboard.log import logger
-from dashboard.log import import_logger
-
-import compmusic
-import data
-
+import data.models
 from dashboard import external_data
+from dashboard.log import import_logger
+from dashboard.log import logger
 
 RELEASE_TYPE_WIKIPEDIA = "29651736-fa6d-48e4-aadc-a557c6add1cb"
 MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"
@@ -34,6 +32,7 @@ RELATION_PERFORMER = "628a9658-f54c-4142-b0c0-95f031b544da"
 # Children of relation_performer
 RELATION_VOCAL = "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa"
 RELATION_INSTRUMENT = "59054b12-01ac-43ee-a618-285fd397e461"
+
 
 class ReleaseImporter(object):
     def __init__(self, collection):
@@ -125,7 +124,6 @@ class ReleaseImporter(object):
     def _create_release_object(self, mbrelease):
         release, created = self._ReleaseClass.objects.get_or_create(
             mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
-        rel_type = mbrelease["release-group"]
         if "release-group" in mbrelease and "primary-type" in mbrelease["release-group"]:
             release.rel_type = mbrelease["release-group"]["primary-type"]
         if "status" in mbrelease:
@@ -173,15 +171,13 @@ class ReleaseImporter(object):
         # object requires an artist.
         # TODO Deleting these each time we overwrite means we churn the
         # alias ids. This may or may not be a good idea
-        args = {}
-        args[alias_ref] = artist
+        args = {alias_ref: artist}
         AliasKlass.objects.filter(**args).delete()
         for alias in mbartist.get("alias-list", []):
             a = alias["alias"]
             primary = alias.get("primary")
             locale = alias.get("locale")
-            args = {"alias": a}
-            args[alias_ref] = artist
+            args = {"alias": a, alias_ref: artist}
             aob, created = AliasKlass.objects.get_or_create(**args)
             if primary:
                 aob.primary = True
@@ -309,6 +305,7 @@ class ReleaseImporter(object):
                     work.lyricists.add(lyricist)
 
         return work
+
 
 class ImportFailedException(Exception):
     pass

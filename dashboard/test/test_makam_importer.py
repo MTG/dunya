@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+import uuid
+
 from django.test import TestCase
 
 from dashboard import makam_importer
 from makam import models
-import uuid
+
 
 class MakamImporterTest(TestCase):
     def setUp(self):

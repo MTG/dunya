@@ -15,7 +15,9 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import logging
-import dashboard
+
+import dashboard.models
+
 
 class ImportLogAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
@@ -23,7 +25,8 @@ class ImportLogAdapter(logging.LoggerAdapter):
         if hasattr(self, "releaseid"):
             extra["releaseid"] = self.releaseid
         kwargs["extra"] = extra
-        return (msg, kwargs)
+        return msg, kwargs
+
 
 class ImportLogHandler(logging.Handler):
     def handle(self, record):

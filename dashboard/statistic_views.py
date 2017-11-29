@@ -14,19 +14,17 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.shortcuts import render
+import compmusic
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Count
+from django.shortcuts import render
 
+import carnatic.models
+import hindustani.models
+import makam.models
 from dashboard import models
 from dashboard import views
-import carnatic
-import hindustani
-import makam
 
-import json
-import collections
-import compmusic
 
 def _common_stats(collectionid):
     """ Get some common statistics for all styles """
@@ -48,6 +46,7 @@ def _common_stats(collectionid):
         ret["missing"] = True
     return ret
 
+
 @user_passes_test(views.is_staff)
 def carnatic_stats(request):
     collectionid = compmusic.CARNATIC_COLLECTION
@@ -57,17 +56,20 @@ def carnatic_stats(request):
     # Duration
     return render(request, 'stats/carnatic.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def carnatic_releases(request):
     message = "releases with missing audio files"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def carnatic_coverart(request):
     message = "releases with no cover art on CAA"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def carnatic_artists(request):
@@ -82,6 +84,7 @@ def carnatic_artists(request):
            "noinstrument": noinstrument,
            "all": artists.order_by('name').all()}
     return render(request, 'stats/carnatic_artists.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def carnatic_recordings(request):
@@ -118,11 +121,13 @@ def carnatic_recordings(request):
            }
     return render(request, 'stats/carnatic_recordings.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def carnatic_raagataala(request):
     message = "recordings with no raaga or taala, and raagas and taalas that couldn't be found in the database"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def carnatic_works(request):
@@ -134,6 +139,7 @@ def carnatic_works(request):
            "duplicatecomposer": duplicatecomposer,
            "all": works.order_by('title').all()}
     return render(request, 'stats/carnatic_works.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def carnatic_workraagataala(request):
@@ -162,6 +168,7 @@ def hindustani_stats(request):
     # Duration, num lead artists
     return render(request, 'stats/hindustani.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def hindustani_releases(request):
 
@@ -169,11 +176,13 @@ def hindustani_releases(request):
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def hindustani_coverart(request):
     message = "releases with no cover art on CAA"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def hindustani_artists(request):
@@ -188,6 +197,7 @@ def hindustani_artists(request):
            "noinstrument": noinstrument,
            "all": artists.order_by('name').all()}
     return render(request, 'stats/hindustani_artists.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def hindustani_recordings(request):
@@ -224,11 +234,13 @@ def hindustani_recordings(request):
            }
     return render(request, 'stats/hindustani_recordings.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def hindustani_raagtaal(request):
     message = "recordings with no raag or taal, and raags and taals that couldn't be found in the database"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def hindustani_works(request):
@@ -251,17 +263,20 @@ def makam_stats(request):
     # Duration
     return render(request, 'stats/makam.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def makam_tags(request):
     message = "recordings with no makam/form/usul or ones that couldn't be found in the database"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def makam_recordings(request):
     message = "recordings with more than one work, or more than 1 work type"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def makam_works(request):
@@ -272,16 +287,19 @@ def makam_works(request):
            "all": works.order_by('title').all()}
     return render(request, 'stats/makam_works.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def makam_missing_instruments(request):
     message = "Instruments not in the database"
     ret = {"message": message}
     return render(request, 'stats/removed.html', ret)
 
+
 @user_passes_test(views.is_staff)
 def makam_artists(request):
     ret = {"all": makam.models.Artist.objects.order_by('name').all()}
     return render(request, 'stats/makam_artists.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def beijing_stats(request):
@@ -295,6 +313,7 @@ def beijing_stats(request):
         ret["missing"] = True
     # duration, num recordings, num albums, num singers, num arias, role-types, shengqiangs
     return render(request, 'stats/beijing.html', ret)
+
 
 @user_passes_test(views.is_staff)
 def andalusian_stats(request):

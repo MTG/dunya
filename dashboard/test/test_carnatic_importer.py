@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import uuid
+
 from django.test import TestCase
 
-from dashboard import carnatic_importer
-import uuid
-from carnatic import models
 import data
+from carnatic import models
+from dashboard import carnatic_importer
+
 
 class CarnaticImporterTest(TestCase):
 
@@ -51,7 +53,6 @@ class CarnaticImporterTest(TestCase):
         models.RecordingWork.objects.create(recording=self.recording1, work=self.work1, sequence=1)
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work2, sequence=1)
         models.RecordingWork.objects.create(recording=self.recording3, work=self.work1, sequence=1)
-
 
     def test_remove_concert_with_shared_artist(self):
 

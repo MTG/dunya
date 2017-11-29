@@ -14,14 +14,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.files.base import ContentFile
 import os
+
+from compmusic import image
+from compmusic import kutcheris
+from compmusic import wikipedia
+from django.core.files.base import ContentFile
 
 import data.models
 
-from compmusic import wikipedia
-from compmusic import kutcheris
-from compmusic import image
 
 def import_artist_kutcheris(a):
     artist = kutcheris.search_artist(a.name)
@@ -38,6 +39,7 @@ def import_artist_kutcheris(a):
         description = data.models.Description.objects.create(description=b, source=source)
         a.description = description
         a.save()
+
 
 def import_artist_wikipedia(artist, source):
     print "Looking for data on wikipedia"
@@ -65,6 +67,7 @@ def import_artist_wikipedia(artist, source):
         im = data.models.Image()
         im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
         artist.image = im
+
 
 def import_release_image(release, directories=[]):
     if release.image:

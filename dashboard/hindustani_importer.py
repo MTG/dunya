@@ -14,12 +14,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from dashboard.log import logger
-from dashboard.log import import_logger
-from dashboard import release_importer
 import compmusic
 
 import hindustani.models
+from dashboard import release_importer
+from dashboard.log import import_logger
+from dashboard.log import logger
+
 
 class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = hindustani.models.Artist

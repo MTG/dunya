@@ -1,10 +1,11 @@
-from django.test import TestCase
-
-import mock
 import uuid
 
-from dashboard import models
+import mock
+from django.test import TestCase
+
 from dashboard import jobs
+from dashboard import models
+
 
 class CollectionTest(TestCase):
     def setUp(self):
@@ -34,7 +35,8 @@ class CollectionTest(TestCase):
     def test_check_existing_dirs_file_added(self, listdir, match, meta):
         listdir.return_value = ["one.mp3", "two.mp3", "three.mp3"]
         ids = {"/a/directory/audio/subdir/one.mp3": {"meta": {"recordingid": self.file1id}},
-                "/a/directory/audio/subdir/two.mp3": {"meta": {"recordingid": self.file2id}}}
+               "/a/directory/audio/subdir/two.mp3": {"meta": {"recordingid": self.file2id}}}
+
         def metadata_side(path, *args, **kwargs):
             return ids[path]
         meta.side_effect = metadata_side
@@ -46,6 +48,7 @@ class CollectionTest(TestCase):
     @mock.patch("compmusic.file_metadata")
     def test_check_existing_dirs_file_changed(self, meta, listdir):
         newuuid = str(uuid.uuid4())
+
         def metadata_side(path, *args, **kwargs):
             if path == "/a/directory/audio/subdir/one.mp3":
                 return {"meta": {"recordingid": self.file1id}}
@@ -64,7 +67,7 @@ class CollectionTest(TestCase):
     @mock.patch("dashboard.jobs._get_musicbrainz_release_for_dir")
     def test_match_directory_to_release(self, get_mbrel, listdir, create_cf):
         relid = str(uuid.uuid4())
-        mbrel = models.MusicbrainzRelease.objects.create(collection=self.collection, mbid=relid)
+        models.MusicbrainzRelease.objects.create(collection=self.collection, mbid=relid)
 
         get_mbrel.return_value = [relid]
         listdir.return_value = ["one.mp3", "two.mp3"]
@@ -84,7 +87,6 @@ class CollectionTest(TestCase):
         jobs._match_directory_to_release(self.collection.collectionid, "/a/directory/audio/sub")
         calls = [mock.call(cd, "one.mp3"), mock.call(cd, "two.mp3"), mock.call(cd, "three.mp3")]
         self.assertEqual(create_cf.mock_calls, calls)
-
 
     @mock.patch("os.path.getsize")
     @mock.patch("compmusic.file_metadata")
@@ -123,4 +125,3 @@ class CollectionTest(TestCase):
         files = ["one.mp3", "two.wav", "three.flac", "four.mp3", "five.mp3"]
         out = jobs._get_mp3_files(files)
         self.assertEqual(out, ["one.mp3", "four.mp3", "five.mp3"])
-

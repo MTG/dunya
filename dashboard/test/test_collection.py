@@ -1,14 +1,14 @@
-from django.test import TestCase
-from django.http import QueryDict
-from django.contrib import auth
-
-import mock
 import StringIO
 
-from dashboard import forms
-from dashboard import views
-from dashboard import models
+import mock
+from django.contrib import auth
+from django.http import QueryDict
+from django.test import TestCase
+
 import docserver
+from dashboard import forms
+from dashboard import models
+from dashboard import views
 
 
 class CollectionTest(TestCase):
@@ -46,9 +46,7 @@ class CollectionTest(TestCase):
         errormsg = "This path doesn't exist"
         self.assertEqual(errormsg, f.errors["path"][0])
 
-
         # Now the first path exists but the second doesn't
-
         pathmock = mock.Mock(side_effect=[True, False])
         forms.os.path.exists = pathmock
 
@@ -69,7 +67,6 @@ class CollectionTest(TestCase):
         self.assertTrue("collectionid" in f.errors)
         errormsg = "Collection ID needs to be a UUID"
         self.assertEqual(errormsg, f.errors["collectionid"][0])
-
 
     def test_collection_exists(self):
         models.Collection.objects.create(collectionid="55412ad8-1b15-44d5-8dc8-eeeeeeeeeeee", name="test collection")
@@ -118,13 +115,12 @@ class CollectionTest(TestCase):
 
         mockimport = mock.Mock()
         views.jobs.force_load_and_import_collection = mockimport
-        resp = self.client.post('/dashboard/addcollection', data)
+        self.client.post('/dashboard/addcollection', data)
 
         # dashboard collection
         dashc = models.Collection.objects.get(collectionid=collid)
         self.assertEqual("/incoming/carnatic", dashc.root_directory)
         mockimport.assert_called_once_with(collid)
-
 
         # docserver collection
         docc = docserver.models.Collection.objects.get(collectionid=collid)

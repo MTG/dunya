@@ -16,8 +16,8 @@
 
 from django.conf.urls import url
 
-from dashboard import views
 from dashboard import statistic_views
+from dashboard import views
 
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 

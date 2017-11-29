@@ -14,18 +14,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django import forms
-from django.contrib.auth.models import User
-import re
 import os
+import re
 import uuid
 
-import data
 import compmusic
+from django import forms
+from django.contrib.auth.models import User
 
+import data.models
+import makam.models
 from dashboard import models
 
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+
 
 class CollectionForm(forms.Form):
     collectionid = forms.CharField(max_length=100, label="Musicbrainz collection ID")
@@ -77,6 +79,7 @@ class AddCollectionForm(CollectionForm):
 
         return cleaned_data
 
+
 class EditCollectionForm(CollectionForm):
     def __init__(self, collectionid, *args, **kwargs):
         super(EditCollectionForm, self).__init__(*args, **kwargs)
@@ -110,10 +113,12 @@ class InactiveUserForm(forms.ModelForm):
         model = User
         fields = ['is_active']
 
+
 class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
         exclude = ['name', 'collectionid']
+
 
 OPTIONS = (
             ("tabs", "Tabs"),
@@ -131,8 +136,10 @@ class CsvAndalusianForm(forms.Form):
 class CsvAndalusianCatalogForm(forms.Form):
     csv_file = forms.FileField()
 
+
 class AndalusianScoreForm(forms.Form):
     score_file = forms.FileField()
+
 
 class DashUUIDField(forms.UUIDField):
     """A UUIDField which returns uuids with dashes """
@@ -146,7 +153,6 @@ class SymbTrForm(forms.ModelForm):
     uuid = DashUUIDField()
 
     class Meta:
-        import makam
         model = makam.models.SymbTr
         fields = ['name', 'uuid']
 
@@ -155,7 +161,6 @@ class SymbTrForm(forms.ModelForm):
         if 'uuid' in self.changed_data or self.instance.pk is None:
             # If this is new, or if the uuid has changed, check if
             # there is already an object with this id
-            import makam
             if makam.models.SymbTr.objects.filter(uuid=data).exists():
                 raise forms.ValidationError("UUID already exists")
         return data

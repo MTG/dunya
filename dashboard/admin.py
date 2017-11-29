@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from dashboard import models
 from django.contrib import admin
+
+from dashboard import models
 
 admin.site.register(models.CollectionState)
 admin.site.register(models.Collection)

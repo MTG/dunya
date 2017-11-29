@@ -14,22 +14,21 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from dashboard.log import logger
-from dashboard import release_importer
+import compmusic
 
 import andalusian
 import andalusian.models
-import compmusic
+from dashboard import release_importer
+from dashboard.log import logger
 
 MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"
+
 
 class AndalusianReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = andalusian.models.Artist
     _ArtistAliasClass = andalusian.models.ArtistAlias
     _OrchestraClass = andalusian.models.Orchestra
     _OrchestraAliasClass = andalusian.models.OrchestraAlias
-    #_ComposerClass = andalusian.models.Composer
-    #_ComposerAliasClass = andalusian.models.ComposerAlias
     _ReleaseClass = andalusian.models.Album
     _RecordingClass = andalusian.models.Recording
     _InstrumentClass = andalusian.models.Instrument

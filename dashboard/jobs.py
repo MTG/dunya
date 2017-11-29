@@ -18,24 +18,21 @@ from __future__ import absolute_import
 
 import os
 import traceback
+
 import celery
-
-from dashboard import models
-from dashboard import carnatic_importer
-from dashboard import hindustani_importer
-from dashboard import makam_importer
-from dashboard import andalusian_importer
-
 import compmusic
 
 import data
 import docserver
 import docserver.util
-
-#import populate_images
+from dashboard import andalusian_importer
+from dashboard import carnatic_importer
+from dashboard import hindustani_importer
+from dashboard import makam_importer
+from dashboard import models
+from dashboard.log import import_logger
 from dunya.celery import app
 
-from dashboard.log import import_logger
 
 class DunyaTask(celery.Task):
     abstract = True
@@ -52,17 +49,20 @@ class DunyaTask(celery.Task):
             raise Exception("Cannot find %s object with key %s to add error to" % (classname, args[0]))
         raise exc
 
+
 class CollectionDunyaTask(DunyaTask):
     ObjectClass = models.Collection
 
     def get_object(self, key):
         return self.ObjectClass.objects.get(collectionid=key)
 
+
 class ReleaseDunyaTask(DunyaTask):
     ObjectClass = models.MusicbrainzRelease
 
     def get_object(self, key):
         return self.ObjectClass.objects.get(pk=key)
+
 
 def force_load_and_import_collection(collectionid):
     """ Scan the collection contents and import every release again
@@ -72,11 +72,13 @@ def force_load_and_import_collection(collectionid):
     chain = load_musicbrainz_collection.si(collectionid) | force_import_all_releases.si(collectionid)
     chain.apply_async()
 
+
 @app.task(ignore_result=True)
 def rematch_unknown_directory(collectiondirectory_id):
     """ Try and match a CollectionDirectory to a release in the collection. """
     cd = models.CollectionDirectory.objects.get(pk=collectiondirectory_id)
     _match_directory_to_release(cd.collection.collectionid, cd.full_path)
+
 
 @app.task(base=CollectionDunyaTask)
 def load_musicbrainz_collection(collectionid):
@@ -93,6 +95,7 @@ def load_musicbrainz_collection(collectionid):
     coll.set_state_scanned()
     coll.add_log_message("Collection scan finished")
     return collectionid
+
 
 @app.task(base=ReleaseDunyaTask)
 def import_single_release(releasepk):
@@ -138,7 +141,7 @@ def import_release(releasepk, ri):
             # Set the release logger releaseid to the id of the current release
             import_logger.releaseid = release.pk
             ri.import_release(release.mbid, directories)
-        except Exception as e:
+        except Exception:
             abort = True
             tb = traceback.format_exc()
             release.add_log_message(tb)
@@ -158,6 +161,7 @@ def import_release(releasepk, ri):
         release.add_log_message("Release import aborted due to failure")
         release.set_state_error()
 
+
 def get_release_importer(collection):
     name = collection.name.lower()
     name = name.lower()
@@ -172,6 +176,7 @@ def get_release_importer(collection):
     elif "andalusian" in name:
         ri = andalusian_importer.AndalusianReleaseImporter(data_coll)
     return ri
+
 
 @app.task(base=CollectionDunyaTask)
 def force_import_all_releases(collectionid):
@@ -201,6 +206,7 @@ def force_import_all_releases(collectionid):
         import_release(r.id, ri)
     collection.set_state_finished()
 
+
 def _get_musicbrainz_release_for_dir(dirname):
     """ Get a unique list of all the musicbrainz release IDs that
     are in tags in mp3 files in the given directory.
@@ -214,10 +220,12 @@ def _get_musicbrainz_release_for_dir(dirname):
             release_ids.add(rel)
     return list(release_ids)
 
+
 def _get_mp3_files(files):
     """ Take a list of files and return only the mp3 files """
     # TODO: This should be any audio file, replace with util method
     return [f for f in files if os.path.splitext(f)[1].lower() == ".mp3"]
+
 
 def update_collection(collectionid):
     """ Sync the contents of a collection on musicbrainz.org to our local
@@ -248,6 +256,7 @@ def update_collection(collectionid):
     for relid in to_remove:
         coll.musicbrainzrelease_set.filter(mbid=relid).delete()
 
+
 def _match_directory_to_release(collectionid, root):
     """ Try and match a single directory containing audio files to a release
         that exists in the given collection.
@@ -257,8 +266,6 @@ def _match_directory_to_release(collectionid, root):
     """
     coll = models.Collection.objects.get(collectionid=collectionid)
     collectionroot = coll.audio_directory
-    print root
-    print "======="
     # Remove the path to the collection from the path to the files (we only store relative paths)
     if not collectionroot.endswith("/"):
         collectionroot += "/"
@@ -283,6 +290,7 @@ def _match_directory_to_release(collectionid, root):
         except models.MusicbrainzRelease.DoesNotExist:
             pass
 
+
 def _create_collectionfile(cd, name):
     """arguments:
        cd: a collectiondirectory
@@ -296,6 +304,7 @@ def _create_collectionfile(cd, name):
     if not created:
         cfile.filesize = size
         cfile.save()
+
 
 def scan_and_link(collectionid):
     """ Scan the root directory of a collection and see if any directories
@@ -340,6 +349,7 @@ def scan_and_link(collectionid):
 
     _check_existing_directories(coll)
 
+
 def _check_existing_directories(coll):
     # For all of the matched directories, look at the contents of them and
     # remove/add files as needed
@@ -374,6 +384,7 @@ def _check_existing_directories(coll):
             # If there are new files in the directory, just run _match again and
             # it will create the new file objects
             _match_directory_to_release(coll.collectionid, cd.full_path)
+
 
 @app.task
 def delete_collection(collectionpk):
