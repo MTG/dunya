@@ -1,7 +1,0 @@
-{% load carnatic.inline %}
-
-<div class="miniitem work">
-  <div class="colorCode shadow1"></div>
-  <div class="disco"><img src="{{work.get_small_image_url}}"></div>
-  <label><b>{% inline_work work %}</b>{% if work.composer %}by {% inline_composer work.composer %}{% endif %}</label>
-</div>
