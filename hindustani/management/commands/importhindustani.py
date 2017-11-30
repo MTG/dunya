@@ -14,10 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
 import csv
 
+from django.core.management.base import BaseCommand, CommandError
+
 from hindustani import models
+
 
 class Command(BaseCommand):
     help = "load hindustani data and aliases from a csv file"
@@ -53,6 +55,6 @@ class Command(BaseCommand):
         elif t == "taal":
             obclass = models.Taal
         elif t == "laay":
-            obclass = models.Laay
+            obclass = models.Laya
         if obclass:
             self.load(fname, obclass)

@@ -14,67 +14,79 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from hindustani import models
-from data import utils
-from data.models import WithImageMixin
-
+from django.shortcuts import redirect
 from rest_framework import generics
 from rest_framework import serializers
-from django.shortcuts import redirect
+
+from data import utils
+from data.models import WithImageMixin
+from hindustani import models
+
 
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
         fields = ['mbid', 'name']
 
+
 class ComposerInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Composer
         fields = ['mbid', 'name']
+
 
 class WorkInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Work
         fields = ['mbid', 'title']
 
+
 class RecordingInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title']
+
 
 class RaagInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Raag
         fields = ['uuid', 'common_name', 'name']
 
+
 class TaalInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taal
         fields = ['uuid', 'common_name', 'name']
+
 
 class LayaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taal
         fields = ['uuid', 'common_name', 'name']
 
+
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taal
         fields = ['uuid', 'common_name', 'name']
+
 
 class ReleaseInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Release
         fields = ['mbid', 'title']
 
+
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
         fields = ['mbid', 'name']
 
+
 class TaalList(generics.ListAPIView):
     queryset = models.Taal.objects.all()
     serializer_class = TaalInnerSerializer
+
 
 class TaalDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(many=True, source='recording_set')
@@ -85,19 +97,23 @@ class TaalDetailSerializer(serializers.ModelSerializer):
         model = models.Taal
         fields = ['uuid', 'name', 'common_name', 'aliases', 'composers', 'recordings']
 
+
 class TaalDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Taal.objects.all()
     serializer_class = TaalDetailSerializer
 
+
 def taalbyid(request, pk):
     taal = models.Taal.objects.get(pk=pk)
     return redirect('api-hindustani-taal-detail', taal.uuid, permanent=True)
 
+
 class RaagList(generics.ListAPIView):
     queryset = models.Raag.objects.all()
     serializer_class = RaagInnerSerializer
+
 
 class RaagDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(many=True)
@@ -109,19 +125,23 @@ class RaagDetailSerializer(serializers.ModelSerializer):
         model = models.Raag
         fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'composers', 'recordings']
 
+
 class RaagDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Raag.objects.all()
     serializer_class = RaagDetailSerializer
 
+
 def raagbyid(request, pk):
     raag = models.Raag.objects.get(pk=pk)
     return redirect('api-hindustani-raag-detail', raag.uuid, permanent=True)
 
+
 class LayaList(generics.ListAPIView):
     queryset = models.Laya.objects.all()
     serializer_class = LayaInnerSerializer
+
 
 class LayaDetailSerializer(serializers.ModelSerializer):
     recordings = RecordingInnerSerializer(many=True)
@@ -131,19 +151,23 @@ class LayaDetailSerializer(serializers.ModelSerializer):
         model = models.Laya
         fields = ['uuid', 'name', 'common_name', 'recordings', 'aliases']
 
+
 class LayaDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Laya.objects.all()
     serializer_class = LayaDetailSerializer
 
+
 def layabyid(request, pk):
     laya = models.Laya.objects.get(pk=pk)
     return redirect('api-hindustani-laya-detail', laya.uuid, permanent=True)
 
+
 class FormList(generics.ListAPIView):
     queryset = models.Form.objects.all()
     serializer_class = FormInnerSerializer
+
 
 class FormDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(many=True)
@@ -154,24 +178,29 @@ class FormDetailSerializer(serializers.ModelSerializer):
         model = models.Form
         fields = ['uuid', 'name', 'common_name', 'aliases', 'artists', 'recordings']
 
+
 class FormDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
+
 def formbyid(request, pk):
     form = models.Form.objects.get(pk=pk)
     return redirect('api-hindustani-form-detail', form.uuid, permanent=True)
+
 
 class InstrumentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
         fields = ['mbid', 'name']
 
+
 class InstrumentList(generics.ListAPIView):
     queryset = models.Instrument.objects.all()
     serializer_class = InstrumentListSerializer
+
 
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     artists = ArtistInnerSerializer(many=True)
@@ -179,6 +208,7 @@ class InstrumentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
         fields = ['mbid', 'name', 'artists']
+
 
 class InstrumentDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
@@ -192,9 +222,11 @@ class WorkListSerializer(serializers.ModelSerializer):
         model = models.Work
         fields = ['mbid', 'title']
 
+
 class WorkList(generics.ListAPIView):
     queryset = models.Work.objects.all()
     serializer_class = WorkListSerializer
+
 
 class WorkDetailSerializer(serializers.ModelSerializer):
     recordings = serializers.SerializerMethodField('recording_list')
@@ -209,11 +241,13 @@ class WorkDetailSerializer(serializers.ModelSerializer):
         recordings = ob.recording_set.with_permissions(collection_ids, permission)
         return RecordingInnerSerializer(recordings, many=True).data
 
+
 class WorkDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Work.objects.all()
     serializer_class = WorkDetailSerializer
+
 
 class InstrumentPerformanceInnerSerializer(serializers.ModelSerializer):
     artist = ArtistInnerSerializer()
@@ -223,6 +257,7 @@ class InstrumentPerformanceInnerSerializer(serializers.ModelSerializer):
         model = models.InstrumentPerformance
         fields = ['artist', 'instrument', 'lead', 'attributes']
 
+
 class RecordingList(generics.ListAPIView):
     serializer_class = RecordingInnerSerializer
 
@@ -230,6 +265,7 @@ class RecordingList(generics.ListAPIView):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.request.user)
         return models.Recording.objects.with_permissions(collection_ids, permission)
+
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
     release = serializers.SerializerMethodField('release_list')
@@ -244,7 +280,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recording
         fields = ['mbid', 'title', 'length', 'artists', 'raags', 'taals',
-                'layas', 'forms', 'works', 'release', 'album_artists']
+                  'layas', 'forms', 'works', 'release', 'album_artists']
 
     def release_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
@@ -263,6 +299,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
         arts = ArtistInnerSerializer(ret, many=True)
         return arts.data
 
+
 class RecordingDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
@@ -275,9 +312,11 @@ class ArtistListSerializer(serializers.ModelSerializer):
         model = models.Artist
         fields = ['mbid', 'name']
 
+
 class ArtistList(generics.ListAPIView):
     queryset = models.Artist.objects.all()
     serializer_class = ArtistListSerializer
+
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
     releases = serializers.SerializerMethodField('release_list')
@@ -315,6 +354,7 @@ class ReleaseListSerializer(serializers.ModelSerializer):
         model = models.Release
         fields = ['mbid', 'title']
 
+
 class ReleaseList(generics.ListAPIView):
     queryset = models.Release.objects.all()
     serializer_class = ReleaseListSerializer
@@ -324,6 +364,7 @@ class ReleaseList(generics.ListAPIView):
         permission = utils.get_user_permissions(self.request.user)
         return models.Release.objects.with_permissions(collection_ids, permission)
 
+
 class ReleaseRecordingSerializer(serializers.ModelSerializer):
     mbid = serializers.ReadOnlyField(source='recording.mbid')
     title = serializers.ReadOnlyField(source='recording.title')
@@ -331,6 +372,7 @@ class ReleaseRecordingSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ReleaseRecording
         fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
+
 
 class ReleaseDetailSerializer(serializers.ModelSerializer, WithImageMixin):
     recordings = ReleaseRecordingSerializer(source='releaserecording_set', many=True)
@@ -351,6 +393,7 @@ class ReleaseDetailSerializer(serializers.ModelSerializer, WithImageMixin):
             inner["instruments"] = InstrumentInnerSerializer(instrument, many=True).data
             data.append(inner)
         return data
+
 
 class ReleaseDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'

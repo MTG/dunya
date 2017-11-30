@@ -14,19 +14,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
-from django.core.files.base import ContentFile
+import collections
+import os
 from optparse import make_option
 
-import os
-import collections
-import numpy as np
-
-import data
-from docserver import util
-import hindustani
-import carnatic
 import compmusic.extractors.similaritylib.raaga
+import numpy as np
+from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand, CommandError
+
+import carnatic
+import data
+import hindustani
+from docserver import util
+
 
 class Command(BaseCommand):
     help = "Calculate mean pitch profile of all raags"

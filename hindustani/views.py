@@ -16,22 +16,18 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.conf import settings
-
 import json
 import math
-import random
 
-import pysolr
+from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 
-import data
+import docserver.exceptions
+import docserver.util
 from hindustani import models
-from hindustani import search
-import docserver
+
 
 def searchcomplete(request):
     term = request.GET.get("input")
@@ -40,8 +36,10 @@ def searchcomplete(request):
         suggestions = models.Release.objects.filter(title__istartswith=term)[:3]
         ret = [{"category": "releases", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
         suggestions = models.Artist.objects.filter(name__istartswith=term)[:3]
-        ret += [{"category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
+        ret += [{"category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in
+                enumerate(suggestions, len(ret))]
     return HttpResponse(json.dumps(ret), content_type="application/json")
+
 
 def recordings_search(request):
     q = request.GET.get('recording', '')
@@ -53,19 +51,19 @@ def recordings_search(request):
     s_tals = request.GET.get('tals', '')
 
     recordings = models.Recording.objects
-    if s_artists != '' or s_releases != '' or q\
+    if s_artists != '' or s_releases != '' or q \
             or s_instruments != '' or s_rags != '' or s_tals != '':
-        if q and q!='':
+        if q and q != '':
             ids = list(models.Work.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
-            recordings = recordings.filter(works__id__in=ids)\
-                    | recordings.filter(title__unaccent__icontains=q)\
-                    | recordings.filter(release__title__unaccent__icontains=q)
+            recordings = recordings.filter(works__id__in=ids) \
+                         | recordings.filter(title__unaccent__icontains=q) \
+                         | recordings.filter(release__title__unaccent__icontains=q)
 
         if s_artists and s_artists != '':
             artists = s_artists.split()
-            recordings = recordings.filter(works__composers__mbid__in=artists)\
-                    | recordings.filter(works__lyricists__mbid__in=artists)\
-                    | recordings.filter(release__artists__mbid__in=artists)
+            recordings = recordings.filter(works__composers__mbid__in=artists) \
+                         | recordings.filter(works__lyricists__mbid__in=artists) \
+                         | recordings.filter(release__artists__mbid__in=artists)
 
         if s_releases and s_releases != '':
             recordings = recordings.filter(release__mbid__in=s_releases.split())
@@ -78,7 +76,6 @@ def recordings_search(request):
 
         if s_tals and s_tals != '':
             recordings = recordings.filter(taals__uuid__in=s_tals.split())
-
 
     paginator = Paginator(recordings.all(), 25)
     page = request.GET.get('page')
@@ -96,14 +93,13 @@ def recordings_search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         recordings = paginator.page(paginator.num_pages)
     results = {
-            "results": [item.get_dict() for item in recordings.object_list],
-            "moreResults": next_page
+        "results": [item.get_dict() for item in recordings.object_list],
+        "moreResults": next_page
     }
     return HttpResponse(json.dumps(results), content_type='application/json')
 
 
 def filters(request):
-
     taals = models.Taal.objects.prefetch_related('aliases').all()
     taallist = []
     for r in taals:
@@ -127,14 +123,14 @@ def filters(request):
         cc = []
         ii = []
 
-        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
-
+        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc],
+                           "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt],
+                           "instruments": [str(i.mbid) for i in ii]})
 
     instruments = models.Instrument.objects.all()
     instrumentlist = []
     for i in instruments:
         instrumentlist.append({"name": i.name, "mbid": str(i.mbid)})
-
 
     ret = {"artists": artistlist,
            "releases": releaselist,
@@ -145,8 +141,10 @@ def filters(request):
 
     return JsonResponse(ret)
 
+
 def main(request):
     return render(request, "hindustani/index.html")
+
 
 def recordingbyid(request, recordingid, title=None):
     recording = get_object_or_404(models.Recording, pk=recordingid)
@@ -157,15 +155,18 @@ def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
 
     try:
-        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
+        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1,
+                                                version=settings.FEAT_VERSION_IMAGE)
     except docserver.exceptions.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
+        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1,
+                                                version=settings.FEAT_VERSION_IMAGE)
     except docserver.exceptions.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
+        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull",
+                                                 version=settings.FEAT_VERSION_IMAGE)
     except docserver.exceptions.NoFileException:
         small = None
     try:
@@ -173,7 +174,8 @@ def recording(request, uuid, title=None):
     except docserver.exceptions.NoFileException:
         audio = None
     try:
-        tonic = docserver.util.docserver_get_contents(recording.mbid, "hindustanivotedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
+        tonic = docserver.util.docserver_get_contents(recording.mbid, "hindustanivotedtonic", "tonic",
+                                                      version=settings.FEAT_VERSION_TONIC)
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
@@ -191,8 +193,10 @@ def recording(request, uuid, title=None):
     drawtempo = not recording.layas.filter(pk=vilambit.pk).exists()
     if drawtempo:
         try:
-            aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
-            akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
+            aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve",
+                                                          version=settings.FEAT_VERSION_RHYTHM)
+            akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod",
+                                                            version=settings.FEAT_VERSION_RHYTHM)
             akshara = str(round(float(akshara), 3) * 1000)
         except docserver.exceptions.NoFileException:
             akshara = None
@@ -202,9 +206,12 @@ def recording(request, uuid, title=None):
         aksharaurl = None
 
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "packedpitch", version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
-        histogramurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
-        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
+        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "packedpitch",
+                                                         version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
+        histogramurl = docserver.util.docserver_get_url(recording.mbid, "hindustaninormalisedpitch", "drawhistogram",
+                                                        version=settings.FEAT_VERSION_HINDUSTANI_NORMALISED_PITCH)
+        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks",
+                                                     version=settings.FEAT_VERSION_RHYTHM)
     except docserver.exceptions.NoFileException:
         pitchtrackurl = None
         histogramurl = None
@@ -253,5 +260,3 @@ def recording(request, uuid, title=None):
            "artists": artists
            }
     return render(request, "hindustani/recording.html", ret)
-
-

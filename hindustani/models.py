@@ -14,17 +14,18 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.db import models
+import collections
+
+import pysolr
 from django.core.urlresolvers import reverse
+from django.db import models
 from django.db.models import Q
 from django.utils.text import slugify
 
-import collections
-import pysolr
-
+import data.models
 from hindustani import managers
 from hindustani import search
-import data.models
+
 
 class HindustaniStyle(object):
     def get_style(self):
@@ -39,6 +40,7 @@ class HindustaniStyle(object):
                 "work": Work,
                 "instrument": Instrument
                 }[key]
+
 
 class Instrument(HindustaniStyle, data.models.Instrument):
     objects = managers.HindustaniInstrumentManager()
@@ -66,6 +68,7 @@ class Instrument(HindustaniStyle, data.models.Instrument):
                "data": []
                }
         return ret
+
 
 class Artist(HindustaniStyle, data.models.Artist):
     missing_image = "hindustaniartist.jpg"
@@ -152,9 +155,9 @@ class Artist(HindustaniStyle, data.models.Artist):
         return ret
 
     def releases(self, collection_ids=False, permission=False):
-        rcollections=[]
+        rcollections = []
         if collection_ids:
-            rcollections = collection_ids.replace(' ','').split(",")
+            rcollections = collection_ids.replace(' ', '').split(",")
         if not permission:
             permission = ["U"]
 
@@ -166,12 +169,13 @@ class Artist(HindustaniStyle, data.models.Artist):
         for a in self.groups.all():
             for c in a.releases():
                 if c not in ret and c.collection \
-                        and (collection_ids == False or str(c.collection.collectionid) in rcollections) \
+                        and (not collection_ids or str(c.collection.collectionid) in rcollections) \
                         and c.collection.permission in permission:
                     ret.append(c)
 
         # Releases in which we performed
-        ret.extend([r for r in Release.objects.with_permissions(collection_ids, permission).filter(recordings__instrumentperformance__artist=self).distinct()])
+        ret.extend([r for r in Release.objects.with_permissions(collection_ids, permission).filter(
+            recordings__instrumentperformance__artist=self).distinct()])
         ret = list(set(ret))
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -191,7 +195,8 @@ class Artist(HindustaniStyle, data.models.Artist):
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
     def recordings(self, collection_ids=False, permission=False):
-        return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(release__artists=self)).distinct()
+        return Recording.objects.with_permissions(collection_ids, permission).filter(
+            Q(instrumentperformance__artist=self) | Q(release__artists=self)).distinct()
 
     @classmethod
     def get_filter_criteria(cls):
@@ -201,8 +206,10 @@ class Artist(HindustaniStyle, data.models.Artist):
                }
         return ret
 
+
 class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
     pass
+
 
 class ReleaseRecording(models.Model):
     """ Links a release to a recording with an implicit ordering """
@@ -216,10 +223,11 @@ class ReleaseRecording(models.Model):
     disctrack = models.IntegerField()
 
     class Meta:
-        ordering = ("track", )
+        ordering = ("track",)
 
     def __unicode__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
+
 
 class Release(HindustaniStyle, data.models.Release):
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
@@ -276,7 +284,6 @@ class Release(HindustaniStyle, data.models.Release):
         return ret
 
     def get_similar(self):
-
         artists = set()
         for p in self.performers():
             artists.add(p)
@@ -300,7 +307,8 @@ class Release(HindustaniStyle, data.models.Release):
         try:
             similar = search.get_similar_releases(aid, rid, tid, lid)
             similar = sorted(similar, reverse=True,
-                             key=lambda c: (len(c[1]["artists"]), len(c[1]["raags"]), len(c[1]["taals"]), len(c[1]["layas"])))
+                             key=lambda c: (
+                             len(c[1]["artists"]), len(c[1]["raags"]), len(c[1]["taals"]), len(c[1]["layas"])))
 
             similar = similar[:10]
             for s, v in similar:
@@ -334,23 +342,26 @@ class RecordingRaag(models.Model):
     raag = models.ForeignKey("Raag")
     sequence = models.IntegerField()
 
+
 class RecordingTaal(models.Model):
     recording = models.ForeignKey("Recording")
     taal = models.ForeignKey("Taal")
     sequence = models.IntegerField()
+
 
 class RecordingLaya(models.Model):
     recording = models.ForeignKey("Recording")
     laya = models.ForeignKey("Laya")
     sequence = models.IntegerField()
 
+
 class RecordingForm(models.Model):
     recording = models.ForeignKey("Recording")
     form = models.ForeignKey("Form")
     sequence = models.IntegerField()
 
-class Recording(HindustaniStyle, data.models.Recording):
 
+class Recording(HindustaniStyle, data.models.Recording):
     raags = models.ManyToManyField("Raag", through="RecordingRaag")
     taals = models.ManyToManyField("Taal", through="RecordingTaal")
     layas = models.ManyToManyField("Laya", through="RecordingLaya")
@@ -371,31 +382,35 @@ class Recording(HindustaniStyle, data.models.Recording):
             image = "/media/images/noconcert.jpg"
         artists = Artist.objects.filter(primary_concerts__recordings=self).values_list('name').all()
         return {
-                "concert": title,
-                "mainArtists": [item for sublist in artists for item in sublist],
-                "name": self.title,
-                "image": image,
-                "linkToRecording": reverse("hindustani-recording", args=[self.mbid]),
-                "collaborators": [],
-                "selectedArtists": ""
+            "concert": title,
+            "mainArtists": [item for sublist in artists for item in sublist],
+            "name": self.title,
+            "image": image,
+            "linkToRecording": reverse("hindustani-recording", args=[self.mbid]),
+            "collaborators": [],
+            "selectedArtists": ""
         }
-
 
 
 class InstrumentPerformance(HindustaniStyle, data.models.InstrumentPerformance):
     pass
 
+
 class Composer(HindustaniStyle, data.models.Composer):
     pass
+
 
 class ComposerAlias(HindustaniStyle, data.models.ComposerAlias):
     pass
 
+
 class Lyrics(models.Model):
     lyrics = models.CharField(max_length=50)
 
+
 class Work(HindustaniStyle, data.models.Work):
     lyrics = models.ForeignKey("Lyrics", blank=True, null=True)
+
 
 class WorkTime(models.Model):
     # The time in a recording that a work occurs (recordings can consist of
@@ -491,12 +506,14 @@ class Raag(data.models.BaseModel, data.models.ImageMixin):
                }
         return ret
 
+
 class RaagAlias(models.Model):
     name = models.CharField(max_length=50)
     raag = models.ForeignKey("Raag", related_name="aliases")
 
     def __unicode__(self):
         return self.name
+
 
 class Taal(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "taal.jpg"
@@ -522,7 +539,8 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
     def percussion_artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(Q(instrumentperformance__recording__taals=self) & Q(instrumentperformance__instrument__percussion=True))
+        artists = Artist.objects.filter(
+            Q(instrumentperformance__recording__taals=self) & Q(instrumentperformance__instrument__percussion=True))
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -581,6 +599,7 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
                }
         return ret
 
+
 class TaalAlias(models.Model):
     name = models.CharField(max_length=50)
     taal = models.ForeignKey("Taal", related_name="aliases")
@@ -588,8 +607,8 @@ class TaalAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Laya(data.models.BaseModel):
 
+class Laya(data.models.BaseModel):
     objects = managers.HindustaniLayaManager()
 
     name = models.CharField(max_length=50)
@@ -632,6 +651,7 @@ class Laya(data.models.BaseModel):
     def Vilambit(cls):
         return cls.objects.fuzzy('vilambit')
 
+
 class LayaAlias(models.Model):
     name = models.CharField(max_length=50)
     laya = models.ForeignKey("Laya", related_name="aliases")
@@ -639,8 +659,8 @@ class LayaAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-class Form(data.models.BaseModel):
 
+class Form(data.models.BaseModel):
     objects = managers.HindustaniFormManager()
 
     name = models.CharField(max_length=50)
@@ -707,6 +727,7 @@ class Form(data.models.BaseModel):
                "data": []
                }
         return ret
+
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=50)

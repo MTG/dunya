@@ -26,7 +26,7 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 urlpatterns = [
     url(r'^$', views.main, name='hindustani-main'),
     url(r'^info$',
-        TemplateView.as_view(template_name="hindustani/info.html"), name='hindustani-info'),
+        TemplateView.as_view(template_name='hindustani/info.html'), name='hindustani-info'),
 
     url(r'^searchcomplete$', views.searchcomplete, name='hindustani-searchcomplete'),
     url(r'^search$', views.recordings_search, name='hindustani-search'),

@@ -14,88 +14,112 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from hindustani import models
 from django.contrib import admin
+
+from hindustani import models
+
 
 class ArtistAliasInline(admin.TabularInline):
     model = models.ArtistAlias
     extra = 1
 
+
 class ComposerAliasInline(admin.TabularInline):
     model = models.ComposerAlias
     extra = 1
+
 
 class ReleaseRecordingInline(admin.TabularInline):
     model = models.ReleaseRecording
     extra = 1
 
+
 class WorkTimeInline(admin.TabularInline):
     model = models.WorkTime
     extra = 1
+
 
 class RecordingPerformanceInline(admin.TabularInline):
     model = models.InstrumentPerformance
     extra = 1
 
+
 class RecordingRaagInline(admin.TabularInline):
     model = models.RecordingRaag
     extra = 1
+
 
 class RecordingLayaInline(admin.TabularInline):
     model = models.RecordingLaya
     extra = 1
 
+
 class RecordingTaalInline(admin.TabularInline):
     model = models.RecordingTaal
     extra = 1
+
 
 class RecordingFormInline(admin.TabularInline):
     model = models.RecordingForm
     extra = 1
 
+
 class ArtistAdmin(admin.ModelAdmin):
-    inlines = (ArtistAliasInline, )
+    inlines = (ArtistAliasInline,)
     exclude = ('image', 'description')
+
 
 class ComposerAdmin(admin.ModelAdmin):
-    inlines = (ComposerAliasInline, )
+    inlines = (ComposerAliasInline,)
     exclude = ('image', 'description')
 
+
 class RecordingAdmin(admin.ModelAdmin):
-    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, WorkTimeInline, RecordingPerformanceInline)
+    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, WorkTimeInline,
+               RecordingPerformanceInline)
+
 
 class ReleaseAdmin(admin.ModelAdmin):
-    inlines = (ReleaseRecordingInline, )
+    inlines = (ReleaseRecordingInline,)
+
 
 class RaagAliasInline(admin.TabularInline):
     model = models.RaagAlias
     extra = 1
 
+
 class RaagAdmin(admin.ModelAdmin):
-    inlines = (RaagAliasInline, )
-    exclude = ('image', )
+    inlines = (RaagAliasInline,)
+    exclude = ('image',)
+
 
 class TaalAliasInline(admin.TabularInline):
     model = models.TaalAlias
     extra = 1
 
+
 class TaalAdmin(admin.ModelAdmin):
-    inlines = (TaalAliasInline, )
-    exclude = ('image', )
+    inlines = (TaalAliasInline,)
+    exclude = ('image',)
+
 
 class LayaAliasInline(admin.TabularInline):
     model = models.LayaAlias
     extra = 1
 
+
 class LayaAdmin(admin.ModelAdmin):
-    inlines = (LayaAliasInline, )
+    inlines = (LayaAliasInline,)
+
 
 class FormAliasInline(admin.TabularInline):
     model = models.FormAlias
     extra = 1
 
+
 class FormAdmin(admin.ModelAdmin):
-    inlines = (FormAliasInline, )
+    inlines = (FormAliasInline,)
+
 
 admin.site.register(models.Instrument)
 admin.site.register(models.InstrumentPerformance)

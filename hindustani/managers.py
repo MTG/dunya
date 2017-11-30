@@ -19,6 +19,7 @@ from django.db.models import Q
 
 import hindustani
 
+
 class HindustaniRaagManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -29,6 +30,7 @@ class HindustaniRaagManager(models.Manager):
                 return al.raag
             except hindustani.models.RaagAlias.DoesNotExist:
                 raise e
+
 
 class HindustaniTaalManager(models.Manager):
     def fuzzy(self, name):
@@ -41,6 +43,7 @@ class HindustaniTaalManager(models.Manager):
             except hindustani.models.TaalAlias.DoesNotExist:
                 raise e
 
+
 class HindustaniFormManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -51,6 +54,7 @@ class HindustaniFormManager(models.Manager):
                 return al.form
             except hindustani.models.FormAlias.DoesNotExist:
                 raise e
+
 
 class HindustaniLayaManager(models.Manager):
     def fuzzy(self, name):
@@ -63,6 +67,7 @@ class HindustaniLayaManager(models.Manager):
             except hindustani.models.LayaAlias.DoesNotExist:
                 raise e
 
+
 class HindustaniInstrumentManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -70,18 +75,20 @@ class HindustaniInstrumentManager(models.Manager):
         except hindustani.models.Instrument.DoesNotExist as e:
             raise e
 
+
 class HindustaniReleaseManager(models.Manager):
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
         if ids and ids != "":
-            ids = ids.replace(' ','').split(",")
+            ids = ids.replace(' ', '').split(",")
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
+
 
 class HindustaniRecordingManager(models.Manager):
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
         if ids and ids != "":
-            ids = ids.replace(' ','').split(",")
+            ids = ids.replace(' ', '').split(",")
             qs = qs.filter(release__collection__collectionid__in=ids)
         return qs.filter(release__collection__permission__in=permission)

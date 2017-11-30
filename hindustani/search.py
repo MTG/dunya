@@ -14,14 +14,17 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import pysolr
-from django.conf import settings
 import collections
 import json
 
-import hindustani
+import pysolr
+from django.conf import settings
+
+import hindustani.models
 
 solr = pysolr.Solr(settings.SOLR_URL + "/hindustani")
+
+
 def search(name):
     name = name.lower()
     query = "doctype_s:search AND title_t:(%s)" % name
@@ -37,6 +40,7 @@ def search(name):
             ret[type].append(instance)
     return ret
 
+
 def autocomplete(term):
     params = {}
     params['wt'] = 'json'
@@ -51,6 +55,7 @@ def autocomplete(term):
     for d in docs:
         ret.append(d["title_t"])
     return ret[:5]
+
 
 def get_similar_releases(artists, raags, taals, layas):
     artistids = set(artists)
@@ -76,7 +81,7 @@ def get_similar_releases(artists, raags, taals, layas):
         # If we have nothing to search for, return no matches
         return []
 
-    query = "doctype_s:releasesimilar AND (%s)" % (" ".join(searchitems), )
+    query = "doctype_s:releasesimilar AND (%s)" % (" ".join(searchitems),)
     results = solr.search(query, rows=100)
 
     ret = []
@@ -93,6 +98,7 @@ def get_similar_releases(artists, raags, taals, layas):
 
         ret.append((concertid, {"raags": commonr, "taals": commont, "artists": commona, "layas": commonl}))
     return ret
+
 
 def get_klassmap():
     return {"instrument": hindustani.models.Instrument,

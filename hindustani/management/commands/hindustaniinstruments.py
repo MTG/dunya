@@ -14,13 +14,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile
-
 import csv
-from hindustani import models
-import data
+
 import requests
+from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
+
+import data
+from hindustani import models
+
 
 def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
     # csv.py doesn't do Unicode; encode temporarily as UTF-8:
@@ -30,9 +32,11 @@ def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
         # decode UTF-8 back to Unicode, cell by cell:
         yield [unicode(cell, 'utf-8') for cell in row]
 
+
 def utf_8_encoder(unicode_csv_data):
     for line in unicode_csv_data:
         yield line.encode('utf-8')
+
 
 class Command(BaseCommand):
     help = "Load ajay's updates to instruments"
