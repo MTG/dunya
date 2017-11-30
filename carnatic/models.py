@@ -241,13 +241,6 @@ class Artist(CarnaticStyle, data.models.Artist):
             raagas.append((raagamap[r], count))
         return raagas
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('carnatic-artist-search'),
-               "name": "Artist",
-               }
-        return ret
-
 
 class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
     pass
@@ -297,13 +290,6 @@ class Concert(CarnaticStyle, data.models.Release):
         ret = self.artists.all()
         artists = Artist.objects.filter(instrumentperformance__recording__concert=self).exclude(id__in=ret).distinct()
         return list(ret) + list(artists)
-
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('carnatic-concert-search'),
-               "name": "Concert",
-               }
-        return ret
 
     def get_similar(self):
 
@@ -542,13 +528,6 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
     def __unicode__(self):
         return self.name
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('carnatic-raaga-search'),
-               "name": "Raaga",
-               }
-        return ret
-
     def get_absolute_url(self):
         if self.common_name:
             slug = slugify(self.common_name)
@@ -646,13 +625,6 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
         else:
             return []
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('carnatic-taala-search'),
-               "name": "Taala",
-               }
-        return ret
-
     def works(self):
         return self.work_set.distinct().all()
 
@@ -694,13 +666,6 @@ class Work(CarnaticStyle, data.models.Work):
     raaga = models.ForeignKey('Raaga', blank=True, null=True)
     taala = models.ForeignKey('Taala', blank=True, null=True)
     form = models.ForeignKey('Form', blank=True, null=True)
-
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('carnatic-work-search'),
-               "name": "Composition",
-               }
-        return ret
 
     def recordings(self):
         return self.recording_set.all()
@@ -873,13 +838,6 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         random.shuffle(performances)
         perf = performances[:limit]
         return [p.recording for p in perf]
-
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('carnatic-instrument-search'),
-               "name": "Instrument",
-               }
-        return ret
 
 
 class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
