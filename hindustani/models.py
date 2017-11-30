@@ -61,14 +61,6 @@ class Instrument(HindustaniStyle, data.models.Instrument):
             ret.append(("artist", p))
         return ret
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-instrument-search'),
-               "name": "Instrument",
-               "data": []
-               }
-        return ret
-
 
 class Artist(HindustaniStyle, data.models.Artist):
     missing_image = "hindustaniartist.jpg"
@@ -198,14 +190,6 @@ class Artist(HindustaniStyle, data.models.Artist):
         return Recording.objects.with_permissions(collection_ids, permission).filter(
             Q(instrumentperformance__artist=self) | Q(release__artists=self)).distinct()
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-artist-search'),
-               "name": "Artist",
-               "data": []
-               }
-        return ret
-
 
 class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
     pass
@@ -326,14 +310,6 @@ class Release(HindustaniStyle, data.models.Release):
             # TODO: Should show an error message
             pass
 
-        return ret
-
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-release-search'),
-               "name": "Release",
-               "data": []
-               }
         return ret
 
 
@@ -498,14 +474,6 @@ class Raag(data.models.BaseModel, data.models.ImageMixin):
             ret.append(("form", fo))
         return ret
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-raag-search'),
-               "name": "Raag",
-               "data": []
-               }
-        return ret
-
 
 class RaagAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -591,14 +559,6 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
             ret.append(("form", fo))
         return ret
 
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-taal-search'),
-               "name": "Taal",
-               "data": []
-               }
-        return ret
-
 
 class TaalAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -627,14 +587,6 @@ class Laya(data.models.BaseModel):
 
     def recordings(self):
         return self.recording_set.all()
-
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-laya-search'),
-               "name": "Laya",
-               "data": []
-               }
-        return ret
 
     @data.models.ClassProperty
     @classmethod
@@ -718,14 +670,6 @@ class Form(data.models.BaseModel):
             releases = releases.filter(recordings__layas__in=layas)
         for r in releases[:5]:
             ret.append(("release", r))
-        return ret
-
-    @classmethod
-    def get_filter_criteria(cls):
-        ret = {"url": reverse('hindustani-form-search'),
-               "name": "form",
-               "data": []
-               }
         return ret
 
 
