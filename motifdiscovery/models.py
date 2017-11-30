@@ -1,9 +1,11 @@
-from django.db import models
 from django.core.urlresolvers import reverse
+from django.db import models
+
 
 class MotifManager(models.Manager):
     def get_queryset(self):
         return super(MotifManager, self).get_queryset().using('motif')
+
 
 class File(models.Model):
     objects = MotifManager()
@@ -14,6 +16,7 @@ class File(models.Model):
 
     def __unicode__(self):
         return u"%s (%s) [%s]" % (self.filename, self.mbid, self.hasseed)
+
 
 class Match(models.Model):
     objects = MotifManager()
@@ -26,6 +29,7 @@ class Match(models.Model):
     def __unicode__(self):
         return u"%s, %s (%s) [%s]" % (self.source, self.target, self.distance, self.version)
 
+
 class Pattern(models.Model):
     objects = MotifManager()
 
@@ -37,7 +41,9 @@ class Pattern(models.Model):
     segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True)
 
     def __unicode__(self):
-        return u"File %s (%s - %s) [%s, %s]" % (self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id)
+        return u"File %s (%s - %s) [%s, %s]" % (
+        self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id)
+
 
 class Segment(models.Model):
     objects = MotifManager()
