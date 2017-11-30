@@ -2,8 +2,8 @@ from django.test import TestCase
 
 from makam import models
 
-class InstrumentTest(TestCase):
 
+class InstrumentTest(TestCase):
     def test_artists(self):
         i1 = models.Instrument.objects.create(name="inst1")
         i2 = models.Instrument.objects.create(name="inst2")
@@ -25,4 +25,3 @@ class InstrumentTest(TestCase):
         artists = i2.artists()
         self.assertEqual(1, len(artists))
         self.assertTrue(a1 in artists)
-

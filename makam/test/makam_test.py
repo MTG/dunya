@@ -4,6 +4,7 @@ from django.test import TestCase
 
 from makam import models
 
+
 class MakamTest(TestCase):
     def setUp(self):
         self.w = models.Work.objects.create(title="w")
@@ -44,4 +45,3 @@ class MakamTest(TestCase):
     def test_gazellist(self):
         self.assertEqual(1, len(self.m.gazellist()))
         self.assertTrue(self.r2 in self.m.gazellist())
-

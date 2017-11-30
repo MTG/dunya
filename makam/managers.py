@@ -15,23 +15,24 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.db import models
-from django.db.models import Q
 
 import makam
+
 
 class CollectionReleaseManager(models.Manager):
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
         if ids and ids != "":
-            ids = ids.replace(' ','').split(",")
+            ids = ids.replace(' ', '').split(",")
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
+
 
 class CollectionRecordingManager(models.Manager):
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
         if ids and ids != "":
-            ids = ids.replace(' ','').split(",")
+            ids = ids.replace(' ', '').split(",")
             qs = qs.filter(release__collection__collectionid__in=ids)
         return qs.filter(release__collection__permission__in=permission)
 
@@ -47,6 +48,7 @@ class MakamFormManager(models.Manager):
             except makam.models.FormAlias.DoesNotExist:
                 raise e
 
+
 class MakamUsulManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -58,6 +60,7 @@ class MakamUsulManager(models.Manager):
             except makam.models.UsulAlias.DoesNotExist:
                 raise e
 
+
 class MakamFuzzyManager(models.Manager):
     def fuzzy(self, name):
         try:
@@ -68,4 +71,3 @@ class MakamFuzzyManager(models.Manager):
                 return alias.makam
             except makam.models.MakamAlias.DoesNotExist:
                 raise e
-

@@ -14,39 +14,49 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from makam import models
 from django.contrib import admin
+
+from makam import models
+
 
 class ArtistAliasInline(admin.TabularInline):
     model = models.ArtistAlias
     extra = 1
 
+
 class ComposerAliasInline(admin.TabularInline):
     model = models.ComposerAlias
     extra = 1
+
 
 class ReleaseRecordingInline(admin.TabularInline):
     model = models.ReleaseRecording
     extra = 1
 
+
 class RecordingWorkInline(admin.TabularInline):
     model = models.RecordingWork
     extra = 1
+
 
 class InstrumentPerformanceInline(admin.TabularInline):
     model = models.InstrumentPerformance
     extra = 1
 
+
 class ArtistAdmin(admin.ModelAdmin):
-    inlines = (ArtistAliasInline, )
+    inlines = (ArtistAliasInline,)
     exclude = ('image', 'description')
+
 
 class InstrumentAdmin(admin.ModelAdmin):
     exclude = ('image', 'description')
 
+
 class ComposerAdmin(admin.ModelAdmin):
-    inlines = (ComposerAliasInline, )
+    inlines = (ComposerAliasInline,)
     exclude = ('image', 'description')
+
 
 class RecordingAdmin(admin.ModelAdmin):
     inlines = (RecordingWorkInline, InstrumentPerformanceInline)

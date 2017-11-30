@@ -4,6 +4,7 @@ from django.test import TestCase
 
 from makam import models
 
+
 class UsulTest(TestCase):
     def setUp(self):
         self.w = models.Work.objects.create(title="w")

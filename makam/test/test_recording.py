@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from makam import models
 
+
 class RecordingTest(TestCase):
     fixtures = ["makam_instrument"]
 

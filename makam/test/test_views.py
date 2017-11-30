@@ -1,17 +1,16 @@
+import mock
+from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.test import TestCase
 
+import docserver.models
+import docserver.views
 from makam import models
-from makam import views
-import mock
-import docserver
-from django.http import HttpResponseNotFound, Http404, HttpResponse
 
 
 class SymbTrTest(TestCase):
     def setUp(self):
         self.test_uuid = "721ae3da-ed63-4ad7-86d9-ac2c9a4ab039"
         self.symbtr = models.SymbTr.objects.create(uuid=self.test_uuid, name="test_symbtr")
-
 
     @mock.patch('docserver.views.download_external')
     def test_successful(self, download):
@@ -21,7 +20,6 @@ class SymbTrTest(TestCase):
         resp = self.client.get("/makam/symbtr/%s" % self.test_uuid)
         download.assert_called_with(mock.ANY, self.test_uuid, "symbtrtxt")
         self.assertEqual(resp.status_code, 200)
-
 
     def test_format_invalid(self):
         # a type that is not valid

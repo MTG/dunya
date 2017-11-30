@@ -1,7 +1,9 @@
+import uuid
+
 from django.test import TestCase
 
 from makam import models
-import uuid
+
 
 class WorkTest(TestCase):
     # Work tests are simple because all methods just call foreign keys

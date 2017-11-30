@@ -14,14 +14,17 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import pysolr
-from django.conf import settings
 import collections
 import json
 
-import makam
+import pysolr
+from django.conf import settings
+
+import makam.models
 
 solr = pysolr.Solr(settings.SOLR_URL + "/makam")
+
+
 def search(name, with_restricted=False):
     name = name.lower()
     query = "doctype_s:search AND title_t:(%s)" % name
@@ -44,6 +47,7 @@ def search(name, with_restricted=False):
                 pass
     return dict(ret)
 
+
 def autocomplete(term):
     params = {}
     params['wt'] = 'json'
@@ -56,6 +60,7 @@ def autocomplete(term):
     docs = check.get("docs", [])
     ret = []
     return docs
+
 
 def get_klassmap():
     return {"instrument": makam.models.Instrument,

@@ -1,8 +1,10 @@
-from django.test import TestCase
 import uuid
 
-import data
+from django.test import TestCase
+
+import data.models
 from makam import models
+
 
 class ArtistTest(TestCase):
     fixtures = ["makam_instrument"]
@@ -59,8 +61,8 @@ class ArtistTest(TestCase):
         self.assertTrue(i1 in artist_instruments)
         self.assertTrue(i2 in artist_instruments)
 
-class ArtistReleaseListTest(TestCase):
 
+class ArtistReleaseListTest(TestCase):
     def setUp(self):
         c1id = str(uuid.uuid4())
         c1 = data.models.Collection.objects.create(collectionid=c1id, name="collection 1", permission="U")

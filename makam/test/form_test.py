@@ -4,6 +4,7 @@ from django.test import TestCase
 
 from makam import models
 
+
 class FormTest(TestCase):
 
     def test_unaccent_get(self):

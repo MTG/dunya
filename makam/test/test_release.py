@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from makam import models
 
+
 class ReleaseTest(TestCase):
     fixtures = ["makam_instrument", ]
 
@@ -35,7 +36,6 @@ class ReleaseTest(TestCase):
         models.InstrumentPerformance.objects.create(recording=self.recording2, artist=self.a3, instrument=self.i2)
         models.InstrumentPerformance.objects.create(recording=self.recording2, artist=self.a3, instrument=self.i1)
 
-
         models.InstrumentPerformance.objects.create(recording=self.recording3, artist=self.a2, instrument=self.i4)
 
     def test_get_performers(self):
@@ -62,4 +62,3 @@ class ReleaseTest(TestCase):
         tl = rel.tracklist()
         self.assertEqual(rec1, tl[0])
         self.assertEqual(rec2, tl[1])
-
