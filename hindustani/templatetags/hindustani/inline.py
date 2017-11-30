@@ -15,23 +15,12 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django import template
-from django.utils.html import format_html, format_html_join, mark_safe
+from django.utils.html import format_html, mark_safe
 
-import collections
 import hindustani
 
 register = template.Library()
 
-@register.simple_tag
-def url_host_and_path(request, url):
-    return request.build_absolute_uri(url)
-
-@register.simple_tag
-def inline_artist(artist):
-    if artist:
-        return inline_artist_part(artist)
-    else:
-        return ""
 
 @register.simple_tag
 def inline_artist_list(artists):
@@ -52,30 +41,13 @@ def inline_artist_part(artist):
 
 
 @register.simple_tag
-def inline_release(release, bold=False):
-    sb = ""
-    eb = ""
-    if bold:
-        sb = "<b>"
-        eb = "</b>"
-    return format_html(u'<span>%s{}%s</span>' % (sb, eb), release.title)
+def inline_release(release):
+    return format_html(u'<span>{}</span>', release.title)
 
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html(u'<span>{}</span>',composer.name)
-
-
-@register.simple_tag
-def inline_recording(recording):
-    return format_html(u'<span>{}</span>', recording.title)
-
-
-@register.simple_tag
-def inline_recording_artist(recording):
-    if recording.artist() is not None:
-        return recording.artist().name
-    return "unknown"
+    return format_html(u'<span>{}</span>', composer.name)
 
 
 @register.simple_tag
@@ -100,11 +72,6 @@ def inline_raag(raag):
 
 
 @register.simple_tag
-def inline_laya(laya):
-    return format_html(u'<span title="{}">{}</span>', laya.common_name.title(), laya.name.title())
-
-
-@register.simple_tag
 def inline_form(form):
     return format_html(u'<span title="{}">{}</span>', form.common_name.title(), form.name.title())
 
@@ -112,10 +79,3 @@ def inline_form(form):
 @register.simple_tag
 def inline_taal(taal):
     return format_html(u'<span title="{}">{}</span>', taal.common_name.title(), taal.name.title())
-
-
-@register.simple_tag
-def inline_instrument(instrument):
-    if not isinstance(instrument, collections.Iterable):
-        instrument = [instrument]
-    return format_html_join(u", ", u'<span>{}</span>', (i.name for i in instrument if i))
