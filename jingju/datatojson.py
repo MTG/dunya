@@ -1,6 +1,7 @@
-import sys
 import csv
 import json
+import sys
+
 
 def main(fname):
     c = csv.reader(open(fname))

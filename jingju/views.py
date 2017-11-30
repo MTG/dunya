@@ -16,15 +16,18 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.shortcuts import render
-from django.http import Http404
-from makam import models
-import math
 import json
+import math
+
+from django.http import Http404
+from django.shortcuts import render
 
 import docserver.util
+import docserver.exceptions
+from makam import models
 
 recordings = None
+
 
 def main(request):
     global recordings
@@ -51,6 +54,7 @@ def length_format(length):
         val = "%02d:%02d" % (minutes, seconds)
 
     return val
+
 
 def recording(request, uuid):
     global recordings
@@ -84,28 +88,29 @@ def recording(request, uuid):
         histogramurl = "/document/by-id/%s/%s?subtype=%s" % (mbid, "normalisedpitch", "drawhistogram")
 
     ret = {
-           "recording": recording,
-           "spectrogram": spec,
-           "smallimage": small,
-           "audio": audio,
-           "mbid": mbid,
-           "pitchtrackurl": pitchtrackurl,
-           "histogramurl": histogramurl,
-           "length": length,
-           "length_format": length_format(length),
-           "meta": recordings[uuid],
-           "drawoctave": drawoctave
-           }
+        "recording": recording,
+        "spectrogram": spec,
+        "smallimage": small,
+        "audio": audio,
+        "mbid": mbid,
+        "pitchtrackurl": pitchtrackurl,
+        "histogramurl": histogramurl,
+        "length": length,
+        "length_format": length_format(length),
+        "meta": recordings[uuid],
+        "drawoctave": drawoctave
+    }
 
     return render(request, "jingju/recording.html", ret)
+
 
 def basic_lyric_alignment(request, uuid, title=None):
     recording = models.Recording()
     recording.title = "碧云天黄花地西风紧” 《西厢记》（崔莺莺）"
-    recordingmbid = uuid
     mbid = uuid
     try:
-        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1")
+        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1,
+                                                          version="0.1")
     except docserver.exceptions.NoFileException:
         lyricsalignurl = None
     try:
@@ -113,12 +118,12 @@ def basic_lyric_alignment(request, uuid, title=None):
     except docserver.exceptions.NoFileException:
         audio = None
     ret = {
-           "recording": recording,
-           "objecttype": "recording",
-           "audio": audio,
-           "mbid": mbid,
-           "lyricsalignurl": lyricsalignurl,
-           "recordinglengthfmt": "5:29",
-           "recordinglengthseconds": "329",
+        "recording": recording,
+        "objecttype": "recording",
+        "audio": audio,
+        "mbid": mbid,
+        "lyricsalignurl": lyricsalignurl,
+        "recordinglengthfmt": "5:29",
+        "recordinglengthseconds": "329",
     }
     return render(request, "jingju/basic_lyric_alignment.html", ret)
