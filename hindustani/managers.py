@@ -17,13 +17,13 @@
 from django.db import models
 from django.db.models import Q
 
-import hindustani
+import hindustani.models
 
 
 class HindustaniRaagManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return hindustani.models.Raag.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
+            return self.get_queryset().get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except hindustani.models.Raag.DoesNotExist as e:
             try:
                 al = hindustani.models.RaagAlias.objects.get(name__iexact=name)
@@ -35,7 +35,7 @@ class HindustaniRaagManager(models.Manager):
 class HindustaniTaalManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return hindustani.models.Taal.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
+            return self.get_queryset().get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except hindustani.models.Taal.DoesNotExist as e:
             try:
                 al = hindustani.models.TaalAlias.objects.get(name__iexact=name)
@@ -47,7 +47,7 @@ class HindustaniTaalManager(models.Manager):
 class HindustaniFormManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return hindustani.models.Form.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
+            return self.get_queryset().get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except hindustani.models.Form.DoesNotExist as e:
             try:
                 al = hindustani.models.FormAlias.objects.get(name__iexact=name)
@@ -59,7 +59,7 @@ class HindustaniFormManager(models.Manager):
 class HindustaniLayaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return hindustani.models.Laya.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
+            return self.get_queryset().get(Q(name__iexact=name) | Q(common_name__iexact=name))
         except hindustani.models.Laya.DoesNotExist as e:
             try:
                 al = hindustani.models.LayaAlias.objects.get(name__iexact=name)
@@ -70,17 +70,14 @@ class HindustaniLayaManager(models.Manager):
 
 class HindustaniInstrumentManager(models.Manager):
     def fuzzy(self, name):
-        try:
-            return hindustani.models.Instrument.objects.get(name__iexact=name)
-        except hindustani.models.Instrument.DoesNotExist as e:
-            raise e
+        return self.get_queryset().get(name__iexact=name)
 
 
 class HindustaniReleaseManager(models.Manager):
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if ids and ids != "":
-            ids = ids.replace(' ', '').split(",")
+        if ids and ids != '':
+            ids = ids.replace(' ', '').split(',')
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
@@ -88,7 +85,7 @@ class HindustaniReleaseManager(models.Manager):
 class HindustaniRecordingManager(models.Manager):
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if ids and ids != "":
-            ids = ids.replace(' ', '').split(",")
+        if ids and ids != '':
+            ids = ids.replace(' ', '').split(',')
             qs = qs.filter(release__collection__collectionid__in=ids)
         return qs.filter(release__collection__permission__in=permission)
