@@ -1,8 +1,10 @@
+import uuid
+
 from django.test import TestCase
 
+import data.models
 from carnatic import models
-import data
-import uuid
+
 
 class ArtistCountTest(TestCase):
     """ Test the artists for a recording, or a concert,
@@ -48,7 +50,6 @@ class ArtistCountTest(TestCase):
         self.r4 = models.Recording.objects.create(title="Recording4")
         models.ConcertRecording.objects.create(concert=self.c3, recording=self.r4, track=1, disc=1, disctrack=1)
         self.c3.artists.add(self.a2)
-
 
     def test_recording_get_artists(self):
         """ The artists that performed on a recording
@@ -205,18 +206,18 @@ class CollaboratingArtistsTest(TestCase):
 
     def test_show_collectionss(self):
         collections = "%s, %s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id, self.coll4id)
-        coll = self.a1.collaborating_artists(collection_ids=collections, permission=['U','R','S'])
+        coll = self.a1.collaborating_artists(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(4, len(coll))
-        self.assertEqual( (self.a2, [self.c1, self.c2, self.c3, self.c4], 0), coll[0])
-        self.assertEqual( (self.a3, [self.c1, self.c2, self.c3], 0), coll[1])
-        self.assertEqual( (self.a4, [self.c3, self.c4], 0), coll[2])
-        self.assertEqual( (self.a5, [self.c1], 0), coll[3])
+        self.assertEqual((self.a2, [self.c1, self.c2, self.c3, self.c4], 0), coll[0])
+        self.assertEqual((self.a3, [self.c1, self.c2, self.c3], 0), coll[1])
+        self.assertEqual((self.a4, [self.c3, self.c4], 0), coll[2])
+        self.assertEqual((self.a5, [self.c1], 0), coll[3])
 
     def test_dont_show_collections(self):
         collections = "%s, %s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id, self.coll4id)
         coll = self.a1.collaborating_artists(collection_ids=collections, permission=['U'])
         self.assertEqual(4, len(coll))
-        self.assertEqual( (self.a2, [self.c1, self.c2], 2), coll[0])
-        self.assertEqual( (self.a3, [self.c1, self.c2], 1), coll[1])
-        self.assertEqual( (self.a4, [], 2), coll[2])
-        self.assertEqual( (self.a5, [self.c1], 0), coll[3])
+        self.assertEqual((self.a2, [self.c1, self.c2], 2), coll[0])
+        self.assertEqual((self.a3, [self.c1, self.c2], 1), coll[1])
+        self.assertEqual((self.a4, [], 2), coll[2])
+        self.assertEqual((self.a5, [self.c1], 0), coll[3])

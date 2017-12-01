@@ -17,7 +17,7 @@
 from django.db import models
 from django.db.models import Q
 
-import carnatic
+import carnatic.models
 
 
 class CollectionConcertManager(models.Manager):
@@ -25,8 +25,8 @@ class CollectionConcertManager(models.Manager):
 
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if ids and ids != "":
-            ids = ids.replace(' ', '').split(",")
+        if ids and ids != '':
+            ids = ids.replace(' ', '').split(',')
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
@@ -36,8 +36,8 @@ class CollectionRecordingManager(models.Manager):
 
     def with_permissions(self, ids, permission):
         qs = self.get_queryset()
-        if ids and ids != "":
-            ids = ids.replace(' ','').split(",")
+        if ids and ids != '':
+            ids = ids.replace(' ', '').split(',')
             qs = qs.filter(concert__collection__collectionid__in=ids)
         if permission:
             qs = qs.filter(concert__collection__permission__in=permission)
@@ -47,8 +47,8 @@ class CollectionRecordingManager(models.Manager):
 class CarnaticRaagaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Raaga.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
-        except carnatic.models.Raaga.DoesNotExist as e:
+            return self.get_queryset().get(Q(name__iexact=name) | Q(common_name__iexact=name))
+        except self.model.DoesNotExist as e:
             try:
                 alias = carnatic.models.RaagaAlias.objects.get(name__iexact=name)
                 return alias.raaga
@@ -59,8 +59,8 @@ class CarnaticRaagaManager(models.Manager):
 class CarnaticTaalaManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Taala.objects.get(Q(name__iexact=name) | Q(common_name__iexact=name))
-        except carnatic.models.Taala.DoesNotExist as e:
+            return self.get_queryset().get(Q(name__iexact=name) | Q(common_name__iexact=name))
+        except self.model.DoesNotExist as e:
             try:
                 alias = carnatic.models.TaalaAlias.objects.get(name__iexact=name)
                 return alias.taala
@@ -71,8 +71,8 @@ class CarnaticTaalaManager(models.Manager):
 class CarnaticFormManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Form.objects.get(name__iexact=name)
-        except carnatic.models.Form.DoesNotExist as e:
+            return self.get_queryset().get(name__iexact=name)
+        except self.model.DoesNotExist as e:
             try:
                 alias = carnatic.models.FormAlias.objects.get(name__iexact=name)
                 return alias.form
@@ -83,8 +83,8 @@ class CarnaticFormManager(models.Manager):
 class CarnaticInstrumentManager(models.Manager):
     def fuzzy(self, name):
         try:
-            return carnatic.models.Instrument.objects.get(name__iexact=name)
-        except carnatic.models.Instrument.DoesNotExist as e:
+            return self.get_queryset().get(name__iexact=name)
+        except self.model.DoesNotExist as e:
             try:
                 alias = carnatic.models.InstrumentAlias.objects.get(name__iexact=name)
                 return alias.instrument
