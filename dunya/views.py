@@ -18,17 +18,22 @@
 
 from django.shortcuts import render
 
+
 def terms(request):
-    return render(request, "carnatic/terms.html")
+    return render(request, "dunya/terms.html")
+
 
 def cookies(request):
-    return render(request, "carnatic/cookies.html")
+    return render(request, "dunya/cookies.html")
+
 
 def contact(request):
-    return render(request, "carnatic/contact.html")
+    return render(request, "dunya/contact.html")
+
 
 def main(request):
-    return render(request, "carnatic/index_dunya.html")
+    return render(request, "dunya/index_dunya.html")
+
 
 def developers(request):
-    return render(request, "carnatic/developers.html")
+    return render(request, "dunya/developers.html")
