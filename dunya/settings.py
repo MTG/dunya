@@ -1,121 +1,34 @@
 # Django settings for dunya project.
 
-# To change database settings, copy local_settings.py.dist to
-# to local_settings.py and edit
 
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Europe/Madrid'
+import os
 
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
-
-SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
-USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = 'static/'
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
-
-LOGIN_URL = '/social/login/'
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '_11by(qyct6gy7d0$8t%(#s2l(#w13d+48pc%wchv4v8hn^$+0'
-
-# Header check to see if we are on HTTPS
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.template.context_processors.request',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Log every page that people go to
-    'dunya.middleware.PageLoggerMiddleware',
-    'dunya.middleware.ShowBootlegMiddleware',
-]
-
-ROOT_URLCONF = 'dunya.urls'
-
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'dunya.wsgi.application'
-
-ADMINS = (
-    # The email address of the first person in this list will be used in the
-    # reply field of the emails sent by Dunya
-    # ('YOUR NAME', 'EMAIL ADDRESS'),
-)
+from django.core.exceptions import ImproperlyConfigured
+import dj_database_url
+import raven
 
 
-INSTALLED_APPS = (
+def get_env(envname):
+    return os.getenv(envname)
+
+
+def get_check_env(envname):
+    var = get_env(envname)
+    if not var:
+        raise ImproperlyConfigured("{} is not set".format(envname))
+    return var
+
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = get_check_env('DUNYA_SECRET_KEY')
+
+ALLOWED_HOSTS = []
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -125,7 +38,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'django.contrib.admin',
     'raven.contrib.django.raven_compat',
     'data',
     'carnatic',
@@ -140,30 +52,150 @@ INSTALLED_APPS = (
     'jingju',
     'frontend',
     'social_django',
-)
-AUTHENTICATION_BACKENDS = (
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Dunya middleware
+    # Log every page that people go to
+    'dunya.middleware.PageLoggerMiddleware',
+    # Say if the current user is allowed to see bootleg recordings
+    'dunya.middleware.ShowBootlegMiddleware',
+]
+
+ROOT_URLCONF = 'dunya.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# Python dotted path to the WSGI application used by Django's runserver.
+WSGI_APPLICATION = 'dunya.wsgi.application'
+
+# Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+
+default_url = 'postgres://postgres@db/postgres'
+DATABASES = {'default': dj_database_url.config('DUNYA_DATABASE_URL', default=default_url)}
+
+
+AUTHENTICATION_BACKENDS = [
     'social_core.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
-)
-INPLACEEDIT_EDIT_EMPTY_VALUE = 'Double click to edit'
+]
 
-# Celery
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
+# Password validation
+# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
-class DunyaRouter(object):
-    def route_for_task(self, task, *args, **kwargs):
-        if task.startswith("dashboard."):
-            return {"queue": "import"}
-        return {"queue": "celery"}
 
-CELERY_ROUTES = (DunyaRouter(), )
-CELERYD_CONCURRENCY = 3
+# Internationalization
+# https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-# Sendfile
-SENDFILE_BACKEND = 'sendfile.backends.nginx'
-SENDFILE_ROOT = '/'
-SENDFILE_URL = '/serve'
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Europe/Madrid'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.11/howto/static-files/
+
+STATIC_URL = '/static/'
+
+# collectstatic puts static files here
+STATIC_ROOT = '/static/'
+
+SITE_ID = 1
+
+LOGIN_URL = '/social/login/'
+
+# Admins should be in this format:
+# Name;email,Name2;email2
+admin_str = get_env('DUNYA_ADMINS')
+ADMINS = [tuple(s.split(';')) for s in admin_str.split(',')]
+
+MANAGERS = []
+
+deploy_env = get_check_env('DUNYA_DEPLOY_ENV')
+if deploy_env == 'prod':
+    ALLOWED_HOSTS = ['dunya.compmusic.upf.edu']
+    debug = False
+
+    #  Sendfile, for serving static content
+    SENDFILE_BACKEND = 'sendfile.backends.nginx'
+    SENDFILE_ROOT = '/'
+    SENDFILE_URL = '/serve'
+
+    RAVEN_CONFIG = {
+        'dsn': get_check_env('DUNYA_RAVEN_DSN'),
+        'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    }
+else:  # development
+    ALLOWED_HOSTS = []
+    debug = True
+    SENDFILE_BACKEND = 'sendfile.backends.development'
+
+    # For development this sets up a dummy email server
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = '/tmp/dunya-messages'
+
+    INTERNAL_IPS = ['127.0.0.1']
+
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+
+DEBUG = debug
+
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/media/"
+MEDIA_ROOT = '/media'
+DERIVED_FOLDER = 'derived'
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash.
+# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+MEDIA_URL = '/media/'
+
+# Header check to see if we are on HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Django rest framework
 REST_FRAMEWORK = {
@@ -178,17 +210,6 @@ REST_FRAMEWORK = {
     )
 }
 
-# Notification emails (e.g. account activated)
-# Who emails are from
-NOTIFICATION_EMAIL_FROM = ""
-# Who gets system emails (e.g., new user) [list/set]
-NOTIFICATION_EMAIL_TO = ('', )
-
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -213,14 +234,39 @@ LOGGING = {
     }
 }
 
-# K/V json file max size
-MAX_UPLOAD_SIZE = 1024 * 1024 * 50
+# To store history/log of output from workers
+WORKER_REDIS_HOST = get_check_env('DUNYA_WORKER_REDIS_HOST')
 
-# Social part_PROFILE
-AUTH_USER_MODULE = "django.contrib.auth.models.User"
+#  Celery
 
-# Navigation Header settings
-MAX_NAV_HEADER_ITEMS = 4
+BROKER_URL = get_check_env('DUNYA_CELERY_BROKER_URL')
+CELERY_RESULT_DBURI = get_check_env('DUNYA_CELERY_RESULT_URL')
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+class DunyaRouter(object):
+    def route_for_task(self, task, *args, **kwargs):
+        if task.startswith("dashboard."):
+            return {"queue": "import"}
+        return {"queue": "celery"}
+
+
+CELERY_ROUTES = (DunyaRouter(), )
+CELERYD_CONCURRENCY = 3
+
+
+# Notification emails (e.g. account activated)
+# Who emails are from
+NOTIFICATION_EMAIL_FROM = get_check_env('DUNYA_NOTIFICATION_FROM')
+# Who gets system emails (e.g., new user) [list/set]
+NOTIFICATION_EMAIL_TO = get_check_env('DUNYA_NOTIFICATION_TO').split(',')
+
+
+EXTERNAL_OAUTH_LOGIN = ['twitter']
+SOCIAL_AUTH_TWITTER_KEY = get_env('DUNYA_TWITTER_KEY')
+SOCIAL_AUTH_TWITTER_SECRET = get_env('DUNYA_TWITTER_SECRET')
+
 
 # Fixed versions of extracted features to show on dunya
 FEAT_VERSION_NORMALISED_PITCH = "0.6"
@@ -229,5 +275,3 @@ FEAT_VERSION_CARNATIC_NORMALISED_PITCH = "0.1"
 FEAT_VERSION_TONIC = "0.1"
 FEAT_VERSION_RHYTHM = "0.3"
 FEAT_VERSION_IMAGE = "0.2"
-
-from local_settings import *

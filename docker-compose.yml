@@ -1,0 +1,58 @@
+version: '2'
+volumes:
+  dbvolume:
+services:
+  db:
+    image: postgres
+    volumes:
+      - dbvolume:/var/lib/postgresql/data/
+
+  redis:
+    image: redis
+
+  rabbitmq:
+    image: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=dunya
+      - RABBITMQ_DEFAULT_PASS=dunyapassword
+      - RABBITMQ_DEFAULT_VHOST=dunya
+  web:
+    build: .
+    command: dumb-init python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+      - ./media:/media/
+      - ./tmp:/tmp/
+      - /data/incoming:/incoming
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - rabbitmq
+    env_file:
+      - environment
+  celeryimport:
+    build: .
+    command: celery worker --app dunya -l info -Q import -n celeryimport
+    volumes:
+      - .:/code
+      - /data/incoming:/incoming
+    env_file:
+      - environment
+    depends_on:
+      - rabbitmq
+      - db
+      - redis
+  celeryprocess:
+    build: .
+    command: celery worker --app dunya -l info -Q celery -n celeryprocess
+    volumes:
+      - .:/code
+      - /data/incoming:/incoming
+    env_file:
+      - environment
+    depends_on:
+      - rabbitmq
+      - db
+      - redis

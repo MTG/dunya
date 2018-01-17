@@ -123,7 +123,11 @@ class Collection(models.Model):
         return "rscan_and_linked"
 
     def get_current_state(self):
-        return self.collectionstate_set.all()[0]
+        states = self.collectionstate_set.all()
+        if len(states):
+            return states[0]
+        else:
+            return None
 
     def has_previous_state(self):
         return self.collectionstate_set.count() > 1

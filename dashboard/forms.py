@@ -21,6 +21,7 @@ import uuid
 import compmusic
 from django import forms
 from django.contrib.auth.models import User
+import requests.exceptions
 
 import data.models
 import makam.models
@@ -69,10 +70,10 @@ class AddCollectionForm(CollectionForm):
             try:
                 coll_name = compmusic.musicbrainz.get_collection_name(collectionid)
                 cleaned_data['collectionname'] = coll_name
-            except compmusic.musicbrainz.urllib2.HTTPError as e:
-                if e.code == 503:
+            except requests.exceptions.HTTPError as e:
+                if e.response.status_code == 503:
                     raise forms.ValidationError("Error connecting to MusicBrainz, try again shortly")
-                elif e.code == 404:
+                elif e.response.status_code == 404:
                     raise forms.ValidationError("Cannot find this collection on MusicBrainz")
                 else:
                     raise forms.ValidationError("Unknown error connecting to MusicBrainz")

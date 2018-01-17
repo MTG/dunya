@@ -26,7 +26,6 @@ from django.utils.text import slugify
 
 import data.models
 import managers
-from carnatic import search
 
 
 class CarnaticStyle(object):

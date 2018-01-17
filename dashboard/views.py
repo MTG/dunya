@@ -16,9 +16,9 @@
 import csv
 import os
 
-import arabic_reshaper
 import compmusic
-from ALA_LC_Transliterator import ALA_LC_Transliterator
+from arabic import arabic_reshaper
+from arabic.ALA_LC_Transliterator import ALA_LC_Transliterator
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test

@@ -24,7 +24,6 @@ from django.utils.text import slugify
 
 import data.models
 from hindustani import managers
-from hindustani import search
 
 
 class HindustaniStyle(object):
