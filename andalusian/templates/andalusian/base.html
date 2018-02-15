@@ -91,19 +91,6 @@
                 $("#previewicon.disabled").click(function() {
                     $( "#playback_dialog" ).dialog( "open" );
                 });
-                var presentationMode = $.cookie("presentationMode");
-                if (!presentationMode || presentationMode === "off") {
-                    $("#presmode").html("enable presentation mode");
-                } else {
-                    $("#presmode").html("disable presentation mode");
-                }
-                $("#presmode").click(function(event) {
-                    if (!presentationMode || presentationMode === "off") {
-                        $.cookie("presentationMode", "on", { expires: 500, path: '/' });
-                    } else {
-                        $.cookie("presentationMode", "off", { expires: 500, path: '/' });
-                    }
-                });
 
             });
         </script>

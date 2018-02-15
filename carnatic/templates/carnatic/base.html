@@ -86,19 +86,6 @@
                 $("#previewicon.disabled").click(function() {
                     $( "#playback_dialog" ).dialog( "open" );
                 });
-                var presentationMode = $.cookie("presentationMode");
-                if (!presentationMode || presentationMode === "off") {
-                    $("#presmode").html("enable presentation mode");
-                } else {
-                    $("#presmode").html("disable presentation mode");
-                }
-                $("#presmode").click(function(event) {
-                    if (!presentationMode || presentationMode === "off") {
-                        $.cookie("presentationMode", "on", { expires: 500, path: '/' });
-                    } else {
-                        $.cookie("presentationMode", "off", { expires: 500, path: '/' });
-                    }
-                });
 
             });
         </script>
@@ -172,35 +159,6 @@
            <div style="float:right; margin-top:10px;margin-right:10px;">
                <button id="cookie-accept">Ok</button>
            </div>
-        </div>
-        <!--[if lte IE 9]>
-        <div id="uncompatibleIE-bar">
-           <div style="float:left">
-                <p>Dunya is not compatible with Internet Explorer version 9 and lower. Consider upgrading your browser or switching to
-                 <a href="http://chrome.google.com">Chrome</a> or <a href="http://www.firefox.com">Firefox</a>.</p>
-            </div>
-        </div>
-        <![endif]-->
-
-        <div id="footage">
-
-            <!-- //////////////// -->
-            <!-- FILTER BASE MODEL -->
-            <!-- //////////////// -->
-
-            <div id="filterModel" class="filters" style="display:none;">
-                <div class="close"><a class="filterCloseButton" href="">
-                        <img src="{% static 'carnatic/img/Cross.png' %}">
-                </a></div>
-                <div class="filterBall shadow1">
-                    <span></span>
-                    <div class="arrow"></div>
-                    <div class="filterSummary shadow1"></div>
-                    <div class="closeFilter"></div><div class="resizeFilter"></div>
-                </div>
-                <!--<div class="formFilter"></div>-->
-                <div class="filterList filterGlobalList"></div>
-            </div>
         </div>
 
     </body>
