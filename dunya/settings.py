@@ -154,7 +154,7 @@ MANAGERS = []
 
 deploy_env = get_check_env('DUNYA_DEPLOY_ENV')
 if deploy_env == 'prod':
-    ALLOWED_HOSTS = ['dunya.compmusic.upf.edu']
+    ALLOWED_HOSTS = ['dunya.compmusic.upf.edu', 'asplab-web3.s.upf.edu']
     debug = False
 
     #  Sendfile, for serving static content
