@@ -21,6 +21,7 @@ RUN wget -q -O - https://deb.nodesource.com/setup_6.x | bash - \
          libsndfile1-dev \
          build-essential \
          libpython2.7-dev \
+         lame \
       && rm -rf /var/lib/apt/lists/*
 
 
