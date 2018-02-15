@@ -1,5 +1,5 @@
-The CompMusic Browser
-=====================
+Dunya
+=====
 
 Introduction
 ------------
@@ -11,7 +11,7 @@ large repositories. For more information: http://compmusic.upf.edu
 
 License
 =======
-Dunya is Copyright 2013 Music Technology Group - Universitat Pompeu Fabra
+Dunya is Copyright 2013-2018 Music Technology Group - Universitat Pompeu Fabra
 
 Dunya is released under the terms of the GNU Affero General Public
 License (v3 or later). See the COPYING file for more information.
@@ -175,31 +175,6 @@ In `dunya/local_settings.py` you will need to add connection details:
 
     BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
 
-Solr
-----
-
-This is not needed if you are not developing search. You can use the main solr
-server configured in `local_settings.py.dist`.
-
-Search, search autocompletion, and similar concerts use solr to make things faster
-
-Download the solr package from https://github.com/alastair/solr-mvn-template
-
-Copy in the configuration files from `dunya/solr`
-
-run
-
-    mvn jetty:run-war
-
-To import data into solr
-
-    python manage.py solrdelete
-    python manage.py solrimport
-
-Modify  `SOLR_URL` in `local_settings.py.dist` to point to your solr server.
-For example, if you are running solr on port 8080 in your localhost:
-
-    SOLR_URL = 'http://localhost:8080'
 
 
 Less stylesheets
