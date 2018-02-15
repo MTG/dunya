@@ -217,20 +217,6 @@ def recording(request, uuid, title=None):
         rhythmurl = ""
         aksharaurl = ""
 
-    similar = []
-    try:
-        similar_mbids = search.similar_recordings(recording.mbid)
-        for m in similar_mbids:
-            try:
-                rec = Recording.objects.get(mbid=m[0])
-                similar.append(rec)
-            except Recording.DoesNotExist:
-                pass
-    except pysolr.SolrError:
-        # TODO: Show error in similar recordings page instead of empty
-        pass
-    similar = similar[:10]
-
     try:
         permission = utils.get_user_permissions(request.user)
         concert = recording.concert_set.with_permissions(None, permission=permission).get()
@@ -265,7 +251,6 @@ def recording(request, uuid, title=None):
            "histogramurl": histogramurl,
            "rhythmurl": rhythmurl,
            "aksharaurl": aksharaurl,
-           "similar": similar,
            "concert": concert,
            "bootleg": show_restricted,
            }
