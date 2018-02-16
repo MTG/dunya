@@ -95,6 +95,8 @@ WSGI_APPLICATION = 'dunya.wsgi.application'
 
 default_url = 'postgres://postgres@db/postgres'
 DATABASES = {'default': dj_database_url.config('DUNYA_DATABASE_URL', default=default_url)}
+if get_env('DUNYA_MOTIF_DB_URL'):
+    DATABASES['motif'] = dj_database_url.config('DUNYA_MOTIF_DB_URL')
 
 
 AUTHENTICATION_BACKENDS = [
