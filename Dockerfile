@@ -34,4 +34,15 @@ RUN pip install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r re
 ADD requirements_dev /code/
 RUN pip install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements_dev
 
+RUN mkdir /code/frontend
+ADD frontend/package.json /code/frontend
+WORKDIR /code/frontend
+RUN npm install
+
 ADD . /code/
+
+RUN npm run build
+WORKDIR /code
+# TODO: Could be made part of the frontend build script
+RUN bash build-less.sh
+
