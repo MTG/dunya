@@ -1,5 +1,6 @@
 FROM mtgupf/essentia:stretch-python2
 ENV PYTHONUNBUFFERED 1
+ENV LANG C.UTF-8
 
 RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
