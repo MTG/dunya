@@ -17,7 +17,6 @@
 import collections
 import random
 
-import pysolr
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Count
@@ -290,51 +289,6 @@ class Concert(CarnaticStyle, data.models.Release):
         artists = Artist.objects.filter(instrumentperformance__recording__concert=self).exclude(id__in=ret).distinct()
         return list(ret) + list(artists)
 
-    def get_similar(self):
-
-        artists = set(self.artists.all())
-        for p in self.performers():
-            artists.add(p)
-        works = Work.objects.filter(recording__concert=self)
-        raagas = Raaga.objects.filter(work__recording__concert=self)
-        taalas = Taala.objects.filter(work__recording__concert=self)
-
-        aid = [a.id for a in artists]
-        wid = [w.id for w in works]
-        rid = [r.id for r in raagas]
-        tid = [t.id for t in taalas]
-
-        ret = []
-        try:
-            similar = search.get_similar_concerts(wid, rid, tid, aid)
-            similar = sorted(similar, reverse=True,
-                             key=lambda c: (len(c[1]["works"]), len(c[1]["artists"]), len(c[1]["raagas"])))
-
-            similar = similar[:10]
-            for s, v in similar:
-                # Don't show this concert as similar
-                if s == self.id:
-                    continue
-                try:
-                    concert = Concert.objects.get(pk=s)
-                except Concert.DoesNotExist:
-                    continue
-
-                works = [Work.objects.get(pk=w) for w in v["works"]]
-                raagas = [Raaga.objects.get(pk=r) for r in v["raagas"]]
-                taalas = [Taala.objects.get(pk=t) for t in v["taalas"]]
-                artists = [Artist.objects.get(pk=a) for a in v["artists"]]
-                ret.append((concert,
-                           {"works": works,
-                            "raagas": raagas,
-                            "taalas": taalas,
-                            "artists": artists}))
-        except pysolr.SolrError:
-            # TODO: Should show an error message
-            pass
-
-        return ret
-
 
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
@@ -382,136 +336,6 @@ class FormAlias(models.Model):
     def __unicode__(self):
         return self.name
 
-raaga_similar = {1: [14, 64, 159, 55, 16],
- 2: [98, 207, 78, 31],
- 7: [153, 265, 210, 283, 229],
- 8: [265, 210, 166, 37, 32],
- 9: [242, 27, 8, 265, 166],
- 10: [4, 154, 60, 35, 159],
- 11: [64, 14, 159, 52, 70],
- 13: [10, 38, 167, 4, 15],
- 14: [159, 1, 154, 64, 11, 159, 1, 154, 64, 11],
- 15: [31, 52, 30, 70, 10],
- 17: [55, 274, 134, 5, 47],
- 21: [188, 254, 58, 9, 83],
- 23: [70, 1, 14, 172, 58],
- 24: [193, 164, 77, 266, 106],
- 25: [81, 104, 221, 38, 262],
- 27: [224, 203, 254, 9, 20, 98, 2, 78, 207, 102],
- 28: [145, 184, 56, 210, 83],
- 30: [52, 46, 31, 64, 15],
- 31: [15, 30, 52, 14, 159],
- 33: [90, 94, 28, 83, 56],
- 35: [4, 10, 154, 262, 203, 4, 10, 154, 262, 203],
- 36: [141, 35, 10, 4, 70, 141, 35, 10, 4, 70],
- 37: [32, 220, 210, 8, 116],
- 38: [10, 13, 4, 141, 167],
- 44: [31, 262, 98, 52],
- 46: [64, 247, 62, 210, 30],
- 47: [209, 17, 68, 62, 55],
- 52: [64, 15, 30, 46, 31, 46, 62, 210, 247, 83],
- 55: [17, 1, 136, 274, 4],
- 56: [145, 184, 28, 112, 6],
- 57: [216, 137, 194, 55, 262],
- 58: [174, 23, 47, 115, 40],
- 60: [10, 4, 35, 124, 36, 10, 4, 35, 124, 36],
- 62: [64, 46, 247, 203, 210],
- 68: [47, 57, 125, 216, 187, 47, 57, 125, 216, 187],
- 69: [141, 244, 120, 154, 38, 141, 244, 120, 154, 38],
- 70: [159, 10, 64, 46, 31],
- 73: [92, 209, 55, 17, 174, 92, 209, 55, 17, 174],
- 74: [136, 55, 194, 49],
- 76: [16, 14, 1, 176, 154],
- 77: [17, 72, 274, 134, 216],
- 80: [174, 48, 58, 275, 262],
- 81: [104, 120, 25, 262, 38],
- 83: [46, 52, 210, 30, 64, 27, 188, 254, 9, 21],
- 85: [196, 56, 145, 184, 28, 94, 153, 229, 115, 28],
- 87: [190, 166, 106, 72, 242],
- 90: [33, 115, 113, 83],
- 91: [159, 154, 64, 62, 46],
- 92: [209, 64, 60, 1, 52],
- 93: [224, 203, 266, 242, 8],
- 95: [94, 254, 47, 274, 17],
- 104: [81, 38, 10, 25, 262],
- 111: [9, 27, 137, 274, 152],
- 113: [115, 90, 48, 33, 83],
- 114: [200, 5, 17, 141, 266],
- 115: [94, 153, 30, 64],
- 122: [248, 61, 69, 247, 148],
- 124: [4, 60, 35, 10, 52],
- 125: [62, 47, 52, 68],
- 126: [201, 214, 27, 152, 35],
- 128: [141, 4, 203, 46, 154],
- 129: [38, 104, 81, 167, 13],
- 131: [5, 200, 77, 17, 193],
- 133: [167, 112, 56, 15, 31],
- 135: [102, 148, 98, 219, 54],
- 136: [55, 1, 10, 159, 4],
- 137: [71, 137, 216, 254, 57],
- 138: [280, 227, 23, 168, 58],
- 139: [57, 68, 125, 262, 216],
- 145: [28, 184, 56, 210, 8],
- 146: [40, 102, 160, 153],
- 148: [61, 98, 2, 14, 70],
- 151: [211, 281, 36, 8, 203],
- 152: [149, 20, 203, 201, 137],
- 153: [229, 7, 283, 210],
- 154: [159, 4, 262, 14, 141],
- 156: [13, 38, 141, 244, 124],
- 157: [70, 13, 36, 159, 91],
- 159: [14, 154, 64, 70, 1],
- 160: [99, 242, 283, 166, 37],
- 164: [24, 242, 238, 93, 9],
- 165: [133, 25, 237, 44],
- 169: [233, 8, 93, 210, 37],
- 172: [285, 14, 70, 76, 23],
- 177: [207, 30, 159, 244],
- 179: [68, 199, 47, 275, 125],
- 181: [176, 128, 283, 141, 148],
- 182: [17, 72, 274, 187, 137],
- 183: [168, 23, 280, 138, 216],
- 184: [28, 145, 56, 210, 229],
- 185: [262, 176, 4, 154, 187],
- 188: [21, 83, 9, 174, 58],
- 189: [118, 112, 6, 208, 201],
- 193: [71, 216, 24, 266, 77],
- 196: [85, 56, 184, 145, 28],
- 197: [60, 35, 4, 5, 17],
- 199: [40, 28, 47, 209, 145],
- 200: [5, 131, 114, 134, 17],
- 201: [35, 262, 4, 208, 27, 35, 262, 4, 208, 27],
- 203: [64, 141, 32, 35, 4],
- 205: [14, 64, 1, 27, 224],
- 207: [98, 2, 30, 154, 159],
- 208: [35, 201, 203, 4, 141],
- 210: [8, 64, 37, 46, 265],
- 211: [110, 118, 8, 265, 166],
- 213: [66, 32, 247, 14, 154],
- 214: [225, 10, 201, 4, 60],
- 216: [57, 55, 137, 274, 47],
- 219: [78, 98, 2, 15, 31],
- 220: [37, 32, 210, 8, 27],
- 222: [167, 112, 6, 275, 57],
- 223: [70, 30, 46, 11, 64],
- 224: [242, 20, 284, 203, 93],
- 225: [214, 274, 203, 10, 35],
- 226: [134, 17, 106, 232, 77],
- 232: [166, 106, 265, 203, 8],
- 233: [37, 210, 229, 8, 32, 55, 17, 216, 187, 137],
- 236: [49, 76, 176, 16, 272],
- 237: [25, 31, 15, 251, 49],
- 239: [140, 48, 174, 92, 206],
- 240: [262, 154, 35, 185, 159],
- 241: [91, 242, 20, 224, 247],
- 244: [221, 154, 13, 10, 141],
- 247: [46, 121, 66, 64, 62, 99, 219, 213, 283],
- 254: [254, 274, 209, 166, 8, 209, 137, 254, 274, 27],
- 262: [154, 35, 4, 10, 52],
- 265: [8, 210, 166, 7, 283],
- 266: [203, 224, 93, 72, 149],
- 285: [141, 16, 159, 1, 14]}
-
 
 class Raaga(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "raaga.jpg"
@@ -553,18 +377,6 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
             artists.append(artistmap[aid])
         return artists
 
-    def get_similar(self):
-        if self.pk in raaga_similar:
-            sim = []
-            for id in raaga_similar[self.pk]:
-                try:
-                    sim.append(Raaga.objects.get(pk=id))
-                except Raaga.DoesNotExist:
-                    pass
-            return sim
-        else:
-            return []
-
     def recordings(self, limit=None):
         recordings = Recording.objects.filter(works__raaga=self)
         if recordings is not None:
@@ -589,13 +401,6 @@ class TaalaAlias(models.Model):
         return self.name
 
 
-# similarity matrix. key: a taala id, val: an ordered list of similarities (taala ids)
-# We fill in 'above' and 'below' the diagonal - e.g. 1: 2,3 / 2: 1
-taala_similar = {1: [5], 3: [7, 11, 10], 4: [8, 9], 5: [1], 6: [2],
-                 7: [3, 11, 10], 8: [4, 9], 2: [6], 9: [8, 4],
-                 10: [7, 3], 11: [7, 3]}
-
-
 class Taala(data.models.BaseModel, data.models.ImageMixin):
     missing_image = "taala.jpg"
 
@@ -617,12 +422,6 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
         else:
             slug = slugify(self.name)
         return reverse('carnatic-taala', args=[str(self.uuid), slug])
-
-    def get_similar(self):
-        if self.pk in taala_similar:
-            return [Taala.objects.get(pk=id) for id in taala_similar[self.pk]]
-        else:
-            return []
 
     def works(self):
         return self.work_set.distinct().all()
