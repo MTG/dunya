@@ -14,13 +14,16 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile
+from __future__ import print_function
 
-from carnatic import models
-import data
 from compmusic import kutcheris
 from compmusic import musicbrainz as mb
+from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
+
+import data
+from carnatic import models
+
 mb.mb.set_hostname("musicbrainz.org")
 
 # dunya id: Kutcheris id
@@ -28,38 +31,40 @@ themap = {38: 6,
           64: 103
           }
 
+
 class Command(BaseCommand):
     help = 'Load biographies and images from kutcheris data'
 
     def handle(self, *args, **options):
         for did, kid in themap.items():
             a = models.Artist.objects.get(pk=did)
-            print "* got", a.name, a.mbid
+            print("* got %s %s" % (a.name, a.mbid))
             imgcontent, bio, wpurl = kutcheris.get_artist_details(kid)
             if bio:
-                print "got bio"
+                print("got bio")
                 u = "http://kutcheris.com/artist.php?id=%s" % kid
                 sn = data.models.SourceName.objects.get(name="kutcheris.com")
-                source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": a.name})
+                source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u,
+                                                                           defaults={"title": a.name})
                 description = data.models.Description.objects.create(description=bio, source=source)
                 a.description = description
 
             if imgcontent:
-                print "got image"
+                print("got image")
                 im = data.models.Image()
                 im.image.save("%s.jpg" % a.mbid, ContentFile(imgcontent))
                 a.image = im
                 a.save()
 
             # Check if they're on musicbrainz->wikipedia too
-            print "looking up wikipedia"
+            print("looking up wikipedia")
             mba = mb.mb.get_artist_by_id(a.mbid, includes="url-rels")
             mba = mba["artist"]
             wikipedia = None
             for rel in mba.get("url-relation-list", []):
                 if rel["type"] == "wikipedia":
                     wikipedia = rel["target"]
-                    print "got wikipedia url", wikipedia
+                    print("got wikipedia url %s" % wikipedia)
             theurl = None
             if wikipedia or wpurl:
                 if wikipedia == wpurl:
@@ -69,5 +74,5 @@ class Command(BaseCommand):
                 elif not wikipedia and wpurl:
                     theurl = wpurl
                 else:
-                    print "musicbrainz wp", wikipedia, "and kutcheris wp", wpurl, "are differnt. using mb"
+                    print("musicbrainz wp %s and kutcheris wp % are differnt. using mb" % (wikipedia, wpurl))
                     theurl = wikipedia

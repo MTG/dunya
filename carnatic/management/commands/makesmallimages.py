@@ -13,23 +13,25 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+from __future__ import print_function
 
-from django.core.management.base import BaseCommand
+import cStringIO
+
+import os
+from PIL import Image
 from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
 
 from carnatic import models
 
-from PIL import Image
-import os
-import cStringIO
 
 class Command(BaseCommand):
     help = 'Make mini versions of all images that are loaded'
 
     def make_small(self, item):
-        print item
+        print(item)
         img = item.image
-        print "  ", img
+        print("  %s" % img)
 
         size = 150, 150
         big = img.image

@@ -14,10 +14,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
+from __future__ import print_function
+
 import csv
 
+from django.core.management.base import BaseCommand, CommandError
+
 from carnatic import models
+
 
 class Command(BaseCommand):
     help = "load data and aliases from a csv file"
@@ -32,7 +36,7 @@ class Command(BaseCommand):
             reader.next()
         for line in reader:
             name = line[0]
-            print name
+            print(name)
             tl = None
             if has_com:
                 tl = line[1]
@@ -41,23 +45,23 @@ class Command(BaseCommand):
                 rest = line[1:]
             item, _ = obclass.objects.get_or_create(name=name)
             if has_com and hasattr(item, "common_name"):
-                print "  common_name", tl
+                print("  common_name %s" % tl)
                 item.common_name = tl
                 item.save()
             if hasattr(obclass, "aliases"):
                 for a in rest:
                     if a:
-                        print "  alias", a
+                        print("  alias %s" % a)
                         aob = item.aliases.filter(name=a)
                         if aob.count() == 0:
-                            print "  - adding"
+                            print("  - adding")
                             item.aliases.create(name=a)
                         else:
-                            print "  - exists"
+                            print("  - exists")
 
     def handle(self, *args, **options):
         if len(args) < 2:
-            raise CommandError("Arguments: <instrument,raaga,taala,region,form,language,school> <csvfile>")
+            raise CommandError("Arguments: <instrument,raaga,taala,region,form> <csvfile>")
         t = args[0]
         fname = args[1]
 
@@ -81,9 +85,5 @@ class Command(BaseCommand):
             obclass = models.GeographicRegion
         elif t == "form":
             obclass = models.Form
-        elif t == "language":
-            obclass = models.Language
-        elif t == "school":
-            obclass = models.MusicalSchool
         if obclass:
             self.load(fname, obclass, has_com, has_header)

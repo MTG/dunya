@@ -14,17 +14,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
+from __future__ import print_function
 
-from django.conf import settings
-import pysolr
 import json
-import os
 
+import os
+import pysolr
 from compmusic.extractors.similaritylib import recording
-from docserver import util
+from django.conf import settings
+from django.core.management.base import BaseCommand
+
 import carnatic
 import hindustani
+from docserver import util
+
 
 class Command(BaseCommand):
     help = 'Calculate recording similarity between recordings of the same raaga'
@@ -37,7 +40,7 @@ class Command(BaseCommand):
         sim = obj["similar"]
         if not sim:
             return None
-        insert = {"id": "sim_%s" % (mbid, ),
+        insert = {"id": "sim_%s" % (mbid,),
                   "similar_s": json.dumps(sim),
                   "mbid_t": mbid,
                   "doctype_s": "recordingsimilarity",
@@ -66,7 +69,7 @@ class Command(BaseCommand):
             try:
                 adata = util.docserver_get_json(a, "normalisedpitch", "normalisedhistogram")
             except util.NoFileException:
-                print "can't find recording %s in docserver" % a
+                print("can't find recording %s in docserver" % a)
                 self.intonationmap[a] = None
                 return None
             self.intonationmap[a] = adata
@@ -77,9 +80,8 @@ class Command(BaseCommand):
             try:
                 bdata = util.docserver_get_json(b, "normalisedpitch", "normalisedhistogram")
             except util.NoFileException:
-                print "can't find recording %s in docserver" % b
+                print("can't find recording %s in docserver" % b)
                 return None
-                self.intonationmap[b] = None
             self.intonationmap[b] = bdata
 
         if adata is None or bdata is None:
@@ -119,8 +121,11 @@ class Command(BaseCommand):
         for i, rec in enumerate(recordings, 1):
             raaga = rec.get_raaga()
             if raaga:
-                otherrecordings = carnatic.models.Recording.objects.filter(works__raaga=raaga[0], concert__collection__permission__in=['R', 'U']).exclude(pk=rec.pk).distinct()
-                print "Recording %s (%s/%s)" % (rec, i, total)
+                otherrecordings = carnatic.models.Recording.objects.filter(works__raaga=raaga[0],
+                                                                           concert__collection__permission__in=['R',
+                                                                                                                'U']).exclude(
+                    pk=rec.pk).distinct()
+                print("Recording %s (%s/%s)" % (rec, i, total))
                 self.compute_similarity(rec, otherrecordings)
 
     def compute_matrix_hindustani(self):
@@ -129,23 +134,10 @@ class Command(BaseCommand):
         for i, rec in enumerate(recordings, 1):
             if rec.raags.count() == 1:
                 raag = rec.raags.get()
-                otherrecordings = hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(pk=rec.pk).distinct()
-                print "Recording %s (%s/%s)" % (rec, i, total)
+                otherrecordings = hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(
+                    pk=rec.pk).distinct()
+                print("Recording %s (%s/%s)" % (rec, i, total))
                 self.compute_similarity(rec, otherrecordings)
 
     def handle(self, *args, **options):
         self.compute_matrix_carnatic()
-    """
-        if len(args) < 1:
-            raise CommandError("arguments: <hindustani|carnatic> [import]")
-
-        module = args[0]
-        if len(args) > 1 and args[1] == "import":
-            print "importing"
-            self.import_solr(module)
-        else:
-            if module == "carnatic":
-                self.compute_matrix_carnatic()
-            elif module == "hindustani":
-                self.compute_matrix_hindustani()
-    """

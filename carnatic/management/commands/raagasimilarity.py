@@ -14,22 +14,25 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand, CommandError
+from __future__ import print_function
 
-from django.conf import settings
-import pysolr
-import json
-import os
 import collections
-import numpy as np
-from scipy.ndimage.filters import gaussian_filter
 import decimal
+import json
 
-from compmusic.extractors.similaritylib import recording
 import compmusic.extractors.similaritylib.raaga
-from docserver import util
+import numpy as np
+import os
+import pysolr
+from compmusic.extractors.similaritylib import recording
+from django.conf import settings
+from django.core.management.base import BaseCommand
+from scipy.ndimage.filters import gaussian_filter
+
 import carnatic
 import hindustani
+from docserver import util
+
 
 class Command(BaseCommand):
     help = 'Calculate distance between mean raaga profiles'
@@ -84,7 +87,7 @@ class Command(BaseCommand):
             else:
                 distance = recording.kldiv(raagprofile, oprofile)
                 self.distancemap[(rid, oid)] = distance
-            print "distance between %s-%s is %s" % (rid, oid, distance)
+            print("distance between %s-%s is %s" % (rid, oid, distance))
 
             if distance:
                 sims.append((oid, distance))
@@ -126,10 +129,10 @@ class Command(BaseCommand):
             if ra and ra[0]:
                 recmap[ra[0]].append(r)
         numraagas = len(recmap.keys())
-        print "Got", numraagas, "raags"
+        print("Got", numraagas, "raags")
         raagaprofiles = {}
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
-            print "(%s/%s) %s" % (i, numraagas, raag)
+            print("(%s/%s) %s" % (i, numraagas, raag))
             profile = self.calc_profile(raag, recordings)
             raagaprofiles[raag] = profile
 
@@ -141,7 +144,7 @@ class Command(BaseCommand):
             self.compute_similarity(r, profile, otherraags, "carnatic")
 
     def compute_matrix_hindustani(self):
-        print "Creating hindustani raag images"
+        print("Creating hindustani raag images")
         recordings = hindustani.models.Recording.objects.all()
         recmap = collections.defaultdict(list)
         for r in recordings:
@@ -149,10 +152,10 @@ class Command(BaseCommand):
                 raag = r.raags.get()
                 recmap[raag].append(r)
         numraagas = len(recmap.keys())
-        print "Got", numraagas, "raags"
+        print("Got %s raags" % numraagas)
         raagaprofiles = {}
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
-            print "(%s/%s) %s" % (i, numraagas, raag)
+            print("(%s/%s) %s" % (i, numraagas, raag))
             profile = self.calc_profile(raag, recordings)
             raagaprofiles[raag] = profile
 
@@ -165,17 +168,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.compute_matrix_carnatic()
-        """
-        if len(args) < 1:
-            raise CommandError("arguments: <hindustani|carnatic> [import]")
-
-        module = args[0]
-        if len(args) > 1 and args[1] == "import":
-            print "importing"
-            self.import_solr(module)
-        else:
-            if module == "carnatic":
-                self.compute_matrix_carnatic()
-            elif module == "hindustani":
-                self.compute_matrix_hindustani()
-        """

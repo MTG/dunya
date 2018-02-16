@@ -14,10 +14,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand
+from __future__ import print_function
 
 import csv
+
+from django.core.management.base import BaseCommand
+
 from carnatic import models
+
 
 class Command(BaseCommand):
     help = "Load vignesh's updates to artists"
@@ -37,7 +41,7 @@ class Command(BaseCommand):
                 continue
 
             a = models.Artist.objects.get(pk=int(id))
-            print "Artist", name, a.id
+            print("Artist %s %s" % (name, a.id))
             a.gurus.clear()
 
             for g in guru.split(","):
@@ -46,8 +50,8 @@ class Command(BaseCommand):
                     gobject = models.Artist.objects.get(name=g)
                     a.gurus.add(gobject)
                 except models.Artist.DoesNotExist:
-                    print "  * cannot find guru", g
-                    print "  * making a dummy one"
+                    print("  * cannot find guru %s" % g)
+                    print("  * making a dummy one")
                     gobject, created = models.Artist.objects.get_or_create(name=g, dummy=True)
                     a.gurus.add(gobject)
 
@@ -56,4 +60,4 @@ class Command(BaseCommand):
                 a.state = gr
                 a.save()
             except models.GeographicRegion.DoesNotExist:
-                print "  * cannot find state", place
+                print("  * cannot find state %s" % place)

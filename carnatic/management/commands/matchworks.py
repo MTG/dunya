@@ -14,10 +14,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand
+from __future__ import print_function
 
 import csv
+
+from django.core.management.base import BaseCommand
+
 from carnatic import models
+
 
 class Command(BaseCommand):
     help = "Load vignesh's updates to works"
@@ -34,13 +38,11 @@ class Command(BaseCommand):
             taala = row["Taala"]
             lang = row["Language"]
             form = row["Form"]
-            print "work", workname
+            print("work %s" % workname)
 
             w = models.Work.objects.get(pk=int(id))
             # TODO: Aliases
-            l = models.Language.objects.fuzzy(lang)
             f = models.Form.objects.fuzzy(form)
-            w.language = l
             w.form = f
 
             r = models.Raaga.objects.fuzzy(raaga)

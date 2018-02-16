@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+from __future__ import print_function
 
 from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
@@ -22,6 +23,7 @@ import os
 import re
 from carnatic import models
 import data
+
 
 class Command(BaseCommand):
     help = 'Load biographies and images from kutcheris data'
@@ -34,27 +36,28 @@ class Command(BaseCommand):
             name = row["artist"]
             bio = row["bio"]
             link = row["link"]
-            print "Artist", name
+            print("Artist %s" % name)
 
             a = None
             try:
                 a = models.Artist.objects.get(name=name)
             except models.Artist.DoesNotExist:
-                m = re.search("[A-Z]\.[A-Z]", name)
+                m = re.search(r"[A-Z]\.[A-Z]", name)
                 if m:
-                    newname = re.sub("([A-Z]\.)([A-Z])", r"\1 \2", name)
+                    newname = re.sub(r"([A-Z]\.)([A-Z])", r"\1 \2", name)
                     try:
                         a = models.Artist.objects.get(name=newname)
                     except models.Artist.DoesNotExist:
                         pass
             if a:
-                print "* got", a.mbid
+                print("* got %s" % a.mbid)
                 thedir = os.path.dirname(fname)
                 photo = os.path.join(thedir, "photos", "%s.jpg" % name)
                 if os.path.exists(photo):
                     if link:
                         sn = data.models.SourceName.objects.get(name="kutcheris.com")
-                        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=link, defaults={"title": a.name})
+                        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=link,
+                                                                                   defaults={"title": a.name})
                     else:
                         source = None
                     description = data.models.Description.objects.create(description=bio, source=source)
@@ -66,4 +69,4 @@ class Command(BaseCommand):
                     a.save()
 
             else:
-                print "* not got"
+                print("* not got")
