@@ -30,7 +30,7 @@ import dashboard.views
 import docserver
 import docserver.exceptions
 import docserver.util
-from carnatic.models import *
+from carnatic.models import Artist, Recording, Concert, Work, Taala, Raaga, Instrument, Form, RecordingForm
 from data import utils
 
 
@@ -57,7 +57,7 @@ def recordings_search(request):
     recordings = Recording.objects
     if s_artists != '' or s_concerts != '' or q\
             or s_instruments != '' or s_raga != '' or s_tala != '':
-        if q and q!='':
+        if q and q != '':
             ids = list(Work.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
             recordings = recordings.filter(works__id__in=ids)\
                     | recordings.filter(title__unaccent__icontains=q)\

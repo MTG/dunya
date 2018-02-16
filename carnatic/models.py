@@ -124,7 +124,7 @@ class Artist(CarnaticStyle, data.models.Artist):
                     c[p.id] += 1
 
         collaborators = [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), restr_concerts[pk]) for pk, count in c.most_common()]
-        collaborators = sorted(collaborators, key=lambda c: (len(c[1])+c[2], len(c[1])), reverse=True)
+        collaborators = sorted(collaborators, key=lambda c: (len(c[1]) + c[2], len(c[1])), reverse=True)
         return collaborators
 
     def recordings(self, collection_ids=False, permission=False):
@@ -148,9 +148,9 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = []
         concerts = self.primary_concerts.with_permissions(collection_ids, permission)
         if raagas:
-            concerts = concerts.filter(Q(recordings__works__raaga__in=raagas)|Q(recordings__raagas__in=raagas)).distinct()
+            concerts = concerts.filter(Q(recordings__works__raaga__in=raagas) | Q(recordings__raagas__in=raagas)).distinct()
         if taalas:
-            concerts = concerts.filter(Q(recordings__works__taala__in=taalas)|Q(recordings__taalas__in=taalas)).distinct()
+            concerts = concerts.filter(Q(recordings__works__taala__in=taalas) | Q(recordings__taalas__in=taalas)).distinct()
         ret.extend(concerts.all())
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
