@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 \
     && chmod +x /usr/local/bin/dumb-init
 
-RUN wget -q -O - https://deb.nodesource.com/setup_6.x | bash - \
+RUN wget -q -O - https://deb.nodesource.com/setup_8.x | bash - \
       && apt-get install -y --no-install-recommends \
          cmake \
          libmad0-dev \
