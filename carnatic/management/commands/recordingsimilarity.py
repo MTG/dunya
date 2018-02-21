@@ -19,7 +19,6 @@ from __future__ import print_function
 import json
 
 import os
-import pysolr
 from compmusic.extractors.similaritylib import recording
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -31,7 +30,6 @@ from docserver import util
 
 class Command(BaseCommand):
     help = 'Calculate recording similarity between recordings of the same raaga'
-    solr = pysolr.Solr(settings.SOLR_URL)
     intonationmap = {}
     distancemap = {}
 
@@ -58,8 +56,8 @@ class Command(BaseCommand):
             val = self.make_data(data, module)
             if val:
                 ret.append(val)
-        self.solr.add(ret)
-        self.solr.commit()
+        # self.solr.add(ret)
+        # self.solr.commit()
 
     def compute_distance(self, a, b):
         if a in self.intonationmap:

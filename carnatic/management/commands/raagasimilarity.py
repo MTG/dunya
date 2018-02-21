@@ -23,7 +23,6 @@ import json
 import compmusic.extractors.similaritylib.raaga
 import numpy as np
 import os
-import pysolr
 from compmusic.extractors.similaritylib import recording
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -36,7 +35,6 @@ from docserver import util
 
 class Command(BaseCommand):
     help = 'Calculate distance between mean raaga profiles'
-    solr = pysolr.Solr(settings.SOLR_URL)
     intonationmap = {}
     distancemap = {}
     dirname = "raagasimilarity-%s"
@@ -64,8 +62,8 @@ class Command(BaseCommand):
             val = self.make_data(data, module)
             if val:
                 ret.append(val)
-        self.solr.add(ret)
-        self.solr.commit()
+        # self.solr.add(ret)
+        # self.solr.commit()
 
     def compute_similarity(self, raag, raagprofile, otherraags, module):
         rid = raag.pk

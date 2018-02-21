@@ -16,7 +16,6 @@
 
 import collections
 
-import pysolr
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
@@ -264,51 +263,6 @@ class Release(HindustaniStyle, data.models.Release):
             ret.append(("raag", ra))
         for fo, _ in forms.most_common(5):
             ret.append(("form", fo))
-        return ret
-
-    def get_similar(self):
-        artists = set()
-        for p in self.performers():
-            artists.add(p)
-        raags = set()
-        taals = set()
-        layas = set()
-        for tr in self.recordings.all():
-            for ta in tr.taals.all():
-                taals.add(ta)
-            for ra in tr.raags.all():
-                raags.add(ra)
-            for la in tr.layas.all():
-                layas.add(la)
-
-        aid = [a.id for a in artists]
-        rid = [r.id for r in raags]
-        tid = [t.id for t in taals]
-        lid = [l.id for l in layas]
-
-        ret = []
-        try:
-            similar = search.get_similar_releases(aid, rid, tid, lid)
-            similar = sorted(similar, reverse=True,
-                             key=lambda c: (
-                             len(c[1]["artists"]), len(c[1]["raags"]), len(c[1]["taals"]), len(c[1]["layas"])))
-
-            similar = similar[:10]
-            for s, v in similar:
-                # Don't show this release as similar
-                if s == self.id:
-                    continue
-                release = Release.objects.get(pk=s)
-                artists = [Artist.objects.get(pk=a) for a in v["artists"]]
-                raags = [Raag.objects.get(pk=r) for r in v["raags"]]
-                taals = [Taal.objects.get(pk=t) for t in v["taals"]]
-                layas = [Laya.objects.get(pk=l) for l in v["layas"]]
-                ret.append((release,
-                            {"layas": layas, "raags": raags, "taals": taals, "artists": artists}))
-        except pysolr.SolrError:
-            # TODO: Should show an error message
-            pass
-
         return ret
 
 
