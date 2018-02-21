@@ -35,22 +35,27 @@ module.exports = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
   ]),
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        loaders: ['babel'],
+        use: ['babel-loader'],
         include: path.join(__dirname, 'src'),
       },
       {
         test: /\.scss$/,
-        loaders: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader',
-          'sass',
+        use: [
+            'style-loader',
+            'css-loader',
+            // From https://github.com/postcss/postcss-loader#plugins
+            // sets postcss options without using a postcss.config.js
+            // Default plugins from https://github.com/postcss/postcss#usage
+            {loader: 'postcss-loader',
+                ident: 'postcss',
+                options: { plugins: () => [require('precss'), require('autoprefixer')]}},
+            {loader: 'sass-loader',
+             options: {importer: jsonImporter}},
         ],
         include: [
           path.resolve(__dirname, 'src/stylesheets'),
@@ -59,33 +64,37 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: [
-          'style',
-          'css',
+        use: [
+          'style-loader',
+          'css-loader',
         ],
       },
       {
         test: /\.(ttf|eot|png|jpg|svg)(\?.*$|$)$/,
-        loader: 'file?name=[name].[ext]',
+        use: [
+          {
+            loader: 'file',
+            options: {
+              file: 'name=[name].[ext]'
+            }
+          }
+        ]
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-      },
-      {
-        test: /\.json$/,
-        loader: 'json',
+        use: [
+          {
+            loader: 'url',
+            options: {
+              limit: '10000',
+              mimetype: 'application/font-woff'
+            }
+          }
+        ]
       },
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-  },
-  postcss() {
-    return [autoprefixer, precss];
-  },
-  sassLoader: {
-    // Apply the JSON importer via sass-loader's options.
-    importer: jsonImporter,
+    extensions: ['.js', '.jsx'],
   },
 };
