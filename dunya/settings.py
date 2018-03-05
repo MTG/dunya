@@ -168,6 +168,7 @@ if deploy_env == 'prod':
         'dsn': get_check_env('DUNYA_RAVEN_DSN'),
         'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
     }
+    EMAIL_HOST = get_check_env('DUNYA_EMAIL_HOST')
 else:  # development
     ALLOWED_HOSTS = []
     debug = True
