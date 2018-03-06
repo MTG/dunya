@@ -4,6 +4,9 @@ volumes:
 services:
   db:
     image: postgres
+    environment:
+      POSTGRES_USER: dunya
+      POSTGRES_DB: dunya
     volumes:
       - dbvolume:/var/lib/postgresql/data/
 

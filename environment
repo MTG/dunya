@@ -11,4 +11,4 @@ DUNYA_DEPLOY_ENV=env
 
 DUNYA_SECRET_KEY=testingsecretkeytestingsecretkeytestingsecretkey
 
-DUNYA_DATABASE_URL=postgres://postgres@db/postgres
+DUNYA_DATABASE_URL=postgres://dunya@db/dunya
