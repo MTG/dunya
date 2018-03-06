@@ -27,15 +27,15 @@ def dumpfixture(modname):
         return
     elif modname == "carnatic":
         tablemap = {"instrument": ["Instrument", "InstrumentAlias"],
-                  "taala": ["Taala", "TaalaAlias"],
-                  "raaga": ["Raaga", "RaagaAlias"],
-                  "form": ["Form", "FormAlias"]}
+                    "taala": ["Taala", "TaalaAlias"],
+                    "raaga": ["Raaga", "RaagaAlias"],
+                    "form": ["Form", "FormAlias"]}
     elif modname == "hindustani":
         tablemap = {"instrument": ["Instrument"],
-                  "taal": ["Taal", "TaalAlias"],
-                  "raag": ["Raag", "RaagAlias"],
-                  "form": ["Form", "FormAlias"],
-                  "laya": ["Laya", "LayaAlias"]}
+                    "taal": ["Taal", "TaalAlias"],
+                    "raag": ["Raag", "RaagAlias"],
+                    "form": ["Form", "FormAlias"],
+                    "laya": ["Laya", "LayaAlias"]}
     elif modname == "makam":
         tablemap = {"instrument": ["Instrument"],
                     "makam": ["Makam", "MakamAlias"],
