@@ -103,12 +103,6 @@
                 }
             }
         }
-        .graph {
-            position: relative;
-            width: 100%;
-            height: 256px;
-            text-align: right;
-        }
     }
 
     .alldata {
@@ -129,14 +123,38 @@
                         width: 901px;
                         #capcal {
                             position: absolute;
-                            left:-5px;
-                            top:0px;
-                            width:8px;
+                            left: -5px;
+                            top: 0px;
+                            width: 8px;
                             height: 100%;
                             background: url("../img/capcal.png") 0 0 repeat-y;
                             z-index: 1
                         }
-                        #bigWave, #bigPitch {
+                        div#timecodes {
+                                position: relative;
+                                height:20px;
+                                span {
+                                    position: absolute;
+                                    height: 25px;
+                                    margin: 2px;
+                                }
+                                .timecode1 {
+                                    left: 0px;
+                                }
+                                .timecode2 {
+                                    left: 220px;
+                                }
+                                .timecode3 {
+                                    left: 445px;
+                                }
+                                .timecode4 {
+                                    left: 670px;
+                                }
+                                .timecode5 {
+                                    right: 0px;
+                                }
+                            }
+                        #bigPitch {
                             position: relative;
                             height: 256px;
                             width:100%;
@@ -145,70 +163,11 @@
                                 border: 0;
                                 margin: 0;
                             }
-                            #zooms {
-                                position: absolute;
-                                bottom: 4px;
-                                padding-right: 4px;
-                                width: 100%;
-                                text-align: right;
-                                span {
-                                    display: block;
-                                }
-                                a {
-                                    position: relative;
-                                    display: inline-block;
-                                    color: #fff !important;
-                                    background: rgba(255, 255, 255, 0.2);
-                                    .rounded(3px);
-                                    box-shadow: 0px 1px 2px #ddd;
-                                    padding:2px;
-                                    text-decoration: none;
-                                    width: 22px;
-                                    &.selected {
-                                        background: rgba(255, 255, 255, 0.8);
-                                        color:#333 !important;
-                                    }
-                                }
-                            }
                             div#lyrics {
                                 position: relative;
                                 height: 30px;
                                 .lyric {
                                     position: absolute;
-                                    margin: 2px;
-                                }
-                            }
-                            div#timecodes {
-                                position: relative;
-                                height:20px;
-                                span.timecode1 {
-                                    position: absolute;
-                                    left: 0px;
-                                    height: 25px;
-                                    margin: 2px;
-                                }
-                                span.timecode2 {
-                                    position: absolute;
-                                    left: 220px;
-                                    height: 25px;
-                                    margin: 2px;
-                                }
-                                span.timecode3 {
-                                    position: absolute;
-                                    left: 445px;
-                                    height: 25px;
-                                    margin: 2px;
-                                }
-                                span.timecode4 {
-                                    position: absolute;
-                                    left: 670px;
-                                    height: 25px;
-                                    margin: 2px;
-                                }
-                                span.timecode5 {
-                                    position: absolute;
-                                    right: 0px;
-                                    height: 25px;
                                     margin: 2px;
                                 }
                             }
@@ -241,16 +200,6 @@
                         height: 100%;
                         z-index: 2;
                         background: rgba(255, 255, 255, 0.3);
-                        pointer-events: none;
-                    }
-                    .miniviewBlock {
-                        position: absolute;
-                        left:0px;
-                        top:0px;
-                        width:0px;
-                        height: 100%;
-                        z-index: 2;
-                        background: rgba(0, 0, 100, 0.3);
                         pointer-events: none;
                     }
                     #timepoint {
@@ -302,53 +251,10 @@
                         margin-left: 901px;
                         height: 576px;
                         width: 100%;
-                        h1 {
-                            margin: 0px;
-                            font-weight: normal;
-                            padding: 10px;
-                        }
-                        span.tempoup {
-                            position: absolute;
-                            // 20% lower than midpoint
-                            top:150px;
-                            padding-left: 10px;
-                        }
-                        span.tempodown {
-                            position: absolute;
-                            bottom: 20px;
-                            padding-left: 10px;
-                        }
                         div {
                             padding: 10px;
                         }
 
-                    }
-                    .pitchLabel {
-                        position: relative;
-                        margin-left: 901px;
-                        height: 256px;
-                        width: 100%;
-                        h1 {
-                            margin: 0px;
-                            font-weight: normal;
-                            padding: 10px;
-                        }
-                        span.sao {
-                            position: absolute;
-                            // This sits at 128px, but we want the text centered
-                            // so move it up just a bit.
-                            top:122px;
-                            padding-left: 10px;
-                        }
-                        span.sa {
-                            font-weight:bold;
-                            position: absolute;
-                            top:186px;
-                            padding-left: 10px;
-                        }
-                        div {
-                            padding: 10px;
-                        }
                     }
                 }
             }
