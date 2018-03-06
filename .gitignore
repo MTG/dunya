@@ -8,5 +8,5 @@ dunya/local_settings.py
 dunya_data.json
 media
 /static
-LESS_CACHE
 node_modules
+*.css.map
