@@ -39,32 +39,6 @@ def log_processed_file(worker, recordingid, moduleversion):
     _send_item_with_size(key, data, 5)
 
 
-def log_worker_action(worker, user, action):
-    """ Log an action by a user in the docserver.
-    Actions are applied to either a worker or to a module
-        updateessentia - updates essentia
-        updatepycm - updates pycompmusic
-        updateall - updates essentia and pycm and restarts
-        restart - restarts
-    """
-    now = datetime.datetime.now()
-    key = "worker-action-%s" % worker
-    if action == "updateessentia":
-        description = "'%s' updated essentia" % (user,)
-    elif action == "updatepycm":
-        description = "'%s' updated pycompmusic" % (user,)
-    elif action == "updateall":
-        description = "'%s' updated essentia and pycompmusic and restarted" % (user,)
-    elif action == "restart":
-        description = "'%s' restarted the worker" % (user,)
-    else:
-        description = "Unknown action (user %s)" % (user,)
-    data = {"date": now.isoformat(),
-            "action": description}
-    data = json.dumps(data)
-    _send_item_with_size(key, data, 5)
-
-
 def log_module_action(module, user, action):
     """
     Actions could be:

@@ -50,7 +50,7 @@ function renderWork(dat){
     html += '<div class="topbox"><div class="topheader">New workers</div><ul>'
     for(var i=0;i<dat.newworkers.length;i++){
         var w = dat.newworkers[i];
-        html +='<li>' + w + '<a href="?register=' + w + '">Register</a></li>';
+        html +='<li>' + w + ' <a href="?register=' + w + '">(Register)</a></li>';
     }
     html += '</ul></div>';
     $(html).insertAfter('#workers');
@@ -107,13 +107,6 @@ $( document ).ready(function() {
   <div id="workers" class="row placeholders">
   <span>Loading Workers status....</span>
   </div>
-
-<form method="post" action="">
-    Press this once to update essentia and pycompmusic from git and restart all workers<br>
-    {% csrf_token %}
-    <input type="hidden" name="updateall" value="yes">
-    <input type="submit" value="Update all workers" onclick="return confirm('Do you want to update and restart all workers?');">
-</form>
 
 
 <div class="container">

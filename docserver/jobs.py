@@ -289,7 +289,6 @@ def process_collection(collectionid, moduleversionid):
     # has the same id of the collection and the result is
     # set to this document
     collection = models.Collection.objects.get(pk=collectionid)
-    results = None
     sfiles = models.SourceFile.objects.filter(document__collections=collection, file_type=module.source_type)
 
     document, created = models.Document.objects.get_or_create(
@@ -380,60 +379,29 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
                 process_document.delay(d.pk, version.pk)
 
 
-ESSENTIA_DIR = "/srv/essentia"
-COMPMUSIC_DIR = "/srv/dunya/env/src/pycompmusic"
-
-
-def get_compmusic_dir():
+def get_essentia_hash():
     try:
-        import compmusic
-        d = os.path.dirname(compmusic.__file__)
-        d = os.path.abspath(os.path.join(d, ".."))
-        return d
+        import essentia
+        version = essentia.__version__
+        sha = essentia.__version_git_sha__
+        if '-g' in sha:
+            sha = sha.rsplit('-g')[-1]
+        return version, sha
     except ImportError:
-        return None
-
-
-def get_git_hash(cwd):
-    proc = subprocess.Popen("git rev-parse HEAD", cwd=cwd, stdout=subprocess.PIPE, shell=True)
-    version = proc.communicate()[0].strip()
-    proc = subprocess.Popen("git log -1 --format=%ci", cwd=cwd, stdout=subprocess.PIPE, shell=True)
-    date = proc.communicate()[0].strip()
-    # Git puts a space before timezone identifier, but django doesn't like it
-    date = date.replace(" +", "+").replace(" -", "-")
-    return version, date
+        return None, None
 
 
 def get_pycompmusic_hash():
-    d = get_compmusic_dir()
-    if d:
-        return get_git_hash(d)
-    else:
-        return None, None
-
-
-def get_essentia_hash():
-    if os.path.exists(ESSENTIA_DIR):
-        return get_git_hash(ESSENTIA_DIR)
-    else:
-        return None, None
-
-
-def get_essentia_version():
-    try:
-        import essentia
-        return essentia.__version__
-    except ImportError:
-        return None
+    import compmusic._version
+    version = compmusic._version.get_versions()
+    return version['full-revisionid'], version['date']
 
 
 @app.task
 def register_host(hostname):
-    # Some machines don't have essentia
-    ever = get_essentia_version()
+    ever, ehash = get_essentia_hash()
     if ever:
-        ehash, edate = get_essentia_hash()
-        essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
+        essentia, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash)
     else:
         essentia = None
     phash, pdate = get_pycompmusic_hash()
@@ -447,69 +415,3 @@ def register_host(hostname):
     worker.pycompmusic = pycompmusic
     worker.set_state_updated()
     worker.save()
-
-
-def git_update_and_compile_essentia():
-    subprocess.call("git checkout deploy", cwd=ESSENTIA_DIR, shell=True)
-    subprocess.call("git fetch --all", cwd=ESSENTIA_DIR, shell=True)
-    subprocess.call("git reset --hard origin/deploy", cwd=ESSENTIA_DIR, shell=True)
-    subprocess.call("./waf -v", cwd=ESSENTIA_DIR, shell=True)
-    subprocess.call("./waf install", cwd=ESSENTIA_DIR, shell=True)
-
-
-def git_update_pycompmusic():
-    subprocess.call("git fetch --all", cwd=COMPMUSIC_DIR, shell=True)
-    subprocess.call("git reset --hard origin/master", cwd=COMPMUSIC_DIR, shell=True)
-
-
-@app.task
-def update_essentia(hostname):
-    worker = models.Worker.objects.get(hostname=hostname)
-    worker.set_state_updating()
-    git_update_and_compile_essentia()
-    ever = get_essentia_version()
-    ehash, edate = get_essentia_hash()
-    version, created = models.EssentiaVersion.objects.get_or_create(version=ever, sha1=ehash, commit_date=edate)
-    worker.essentia = version
-    worker.set_state_updated()
-    worker.save()
-
-
-@app.task
-def update_pycompmusic(hostname):
-    worker = models.Worker.objects.get(hostname=hostname)
-    worker.set_state_updating()
-    git_update_pycompmusic()
-    phash, pdate = get_pycompmusic_hash()
-    version, created = models.PyCompmusicVersion.objects.get_or_create(sha1=phash, commit_date=pdate)
-    worker.pycompmusic = version
-    worker.set_state_updated()
-    worker.save()
-
-    if hostname == "sitar":
-        # Special case. If we upgrade pycompmusic on sitar, the webserver,
-        # make sure we scan for new versions of all extractors.
-        get_latest_module_version()
-
-
-def shutdown_celery(hostname):
-    name = "celery@%s" % hostname
-    app.control.broadcast("shutdown", destination=[name])
-
-
-@app.task
-def update_single_worker(hostname):
-    try:
-        # Some workers don't have essentia
-        update_essentia(hostname)
-    except OSError:
-        pass
-    update_pycompmusic(hostname)
-    shutdown_celery(hostname)
-
-
-def update_all_workers(user=None):
-    workers = models.Worker.objects.all()
-    for w in workers:
-        log.log_worker_action(w.hostname, user, "updateall")
-        update_single_worker.apply_async([w.hostname], queue=w.hostname)

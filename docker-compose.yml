@@ -32,9 +32,10 @@ services:
       - rabbitmq
     env_file:
       - environment
+  # All celery hosts should listen on a queue of the same name as their host/name (-Q and -n)
   celeryimport:
     build: .
-    command: celery worker --app dunya -l info -Q import -n celeryimport
+    command: celery worker --app dunya -l info -Q import,celeryimport -n celeryimport
     volumes:
       - .:/code
       - /data/incoming:/incoming
@@ -46,7 +47,7 @@ services:
       - redis
   celeryprocess:
     build: .
-    command: celery worker --app dunya -l info -Q celery -n celeryprocess
+    command: celery worker --app dunya -l info -Q celery,celeryprocess -n celeryprocess
     volumes:
       - .:/code
       - /data/incoming:/incoming

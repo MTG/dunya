@@ -222,14 +222,11 @@ def manager(request):
     # Add a new worker to the cluster
     register = request.GET.get("register")
     if register is not None:
+        # All hosts should listen on a queue named themselves, so that
+        # when we register it, we get the data from the correct host
         jobs.register_host.apply_async([register], queue=register)
         return redirect('docserver-manager')
     if request.method == "POST":
-        # Update essentia and pycompmusic on all workers
-        update = request.POST.get("updateall")
-        if update is not None:
-            jobs.update_all_workers(request.user.username)
-            return redirect('docserver-manager')
         # Process a module version
         run = request.POST.get("run")
         if run is not None:
@@ -361,26 +358,6 @@ def understand_task(task):
 
 @user_passes_test(is_staff)
 def worker(request, hostname):
-    # TODO: Show logs/stdout
-    # TODO: Load the task data via ajax, so the page loads quickly
-    user = request.user.username
-
-    updatee = request.GET.get("updateessentia")
-    if updatee is not None:
-        log.log_worker_action(hostname, user, "updateessentia")
-        jobs.update_essentia.apply_async([hostname], queue=hostname)
-        return redirect('docserver-worker', hostname)
-    updatep = request.GET.get("updatepcm")
-    if updatep is not None:
-        log.log_worker_action(hostname, user, "updatepycm")
-        jobs.update_pycompmusic.apply_async([hostname], queue=hostname)
-        return redirect('docserver-worker', hostname)
-    restart = request.GET.get("restart")
-    if restart is not None:
-        log.log_worker_action(hostname, user, "restart")
-        jobs.shutdown_celery(hostname)
-        return redirect('docserver-worker', hostname)
-
     try:
         wk = models.Worker.objects.get(hostname=hostname)
     except models.Worker.DoesNotExist:
@@ -436,12 +413,6 @@ def worker(request, hostname):
     ret = {"worker": wk, "state": state, "active": active,
            "reserved": reserved, "recent": recent, "workerlog": workerlog}
     return render(request, 'docserver/worker.html', ret)
-
-
-@user_passes_test(is_staff)
-def update_all_workers(request):
-    jobs.update_all_workers()
-    return redirect('docserver-manager')
 
 
 def get_module_source(modulename):
