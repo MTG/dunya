@@ -303,8 +303,8 @@ def process_collection(collectionid, moduleversionid):
         results = instance.process_collection(document.pk, id_fnames)
         endtime = time.time()
 
-    if results:
-        _save_process_results(version, instance, document, worker, results, starttime, endtime)
+        if results:
+            _save_process_results(version, instance, document, worker, results, starttime, endtime)
 
 
 @app.task
@@ -318,7 +318,6 @@ def process_document(documentid, moduleversionid):
     instance.hostname = hostname
 
     document = models.Document.objects.get(pk=documentid)
-    results = None
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
         s = sfiles[0]
@@ -327,8 +326,8 @@ def process_document(documentid, moduleversionid):
         results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
         endtime = time.time()
 
-    if results:
-        _save_process_results(version, instance, document, worker, results, starttime, endtime)
+        if results:
+            _save_process_results(version, instance, document, worker, results, starttime, endtime)
 
 
 def run_module(moduleid, versionid=None):
