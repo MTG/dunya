@@ -53,7 +53,7 @@ module.exports = {
             // Default plugins from https://github.com/postcss/postcss#usage
             {loader: 'postcss-loader',
                 ident: 'postcss',
-                options: { plugins: () => [require('precss'), require('autoprefixer')]}},
+                options: { plugins: () => [precss, autoprefixer]}},
             {loader: 'sass-loader',
              options: {importer: jsonImporter}},
         ],
@@ -73,7 +73,7 @@ module.exports = {
         test: /\.(ttf|eot|png|jpg|svg)(\?.*$|$)$/,
         use: [
           {
-            loader: 'file',
+            loader: 'file-loader',
             options: {
               file: 'name=[name].[ext]'
             }
@@ -84,7 +84,7 @@ module.exports = {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
           {
-            loader: 'url',
+            loader: 'url-loader',
             options: {
               limit: '10000',
               mimetype: 'application/font-woff'
