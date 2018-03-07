@@ -26,11 +26,6 @@ body {
     font-family:'Open Sans', sans-serif;
 }
 
-::-moz-selection {
-    background: @selectionColor;
-    text-shadow: none;
-}
-
 ::selection {
     background: @selectionColor;
     text-shadow: none;
@@ -113,38 +108,6 @@ textarea {
             right: 5px;
         }
     }
-    #globalMusic {
-        position: relative;
-        float:left;
-        top:16px;
-        margin-left: 15px;
-        label {
-            position: relative;
-            font-size: 10px;
-        }
-        #gmSelected {
-            position: absolute;
-            top:16px;
-            left: 0px;
-            background: url("../img/smallArrow.png") 0 7px no-repeat;
-            padding-left: 12px;
-            cursor: pointer;
-        }
-        #gmDropDown {
-            list-style: none;
-            margin:0px;
-            position: absolute;
-            z-index: 4;
-            .boxesCloth;
-            display: none;
-            li {
-                list-style: none;
-                display: block;
-                white-space: nowrap;
-                cursor: pointer;
-            }
-        }
-    }
     #erclogo {
         float: right;
         position: relative;
@@ -204,7 +167,7 @@ textarea {
         }
         a:hover:after{
           width:100%;
-        }  
+        }
     }
 }
 
@@ -273,55 +236,6 @@ textarea {
     border-bottom-right-radius: 4px;
 }
 
-/* ==========================
- * Common to all pages
- * ======================== */
-.miniitem {
-    height: auto !important;
-    left: 0px;
-    position: relative;
-    top: 0px;
-    width:100% !important;
-    background: none;
-    margin-top: 5px;
-    padding:6px;
-    padding-right: 15px;
-    padding-bottom:5px;
-    clear: both;
-    label {
-        font-size: 12px;
-        line-height: 14px;
-        display: block;
-        color: rgba(0,0,0,0.5);
-        b {
-            display: block;
-            color: #000;
-        }
-    }
-    .disco {
-        float: left;
-        margin-right: 8px;
-        margin-bottom: 15px;
-        img { width: 40px !important; }
-        a {
-            background: none;
-        }
-    }
-}
-
-
-/******************************
- * Small things inside badges or on page lists
- *****************************/
-
-.miniitem.artist .colorCode { border-color: @artist_color !important; }
-.miniitem.concert .colorCode { border-color: @concert_color !important; }
-.miniitem.work .colorCode { border-color: @work_color !important; }
-.miniitem.instrument .colorCode { border-color: @instrument_color !important; }
-.miniitem.raaga .colorCode { border-color: @raaga_color !important; }
-.miniitem.taala .colorCode { border-color: @taala_color !important; }
-.miniitem.recording .colorCode { border-color: @recording_color !important; }
-.miniitem.composer .colorCode { border-color: @composer_color !important; }
 
 /* ==========================================================================
    LOGIN
@@ -392,18 +306,6 @@ input[type="text"], input[type="password"], input[type="email"] {
     outline: 0;
 }
 
-/************
- * Top segment, used for browse interface and also navigation header on other pages
- ************/
-
-#filterMask #filterArea #entitiesList ul li.artist .colorCode { border-color: @artist_color; }
-#filterMask #filterArea #entitiesList ul li.concert .colorCode { border-color: @concert_color; }
-#filterMask #filterArea #entitiesList ul li.work .colorCode { border-color: @work_color; }
-#filterMask #filterArea #entitiesList ul li.instrument .colorCode { border-color: @instrument_color; }
-#filterMask #filterArea #entitiesList ul li.raaga .colorCode { border-color: @raaga_color; }
-#filterMask #filterArea #entitiesList ul li.taala .colorCode { border-color: @taala_color; }
-#filterMask #filterArea #entitiesList ul li.recording .colorCode { border-color: @recording_color; }
-#filterMask #filterArea #entitiesList ul li.composer .colorCode { border-color: @composer_color; }
 
 /* ==========================================================================
    Helper classes
@@ -414,21 +316,6 @@ input[type="text"], input[type="password"], input[type="email"] {
     visibility: hidden;
 }
 
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-
-.invisible {
-    visibility: hidden;
-}
-.clearer { clear: both; }
 .clearfix:before,
 .clearfix:after {
     content: " ";
