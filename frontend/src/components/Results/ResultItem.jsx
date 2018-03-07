@@ -1,18 +1,19 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { USE_REMOTE_SOURCES, REMOTE_URL } from 'settings';
 import './ResultItem.scss';
 
 const propTypes = {
-  collaborators: React.PropTypes.arrayOf(React.PropTypes.shape({
-    name: React.PropTypes.string,
-    instrument: React.PropTypes.string,
+  collaborators: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    instrument: PropTypes.string,
   })),
-  concert: React.PropTypes.string,
-  image: React.PropTypes.string,
-  linkToRecording: React.PropTypes.string,
-  mainArtists: React.PropTypes.arrayOf(React.PropTypes.string),
-  name: React.PropTypes.string,
-  selectedArtists: React.PropTypes.array,
+  concert: PropTypes.string,
+  image: PropTypes.string,
+  linkToRecording: PropTypes.string,
+  mainArtists: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string,
+  selectedArtists: PropTypes.array,
 };
 
 const renderList = list => list.join(', ');

@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import './SearchButton.scss';
 
 const propTypes = {
-  isEnabled: React.PropTypes.bool,
+  isEnabled: PropTypes.bool,
 };
 
 const SearchButton = props =>

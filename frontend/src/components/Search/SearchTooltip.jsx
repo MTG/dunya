@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
 const propTypes = {
-  isVisible: React.PropTypes.bool,
+  isVisible: PropTypes.bool,
 };
 
 const SearchTooltip = (props) => (

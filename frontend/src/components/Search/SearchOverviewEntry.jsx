@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { SELF_EXPLANATORY_CATEGORY_ITEMS } from 'settings';
@@ -7,8 +8,8 @@ import pluralize from 'utils/pluralRules';
 import './SearchOverviewEntry.scss';
 
 const propTypes = {
-  entry: React.PropTypes.object,
-  toggleSelectedEntry: React.PropTypes.func,
+  entry: PropTypes.object,
+  toggleSelectedEntry: PropTypes.func,
 };
 
 const SearchOverviewEntry = (props) => {

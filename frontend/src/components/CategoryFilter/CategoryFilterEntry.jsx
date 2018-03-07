@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { toggleSelectedEntry } from '../../actions/filtersData';
 import { getEntryId, makeIsEntrySelected } from '../../selectors/filtersData';
 
 const propTypes = {
-  category: React.PropTypes.string,
-  isSelected: React.PropTypes.bool,
-  toggleSelectedEntry: React.PropTypes.func,
-  entry: React.PropTypes.object,
+  category: PropTypes.string,
+  isSelected: PropTypes.bool,
+  toggleSelectedEntry: PropTypes.func,
+  entry: PropTypes.object,
 };
 
 const CategoryFilterEntry = props => (

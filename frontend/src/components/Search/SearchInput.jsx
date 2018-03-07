@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { toggleFocus, updateSearchInput, getAutocompleteList, resetAutocompleteResults }
@@ -14,16 +15,16 @@ import { breakpoints } from '../../stylesheets/variables.json';
 const breakpoint = parseInt(breakpoints.medium, 10);
 
 const propTypes = {
-  allSelectedItems: React.PropTypes.array,
-  input: React.PropTypes.string,
-  toggleSelectedEntry: React.PropTypes.func,
-  updateSearchInput: React.PropTypes.func,
-  getAutocompleteList: React.PropTypes.func,
-  resetAutocompleteResults: React.PropTypes.func,
-  toggleFocus: React.PropTypes.func,
-  isFocused: React.PropTypes.bool,
-  autocompleteResults: React.PropTypes.array,
-  windowSize: React.PropTypes.object,
+  allSelectedItems: PropTypes.array,
+  input: PropTypes.string,
+  toggleSelectedEntry: PropTypes.func,
+  updateSearchInput: PropTypes.func,
+  getAutocompleteList: PropTypes.func,
+  resetAutocompleteResults: PropTypes.func,
+  toggleFocus: PropTypes.func,
+  isFocused: PropTypes.bool,
+  autocompleteResults: PropTypes.array,
+  windowSize: PropTypes.object,
 };
 
 const shouldShowSearchTooltip = false;

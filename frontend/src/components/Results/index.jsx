@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { makeGetDetailsForCategorySelectedEntries } from 'selectors/filtersData';
 import ResultItem from './ResultItem';
 
 const propTypes = {
-  results: React.PropTypes.array,
-  children: React.PropTypes.element,
-  selectedArtists: React.PropTypes.array,
+  results: PropTypes.array,
+  children: PropTypes.element,
+  selectedArtists: PropTypes.array,
 };
 
 const Results = props => (

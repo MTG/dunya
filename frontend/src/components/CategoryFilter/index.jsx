@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { toggleExpandCategory } from 'actions/filtersData';
@@ -11,12 +12,12 @@ import './CategoryFilterSelectedList.scss';
 import sortByName from '../../utils/sortByName';
 
 const propTypes = {
-  category: React.PropTypes.string,
-  data: React.PropTypes.array,
-  selected: React.PropTypes.array,
-  selectedItemsCount: React.PropTypes.number,
-  toggleExpandCategory: React.PropTypes.func,
-  isExpanded: React.PropTypes.bool,
+  category: PropTypes.string,
+  data: PropTypes.array,
+  selected: PropTypes.array,
+  selectedItemsCount: PropTypes.number,
+  toggleExpandCategory: PropTypes.func,
+  isExpanded: PropTypes.bool,
 };
 
 const CategoryFilter = (props) => {

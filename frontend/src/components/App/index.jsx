@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Provider } from 'react-redux';
 import Navbar from '../Navbar';
@@ -9,7 +10,7 @@ import MobileMenu from '../MobileMenu';
 import './App.scss';
 
 const propTypes = {
-  store: React.PropTypes.object,
+  store: PropTypes.object,
 };
 
 const App = props => (

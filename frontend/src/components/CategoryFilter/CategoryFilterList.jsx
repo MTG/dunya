@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import CategoryFilterEntry from './CategoryFilterEntry';
 import CategoryFilterSearch from './CategoryFilterSearch';
@@ -5,8 +6,8 @@ import { getEntryId } from '../../selectors/filtersData';
 import './CategoryFilterList.scss';
 
 const propTypes = {
-  category: React.PropTypes.string,
-  data: React.PropTypes.array,
+  category: PropTypes.string,
+  data: PropTypes.array,
 };
 
 const CategoryFilterList = props => (

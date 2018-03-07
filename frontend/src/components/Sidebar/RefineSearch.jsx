@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { DATA_FETCH_STATUS } from 'constants';
@@ -17,10 +18,10 @@ const sortCategories = (catA, catB) => {
 };
 
 const propTypes = {
-  receivedData: React.PropTypes.object,
-  status: React.PropTypes.string,
-  getFiltersData: React.PropTypes.func,
-  toggleSelectedEntry: React.PropTypes.func,
+  receivedData: PropTypes.object,
+  status: PropTypes.string,
+  getFiltersData: PropTypes.func,
+  toggleSelectedEntry: PropTypes.func,
 };
 
 const renderRefineSection = (receivedData) => {

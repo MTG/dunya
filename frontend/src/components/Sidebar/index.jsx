@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import RefineSearch from './RefineSearch';
@@ -7,7 +8,7 @@ import { breakpoints } from '../../stylesheets/variables.json';
 const breakpoint = parseInt(breakpoints.medium, 10);
 
 const propTypes = {
-  windowSize: React.PropTypes.object,
+  windowSize: PropTypes.object,
 };
 
 const Sidebar = (props) => {

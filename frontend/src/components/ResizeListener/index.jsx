@@ -1,9 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { updateWindowSize } from 'actions/windowSize';
 
 const propTypes = {
-  updateWindowSize: React.PropTypes.func,
+  updateWindowSize: PropTypes.func,
 };
 
 class ResizeListener extends React.Component {

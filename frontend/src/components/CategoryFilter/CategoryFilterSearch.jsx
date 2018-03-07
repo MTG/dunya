@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import pluralize from '../../utils/pluralRules';
 import { setSearchCategory, resetSearchCategory } from '../../actions/filtersData';
 
 const propTypes = {
-  category: React.PropTypes.string,
-  currentSearch: React.PropTypes.string,
-  setSearchCategory: React.PropTypes.func,
-  resetSearchCategory: React.PropTypes.func,
+  category: PropTypes.string,
+  currentSearch: PropTypes.string,
+  setSearchCategory: PropTypes.func,
+  resetSearchCategory: PropTypes.func,
 };
 
 const updateCategorySearch = (evt, category, setSearch) => {

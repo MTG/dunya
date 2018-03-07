@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { toggleFiltersMenu } from 'actions/mobileMenu';
@@ -8,9 +9,9 @@ import { breakpoints } from '../../stylesheets/variables.json';
 const breakpoint = parseInt(breakpoints.medium, 10);
 
 const propTypes = {
-  isVisible: React.PropTypes.bool,
-  windowSize: React.PropTypes.object,
-  toggleFiltersMenu: React.PropTypes.func,
+  isVisible: PropTypes.bool,
+  windowSize: PropTypes.object,
+  toggleFiltersMenu: PropTypes.func,
 };
 
 const MobileMenu = (props) => {

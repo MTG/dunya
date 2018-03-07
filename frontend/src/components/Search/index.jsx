@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { DATA_FETCH_STATUS } from 'constants';
@@ -7,8 +8,8 @@ import SearchButton from './SearchButton';
 import './Search.scss';
 
 const propTypes = {
-  getSearchResults: React.PropTypes.func,
-  isSearchEnabled: React.PropTypes.bool,
+  getSearchResults: PropTypes.func,
+  isSearchEnabled: PropTypes.bool,
 };
 
 const Search = props => (

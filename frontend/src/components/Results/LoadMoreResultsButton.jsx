@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import './LoadMoreResultsButton.scss';
 
 const propTypes = {
-  moreResults: React.PropTypes.number,
+  moreResults: PropTypes.number,
 };
 
 const LoadMoreResultsButton = props =>

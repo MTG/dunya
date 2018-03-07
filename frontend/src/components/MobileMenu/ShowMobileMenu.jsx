@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { toggleFiltersMenu } from 'actions/mobileMenu';
 import './MobileMenu.scss';
 
 const propTypes = {
-  toggleFiltersMenu: React.PropTypes.func,
+  toggleFiltersMenu: PropTypes.func,
 };
 
 const ShowMobileMenu = props =>

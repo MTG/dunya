@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { DATA_FETCH_STATUS } from 'constants';
@@ -8,10 +9,10 @@ import Loading from '../Loading';
 import './Results.scss';
 
 const propTypes = {
-  status: React.PropTypes.string,
-  results: React.PropTypes.array,
-  moreResults: React.PropTypes.number,
-  getMoreResults: React.PropTypes.func,
+  status: PropTypes.string,
+  results: PropTypes.array,
+  moreResults: PropTypes.number,
+  getMoreResults: PropTypes.func,
 };
 
 const ResultsContainer = (props) => {

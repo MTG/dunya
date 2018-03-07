@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { getEntryId } from 'selectors/filtersData';
 import './AutoComplete.scss';
 
 const propTypes = {
-  results: React.PropTypes.array,
-  id: React.PropTypes.string,
-  toggleSelectedEntry: React.PropTypes.func,
-  updateSearchInput: React.PropTypes.func,
-  searchInput: React.PropTypes.string,
+  results: PropTypes.array,
+  id: PropTypes.string,
+  toggleSelectedEntry: PropTypes.func,
+  updateSearchInput: PropTypes.func,
+  searchInput: PropTypes.string,
 };
 
 const computeRemainingInputOnClick = (searchInput, matched = '') => {
