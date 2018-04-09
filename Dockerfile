@@ -32,8 +32,15 @@ WORKDIR /code
 RUN pip install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.13.3
 ADD requirements /code/
 RUN pip install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements
+
 ADD requirements_dev /code/
 RUN pip install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements_dev
+
+RUN mkdir /sources
+WORKDIR /sources
+RUN git clone https://github.com/MTG/pycompmusic.git
+WORKDIR /sources/pycompmusic
+RUN pip install -e .
 
 RUN mkdir /code/frontend
 ADD frontend/package.json /code/frontend

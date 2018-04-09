@@ -27,6 +27,7 @@ services:
       - ./media:/media/
       - ./tmp:/tmp/
       - /data/incoming:/incoming
+      - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     ports:
       - "8000:8000"
     depends_on:
@@ -42,6 +43,7 @@ services:
     volumes:
       - .:/code
       - /data/incoming:/incoming
+      - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     env_file:
       - environment
     depends_on:
@@ -54,6 +56,7 @@ services:
     volumes:
       - .:/code
       - /data/incoming:/incoming
+      - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     env_file:
       - environment
     depends_on:
