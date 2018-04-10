@@ -26,7 +26,7 @@ services:
       - .:/code
       - ./media:/media/
       - ./tmp:/tmp/
-      - /data/incoming:/incoming
+      - ${DUNYA_DATA}:/incoming
       - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     ports:
       - "8000:8000"
@@ -42,7 +42,7 @@ services:
     command: celery worker --app dunya -l info -Q import,celeryimport -n celeryimport
     volumes:
       - .:/code
-      - /data/incoming:/incoming
+      - ${DUNYA_DATA}:/incoming
       - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     env_file:
       - environment
@@ -55,7 +55,7 @@ services:
     command: celery worker --app dunya -l info -Q celery,celeryprocess -n celeryprocess
     volumes:
       - .:/code
-      - /data/incoming:/incoming
+      - ${DUNYA_DATA}:/incoming
       - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     env_file:
       - environment
