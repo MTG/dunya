@@ -111,4 +111,5 @@ uwsgi
 # These are from our private devpi mirror:
 pycompmusic
 arabictransliterator==0.1
-tomato
+tomato==0.13.0.dev0
+git+git://github.com/sertansenturk/seyiranalyzer.git
