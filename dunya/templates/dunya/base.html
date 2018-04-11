@@ -1,9 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html class="no-js">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -56,62 +53,12 @@
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 
-        <script>
-            $(document).ready(function() {
-                soundManager.setup({
-                  url: "{% static 'carnatic/swf/' %}"
-                });
-
-                $("#playback_dialog").dialog({
-                  autoOpen: false,
-                  show: {
-                    effect: "blind",
-                    duration: 100
-                  },
-                  hide: {
-                    effect: "explode",
-                    duration: 100
-                  }
-                });
-
-                $("#aboutdialog").dialog({
-                  autoOpen: false,
-                  minWidth: 500
-                });
-
-                $("#aboutbutton").click(function() {
-                    $("#aboutdialog").dialog("open");
-                });
-
-                $("#previewicon.disabled").click(function() {
-                    $( "#playback_dialog" ).dialog( "open" );
-                });
-
-            });
-        </script>
         {% block script %}
         {% endblock %}
         {% block extra_head %}
         {% endblock %}
     </head>
     <body>
-
-        <div id="playback_dialog" title="Audio playback">
-        <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
-        </div>
-
-		<div id="aboutdialog" title="Dunya">
-            <p>Dunya is a research prototype being developed in CompMusic, a research project that studies
-            several world music traditions from an information technologies point of view. It has been
-            developed to evaluate the results of the research, mainly to be able to get feedback from users
-            to further improve the technologies being developed.</p>
-            <p>The information shown has been gathered from different sources and we have tried our best
-            to get accurate data and to identify its provenance whenever possible.</p>
-            <p>For more information see <a href="{% url 'contact' %}">how to contact us</a></p>
-            <p>Use of Dunya is governed by our <a href="{% url 'terms' %}">Terms and Conditions</a></p>
-            <p>For presentations of the website using a projector, we recommend to enable presentation mode.
-            (<a href id="presmode">enable presentation mode</a>)</p>
-	    </div>
         <!-- //////  HEADER BLOCK  ////// -->
         <div class="header-container">
             <header class="centering">
@@ -125,12 +72,12 @@
                     {% block info_link %}
                     <li><a class="" href="./info">Info</a></li>
                     {% endblock %}
-                    <li><a class="" href="{% url 'terms' %}">Legal</a></li>
+                    <li><a class="" href="about/terms">Legal</a></li>
                     {% if user.is_authenticated %}
                       {% if user.username != 'guest' %}
                         <li><a class="" id="mainmenu_a" href="{% url 'social-user-profile' %}">{{ user.username }}</a></li>
                       {% endif %}
-                      <li><a class="" href="{% url 'social-auth-logout' %}">Logout</a></li>
+                      <li><a class="" href="/social/logout">Logout</a></li>
                       {% else %}
                       <li><a href="{% url 'social-auth-login' %}">Login</a></li>
                       <li><a href="{% url 'social-auth-register' %}">Register</a></li>

@@ -4,18 +4,15 @@ from django.conf.urls import include, url, static
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
-import dunya.views
 import makam
 
 urlpatterns = [
-    url(r'^$', dunya.views.main, name="main"),
-    url(r'^developers/$', dunya.views.developers, name="developers"),
-    url(r'^about/terms', dunya.views.terms, name="terms"),
-    url(r'^about/cookies', dunya.views.cookies, name="cookies"),
-    url(r'^about/info',
-        TemplateView.as_view(template_name="carnatic/general_info.html"),
-        name="general-info"),
-    url(r'^about/contact', dunya.views.contact, name="contact"),
+    url(r'^$', TemplateView.as_view(template_name='dunya/index_dunya.html'), name='main'),
+    url(r'^developers/$', TemplateView.as_view(template_name='dunya/developers.html'), name='developers'),
+    url(r'^about/terms', TemplateView.as_view(template_name='dunya/terms.html'), name='terms'),
+    url(r'^about/cookies', TemplateView.as_view(template_name='dunya/cookies.html'), name='cookies'),
+    url(r'^about/info', TemplateView.as_view(template_name='dunya/general_info.html'), name='general-info'),
+    url(r'^about/contact', TemplateView.as_view(template_name='dunya/contact.html'), name='contact'),
     url(r'^api/carnatic/', include('carnatic.api_urls')),
     url(r'^api/hindustani/', include('hindustani.api_urls')),
     url(r'^api/makam/', include('makam.api_urls')),

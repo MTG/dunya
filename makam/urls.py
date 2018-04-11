@@ -25,21 +25,16 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='makam/index.html'), name='makam-main'),
     url(r'^search$', views.recordings_search, name='makam-search'),
-
-    url(r'^info$',
-        TemplateView.as_view(template_name="makam/info.html"), name='makam-info'),
-
+    url(r'^info$', TemplateView.as_view(template_name="makam/info.html"), name='makam-info'),
     url(r'^stats$', TemplateView.as_view(template_name='makam/stats.html'), name='makam-stats'),
     url(r'^overview$', TemplateView.as_view(template_name='makam/overview.html'), name='makam-overview'),
-    url(r'^results-stats$',
-        TemplateView.as_view(template_name='makam/results_stats.html'),
-        name='makam-res-stats'),
+    url(r'^results-stats$', TemplateView.as_view(template_name='makam/results_stats.html'), name='makam-res-stats'),
     url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='makam-recordingbyid'),
     url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
     url(r'^download-files/%s%s$' % (uuid_match, title_match),
         views.download_derived_files, name='makam-download-derived'),
     url(r'^lyric-align/%s%s$' % (uuid_match, title_match), views.lyric_alignment, name='makam-lyric-alignment'),
-    url(r'^score/%s$' % (uuid_match), views.work_score, name='makam-score'),
+    url(r'^score/%s$' % (uuid_match, ), views.work_score, name='makam-score'),
     url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),
 
     url(r'^searchcomplete$', views.searchcomplete, name='makam-searchcomplete'),

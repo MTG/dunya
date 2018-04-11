@@ -1,4 +1,4 @@
-{% extends "carnatic/base.html" %}
+{% extends "dunya/base.html" %}
 {% load staticfiles %}
 
 {% block extra_css %}
@@ -31,7 +31,7 @@ table{
 
     <h2>Overview</h2>
       <p class="p1">
-      Dunya-makam stores and processes musical data such as audio recordings, music scores and relevant metadata...[<a href='{% url 'makam-overview' %}'>See more</a>]
+      Dunya-makam stores and processes musical data such as audio recordings, music scores and relevant metadata.[<a href='{% url 'makam-overview' %}'>See more</a>]
       </p>
 
     <h2>Corpus Statistics</h2>
@@ -48,7 +48,7 @@ table{
   <p>Public datasets had been created from this corpus. These datasets are useful for various MIR related tasks on the music cultures under study in CompMusic. Please visit the <a href="http://compmusic.upf.edu/datasets">respective pages</a> for more details. </p>
     
   <h2>API</h2>
-      <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">deveopers page</a>.</p>
+      <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">developers page</a>.</p>
 
 
   <h2>Contact us</h2>
