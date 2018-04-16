@@ -41,6 +41,9 @@ class HindustaniStyle(object):
 
 
 class Instrument(HindustaniStyle, data.models.Instrument):
+    class Meta:
+        ordering = ['id']
+
     objects = managers.HindustaniInstrumentManager()
 
     def performers(self):
@@ -61,6 +64,9 @@ class Instrument(HindustaniStyle, data.models.Instrument):
 
 
 class Artist(HindustaniStyle, data.models.Artist):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "hindustaniartist.jpg"
 
     def related_items(self):
@@ -212,6 +218,9 @@ class ReleaseRecording(models.Model):
 
 
 class Release(HindustaniStyle, data.models.Release):
+    class Meta:
+        ordering = ['id']
+
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases")
 
@@ -291,6 +300,9 @@ class RecordingForm(models.Model):
 
 
 class Recording(HindustaniStyle, data.models.Recording):
+    class Meta:
+        ordering = ['id']
+
     raags = models.ManyToManyField("Raag", through="RecordingRaag")
     taals = models.ManyToManyField("Taal", through="RecordingTaal")
     layas = models.ManyToManyField("Laya", through="RecordingLaya")
@@ -338,6 +350,9 @@ class Lyrics(models.Model):
 
 
 class Work(HindustaniStyle, data.models.Work):
+    class Meta:
+        ordering = ['id']
+
     lyrics = models.ForeignKey("Lyrics", blank=True, null=True)
 
 
@@ -353,6 +368,9 @@ class WorkTime(models.Model):
 
 
 class Raag(data.models.BaseModel, data.models.ImageMixin):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "raag.jpg"
 
     objects = managers.HindustaniRaagManager()
@@ -437,6 +455,9 @@ class RaagAlias(models.Model):
 
 
 class Taal(data.models.BaseModel, data.models.ImageMixin):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "taal.jpg"
 
     objects = managers.HindustaniTaalManager()
@@ -522,6 +543,9 @@ class TaalAlias(models.Model):
 
 
 class Laya(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     objects = managers.HindustaniLayaManager()
 
     name = models.CharField(max_length=50)
@@ -566,6 +590,9 @@ class LayaAlias(models.Model):
 
 
 class Form(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     objects = managers.HindustaniFormManager()
 
     name = models.CharField(max_length=50)

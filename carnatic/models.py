@@ -50,6 +50,8 @@ class GeographicRegion(CarnaticStyle, models.Model):
 
 
 class Artist(CarnaticStyle, data.models.Artist):
+    class Meta:
+        ordering = ['id']
 
     # Automatically gets the Artist + the artists' main instrument
     objects = managers.ArtistManager()
@@ -263,6 +265,9 @@ class ConcertRecording(models.Model):
 
 
 class Concert(CarnaticStyle, data.models.Release):
+    class Meta:
+        ordering = ['id']
+
     recordings = models.ManyToManyField('Recording', through="ConcertRecording")
 
     objects = managers.CollectionConcertManager()
@@ -338,6 +343,9 @@ class FormAlias(models.Model):
 
 
 class Raaga(data.models.BaseModel, data.models.ImageMixin):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "raaga.jpg"
 
     name = models.CharField(max_length=50)
@@ -402,6 +410,9 @@ class TaalaAlias(models.Model):
 
 
 class Taala(data.models.BaseModel, data.models.ImageMixin):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "taala.jpg"
 
     name = models.CharField(max_length=50)
@@ -459,6 +470,8 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
 
 
 class Work(CarnaticStyle, data.models.Work):
+    class Meta:
+        ordering = ['id']
 
     # (raaga, taala)
     raaga = models.ForeignKey('Raaga', blank=True, null=True)
@@ -515,6 +528,9 @@ class RecordingWork(models.Model):
 
 
 class Recording(CarnaticStyle, data.models.Recording):
+    class Meta:
+        ordering = ['id']
+
     works = models.ManyToManyField('Work', through='RecordingWork')
     forms = models.ManyToManyField('Form', through='RecordingForm')
 
@@ -609,6 +625,9 @@ class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
 
 
 class Instrument(CarnaticStyle, data.models.Instrument):
+    class Meta:
+        ordering = ['id']
+
     fuzzymanager = managers.FuzzySearchManager()
     objects = managers.CarnaticInstrumentManager()
 
