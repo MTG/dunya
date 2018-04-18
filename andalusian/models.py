@@ -34,6 +34,9 @@ class MusicalSchool(AndalusianStyle, data.models.BaseModel):
 
 
 class Orchestra(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     mbid = models.UUIDField(blank=True, null=True)
     name = models.CharField(max_length=255)
     transliterated_name = models.CharField(max_length=255, blank=True)
@@ -69,6 +72,9 @@ class OrchestraAlias(models.Model):
 
 
 class Artist(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "artist.jpg"
 
     GENDER_CHOICES = (
@@ -155,6 +161,9 @@ class AlbumRecording(models.Model):
 
 
 class Album(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     missing_image = "album.jpg"
 
     mbid = models.UUIDField(blank=True, null=True)
@@ -177,6 +186,9 @@ class Album(AndalusianStyle, data.models.BaseModel):
 
 
 class Work(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     mbid = models.UUIDField(blank=True, null=True)
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
@@ -186,6 +198,9 @@ class Work(AndalusianStyle, data.models.BaseModel):
 
 
 class Genre(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=100, blank=True)
     transliterated_name = models.CharField(max_length=100, blank=True)
 
@@ -206,6 +221,9 @@ class RecordingWork(models.Model):
 
 
 class Recording(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     mbid = models.UUIDField(blank=True, null=True)
     works = models.ManyToManyField("Work", through="RecordingWork")
     artists = models.ManyToManyField("Artist", through="InstrumentPerformance")
@@ -255,6 +273,9 @@ class Recording(AndalusianStyle, data.models.BaseModel):
 
 
 class Instrument(AndalusianStyle, data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
     original_name = models.CharField(max_length=50, blank=True)
@@ -293,6 +314,9 @@ class OrchestraPerformer(models.Model):
 
 
 class Tab(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=50)
     transliterated_name = models.CharField(max_length=50, blank=True)
 
@@ -301,6 +325,9 @@ class Tab(data.models.BaseModel):
 
 
 class Nawba(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=50, blank=True)
     transliterated_name = models.CharField(max_length=50, blank=True)
 
@@ -309,6 +336,9 @@ class Nawba(data.models.BaseModel):
 
 
 class Mizan(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=50, blank=True)
     transliterated_name = models.CharField(max_length=50, blank=True)
 
@@ -324,6 +354,9 @@ class FormType(models.Model):
 
 
 class Form(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=50)
     transliterated_name = models.CharField(max_length=50, blank=True)
     form_type = models.ForeignKey(FormType, blank=True, null=True)
@@ -359,6 +392,9 @@ class InstrumentSectionPerformance(models.Model):
 
 
 class Sanaa(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
 
@@ -374,6 +410,9 @@ class PoemType(models.Model):
 
 
 class Poem(data.models.BaseModel):
+    class Meta:
+        ordering = ['id']
+
     identifier = models.CharField(max_length=100, blank=True, null=True)
     first_words = models.CharField(max_length=255, blank=True, null=True)
     transliterated_first_words = models.CharField(max_length=255, blank=True, null=True)

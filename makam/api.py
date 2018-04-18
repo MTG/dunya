@@ -227,7 +227,6 @@ class WorkListSerializer(serializers.ModelSerializer):
 
 
 class WorkList(generics.ListAPIView):
-    queryset = models.Work.objects.all()
     serializer_class = WorkListSerializer
 
     def get_queryset(self):
@@ -251,7 +250,7 @@ class WorkList(generics.ListAPIView):
         if makam and makam != '':
             works = works.filter(makam__uuid=makam)
         works = works.order_by('title')
-        return works.all()
+        return works.prefetch_related('composers').all()
 
 
 class WorkDetailSerializer(serializers.ModelSerializer):

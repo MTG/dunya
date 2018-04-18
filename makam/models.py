@@ -46,6 +46,9 @@ class ArtistAlias(MakamStyle, data.models.ArtistAlias):
 
 
 class Artist(MakamStyle, data.models.Artist):
+    class Meta:
+        ordering = ['id']
+
     def collaborating_artists(self):
         our_releases = Release.objects.filter(
             Q(recordings__instrumentperformance__artist=self) | Q(artists=self)).distinct()
@@ -72,6 +75,9 @@ class ComposerAlias(MakamStyle, data.models.ComposerAlias):
 
 
 class Composer(MakamStyle, data.models.Composer):
+    class Meta:
+        ordering = ['id']
+
     def worklist(self):
         return self.works.all()
 
@@ -80,6 +86,9 @@ class Composer(MakamStyle, data.models.Composer):
 
 
 class Release(MakamStyle, data.models.Release):
+    class Meta:
+        ordering = ['id']
+
     is_concert = models.BooleanField(default=False)
     recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
     collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases")
@@ -132,6 +141,9 @@ class RecordingWork(models.Model):
 
 
 class Recording(MakamStyle, data.models.Recording):
+    class Meta:
+        ordering = ['id']
+
     works = models.ManyToManyField("Work", through="RecordingWork")
     artists = models.ManyToManyField("Artist", related_name="recordings_artist")
 
@@ -213,6 +225,9 @@ class InstrumentManager(models.Manager):
 
 
 class Instrument(MakamStyle, data.models.Instrument):
+    class Meta:
+        ordering = ['id']
+
     # Name in Turkish
     name_tr = models.CharField(max_length=50)
 
@@ -228,6 +243,9 @@ class MakamAlias(models.Model):
 
 
 class Makam(models.Model):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=100)
     tonic_symbol = models.CharField(max_length=50, null=True, blank=True)
 
@@ -268,6 +286,9 @@ class UsulAlias(models.Model):
 
 
 class Usul(models.Model):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=100)
     uuid = models.UUIDField(db_index=True)
 
@@ -306,6 +327,9 @@ class FormAlias(models.Model):
 
 
 class Form(models.Model):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=100)
     uuid = models.UUIDField(db_index=True)
 
@@ -326,6 +350,9 @@ class Form(models.Model):
 
 
 class Work(MakamStyle, data.models.Work):
+    class Meta:
+        ordering = ['id']
+
     composition_date = models.CharField(max_length=100, blank=True, null=True)
 
     makam = models.ManyToManyField(Makam, blank=True)
@@ -352,6 +379,9 @@ class Work(MakamStyle, data.models.Work):
 
 
 class SymbTr(models.Model):
+    class Meta:
+        ordering = ['id']
+
     name = models.CharField(max_length=200)
     # We use a uuid directly instead of a link to an existing model
     # because this could be a workid (most common), or a recordingid (sometimes)
