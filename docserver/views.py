@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
-
+import ast
 import datetime
 import imp
 import inspect
@@ -317,8 +317,8 @@ def workers_status(request):
 def understand_task(task):
     tname = task["name"]
     try:
-        args = json.loads(task["args"])
-    except ValueError:
+        args = ast.literal_eval(task["args"])
+    except SyntaxError:
         args = []
     thetask = {"name": tname}
     # Magic task splitter
@@ -335,12 +335,6 @@ def understand_task(task):
         coll = dashboard.models.Collection.objects.get(collectionid=collectionid)
         thetask["collection"] = coll
     elif tname == "dashboard.jobs.import_single_release":
-        thetask["type"] = ""
-        thetask["nicename"] = ""
-    elif tname == "docserver.jobs.update_essentia":
-        thetask["type"] = "essentia"
-        thetask["nicename"] = "Updating essentia"
-    elif tname == "docserver.jobs.update_pycompmusic":
         thetask["type"] = ""
         thetask["nicename"] = ""
     elif tname == "docserver.jobs.process_document":
