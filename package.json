@@ -2,35 +2,23 @@
   "name": "dunya-frontend",
   "version": "0.5.0",
   "description": "Front end code for dunya.compmusic.edu",
-  "main": "src/index.jsx",
+  "main": "frontend/src/index.jsx",
   "scripts": {
     "build": "NODE_ENV=production ./node_modules/webpack/bin/webpack.js -p",
-    "dev": "node express_server.js",
-    "dev-mobile": "NODE_ENV=production node express_server.js",
-    "eslint": "./node_modules/eslint/bin/eslint.js src/**/**",
+    "dev": "node frontend/express_server.js",
+    "dev-mobile": "NODE_ENV=production node frontend/express_server.js",
+    "eslint": "./node_modules/eslint/bin/eslint.js frontend/src/**/**",
     "test": "./node_modules/jest/bin/jest.js",
     "test-cov": "./node_modules/jest/bin/jest.js --coverage",
     "test-json": "./node_modules/jest/bin/jest.js --json --coverage"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giuband/dunya-frontend.git"
+    "url": "git+https://github.com/MTG/dunya.git"
   },
-  "keywords": [
-    "dunya",
-    "mir",
-    "india",
-    "turkey",
-    "non-western",
-    "music",
-    "analysis"
-  ],
-  "author": "Giuseppe Bandiera",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/giuband/dunya-frontend/issues"
-  },
-  "homepage": "https://github.com/giuband/dunya-frontend#readme",
+  "author": "Music Technology Group",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "https://github.com/MTG/dunya",
   "dependencies": {
     "autoprefixer": "^8.0.0",
     "babel-core": "^6.14.0",
@@ -44,6 +32,7 @@
     "express": "^4.14.0",
     "file-loader": "^1.1.8",
     "jest": "^22.4.0",
+    "jquery": "^3.3.1",
     "json-loader": "^0.5.4",
     "loader-utils": "^1.1.0",
     "node-sass": "^4.7.2",
@@ -54,12 +43,12 @@
     "precss": "^3.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-hot-loader": "^3.0.0-beta.5",
     "react-redux": "^5.0.7",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "reselect": "^3.0.1",
     "sass-loader": "^6.0.6",
+    "soundmanager2": "^2.97.20170602",
     "style-loader": "^0.20.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1",
@@ -77,7 +66,7 @@
     "eslint-plugin-react": "^7.7.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
-    "react-hot-loader": "^3.0.0-beta.3",
+    "react-hot-loader": "^3.0.0-beta.5",
     "webpack-dev-middleware": "^2.0.5"
   }
 }

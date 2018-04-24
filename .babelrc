@@ -3,9 +3,9 @@
   "plugins": [
     "react-hot-loader/babel",
     ["module-resolver", {
-      "root": ["./src"],
+      "root": ["./frontend/src"],
       "alias": {
-        "test": "./test",
+        "test": "./frontend/test",
         "underscore": "lodash"
       }
     }]

@@ -22,10 +22,10 @@ function getPlugins(plugins) {
 module.exports = {
   devtool: (process.env.NODE_ENV !== 'production') ? 'eval' : '',
   entry: getEntrySources([
-    './src/index',
+    './frontend/src/index',
   ]),
   output: {
-    path: path.join(__dirname, 'static', 'frontend'),
+    path: path.join(__dirname, 'frontend', 'static', 'frontend'),
     filename: 'bundle.js',
     publicPath: '/dist/',
   },
@@ -41,7 +41,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: ['babel-loader'],
-        include: path.join(__dirname, 'src'),
+        include: path.join(__dirname, 'frontend', 'src'),
       },
       {
         test: /\.scss$/,
@@ -58,8 +58,8 @@ module.exports = {
              options: {importer: jsonImporter}},
         ],
         include: [
-          path.resolve(__dirname, 'src/stylesheets'),
-          path.resolve(__dirname, 'src/components'),
+          path.resolve(__dirname, 'frontend', 'src/stylesheets'),
+          path.resolve(__dirname, 'frontend', 'src/components'),
         ],
       },
       {

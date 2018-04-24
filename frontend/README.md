@@ -1,24 +1,18 @@
 # Dunya front end
-
-[![Build Status](https://travis-ci.org/giuband/dunya-frontend.svg?branch=master)](https://travis-ci.org/giuband/dunya-frontend)
-![Dependencies](https://david-dm.org/giuband/dunya-frontend.svg)
-
 ## Development
 First use
-```
-npm install
-```
+
+    yarn install
+
 to install all the dependencies.
 
 If you want to generate the production build, run:
-```
-npm run build
-```
+
+    yarn run build
 
 If instead you want to start an express server that simulates the client-only environment with hot reloading, run:
-```
-npm run dev
-```
+
+    yarn run dev
 
 
 ## Integration with back-end
@@ -142,6 +136,3 @@ In case of extending the application to support a new catalogue, the settings fo
 
 ### Singular/Plural rules
 Edit the file `utils/pluralRules.js` to add new rules for singular and plural. Since the server mostly returns keys in the plural form, you should only need to add rules for singular forms.
-
-## License
-MIT
