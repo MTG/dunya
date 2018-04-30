@@ -7,12 +7,13 @@
  {% if form.errors %}
   <p>We were unable to log you in. Please try again.</p>
   <p>If you have just created an account you must wait until it has been activated.</p>
-  <p>Forgot your password? <a href="{% url 'social-pwreset' %}">Click here to reset it.</a></p>
+  <p>Forgot your password? <a href="{% url 'account-pwreset' %}">Click here to reset it.</a></p>
  {% endif %}
   <form method="post" action=".">
    {% csrf_token %}
    <p><label for="id_username">Username</label></p><p>{{ form.username }}</p>
    <p><label for="id_password">Password</label></p><p>{{ form.password }}</p>
+   <p>Forgot your password? <a href="{% url 'account-pwreset' %}">Click here to reset it.</a></p>
    <input type="submit" value="login" />
    {% if request.GET.next %}
    <input type="hidden" name="next" value="{{ request.GET.next }}" />
@@ -21,21 +22,9 @@
    {% endif %}
   </form>
   <p>
-  {% if 'facebook' in api_login %}
-  <a href="{% url 'social-pwreset' %}">Password reset</a></p>
-    <div><a rel="nofollow" href="{% url 'social:begin' 'facebook' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
-      <img width="160" src='{% static 'account/img/facebook.png' %}' alt='Login with Facebook'/></a>
-    </a></div>
-  {% endif %}
-  {% if 'google' in api_login %}
-    <div><a rel="nofollow" href="{% url 'social:begin' 'google-oauth2' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}"></div>
-      <img width="165" src='{% static 'account/img/btn_google.png' %}' alt='Login with Google'/></a>
-  {% endif %}
-  {% if 'twitter' in api_login %}
-  <div><a rel="nofollow" href="{% url 'social:begin' 'twitter' %}?next={% if request.GET.next %}{{ request.GET.next }}{%else%}{% url 'carnatic-main' %}{%endif%}">
-      <img  src='{% static 'account/img/twitter.png' %}' alt='Login with Twitter'/></a>
-    </a></div>
-  {% endif %}
+
+
+
 </div>
 {% endblock %}
 

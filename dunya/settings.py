@@ -145,7 +145,8 @@ STATIC_ROOT = '/static/'
 
 SITE_ID = 1
 
-LOGIN_URL = '/social/login/'
+LOGIN_URL = '/user/login/'
+LOGOUT_REDIRECT_URL = 'main'
 
 # Admins should be in this format:
 # Name;email,Name2;email2
@@ -266,11 +267,6 @@ CELERYD_CONCURRENCY = 3
 NOTIFICATION_EMAIL_FROM = get_check_env('DUNYA_NOTIFICATION_FROM')
 # Who gets system emails (e.g., new user) [list/set]
 NOTIFICATION_EMAIL_TO = get_check_env('DUNYA_NOTIFICATION_TO').split(',')
-
-
-EXTERNAL_OAUTH_LOGIN = ['twitter']
-SOCIAL_AUTH_TWITTER_KEY = get_env('DUNYA_TWITTER_KEY')
-SOCIAL_AUTH_TWITTER_SECRET = get_env('DUNYA_TWITTER_SECRET')
 
 
 # Fixed versions of extracted features to show on dunya

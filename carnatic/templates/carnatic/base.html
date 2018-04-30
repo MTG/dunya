@@ -90,7 +90,7 @@
     <body>
 
         <div id="playback_dialog" title="Audio playback">
-        <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
+        <p>Sorry, only registered users can play music in Dunya. Please <a href="{% url 'auth-register' %}?next={{request.path}}">register</a>. Already registered? then <a href="{% url 'account-login' %}?next={{request.path}}">login</a></p>
         </div>
 
 		<div id="aboutdialog" title="Dunya">
@@ -121,12 +121,12 @@
                     <li><a class="" href="{% url 'terms' %}">Legal</a></li>
                     {% if user.is_authenticated %}
                       {% if user.username != 'guest' %}
-                        <li><a class="" id="mainmenu_a" href="{% url 'social-user-profile' %}">{{ user.username }}</a></li>
+                        <li><a class="" id="mainmenu_a" href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
                       {% endif %}
-                      <li><a class="" href="{% url 'social-auth-logout' %}">Logout</a></li>
+                      <li><a class="" href="{% url 'account-logout' %}">Logout</a></li>
                       {% else %}
-                      <li><a href="{% url 'social-auth-login' %}">Login</a></li>
-                      <li><a href="{% url 'social-auth-register' %}">Register</a></li>
+                      <li><a href="{% url 'account-login' %}">Login</a></li>
+                      <li><a href="{% url 'account-register' %}">Register</a></li>
                     {% endif %}
                   </ul>
                 </nav>

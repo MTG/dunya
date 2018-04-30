@@ -20,9 +20,9 @@ export const AUTOCOMPLETE_URL = {
   andalusian: '/andalusian/searchcomplete',
 };
 
-export const LOGIN_URL = '/social/login';
-export const LOGOUT_URL = '/social/logout';
-export const USER_PROFILE_BASE_URL = '/social/profile';
+export const LOGIN_URL = '/user/login';
+export const LOGOUT_URL = '/user/logout';
+export const USER_PROFILE_BASE_URL = '/user/profile';
 
 // whether to show in selected list only entries that fulfill all filters
 export const SHOW_ONLY_VISIBLE_SELECTED = false;

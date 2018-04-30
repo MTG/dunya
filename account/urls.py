@@ -1,28 +1,34 @@
-import django.contrib.auth.views
-from django.conf import settings
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from account import views
 
 urlpatterns = [
     # Change password
-    url(r'^user/password$',  django.contrib.auth.views.password_change, {'post_change_redirect': '/', 'template_name': 'registration/changepw.html'}, name='social-user-changepw'),
+    url(r'^password$', auth_views.PasswordChangeView.as_view(success_url=reverse_lazy('account-user-profile'),
+                                                             template_name='registration/changepw.html'),
+        name='account-user-changepw'),
     # reset password
-    url(r'^user/reset/sent$', django.contrib.auth.views.password_reset_done, name='social-pwreset-done'),
-    url(r'^user/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$', django.contrib.auth.views.password_reset_confirm, {'post_reset_redirect': 'social-pwreset-complete'}, name='social-pwreset-confirm'),
-    url(r'^user/reset/complete$', django.contrib.auth.views.password_reset_complete, name='social-pwreset-complete'),
-    url(r'^user/reset/$', django.contrib.auth.views.password_reset, {'post_reset_redirect': 'social-pwreset-done', 'template_name': 'registration/pwreset.html', 'email_template_name': 'registration/pwreset_email.html'}, name='social-pwreset'),
-
-    url(r'^profile/(?P<username>[^/]+)/$', views.user_profile_username, name='social-user-profile-username'),
-    url(r'^profile/$', views.user_profile, name='social-user-profile'),
-    url(r'^delete/$', views.delete_account, name='social-delete-account'),
-    url(r'^login/$', django.contrib.auth.views.login,
-        {'extra_context': {'api_login': settings.EXTERNAL_OAUTH_LOGIN},
-         'template_name': 'registration/login.html'}, name='social-auth-login'),
-    url(r'^logout/$', views.logout_page, name='social-auth-logout'),
-    url(r'^register/$', views.register_page, name='social-auth-register'),
-    url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'), name='social-auth-register-success'),
-    url(r'^api-auth-login/(?P<backend>[^/]+)/$', views.register_by_access_token, name='social-api-auth-login'),
-    url(r'^api-login/$', views.token_login, name='api-token-login'),
+    url(r'^reset/$', auth_views.PasswordResetView.as_view(success_url=reverse_lazy('account-pwreset-done'),
+                                                          template_name='registration/pwreset.html',
+                                                          email_template_name='registration/pwreset_email.html'),
+        name='account-pwreset'),
+    url(r'^reset/sent$', auth_views.PasswordResetDoneView.as_view(template_name='registration/pwreset_sent.html'),
+        name='account-pwreset-done'),
+    url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$',
+        auth_views.PasswordResetConfirmView.as_view(success_url=reverse_lazy('account-pwreset-complete'),
+                                                    template_name='registration/pwreset_confirm.html'),
+        name='account-pwreset-confirm'),
+    url(r'^reset/complete$',
+        auth_views.PasswordResetCompleteView.as_view(template_name='registration/pwreset_complete.html'),
+        name='account-pwreset-complete'),
+    url(r'^profile/$', views.user_profile, name='account-user-profile'),
+    url(r'^delete/$', views.delete_account, name='account-delete-account'),
+    url(r'^login/$', auth_views.LoginView.as_view(template_name='registration/login.html'), name='account-login'),
+    url(r'^logout/$', auth_views.LogoutView.as_view(), name='account-logout'),
+    url(r'^register/$', views.register_page, name='account-register'),
+    url(r'^register/success/$', TemplateView.as_view(template_name='registration/register_success.html'),
+        name='account-register-success'),
 ]

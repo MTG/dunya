@@ -68,12 +68,12 @@
                     <li><a class="" href="about/terms">Legal</a></li>
                     {% if user.is_authenticated %}
                       {% if user.username != 'guest' %}
-                        <li><a class="" id="mainmenu_a" href="{% url 'social-user-profile' %}">{{ user.username }}</a></li>
+                        <li><a class="" id="mainmenu_a" href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
                       {% endif %}
-                      <li><a class="" href="/social/logout">Logout</a></li>
+                      <li><a class="" href="{% url 'account-login' %}">Logout</a></li>
                       {% else %}
-                      <li><a href="{% url 'social-auth-login' %}">Login</a></li>
-                      <li><a href="{% url 'social-auth-register' %}">Register</a></li>
+                      <li><a href="{% url 'account-login' %}">Login</a></li>
+                      <li><a href="{% url 'account-register' %}">Register</a></li>
                     {% endif %}
                   </ul>
                 </nav>

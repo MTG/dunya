@@ -3,11 +3,11 @@
 {% block wrap %}
 <div id="login">
     <h1>Reset password</h1>
-    If you have forgotten your password, enter your email address here
+    If you have forgotten your password, enter your email address here and we will send you a link to change it
     <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="register" />
+        <input type="submit" value="Reset" />
     </form>
 </div>
 {% endblock %}

@@ -7,7 +7,7 @@ const getLinks = () => {
   const isUserLoggedIn = Boolean(window.username) && window.username !== '{% user_name %}';
   const contact = buildLink('Info', './info');
   const about = buildLink('Legal', 'https://dunya.compmusic.upf.edu/about/terms');
-  const register = buildLink('Register', 'https://dunya.compmusic.upf.edu/social/register');
+  const register = buildLink('Register', 'https://dunya.compmusic.upf.edu/user/register');
   const login = buildLink('Login', LOGIN_URL);
   const logout = buildLink('Logout', LOGOUT_URL);
   const user = buildLink(window.username, `${USER_PROFILE_BASE_URL}/${window.username}`);

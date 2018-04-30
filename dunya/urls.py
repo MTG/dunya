@@ -13,23 +13,23 @@ urlpatterns = [
     url(r'^about/cookies', TemplateView.as_view(template_name='dunya/cookies.html'), name='cookies'),
     url(r'^about/info', TemplateView.as_view(template_name='dunya/general_info.html'), name='general-info'),
     url(r'^about/contact', TemplateView.as_view(template_name='dunya/contact.html'), name='contact'),
+
     url(r'^api/carnatic/', include('carnatic.api_urls')),
     url(r'^api/hindustani/', include('hindustani.api_urls')),
     url(r'^api/makam/', include('makam.api_urls')),
     url(r'^api/andalusian/', include('andalusian.api_urls')),
+
     url(r'^carnatic/', include('carnatic.urls')),
     url(r'^motifdiscovery/', include('motifdiscovery.urls')),
     url(r'^hindustani/', include('hindustani.urls')),
     url(r'^andalusian/', include('andalusian.urls')),
     url(r'^makam/', include('makam.urls')),
     url(r'^jingju/', include('jingju.urls')),
+
     url(r'^document/', include('docserver.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^social/', include('account.urls')),
+    url(r'^user/', include('account.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
-    url(r'^new/', include('frontend.urls')),
-    url(r'^accounts/login/$', django.contrib.auth.views.login),
-    url(r'^accounts/logout/$', django.contrib.auth.views.logout),
     url(r'^makamplayer/$', makam.views.makamplayer),
     url('', include('social_django.urls', namespace='social'))
 ]

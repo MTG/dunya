@@ -31,21 +31,6 @@ from social_django.utils import psa
 from account import forms
 
 
-def logout_page(request):
-    logout(request)
-    if "next" in request.GET:
-        return HttpResponseRedirect(request.GET['next'])
-    return HttpResponseRedirect(reverse('main'))
-
-
-def token_login(request):
-    token = request.GET.get('token')
-    t = get_object_or_404(Token, key=token)
-    t.user.backend = 'django.contrib.auth.backends.ModelBackend'
-    login(request, t.user)
-    return HttpResponse("")
-
-
 def register_page(request):
     if request.method == 'POST':
         form = forms.RegistrationForm(request.POST)
@@ -71,7 +56,7 @@ def register_page(request):
             recipients = [a for a in settings.NOTIFICATION_EMAIL_TO]
             send_mail(subject, message, from_email, recipients, fail_silently=True)
 
-            return HttpResponseRedirect(reverse('social-auth-register-success'))
+            return HttpResponseRedirect(reverse('account-register-success'))
     else:
         form = forms.RegistrationForm()
 
@@ -102,11 +87,6 @@ def delete_account(request):
 
 
 @login_required
-def user_profile_username(request, username):
-    return user_profile(request)
-
-
-@login_required
 def user_profile(request):
     if request.user.username == "guest":
         raise Http404
@@ -134,16 +114,3 @@ def user_profile(request):
         'form': form
     }
     return render(request, 'account/user_profile.html', ret)
-
-
-@psa('social:complete')
-def register_by_access_token(request, backend):
-    # log in using external OAuth access Token
-    token = request.GET.get('access_token')
-    user = request.backend.do_auth(token)
-    if user:
-        login(request, user)
-        ret_token, created = Token.objects.get_or_create(user=user)
-        return HttpResponse(json.dumps({"result": "Success", "token": ret_token.key}))
-    else:
-        return HttpResponse(json.dumps({"result": "error"}))

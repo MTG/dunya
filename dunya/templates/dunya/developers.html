@@ -1,5 +1,5 @@
 {% extends "dunya/base.html" %}
-{% block title %}Terms and Conditions | {% endblock %}
+{% block title %}Developers | {% endblock %}
 
 {% block extra_head %}
 <style type="text/css">
@@ -33,7 +33,7 @@ table td, table tr {
 
 <h3>Dunya API</h3>
 
-<p>To use the api first you need to register on dunya <a href='http://dunya.compmusic.upf.edu/social/register/'>here</a>. Once your account is active you can start using the api, for example you can get the information of all the recordings of the makam collections with this url:<br> <a href='http://dunya.compmusic.upf.edu/api/makam/recording'>http://dunya.compmusic.upf.edu/api/makam/recording</a></p>
+<p>To use the api first you need to register on dunya <a href="{% url 'account-register' %}">here</a>. Once your account is active you can start using the api, for example you can get the information of all the recordings of the makam collections with this url:<br> <a href='http://dunya.compmusic.upf.edu/api/makam/recording'>http://dunya.compmusic.upf.edu/api/makam/recording</a></p>
 <p>
 In <a href='https://github.com/MTG/pycompmusic'>this repository</a> you can find the code to access the API with python. For example to access the recording in the makam collection:
 </p>
@@ -43,7 +43,7 @@ dunya.set_token("<your_token>")<br>
 recordings = dunya.makam.get_recordings()<br>
 </p>
 <p>
-In order to get your API token you have to <a href='http://dunya.compmusic.upf.edu/social/login/'>log in</a> to dunya and then go to your <a href='http://dunya.compmusic.upf.edu/social/profile/'>profile</a> where you will find your token.
+In order to get your API token you have to <a href="{% url 'account-login' %}">log in</a> to dunya and then go to your <a href="{% url 'account-user-profile' %}">profile</a> where you will find your token.
 </p>
 
 </div>

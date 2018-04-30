@@ -91,7 +91,7 @@
     <body>
 
         <div id="playback_dialog" title="Audio playback">
-        <p>Sorry, only registered users can play music in Dunya. Please <a href="/social/register/?next={{request.path}}">register</a>. Already registered? then <a href="/social/login/?next={{request.path}}">login</a></p>
+        <p>Sorry, only registered users can play music in Dunya. Please <a href="{% url 'account-user-register' %}?next={{request.path}}">register</a>. Already registered? then <a href="{% url 'account-login' %}?next={{request.path}}">login</a></p>
         </div>
 
 		<div id="aboutdialog" title="Dunya">
@@ -124,21 +124,21 @@
             <a href="#" id="aboutbutton">About</a>
             <div href="#" id="usermenu">
             {% if user.username == 'guest' %}
-                {% url 'social-auth-login' as login %}
-                {% url 'social-auth-register' as register %}
+                {% url 'account-login' as login %}
+                {% url 'account-register' as register %}
                  <a href="#">Login<img src="{% static 'carnatic/img/avatar.png' %}" /></a>
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi! what do you want to do?</h3>
-                        <a href="{% url 'social-auth-logout' %}?next={% autoescape on %}{{ login }}?next={% firstof request.path %}{% endautoescape %}">Login</a>
-                        <a href="{% url 'social-auth-logout' %}?next={{ register|safe }}">Register</a>
+                        <a href="{% url 'account-logout' %}?next={% autoescape on %}{{ login }}?next={% firstof request.path %}{% endautoescape %}">Login</a>
+                        <a href="{% url 'account-register' %}?next={{ register|safe }}">Register</a>
                     </div>
             {% elif user.is_authenticated %}
                     <a href="#" class="loggedin">{{ user.username }} <img src="{% static 'carnatic/img/avatar.png' %}" /></a>
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
-                        <a href="{% url 'social-auth-logout' %}?next={% firstof request.path|safe '/' %}">Logout</a>
+                        <a href="{% url 'account-logout' %}?next={% firstof request.path|safe '/' %}">Logout</a>
                     </div>
 
             {% else %}
@@ -146,8 +146,8 @@
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi! what do you want to do?</h3>
-                        <a href="{% url 'social-auth-login' %}?next={% firstof request.path|safe '/' %}">Login</a>
-                        <a href="{% url 'social-auth-register' %}">Register</a>
+                        <a href="{% url 'account-login' %}?next={% firstof request.path|safe '/' %}">Login</a>
+                        <a href="{% url 'account-register' %}">Register</a>
                     </div>
             {% endif %}
                 </div>

@@ -26,11 +26,11 @@
                                 <li><a href="{% url 'general-info' %}">Info</a></li>
                                 <li><a href="{% url 'terms' %}">Legal</a></li>
                                 {% if user.is_authenticated %}
-                                <li><a href="/social/profile">{{ user.username }}</a></li>
-                                <li><a href="/social/logout">Logout</a></li>
+                                <li><a href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
+                                <li><a href="{% url 'account-logout' %}">Logout</a></li>
                                 {% else %}
-                                <li><a href="/social/register">Register</a></li>
-                                <li><a href="/social/login">Login</a></li>
+                                <li><a href="{% url 'account-register' %}">Register</a></li>
+                                <li><a href="{% url 'account-login' %}">Login</a></li>
                                 {% endif %}
                             </ul>
                         </div>
