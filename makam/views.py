@@ -137,24 +137,6 @@ def get_works(work, artist, form, usul, makam, perf, q, elem=None):
     return recordings
 
 
-def work_score(request, uuid, title=None):
-    work = None
-    works = models.Work.objects.filter(mbid=uuid)
-    if len(works):
-        work = works[0]
-
-    scoreurl = "/document/by-id/%s/score?v=0.1&subtype=score&part=1" % uuid
-    phraseurl = "/document/by-id/%s/segmentphraseseg?v=0.1&subtype=segments" % uuid
-    indexmapurl = "/document/by-id/%s/score?v=0.1&subtype=indexmap" % uuid
-
-    return render(request, "makam/work_score.html", {
-        "work": work,
-        "phraseurl": phraseurl,
-        "scoreurl": scoreurl,
-        "indexmapurl": indexmapurl,
-    })
-
-
 def lyric_alignment(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
     mbid = recording.mbid

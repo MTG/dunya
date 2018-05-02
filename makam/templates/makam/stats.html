@@ -1,251 +1,41 @@
-{% extends "makam/base.html" %}
+{% extends "dunya/base.html" %}
 {% load staticfiles %}
 
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/pages.css' %}" />
-{% endblock %}
-{% block title %}Makam index | {% endblock %}
-{% block script %}
-<style>
+{% block title %}Makam statistics | {% endblock %}
 
-  .custom-combobox {
-    position: relative;
-    display: inline-block;
-  }
-  .custom-combobox-toggle {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-left: -1px;
-    padding: 0;
-  }
-  .custom-combobox-input {
-    margin: 0;
-    padding: 5px 10px;
-  }
-#one-column-emphasis th
-{
-  font-size: 14px;
-  font-weight: normal;
-  padding: 12px 15px;
-  color: #039;
-}
-#one-column-emphasis td
-{
-  padding: 10px 15px;
-  color: #669;
-  border-top: 1px solid #e8edff;
-  width: 300px;
-vertical-align: top;
-}
-.oce-first
-{
-  background: #d0dafd;
-  border-right: 10px solid transparent;
-  border-left: 10px solid transparent;
-}
-#one-column-emphasis tr:hover td
-{
-  color: #339;
-  background: #eff2ff;
-}
-#one-column-emphasis
-{
-  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-  font-size: 12px;
-  margin-left: 45px;
-  width: 480px;
-  text-align: left;
-  border-collapse: collapse;
-}
-#one-column-emphasis th
-{
-  font-size: 14px;
-  font-weight: bold;
-  padding: 12px 15px;
-  color: #039;
-}
-#one-column-emphasis td a
-{
-  color: #669;
-  text-decoration: none;
-  display:block;
-  height:100%;
-  width:100%;
-}
-#disp-filters{
-  padding-left: 42px;
- /* color: #339;*/
-  margin-top: 5px;
-}
-.pagination{
-margin: 10px 0 25px 42px;
-font-size: 14px;
-}
-.step-links{
-border-top: 1px black solid;
-}
-#right-display{
-  position: fixed;
-  top: 100px;
-  right: 100px;
-  border: 1px #ccc solid;
-  padding: 13px;
-  border-radius: 9px;
-  background-color: #FFFFD1;
-}
-#right-display ul{
-list-style-type: none;
-}
-#right-display a{
-  text-decoration: none;
-  color: #339;
-}
-td.recodings{
-width: 400px;
-}
-a:hover{
-  text-decoration: underline !important;
-}
-h2{
-  margin: 30px 0 0 20px;
-  color: #46433a;
-  font-size: 30px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-}
-#results{
-margin-left: 30px;
-}
-#initial, #loading, #no-results{
-  font-family: 'Sintony', sans-serif;
-  font-size: 14px;
-  margin-left: 30px;
-  margin-top: 15px;
-  color: #46433a;
-  min-height: 20px;
-  padding: 19px;
-  margin-bottom: 20px;
-  background-color: #f9f6f5;
-  border: 1px solid #ebe2df;
-  border-radius: 2px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
-  max-width: 1200px;
-}
-#initial a{
-  color: #46433a;
-}
-#next-page{
-  display: inline-block;
-  padding: 5px 14px;
-  background-color: #ffffff;
-  border: 1px solid #dddddd;
-  border-radius: 2px;
-margin: 20px;
-}
-.filter {
-  display: inline-block;
-    margin-left: 30px;
-    margin-top: 15px;
-    color: #565a5c;
-    min-height: 20px;
-    padding: 8px;
-    margin-bottom: 10px;
-    background-color: white;
-    border: 1px solid #aaa;
-    border-radius: 0px;
-}
-.filter-sel{
-    background-color: #edefed;
-    border: 1px solid #dce0e0;
-}
-.remove-param{
-    margin-right: 5px;
-    font-weight: bold;
-}
-.filter a{
-    text-decoration: none;
-    color: #039;
-}
-.table-front{
-    display: inline-block;
-    margin: 10px 56px;
-    border: 1px solid #ddd;
-  vertical-align:top;
-}
-
-.table-front th{
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-.table-front td {
-    padding: 15px;
-    text-align: left;
-}
-.table-front tr:nth-child(even) {background-color: #f2f2f2}
-.bold-text{
-    font-weight: bold;
-}
-</style>
-{% endblock%}
 {% block wrap %}
-<div id="detail"   style="min-height: 850px;">
+<div class="centering">
 
-    <div id="initial">
     <h2> CompMusic Turkish makam music corpus</h2>
 
-        <p class="p1">
-To develop methodologies for the automatic analysis, discovery and exploration of the culture-specific characteristics of a music tradition, we need music collections, which are representative of the studied aspects of that music. For Turkish makam music, there are various resources available such as audio recordings, music scores, lyrics and editorial metadata. However, most of these resources are not typically suited for computational analysis, are hard to access, do not have sufficient quality or do not include adequate descriptive information.
-        </p>
+    <p>To develop methodologies for the automatic analysis, discovery and exploration of the culture-specific characteristics of a music tradition, we need music collections, which are representative of the studied aspects of that music. For Turkish makam music, there are various resources available such as audio recordings, music scores, lyrics and editorial metadata. However, most of these resources are not typically suited for computational analysis, are hard to access, do not have sufficient quality or do not include adequate descriptive information.</p>
 
-        <p class="p1">
-To satisfy this need of representative music collections suitable for computational research, we have created a corpus of Turkish makam music. The primary considerations during the creation of this corpus reflect some criteria, namely, purpose, coverage, completeness, quality and reusability.
-        </p>
+    <p>To satisfy this need of representative music collections suitable for computational research, we have created a corpus of Turkish makam music. The primary considerations during the creation of this corpus reflect some criteria, namely, purpose, coverage, completeness, quality and reusability.</p>
 
-        <p class="p1">
-The CompMusic Turkish-makam corpus consists of around <strong>6500 audio recordings</strong>, adding up to 412 hours of playback duration; <a href="https://github.com/MTG/SymbTr"><strong>2200 music scores</strong></a> with lyrics encompassing 883,803 notes, 21536 sections and 100 hours of nominal playback duration; and <strong>13500 instances of editorial metadata</strong> in <a href="http://musicbrainz.org">Musicbrainz</a> related to the classical and folk repertoires of Turkish makam music. These statistics make the corpus the biggest corpus of Turkish makam music intended for computational research.
-        </p>
+    <p>The CompMusic Turkish-makam corpus consists of around <strong>6500 audio recordings</strong>, adding up to 412 hours of playback duration; <a href="https://github.com/MTG/SymbTr"><strong>2200 music scores</strong></a> with lyrics encompassing 883,803 notes, 21536 sections and 100 hours of nominal playback duration; and <strong>13500 instances of editorial metadata</strong> in <a href="http://musicbrainz.org">Musicbrainz</a> related to the classical and folk repertoires of Turkish makam music. These statistics make the corpus the biggest corpus of Turkish makam music intended for computational research.</p>
 
-<img style="margin-left: 339px;width: 432px;"src="{% static 'makam/img/metadata.png'%}"/>
-        <p class="p1" style="font-style: italic; font-size: 13px; text-align: center;">
-The basic statistics of the CompMusic Turkish makam music corpus. <br />
-The nodes represent the metadata stored and the numbers on the arrows indicate the number of relationships between each type of metadata
-        </p>
+    <img style="margin-left: 184px;width: 432px;" src="{% static 'makam/img/metadata.png'%}"/>
+    <p style="font-style: italic; font-size: 13px; text-align: center;">The basic statistics of the CompMusic Turkish makam music corpus. <br />
 
-        <p class="p1">
-We have compiled several test datasets from the corpus, providing a ground truth for specific computational tasks:
-        </p>
+    <p>We have compiled several test datasets from the corpus, providing a ground truth for specific computational tasks:</p>
 
-        <p class="p1">
-          <ul>
-          <li><a href="https://github.com/MTG/turkish_makam_tonic_dataset">Tonic Identification dataset</a></li>
-          <li><a href="https://github.com/MTG/makam-symbolic-phrase-segmentation-dataset">Symbolic phrase segmentation dataset</a></li>
-          <li><a href="https://github.com/MTG/turkish_makam_partial_alignment_dataset">Partial audio alignment dataset</a></li>
-          <li><a href="https://github.com/MTG/turkish_makam_section_dataset">Section dataset</a></li>
-          <li><a href="https://github.com/MTG/turkish_makam_audio_score_alignment_dataset">Audio-score alignment dataset</a></li>
-          <li><a href="https://github.com/MTG/turkish_makam_recognition_dataset">Makam recognition dataset</a></li>
-          <li><a href="https://github.com/georgid/turkish-makam-lyrics-2-audio-test-data">Audio-lyrics alignment dataset</a></li>
-         </ul>
-         </p>
+    <p>
+        <ul>
+        <li><a href="https://github.com/MTG/turkish_makam_tonic_dataset">Tonic Identification dataset</a></li>
+        <li><a href="https://github.com/MTG/makam-symbolic-phrase-segmentation-dataset">Symbolic phrase segmentation dataset</a></li>
+        <li><a href="https://github.com/MTG/turkish_makam_partial_alignment_dataset">Partial audio alignment dataset</a></li>
+        <li><a href="https://github.com/MTG/turkish_makam_section_dataset">Section dataset</a></li>
+        <li><a href="https://github.com/MTG/turkish_makam_audio_score_alignment_dataset">Audio-score alignment dataset</a></li>
+        <li><a href="https://github.com/MTG/turkish_makam_recognition_dataset">Makam recognition dataset</a></li>
+        <li><a href="https://github.com/georgid/turkish-makam-lyrics-2-audio-test-data">Audio-lyrics alignment dataset</a></li>
+        </ul>
+    </p>
 
-        <p class="p1">
-We have also started using the corpus to generate a knowledge base for a domain ontology describing Turkish makam music. We hope that this research corpus will facilitate academic studies in several fields such as music information retrieval and computational musicology.
-        </p>
+    <p>We have also started using the corpus to generate a knowledge base for a domain ontology describing Turkish makam music. We hope that this research corpus will facilitate academic studies in several fields such as music information retrieval and computational musicology.</p>
 
 References
-        <p class="p1">
-[1] Uyar, B., Atlı, H. S., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3030">A corpus for computational research of Turkish makam music</a>. In Proceedings of 1st International Digital Libraries for Musicology Workshop, pages 57–63, London, United Kingdom.
-        </p>
+    <p>[1] Uyar, B., Atlı, H. S., Şentürk, S., Bozkurt, B., and Serra, X. (2014). <a href="http://mtg.upf.edu/node/3030">A corpus for computational research of Turkish makam music</a>. In Proceedings of 1st International Digital Libraries for Musicology Workshop, pages 57–63, London, United Kingdom.</p>
 
-
-
-
-    </div>
-    <div class="clearfix"></div>
-</div>
-<div id="filterdialog" title="Filter">
 </div>
 {% endblock %}
 
