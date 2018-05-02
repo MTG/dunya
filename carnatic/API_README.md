@@ -15,7 +15,7 @@ You must authenticate in order to access API resources. Do this by sending a hea
     Authorization: Token <token>
 
 with your request. You can get the token on your dunya profile page at
-http://dunya.compmusic.upf.edu/social/profile/
+https://dunya.compmusic.upf.edu/user/profile/
 
 Methods
 -------

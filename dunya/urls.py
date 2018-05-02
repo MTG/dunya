@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^about/terms', TemplateView.as_view(template_name='dunya/terms.html'), name='terms'),
     url(r'^about/cookies', TemplateView.as_view(template_name='dunya/cookies.html'), name='cookies'),
     url(r'^about/info', TemplateView.as_view(template_name='dunya/general_info.html'), name='general-info'),
-    url(r'^about/contact', TemplateView.as_view(template_name='dunya/contact.html'), name='contact'),
 
     url(r'^api/carnatic/', include('carnatic.api_urls')),
     url(r'^api/hindustani/', include('hindustani.api_urls')),
