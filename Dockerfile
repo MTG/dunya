@@ -42,9 +42,9 @@ RUN git clone https://github.com/MTG/pycompmusic.git
 WORKDIR /sources/pycompmusic
 RUN pip install -e .
 
-RUN mkdir /code/frontend
-ADD frontend/package.json /code/frontend
-WORKDIR /code/frontend
+
+ADD package.json /code/
+WORKDIR /code
 RUN npm install
 
 ADD . /code/
