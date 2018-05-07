@@ -9,7 +9,7 @@
 
 {% block title %}{{recording.title}} - {% endblock %}
 
-{% block script %}
+{% block extra_head %}
 <script>
     var pitchtrackurl = "{{pitchtrackurl|safe}}";
     var histogramurl = "{{histogramurl|safe}}";
