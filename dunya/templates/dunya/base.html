@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html class="no-js">
+<html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -46,13 +46,36 @@
         <script src="{% static 'carnatic/js/main.js' %}"></script>
         <script src="{% static 'carnatic/js/plugins.js' %}"></script>
 
+        <script>
+            $(document).ready(function() {
+                soundManager.setup({
+                  url: "{% static 'dunya/swf/' %}"
+                });
+
+                $("#playback_dialog").dialog({
+                  autoOpen: false,
+                  show: {
+                    effect: "blind",
+                    duration: 100
+                  },
+                  hide: {
+                    effect: "explode",
+                    duration: 100
+                  }
+                });
+            });
+        </script>
         {% block script %}
         {% endblock %}
         {% block extra_head %}
         {% endblock %}
     </head>
     <body>
-        <!-- //////  HEADER BLOCK  ////// -->
+
+        <div id="playback_dialog" title="Audio playback">
+        <p>Sorry, only registered users can play music in Dunya. Please <a href="{% url 'account-register' %}?next={{request.path}}">register</a>. Already registered? then <a href="{% url 'account-login' %}?next={{request.path}}">login</a></p>
+        </div>
+
         <div class="header-container">
             <header class="centering">
             <div id="logo">
@@ -65,12 +88,12 @@
                     {% block info_link %}
                     <li><a class="" href="./info">Info</a></li>
                     {% endblock %}
-                    <li><a class="" href="about/terms">Legal</a></li>
+                    <li><a class="" href="{% url 'terms' %}">Legal</a></li>
                     {% if user.is_authenticated %}
                       {% if user.username != 'guest' %}
                         <li><a class="" id="mainmenu_a" href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
                       {% endif %}
-                      <li><a class="" href="{% url 'account-login' %}">Logout</a></li>
+                      <li><a class="" href="{% url 'account-logout' %}">Logout</a></li>
                       {% else %}
                       <li><a href="{% url 'account-login' %}">Login</a></li>
                       <li><a href="{% url 'account-register' %}">Register</a></li>
