@@ -1,4 +1,6 @@
 {% extends "dunya/base.html" %}
+{% load static %}
+
 {% block title %}General Info | {% endblock %}
 
 {% block extra_head %}
@@ -13,8 +15,18 @@
 
 {% block wrap %}
 <div class="centering">
+    <p>Dunya is a research prototype developed in CompMusic, a research project that studies
+    several world music traditions from an information technologies point of view. It has been
+    developed to evaluate the results of the research, mainly to be able to get feedback from users
+    to further improve the technologies being developed.</p>
+    <p>The information shown has been gathered from different sources and we have tried our best
+    to get accurate data and to identify its provenance whenever possible.</p>
+
+
     <h2>Developers</h2>
-    <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">developers page</a>.</p>
+    <p>Dunya offers an API that allows other applications to access the collections and data that we
+        computed as part of the CompMusic project.
+        For more information go to the <a href="{% url 'developers' %}">developers page</a>.</p>
 
     <h2>Contact us</h2>
 
@@ -23,5 +35,11 @@
     <p>To contact a specific researcher, see their <a href="http://compmusic.upf.edu/node/3">contact information</a>.</p>
     <p>For information about Dunya, contact Alastair Porter: alastair.porter@upf.edu.</p>
     <p>For general information about the CompMusic project, contact mtg@upf.edu.</p>
+
+    <p>We use icons made by <a href="http://www.freepik.com/">Freepik</a> from <a href="http://www.flaticon.com/">www.flaticon.com</a> </p>
+
+    <p>Dunya was Funded by the European Research Council<br>
+    <img src="{% static 'carnatic/img/erclogo.jpg' %}"> </p>
+
 </div>
 {% endblock %}
