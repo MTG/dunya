@@ -315,10 +315,14 @@ class OrchestraPerformer(models.Model):
 
 class Tab(data.models.BaseModel):
     class Meta:
-        ordering = ['id']
+        ordering = ['display_order', 'id']
 
+    uuid = models.UUIDField(db_index=True, null=True)
     name = models.CharField(max_length=50)
     transliterated_name = models.CharField(max_length=50, blank=True)
+
+    # Set to 1 to force some Tab to show at the bottom when listing them
+    display_order = models.IntegerField(null=False, default=0)
 
     def __unicode__(self):
         return self.name
@@ -326,10 +330,14 @@ class Tab(data.models.BaseModel):
 
 class Nawba(data.models.BaseModel):
     class Meta:
-        ordering = ['id']
+        ordering = ['display_order', 'id']
 
+    uuid = models.UUIDField(db_index=True, null=True)
     name = models.CharField(max_length=50, blank=True)
     transliterated_name = models.CharField(max_length=50, blank=True)
+
+    # Set to 1 to force some Nawba to show at the bottom when listing them
+    display_order = models.IntegerField(null=False, default=0)
 
     def __unicode__(self):
         return self.name
@@ -337,10 +345,14 @@ class Nawba(data.models.BaseModel):
 
 class Mizan(data.models.BaseModel):
     class Meta:
-        ordering = ['id']
+        ordering = ['display_order', 'id']
 
+    uuid = models.UUIDField(db_index=True, null=True)
     name = models.CharField(max_length=50, blank=True)
     transliterated_name = models.CharField(max_length=50, blank=True)
+
+    # Set to 1 to force some Mizan to show at the bottom when listing them
+    display_order = models.IntegerField(null=False, default=0)
 
     def __unicode__(self):
         return self.name
@@ -355,11 +367,15 @@ class FormType(models.Model):
 
 class Form(data.models.BaseModel):
     class Meta:
-        ordering = ['id']
+        ordering = ['display_order', 'id']
 
+    uuid = models.UUIDField(db_index=True, null=True)
     name = models.CharField(max_length=50)
     transliterated_name = models.CharField(max_length=50, blank=True)
     form_type = models.ForeignKey(FormType, blank=True, null=True)
+
+    # Set to 1 to force some Form to show at the bottom when listing them
+    display_order = models.IntegerField(null=False, default=0)
 
     def __unicode__(self):
         return self.name

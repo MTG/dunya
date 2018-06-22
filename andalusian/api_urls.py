@@ -20,6 +20,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 import andalusian.api
 
 mbid_match = r'(?P<mbid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+
 
 urlpatterns = [
     url(r'^orchestra$', andalusian.api.OrchestraList.as_view(), name='api-andalusian-raaga-list'),
@@ -45,16 +47,16 @@ urlpatterns = [
     url(r'^instrument/(?P<pk>\d+)$', andalusian.api.InstrumentDetail.as_view(), name='api-andalusian-instrument-detail'),
 
     url(r'^tab$', andalusian.api.TabList.as_view(), name='api-andalusian-tab-list'),
-    url(r'^tab/(?P<pk>\d+)$', andalusian.api.TabDetail.as_view(), name='api-andalusian-tab-detail'),
+    url(r'^tab/%s' % uuid_match, andalusian.api.TabDetail.as_view(), name='api-andalusian-tab-detail'),
 
     url(r'^mizan$', andalusian.api.MizanList.as_view(), name='api-andalusian-mizan-list'),
-    url(r'^mizan/(?P<pk>\d+)$', andalusian.api.MizanDetail.as_view(), name='api-andalusian-mizan-detail'),
+    url(r'^mizan/%s' % uuid_match, andalusian.api.MizanDetail.as_view(), name='api-andalusian-mizan-detail'),
 
     url(r'^nawba$', andalusian.api.NawbaList.as_view(), name='api-andalusian-nawba-list'),
-    url(r'^nawba/(?P<pk>\d+)$', andalusian.api.NawbaDetail.as_view(), name='api-andalusian-nawba-detail'),
+    url(r'^nawba/%s' % uuid_match, andalusian.api.NawbaDetail.as_view(), name='api-andalusian-nawba-detail'),
 
     url(r'^form$', andalusian.api.FormList.as_view(), name='api-andalusian-form-list'),
-    url(r'^form/(?P<pk>\d+)$', andalusian.api.FormDetail.as_view(), name='api-andalusian-form-detail'),
+    url(r'^form/%s' % uuid_match, andalusian.api.FormDetail.as_view(), name='api-andalusian-form-detail'),
 
     url(r'^sanaa$', andalusian.api.SanaaList.as_view(), name='api-andalusian-sanaa-list'),
     url(r'^sanaa/(?P<pk>\d+)$', andalusian.api.SanaaDetail.as_view(), name='api-andalusian-sanaa-detail'),

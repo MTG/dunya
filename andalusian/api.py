@@ -72,25 +72,25 @@ class InstrumentInnerSerializer(serializers.ModelSerializer):
 class TabInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tab
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class MizanInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mizan
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class NawbaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nawba
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class SanaaInnerSerializer(serializers.ModelSerializer):
@@ -229,11 +229,11 @@ class InstrumentList(generics.ListAPIView):
 class TabDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tab
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class TabDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Tab.objects.all()
     serializer_class = TabDetailSerializer
 
@@ -246,11 +246,11 @@ class TabList(generics.ListAPIView):
 class MizanDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mizan
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class MizanDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Mizan.objects.all()
     serializer_class = MizanDetailSerializer
 
@@ -263,11 +263,11 @@ class MizanList(generics.ListAPIView):
 class NawbaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nawba
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class NawbaDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Nawba.objects.all()
     serializer_class = NawbaDetailSerializer
 
@@ -280,11 +280,11 @@ class NawbaList(generics.ListAPIView):
 class FormDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
 
 
 class FormDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'uuid'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
