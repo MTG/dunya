@@ -22,134 +22,25 @@ contact us at mtg@upf.edu
 Installation
 ============
 
-On ubuntu-like machines you can run `bash setup.sh` to install dependencies from
-apt, create symlinks into the python environment, and install all python packages.
-Otherwise, read on
+Using docker, run
 
-Dependencies
-------------
+    docker-compose build
 
-    sudo apt-get install python-numpy python-scipy python-matplotlib libsndfile1-dev lame libjpeg8-dev
+to build the relevant packages, and then run
 
-* Create a virtualenv
+    docker-compose up
 
-        virtualenv --no-site-packages env
-        source env/bin/activate
-        pip install --upgrade distribute
-        pip install -r requirements
+to start it.
 
-* Also install essentia + python libraries
+Setup
+-----
 
-We install essentia into the virtualenv that we created for python. This lets the automatic celery jobs upgrade essentia
-when we make changes to it without needing root.
+Perform a database migration, and load fixture data
 
-        git clone git@github.com:CompMusic/essentia.git
-        cd essentia
-        git checkout -t origin/deploy
-        sudo apt-get install build-essential libyaml-dev libfftw3-dev libavcodec-dev libavformat-dev python-dev libsamplerate0-dev libtag1-dev python-numpy-dev python-numpy
-        ./waf configure --mode=release --with-python --prefix=/srv/dunya/env
-        ./waf
-        sudo ./waf install
+    docker-compose run --rm web python manage.py migrate
 
-* Using essentia, numpy, and scipy in virtualenv
+    docker-compose run --rm web python manage.py loaddata carnatic_form.json carnatic_raaga.json carnatic_instrument.json carnatic_taala.json data_initial_data.json docserver_groups.json docserver_sourcefiletype.json sites.json hindustani_form.json hindustani_laya.json hindustani_taal.json hindustani_instrument.json hindustani_raag.json makam_form.json makam_instrument.json makam_makam.json makam_usul.json
 
-        ln -s /usr/local/lib/python2.7/dist-packages/essentia/ env/lib/python2.7/site-packages
-        ln -s /usr/lib/python2.7/dist-packages/numpy* env/lib/python2.7/site-packages
-        ln -s /usr/lib/python2.7/dist-packages/scipy* env/lib/python2.7/site-packages
-
-* Installing Pillow with jpeg support
-
-        sudo apt-get install libjpeg8-dev
-        ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so* env/lib
-        ln -s /usr/lib/x86_64-linux-gnu/libz.so* env/lib
-        ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so* env/lib
-        pip install pillow
-
-* If you install matplotlib with apt:
-
-        pip install python-dateutil
-        ln -s /usr/lib/pymodules/python2.7/matplotlib* env/lib/python2.7/site-packages/
-        ln -s /usr/lib/pymodules/python2.7/pylab* env/lib/python2.7/site-packages/
-
-Database
---------
-
-Copy the file `dunya/local_settings.py.dist` to `dunya/local_settings.py` and
-edit it to point to your database. We currently use postgres for its
-unaccent support.
-
-Create the database:
-
-    createdb dunya
-
-and also create the unaccent extension:
-
-    echo 'create extension unaccent;' | psql dunya
-
-To add tables to the database run
-
-    fab setupdb
-
-Alternatively, you may want to create a postgres dump, since the django json dump
-is over 500mb. Set up postgres and run
-
-    # on the server
-    pg_dump -O dunya > dunya_pg.sql
-
-    # on the new machine
-    psql dunya < dunya_pg.sql
-
-Where `dunya` is the name of the database
-
-* If you want to manually add data to an empty database, follow these steps:
-    1.  To setup and configure your database, run:
-            fab setupdb
-
-    2.  Inside your database, add a row to the `django_site` table:
-        Example:
-            id |         domain          |            name
-            1  | dunya.compmusic.upf.edu | dunya.compmusic.upf.edu
-
-    3.  You need to have a collection of albums and audio files somewhere on your drive.
-        You will need to enter the path to this folder. You can download sample collections
-        from one of 'kora' if you have access to it.
-
-    4.  Assuming you have a MusicBrainz account, create a public collection and make
-        sure the name contains the name of the music style that the collection is
-        related to. For example, for Carnatic style the word 'carnatic' should be included
-        somewhere in the collection name (ie 'carnatic_coll_23423')
-        Add the releases for which you have a copy (step 3) into this collection.
-
-    5. Run the development server and direct your browser to localhost:XXXX/dashboard
-
-    6. Enter the corresponding data for the 'add collection' form.
-        - You can retrieve the collection id from the link of the page
-            (http://musicbrainz.org/collection/{collection_id})
-       Note:
-        At the moment, if you are adding a collection for Carnatic style, you can choose
-        all the checkers except the ones containing Makam.
-
-    7. Click on Submit.
-
-Updating file locations
------------------------
-
-Dunya has files in 3 locations:
-
-* Audio files
-* Derived files (images, wav files, features)
-* Media files (see below section)
-
-The database stores the location of all files in docserver. If you copied audio and
-derived files from the server then you need to update the location. Run
-
-    python manage.py moveaudiodata <collectionid> <audiodir>
-
-where `collectionid` is the musicbrainz id of the collection and `audiodir` is the
-location where the audio now lives.
-This takes a while (For just carnatic we have close to 1.5m rows to update). In the
-future we may suggest a method that accesses the database directly instead of
-using django.
 
 Media files (entity images)
 ---------------------------
@@ -157,71 +48,13 @@ Media files (entity images)
 On the server, these files are stored in `/mnt/compmusic/compmusicweb/dunya`.
 You need to copy the directory to the `MEDIA_ROOT` location in `local_settings.py`
 
-Rabbitmq
---------
-
-This is not needed if you don't want to use the extractors.
-
-We use rabbitmq for sending job commands to workers. On the server you will need to run
-(password values aren't important)
-
-    rabbitmqctl add_user dunyauser dunyapassword
-    rabbitmqctl add_vhost CompMusic
-    rabbitmqctl set_permissions -p CompMusic dunyauser ".*" ".*" ".*"
-
-* Rabbitmq configuration
-
-In `dunya/local_settings.py` you will need to add connection details:
-
-    BROKER_URL = 'amqp://dunyauser:dunyapassword@sitar.s.upf.edu:5672/CompMusic'
-
-
 
 Less stylesheets
 ----------------
 We use the less css compiler for stylesheets. You'll need `lessc` installed in order
-to update them. This might be as simple as one of these:
-
-    npm install -g less
-    sudo apt-get install node-less
-
-You can also install node and less directly into your virtualenv if system versions
-of node are too old:
-
-    wget http://nodejs.org/dist/v0.10.25/node-v0.10.25.tar.gz
-    tar xfz node-v0.10.25.tar.gz
-    cd node-v0.10.25
-    ./configure --prefix=/srv/dunya/env
-    make && make install
-    hash -r
-    npm install -g less
-
-Compile all the less files to css by running
+to update them.
 
     fab lesscompress
-
-Running
-=======
-
-To run the server:
-
-    source env/bin/activate
-    fab up
-
-To run jobs, make sure rabbitmq is running on the server
-
-And on each client you run celery, either for executing the feature processing algorithms or the
-information import from MusicBrainz.
-
-    celery -A dunya worker -l info
-
-    celery -A dunya worker -l info -Q import
-
-To make a complete dump of the database to a file called `dunya_data.json` or to
-load it again, run
-
-    fab dumpdata
-    fab loaddata
 
 Updating Fixtures
 =================
@@ -242,81 +75,6 @@ new fixture, too.
 
     fab dumpfixture:carnatic
 
-
-Development
-===========
-
-In the data module there are 5 abstract classes:
-
- * Artist
- * Composer
- * Work
- * Concert
- * Recording
-
-These classes store fields that are common to all cultures.
-
-They also store lookup properties that are common over all styles, e.g.,
-`concert.performers()`
-
-Each style has replicas of these classes that can inherit from these
-abstract classes.
-
-The abstract classes also provide the `get_absolute_url()` method, to be used
-when referring to an object.
-
-both `get_absolute_url` and property lookups require data (class names, url fragments) that
-are common to the specific culture. Because of this, you need to create a StyleBase class
-which implements two methods. Here is an example:
-
-    class CarnaticBase(object):
-        def get_style(self):
-            return "carnatic"
-        def get_object_map(self):
-            return {"performance": InstrumentPerformance,
-                    "concert": Concert
-            }
-
-You need an object map for each of the abstract classes.
-
-A specific culture has a concrete class inheriting from the base class ''first'' and
-then the abstract data class
-
-    class Concert(CarnaticBase, data.models.BaseConcert):
-
-Any fields that are specific to this culture can be added to this specific class.
-
-Templates
-=========
-
-To get the application chrome, add this to the top of the template
-
-    {% extends "browse/base.html" %}
-
-and put the contents of the template inside
-
-    {% block wrap %}
-    ...
-    {% endblock %}
-
-Template files should be saved in `modulename/templates/modulename/templatename.html` and can be
-refered to in a view as `modulename/templatename.html`
-
-Template fragments
-==================
-
-Commonly used parts of code are added to template fragments.
-
-We need a better description about how to name these and what the arguments should be.
-
-Inline links
-============
-When linking to an entity, never construct a link manually. Instead, make sure the template contains
-
-    {% load extras %}
-
-and use the provided `{% inline_x thex %}` methods. These will automatically create a link and
-the best form of the objects name.
 
 Server configuration
 ====================
