@@ -26,7 +26,6 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from rest_framework.authtoken.models import Token
-from social_django.utils import psa
 
 from account import forms
 

@@ -29,8 +29,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include('account.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
-    url(r'^makamplayer/$', makam.views.makamplayer),
-    url('', include('social_django.urls', namespace='social'))
+    url(r'^makamplayer/$', makam.views.makamplayer)
 ]
 
 if settings.DEBUG:

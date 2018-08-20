@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'andalusian',
     'jingju',
     'frontend',
-    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -100,7 +99,6 @@ if get_env('DUNYA_MOTIF_DB_URL'):
 
 
 AUTHENTICATION_BACKENDS = [
-    'social_core.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
