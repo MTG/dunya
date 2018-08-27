@@ -8,14 +8,12 @@ from django.db.models import Q
 from django.utils.text import slugify
 
 import data.models
-import managers
 
-class Recording(data.models.Recording):
+class Recording(data.models.BaseModel):
     class Meta:
         ordering = ['id']
 
     work = models.ForeignKey('Work')
-    release = models.ForeignKey('Release', through='RecordingRelease')
     performer = models.ManyToManyField('Performer', through='RecordingPerformer')
     instrumentalists = models.ManyToManyField('Artist', through='RecordingArtist')
 
@@ -50,7 +48,7 @@ class RecordingPerformer(models.Model):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.release)
 
 
-class Work(data.models.Work):
+class Work(data.models.BaseModel):
     class Meta:
         ordering = ['id']
 
@@ -73,7 +71,7 @@ class Performer(data.models.BaseModel):
 
     name = models.CharField(max_length=100)
     uuid = models.UUIDField()
-    recordings = models.ManyToManyField('Recording', through='RecordingPerformer')
+
     roletype = models.ForeignKey('Roletype',  blank=True, null=True)
 
 class Roletype(data.models.BaseModel):
