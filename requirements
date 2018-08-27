@@ -110,4 +110,4 @@ uwsgi
 pycompmusic
 arabictransliterator==0.1
 tomato==0.13.0.dev0
-git+git://github.com/sertansenturk/seyiranalyzer.git
+git+https://github.com/sertansenturk/seyiranalyzer.git
