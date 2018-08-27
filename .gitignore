@@ -11,3 +11,5 @@ media
 /static
 node_modules
 *.css.map
+# docker compose environment file
+.env
