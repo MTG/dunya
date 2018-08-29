@@ -13,16 +13,24 @@ class Recording(data.models.BaseModel):
     class Meta:
         ordering = ['id']
 
+    title = models.CharField(max_length=200, blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     work = models.ForeignKey('Work')
-    performer = models.ManyToManyField('Performer', through='RecordingPerformer')
-    instrumentalists = models.ManyToManyField('Artist', through='RecordingArtist')
+    performers = models.ManyToManyField('Artist', through='RecordingPerformer')
+    instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist')
 
-class RecordingArtist(models.Model):
+    def __unicode__(self):
+        return u"%s" % (self.title)
+
+class RecordingInstrumentalist(models.Model):
     recording = models.ForeignKey('Recording')
     artist = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
 
 class Artist(data.models.Artist):
+    role_type = models.ForeignKey('RoleType', blank=True, null=True)
+    instrument = models.ForeignKey('Instrument', blank=True, null=True)
+
     class Meta:
         ordering = ['id']
 
@@ -41,7 +49,7 @@ class RecordingRelease(models.Model):
 
 class RecordingPerformer(models.Model):
     recording = models.ForeignKey('Recording')
-    performer = models.ForeignKey('Performer')
+    performer = models.ForeignKey('Aritist')
     sequence = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
@@ -52,30 +60,28 @@ class Work(data.models.BaseModel):
     class Meta:
         ordering = ['id']
 
+    title = models.CharField(max_length=200, blank=True, null=True)
+    mbid = models.UUIDField(blank=True, null=True)
     score = models.ForeignKey('Score', blank=True, null=True)
     play = models.ForeignKey('Play', blank=True, null=True)
 
-    def recordings(self):
-        return self.recording_set.all()
+    # def recordings(self):
+    #     return self.recording_set.all()
+
+    def __unicode__(self):
+        return u"%s" % (self.title)
 
 class Release(data.models.Release):
     class Meta:
         ordering = ['id']
 
     recordings = models.ManyToManyField('Recording', through='RecordingRelease')
-    performer = models.ForeignKey('Performer', blank=True, null=True)
+    performer = models.ForeignKey('Artist', blank=True, null=True)
 
-class Performer(data.models.BaseModel):
-    class Meta:
-        ordering = ['id']
 
+class RoleType(data.models.BaseModel):
     name = models.CharField(max_length=100)
     uuid = models.UUIDField()
-
-    roletype = models.ForeignKey('Roletype',  blank=True, null=True)
-
-class Roletype(data.models.BaseModel):
-    name = models.CharField(max_length=100)
 
 class Play(data.models.BaseModel):
     name = models.CharField(max_length=100)
