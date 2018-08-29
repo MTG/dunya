@@ -259,7 +259,12 @@ class InstrumentPerformanceInnerSerializer(serializers.ModelSerializer):
 
 
 class RecordingList(generics.ListAPIView):
-    serializer_class = RecordingInnerSerializer
+    def get_serializer_class(self):
+        detail = self.request.GET.get('detail', None)
+        if detail == '1':
+            return RecordingDetailSerializer
+        else:
+            return RecordingInnerSerializer
 
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
