@@ -50,13 +50,13 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
 class RaagaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Raaga
-        fields = ['uuid', 'name']
+        fields = ['uuid', 'name', 'common_name']
 
 
 class TaalaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Taala
-        fields = ['uuid', 'name']
+        fields = ['uuid', 'name', 'common_name']
 
 
 class FormInnerSerializer(serializers.ModelSerializer):
