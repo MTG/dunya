@@ -6,6 +6,48 @@ from data.models import WithImageMixin
 
 from jingju import models
 
+class ScoreInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Score
+        fields = ['title']
+
+class PlayInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Play
+        fields = ['title']
+
+class RoleTypeInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.RoleType
+        fields = ['title']
+
+class InstrumentInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Artist
+        fields = ['mbid', 'name']
+
+class ArtistInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Artist
+        fields = ['mbid', 'name']
+
+class ArtistDetailSerializer(serializers.ModelSerializer):
+    role_type = RoleTypeInnerSerializer()
+    instrument = InstrumentInnerSerializer()
+
+    class Meta:
+        model = models.Artist
+        fields = ['mbid', 'title', 'role_type', 'instrument']
+
+class RecordingInstrumentInnerSerializer(serializers.ModelSerializer):
+    artist = ArtistInnerSerializer()
+    instrument = InstrumentInnerSerializer()
+
+    class Meta:
+        model = models.RecordingInstrumentalist
+        fields = ['artist', 'instrument']
+
+
 class WorkInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Work
@@ -49,47 +91,15 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'performer', 'recordings']
 
 
-class ArtistInnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Artist
-        fields = ['mbid', 'name']
-
-class ArtistDetailSerializer(serializers.ModelSerializer):
-    role_type = RoleTypeInnerSerializer()
-    instrument = InstrumentInnerSerializer()
-
-    class Meta:
-        model = models.Artist
-        fields = ['mbid', 'title', 'role_type', 'instrument']
-
-class InstrumentInnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Artist
-        fields = ['mbid', 'name']
 
 
-class RecordingInstrumentInnerSerializer(serializers.ModelSerializer):
-    artist = ArtistInnerSerializer()
-    instrument = InstrumentInnerSerializer()
 
-    class Meta:
-        model = models.RecordingInstrumentalist
-        fields = ['artist', 'instrument']
 
-class RoleTypeInnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.RoleType
-        fields = ['title']
 
-class ScoreInnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Score
-        fields = ['title']
 
-class PlayInnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Play
-        fields = ['title']
+
+
+
 
 
 class WorkList(generics.ListAPIView):

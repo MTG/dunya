@@ -16,8 +16,8 @@ class Recording(data.models.BaseModel):
     title = models.CharField(max_length=200, blank=True, null=True)
     mbid = models.UUIDField(blank=True, null=True)
     work = models.ForeignKey('Work')
-    performers = models.ManyToManyField('Artist', through='RecordingPerformer')
-    instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist')
+    performers = models.ManyToManyField('Artist', through='RecordingPerformer', related_name = 'performer')
+    instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist', related_name = 'instrumentalist')
 
     def __unicode__(self):
         return u"%s" % (self.title)
@@ -29,7 +29,7 @@ class RecordingInstrumentalist(models.Model):
 
 class Artist(data.models.Artist):
     role_type = models.ForeignKey('RoleType', blank=True, null=True)
-    instrument = models.ForeignKey('Instrument', blank=True, null=True)
+    instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name = 'jingju')
 
     class Meta:
         ordering = ['id']
@@ -49,7 +49,7 @@ class RecordingRelease(models.Model):
 
 class RecordingPerformer(models.Model):
     recording = models.ForeignKey('Recording')
-    performer = models.ForeignKey('Aritist')
+    performer = models.ForeignKey('Artist')
     sequence = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
