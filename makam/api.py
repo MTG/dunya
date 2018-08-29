@@ -309,12 +309,13 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
     releases = serializers.SerializerMethodField('release_list')
     artists = ArtistInnerSerializer('artists', many=True)
     makamlist = MakamInnerSerializer('makamlist', many=True)
+    usullist = MakamInnerSerializer('usullist', many=True)
     performers = InstrumentPerformanceSerializer(source='instrumentperformance_set', many=True)
     works = WorkInnerSerializer(source='worklist', many=True)
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'releases', 'performers', 'works', 'artists', 'makamlist']
+        fields = ['mbid', 'title', 'releases', 'performers', 'works', 'artists', 'makamlist', 'usullist']
 
     def release_list(self, ob):
         collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)

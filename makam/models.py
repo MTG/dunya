@@ -161,8 +161,10 @@ class Recording(MakamStyle, data.models.Recording):
     objects = managers.CollectionRecordingManager()
 
     def makamlist(self):
-        makams = Makam.objects.filter(Q(work__in=self.works.all()) | Q(recording=self)).distinct().all()
-        return makams
+        return Makam.objects.filter(Q(work__in=self.works.all()) | Q(recording=self)).distinct().all()
+
+    def usullist(self):
+        return Usul.objects.filter(work__in=self.works.all()).distinct().all()
 
     def releaselist(self):
         return self.release_set.all()
