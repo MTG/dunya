@@ -6,10 +6,15 @@ from data.models import WithImageMixin
 
 from jingju import models
 
+class ShengqiangBanshiInnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ShengqiangBanshi
+        fields = ['name']
+
 class ScoreInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Score
-        fields = ['title']
+        fields = ['name']
 
 class PlayInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +24,7 @@ class PlayInnerSerializer(serializers.ModelSerializer):
 class RoleTypeInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.RoleType
-        fields = ['title']
+        fields = ['name', 'transliteration']
 
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,7 +42,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'title', 'role_type', 'instrument']
+        fields = ['mbid', 'name', 'role_type', 'instrument']
 
 class RecordingInstrumentInnerSerializer(serializers.ModelSerializer):
     artist = ArtistInnerSerializer()
@@ -67,28 +72,40 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
         model = models.Recording
         fields = ['mbid', 'title']
 
-
-class RecordingDetailSerializer(serializers.ModelSerializer):
-    work = WorkInnerSerializer()
-    performers = ArtistInnerSerializer(many=True)
-    instrumentalists = RecordingInstrumentInnerSerializer(many=True)
-
-    class Meta:
-        model = models.Work
-        fields = ['mbid', 'title', 'work', 'performers', 'instrumentalists']
-
 class ReleaseInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Release
         fields = ['mbid', 'title']
 
-class ReleaseDetailSerializer(serializers.ModelSerializer):
-    performer = ArtistInnerSerializer()
-    recordings = RecordingInnerSerializer(many=True)
+class RecordingReleaseInnerSerializer(serializers.ModelSerializer):
+    mbid = serializers.ReadOnlyField(source='recording.mbid')
+    title = serializers.ReadOnlyField(source='recording.title')
 
     class Meta:
-        model = models.Work
-        fields = ['mbid', 'title', 'performer', 'recordings']
+        model = models.RecordingRelease
+        fields = ['mbid', 'title', 'disc', 'disctrack', 'track']
+
+class RecordingDetailSerializer(serializers.ModelSerializer):
+    work = WorkInnerSerializer()
+    performers = ArtistInnerSerializer(many=True)
+    instrumentalists = RecordingInstrumentInnerSerializer(source='recordinginstrumentalist_set.all', many=True)
+    release = ReleaseInnerSerializer(source='release_set.all', many=True)
+    shengqiangbanshi = ShengqiangBanshiInnerSerializer(many=True)
+
+    class Meta:
+        model = models.Recording
+        fields = ['mbid', 'title', 'release', 'work', 'performers', 'instrumentalists', 'shengqiangbanshi']
+
+
+
+class ReleaseDetailSerializer(serializers.ModelSerializer):
+    # performer = ArtistInnerSerializer()
+    artists = ArtistInnerSerializer(many=True)
+    recordings = RecordingReleaseInnerSerializer(source='recordingrelease_set.all', many=True)
+
+    class Meta:
+        model = models.Release
+        fields = ['mbid', 'title', 'recordings', 'artists']
 
 
 
@@ -142,6 +159,9 @@ class ArtistDetail(generics.RetrieveAPIView):
     lookup_field = 'mbid'
     lookup_url_kwarg = 'uuid'
     queryset = models.Artist.objects.all()
-    serializer_class = ArtistInnerSerializer
+    serializer_class = ArtistDetailSerializer
 
 
+class RoleTypeList(generics.ListAPIView):
+    serializer_class = RoleTypeInnerSerializer
+    queryset = models.RoleType.objects.all()

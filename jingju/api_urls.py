@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^release$', jingju.api.ReleaseList.as_view(), name='api-jingju-release-list'),
     url(r'^release/%s$' % uuid_match, jingju.api.ReleaseDetail.as_view(), name='api-jingju-release-detail'),
 
+    url(r'^roletype$', jingju.api.RoleTypeList.as_view(), name='api-jingju-roletype-list'),
+
 
 ]
 
