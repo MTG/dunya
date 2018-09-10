@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Count
 from django.db.models import Q
 from django.utils.text import slugify
+import managers
 
 import data.models
 
@@ -33,6 +34,7 @@ class Recording(JingjuStyle, data.models.BaseModel):
     performers = models.ManyToManyField('Artist')
     instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist', related_name = 'instrumentalist')
     shengqiangbanshi = models.ManyToManyField('ShengqiangBanshi')
+    objects = managers.CollectionRecordingManager()
 
 
 
@@ -44,9 +46,12 @@ class RecordingInstrumentalist(JingjuStyle, models.Model):
     artist = models.ForeignKey('Artist')
     instrument = models.ForeignKey('Instrument')
 
+
 class Artist(data.models.Artist):
+    alias = models.CharField(max_length=200, blank=True, null=True)
     role_type = models.ForeignKey('RoleType', blank=True, null=True)
     instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name = 'jingju')
+    objects = managers.ArtistManager()
 
     class Meta:
         ordering = ['id']
@@ -102,7 +107,7 @@ class Release(JingjuStyle, data.models.Release):
     recordings = models.ManyToManyField('Recording', through='RecordingRelease')
     # performer = models.ForeignKey('Artist', blank=True, null=True)
     collection = models.ForeignKey('data.Collection', blank=True, null=True)
-
+    objects = managers.CollectionReleaseManager()
 
 class RoleType(data.models.BaseModel):
     name = models.CharField(max_length=100)
