@@ -548,9 +548,10 @@ class Recording(CarnaticStyle, data.models.Recording):
         if forms[0].attrfromrecording:
             return self.raagas.all()
 
-        if len(self.works.all()):
+        works = self.works.all()
+        if len(works):
             ret = []
-            for w in self.works.all():
+            for w in works:
                 if w.raaga:
                     ret.append(w.raaga)
             if ret:
@@ -569,9 +570,10 @@ class Recording(CarnaticStyle, data.models.Recording):
         if forms[0].attrfromrecording:
             return self.taalas.all()
 
-        if len(self.works.all()):
+        works = self.works.all()
+        if len(works):
             ret = []
-            for w in self.works.all():
+            for w in works:
                 if w.taala:
                     ret.append(w.taala)
             if ret:

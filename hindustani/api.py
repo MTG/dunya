@@ -269,7 +269,7 @@ class RecordingList(generics.ListAPIView):
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.request.user)
-        return models.Recording.objects.with_permissions(collection_ids, permission)
+        return models.Recording.objects.with_permissions(collection_ids, permission).prefetch_related('raags', 'taals', 'layas', 'forms', 'works', 'instrumentperformance_set')
 
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
