@@ -29,6 +29,7 @@ from dashboard import andalusian_importer
 from dashboard import carnatic_importer
 from dashboard import hindustani_importer
 from dashboard import makam_importer
+from dashboard import jingju_importer
 from dashboard import models
 from dashboard.log import import_logger
 from dunya.celery import app
@@ -175,6 +176,8 @@ def get_release_importer(collection):
         ri = makam_importer.MakamReleaseImporter(data_coll)
     elif "andalusian" in name:
         ri = andalusian_importer.AndalusianReleaseImporter(data_coll)
+    elif "beijing" in name:
+        ri = jingju_importer.JingjuReleaseImporter(data_coll)
     return ri
 
 
