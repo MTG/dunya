@@ -27,12 +27,15 @@ MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"
 RELATION_COMPOSER = "d59d99ea-23d4-4a80-b066-edca32ee158f"
 RELATION_LYRICIST = "3e48faba-ec01-47fd-8e89-30e81161661c"
 
-RELATION_ORCHESTRA = "3b6616c5-88ba-4341-b4ee-81ce1e6d7ebb"
-RELATION_PERFORMER = "628a9658-f54c-4142-b0c0-95f031b544da"
+RELATION_RECORDING_ORCHESTRA = "3b6616c5-88ba-4341-b4ee-81ce1e6d7ebb"
+RELATION_RELEASE_ORCHESTRA = "23a2e2e7-81ca-4865-8d05-2243848a77bf"
+RELATION_RECORDING_PERFORMER = "628a9658-f54c-4142-b0c0-95f031b544da"
+RELATION_RELEASE_PERFORMER = "888a2320-52e4-4fe8-a8a0-7a4c8dfde167"
 # Children of relation_performer
-RELATION_VOCAL = "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa"
-RELATION_INSTRUMENT = "59054b12-01ac-43ee-a618-285fd397e461"
-
+RELATION_RECORDING_VOCAL = "0fdbe3c6-7700-4a31-ae54-b53f06ae1cfa"
+RELATION_RELEASE_VOCAL = "eb10f8a0-0f4c-4dce-aa47-87bcb2bc42f3"
+RELATION_RECORDING_INSTRUMENT = "59054b12-01ac-43ee-a618-285fd397e461"
+RELATION_RELEASE_INSTRUMENT = "67555849-61e5-455b-96e3-29733f0115f5"
 
 class ReleaseImporter(object):
     def __init__(self, collection):
@@ -98,7 +101,7 @@ class ReleaseImporter(object):
         recordings = []
         for mnum, medium in enumerate(rel["medium-list"], 1):
             for tnum, track in enumerate(medium["track-list"], 1):
-                recordings.append( (track["recording"]["id"], mnum, tnum))
+                recordings.append((track["recording"]["id"], mnum, tnum))
         release.recordings.clear()
         trackorder = 1
         for recid, mnum, tnum in recordings:
@@ -224,7 +227,10 @@ class ReleaseImporter(object):
     def _get_artist_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
-            if perf["type-id"] in [RELATION_PERFORMER, RELATION_VOCAL, RELATION_INSTRUMENT, RELATION_ORCHESTRA]:
+            if perf["type-id"] in [RELATION_RECORDING_PERFORMER, RELATION_RECORDING_VOCAL,
+                                   RELATION_RECORDING_INSTRUMENT, RELATION_RECORDING_ORCHESTRA,
+                                   RELATION_RELEASE_PERFORMER, RELATION_RELEASE_VOCAL,
+                                   RELATION_RELEASE_INSTRUMENT, RELATION_RELEASE_ORCHESTRA]:
                 artistid = perf["target"]
                 attrs = perf.get("attribute-list", [])
                 type_id = perf["type-id"]
