@@ -241,7 +241,7 @@ def update_collection(collectionid):
     """
     found_releases = compmusic.get_releases_in_collection(collectionid)
     coll = models.Collection.objects.get(collectionid=collectionid)
-    existing_releases = [r.mbid for r in coll.musicbrainzrelease_set.all()]
+    existing_releases = [str(r.mbid) for r in coll.musicbrainzrelease_set.all()]
     to_remove = set(existing_releases) - set(found_releases)
     to_add = set(found_releases) - set(existing_releases)
 
