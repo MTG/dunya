@@ -218,9 +218,10 @@ def _get_musicbrainz_release_for_dir(dirname):
     for fname in _get_mp3_files(os.listdir(dirname)):
         fpath = os.path.join(dirname, fname)
         meta = compmusic.file_metadata(fpath)
-        rel = meta["meta"]["releaseid"]
-        if rel:
-            release_ids.add(rel)
+        if meta:
+            rel = meta["meta"]["releaseid"]
+            if rel:
+                release_ids.add(rel)
     return list(release_ids)
 
 
