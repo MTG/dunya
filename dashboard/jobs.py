@@ -176,7 +176,7 @@ def get_release_importer(collection):
         ri = makam_importer.MakamReleaseImporter(data_coll)
     elif "andalusian" in name:
         ri = andalusian_importer.AndalusianReleaseImporter(data_coll)
-    elif "beijing" in name:
+    elif "jingju" in name:
         ri = jingju_importer.JingjuReleaseImporter(data_coll)
     return ri
 
