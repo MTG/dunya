@@ -1,5 +1,26 @@
 # -*- coding: utf-8 -*-
+
+# Copyright 2018 Honglin Ma
+# This file is part of Dunya
+#
+# Dunya is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation (FSF), either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program.  If not, see http://www.gnu.org/licenses/
+
+
+
+
+
 import compmusic
+import data
 
 import jingju.models
 from dashboard import release_importer
@@ -16,8 +37,8 @@ ROLE_TYPE_DIC= {u'旦': 'dan',
 class JingjuReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = jingju.models.Artist
     _ArtistAliasClass = jingju.models.ArtistAlias
-    # _ComposerClass = carnatic.models.Composer
-    # _ComposerAliasClass = carnatic.models.ComposerAlias
+    _ComposerClass = data.models.Composer
+    _ComposerAliasClass = data.models.ComposerAlias
     _ReleaseClass = jingju.models.Release
     _RecordingClass = jingju.models.Recording
     _InstrumentClass = jingju.models.Instrument
@@ -100,7 +121,7 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
             return self._ArtistClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases", "tags"])["artist"]
-        artist = self._create_artist_object(mbartist)
+        artist = self._create_artist_object(mbartist=mbartist)
         # print mbartist['id']
         if mbartist.has_key('tag-list'):
             for tag in mbartist['tag-list']:
@@ -118,3 +139,21 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
         alias = mbartist['sort-name'].replace(", ", " ")
         artist.alias = alias
         return artist
+
+    def add_and_get_composer(self, artistid):
+        pass
+
+    def add_and_get_work(self, workid):
+        mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
+        # import_logger.info("adding work %s", mbwork["title"])
+        work, created = self._WorkClass.objects.get_or_create(
+            mbid=workid,
+            defaults={"title": mbwork["title"]})
+
+        work.title = mbwork["title"]
+        work.save()
+
+        self._add_work_attributes(work, mbwork, created)
+
+
+        return work
