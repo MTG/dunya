@@ -161,16 +161,24 @@ class Recording(MakamStyle, data.models.Recording):
     objects = managers.CollectionRecordingManager()
 
     def makamlist(self):
-        return Makam.objects.filter(Q(work__in=self.works.all()) | Q(recording=self)).distinct().all()
+        makams = set()
+        if self.has_taksim or self.has_gazel:
+            makams.update(self.makam.all())
+        for w in self.works.all():
+            makams.update(w.makam.all())
+        return list(makams)
 
     def usullist(self):
-        return Usul.objects.filter(work__in=self.works.all()).distinct().all()
+        usuls = set()
+        for w in self.works.all():
+            usuls.update(w.usul.all())
+        return list(usuls)
 
     def releaselist(self):
         return self.release_set.all()
 
     def worklist(self):
-        return self.works.order_by('recordingwork')
+        return self.works.all()
 
     def instruments_for_artist(self, artist):
         """ Returns a list of instruments that this
