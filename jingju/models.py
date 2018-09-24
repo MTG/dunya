@@ -10,19 +10,21 @@ import managers
 
 import data.models
 
+
 class JingjuStyle(object):
     def get_style(self):
         return "jingju"
 
     def get_object_map(self, key):
         return {
-                "performance": RecordingInstrumentalist,
-                "release": Release,
-                "artist": Artist,
-                "recording": Recording,
-                "work": Work,
-                "instrument": Instrument
-                }[key]
+            "performance": RecordingInstrumentalist,
+            "release": Release,
+            "artist": Artist,
+            "recording": Recording,
+            "work": Work,
+            "instrument": Instrument
+        }[key]
+
 
 class Recording(JingjuStyle, data.models.BaseModel):
     class Meta:
@@ -32,14 +34,14 @@ class Recording(JingjuStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
     work = models.ForeignKey('Work', null=True)
     performers = models.ManyToManyField('Artist')
-    instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist', related_name = 'instrumentalist')
+    instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist',
+                                              related_name='instrumentalist')
     shengqiangbanshi = models.ManyToManyField('ShengqiangBanshi')
     objects = managers.CollectionRecordingManager()
 
-
-
     def __unicode__(self):
         return u"%s" % (self.title)
+
 
 class RecordingInstrumentalist(JingjuStyle, models.Model):
     recording = models.ForeignKey('Recording')
@@ -50,14 +52,16 @@ class RecordingInstrumentalist(JingjuStyle, models.Model):
 class Artist(data.models.Artist):
     alias = models.CharField(max_length=200, blank=True, null=True)
     role_type = models.ForeignKey('RoleType', blank=True, null=True)
-    instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name = 'jingju')
+    instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name='jingju')
     objects = managers.ArtistManager()
 
     class Meta:
         ordering = ['id']
 
+
 class ArtistAlias(data.models.ArtistAlias):
     pass
+
 
 class Instrument(data.models.Instrument):
     class Meta:
@@ -83,8 +87,6 @@ class RecordingRelease(models.Model):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 
-
-
 class Work(JingjuStyle, data.models.BaseModel):
     class Meta:
         ordering = ['id']
@@ -94,34 +96,34 @@ class Work(JingjuStyle, data.models.BaseModel):
     score = models.ForeignKey('Score', blank=True, null=True)
     play = models.ForeignKey('Play', blank=True, null=True)
 
-    # def recordings(self):
-    #     return self.recording_set.all()
-
     def __unicode__(self):
-        return u"%s" % (self.title)
+        return u"%s" % self.title
+
 
 class Release(JingjuStyle, data.models.Release):
     class Meta:
         ordering = ['id']
 
     recordings = models.ManyToManyField('Recording', through='RecordingRelease')
-    # performer = models.ForeignKey('Artist', blank=True, null=True)
     collection = models.ForeignKey('data.Collection', blank=True, null=True)
     objects = managers.CollectionReleaseManager()
+
 
 class RoleType(data.models.BaseModel):
     name = models.CharField(max_length=100)
     transliteration = models.CharField(max_length=100)
     uuid = models.UUIDField()
 
+
 class Play(data.models.BaseModel):
     title = models.CharField(max_length=100)
     uuid = models.UUIDField(blank=True, null=True)
+
 
 class Score(data.models.BaseModel):
     name = models.CharField(max_length=100)
     uuid = models.UUIDField(blank=True, null=True)
 
+
 class ShengqiangBanshi(data.models.BaseModel):
     name = models.CharField(max_length=100)
-    # uuid = models.UUIDField(blank=True, null=True)

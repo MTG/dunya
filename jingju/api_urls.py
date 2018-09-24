@@ -6,10 +6,6 @@ import jingju.api
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
 
 urlpatterns = [
-
-    # url(r'^instrument$', carnatic.api.InstrumentList.as_view(), name='api-carnatic-instrument-list'),
-    # url(r'^instrument/(?P<pk>\d+)$', carnatic.api.InstrumentDetail.as_view(), name='api-carnatic-instrument-detail'),
-
     url(r'^work$', jingju.api.WorkList.as_view(), name='api-jingju-work-list'),
     url(r'^work/%s$' % uuid_match, jingju.api.WorkDetail.as_view(), name='api-jingju-work-detail'),
 
@@ -26,7 +22,6 @@ urlpatterns = [
     url(r'^release/%s$' % uuid_match, jingju.api.ReleaseDetail.as_view(), name='api-jingju-release-detail'),
 
     url(r'^roletype$', jingju.api.RoleTypeList.as_view(), name='api-jingju-roletype-list'),
-
 
 ]
 
