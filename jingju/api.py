@@ -162,7 +162,7 @@ class RecordingList(generics.ListAPIView):
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.request.user)
-        return models.Recording.objects.with_permissions(collection_ids, permission)
+        return models.Recording.objects.with_permissions(collection_ids, permission).select_related('work').prefetch_related('recordinginstrumentalist_set__artist', 'recordinginstrumentalist_set__instrument', 'performers', 'shengqiangbanshi')
 
 
 class RecordingDetail(generics.RetrieveAPIView):
@@ -206,7 +206,7 @@ class ArtistList(generics.ListAPIView):
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
         permission = utils.get_user_permissions(self.request.user)
-        return models.Artist.objects.with_permissions(collection_ids, permission)
+        return models.Artist.objects.with_permissions(collection_ids, permission).select_related('role_type', 'instrument')
 
 
 class ArtistDetail(generics.RetrieveAPIView):
