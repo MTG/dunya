@@ -152,8 +152,12 @@ class WorkDetail(generics.RetrieveAPIView):
 
 
 class RecordingList(generics.ListAPIView):
-    serializer_class = RecordingInnerSerializer
-    # queryset = models.Recording.objects.all()
+    def get_serializer_class(self):
+        detail = self.request.GET.get('detail', None)
+        if detail == '1':
+            return RecordingDetailSerializer
+        else:
+            return RecordingInnerSerializer
 
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
@@ -192,7 +196,12 @@ class ReleaseDetail(generics.RetrieveAPIView):
 
 
 class ArtistList(generics.ListAPIView):
-    serializer_class = ArtistInnerSerializer
+    def get_serializer_class(self):
+        detail = self.request.GET.get('detail', None)
+        if detail == '1':
+            return ArtistDetailSerializer
+        else:
+            return ArtistInnerSerializer
 
     def get_queryset(self):
         collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
