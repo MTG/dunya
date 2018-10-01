@@ -2,24 +2,6 @@ import data.models
 from data import utils
 
 
-class PageLoggerMiddleware(object):
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        path = request.get_full_path()
-        user = request.user
-        if user.is_authenticated():
-            uname = user.username
-        else:
-            uname = None
-        ip = request.META.get("HTTP_X_FORWARDED_FOR", "")
-        data.models.VisitLog.objects.create(user=uname, ip=ip, path=path)
-
-        response = self.get_response(request)
-        return response
-
-
 class ShowBootlegMiddleware(object):
     """ A middleware to say if the current user is able to see
         restricted releases and recordings.

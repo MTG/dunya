@@ -62,8 +62,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Dunya middleware
-    # Log every page that people go to
-    'dunya.middleware.PageLoggerMiddleware',
     # Say if the current user is allowed to see bootleg recordings
     'dunya.middleware.ShowBootlegMiddleware',
 ]

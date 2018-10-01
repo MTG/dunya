@@ -429,17 +429,6 @@ class ComposerAlias(models.Model):
         return u"%s (alias for %s)" % (self.alias, self.composer)
 
 
-class VisitLog(models.Model):
-    date = models.DateTimeField(auto_now_add=True)
-    user = models.CharField(max_length=100, blank=True, null=True)
-    # ipv4 only!
-    ip = models.CharField(max_length=16)
-    path = models.CharField(max_length=500)
-
-    def __unicode__(self):
-        return u"%s: (%s/%s): %s" % (self.date, self.user, self.ip, self.path)
-
-
 # This mixin needs to be used with ModelSerializable
 # to generate the image absolute url
 class WithImageMixin(object):
