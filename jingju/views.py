@@ -35,7 +35,6 @@ def main(request):
         recordings = json.load(open("jingju/trackdata.json"))
     data = []
     for k, d in recordings.items():
-        print d
         data.append({"title": d["title"]["val"], "recording": k, "release": d["release"]["val"]})
     ret = {"recordings": data}
 

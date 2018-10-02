@@ -6,6 +6,9 @@
 
 # Delete symbtr mapping
 # Run in a django shell
+from __future__ import print_function
+
+
 def delete_mapping():
     import makam.models
     makam.models.SymbTr.objects.all().delete()
@@ -99,7 +102,7 @@ def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
         count = len(mbid_file)
         for i, (mbid, name) in enumerate(mbid_file.items(), 1):
             filename = os.path.join(git_dir, d, "%s.%s" % (name, ext))
-            print "%s) %s/%s: %s (%s)" % (sl, i, count, mbid, name)
+            print("%s) %s/%s: %s (%s)" % (sl, i, count, mbid, name))
             compmusic.dunya.docserver.add_sourcetype(mbid, sl, filename)
             time.sleep(0.1)
 
@@ -152,20 +155,20 @@ def retrive_git_changes():
     with open("/tmp/tmpsymbtr.json", "w") as outfile:
         json.dump(to_add, outfile, indent=4)
 
-    print "Deleting and creating documents"
+    print("Deleting and creating documents")
     delete_documents()
 
-    print "Generated list of files to upload"
-    print "Uploading Files"
+    print("Generated list of files to upload")
+    print("Uploading Files")
     upload_symbtr("/tmp/tmpsymbtr.json")
 
-    print "Deleting Symbtr entries on database"
+    print("Deleting Symbtr entries on database")
     delete_mapping()
 
-    print "Creating Symbtr entries on database"
+    print("Creating Symbtr entries on database")
     create_mapping()
 
     c_data['last_commit'] = str(git.Repo(git_dir).head.commit)
     c.data = json.dumps(c_data)
     c.save()
-    print "Done"
+    print("Done")

@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import os
 
 from compmusic import image
@@ -27,7 +28,7 @@ import data.models
 def import_artist_kutcheris(a):
     artist = kutcheris.search_artist(a.name)
     if artist:
-        print "Found data on kutcheris.com"
+        print("Found data on kutcheris.com")
         aid = artist.values()[0]
         i, b, u = kutcheris.get_artist_details(aid)
         u = "http://kutcheris.com/artist.php?id=%s" % aid
@@ -42,7 +43,7 @@ def import_artist_kutcheris(a):
 
 
 def import_artist_wikipedia(artist, source):
-    print "Looking for data on wikipedia"
+    print("Looking for data on wikipedia")
 
     wikipedia_url = source.uri
     name = os.path.basename(wikipedia_url)
@@ -71,14 +72,14 @@ def import_artist_wikipedia(artist, source):
 
 def import_release_image(release, directories=[]):
     if release.image:
-        print "Image for release %s exists, skipping" % release.mbid
+        print("Image for release %s exists, skipping" % release.mbid)
         return
 
     i = image.get_coverart_from_caa(release.mbid)
     caa = True
     if not i:
         caa = False
-        print "No image on CAA for %s, looking in directory" % release.mbid
+        print("No image on CAA for %s, looking in directory" % release.mbid)
         i = image.get_coverart_from_directories(directories)
     if i:
         im = data.models.Image()
@@ -109,4 +110,4 @@ def import_release_image(release, directories=[]):
             release.image = im
             release.save()
     else:
-        print "Can't find an image for %s" % release.mbid
+        print("Can't find an image for %s" % release.mbid)

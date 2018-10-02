@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import compmusic
 
 import hindustani.models
@@ -66,7 +67,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             if lob:
                 hindustani.models.RecordingLaya.objects.create(recording=recording, laya=lob, sequence=lpos)
             else:
-                print "couldn't find a laya", l
+                print("couldn't find a laya", l)
 
         if not taals:
             import_logger.warning("No taal tags found on recording")
@@ -77,7 +78,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             if tob:
                 hindustani.models.RecordingTaal.objects.create(recording=recording, taal=tob, sequence=tpos)
             else:
-                print "couldn't find a taal", t
+                print("couldn't find a taal", t)
 
         if not raags:
             import_logger.warning("No raag tags found on recording")
@@ -88,7 +89,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             if rob:
                 hindustani.models.RecordingRaag.objects.create(recording=recording, raag=rob, sequence=rpos)
             else:
-                print "could't find a raag", r
+                print("could't find a raag", r)
 
         if not forms:
             import_logger.warning("No form tags found on recording")
@@ -99,7 +100,7 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
             if fob:
                 hindustani.models.RecordingForm.objects.create(recording=recording, form=fob, sequence=fpos)
             else:
-                print "couldn't find a form", f
+                print("couldn't find a form", f)
 
     def _get_raag_tags(self, taglist):
         ret = []

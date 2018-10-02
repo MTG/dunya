@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import compmusic
 
 import andalusian
@@ -99,7 +100,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
 
     def add_and_get_artist(self, artistid):
         if artistid in self.imported_artists:
-            print "Artist already updated in this import. Not doing it again"
+            print("Artist already updated in this import. Not doing it again")
             return self._ArtistClass.objects.get(mbid=artistid)
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
         artist = self._create_artist_object(self._ArtistClass, self._ArtistAliasClass, mbartist)
@@ -108,7 +109,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
 
     def add_and_get_orchestra(self, orchestraid):
         if orchestraid in self.imported_orchestras:
-            print "Orchestra already updated in this import. Not doing it again"
+            print("Orchestra already updated in this import. Not doing it again")
             return self._OrchestraClass.objects.get(mbid=orchestraid)
 
         mborchestra = compmusic.mb.get_artist_by_id(orchestraid, includes=["url-rels", "artist-rels", "aliases"])["artist"]

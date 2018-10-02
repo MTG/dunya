@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import csv
 
 import requests
@@ -57,14 +58,14 @@ class Command(BaseCommand):
             picture = row[7]
             description = row[8].decode("utf-8")
 
-            print name
+            print(name)
 
             i = models.Instrument.objects.fuzzy(name)
             i.percussion = not not percussion
             i.hidden = not not hidden
 
             if picture:
-                print "downloading picture from", picture
+                print("downloading picture from", picture)
                 req = requests.get(picture)
                 piccontents = req.content
                 im = data.models.Image()

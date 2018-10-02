@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import json
 import os
 import subprocess
@@ -85,7 +86,7 @@ def docserver_upload_and_save_file(document_id, sft_id, file):
     try:
         os.makedirs(datadir)
     except OSError:
-        print "Error making directory", datadir
+        print("Error making directory", datadir)
         pass
 
     filename = "%s-%s.%s" % (mbid, slug, ext)
@@ -131,7 +132,7 @@ def docserver_get_wav_filename(documentid):
             raise exceptions.NoFileException("Wave file doesn't exist")
         return filename, False
     except:  # Error getting file because it's not in the db or it doesn't exist
-        print "Error getting file, calculating again"
+        print("Error getting file, calculating again")
         mp3filename = docserver_get_filename(documentid, "mp3")
         fp, tmpname = tempfile.mkstemp(".wav")
         os.close(fp)

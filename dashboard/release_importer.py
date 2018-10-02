@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import compmusic
 import django.utils.timezone
 
@@ -76,7 +77,7 @@ class ReleaseImporter(object):
 
     def import_release(self, releaseid, directories):
         if releaseid in self.imported_releases:
-            print "Release already updated in this import. Not doing it again"
+            print("Release already updated in this import. Not doing it again")
             return self._ReleaseClass.objects.get(mbid=releaseid)
 
         rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels", "release-groups"])
@@ -198,7 +199,7 @@ class ReleaseImporter(object):
 
     def add_and_get_artist(self, artistid):
         if artistid in self.imported_artists:
-            print "Artist already updated in this import. Not doing it again"
+            print("Artist already updated in this import. Not doing it again")
             return self._ArtistClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
@@ -216,7 +217,7 @@ class ReleaseImporter(object):
 
     def add_and_get_composer(self, artistid):
         if artistid in self.imported_composers:
-            print "Composer already updated in this import. Not doing it again"
+            print("Composer already updated in this import. Not doing it again")
             return self._ComposerClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]

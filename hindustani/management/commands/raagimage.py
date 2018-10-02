@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 import collections
 import os
 from optparse import make_option
@@ -69,7 +70,7 @@ class Command(BaseCommand):
         os.unlink(fname)
 
     def hindustani(self, delete):
-        print "Creating hindustani raag images"
+        print("Creating hindustani raag images")
         recordings = hindustani.models.Recording.objects.all()
         recmap = collections.defaultdict(list)
         for r in recordings:
@@ -77,9 +78,9 @@ class Command(BaseCommand):
                 raag = r.raags.get()
                 recmap[raag].append(r)
         numraagas = len(recmap.keys())
-        print "Got", numraagas, "raags"
+        print("Got", numraagas, "raags")
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
-            print "(%s/%s) %s" % (i, numraagas, raag)
+            print("(%s/%s) %s" % (i, numraagas, raag))
             create = True
             if raag.image:
                 if delete:
@@ -90,16 +91,16 @@ class Command(BaseCommand):
                     raag.image.delete()
                     raag.image = None
                     raag.save()
-                    print " - Deleting images and remaking"
+                    print(" - Deleting images and remaking")
                 else:
                     create = False
-                    print " - Image exists, skipping"
+                    print(" - Image exists, skipping")
             if create:
-                print " - Making images"
+                print(" - Making images")
                 self.calc_profile(raag, recordings, "hindustani")
 
     def carnatic(self, delete):
-        print "Creating carnatic raaga images"
+        print("Creating carnatic raaga images")
         recordings = carnatic.models.Recording.objects.all()
         recmap = collections.defaultdict(list)
         for r in recordings:
@@ -107,9 +108,9 @@ class Command(BaseCommand):
             if ra:
                 recmap[ra].append(r)
         numraagas = len(recmap.keys())
-        print "Got", numraagas, "raagas"
+        print("Got", numraagas, "raagas")
         for i, (raaga, recordings) in enumerate(recmap.items(), 1):
-            print "(%s/%s) %s" % (i, numraagas, raaga)
+            print("(%s/%s) %s" % (i, numraagas, raaga))
             create = True
             if raaga.image:
                 if delete:
@@ -120,12 +121,12 @@ class Command(BaseCommand):
                     raaga.image.delete()
                     raaga.image = None
                     raaga.save()
-                    print " - Deleting images and remaking"
+                    print(" - Deleting images and remaking")
                 else:
                     create = False
-                    print " - Image exists, skipping"
+                    print(" - Image exists, skipping")
             if create:
-                print " - Making images"
+                print(" - Making images")
                 self.calc_profile(raaga, recordings, "carnatic")
 
     def handle(self, *args, **options):

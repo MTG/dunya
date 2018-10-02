@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+from __future__ import print_function
 from __future__ import absolute_import
 
 import os
@@ -39,8 +40,8 @@ class DunyaTask(celery.Task):
     abstract = True
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        print "got an exception"
-        print einfo
+        print("got an exception")
+        print(einfo)
         try:
             theobj = self.get_object(args[0])
             theobj.add_log_message(einfo)

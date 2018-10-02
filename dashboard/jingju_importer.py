@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import compmusic
 
 import jingju.models
@@ -96,7 +97,7 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
 
     def add_and_get_artist(self, artistid):
         if artistid in self.imported_artists:
-            print "Artist already updated in this import. Not doing it again"
+            print("Artist already updated in this import. Not doing it again")
             return self._ArtistClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases", "tags"])["artist"]
