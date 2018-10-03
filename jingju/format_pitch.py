@@ -1,5 +1,5 @@
 from __future__ import print_function
-import StringIO
+import six
 import json
 import struct
 import sys
@@ -59,7 +59,7 @@ def run(fname, tonic):
     resampled = interpolatePitchTracks(nppitch[:, 0], nppitch[:, 1], outputTime, 0)
 
     drawpitch = normalise_pitch(resampled, tonic, bpo, height)
-    packed_pitch = StringIO.StringIO()
+    packed_pitch = six.BytesIO()
     for p in drawpitch:
         packed_pitch.write(struct.pack("B", p))
     drawhist = get_histogram(drawpitch, 256, 1)

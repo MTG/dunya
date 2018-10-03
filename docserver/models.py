@@ -41,7 +41,7 @@ class Collection(models.Model):
 
     root_directory = models.CharField(max_length=200)
 
-    def __unicode__(self):
+    def __str__(self):
         desc = u"%s (%s)" % (self.name, self.slug)
         if self.description:
             desc += u" - %s" % (self.description,)
@@ -88,7 +88,7 @@ class Document(models.Model):
     def get_absolute_url(self):
         return reverse("ds-document-external", args=[self.external_identifier])
 
-    def __unicode__(self):
+    def __str__(self):
         ret = u""
         if self.title:
             ret += u"%s" % self.title
@@ -243,7 +243,7 @@ class SourceFileType(models.Model):
 
     stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -284,7 +284,7 @@ class SourceFile(models.Model):
     def mimetype(self):
         return self.file_type.mimetype
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
 
 
@@ -366,7 +366,7 @@ class DerivedFile(models.Model):
             url = "%s&part=%s" % (url, partnumber)
         return url
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
 
 
@@ -413,7 +413,7 @@ class Worker(models.Model):
         self.state = self.UPDATED
         self.save()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s with Essentia %s and Compmusic %s" % (self.hostname, self.essentia, self.pycompmusic)
 
 
@@ -432,7 +432,7 @@ class PyCompmusicVersion(models.Model):
     def short_link(self):
         return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % (self.sha1,)
 
 
@@ -452,7 +452,7 @@ class EssentiaVersion(models.Model):
     def short_link(self):
         return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.version, self.sha1)
 
 
@@ -468,7 +468,7 @@ class Module(models.Model):
 
     collections = models.ManyToManyField(Collection)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.name, self.module)
 
     def processed_files(self):
@@ -571,7 +571,7 @@ AND NOT ("docserver_document"."id" IN (
         row = cursor.fetchone()
         return row[0]
 
-    def __unicode__(self):
+    def __str__(self):
         return u"v%s for %s" % (self.version, self.module)
 
 
@@ -592,5 +592,5 @@ class DocumentLogMessage(models.Model):
     def is_exception(self):
         return "Traceback (most recent call last)" in self.message
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s" % (self.datetime, self.message)

@@ -23,7 +23,7 @@ from django.db.models import Q
 from django.utils.text import slugify
 
 import data.models
-import managers
+from makam import managers
 
 
 class MakamStyle(object):
@@ -124,7 +124,7 @@ class ReleaseRecording(models.Model):
     class Meta:
         ordering = ("track",)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 
@@ -136,7 +136,7 @@ class RecordingWork(models.Model):
     class Meta:
         ordering = ("sequence",)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s" % (self.sequence, self.work.title)
 
 
@@ -248,7 +248,7 @@ class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
     makam = models.ForeignKey("Makam", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -267,7 +267,7 @@ class Makam(models.Model):
 
     objects = managers.MakamFuzzyManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -275,7 +275,7 @@ class Makam(models.Model):
             mname = unidecode.unidecode(self.name)
         else:
             mname = self.name
-        return reverse('makam-makam', args=[str(self.uuid), slugify(unicode(mname))])
+        return reverse('makam-makam', args=[str(self.uuid), slugify(mname)])
 
     def worklist(self):
         return self.work_set.all()
@@ -291,7 +291,7 @@ class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
     usul = models.ForeignKey("Usul", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -304,7 +304,7 @@ class Usul(models.Model):
 
     objects = managers.MakamUsulManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -312,7 +312,7 @@ class Usul(models.Model):
             uname = unidecode.unidecode(self.name)
         else:
             uname = self.name
-        return reverse('makam-usul', args=[str(self.uuid), slugify(unicode(uname))])
+        return reverse('makam-usul', args=[str(self.uuid), slugify(uname)])
 
     def worklist(self):
         return self.work_set.all()
@@ -332,7 +332,7 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=100)
     form = models.ForeignKey("Form", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -345,7 +345,7 @@ class Form(models.Model):
 
     objects = managers.MakamFormManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -353,7 +353,7 @@ class Form(models.Model):
             fname = unidecode.unidecode(self.name)
         else:
             fname = self.name
-        return reverse('makam-form', args=[str(self.uuid), slugify(unicode(fname))])
+        return reverse('makam-form', args=[str(self.uuid), slugify(fname)])
 
     def worklist(self):
         return self.work_set.all()
@@ -397,5 +397,5 @@ class SymbTr(models.Model):
     # because this could be a workid (most common), or a recordingid (sometimes)
     uuid = models.UUIDField(db_index=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s -> %s" % (self.uuid, self.name)

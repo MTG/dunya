@@ -29,7 +29,7 @@ class MusicalSchool(AndalusianStyle, data.models.BaseModel):
     name = models.CharField(max_length=100)
     transliterated_name = models.CharField(max_length=100, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -43,7 +43,7 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
     school = models.ForeignKey(MusicalSchool, blank=True, null=True)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups', through="OrchestraPerformer")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -67,7 +67,7 @@ class OrchestraAlias(models.Model):
     name = models.CharField(max_length=255)
     orchestra = models.ForeignKey("Orchestra", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -88,7 +88,7 @@ class Artist(AndalusianStyle, data.models.BaseModel):
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -142,7 +142,7 @@ class AlbumType(models.Model):
     type = models.CharField(max_length=255)
     transliterated_type = models.CharField(max_length=255, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.type
 
 
@@ -156,7 +156,7 @@ class AlbumRecording(models.Model):
     class Meta:
         ordering = ("track", )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.album)
 
 
@@ -174,7 +174,7 @@ class Album(AndalusianStyle, data.models.BaseModel):
     recordings = models.ManyToManyField('Recording', through="AlbumRecording")
     director = models.ForeignKey('Artist', null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -193,7 +193,7 @@ class Work(AndalusianStyle, data.models.BaseModel):
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -204,7 +204,7 @@ class Genre(AndalusianStyle, data.models.BaseModel):
     name = models.CharField(max_length=100, blank=True)
     transliterated_name = models.CharField(max_length=100, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -216,7 +216,7 @@ class RecordingWork(models.Model):
     class Meta:
         ordering = ("sequence", )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s" % (self.sequence, self.work.title)
 
 
@@ -236,7 +236,7 @@ class Recording(AndalusianStyle, data.models.BaseModel):
     musescore_url = models.CharField(max_length=255)
     poems = models.ManyToManyField("Poem", through="RecordingPoem")
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % self.title
 
     def performers(self):
@@ -280,7 +280,7 @@ class Instrument(AndalusianStyle, data.models.BaseModel):
     name = models.CharField(max_length=50)
     original_name = models.CharField(max_length=50, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -290,7 +290,7 @@ class InstrumentPerformance(models.Model):
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
 
 
@@ -302,8 +302,8 @@ class OrchestraPerformer(models.Model):
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
 
-    def __unicode__(self):
-        ret = u"%s played %s on %s" % (self.performer, u", ".join([unicode(i) for i in self.instruments.all()]), self.orchestra)
+    def __str__(self):
+        ret = u"%s played %s on %s" % (self.performer, u", ".join([i for i in self.instruments.all()]), self.orchestra)
         if self.director:
             ret += u". Moreover, %s acted as the director of this orchestra" % self.performer
             if self.begin:
@@ -324,7 +324,7 @@ class Tab(data.models.BaseModel):
     # Set to 1 to force some Tab to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -339,7 +339,7 @@ class Nawba(data.models.BaseModel):
     # Set to 1 to force some Nawba to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -354,14 +354,14 @@ class Mizan(data.models.BaseModel):
     # Set to 1 to force some Mizan to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 class FormType(models.Model):
     type = models.CharField(max_length=50)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.type
 
 
@@ -377,7 +377,7 @@ class Form(data.models.BaseModel):
     # Set to 1 to force some Form to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -390,7 +390,7 @@ class Section(AndalusianStyle, data.models.BaseModel):
     mizan = models.ForeignKey('Mizan', blank=True, null=True)
     form = models.ForeignKey('Form', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Section of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
                (self.recording, self.start_time, self.end_time,
                 self.form, self.mizan, self.tab, self.nawba)
@@ -402,7 +402,7 @@ class InstrumentSectionPerformance(models.Model):
     instrument = models.ForeignKey('Instrument')
     lead = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s playing %s on section (%s, %s) of recording %s" % \
                (self.performer, self.instrument, self.section.start_time, self.section.end_time, self.section.recording)
 
@@ -414,14 +414,14 @@ class Sanaa(data.models.BaseModel):
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
 class PoemType(models.Model):
     type = models.CharField(max_length=50)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.type
 
 
@@ -438,7 +438,7 @@ class Poem(data.models.BaseModel):
     title = models.CharField(max_length=255, blank=True, null=True)
     transliterated_title = models.CharField(max_length=255, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.identifier
 
 

@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import StringIO
 import json
 import os
 import zipfile
+import six
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
@@ -379,7 +379,7 @@ def download_derived_files(request, uuid, title=None):
     zip_subdir = "derivedfiles_%s" % mbid
     zip_filename = "%s.zip" % zip_subdir
 
-    s = StringIO.StringIO()
+    s = six.BytesIO()
     zf = zipfile.ZipFile(s, "w")
     for f in filenames:
         fpath = f[0]

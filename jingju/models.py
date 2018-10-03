@@ -1,14 +1,7 @@
-import collections
-import random
-
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Count
-from django.db.models import Q
-from django.utils.text import slugify
-import managers
 
 import data.models
+from jingju import managers
 
 
 class JingjuStyle(object):
@@ -39,7 +32,7 @@ class Recording(JingjuStyle, data.models.BaseModel):
     shengqiangbanshi = models.ManyToManyField('ShengqiangBanshi')
     objects = managers.CollectionRecordingManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % (self.title)
 
 
@@ -83,7 +76,7 @@ class RecordingRelease(models.Model):
     class Meta:
         ordering = ("track",)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 
@@ -96,7 +89,7 @@ class Work(JingjuStyle, data.models.BaseModel):
     score = models.ForeignKey('Score', blank=True, null=True)
     play = models.ForeignKey('Play', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % self.title
 
 

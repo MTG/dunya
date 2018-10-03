@@ -24,7 +24,7 @@ from django.db.models import Q
 from django.utils.text import slugify
 
 import data.models
-import managers
+from carnatic import managers
 
 
 class CarnaticStyle(object):
@@ -45,7 +45,7 @@ class CarnaticStyle(object):
 class GeographicRegion(CarnaticStyle, models.Model):
     name = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -260,7 +260,7 @@ class ConcertRecording(models.Model):
     class Meta:
         ordering = ("track", )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.concert)
 
 
@@ -302,7 +302,7 @@ class RaagaAlias(models.Model):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -317,7 +317,7 @@ class RecordingForm(models.Model):
     class Meta:
         ordering = ("sequence", )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.form)
 
 
@@ -328,7 +328,7 @@ class Form(models.Model):
     objects = managers.CarnaticFormManager()
     fuzzymanager = managers.FuzzySearchManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -338,7 +338,7 @@ class FormAlias(models.Model):
 
     objects = managers.FuzzySearchManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -356,7 +356,7 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -405,7 +405,7 @@ class TaalaAlias(models.Model):
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -424,7 +424,7 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
     objects = managers.CarnaticTaalaManager()
     fuzzymanager = managers.FuzzySearchManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -487,7 +487,7 @@ class RecordingRaaga(models.Model):
     raaga = models.ForeignKey('Raaga')
     sequence = models.IntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.raaga)
 
 
@@ -496,7 +496,7 @@ class RecordingTaala(models.Model):
     taala = models.ForeignKey('Taala')
     sequence = models.IntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.taala)
 
 
@@ -505,7 +505,7 @@ class WorkRaaga(models.Model):
     raaga = models.ForeignKey('Raaga')
     sequence = models.IntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.raaga)
 
 
@@ -514,7 +514,7 @@ class WorkTaala(models.Model):
     taala = models.ForeignKey('Taala')
     sequence = models.IntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 
@@ -523,7 +523,7 @@ class RecordingWork(models.Model):
     work = models.ForeignKey('Work')
     sequence = models.IntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
 
 

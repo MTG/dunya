@@ -15,12 +15,11 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 from __future__ import print_function
 
-import cStringIO
-
 import os
 from PIL import Image
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
+import six
 
 from carnatic import models
 
@@ -39,7 +38,7 @@ class Command(BaseCommand):
         smallfname = "small_%s" % fname
         try:
             pilimage = Image.open(big.path)
-            out = cStringIO.StringIO()
+            out = six.BytesIO()
             pilimage.thumbnail(size)
             pilimage.save(out, "JPEG")
 

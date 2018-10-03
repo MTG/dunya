@@ -1,7 +1,7 @@
 import uuid
-from StringIO import StringIO
 
 import mock
+import six
 from django.test import TestCase
 
 from docserver import models
@@ -28,7 +28,7 @@ class UtilTest(TestCase):
     @mock.patch('docserver.util._write_to_disk')
     @mock.patch('docserver.util.docserver_add_sourcefile')
     def test_upload_and_save_file_audio(self, add_sourcefile, write, makedirs):
-        thefile = StringIO()
+        thefile = six.StringIO()
 
         util.docserver_upload_and_save_file(self.doc.id, self.sft.id, thefile)
         final_filename = "/root/directory/audio/11/1122-3333-4444/mp3/1122-3333-4444-mp3.mp3"
@@ -40,7 +40,7 @@ class UtilTest(TestCase):
     @mock.patch('docserver.util._write_to_disk')
     @mock.patch('docserver.util.docserver_add_sourcefile')
     def test_upload_and_save_file_data(self, add_sourcefile, write, makedirs):
-        thefile = StringIO()
+        thefile = six.StringIO()
 
         othersft = models.SourceFileType.objects.get_by_slug("csv")
         util.docserver_upload_and_save_file(self.doc.id, othersft.id, thefile)

@@ -36,7 +36,7 @@ class ClassProperty(property):
 class SourceName(models.Model):
     name = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -49,7 +49,7 @@ class Source(models.Model):
     uri = models.CharField(max_length=255)
     last_updated = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
 
 
@@ -59,7 +59,7 @@ class Description(models.Model):
     source = models.ForeignKey(Source, blank=True, null=True)
     description = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s - %s" % (self.source, self.description[:100])
 
 
@@ -69,7 +69,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to="images")
     small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         ret = u"%s" % (self.image.name, )
         if self.source:
             ret = u"%s from %s" % (ret, self.source.uri)
@@ -140,7 +140,7 @@ class Artist(BaseModel, ImageMixin):
     description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
     description_edited = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -149,7 +149,7 @@ class Artist(BaseModel, ImageMixin):
             aname = unidecode.unidecode(self.name)
         else:
             aname = self.name
-        return reverse(viewname, args=[self.mbid, slugify(unicode(aname))])
+        return reverse(viewname, args=[self.mbid, slugify(aname)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -167,7 +167,7 @@ class ArtistAlias(models.Model):
     primary = models.BooleanField(default=False)
     locale = models.CharField(max_length=10, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (alias for %s)" % (self.alias, self.artist)
 
 
@@ -197,8 +197,8 @@ class Release(BaseModel, ImageMixin):
             tot_len += t.length / 1000
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
-    def __unicode__(self):
-        ret = u", ".join([unicode(a) for a in self.artists.all()])
+    def __str__(self):
+        ret = u", ".join(self.artists.all())
         return u"%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):
@@ -228,7 +228,7 @@ class Collection(models.Model):
     permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
     name = models.CharField(max_length=100)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"data/%s[%s] (%s)" % (self.name, self.collectionid, self.permission)
 
 
@@ -240,7 +240,7 @@ class Work(BaseModel):
     composers = models.ManyToManyField('Composer', blank=True, related_name="works")
     lyricists = models.ManyToManyField('Composer', blank=True, related_name="lyric_works")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -266,7 +266,7 @@ class Recording(BaseModel):
     # On concrete class because a recording may have >1 work in some styles
     # work = models.ForeignKey('Work', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -330,7 +330,7 @@ class InstrumentAlias(models.Model):
     name = models.CharField(max_length=50)
     instrument = models.ForeignKey("Instrument", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -351,7 +351,7 @@ class Instrument(BaseModel, ImageMixin):
     # don't want to show them
     hidden = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -372,7 +372,7 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
     attributes = models.CharField(max_length=200, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         person = u"%s" % self.artist
         if self.instrument:
             person += u" playing %s" % self.instrument
@@ -398,7 +398,7 @@ class Composer(BaseModel, ImageMixin):
     image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
     description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_musicbrainz_url(self):
@@ -411,7 +411,7 @@ class Composer(BaseModel, ImageMixin):
         else:
             cname = self.name
         args = [self.mbid]
-        slug = slugify(unicode(cname))
+        slug = slugify(cname)
         if slug:
             args.append(slug)
         return reverse(viewname, args=args)
@@ -425,7 +425,7 @@ class ComposerAlias(models.Model):
     primary = models.BooleanField(default=False)
     locale = models.CharField(max_length=10, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (alias for %s)" % (self.alias, self.composer)
 
 

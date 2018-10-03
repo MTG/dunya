@@ -20,11 +20,11 @@ import importlib
 import json
 import logging
 import os
-import subprocess
 import time
 
 import django.utils.timezone
 import numpy as np
+import six
 from django.conf import settings
 from django.db import transaction
 
@@ -217,7 +217,7 @@ def _save_file(derivedfile, partnumber, extension, data):
         if extension == "json":
             json.dump(data, fp, cls=NumPyArangeEncoder)
         else:
-            if not isinstance(data, basestring):
+            if not isinstance(data, six.string_types):
                 logger.warn("Data is not a string-ish thing. instead it's %s" % type(data))
             fp.write(data)
         fp.close()

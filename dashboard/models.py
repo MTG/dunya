@@ -20,6 +20,7 @@ import django.utils.timezone
 from django.apps import apps
 from django.core.urlresolvers import reverse
 from django.db import models
+import six
 
 
 class StateCarryingManager(models.Manager):
@@ -31,7 +32,7 @@ class StateCarryingManager(models.Manager):
     def create(self, **kwargs):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
-        if isinstance(self.stateclass, basestring):
+        if isinstance(self.stateclass, six.string_types):
             db = apps.get_app_config("dashboard")
             cls = db.get_model(self.stateclass)
         else:
@@ -46,7 +47,7 @@ class StateCarryingManager(models.Manager):
     def get_or_create(self, **kwargs):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
-        if isinstance(self.stateclass, basestring):
+        if isinstance(self.stateclass, six.string_types):
             db = apps.get_app_config("dashboard")
             cls = db.get_model(self.stateclass)
         else:
@@ -88,7 +89,7 @@ class CollectionState(models.Model):
     def state_name(self):
         return dict(self.STATE_CHOICE)[self.state]
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.state_name, self.state_date)
 
 
@@ -104,7 +105,7 @@ class Collection(models.Model):
     # If we want to import this collection to main Dunya
     do_import = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.name, self.id)
 
     @property
@@ -181,7 +182,7 @@ class CollectionLogMessage(models.Model):
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s - %s" % (self.collection.name, self.datetime)
 
 
@@ -202,7 +203,7 @@ class MusicbrainzReleaseState(models.Model):
     def state_name(self):
         return dict(self.STATE_CHOICE)[self.state]
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.state_name, self.state_date)
 
 
@@ -219,7 +220,7 @@ class MusicbrainzRelease(models.Model):
     # If a release has ignore set, we do not try and import it
     ignore = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.title, self.id)
 
     def all_files(self):
@@ -278,7 +279,7 @@ class MusicbrainzReleaseLogMessage(models.Model):
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s" % (self.datetime, self.message)
 
 
@@ -295,7 +296,7 @@ class CollectionDirectory(models.Model):
     def full_path(self):
         return os.path.join(self.collection.audio_directory, self.path)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"From collection %s, release %s, path on disk %s" % (
             self.collection,
             self.musicbrainzrelease, self.path)
@@ -330,7 +331,7 @@ class CollectionFileState(models.Model):
     def state_name(self):
         return dict(self.STATE_CHOICE)[self.state]
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.state_name, self.state_date)
 
 
@@ -360,7 +361,7 @@ class CollectionFile(models.Model):
         """ Path relative to the collection root """
         return os.path.join(self.directory.path, self.name)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
 
     def update_state(self, state):

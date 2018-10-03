@@ -3,6 +3,7 @@
 
 from __future__ import print_function
 import django.apps
+import six
 # v0.1 -- current version
 # known issues:
 # no support for generic relations
@@ -51,7 +52,7 @@ class Command(LabelCommand):
 
         objects = []
         for model, slice in models:
-            if isinstance(slice, basestring):
+            if isinstance(slice, six.string_types):
                 objects.extend(model._default_manager.filter(pk__exact=slice))
             elif not slice or type(slice) is list:
                 items = model._default_manager.all()

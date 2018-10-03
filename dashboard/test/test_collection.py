@@ -1,9 +1,8 @@
-import StringIO
-
 import mock
 from django.contrib import auth
 from django.http import QueryDict
 from django.test import TestCase
+import six
 
 import docserver
 from dashboard import forms
@@ -88,7 +87,7 @@ class CollectionTest(TestCase):
         code = 404
         msg = "Not found"
         hdrs = {}
-        fp = StringIO.StringIO()
+        fp = six.StringIO()
         mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
         forms.compmusic.musicbrainz.get_collection_name = mockerror
 

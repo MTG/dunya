@@ -24,8 +24,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True)
     affiliation = models.CharField(max_length=200, blank=True)
 
-    def __unicode__(self):
-        return unicode(self.user)
+    def __str__(self):
+        return self.user
 
 
 def user_post_save(sender, instance, created, **kwargs):

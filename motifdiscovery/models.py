@@ -14,7 +14,7 @@ class File(models.Model):
     mbid = models.UUIDField(blank=True, null=True)
     hasseed = models.IntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s) [%s]" % (self.filename, self.mbid, self.hasseed)
 
 
@@ -26,7 +26,7 @@ class Match(models.Model):
     distance = models.FloatField()
     version = models.IntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s, %s (%s) [%s]" % (self.source, self.target, self.distance, self.version)
 
 
@@ -40,7 +40,7 @@ class Pattern(models.Model):
     isseed = models.IntegerField()
     segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"File %s (%s - %s) [%s, %s]" % (
         self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id)
 
@@ -53,7 +53,7 @@ class Segment(models.Model):
     rounded_end = models.FloatField()
     segment_path = models.CharField(max_length=500)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"segment of %s (%s-%s)" % (self.file, self.rounded_start, self.rounded_end)
 
     def get_absolute_url(self):

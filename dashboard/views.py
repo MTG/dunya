@@ -210,8 +210,8 @@ def collection(request, uuid):
         def sortkey(rel):
             return rel.ignore
     else:
-        def sortkey(obj):
-            pass
+        def sortkey(rel):
+            return rel.id
     releases = sorted(releases, key=sortkey, reverse=True)
 
     numtotal = len(releases)
@@ -315,7 +315,10 @@ def directory(request, dirid):
         return redirect('dashboard-directory', dirid)
 
     full_path = directory.full_path
-    files = os.listdir(full_path)
+    try:
+        files = os.listdir(full_path)
+    except FileNotFoundError:
+        files = []
     releaseids = set()
     releasename = set()
     artistids = set()

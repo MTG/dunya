@@ -213,7 +213,7 @@ class ReleaseRecording(models.Model):
     class Meta:
         ordering = ("track",)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 
@@ -380,7 +380,7 @@ class Raag(data.models.BaseModel, data.models.ImageMixin):
     uuid = models.UUIDField(db_index=True)
     image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
@@ -450,7 +450,7 @@ class RaagAlias(models.Model):
     name = models.CharField(max_length=50)
     raag = models.ForeignKey("Raag", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -468,7 +468,7 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
     uuid = models.UUIDField(db_index=True)
     image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
@@ -538,7 +538,7 @@ class TaalAlias(models.Model):
     name = models.CharField(max_length=50)
     taal = models.ForeignKey("Taal", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -552,7 +552,7 @@ class Laya(data.models.BaseModel):
     common_name = models.CharField(max_length=50)
     uuid = models.UUIDField(db_index=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
@@ -585,7 +585,7 @@ class LayaAlias(models.Model):
     name = models.CharField(max_length=50)
     laya = models.ForeignKey("Laya", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -614,7 +614,7 @@ class Form(data.models.BaseModel):
             artists.append(artistmap[aid])
         return artists
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name.capitalize()
 
     def get_absolute_url(self):
@@ -657,5 +657,5 @@ class FormAlias(models.Model):
     name = models.CharField(max_length=50)
     form = models.ForeignKey("Form", related_name="aliases")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
