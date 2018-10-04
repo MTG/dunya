@@ -48,7 +48,7 @@ class AbstractFileTest(TestCase):
 
 class SourceFileTest(AbstractFileTest):
     @mock.patch('os.makedirs')
-    @mock.patch('__builtin__.open')
+    @mock.patch('builtins.open')
     def test_run_module_on_collection(self, mock_open, makedir):
         modulepath = "compmusic.extractors.TestExtractor"
         instance = TestExtractor()
@@ -77,7 +77,7 @@ class SourceFileTest(AbstractFileTest):
     """
 
     @mock.patch('os.makedirs')
-    @mock.patch('__builtin__.open')
+    @mock.patch('builtins.open')
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_process_document(self, mock_open, makedir):
         # /tmp/col1/incoming/11/111111/asd2/0.1

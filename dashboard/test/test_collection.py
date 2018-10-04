@@ -1,4 +1,6 @@
 from unittest import mock
+
+import requests
 from django.contrib import auth
 from django.http import QueryDict
 from django.test import TestCase
@@ -83,12 +85,9 @@ class CollectionTest(TestCase):
         data = QueryDict(formdata)
         f = forms.AddCollectionForm(data)
 
-        url = "http://example.com"
-        code = 404
-        msg = "Not found"
-        hdrs = {}
-        fp = six.StringIO()
-        mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
+        response = requests.Response()
+        response.status_code = 404
+        mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.requests.HTTPError(response=response))
         forms.compmusic.musicbrainz.get_collection_name = mockerror
 
         self.assertFalse(f.is_valid())
@@ -96,8 +95,9 @@ class CollectionTest(TestCase):
         errormsg = "Cannot find this collection on MusicBrainz"
         self.assertEqual(errormsg, f.errors["__all__"][0])
 
-        code = 503
-        mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.urllib2.HTTPError(url, code, msg, hdrs, fp))
+        response = requests.Response()
+        response.status_code = 503
+        mockerror = mock.Mock(side_effect=forms.compmusic.musicbrainz.requests.HTTPError(response=response))
         forms.compmusic.musicbrainz.get_collection_name = mockerror
         f = forms.AddCollectionForm(data)
         self.assertFalse(f.is_valid())
