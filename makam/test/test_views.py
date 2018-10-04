@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 from django.http import HttpResponseNotFound, Http404, HttpResponse
 from django.test import TestCase
 

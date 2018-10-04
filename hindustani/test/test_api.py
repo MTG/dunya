@@ -67,7 +67,7 @@ class ArtistTest(ApiTestCase):
 
     def test_render_artist_inner(self):
         s = api.ArtistInnerSerializer(self.a1)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = {"name": "Artist1", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
         self.assertEquals(expected, data)
 
@@ -207,7 +207,7 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_inner(self):
         s = api.RecordingInnerSerializer(self.rnormal)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['mbid', 'title'], sorted(data.keys()))
 
     def test_render_recording_detail(self):
@@ -286,7 +286,7 @@ class WorkTest(ApiTestCase):
 
     def test_render_work_inner(self):
         s = api.WorkInnerSerializer(self.wnormal)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['mbid', 'title'], sorted(data.keys()))
 
     def test_render_work_detail(self):
@@ -362,12 +362,12 @@ class RaagTest(ApiTestCase):
 
     def test_render_raag_inner(self):
         s = api.RaagInnerSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_raag_detail(self):
         s = api.RaagDetailSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid']
         self.assertEqual(expected, sorted(data.keys()))
 
@@ -382,12 +382,12 @@ class TaalTest(ApiTestCase):
 
     def test_render_taal_inner(self):
         s = api.TaalInnerSerializer(self.t)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_taal_detail(self):
         s = api.TaalDetailSerializer(self.t)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = ['aliases', 'common_name', 'composers', 'name', 'recordings', 'uuid']
         self.assertEqual(expected, sorted(data.keys()))
 
@@ -402,12 +402,12 @@ class FormTest(ApiTestCase):
 
     def test_render_form_inner(self):
         s = api.FormInnerSerializer(self.f)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = ['aliases', 'artists', 'common_name', 'name', 'recordings', 'uuid']
         self.assertEqual(expected, sorted(data.keys()))
 
@@ -422,12 +422,12 @@ class LayaTest(ApiTestCase):
 
     def test_render_laya_inner(self):
         s = api.LayaInnerSerializer(self.l)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
 
     def test_render_laya_detail(self):
         s = api.LayaDetailSerializer(self.l)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = ['aliases', 'common_name', 'name', 'recordings', 'uuid']
         self.assertEqual(expected, sorted(data.keys()))
 
@@ -492,12 +492,12 @@ class ReleaseTest(ApiTestCase):
 
     def test_render_release_inner(self):
         s = api.ReleaseInnerSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['mbid', 'title'], sorted(data.keys()))
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = ['artists', 'image', 'mbid', 'recordings', 'release_artists', 'title', 'year']
         self.assertEqual(expected, sorted(data.keys()))
 
@@ -513,12 +513,12 @@ class InstrumentTest(ApiTestCase):
 
     def test_render_instrument_inner(self):
         s = api.InstrumentInnerSerializer(self.i)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(['mbid', 'name'], sorted(data.keys()))
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = ['artists', 'mbid', 'name']
         self.assertEqual(expected, sorted(data.keys()))
 

@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 from django.contrib import auth
 from django.http import QueryDict
 from django.test import TestCase

@@ -1,6 +1,6 @@
 import uuid
 
-import mock
+from unittest import mock
 import six
 from django.test import TestCase
 

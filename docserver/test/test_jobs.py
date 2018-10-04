@@ -1,7 +1,7 @@
 import uuid
 
 import compmusic.extractors
-import mock
+from unittest import mock
 from django.test import TestCase, override_settings
 
 from docserver import jobs

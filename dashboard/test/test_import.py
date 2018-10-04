@@ -1,6 +1,6 @@
 import uuid
 
-import mock
+from unittest import mock
 from django.test import TestCase
 
 from dashboard import jobs

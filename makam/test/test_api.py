@@ -71,7 +71,7 @@ class ArtistTest(ApiTestCase):
 
     def test_render_artist_list(self):
         s = api.ArtistInnerSerializer(self.a)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = {"name": "Artist", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
         self.assertEquals(expected, data)
 
@@ -149,12 +149,12 @@ class ComposerTest(ApiTestCase):
 
     def test_render_composer_detail(self):
         s = api.ComposerDetailSerializer(self.c)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEqual(["lyric_works", "mbid", "name", "works"], sorted(data.keys()))
 
     def test_render_composer_list(self):
         s = api.ComposerInnerSerializer(self.c)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = {"name": "Composer", "mbid": "392fa7ab-f87d-4a07-9c83-bd23130e711b"}
         self.assertEquals(expected, data)
 
@@ -171,12 +171,12 @@ class ComposerTest(ApiTestCase):
 class ReleaseTest(ApiTestCase):
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["image", "mbid", "recordings", "release_artists", "title", "year"], sorted(data.keys()))
 
     def test_render_release_list(self):
         s = api.ReleaseInnerSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["mbid", "title"], sorted(data.keys()))
 
     def test_release_detail_url(self):
@@ -230,12 +230,12 @@ class RecordingTest(ApiTestCase):
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/makam/recording/2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
-        self.assertEqual(["artists", "makamlist", "mbid", "performers", "releases", "title", "works"],
+        self.assertEqual(["artists", "makamlist", "mbid", "performers", "releases", "title", "usullist", "works"],
                          sorted(resp.data.keys()))
 
     def test_render_recording_list(self):
         s = api.RecordingInnerSerializer(self.r)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["artists", "mbid", "title"], sorted(data.keys()))
 
     def test_recording_detail_url(self):
@@ -291,7 +291,7 @@ class WorkTest(ApiTestCase):
 
     def test_render_work_list(self):
         s = api.WorkInnerSerializer(self.w)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["mbid", "title"], sorted(data.keys()))
 
     def test_recording_detail_url(self):
@@ -315,13 +315,13 @@ class InstrumentTest(ApiTestCase):
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i1)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["artists", "mbid", "name"], sorted(data.keys()))
         self.assertEquals(1, len(data["artists"]))
 
     def test_render_instrument_list(self):
         s = api.InstrumentInnerSerializer(self.i1)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["mbid", "name"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
@@ -341,12 +341,12 @@ class MakamTest(ApiTestCase):
 
     def test_render_makam_detail(self):
         s = api.MakamDetailSerializer(self.m)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["gazels", "name", "symtr_key", "taksims", "uuid", "works"], sorted(data.keys()))
 
     def test_render_makam_list(self):
         s = api.MakamInnerSerializer(self.m)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
@@ -366,12 +366,12 @@ class FormTest(ApiTestCase):
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["name", "uuid", "works"], sorted(data.keys()))
 
     def test_render_form_list(self):
         s = api.FormInnerSerializer(self.f)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
@@ -391,12 +391,12 @@ class UsulTest(ApiTestCase):
 
     def test_render_usul_detail(self):
         s = api.UsulDetailSerializer(self.u)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["gazels", "name", "taksims", "uuid", "works"], sorted(data.keys()))
 
     def test_render_usul_list(self):
         s = api.UsulInnerSerializer(self.u)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
@@ -416,7 +416,7 @@ class SymbTrTest(ApiTestCase):
 
     def test_render_symbtr_detail(self):
         s = api.SymbtrDetailSerializer(self.s)
-        data = json.loads(JSONRenderer().render(s.data))
+        data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         self.assertEquals(["name", "uuid"], sorted(data.keys()))
 
     def test_symbtr_detail_url(self):
