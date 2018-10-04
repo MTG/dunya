@@ -421,7 +421,7 @@ class RaagaTest(TestCase):
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(["name", "uuid"], sorted(data.keys()))
+        self.assertEqual(["common_name", "name", "uuid"], sorted(data.keys()))
 
         try:
             uuid.UUID(data["uuid"])
@@ -476,7 +476,7 @@ class TaalaTest(TestCase):
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(["name", "uuid"], sorted(data.keys()))
+        self.assertEqual(["common_name", "name", "uuid"], sorted(data.keys()))
 
         try:
             uuid.UUID(data["uuid"])
