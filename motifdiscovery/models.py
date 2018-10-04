@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 
 
@@ -21,8 +21,8 @@ class File(models.Model):
 class Match(models.Model):
     objects = MotifManager()
 
-    source = models.ForeignKey("Pattern", related_name='match_sources')
-    target = models.ForeignKey("Pattern", related_name='match_targets')
+    source = models.ForeignKey("Pattern", related_name='match_sources', on_delete=models.CASCADE)
+    target = models.ForeignKey("Pattern", related_name='match_targets', on_delete=models.CASCADE)
     distance = models.FloatField()
     version = models.IntegerField()
 
@@ -33,12 +33,12 @@ class Match(models.Model):
 class Pattern(models.Model):
     objects = MotifManager()
 
-    file = models.ForeignKey(File)
+    file = models.ForeignKey(File, on_delete=models.CASCADE)
     start_time = models.FloatField()
     end_time = models.FloatField()
     pair_id = models.IntegerField(blank=True, null=True)  # ForeignKey to Pattern
     isseed = models.IntegerField()
-    segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True)
+    segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return u"File %s (%s - %s) [%s, %s]" % (
@@ -48,7 +48,7 @@ class Pattern(models.Model):
 class Segment(models.Model):
     objects = MotifManager()
 
-    file = models.ForeignKey(File)
+    file = models.ForeignKey(File, on_delete=models.CASCADE)
     rounded_start = models.FloatField()
     rounded_end = models.FloatField()
     segment_path = models.CharField(max_length=500)

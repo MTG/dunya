@@ -1,6 +1,6 @@
-import django.contrib.auth.views
 from django.conf import settings
 from django.conf.urls import include, url, static
+from django.urls import path
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^jingju/', include('jingju.urls')),
 
     url(r'^document/', include('docserver.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    path('admin/', admin.site.urls),
     url(r'^user/', include('account.urls')),
     url(r'^dashboard/', include('dashboard.urls')),
     url(r'^makamplayer/$', makam.views.makamplayer)

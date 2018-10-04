@@ -18,7 +18,7 @@ import os
 
 import django.utils.timezone
 from django.apps import apps
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 import six
 
@@ -80,7 +80,7 @@ class CollectionState(models.Model):
     class Meta:
         ordering = ['-state_date']
 
-    collection = models.ForeignKey("Collection")
+    collection = models.ForeignKey("Collection", on_delete=models.CASCADE)
     STATE_CHOICE = (('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
@@ -178,7 +178,7 @@ class CollectionLogMessage(models.Model):
     class Meta:
         ordering = ['-datetime']
 
-    collection = models.ForeignKey(Collection)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -194,7 +194,7 @@ class MusicbrainzReleaseState(models.Model):
     class Meta:
         ordering = ['-state_date']
 
-    musicbrainzrelease = models.ForeignKey("MusicbrainzRelease")
+    musicbrainzrelease = models.ForeignKey("MusicbrainzRelease", on_delete=models.CASCADE)
     STATE_CHOICE = (('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
@@ -214,7 +214,7 @@ class MusicbrainzRelease(models.Model):
     objects = MusicbrainzReleaseManager()
 
     mbid = models.UUIDField()
-    collection = models.ForeignKey(Collection)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     artist = models.CharField(max_length=200, blank=True, null=True)
     # If a release has ignore set, we do not try and import it
@@ -275,7 +275,7 @@ class MusicbrainzReleaseLogMessage(models.Model):
     class Meta:
         ordering = ['-datetime']
 
-    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease)
+    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, on_delete=models.CASCADE)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -288,8 +288,8 @@ class CollectionDirectory(models.Model):
     in it. This usually corresponds to a single CD. This means a MusicbrainzRelease
     may have more than 1 CollectionDirectory """
 
-    collection = models.ForeignKey(Collection)
-    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True, on_delete=models.CASCADE)
     path = models.CharField(max_length=500)
 
     @property
@@ -322,7 +322,7 @@ class CollectionFileState(models.Model):
     class Meta:
         ordering = ['-state_date']
 
-    collectionfile = models.ForeignKey("CollectionFile")
+    collectionfile = models.ForeignKey("CollectionFile", on_delete=models.CASCADE)
     STATE_CHOICE = (('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
     state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
     state_date = models.DateTimeField(default=django.utils.timezone.now)
@@ -345,7 +345,7 @@ class CollectionFile(models.Model):
     objects = CollectionFileManager()
 
     name = models.CharField(max_length=255)
-    directory = models.ForeignKey(CollectionDirectory)
+    directory = models.ForeignKey(CollectionDirectory, on_delete=models.CASCADE)
     recordingid = models.UUIDField(null=True, blank=True)
     filesize = models.IntegerField(blank=True, null=True)
 

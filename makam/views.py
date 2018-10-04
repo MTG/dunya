@@ -40,14 +40,14 @@ def makamplayer(request):
 
 
 def guest_login(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         user = User.objects.get(username='guest')
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
 
 
 def guest_logout(request):
-    if request.user.is_authenticated() and request.user.username == 'guest':
+    if request.user.is_authenticated and request.user.username == 'guest':
         logout(request)
 
 

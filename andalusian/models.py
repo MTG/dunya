@@ -1,7 +1,7 @@
 import collections
 import math
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 
 import data.models
@@ -40,7 +40,7 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
     name = models.CharField(max_length=255)
     transliterated_name = models.CharField(max_length=255, blank=True)
-    school = models.ForeignKey(MusicalSchool, blank=True, null=True)
+    school = models.ForeignKey(MusicalSchool, blank=True, null=True, on_delete=models.CASCADE)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups', through="OrchestraPerformer")
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
 
 class OrchestraAlias(models.Model):
     name = models.CharField(max_length=255)
-    orchestra = models.ForeignKey("Orchestra", related_name="aliases")
+    orchestra = models.ForeignKey("Orchestra", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -148,8 +148,8 @@ class AlbumType(models.Model):
 
 class AlbumRecording(models.Model):
     """ Links a album to a recording with an explicit ordering """
-    album = models.ForeignKey('Album')
-    recording = models.ForeignKey('Recording')
+    album = models.ForeignKey('Album', on_delete=models.CASCADE)
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
     # The number that the track comes in the album. Numerical 1-n
     track = models.IntegerField()
 
@@ -169,10 +169,10 @@ class Album(AndalusianStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
-    album_type = models.ForeignKey(AlbumType, blank=True, null=True)
+    album_type = models.ForeignKey(AlbumType, blank=True, null=True, on_delete=models.CASCADE)
     artists = models.ManyToManyField('Orchestra')
     recordings = models.ManyToManyField('Recording', through="AlbumRecording")
-    director = models.ForeignKey('Artist', null=True)
+    director = models.ForeignKey('Artist', null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -209,8 +209,8 @@ class Genre(AndalusianStyle, data.models.BaseModel):
 
 
 class RecordingWork(models.Model):
-    work = models.ForeignKey('Work')
-    recording = models.ForeignKey('Recording')
+    work = models.ForeignKey('Work', on_delete=models.CASCADE)
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
     class Meta:
@@ -231,7 +231,7 @@ class Recording(AndalusianStyle, data.models.BaseModel):
     transliterated_title = models.CharField(max_length=255, blank=True)
     length = models.IntegerField(blank=True, null=True)
     year = models.IntegerField(blank=True, null=True)
-    genre = models.ForeignKey('Genre', null=True)
+    genre = models.ForeignKey('Genre', null=True, on_delete=models.CASCADE)
     archive_url = models.CharField(max_length=255)
     musescore_url = models.CharField(max_length=255)
     poems = models.ManyToManyField("Poem", through="RecordingPoem")
@@ -285,9 +285,9 @@ class Instrument(AndalusianStyle, data.models.BaseModel):
 
 
 class InstrumentPerformance(models.Model):
-    recording = models.ForeignKey('Recording')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    performer = models.ForeignKey('Artist', on_delete=models.CASCADE)
+    instrument = models.ForeignKey('Instrument', on_delete=models.CASCADE)
     lead = models.BooleanField(default=False)
 
     def __str__(self):
@@ -295,8 +295,8 @@ class InstrumentPerformance(models.Model):
 
 
 class OrchestraPerformer(models.Model):
-    orchestra = models.ForeignKey('Orchestra')
-    performer = models.ForeignKey('Artist')
+    orchestra = models.ForeignKey('Orchestra', on_delete=models.CASCADE)
+    performer = models.ForeignKey('Artist', on_delete=models.CASCADE)
     instruments = models.ManyToManyField('Instrument')
     director = models.BooleanField(default=False)
     begin = models.CharField(max_length=10, blank=True, null=True)
@@ -372,7 +372,7 @@ class Form(data.models.BaseModel):
     uuid = models.UUIDField(db_index=True, null=True)
     name = models.CharField(max_length=50)
     transliterated_name = models.CharField(max_length=50, blank=True)
-    form_type = models.ForeignKey(FormType, blank=True, null=True)
+    form_type = models.ForeignKey(FormType, blank=True, null=True, on_delete=models.CASCADE)
 
     # Set to 1 to force some Form to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
@@ -382,13 +382,13 @@ class Form(data.models.BaseModel):
 
 
 class Section(AndalusianStyle, data.models.BaseModel):
-    recording = models.ForeignKey('Recording')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
     start_time = models.TimeField(blank=True, null=True)
     end_time = models.TimeField(blank=True, null=True)
-    tab = models.ForeignKey('Tab', blank=True, null=True)
-    nawba = models.ForeignKey('Nawba', blank=True, null=True)
-    mizan = models.ForeignKey('Mizan', blank=True, null=True)
-    form = models.ForeignKey('Form', blank=True, null=True)
+    tab = models.ForeignKey('Tab', blank=True, null=True, on_delete=models.CASCADE)
+    nawba = models.ForeignKey('Nawba', blank=True, null=True, on_delete=models.CASCADE)
+    mizan = models.ForeignKey('Mizan', blank=True, null=True, on_delete=models.CASCADE)
+    form = models.ForeignKey('Form', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return u"Section of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
@@ -397,9 +397,9 @@ class Section(AndalusianStyle, data.models.BaseModel):
 
 
 class InstrumentSectionPerformance(models.Model):
-    section = models.ForeignKey('Section')
-    performer = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
+    section = models.ForeignKey('Section', on_delete=models.CASCADE)
+    performer = models.ForeignKey('Artist', on_delete=models.CASCADE)
+    instrument = models.ForeignKey('Instrument', on_delete=models.CASCADE)
     lead = models.BooleanField(default=False)
 
     def __str__(self):
@@ -432,7 +432,7 @@ class Poem(data.models.BaseModel):
     identifier = models.CharField(max_length=100, blank=True, null=True)
     first_words = models.CharField(max_length=255, blank=True, null=True)
     transliterated_first_words = models.CharField(max_length=255, blank=True, null=True)
-    type = models.ForeignKey(PoemType, blank=True, null=True)
+    type = models.ForeignKey(PoemType, blank=True, null=True, on_delete=models.CASCADE)
     text = models.TextField()
     transliterated_text = models.TextField(blank=True)
     title = models.CharField(max_length=255, blank=True, null=True)
@@ -443,6 +443,6 @@ class Poem(data.models.BaseModel):
 
 
 class RecordingPoem(models.Model):
-    recording = models.ForeignKey('Recording')
-    poem = models.ForeignKey('Poem')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    poem = models.ForeignKey('Poem', on_delete=models.CASCADE)
     order_number = models.IntegerField(blank=True, null=True)

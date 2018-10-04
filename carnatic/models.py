@@ -17,7 +17,7 @@
 import collections
 import random
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Count
 from django.db.models import Q
@@ -56,7 +56,7 @@ class Artist(CarnaticStyle, data.models.Artist):
     # Automatically gets the Artist + the artists' main instrument
     objects = managers.ArtistManager()
 
-    state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+    state = models.ForeignKey(GeographicRegion, blank=True, null=True, on_delete=models.CASCADE)
     gurus = models.ManyToManyField("Artist", related_name="students")
 
     def similar_artists(self):
@@ -248,8 +248,8 @@ class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
 
 class ConcertRecording(models.Model):
     """ Links a concert to a recording with an explicit ordering """
-    concert = models.ForeignKey('Concert')
-    recording = models.ForeignKey('Recording')
+    concert = models.ForeignKey('Concert', on_delete=models.CASCADE)
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
     # The disc number. 1-n
@@ -271,7 +271,7 @@ class Concert(CarnaticStyle, data.models.Release):
     recordings = models.ManyToManyField('Recording', through="ConcertRecording")
 
     objects = managers.CollectionConcertManager()
-    collection = models.ForeignKey('data.Collection', blank=True, null=True)
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
@@ -297,7 +297,7 @@ class Concert(CarnaticStyle, data.models.Release):
 
 class RaagaAlias(models.Model):
     name = models.CharField(max_length=50)
-    raaga = models.ForeignKey("Raaga", related_name="aliases")
+    raaga = models.ForeignKey("Raaga", related_name="aliases", on_delete=models.CASCADE)
 
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
@@ -309,8 +309,8 @@ class RaagaAlias(models.Model):
 class RecordingForm(models.Model):
     """ Links a Form and a Recording with a sequence (if there is more than
         one form in the recording) """
-    recording = models.ForeignKey('Recording')
-    form = models.ForeignKey('Form')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    form = models.ForeignKey('Form', on_delete=models.CASCADE)
 
     sequence = models.IntegerField()
 
@@ -334,7 +334,7 @@ class Form(models.Model):
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=50)
-    form = models.ForeignKey(Form, related_name="aliases")
+    form = models.ForeignKey(Form, related_name="aliases", on_delete=models.CASCADE)
 
     objects = managers.FuzzySearchManager()
 
@@ -351,7 +351,7 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     uuid = models.UUIDField(db_index=True)
-    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -400,7 +400,7 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
 
 class TaalaAlias(models.Model):
     name = models.CharField(max_length=50)
-    taala = models.ForeignKey("Taala", related_name="aliases")
+    taala = models.ForeignKey("Taala", related_name="aliases", on_delete=models.CASCADE)
 
     fuzzymanager = managers.FuzzySearchManager()
     objects = models.Manager()
@@ -419,7 +419,7 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
     common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
     uuid = models.UUIDField(db_index=True)
-    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
     objects = managers.CarnaticTaalaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -474,17 +474,17 @@ class Work(CarnaticStyle, data.models.Work):
         ordering = ['id']
 
     # (raaga, taala)
-    raaga = models.ForeignKey('Raaga', blank=True, null=True)
-    taala = models.ForeignKey('Taala', blank=True, null=True)
-    form = models.ForeignKey('Form', blank=True, null=True)
+    raaga = models.ForeignKey('Raaga', blank=True, null=True, on_delete=models.CASCADE)
+    taala = models.ForeignKey('Taala', blank=True, null=True, on_delete=models.CASCADE)
+    form = models.ForeignKey('Form', blank=True, null=True, on_delete=models.CASCADE)
 
     def recordings(self):
         return self.recording_set.all()
 
 
 class RecordingRaaga(models.Model):
-    recording = models.ForeignKey('Recording')
-    raaga = models.ForeignKey('Raaga')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    raaga = models.ForeignKey('Raaga', on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -492,8 +492,8 @@ class RecordingRaaga(models.Model):
 
 
 class RecordingTaala(models.Model):
-    recording = models.ForeignKey('Recording')
-    taala = models.ForeignKey('Taala')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    taala = models.ForeignKey('Taala', on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -501,8 +501,8 @@ class RecordingTaala(models.Model):
 
 
 class WorkRaaga(models.Model):
-    work = models.ForeignKey('Work')
-    raaga = models.ForeignKey('Raaga')
+    work = models.ForeignKey('Work', on_delete=models.CASCADE)
+    raaga = models.ForeignKey('Raaga', on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -510,8 +510,8 @@ class WorkRaaga(models.Model):
 
 
 class WorkTaala(models.Model):
-    work = models.ForeignKey('Work')
-    taala = models.ForeignKey('Taala')
+    work = models.ForeignKey('Work', on_delete=models.CASCADE)
+    taala = models.ForeignKey('Taala', on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -519,8 +519,8 @@ class WorkTaala(models.Model):
 
 
 class RecordingWork(models.Model):
-    recording = models.ForeignKey('Recording')
-    work = models.ForeignKey('Work')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    work = models.ForeignKey('Work', on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -664,7 +664,7 @@ class InstrumentPerformance(CarnaticStyle, data.models.InstrumentPerformance):
 
 
 class Composer(CarnaticStyle, data.models.Composer):
-    state = models.ForeignKey(GeographicRegion, blank=True, null=True)
+    state = models.ForeignKey(GeographicRegion, blank=True, null=True, on_delete=models.CASCADE)
 
     def raagas(self):
         return Raaga.objects.filter(work__composer=self).all()

@@ -17,7 +17,7 @@
 import collections
 
 import unidecode
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Q
 from django.utils.text import slugify
@@ -91,7 +91,7 @@ class Release(MakamStyle, data.models.Release):
 
     is_concert = models.BooleanField(default=False)
     recordings = models.ManyToManyField('Recording', through="ReleaseRecording")
-    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases")
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="makam_releases", on_delete=models.CASCADE)
 
     objects = managers.CollectionReleaseManager()
 
@@ -116,8 +116,8 @@ class Release(MakamStyle, data.models.Release):
 
 
 class ReleaseRecording(models.Model):
-    release = models.ForeignKey('Release')
-    recording = models.ForeignKey('Recording')
+    release = models.ForeignKey('Release', on_delete=models.CASCADE)
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
     # The number that the track comes in the release. Numerical 1-n
     track = models.IntegerField()
 
@@ -129,8 +129,8 @@ class ReleaseRecording(models.Model):
 
 
 class RecordingWork(models.Model):
-    work = models.ForeignKey("Work")
-    recording = models.ForeignKey("Recording")
+    work = models.ForeignKey("Work", on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
     class Meta:
@@ -246,7 +246,7 @@ class Instrument(MakamStyle, data.models.Instrument):
 
 class MakamAlias(models.Model):
     name = models.CharField(max_length=100)
-    makam = models.ForeignKey("Makam", related_name="aliases")
+    makam = models.ForeignKey("Makam", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -289,7 +289,7 @@ class Makam(models.Model):
 
 class UsulAlias(models.Model):
     name = models.CharField(max_length=100)
-    usul = models.ForeignKey("Usul", related_name="aliases")
+    usul = models.ForeignKey("Usul", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -330,7 +330,7 @@ class Usul(models.Model):
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=100)
-    form = models.ForeignKey("Form", related_name="aliases")
+    form = models.ForeignKey("Form", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

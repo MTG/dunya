@@ -19,7 +19,7 @@ import os
 
 import django.utils.timezone
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.validators import RegexValidator
 from django.db import models, connection
 from django.template.defaultfilters import slugify
@@ -254,9 +254,9 @@ class SourceFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
-    document = models.ForeignKey(Document, related_name='sourcefiles')
+    document = models.ForeignKey(Document, related_name='sourcefiles', on_delete=models.CASCADE)
     """The filetype"""
-    file_type = models.ForeignKey(SourceFileType)
+    file_type = models.ForeignKey(SourceFileType, on_delete=models.CASCADE)
     """The relative path on disk to the file (to the collection root)"""
     path = models.CharField(max_length=500)
     size = models.IntegerField()
@@ -295,12 +295,12 @@ class DerivedFile(models.Model):
         unique_together = ("document", "module_version", "outputname")
 
     """The document this file is part of"""
-    document = models.ForeignKey("Document", related_name='derivedfiles')
+    document = models.ForeignKey("Document", related_name='derivedfiles', on_delete=models.CASCADE)
 
     # A module could output more than 1 file. The combination of
     # module_version and (outputname/extension) refers to one
     # unique file output.
-    module_version = models.ForeignKey("ModuleVersion")
+    module_version = models.ForeignKey("ModuleVersion", on_delete=models.CASCADE)
     outputname = models.CharField(max_length=50)
     extension = models.CharField(max_length=10)
     mimetype = models.CharField(max_length=100)
@@ -310,8 +310,8 @@ class DerivedFile(models.Model):
     num_parts = models.IntegerField()
 
     # The version of essentia and pycompmusic we used to compute this file
-    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
-    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
+    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True, on_delete=models.CASCADE)
+    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True, on_delete=models.CASCADE)
 
     date = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -383,8 +383,8 @@ class CollectionPermission(models.Model):
     )
 
     permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
-    collection = models.ForeignKey(Collection)
-    source_type = models.ForeignKey(SourceFileType)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    source_type = models.ForeignKey(SourceFileType, on_delete=models.CASCADE)
     streamable = models.BooleanField(default=False)
 
 
@@ -401,8 +401,8 @@ class Worker(models.Model):
     )
 
     hostname = models.CharField(max_length=200)
-    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True)
-    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True)
+    essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True, on_delete=models.CASCADE)
+    pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True, on_delete=models.CASCADE)
     state = models.CharField(max_length=1, choices=STATE_CHOICES, default='0')
 
     def set_state_updating(self):
@@ -461,7 +461,7 @@ class Module(models.Model):
     slug = models.SlugField()
     depends = models.CharField(max_length=100, blank=True, null=True)
     module = models.CharField(max_length=200)
-    source_type = models.ForeignKey(SourceFileType)
+    source_type = models.ForeignKey(SourceFileType, on_delete=models.CASCADE)
     disabled = models.BooleanField(default=False)
     restricted = models.BooleanField(default=False)
     many_files = models.BooleanField(default=False)
@@ -505,7 +505,7 @@ class Module(models.Model):
 
 
 class ModuleVersion(models.Model):
-    module = models.ForeignKey(Module, related_name="versions")
+    module = models.ForeignKey(Module, related_name="versions", on_delete=models.CASCADE)
     version = models.CharField(max_length=10)
     date_added = models.DateTimeField(default=django.utils.timezone.now)
 
@@ -582,9 +582,9 @@ class DocumentLogMessage(models.Model):
     class Meta:
         ordering = ['-datetime']
 
-    document = models.ForeignKey(Document, related_name="logs")
-    moduleversion = models.ForeignKey(ModuleVersion, blank=True, null=True)
-    sourcefile = models.ForeignKey(SourceFile, blank=True, null=True)
+    document = models.ForeignKey(Document, related_name="logs", on_delete=models.CASCADE)
+    moduleversion = models.ForeignKey(ModuleVersion, blank=True, null=True, on_delete=models.CASCADE)
+    sourcefile = models.ForeignKey(SourceFile, blank=True, null=True, on_delete=models.CASCADE)
     level = models.CharField(max_length=20)
     message = models.TextField()
     datetime = models.DateTimeField(default=django.utils.timezone.now)

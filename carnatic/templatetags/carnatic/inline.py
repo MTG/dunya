@@ -24,29 +24,6 @@ import carnatic
 register = template.Library()
 
 
-@register.assignment_tag
-def work_recordings_with_restricted(work, with_restricted):
-    all_recordings = work.recordings()
-    restricted = 0
-    ret = []
-    for r in all_recordings:
-        is_b = r.is_restricted()
-        if not with_restricted and is_b:
-            restricted += 1
-        elif with_restricted and is_b:
-            ret.append(r)
-        elif not is_b:
-            ret.append(r)
-
-    return {"recordings": ret, "restricted": restricted}
-
-
-@register.assignment_tag
-def artist_collaborating_artists_with_bootleg(artist, permission):
-    coll_artists = artist.collaborating_artists(permission=permission)
-    return [{"artist": a, "concerts": c, "bootlegs": b} for a, c, b in coll_artists]
-
-
 @register.simple_tag
 def url_host_and_path(request, url):
     return request.build_absolute_uri(url)

@@ -21,7 +21,7 @@ import time
 import unidecode
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
 
@@ -42,7 +42,7 @@ class SourceName(models.Model):
 
 class Source(models.Model):
     # The source type that we got this data from (wikipedia, musicbrainz, etc)
-    source_name = models.ForeignKey(SourceName)
+    source_name = models.ForeignKey(SourceName, on_delete=models.CASCADE)
     # The title of the page on the source website
     title = models.CharField(max_length=255)
     # The URL of the source
@@ -56,7 +56,7 @@ class Source(models.Model):
 class Description(models.Model):
     """ A short description of a thing in the database.
     It could be a biography, or a description """
-    source = models.ForeignKey(Source, blank=True, null=True)
+    source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     description = models.TextField()
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Description(models.Model):
 
 class Image(models.Model):
     """ An image of a thing in the database """
-    source = models.ForeignKey(Source, blank=True, null=True)
+    source = models.ForeignKey(Source, blank=True, null=True, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="images")
     small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
@@ -132,12 +132,12 @@ class Artist(BaseModel, ImageMixin):
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
     artist_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='P')
-    main_instrument = models.ForeignKey('Instrument', blank=True, null=True)
+    main_instrument = models.ForeignKey('Instrument', blank=True, null=True, on_delete=models.CASCADE)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups')
     dummy = models.BooleanField(default=False, db_index=True)
-    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
-    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
     description_edited = models.BooleanField(default=False)
 
     def __str__(self):
@@ -162,7 +162,7 @@ class Artist(BaseModel, ImageMixin):
 class ArtistAlias(models.Model):
     class Meta:
         abstract = True
-    artist = models.ForeignKey("Artist", related_name="aliases")
+    artist = models.ForeignKey("Artist", related_name="aliases", on_delete=models.CASCADE)
     alias = models.CharField(max_length=100)
     primary = models.BooleanField(default=False)
     locale = models.CharField(max_length=10, blank=True, null=True)
@@ -182,7 +182,7 @@ class Release(BaseModel, ImageMixin):
     artists = models.ManyToManyField('Artist', related_name='primary_concerts')
     artistcredit = models.CharField(max_length=255)
     year = models.IntegerField(blank=True, null=True)
-    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
     status = models.CharField(max_length=100, blank=True, null=True)
     rel_type = models.CharField(max_length=100, blank=True, null=True)
@@ -328,7 +328,7 @@ class InstrumentAlias(models.Model):
     class Meta:
         abstract = True
     name = models.CharField(max_length=50)
-    instrument = models.ForeignKey("Instrument", related_name="aliases")
+    instrument = models.ForeignKey("Instrument", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -343,9 +343,9 @@ class Instrument(BaseModel, ImageMixin):
     name = models.CharField(max_length=50)
     # Instruments have mbids too
     mbid = models.UUIDField(blank=True, null=True)
-    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
-    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
 
     # Some instruments exist because they have relationships, but we
     # don't want to show them
@@ -366,9 +366,9 @@ class Instrument(BaseModel, ImageMixin):
 class InstrumentPerformance(models.Model):
     class Meta:
         abstract = True
-    recording = models.ForeignKey('Recording')
-    artist = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument', blank=True, null=True)
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    artist = models.ForeignKey('Artist', on_delete=models.CASCADE)
+    instrument = models.ForeignKey('Instrument', blank=True, null=True, on_delete=models.CASCADE)
     lead = models.BooleanField(default=False)
     attributes = models.CharField(max_length=200, blank=True, null=True)
 
@@ -395,8 +395,8 @@ class Composer(BaseModel, ImageMixin):
     begin = models.CharField(max_length=10, blank=True, null=True)
     end = models.CharField(max_length=10, blank=True, null=True)
 
-    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
-    description = models.ForeignKey(Description, blank=True, null=True, related_name="+")
+    image = models.ForeignKey(Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
+    description = models.ForeignKey(Description, blank=True, null=True, related_name="+", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -420,7 +420,7 @@ class Composer(BaseModel, ImageMixin):
 class ComposerAlias(models.Model):
     class Meta:
         abstract = True
-    composer = models.ForeignKey("Composer", related_name="aliases")
+    composer = models.ForeignKey("Composer", related_name="aliases", on_delete=models.CASCADE)
     alias = models.CharField(max_length=100)
     primary = models.BooleanField(default=False)
     locale = models.CharField(max_length=10, blank=True, null=True)

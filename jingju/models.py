@@ -25,7 +25,7 @@ class Recording(JingjuStyle, data.models.BaseModel):
 
     title = models.CharField(max_length=200, blank=True, null=True)
     mbid = models.UUIDField(blank=True, null=True)
-    work = models.ForeignKey('Work', null=True)
+    work = models.ForeignKey('Work', null=True, on_delete=models.CASCADE)
     performers = models.ManyToManyField('Artist')
     instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist',
                                               related_name='instrumentalist')
@@ -37,15 +37,15 @@ class Recording(JingjuStyle, data.models.BaseModel):
 
 
 class RecordingInstrumentalist(JingjuStyle, models.Model):
-    recording = models.ForeignKey('Recording')
-    artist = models.ForeignKey('Artist')
-    instrument = models.ForeignKey('Instrument')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    artist = models.ForeignKey('Artist', on_delete=models.CASCADE)
+    instrument = models.ForeignKey('Instrument', on_delete=models.CASCADE)
 
 
 class Artist(data.models.Artist):
     alias = models.CharField(max_length=200, blank=True, null=True)
-    role_type = models.ForeignKey('RoleType', blank=True, null=True)
-    instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name='jingju')
+    role_type = models.ForeignKey('RoleType', blank=True, null=True, on_delete=models.CASCADE)
+    instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name='jingju', on_delete=models.CASCADE)
     objects = managers.ArtistManager()
 
     class Meta:
@@ -62,8 +62,8 @@ class Instrument(data.models.Instrument):
 
 
 class RecordingRelease(models.Model):
-    recording = models.ForeignKey('Recording')
-    release = models.ForeignKey('Release')
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    release = models.ForeignKey('Release', on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     # The number that the track comes in the concert. Numerical 1-n
@@ -86,8 +86,8 @@ class Work(JingjuStyle, data.models.BaseModel):
 
     title = models.CharField(max_length=200, blank=True, null=True)
     mbid = models.UUIDField(blank=True, null=True)
-    score = models.ForeignKey('Score', blank=True, null=True)
-    play = models.ForeignKey('Play', blank=True, null=True)
+    score = models.ForeignKey('Score', blank=True, null=True, on_delete=models.CASCADE)
+    play = models.ForeignKey('Play', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return u"%s" % self.title
@@ -98,7 +98,7 @@ class Release(JingjuStyle, data.models.Release):
         ordering = ['id']
 
     recordings = models.ManyToManyField('Recording', through='RecordingRelease')
-    collection = models.ForeignKey('data.Collection', blank=True, null=True)
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, on_delete=models.CASCADE)
     objects = managers.CollectionReleaseManager()
 
 

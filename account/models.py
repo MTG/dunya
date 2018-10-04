@@ -21,7 +21,7 @@ from rest_framework.authtoken.models import Token
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, unique=True)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     affiliation = models.CharField(max_length=200, blank=True)
 
     def __str__(self):

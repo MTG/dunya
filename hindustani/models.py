@@ -16,7 +16,7 @@
 
 import collections
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.db.models import Q
 from django.utils.text import slugify
@@ -201,8 +201,8 @@ class ArtistAlias(HindustaniStyle, data.models.ArtistAlias):
 
 class ReleaseRecording(models.Model):
     """ Links a release to a recording with an implicit ordering """
-    release = models.ForeignKey('Release')
-    recording = models.ForeignKey('Recording')
+    release = models.ForeignKey('Release', on_delete=models.CASCADE)
+    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
     # The disc number. 1-n
@@ -222,7 +222,7 @@ class Release(HindustaniStyle, data.models.Release):
         ordering = ['id']
 
     recordings = models.ManyToManyField("Recording", through="ReleaseRecording")
-    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases")
+    collection = models.ForeignKey('data.Collection', blank=True, null=True, related_name="hindustani_releases", on_delete=models.CASCADE)
 
     objects = managers.HindustaniReleaseManager()
 
@@ -276,26 +276,26 @@ class Release(HindustaniStyle, data.models.Release):
 
 
 class RecordingRaag(models.Model):
-    recording = models.ForeignKey("Recording")
-    raag = models.ForeignKey("Raag")
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    raag = models.ForeignKey("Raag", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
 
 class RecordingTaal(models.Model):
-    recording = models.ForeignKey("Recording")
-    taal = models.ForeignKey("Taal")
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    taal = models.ForeignKey("Taal", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
 
 class RecordingLaya(models.Model):
-    recording = models.ForeignKey("Recording")
-    laya = models.ForeignKey("Laya")
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    laya = models.ForeignKey("Laya", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
 
 class RecordingForm(models.Model):
-    recording = models.ForeignKey("Recording")
-    form = models.ForeignKey("Form")
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    form = models.ForeignKey("Form", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
 
@@ -353,14 +353,14 @@ class Work(HindustaniStyle, data.models.Work):
     class Meta:
         ordering = ['id']
 
-    lyrics = models.ForeignKey("Lyrics", blank=True, null=True)
+    lyrics = models.ForeignKey("Lyrics", blank=True, null=True, on_delete=models.CASCADE)
 
 
 class WorkTime(models.Model):
     # The time in a recording that a work occurs (recordings can consist of
     # many works)
-    recording = models.ForeignKey(Recording)
-    work = models.ForeignKey(Work)
+    recording = models.ForeignKey(Recording, on_delete=models.CASCADE)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE)
     # a worktime is always ordered ...
     sequence = models.IntegerField()
     # but its time is optional (we may not have it yet)
@@ -378,7 +378,7 @@ class Raag(data.models.BaseModel, data.models.ImageMixin):
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     uuid = models.UUIDField(db_index=True)
-    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name.capitalize()
@@ -448,7 +448,7 @@ class Raag(data.models.BaseModel, data.models.ImageMixin):
 
 class RaagAlias(models.Model):
     name = models.CharField(max_length=50)
-    raag = models.ForeignKey("Raag", related_name="aliases")
+    raag = models.ForeignKey("Raag", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -466,7 +466,7 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
     common_name = models.CharField(max_length=50)
     num_maatras = models.IntegerField(null=True)
     uuid = models.UUIDField(db_index=True)
-    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image")
+    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name.capitalize()
@@ -536,7 +536,7 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
 
 class TaalAlias(models.Model):
     name = models.CharField(max_length=50)
-    taal = models.ForeignKey("Taal", related_name="aliases")
+    taal = models.ForeignKey("Taal", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -583,7 +583,7 @@ class Laya(data.models.BaseModel):
 
 class LayaAlias(models.Model):
     name = models.CharField(max_length=50)
-    laya = models.ForeignKey("Laya", related_name="aliases")
+    laya = models.ForeignKey("Laya", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -655,7 +655,7 @@ class Form(data.models.BaseModel):
 
 class FormAlias(models.Model):
     name = models.CharField(max_length=50)
-    form = models.ForeignKey("Form", related_name="aliases")
+    form = models.ForeignKey("Form", related_name="aliases", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
