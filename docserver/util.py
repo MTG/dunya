@@ -197,7 +197,7 @@ def docserver_get_contents(documentid, slug, subtype=None, part=None, version=No
 
 def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
     try:
-        return json.load(open(docserver_get_filename(documentid, slug, subtype, part, version), "rb"))
+        return json.load(open(docserver_get_filename(documentid, slug, subtype, part, version)))
     except IOError:
         raise exceptions.NoFileException
 
