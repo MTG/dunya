@@ -198,7 +198,7 @@ class Release(BaseModel, ImageMixin):
         return time.strftime('%H:%M:%S', time.gmtime(tot_len))
 
     def __str__(self):
-        ret = u", ".join(self.artists.all())
+        ret = u", ".join([str(a) for a in self.artists.all()])
         return u"%s (%s)" % (self.title, ret)
 
     def get_absolute_url(self):

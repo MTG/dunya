@@ -303,7 +303,7 @@ class OrchestraPerformer(models.Model):
     end = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
-        ret = u"%s played %s on %s" % (self.performer, u", ".join([i for i in self.instruments.all()]), self.orchestra)
+        ret = u"%s played %s on %s" % (self.performer, u", ".join([str(i) for i in self.instruments.all()]), self.orchestra)
         if self.director:
             ret += u". Moreover, %s acted as the director of this orchestra" % self.performer
             if self.begin:

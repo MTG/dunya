@@ -25,7 +25,7 @@ class UserProfile(models.Model):
     affiliation = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 def user_post_save(sender, instance, created, **kwargs):
