@@ -63,14 +63,14 @@
                 <nav id="mainmenu">
                   <ul>
                     {% block info_link %}
-                    <li><a class="" href="./info">Info</a></li>
+                    <li><a href="{% url 'general-info' %}">Info</a></li>
                     {% endblock %}
-                    <li><a class="" href="about/terms">Legal</a></li>
+                    <li><a href="{% url 'terms' %}">Legal</a></li>
                     {% if user.is_authenticated %}
                       {% if user.username != 'guest' %}
                         <li><a class="" id="mainmenu_a" href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
                       {% endif %}
-                      <li><a class="" href="{% url 'account-login' %}">Logout</a></li>
+                      <li><a class="" href="{% url 'account-logout' %}">Logout</a></li>
                       {% else %}
                       <li><a href="{% url 'account-login' %}">Login</a></li>
                       <li><a href="{% url 'account-register' %}">Register</a></li>
