@@ -28,11 +28,11 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
         if works:
             work = works[0]
             mbwork = compmusic.mb.get_work_by_id(work.mbid, includes=["artist-rels", "work-rels", "series-rels"])["work"]
-            if mbwork.has_key('series-relation-list'):
+            if 'series-relation-list' in mbwork:
                 mbscore = mbwork['series-relation-list'][0]['series']
                 score = jingju.models.Score.objects.create(name=mbscore['name'], uuid=mbscore['id'])
                 work.score = score
-            if mbwork.has_key('work-relation-list'):
+            if 'work-relation-list' in mbwork:
                 mbplay = mbwork['work-relation-list'][0]['work']
                 play = jingju.models.Play.objects.create(title=mbplay['title'], uuid=mbplay['id'])
                 work.play = play
@@ -103,7 +103,7 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases", "tags"])["artist"]
         artist = self._create_artist_object(mbartist)
         # print mbartist['id']
-        if mbartist.has_key('tag-list'):
+        if 'tag-list' in mbartist:
             for tag in mbartist['tag-list']:
                 tagname = tag['name']
                 if tagname in ROLE_TYPE_DIC:

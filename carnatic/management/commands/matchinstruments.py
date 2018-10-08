@@ -47,7 +47,7 @@ class Command(BaseCommand):
         fname = args[0]
 
         reader = csv.reader(open(fname, "rb"))
-        reader.next()  # header
+        next(reader)  # header
         for row in reader:
             name = row[0]
             percussion = row[2]

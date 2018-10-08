@@ -69,7 +69,7 @@ class ArtistTest(ApiTestCase):
         s = api.ArtistInnerSerializer(self.a1)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = {"name": "Artist1", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
-        self.assertEquals(expected, data)
+        self.assertEqual(expected, data)
 
     def test_render_artist_detail(self):
         pass

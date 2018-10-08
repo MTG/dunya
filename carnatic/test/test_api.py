@@ -64,7 +64,7 @@ class ArtistTest(TestCase):
         s = api.ArtistInnerSerializer(self.a)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
         expected = {"name": "Foo", "mbid": "a484bcbc-c0d9-468a-952c-9938d5811f85"}
-        self.assertEquals(expected, data)
+        self.assertEqual(expected, data)
 
     def test_render_artist_detail(self):
         client = APIClient()
@@ -154,7 +154,7 @@ class ComposerTest(TestCase):
         c = models.Composer.objects.create(name="Composer", mbid=mbid)
         s = api.ComposerInnerSerializer(c)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEquals(["mbid", "name"], sorted(data.keys()))
+        self.assertEqual(["mbid", "name"], sorted(data.keys()))
 
 
 class RecordingTest(TestCase):
@@ -209,7 +209,7 @@ class RecordingTest(TestCase):
     def test_render_recording_inner(self):
         s = api.RecordingInnerSerializer(self.rnormal)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEquals(["mbid", "title"], sorted(data.keys()))
+        self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_recording_list_collection(self):
         """ Staff members will see recordings from restricted collections in
@@ -323,7 +323,7 @@ class WorkTest(TestCase):
         w = models.Work(title="work", mbid="")
         s = api.WorkInnerSerializer(w)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEquals(["mbid", "title"], sorted(data.keys()))
+        self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_render_work_detail(self):
         client = APIClient()
@@ -332,7 +332,7 @@ class WorkTest(TestCase):
         response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         data = response.data
         fields = ['composers', 'lyricists', 'mbid', 'raagas', 'recordings', 'taalas', 'title']
-        self.assertEquals(fields, sorted(data.keys()))
+        self.assertEqual(fields, sorted(data.keys()))
 
     def test_work_collection_recordings_staff(self):
         client = APIClient()

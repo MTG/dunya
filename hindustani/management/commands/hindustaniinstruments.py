@@ -46,7 +46,7 @@ class Command(BaseCommand):
         fname = args[0]
 
         reader = csv.reader(open(fname, "rb"))
-        reader.next()  # header
+        next(reader)  # header
         for row in reader:
             _ = row[0]
             _ = row[1]

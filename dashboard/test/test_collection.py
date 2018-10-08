@@ -29,7 +29,7 @@ class CollectionTest(TestCase):
         f = forms.AddCollectionForm(data)
 
         self.assertTrue(f.is_valid())
-        self.assertEquals("My collection", f.cleaned_data["collectionname"])
+        self.assertEqual("My collection", f.cleaned_data["collectionname"])
         self.mockname.assert_called_once_with("55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d")
         calls = [mock.call("/some/path"), mock.call("/some/path/audio")]
         self.pathmock.assert_has_calls(calls)

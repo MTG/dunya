@@ -4,8 +4,8 @@ import json
 import os
 import sys
 
-import csvtojson
-import format_pitch
+from . import csvtojson
+from . import format_pitch
 
 
 def main(fname):

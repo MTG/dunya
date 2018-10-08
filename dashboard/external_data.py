@@ -29,7 +29,7 @@ def import_artist_kutcheris(a):
     artist = kutcheris.search_artist(a.name)
     if artist:
         print("Found data on kutcheris.com")
-        aid = artist.values()[0]
+        aid = list(artist.values())[0]
         i, b, u = kutcheris.get_artist_details(aid)
         u = "http://kutcheris.com/artist.php?id=%s" % aid
         if b:

@@ -535,7 +535,7 @@ class ModuleVersion(models.Model):
             collections = [collection]
         if self.module.many_files:
             total = len(collections) - len(self.processed_files(collection))
-            return range(total)
+            return list(range(total))
         else:
             qs = Document.objects.filter(
                 collections__in=collections,

@@ -33,7 +33,7 @@ class Command(BaseCommand):
         fp = open(fname, "rb")
         reader = csv.reader(fp)
         if has_header:
-            reader.next()
+            next(reader)
         for line in reader:
             name = line[0]
             print(name)
