@@ -26,7 +26,8 @@ First, create directories for pycompmusic (cloned from https://github.com/MTG/py
 Then, in the dunya directory, set the relevant environment variables to the absolute locations of these folders.
 
     cp .env.in .env
-    insert the absolute paths in .env  
+
+Insert the actual absolute paths in .env  
 
 Using docker, run
 
