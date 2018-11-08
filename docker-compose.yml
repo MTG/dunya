@@ -9,6 +9,7 @@ services:
       POSTGRES_DB: dunya
     volumes:
       - dbvolume:/var/lib/postgresql/data/
+    command: postgres -F
 
   redis:
     image: redis
@@ -25,7 +26,6 @@ services:
     volumes:
       - .:/code
       - ./media:/media/
-      - ./tmp:/tmp/
       - ${DUNYA_DATA}:/incoming
       - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
     ports:
