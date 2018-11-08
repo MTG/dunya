@@ -47,16 +47,16 @@ urlpatterns = [
     url(r'^instrument/(?P<pk>\d+)$', andalusian.api.InstrumentDetail.as_view(), name='api-andalusian-instrument-detail'),
 
     url(r'^tab$', andalusian.api.TabList.as_view(), name='api-andalusian-tab-list'),
-    url(r'^tab/%s' % uuid_match, andalusian.api.TabDetail.as_view(), name='api-andalusian-tab-detail'),
+    url(r'^tab/%s$' % uuid_match, andalusian.api.TabDetail.as_view(), name='api-andalusian-tab-detail'),
 
     url(r'^mizan$', andalusian.api.MizanList.as_view(), name='api-andalusian-mizan-list'),
-    url(r'^mizan/%s' % uuid_match, andalusian.api.MizanDetail.as_view(), name='api-andalusian-mizan-detail'),
+    url(r'^mizan/%s$' % uuid_match, andalusian.api.MizanDetail.as_view(), name='api-andalusian-mizan-detail'),
 
     url(r'^nawba$', andalusian.api.NawbaList.as_view(), name='api-andalusian-nawba-list'),
-    url(r'^nawba/%s' % uuid_match, andalusian.api.NawbaDetail.as_view(), name='api-andalusian-nawba-detail'),
+    url(r'^nawba/%s$' % uuid_match, andalusian.api.NawbaDetail.as_view(), name='api-andalusian-nawba-detail'),
 
     url(r'^form$', andalusian.api.FormList.as_view(), name='api-andalusian-form-list'),
-    url(r'^form/%s' % uuid_match, andalusian.api.FormDetail.as_view(), name='api-andalusian-form-detail'),
+    url(r'^form/%s$' % uuid_match, andalusian.api.FormDetail.as_view(), name='api-andalusian-form-detail'),
 
     url(r'^sanaa$', andalusian.api.SanaaList.as_view(), name='api-andalusian-sanaa-list'),
     url(r'^sanaa/(?P<pk>\d+)$', andalusian.api.SanaaDetail.as_view(), name='api-andalusian-sanaa-detail'),

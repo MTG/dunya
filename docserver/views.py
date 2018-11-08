@@ -36,6 +36,7 @@ from rest_framework import parsers
 from rest_framework import permissions
 from rest_framework import response
 from rest_framework import status
+from rest_framework.serializers import BaseSerializer
 from sendfile import sendfile
 
 import dashboard.models
@@ -113,6 +114,9 @@ class SourceFileException(Exception):
 class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = (StaffWritePermission,)
+
+    def get_serializer_class(self):
+        return BaseSerializer
 
     def _save_file(self, external_identifier, file_type, file):
         try:

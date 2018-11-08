@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^usul/%s$' % uuid_match, makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
 
     url(r'^instrument$', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),
-    url(r'^instrument/%s' % uuid_match, makam.api.InstrumentDetail.as_view(), name='api-makam-instrument-detail'),
+    url(r'^instrument/%s$' % uuid_match, makam.api.InstrumentDetail.as_view(), name='api-makam-instrument-detail'),
 
     url(r'^work$', makam.api.WorkList.as_view(), name='api-makam-work-list'),
     url(r'^work/%s$' % uuid_match, makam.api.WorkDetail.as_view(), name='api-makam-work-detail'),

@@ -75,7 +75,7 @@ urlpatterns = [
     url(r'makam/data/usuls', views.makam_usuls, name='dashboard-makam-usuls'),
     url(r'makam/data/forms', views.makam_forms, name='dashboard-makam-forms'),
     url(r'makam/data/instruments', views.makam_instruments, name='dashboard-makam-instruments'),
-    url(r'makam/data/symbtr/%s' % uuid_match, views.makam_symbtr, name='dashboard-makam-symbtr'),
+    url(r'makam/data/symbtr/%s$' % uuid_match, views.makam_symbtr, name='dashboard-makam-symbtr'),
     url(r'makam/data/symbtr/new', views.makam_symbtr, name='dashboard-makam-symbtrnew'),
     url(r'makam/data/symbtr', views.makam_symbtrlist, name='dashboard-makam-symbtrlist'),
 
