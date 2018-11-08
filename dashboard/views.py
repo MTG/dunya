@@ -26,6 +26,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.forms.models import modelformset_factory
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from mishkal.tashkeel.tashkeel import TashkeelClass
@@ -123,6 +124,13 @@ def index(request):
     collections = models.Collection.objects.all()
     ret = {'collections': collections}
     return render(request, 'dashboard/index.html', ret)
+
+
+@user_passes_test(is_staff)
+def headers(request):
+    body = "\n".join(["%s: %s" % (k, v) for k, v in request.META.items()])
+    response = HttpResponse(body, content_type="text/plain")
+    return response
 
 
 @user_passes_test(is_staff)
