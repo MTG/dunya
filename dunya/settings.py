@@ -155,7 +155,7 @@ deploy_env = get_check_env('DUNYA_DEPLOY_ENV')
 if deploy_env == 'prod':
     # Host 'nginx' is for services inside docker to connect
     # directly to dunya.
-    ALLOWED_HOSTS = ['dunya.compmusic.upf.edu', 'asplab-web3.s.upf.edu', 'nginx']
+    ALLOWED_HOSTS = ['dunya.compmusic.upf.edu', 'dunya.upf.edu', 'asplab-web3.s.upf.edu', 'nginx']
     debug = False
 
     #  Sendfile, for serving static content
