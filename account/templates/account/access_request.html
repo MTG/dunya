@@ -1,0 +1,20 @@
+{% extends "dunya/base.html" %}
+
+{% block wrap %}
+    <div id="profile" class="centering">
+    <h2>Collection access request</h2>
+        <p>Some collections in dunya <a href="{% url 'developers' %}">are restricted to only approved users.</a>
+        You can use this form to request access to these collections. Fill in the request form with a description
+            of your research and why you would like access to a specific collection. We will only approve
+        access to collections where the justification describes a specific research goal.</p>
+    <form method="post">
+        {% csrf_token %}
+        <ul>
+            <li>User: <b>{{ request.user.username }}</b></li>
+            <li>Request date: <b>{{ today }}</b></li>
+        </ul>
+    {{ form.as_p }}
+        <input type="submit" name="Request access">
+    </form>
+</div>
+{% endblock %}

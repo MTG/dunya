@@ -17,6 +17,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
 
 
@@ -39,3 +40,40 @@ def user_post_save(sender, instance, created, **kwargs):
 
 post_save.connect(user_post_save, sender=User)
 
+
+class AccessRequestManager(models.Manager):
+    def for_user(self, user):
+        requests = self.get_queryset().filter(user=user).order_by('-requestdate')
+        if requests.count():
+            return requests[0]
+        return None
+
+    def unapproved(self):
+        return self.get_queryset().filter(approved__isnull=True)
+
+
+class AccessRequest(models.Model):
+    class Meta:
+        ordering = ['requestdate']
+
+    objects = AccessRequestManager()
+
+    user = models.ForeignKey(User, unique=False, on_delete=models.CASCADE)
+    requestdate = models.DateTimeField(default=timezone.now)
+    justification = models.TextField()
+    approved = models.BooleanField(null=True)
+    processedby = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='access_request_approvals')
+    processeddate = models.DateTimeField(blank=True, null=True)
+
+    def approve_or_deny_request(self, user, approved):
+        """Approve or deny this request
+        Arguments:
+            user: the user who processed this request
+            approved: the decision (True for approved, False for denied)
+        """
+        self.approved = approved
+        self.processedby = user
+        self.processeddate = timezone.now()
+
+    def __str__(self):
+        return 'User: {}, Date: {}, approved: {}'.format(self.user, self.requestdate, self.approved)

@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from account import models
+from account.models import AccessRequest
 
 
 class UserProfileInline(admin.StackedInline):
@@ -11,9 +12,10 @@ class UserProfileInline(admin.StackedInline):
     verbose_name_plural = 'userprofile'
 
 
-class UserAdmin(UserAdmin):
+class DunyaUserAdmin(UserAdmin):
     inlines = (UserProfileInline, )
 
 
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, DunyaUserAdmin)
+admin.site.register(AccessRequest)

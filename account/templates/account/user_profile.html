@@ -3,6 +3,14 @@
 {% block wrap %}
 <div id="profile" class="centering">
 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
     <form method="post">{% csrf_token %}
 <ul class="user-profile">
 <li><b>Username:</b> {{ user.username }}</li>
@@ -12,7 +20,15 @@
 </form>
 
 <h2>API Access</h2>
-<p><b>API token:</b> {{token}}</p>
+<p><b>API token:</b> {{token}}<br>
+    Access to some data in Dunya is restricted. <a href="{% url 'developers' %}">Learn more about restricted data.</a><br>
+    {% if has_access_request %}
+        You have access to restricted content
+    {% else %}
+        <a href="{% url 'account-accessrequest' %}">Request access to restricted content</a>
+    {% endif %}
+</p>
+
 
 <h2>Change password</h2>
 <p><a href="{% url 'account-user-changepw' %}">Click here to change your password</a></p>

@@ -25,6 +25,7 @@ import requests.exceptions
 
 import data.models
 import makam.models
+import account.models
 from dashboard import models
 
 uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
@@ -100,7 +101,11 @@ class EditCollectionForm(CollectionForm):
 
 
 class InactiveUserForm(forms.ModelForm):
+
+    delete = forms.BooleanField(required=False)
+
     def __init__(self, *args, **kwargs):
+        # Construct a custom Form which includes the affiliation from the user profile
         super(InactiveUserForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
@@ -113,6 +118,27 @@ class InactiveUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['is_active']
+
+
+ACCESS_REQUEST_DECISION = [('approve', 'Approve'),
+                           ('deny', 'Deny')]
+
+
+class AccessRequestApprovalForm(forms.ModelForm):
+    decision = forms.ChoiceField(choices=ACCESS_REQUEST_DECISION, widget=forms.RadioSelect())
+
+    def __init__(self, *args, **kwargs):
+        # Construct a custom Form which includes the affiliation from the user profile
+        super(AccessRequestApprovalForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.username = instance.user.username
+            self.affiliation = instance.user.userprofile.affiliation
+            self.justification = instance.justification
+
+    class Meta:
+        model = account.models.AccessRequest
+        fields = ['id']
 
 
 class AccessCollectionForm(forms.ModelForm):

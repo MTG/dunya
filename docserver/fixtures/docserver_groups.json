@@ -1,21 +1,13 @@
 [
 {
-    "fields": {
-        "name": "Restricted files",
-        "permissions": [
-            494
-        ]
-    },
     "model": "auth.group",
-    "pk": 1
-},
-{
+    "pk": 1,
     "fields": {
-        "codename": "read_restricted",
-        "name": "Can read files in restricted collections",
-        "content_type": 65
-    },
-    "model": "auth.permission",
-    "pk": 494
+        "name": "Can view restricted items",
+        "permissions": [
+            ["access_restricted", "data", "collection"],
+            ["read_restricted", "docserver", "collection"]
+        ]
+    }
 }
 ]

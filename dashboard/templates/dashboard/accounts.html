@@ -4,15 +4,16 @@
 {% block wrap %}
 
 <h1>New accounts</h1>
-<p>This page only shows new (inactive) accounts. If you approve an account the user will get sent an email telling them
-that their account has been activated. For more detailed account management use <a href="/admin">the django admin</a></p>
+<p>These are new (inactive) accounts. If you approve an account the user will get sent an email telling them
+that their account has been activated. If you select Delete then the user will be deleted and
+    no notification will be sent. For more detailed account management use <a href="/admin/auth/user">the django admin</a></p>
 
 <form method="post">
 {% csrf_token %}
 <table class="table">
-<tr><th>Username</th><th>Email</th><th>Name</th><th>Surname</th><th>Affiliation</th><th>Approve?</th></tr>
-{{formset.management_form.as_p}}
-{% for f in formset.forms %}
+<tr><th>Username</th><th>Email</th><th>Name</th><th>Surname</th><th>Affiliation</th><th>Approve?</th><th>Delete</th></tr>
+{{user_formset.management_form.as_p}}
+{% for f in user_formset.forms %}
     {{f.id.as_hidden}}
 <tr>
 <td> {{f.username}} </td>
@@ -21,12 +22,37 @@ that their account has been activated. For more detailed account management use 
 <td> {{f.last_name}} </td>
 <td> {{f.affiliation}} </td>
 <td> {{f.is_active.as_widget}} </td>
+<td> {{f.delete.as_widget}} </td>
+</tr>
+
+{% endfor %}
+</table>
+<input type="submit" name="submit" value="Approve accounts">
+</form>
+
+    <h1>Restricted data requests</h1>
+<p>These are users who have requested access to restricted datasets (commercial audio).
+    You can approve or decline the request. The user will receive an email informing them of the decision</p>
+
+    <form method="post">
+{% csrf_token %}
+<table class="table">
+<tr><th>Username</th><th>Affiliation</th><th>Justification</th><th>Approve?</th></tr>
+{{access_formset.management_form.as_p}}
+{% for f in access_formset.forms %}
+    {{f.id.as_hidden}}
+<tr>
+<td> {{f.username}} </td>
+    <td> {{f.affiliation}} </td>
+<td> {{f.justification}} </td>
+
+<td> {{f.decision}} </td>
 
 </tr>
 
 {% endfor %}
 </table>
-<input type="submit">
+<input type="submit" name="submit" value="Approve requests">
 </form>
 
 {% endblock %}

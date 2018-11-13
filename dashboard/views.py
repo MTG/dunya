@@ -19,29 +19,30 @@ import os
 import compmusic
 from arabic import arabic_reshaper
 from arabic.ALA_LC_Transliterator import ALA_LC_Transliterator
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template import loader
 from mishkal.tashkeel.tashkeel import TashkeelClass
 
 import andalusian.models
 import carnatic.models
+import dashboard.email
 import data.models
 import docserver.jobs
 import docserver.models
 import docserver.util
 import hindustani.models
 import makam.models
+from account import services
+from account.models import AccessRequest
 from dashboard import forms
 from dashboard import jobs
 from dashboard import models
+from dashboard.forms import AccessRequestApprovalForm
 
 
 def is_staff(user):
@@ -135,28 +136,46 @@ def headers(request):
 
 @user_passes_test(is_staff)
 def accounts(request):
+    """Approve new users, and requests to access restricted data"""
+
+    submit_type = request.POST.get('submit')
+    current_site = get_current_site(request)
+
     UserFormSet = modelformset_factory(User, forms.InactiveUserForm, extra=0)
-    if request.method == 'POST':
-        formset = UserFormSet(request.POST, queryset=User.objects.filter(is_active=False))
-        if formset.is_valid():
-            for f in formset.forms:
-                user = f.cleaned_data["id"]
-                is_active = f.cleaned_data["is_active"]
+    if request.method == 'POST' and submit_type == 'Approve accounts':
+        user_formset = UserFormSet(request.POST, queryset=User.objects.filter(is_active=False))
+        if user_formset.is_valid():
+            for f in user_formset.forms:
+                user = f.cleaned_data['id']
+                is_active = f.cleaned_data['is_active']
+                delete = f.cleaned_data['delete']
                 if is_active:
                     user.is_active = True
                     user.save()
+                    dashboard.email.email_user_on_account_approval(current_site, user)
+                elif delete:
+                    user.delete()
 
-                    # send an email to the user notifying them that their account is active
-                    subject = "Your Dunya account has been activated"
-                    current_site = get_current_site(request)
-                    context = {"username": user.username, "domain": current_site.domain}
-                    message = loader.render_to_string('registration/email_account_activated.html', context)
-                    from_email = settings.NOTIFICATION_EMAIL_FROM
-                    recipients = [user.email, ]
-                    send_mail(subject, message, from_email, recipients, fail_silently=True)
+    user_formset = UserFormSet(queryset=User.objects.filter(is_active=False))
 
-    formset = UserFormSet(queryset=User.objects.filter(is_active=False))
-    ret = {"formset": formset}
+    AccessRequestFormSet = modelformset_factory(AccessRequest, AccessRequestApprovalForm, extra=0)
+    if request.method == 'POST' and submit_type == 'Approve requests':
+        access_formset = AccessRequestFormSet(request.POST, queryset=AccessRequest.objects.unapproved())
+        for form in access_formset.forms:
+            if form.is_valid():
+                access_request = form.cleaned_data['id']
+                decision = form.cleaned_data['decision']
+                approved = decision == 'approve'
+
+                # If a request is approved, the user has to be added to the correct group
+                access_request.approve_or_deny_request(request.user, approved)
+                access_request.save()
+
+                services.add_user_to_restricted_group(access_request.user)
+                dashboard.email.email_user_on_access_request_approval(current_site, access_request.user, approved)
+
+    access_formset = AccessRequestFormSet(queryset=AccessRequest.objects.unapproved())
+    ret = {'user_formset': user_formset, 'access_formset': access_formset}
     return render(request, 'dashboard/accounts.html', ret)
 
 

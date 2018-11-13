@@ -25,6 +25,7 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name='registration/pwreset_complete.html'),
         name='account-pwreset-complete'),
     url(r'^profile/$', views.user_profile, name='account-user-profile'),
+    url(r'^accessrequest$', views.access_request, name='account-accessrequest'),
     url(r'^delete/$', views.delete_account, name='account-delete-account'),
     url(r'^login/$', auth_views.LoginView.as_view(template_name='registration/login.html'), name='account-login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='account-logout'),

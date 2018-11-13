@@ -13,21 +13,22 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
-import json
+import datetime
 
-from django.conf import settings
-from django.contrib.auth import login, logout
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail
+from django.forms import modelform_factory
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render, get_object_or_404
-from django.template import loader
 from rest_framework.authtoken.models import Token
 
 from account import forms
+from account.models import AccessRequest
+import dashboard.email
 
 
 def register_page(request):
@@ -47,13 +48,8 @@ def register_page(request):
             user.userprofile.save()
 
             # send notification email to admin to review the account
-            subject = "New user registration - %s" % user.username
             current_site = get_current_site(request)
-            context = {"username": user.username, "domain": current_site.domain}
-            message = loader.render_to_string('registration/email_notify_admin.html', context)
-            from_email = settings.NOTIFICATION_EMAIL_FROM
-            recipients = [a for a in settings.NOTIFICATION_EMAIL_TO]
-            send_mail(subject, message, from_email, recipients, fail_silently=True)
+            dashboard.email.email_admin_on_new_user(current_site, user)
 
             return HttpResponseRedirect(reverse('account-register-success'))
     else:
@@ -95,6 +91,11 @@ def user_profile(request):
     initial = {"email": user.email, "first_name": user.first_name,
                "last_name": user.last_name, "affiliation": profile.affiliation}
 
+    active_request = AccessRequest.objects.for_user(request.user)
+    has_access_request = False
+    if active_request and active_request.approved:
+        has_access_request = True
+
     if request.method == "POST":
         form = forms.UserEditForm(request.POST, initial=initial)
         if form.is_valid() and form.has_changed():
@@ -110,6 +111,42 @@ def user_profile(request):
     ret = {
         'user_profile': user_profile,
         'token': token.key,
-        'form': form
+        'form': form,
+        'has_access_request': has_access_request
     }
     return render(request, 'account/user_profile.html', ret)
+
+
+@login_required
+def access_request(request):
+    """Ask for access to restricted datasets"""
+    AccessRequestForm = modelform_factory(AccessRequest, fields=('justification',))
+    current_site = get_current_site(request)
+    profile_url = reverse('account-user-profile')
+
+    if request.user.username == "guest":
+        return redirect(profile_url)
+
+    active_request = AccessRequest.objects.for_user(request.user)
+    if active_request:
+        if active_request.approved is None:
+            messages.add_message(request, messages.INFO, 'You already have a pending access request. You will receive a notification when it is processed.')
+        return redirect(profile_url)
+
+    if request.method == 'POST':
+        form = AccessRequestForm(request.POST)
+        if form.is_valid():
+            user_request = form.save(commit=False)
+            user_request.user = request.user
+            user_request.save()
+            dashboard.email.email_admin_on_access_request(current_site, request.user, user_request.justification)
+            messages.add_message(request, messages.INFO, 'Your access request has been received. You will receive a notification when it is processed.')
+            return redirect(profile_url)
+    else:
+        form = AccessRequestForm()
+
+    ret = {
+        'today': datetime.datetime.now().strftime('%Y-%m-%d'),
+        'form': form
+    }
+    return render(request, 'account/access_request.html', ret)
