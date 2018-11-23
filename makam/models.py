@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import collections
+from typing import Optional, List
 
 import unidecode
 from django.urls import reverse
@@ -57,7 +58,7 @@ class Artist(MakamStyle, data.models.Artist):
         counts = collections.Counter(others)
         return [a for a, c in counts.most_common(10)]
 
-    def main_releases(self, collection_ids=False, permission=False):
+    def main_releases(self, collection_ids: Optional[List[str]]=None, permission=False):
         """ Releases where this artist is named on the cover """
         if not permission:
             permission = ["U"]

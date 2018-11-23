@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+from typing import List
 
 from django.db import models
 
@@ -20,19 +21,17 @@ import makam
 
 
 class CollectionReleaseManager(models.Manager):
-    def with_permissions(self, ids, permission):
+    def with_permissions(self, ids: List[str], permission):
         qs = self.get_queryset()
-        if ids and ids != "":
-            ids = ids.replace(' ', '').split(",")
+        if ids:
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
 
 class CollectionRecordingManager(models.Manager):
-    def with_permissions(self, ids, permission):
+    def with_permissions(self, ids: List[str], permission):
         qs = self.get_queryset()
-        if ids and ids != "":
-            ids = ids.replace(' ', '').split(",")
+        if ids:
             qs = qs.filter(release__collection__collectionid__in=ids)
         return qs.filter(release__collection__permission__in=permission)
 

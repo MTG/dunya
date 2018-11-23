@@ -108,7 +108,7 @@ class ArtistCountTest(TestCase):
 
     def test_artist_restr_collection_concerts(self):
         """ If you ask for a restricted collection you get an extra concert"""
-        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        collections = [self.coll1id, self.coll2id, self.coll3id]
         c = self.a2.concerts(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(3, len(c))
 
@@ -117,7 +117,7 @@ class ArtistCountTest(TestCase):
          - explicit recording relationships
          - Also if they're a concert primary artist or have a rel
         """
-        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        collections = [self.coll1id, self.coll2id, self.coll3id]
         recs = self.a1.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(3, len(recs))
         recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
@@ -127,7 +127,7 @@ class ArtistCountTest(TestCase):
         self.assertEqual(2, len(recs))
 
     def test_artist_collection_recordings(self):
-        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        collections = [self.coll1id, self.coll2id, self.coll3id]
         recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
         self.assertEqual(4, len(recs))
 

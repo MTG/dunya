@@ -64,10 +64,10 @@ class ArtistTest(TestCase):
 
 class ArtistReleaseListTest(TestCase):
     def setUp(self):
-        c1id = str(uuid.uuid4())
-        c1 = data.models.Collection.objects.create(collectionid=c1id, name="collection 1", permission="U")
-        c2id = str(uuid.uuid4())
-        c2 = data.models.Collection.objects.create(collectionid=c2id, name="collection 2", permission="U")
+        self.c1id = str(uuid.uuid4())
+        c1 = data.models.Collection.objects.create(collectionid=self.c1id, name="collection 1", permission="U")
+        self.c2id = str(uuid.uuid4())
+        c2 = data.models.Collection.objects.create(collectionid=self.c2id, name="collection 2", permission="U")
         self.rel1 = models.Release.objects.create(collection=c1, title="release1")
         self.rel2 = models.Release.objects.create(collection=c2, title="release2")
         rec1 = models.Recording.objects.create(title="rec1")
@@ -97,6 +97,10 @@ class ArtistReleaseListTest(TestCase):
 
         main_rels = self.a2.main_releases()
         self.assertEqual(2, len(main_rels))
+
+        # limit this query to only one collection and only get 1 release
+        main_rels = self.a2.main_releases(collection_ids=[self.c1id])
+        self.assertEqual(1, len(main_rels))
 
         main_rels = self.a3.main_releases()
         self.assertEqual(1, len(main_rels))

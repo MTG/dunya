@@ -99,6 +99,17 @@ class ArtistTest(TestCase):
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
 
+    def test_artist_invalid_collection(self):
+        # An invalid uuid is passed in the Dunya-Collection header
+        client = APIClient()
+        client.force_authenticate(user=self.normaluser)
+
+        # With the normal user we only get the unrestricted collection's
+        # concerts and recordings
+        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
+                              **{'HTTP_DUNYA_COLLECTION': 'not-uuid'})
+        self.assertEquals(response.status_code, 400)
+
     def test_artist_collections_staff(self):
         # a staff user can choose if they see normal releases
         client = APIClient()

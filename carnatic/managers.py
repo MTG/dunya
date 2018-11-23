@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+from typing import List
 
 from django.db import models
 from django.db.models import Q
@@ -23,10 +24,9 @@ import carnatic.models
 class CollectionConcertManager(models.Manager):
     use_for_related_fields = True
 
-    def with_permissions(self, ids, permission):
+    def with_permissions(self, ids: List[str], permission):
         qs = self.get_queryset()
-        if ids and ids != '':
-            ids = ids.replace(' ', '').split(',')
+        if ids:
             qs = qs.filter(collection__collectionid__in=ids)
         return qs.filter(collection__permission__in=permission)
 
@@ -34,10 +34,9 @@ class CollectionConcertManager(models.Manager):
 class CollectionRecordingManager(models.Manager):
     use_for_related_fields = True
 
-    def with_permissions(self, ids, permission):
+    def with_permissions(self, ids: List[str], permission):
         qs = self.get_queryset()
-        if ids and ids != '':
-            ids = ids.replace(' ', '').split(',')
+        if ids:
             qs = qs.filter(concert__collection__collectionid__in=ids)
         if permission:
             qs = qs.filter(concert__collection__permission__in=permission)

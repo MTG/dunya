@@ -13,6 +13,8 @@ from dashboard import views
 
 
 class CollectionTest(TestCase):
+    """Test creation and view of new Collections"""
+
     def setUp(self):
         self.user1 = auth.models.User.objects.create_user("user1", "", "pass1")
         self.user1.is_staff = True

@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import collections
+from typing import List, Optional
 
 from django.urls import reverse
 from django.db import models
@@ -150,10 +151,9 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return ret
 
-    def releases(self, collection_ids=False, permission=False):
-        rcollections = []
-        if collection_ids:
-            rcollections = collection_ids.replace(' ', '').split(",")
+    def releases(self, collection_ids: Optional[List[str]]=None, permission=False):
+        if collection_ids is None:
+            collection_ids = []
         if not permission:
             permission = ["U"]
 
@@ -165,7 +165,7 @@ class Artist(HindustaniStyle, data.models.Artist):
         for a in self.groups.all():
             for c in a.releases():
                 if c not in ret and c.collection \
-                        and (not collection_ids or str(c.collection.collectionid) in rcollections) \
+                        and (not collection_ids or str(c.collection.collectionid) in collection_ids) \
                         and c.collection.permission in permission:
                     ret.append(c)
 
@@ -190,7 +190,9 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
-    def recordings(self, collection_ids=False, permission=False):
+    def recordings(self, collection_ids: Optional[List[str]]=None, permission=False):
+        if collection_ids is None:
+            collection_ids = []
         return Recording.objects.with_permissions(collection_ids, permission).filter(
             Q(instrumentperformance__artist=self) | Q(release__artists=self)).distinct()
 

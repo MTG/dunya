@@ -16,6 +16,7 @@
 
 import collections
 import random
+from typing import List, Optional
 
 from django.urls import reverse
 from django.db import models
@@ -98,15 +99,12 @@ class Artist(CarnaticStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
-    def collaborating_artists(self, collection_ids=False, permission=False):
+    def collaborating_artists(self, collection_ids: List[str]=False, permission=False):
         # Returns [ (collaborating artist, list of concerts, number of restricted concerts) ]
         #   - number of restricted concerts corresponds to the number of concerts not in the given collections
         # Get all concerts
         # For each artist on the concerts (both types), add a counter
         # top artist ids + the concerts they collaborate on
-        rcollections = []
-        if collection_ids:
-            rcollections = collection_ids.replace(' ', '').split(",")
         if not permission:
             permission = ["U"]
 
@@ -119,7 +117,7 @@ class Artist(CarnaticStyle, data.models.Artist):
             # `Artist a performed with b on these concerts and n more`
             for p in concert.performers():
                 if p.id != self.id:
-                    if collection_ids and concert.collection and str(concert.collection.collectionid) in rcollections and concert.collection.permission in permission:
+                    if collection_ids and concert.collection and str(concert.collection.collectionid) in collection_ids and concert.collection.permission in permission:
                         concerts[p.id].add(concert)
                     else:
                         restr_concerts[p.id] += 1
@@ -129,10 +127,12 @@ class Artist(CarnaticStyle, data.models.Artist):
         collaborators = sorted(collaborators, key=lambda c: (len(c[1]) + c[2], len(c[1])), reverse=True)
         return collaborators
 
-    def recordings(self, collection_ids=False, permission=False):
+    def recordings(self, collection_ids: Optional[List[str]]=None, permission=False):
+        if collection_ids is None:
+            collection_ids = []
         return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
 
-    def concerts(self, raagas=[], taalas=[], collection_ids=False, permission=False):
+    def concerts(self, raagas=[], taalas=[], collection_ids: Optional[List[str]]=None, permission=False):
         """ Get all the concerts that this artist performs in
         If `raagas` or `taalas` is set, only show concerts where
         these raagas or taalas were performed.
@@ -141,11 +141,10 @@ class Artist(CarnaticStyle, data.models.Artist):
         By defaul permissions are restricted to universal
         accesible collections.
         """
-        rcollections = []
-        if collection_ids:
-            rcollections = collection_ids.replace(' ', '').split(",")
         if not permission:
             permission = ["U"]
+        if collection_ids is None:
+            collection_ids = []
 
         ret = []
         concerts = self.primary_concerts.with_permissions(collection_ids, permission)
@@ -157,12 +156,12 @@ class Artist(CarnaticStyle, data.models.Artist):
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
                 if c not in ret and c.collection \
-                        and (collection_ids is False or str(c.collection.collectionid) in rcollections) \
+                        and (not collection_ids or str(c.collection.collectionid) in collection_ids) \
                         and c.collection.permission in permission:
                     ret.append(c)
         for concert, perf in self.performances(raagas, taalas):
             if concert not in ret and concert.collection \
-                    and (collection_ids is False or str(concert.collection.collectionid) in rcollections) \
+                    and (not collection_ids or str(concert.collection.collectionid) in collection_ids) \
                     and concert.collection.permission in permission:
                 ret.append(concert)
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)

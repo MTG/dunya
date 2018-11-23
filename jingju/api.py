@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework import serializers
 
 from data import utils
+from dunya.api import get_collection_ids_from_request_or_error
 
 from jingju import models
 
@@ -88,7 +89,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'name', 'alias', 'role_type', 'instrument', 'recordings']
 
     def recording_list(self, ob):
-        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.context['request'])
         permission = utils.get_user_permissions(self.context['request'].user)
         recordings = ob.recording_set.with_permissions(collection_ids, permission)
         rs = RecordingInnerSerializer(recordings, many=True)
@@ -105,7 +106,7 @@ class WorkDetailSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'score', 'play', 'recordings']
 
     def recording_list(self, ob):
-        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.context['request'])
         permission = utils.get_user_permissions(self.context['request'].user)
         recordings = ob.recording_set.with_permissions(collection_ids, permission)
         return RecordingInnerSerializer(recordings, many=True).data
@@ -123,7 +124,7 @@ class RecordingDetailSerializer(serializers.ModelSerializer):
         fields = ['mbid', 'title', 'release', 'work', 'performers', 'instrumentalists', 'shengqiangbanshi']
 
     def release_list(self, ob):
-        collection_ids = self.context['request'].META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.context['request'])
         permission = utils.get_user_permissions(self.context['request'].user)
         release = ob.release_set.with_permissions(collection_ids, permission)
         cs = ReleaseInnerSerializer(release, many=True)
@@ -160,7 +161,7 @@ class RecordingList(generics.ListAPIView):
             return RecordingInnerSerializer
 
     def get_queryset(self):
-        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.request)
         permission = utils.get_user_permissions(self.request.user)
         return models.Recording.objects.with_permissions(collection_ids, permission).select_related('work').prefetch_related('recordinginstrumentalist_set__artist', 'recordinginstrumentalist_set__instrument', 'performers', 'shengqiangbanshi')
 
@@ -171,7 +172,7 @@ class RecordingDetail(generics.RetrieveAPIView):
     serializer_class = RecordingDetailSerializer
 
     def get_queryset(self):
-        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.request)
         permission = utils.get_user_permissions(self.request.user)
         return models.Recording.objects.with_permissions(collection_ids, permission)
 
@@ -180,7 +181,7 @@ class ReleaseList(generics.ListAPIView):
     serializer_class = ReleaseInnerSerializer
 
     def get_queryset(self):
-        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.request)
         permission = utils.get_user_permissions(self.request.user)
         return models.Release.objects.with_permissions(collection_ids, permission)
 
@@ -192,7 +193,7 @@ class ReleaseDetail(generics.RetrieveAPIView):
 
     def get_queryset(self):
         permission = utils.get_user_permissions(self.request.user)
-        return models.Release.objects.with_permissions(False, permission)
+        return models.Release.objects.with_permissions(None, permission)
 
 
 class ArtistList(generics.ListAPIView):
@@ -204,7 +205,7 @@ class ArtistList(generics.ListAPIView):
             return ArtistInnerSerializer
 
     def get_queryset(self):
-        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.request)
         permission = utils.get_user_permissions(self.request.user)
         return models.Artist.objects.with_permissions(collection_ids, permission).select_related('role_type', 'instrument')
 
@@ -215,7 +216,7 @@ class ArtistDetail(generics.RetrieveAPIView):
     serializer_class = ArtistDetailSerializer
 
     def get_queryset(self):
-        collection_ids = self.request.META.get('HTTP_DUNYA_COLLECTION', None)
+        collection_ids = get_collection_ids_from_request_or_error(self.request)
         permission = utils.get_user_permissions(self.request.user)
         return models.Artist.objects.with_permissions(collection_ids, permission)
 
