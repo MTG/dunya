@@ -28,7 +28,7 @@ class PlayInnerSerializer(serializers.ModelSerializer):
 class RoleTypeInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.RoleType
-        fields = ['name', 'transliteration']
+        fields = ['uuid', 'code', 'name', 'romanisation']
 
 
 class InstrumentInnerSerializer(serializers.ModelSerializer):
@@ -40,7 +40,7 @@ class InstrumentInnerSerializer(serializers.ModelSerializer):
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'name', 'alias']
+        fields = ['mbid', 'name', 'romanisation']
 
 
 class RecordingInstrumentInnerSerializer(serializers.ModelSerializer):
@@ -86,7 +86,7 @@ class ArtistDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'name', 'alias', 'role_type', 'instrument', 'recordings']
+        fields = ['mbid', 'name', 'romanisation', 'role_type', 'instrument', 'recordings']
 
     def recording_list(self, ob):
         collection_ids = get_collection_ids_from_request_or_error(self.context['request'])
@@ -138,6 +138,13 @@ class ReleaseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Release
         fields = ['mbid', 'title', 'recordings', 'artists']
+
+
+class RoleTypeDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.RoleType
+        fields = ['code', 'name', 'romanisation']
 
 
 class WorkList(generics.ListAPIView):
@@ -223,4 +230,12 @@ class ArtistDetail(generics.RetrieveAPIView):
 
 class RoleTypeList(generics.ListAPIView):
     serializer_class = RoleTypeInnerSerializer
+    queryset = models.RoleType.objects.all()
+
+
+class RoleTypeDetail(generics.RetrieveAPIView):
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
+
+    serializer_class = RoleTypeDetailSerializer
     queryset = models.RoleType.objects.all()

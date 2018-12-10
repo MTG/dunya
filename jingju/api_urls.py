@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^release/%s$' % uuid_match, jingju.api.ReleaseDetail.as_view(), name='api-jingju-release-detail'),
 
     url(r'^roletype$', jingju.api.RoleTypeList.as_view(), name='api-jingju-roletype-list'),
-
+    url(r'^roletype/%s$' % uuid_match, jingju.api.RoleTypeDetail.as_view(), name='api-jingju-roletype-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

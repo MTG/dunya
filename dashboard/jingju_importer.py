@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 import compmusic
+import re
 
 import jingju.models
 from dashboard import release_importer
 from dashboard.log import logger
 
 
-ROLE_TYPE_DIC= {u'旦': 'dan',
-                u'老旦': 'laodan',
-                u'老生': 'laosheng',
-                u'小生': 'xiaosheng',
-                u'净': 'jing',
-                u'丑': 'chou'}
-
 class JingjuReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = jingju.models.Artist
-    _ArtistAliasClass = jingju.models.ArtistAlias
-    # _ComposerClass = carnatic.models.Composer
-    # _ComposerAliasClass = carnatic.models.ComposerAlias
+    _ArtistAliasClass = None
+    _ComposerClass = jingju.models.Composer
+    _ComposerAliasClass = None
     _ReleaseClass = jingju.models.Release
     _RecordingClass = jingju.models.Recording
     _InstrumentClass = jingju.models.Instrument
@@ -40,11 +34,26 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
             recording.work = work
             recording.save()
 
-    def _apply_tags(self, recording, works, tags):
+    def _get_sqbs_codes_from_tags(self, tags):
+        sqbs_re = r'(sqbs[0-9]{3}): ?(.+)'
+        codes = set()
         for tag in tags:
-            shengqiangbanshi = jingju.models.ShengqiangBanshi.objects.create(name=tag['name'])
-            recording.shengqiangbanshi.add(shengqiangbanshi)
-            recording.save()
+            name = tag['name']
+            match = re.match(sqbs_re, name)
+            if match:
+                codes.add(match.group(1))
+        return list(codes)
+
+    def _apply_tags(self, recording, works, tags):
+        sqbs_codes = self._get_sqbs_codes_from_tags(tags)
+        for code in sqbs_codes:
+            try:
+                shengqiangbanshi = jingju.models.ShengqiangBanshi.objects.get(code=code)
+                recording.shengqiangbanshi.add(shengqiangbanshi)
+                recording.save()
+            except jingju.models.ShengqiangBanshi.DoesNotExist:
+                logger.error("Cannot find sqbs with code {}".format(code))
+                raise
 
     def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
@@ -92,7 +101,6 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
             artist = self.add_and_get_artist(a)
             logger.info("  artist: %s" % artist)
             if not rec.performers.filter(pk=artist.pk).exists():
-                logger.info("  - adding to artist list 2")
                 rec.performers.add(artist)
 
     def add_and_get_artist(self, artistid):
@@ -101,21 +109,34 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
             return self._ArtistClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases", "tags"])["artist"]
-        artist = self._create_artist_object(mbartist)
-        # print mbartist['id']
-        if 'tag-list' in mbartist:
-            for tag in mbartist['tag-list']:
-                tagname = tag['name']
-                if tagname in ROLE_TYPE_DIC:
-                    role_type = jingju.models.RoleType.objects.get(name__iexact=tagname)
-                    artist.role_type = role_type
-                    artist.save()
+        artist = self._create_artist_object(self._ArtistClass, self._ArtistAliasClass, mbartist)
+
+        sortname = mbartist['sort-name'].replace(", ", " ")
+        artist.romanisation = sortname
+
+        role_type = self._get_roletype_from_tags(mbartist.get('tag-list', []))
+        if role_type:
+            artist.role_type = role_type
+        artist.save()
 
         self.imported_artists.append(artistid)
         return artist
 
-    def _create_artist_object(self, mbartist):
-        artist = super(JingjuReleaseImporter, self)._create_artist_object(self._ArtistClass, self._ArtistAliasClass, mbartist)
-        alias = mbartist['sort-name'].replace(", ", " ")
-        artist.alias = alias
-        return artist
+    def _get_roletype_from_tags(self, tags):
+        rt_re = r'(hd[0-9]{2}): ?(.+)'
+        roletypes = set()
+        for tag in tags:
+            tagname = tag['name']
+            match = re.match(rt_re, tagname)
+            if match:
+                roletypes.add(match.group(1))
+        roletypes = sorted(list(roletypes), reverse=True)
+        # We may get multiple roletypes, but they're ordered in lexical order due to the code,
+        # so we can get the most specific one by sorting them in reverse and taking the first one
+        if roletypes:
+            try:
+                role_type = jingju.models.RoleType.objects.get(code=roletypes[0])
+                return role_type
+            except jingju.models.RoleType.DoesNotExist:
+                logger.error('cannot find roletype with code {}'.format(roletypes[0]))
+        return None

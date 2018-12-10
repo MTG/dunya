@@ -1,0 +1,938 @@
+[
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 86,
+    "fields": {
+        "code": "sqbs352",
+        "name": "\u897f\u76ae\u56de\u9f99",
+        "romanisation": "xipi huilong"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 87,
+    "fields": {
+        "code": "sqbs150",
+        "name": "\u4e8c\u9ec4\u5bfc\u677f",
+        "romanisation": "erhuang daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 88,
+    "fields": {
+        "code": "sqbs550",
+        "name": "\u5439\u8154",
+        "romanisation": "chuiqiang"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 89,
+    "fields": {
+        "code": "sqbs541",
+        "name": "\u9ad8\u62e8\u5b50\u539f\u677f",
+        "romanisation": "gaobozi yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 90,
+    "fields": {
+        "code": "sqbs110",
+        "name": "\u4e8c\u9ec4\u6162\u677f",
+        "romanisation": "erhuang manban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 91,
+    "fields": {
+        "code": "sqbs545",
+        "name": "\u9ad8\u62e8\u5b50\u5bfc\u677f",
+        "romanisation": "gaobozi daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 92,
+    "fields": {
+        "code": "sqbs112",
+        "name": "\u4e8c\u9ec4\u6162\u4e09\u773c",
+        "romanisation": "erhuang mansanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 93,
+    "fields": {
+        "code": "sqbs341",
+        "name": "\u897f\u76ae\u6447\u677f",
+        "romanisation": "xipi yaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 94,
+    "fields": {
+        "code": "sqbs200",
+        "name": "\u53cd\u4e8c\u9ec4",
+        "romanisation": "fan'erhuang"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 95,
+    "fields": {
+        "code": "sqbs365",
+        "name": "\u897f\u76ae\u5bbd\u677f",
+        "romanisation": "xipi kuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 96,
+    "fields": {
+        "code": "sqbs113",
+        "name": "\u4e8c\u9ec4\u4e2d\u4e09\u773c",
+        "romanisation": "erhuang zhongsanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 97,
+    "fields": {
+        "code": "sqbs520",
+        "name": "\u56db\u5e73\u8c03",
+        "romanisation": "sipingdiao"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 98,
+    "fields": {
+        "code": "sqbs253",
+        "name": "\u53cd\u4e8c\u9ec4\u579b\u677f",
+        "romanisation": "fan'erhuang duoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 99,
+    "fields": {
+        "code": "sqbs220",
+        "name": "\u53cd\u4e8c\u9ec4\u539f\u677f",
+        "romanisation": "fan'erhuang yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 100,
+    "fields": {
+        "code": "sqbs504",
+        "name": "\u5522\u5450\u4e8c\u9ec4\u56de\u9f99",
+        "romanisation": "suona'erhuang huilong"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 101,
+    "fields": {
+        "code": "sqbs532",
+        "name": "\u53cd\u56db\u5e73\u8c03\u6563\u677f",
+        "romanisation": "fansipingdiao sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 102,
+    "fields": {
+        "code": "sqbs320",
+        "name": "\u897f\u76ae\u539f\u677f",
+        "romanisation": "xipi yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 103,
+    "fields": {
+        "code": "sqbs351",
+        "name": "\u897f\u76ae\u5c0f\u5bfc\u677f",
+        "romanisation": "xipi xiaodaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 104,
+    "fields": {
+        "code": "sqbs213",
+        "name": "\u53cd\u4e8c\u9ec4\u4e2d\u4e09\u773c",
+        "romanisation": "fan'erhuang zhongsanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 105,
+    "fields": {
+        "code": "sqbs151",
+        "name": "\u4e8c\u9ec4\u5c0f\u5bfc\u677f",
+        "romanisation": "erhuang xiaodaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 106,
+    "fields": {
+        "code": "sqbs153",
+        "name": "\u4e8c\u9ec4\u579b\u677f",
+        "romanisation": "erhuang duoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 107,
+    "fields": {
+        "code": "sqbs510",
+        "name": "\u5357\u6886\u5b50",
+        "romanisation": "nanbangzi"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 108,
+    "fields": {
+        "code": "sqbs314",
+        "name": "\u897f\u76ae\u5feb\u4e09\u773c",
+        "romanisation": "xipi kuaisanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 109,
+    "fields": {
+        "code": "sqbs370",
+        "name": "\u897f\u76ae\u54ed\u5934",
+        "romanisation": "xipi kutou"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 110,
+    "fields": {
+        "code": "sqbs330",
+        "name": "\u897f\u76ae\u5feb\u677f",
+        "romanisation": "xipi kuaiban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 111,
+    "fields": {
+        "code": "sqbs360",
+        "name": "\u897f\u76ae\u9876\u677f",
+        "romanisation": "xipi dingban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 112,
+    "fields": {
+        "code": "sqbs155",
+        "name": "\u4e8c\u9ec4\u579c\u5531",
+        "romanisation": "erhuang duochang"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 113,
+    "fields": {
+        "code": "sqbs580",
+        "name": "\u6c49\u8c03",
+        "romanisation": "handiao"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 114,
+    "fields": {
+        "code": "sqbs312",
+        "name": "\u897f\u76ae\u6162\u4e09\u773c",
+        "romanisation": "xipi mansanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 115,
+    "fields": {
+        "code": "sqbs560",
+        "name": "\u6606\u66f2\uff1a\u3010\u5c71\u5761\u7f8a\u3011",
+        "romanisation": "kunqu shanpoyang"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 116,
+    "fields": {
+        "code": "sqbs340",
+        "name": "\u897f\u76ae\u6563\u677f",
+        "romanisation": "xipi sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 117,
+    "fields": {
+        "code": "sqbs581",
+        "name": "\u6c49\u8c03\u539f\u677f",
+        "romanisation": "handiao yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 118,
+    "fields": {
+        "code": "sqbs241",
+        "name": "\u53cd\u4e8c\u9ec4\u6447\u677f",
+        "romanisation": "fan'erhuang yaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 119,
+    "fields": {
+        "code": "sqbs310",
+        "name": "\u897f\u76ae\u6162\u677f",
+        "romanisation": "xipi manban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 120,
+    "fields": {
+        "code": "sqbs604",
+        "name": "\u3010\u846c\u82b1\u8bcd\u3011",
+        "romanisation": "\u201czanghuaci\u201d"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 121,
+    "fields": {
+        "code": "sqbs602",
+        "name": "\u5f00\u5e55\u66f2",
+        "romanisation": "kaimuqu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 122,
+    "fields": {
+        "code": "sqbs252",
+        "name": "\u53cd\u4e8c\u9ec4\u56de\u9f99",
+        "romanisation": "fan'erhuang huilong"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 123,
+    "fields": {
+        "code": "sqbs470",
+        "name": "\u53cd\u897f\u76ae\u54ed\u5934",
+        "romanisation": "fanxipi kutou"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 124,
+    "fields": {
+        "code": "sqbs250",
+        "name": "\u53cd\u4e8c\u9ec4\u5bfc\u677f",
+        "romanisation": "fan'erhuang daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 125,
+    "fields": {
+        "code": "sqbs154",
+        "name": "\u4e8c\u9ec4\u579b\u5934",
+        "romanisation": "erhuang duotou"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 126,
+    "fields": {
+        "code": "sqbs546",
+        "name": "\u9ad8\u62e8\u5b50\u56de\u9f99",
+        "romanisation": "gaobozi huilong"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 127,
+    "fields": {
+        "code": "sqbs531",
+        "name": "\u53cd\u56db\u5e73\u8c03\u539f\u677f",
+        "romanisation": "fansipingdiao yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 128,
+    "fields": {
+        "code": "sqbs161",
+        "name": "\u4e8c\u9ec4\u78b0\u677f",
+        "romanisation": "erhuang pengban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 129,
+    "fields": {
+        "code": "sqbs440",
+        "name": "\u53cd\u897f\u76ae\u6563\u677f",
+        "romanisation": "fanxipi sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 130,
+    "fields": {
+        "code": "sqbs441",
+        "name": "\u53cd\u897f\u76ae\u6447\u677f",
+        "romanisation": "fanxipi yaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 131,
+    "fields": {
+        "code": "sqbs170",
+        "name": "\u4e8c\u9ec4\u54ed\u5934",
+        "romanisation": "erhuang kutou"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 132,
+    "fields": {
+        "code": "sqbs323",
+        "name": "\u897f\u76ae\u6162\u4e8c\u516d",
+        "romanisation": "xipi man'erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 133,
+    "fields": {
+        "code": "sqbs356",
+        "name": "\u897f\u76ae\u6eda\u677f",
+        "romanisation": "xipi gunban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 134,
+    "fields": {
+        "code": "sqbs164",
+        "name": "\u4e8c\u9ec4\u541f\u677f",
+        "romanisation": "erhuang yinban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 135,
+    "fields": {
+        "code": "sqbs542",
+        "name": "\u9ad8\u62e8\u5b50\u5feb\u677f",
+        "romanisation": "gaobozi kuaiban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 136,
+    "fields": {
+        "code": "sqbs503",
+        "name": "\u5522\u5450\u4e8c\u9ec4\u5bfc\u677f",
+        "romanisation": "suona'erhuang daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 137,
+    "fields": {
+        "code": "sqbs570",
+        "name": "\u5fbd\u8c03",
+        "romanisation": "huidiao"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 138,
+    "fields": {
+        "code": "sqbs122",
+        "name": "\u4e8c\u9ec4\u4e8c\u516d",
+        "romanisation": "erhuang erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 139,
+    "fields": {
+        "code": "sqbs324",
+        "name": "\u897f\u76ae\u5feb\u4e8c\u516d",
+        "romanisation": "xipi kuai'erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 140,
+    "fields": {
+        "code": "sqbs590",
+        "name": "\u53cd\u6c49\u8c03",
+        "romanisation": "fanhandiao"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 141,
+    "fields": {
+        "code": "sqbs543",
+        "name": "\u9ad8\u62e8\u5b50\u6563\u677f",
+        "romanisation": "gaobozi sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 142,
+    "fields": {
+        "code": "sqbs124",
+        "name": "\u4e8c\u9ec4\u5feb\u4e8c\u516d",
+        "romanisation": "erhuang kuai'erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 143,
+    "fields": {
+        "code": "sqbs120",
+        "name": "\u4e8c\u9ec4\u539f\u677f",
+        "romanisation": "erhuang yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 144,
+    "fields": {
+        "code": "sqbs601",
+        "name": "\u95ed\u5e55\u66f2",
+        "romanisation": "bimuqu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 145,
+    "fields": {
+        "code": "sqbs140",
+        "name": "\u4e8c\u9ec4\u6563\u677f",
+        "romanisation": "erhuang sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 146,
+    "fields": {
+        "code": "sqbs224",
+        "name": "\u53cd\u4e8c\u9ec4\u5feb\u4e8c\u516d",
+        "romanisation": "fan'erhuang kuai'erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 147,
+    "fields": {
+        "code": "sqbs313",
+        "name": "\u897f\u76ae\u4e2d\u4e09\u773c",
+        "romanisation": "xipi zhongsanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 148,
+    "fields": {
+        "code": "sqbs430",
+        "name": "\u53cd\u897f\u76ae\u5feb\u677f",
+        "romanisation": "fanxipi kuaiban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 149,
+    "fields": {
+        "code": "sqbs420",
+        "name": "\u53cd\u897f\u76ae\u539f\u677f",
+        "romanisation": "fanxipi yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 150,
+    "fields": {
+        "code": "sqbs214",
+        "name": "\u53cd\u4e8c\u9ec4\u5feb\u4e09\u773c",
+        "romanisation": "fan'erhuang kuaisanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 151,
+    "fields": {
+        "code": "sqbs422",
+        "name": "\u53cd\u897f\u76ae\u4e8c\u516d",
+        "romanisation": "fanxipi erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 152,
+    "fields": {
+        "code": "sqbs211",
+        "name": "\u53cd\u4e8c\u9ec4\u4e09\u773c",
+        "romanisation": "fan'erhuang sanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 153,
+    "fields": {
+        "code": "sqbs212",
+        "name": "\u53cd\u4e8c\u9ec4\u6162\u4e09\u773c",
+        "romanisation": "fan'erhuang mansanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 154,
+    "fields": {
+        "code": "sqbs534",
+        "name": "\u53cd\u56db\u5e73\u8c03\u78b0\u677f",
+        "romanisation": "fansipingdiao pengban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 155,
+    "fields": {
+        "code": "sqbs533",
+        "name": "\u53cd\u56db\u5e73\u8c03\u5bfc\u677f",
+        "romanisation": "fansipingdiao daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 156,
+    "fields": {
+        "code": "sqbs321",
+        "name": "\u897f\u76ae\u5feb\u539f\u677f",
+        "romanisation": "xipi kuaiyuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 157,
+    "fields": {
+        "code": "sqbs547",
+        "name": "\u9ad8\u62e8\u5b50\u579b\u677f",
+        "romanisation": "gaobozi duoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 158,
+    "fields": {
+        "code": "sqbs270",
+        "name": "\u53cd\u4e8c\u9ec4\u54ed\u5934",
+        "romanisation": "fan'erhuang kutou"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 159,
+    "fields": {
+        "code": "sqbs141",
+        "name": "\u4e8c\u9ec4\u6447\u677f",
+        "romanisation": "erhuang yaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 160,
+    "fields": {
+        "code": "sqbs222",
+        "name": "\u53cd\u4e8c\u9ec4\u4e8c\u516d",
+        "romanisation": "fan'erhuang erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 161,
+    "fields": {
+        "code": "sqbs240",
+        "name": "\u53cd\u4e8c\u9ec4\u6563\u677f",
+        "romanisation": "fan'erhuang sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 162,
+    "fields": {
+        "code": "sqbs111",
+        "name": "\u4e8c\u9ec4\u4e09\u773c",
+        "romanisation": "erhuang sanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 163,
+    "fields": {
+        "code": "sqbs152",
+        "name": "\u4e8c\u9ec4\u56de\u9f99",
+        "romanisation": "erhuang huilong"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 164,
+    "fields": {
+        "code": "sqbs210",
+        "name": "\u53cd\u4e8c\u9ec4\u6162\u677f",
+        "romanisation": "fan'erhuang manban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 165,
+    "fields": {
+        "code": "sqbs502",
+        "name": "\u5522\u5450\u4e8c\u9ec4\u6563\u677f",
+        "romanisation": "suona'erhuang sanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 166,
+    "fields": {
+        "code": "sqbs311",
+        "name": "\u897f\u76ae\u4e09\u773c",
+        "romanisation": "xipi sanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 167,
+    "fields": {
+        "code": "sqbs163",
+        "name": "\u4e8c\u9ec4\u6e05\u677f",
+        "romanisation": "erhuang qingban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 168,
+    "fields": {
+        "code": "sqbs350",
+        "name": "\u897f\u76ae\u5bfc\u677f",
+        "romanisation": "xipi daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 169,
+    "fields": {
+        "code": "sqbs130",
+        "name": "\u4e8c\u9ec4\u5feb\u677f",
+        "romanisation": "erhuang kuaiban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 170,
+    "fields": {
+        "code": "sqbs530",
+        "name": "\u53cd\u56db\u5e73\u8c03",
+        "romanisation": "fansipingdiao"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 171,
+    "fields": {
+        "code": "sqbs231",
+        "name": "\u53cd\u4e8c\u9ec4\u6d41\u6c34",
+        "romanisation": "fan'erhuang liushui"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 172,
+    "fields": {
+        "code": "sqbs230",
+        "name": "\u53cd\u4e8c\u9ec4\u5feb\u677f",
+        "romanisation": "fan'erhuang kuaiban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 173,
+    "fields": {
+        "code": "sqbs162",
+        "name": "\u4e8c\u9ec4\u78b0\u677f\u4e09\u773c",
+        "romanisation": "erhuang pengbansanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 174,
+    "fields": {
+        "code": "sqbs114",
+        "name": "\u4e8c\u9ec4\u5feb\u4e09\u773c",
+        "romanisation": "erhuang kuaisanyan"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 175,
+    "fields": {
+        "code": "sqbs544",
+        "name": "\u9ad8\u62e8\u5b50\u6447\u677f",
+        "romanisation": "gaobozi yaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 176,
+    "fields": {
+        "code": "sqbs322",
+        "name": "\u897f\u76ae\u4e8c\u516d",
+        "romanisation": "xipi erliu"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 177,
+    "fields": {
+        "code": "sqbs331",
+        "name": "\u897f\u76ae\u6d41\u6c34",
+        "romanisation": "xipi liushui"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 178,
+    "fields": {
+        "code": "sqbs353",
+        "name": "\u897f\u76ae\u579b\u677f",
+        "romanisation": "xipi duoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 179,
+    "fields": {
+        "code": "sqbs121",
+        "name": "\u4e8c\u9ec4\u5feb\u539f\u677f",
+        "romanisation": "erhuang kuaiyuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 180,
+    "fields": {
+        "code": "sqbs603",
+        "name": "\u3010\u7435\u7436\u8bcd\u3011",
+        "romanisation": "\u201cpipaci\u201d"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 181,
+    "fields": {
+        "code": "sqbs501",
+        "name": "\u5522\u5450\u4e8c\u9ec4\u539f\u677f",
+        "romanisation": "suona'erhuang yuanban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 182,
+    "fields": {
+        "code": "sqbs605",
+        "name": "\u8239\u6b4c",
+        "romanisation": "chuange"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 183,
+    "fields": {
+        "code": "sqbs512",
+        "name": "\u5357\u6886\u5b50\u6447\u677f",
+        "romanisation": "nanbangzi yaoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 184,
+    "fields": {
+        "code": "sqbs364",
+        "name": "\u897f\u76ae\u541f\u677f",
+        "romanisation": "xipi yinban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 185,
+    "fields": {
+        "code": "sqbs511",
+        "name": "\u5357\u6886\u5b50\u5bfc\u677f",
+        "romanisation": "nanbangzi daoban"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 186,
+    "fields": {
+        "code": "sqbs606",
+        "name": "\u3010\u7c89\u8776\u513f\u3011",
+        "romanisation": "\u201cfendie'er\u201d"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 187,
+    "fields": {
+        "code": "sqbs607",
+        "name": "\u3010\u8d4f\u5bab\u82b1\u3011",
+        "romanisation": "\u201cshanggonghua\u201d"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 188,
+    "fields": {
+        "code": "sqbs608",
+        "name": "\u6570\u677f\u513f",
+        "romanisation": "shuban\u2019er"
+    }
+},
+{
+    "model": "jingju.shengqiangbanshi",
+    "pk": 189,
+    "fields": {
+        "code": "sqbs609",
+        "name": "\u3010\u6e14\u706f\u513f\u3011",
+        "romanisation": "\u201cyudeng\u2019er\u201d"
+    }
+}
+]

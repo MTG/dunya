@@ -175,19 +175,20 @@ class ReleaseImporter(object):
         # object requires an artist.
         # TODO Deleting these each time we overwrite means we churn the
         # alias ids. This may or may not be a good idea
-        args = {alias_ref: artist}
-        AliasKlass.objects.filter(**args).delete()
-        for alias in mbartist.get("alias-list", []):
-            a = alias["alias"]
-            primary = alias.get("primary")
-            locale = alias.get("locale")
-            args = {"alias": a, alias_ref: artist}
-            aob, created = AliasKlass.objects.get_or_create(**args)
-            if primary:
-                aob.primary = True
-            if locale:
-                aob.locale = locale
-            aob.save()
+        if AliasKlass:
+            args = {alias_ref: artist}
+            AliasKlass.objects.filter(**args).delete()
+            for alias in mbartist.get("alias-list", []):
+                a = alias["alias"]
+                primary = alias.get("primary")
+                locale = alias.get("locale")
+                args = {"alias": a, alias_ref: artist}
+                aob, created = AliasKlass.objects.get_or_create(**args)
+                if primary:
+                    aob.primary = True
+                if locale:
+                    aob.locale = locale
+                aob.save()
 
         if wikipedia_url:
             source = self.make_wikipedia_source(wikipedia_url)

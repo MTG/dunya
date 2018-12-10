@@ -33,7 +33,7 @@ class Recording(JingjuStyle, data.models.BaseModel):
     objects = managers.CollectionRecordingManager()
 
     def __str__(self):
-        return u"%s" % (self.title)
+        return u"%s" % self.title
 
 
 class RecordingInstrumentalist(JingjuStyle, models.Model):
@@ -43,7 +43,7 @@ class RecordingInstrumentalist(JingjuStyle, models.Model):
 
 
 class Artist(data.models.Artist):
-    alias = models.CharField(max_length=200, blank=True, null=True)
+    romanisation = models.CharField(max_length=200, blank=True, null=True)
     role_type = models.ForeignKey('RoleType', blank=True, null=True, on_delete=models.CASCADE)
     instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name='jingju', on_delete=models.CASCADE)
     objects = managers.ArtistManager()
@@ -52,8 +52,12 @@ class Artist(data.models.Artist):
         ordering = ['id']
 
 
-class ArtistAlias(data.models.ArtistAlias):
-    pass
+class Composer(data.models.Composer):
+    alias = models.CharField(max_length=200, blank=True, null=True)
+    objects = managers.ArtistManager()
+
+    class Meta:
+        ordering = ['id']
 
 
 class Instrument(data.models.Instrument):
@@ -80,7 +84,7 @@ class RecordingRelease(models.Model):
         return u"%s: %s from %s" % (self.track, self.recording, self.release)
 
 
-class Work(JingjuStyle, data.models.BaseModel):
+class Work(JingjuStyle, data.models.Work):
     class Meta:
         ordering = ['id']
 
@@ -103,10 +107,22 @@ class Release(JingjuStyle, data.models.Release):
 
 
 class RoleType(data.models.BaseModel):
+    class Meta:
+        ordering = ['code']
+
+    # The code used in tags in musicbrainz to identify this roletype (hd00)
+    # the first digit specifies a "parent" roletype, and the second digit a subtype.
+    code = models.CharField(max_length=10, db_index=True)
     name = models.CharField(max_length=100)
-    transliteration = models.CharField(max_length=100)
+    romanisation = models.CharField(max_length=100)
     uuid = models.UUIDField()
 
+    # The "main" roletype for a more specific one. An artist who performs in a specific roletype
+    # by definition performs in the parent roletype
+    parent = models.ForeignKey('RoleType', blank=True, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return u"{}: {}/{}".format(self.code, self.name, self.romanisation)
 
 class Play(data.models.BaseModel):
     title = models.CharField(max_length=100)
@@ -114,9 +130,23 @@ class Play(data.models.BaseModel):
 
 
 class Score(data.models.BaseModel):
+    # the name of the work
     name = models.CharField(max_length=100)
+    # The name of the series
+    source = models.CharField(max_length=100)
+    # read this from the annotation of the series (we need to make it machine readable)
+    citation = models.CharField(max_length=100, blank=True, null=True)
+    citation_romanisation = models.CharField(max_length=100, blank=True, null=True)
+
+    # This shouldn't be a uuidfield (
     uuid = models.UUIDField(blank=True, null=True)
 
 
 class ShengqiangBanshi(data.models.BaseModel):
+    # The code used in tags in musicbrainz to identify this shengqiangbanshi (sqbs000)
+    code = models.CharField(max_length=10, db_index=True, unique=True)
     name = models.CharField(max_length=100)
+    romanisation = models.CharField(max_length=100)
+
+    def __str__(self):
+        return u"{}: {}/{}".format(self.code, self.name, self.romanisation)

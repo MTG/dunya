@@ -1,56 +1,156 @@
 [
-  {
-    "model": "jingju.roletype",
-    "pk": 1,
-    "fields": {
-      "name": "旦",
-      "transliteration": "dan",
-      "uuid": "cef58753-538c-463d-b6c5-c6852c28bfa9"
-    }
-  },
-  {
+{
     "model": "jingju.roletype",
     "pk": 2,
     "fields": {
-      "name": "老旦",
-      "transliteration": "laodan",
-      "uuid": "fffc37cd-0b43-403d-a2d7-e0bef0a33213"
+        "code": "hd20",
+        "name": "\u65e6",
+        "romanisation": "dan",
+        "uuid": "eea568e4-b737-443f-bfea-6aec9c40836a",
+        "parent": null
     }
-  },
-  {
+},
+{
     "model": "jingju.roletype",
     "pk": 3,
     "fields": {
-      "name": "小生",
-      "transliteration": "xiaosheng",
-      "uuid": "cafcfcfe-fcda-4451-aeaf-4bbe3b2c667c"
+        "code": "hd28",
+        "name": "\u5200\u9a6c\u65e6",
+        "romanisation": "daomadan",
+        "uuid": "a1df57e7-95ed-4183-8fc1-95ac9c87eee1",
+        "parent": 2
     }
-  },
-  {
+},
+{
     "model": "jingju.roletype",
     "pk": 4,
     "fields": {
-      "name": "老生",
-      "transliteration": "laosheng",
-      "uuid": "c53a0f7b-720e-41e6-8ef9-0441b457c051"
+        "code": "hd22",
+        "name": "\u82b1\u65e6",
+        "romanisation": "huadan",
+        "uuid": "99651f28-c068-4655-8ed5-aa0480949b69",
+        "parent": 2
     }
-  },
-  {
+},
+{
     "model": "jingju.roletype",
     "pk": 5,
     "fields": {
-      "name": "净",
-      "transliteration": "jing",
-      "uuid": "5a395e32-c209-47e0-85ba-07f7af47daf7"
+        "code": "hd49",
+        "name": "\u6b66\u4e11",
+        "romanisation": "wuchou",
+        "uuid": "9c5aebc7-8762-49b9-85bb-d97eb2302388",
+        "parent": 13
     }
-  },
-  {
+},
+{
     "model": "jingju.roletype",
     "pk": 6,
     "fields": {
-      "name": "丑",
-      "transliteration": "chou",
-      "uuid": "370840b8-8d2a-4b88-85e0-a6af2074f3c9"
+        "code": "hd19",
+        "name": "\u6b66\u751f",
+        "romanisation": "wusheng",
+        "uuid": "f53c66fc-1c2b-4088-8db6-71df84ae798a",
+        "parent": 8
     }
-  }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 7,
+    "fields": {
+        "code": "hd21",
+        "name": "\u9752\u8863",
+        "romanisation": "qingyi",
+        "uuid": "22b10d61-80b5-46e0-89a8-f813eb10d5fd",
+        "parent": 2
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 8,
+    "fields": {
+        "code": "hd10",
+        "name": "\u751f",
+        "romanisation": "sheng",
+        "uuid": "3b2e9aa3-6eaa-42ac-a8a2-8bed6ce3cb1b",
+        "parent": null
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 9,
+    "fields": {
+        "code": "hd12",
+        "name": "\u5c0f\u751f",
+        "romanisation": "xiaosheng",
+        "uuid": "87aba8fa-6b2f-498b-8f98-7b63dd007697",
+        "parent": 8
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 10,
+    "fields": {
+        "code": "hd11",
+        "name": "\u8001\u751f",
+        "romanisation": "laosheng",
+        "uuid": "60f30672-9ec6-4d86-8269-d995037890b0",
+        "parent": 8
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 11,
+    "fields": {
+        "code": "hd23",
+        "name": "\u82b1\u886b",
+        "romanisation": "huashan",
+        "uuid": "0a7fb46e-07d6-4a2a-af22-da1979222acf",
+        "parent": 2
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 12,
+    "fields": {
+        "code": "hd29",
+        "name": "\u6b66\u65e6",
+        "romanisation": "wudan",
+        "uuid": "be9fc559-3e1b-414b-b1c4-9cf922940ec6",
+        "parent": 2
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 13,
+    "fields": {
+        "code": "hd40",
+        "name": "\u4e11",
+        "romanisation": "chou",
+        "uuid": "d7898d73-4865-4eb3-8060-19ded4b1fdd8",
+        "parent": null
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 14,
+    "fields": {
+        "code": "hd30",
+        "name": "\u51c0",
+        "romanisation": "jing",
+        "uuid": "bbd37c54-376b-4b5d-8707-da30000c0f2a",
+        "parent": null
+    }
+},
+{
+    "model": "jingju.roletype",
+    "pk": 15,
+    "fields": {
+        "code": "hd25",
+        "name": "\u8001\u65e6",
+        "romanisation": "laodan",
+        "uuid": "e0664050-023f-401b-a95a-3b85babe81aa",
+        "parent": 2
+    }
+}
 ]
