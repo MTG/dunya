@@ -46,22 +46,23 @@ Perform a database migration, and load fixture data
 
     docker-compose run --rm web python manage.py migrate
 
-    docker-compose run --rm web python manage.py loaddata carnatic_form.json carnatic_raaga.json carnatic_instrument.json carnatic_taala.json data_initial_data.json docserver_groups.json docserver_sourcefiletype.json sites.json hindustani_form.json hindustani_laya.json hindustani_taal.json hindustani_instrument.json hindustani_raag.json makam_form.json makam_instrument.json makam_makam.json makam_usul.json
+    docker-compose run --rm web python manage.py loaddata carnatic_form.json carnatic_raaga.json carnatic_instrument.json carnatic_taala.json data_initial_data.json docserver_groups.json docserver_sourcefiletype.json sites.json hindustani_form.json hindustani_laya.json hindustani_taal.json hindustani_instrument.json hindustani_raag.json makam_form.json makam_instrument.json makam_makam.json makam_usul.json jingju_roletype.json jingju_instrument.json jingju_shengqiangbanshi.json
 
 
-Media files (entity images)
----------------------------
+Javascript
+-----
+Install npm modules
+    npm install
 
-On the server, these files are stored in `/mnt/compmusic/compmusicweb/dunya`.
-You need to copy the directory to the `MEDIA_ROOT` location in `local_settings.py`
+Build required js packages
+    npm run build
 
 
-Less stylesheets
-----------------
-We use the less css compiler for stylesheets. You'll need `lessc` installed in order
-to update them.
+Stylesheets
+-----
+Compile less stylesheets
+    sh build-less.sh
 
-    fab lesscompress
 
 Updating Fixtures
 =================
@@ -87,16 +88,7 @@ Server configuration
 ====================
 
 Find an nginx configuration file in the `admin/` directory.
-Use this configuration for supervisor.
 
-    [program:dunya]
-    environment=LANG='en_US.UTF-8',LC_ALL='en_US.UTF-8'
-    user=dunya
-    directory=/srv/dunya
-    command=/srv/dunya/env/bin/python manage.py runfcgi daemonize=false socket=/tmp/dunya.sock
-    umask=0
-    redirect_stderr=true
-    stopasgroup=true
 
 Workers
 =======

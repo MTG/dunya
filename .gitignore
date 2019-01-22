@@ -8,7 +8,7 @@ dunya/local_settings.py
 .DS_Store
 dunya_data.json
 media
-/static
+static
 node_modules
 *.css.map
 # docker compose environment file
