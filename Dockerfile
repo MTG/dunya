@@ -17,24 +17,26 @@ RUN wget -q -O - https://deb.nodesource.com/setup_8.x | bash - \
          libboost-program-options-dev \
          libboost-regex-dev \
          nodejs \
-         python3-pip \
-         python3-setuptools \
          libsndfile1-dev \
          build-essential \
          libpython3.5-dev \
          lame \
       && rm -rf /var/lib/apt/lists/*
 
+RUN wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
+    && python3 get-pip.py --disable-pip-version-check --no-cache-dir \
+    && rm -r get-pip.py
+
 
 RUN mkdir /code
 WORKDIR /code
 
 RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.15.2
-ADD requirements /code/
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements
+ADD requirements.txt /code/
+RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements.txt
 
-ADD requirements_dev /code/
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements_dev
+ADD requirements_dev.txt /code/
+RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements_dev.txt
 
 RUN mkdir /sources
 WORKDIR /sources
