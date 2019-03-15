@@ -55,7 +55,7 @@ module.exports = {
                 ident: 'postcss',
                 options: { plugins: () => [precss, autoprefixer]}},
             {loader: 'sass-loader',
-             options: {importer: jsonImporter}},
+             options: {importer: jsonImporter()}},
         ],
         include: [
           path.resolve(__dirname, 'frontend', 'src/stylesheets'),
