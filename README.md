@@ -27,7 +27,7 @@ Then, in the dunya directory, set the relevant environment variables to the abso
 
     cp .env.in .env
 
-Insert the actual absolute paths in .env  
+Insert the actual absolute paths in .env
 
 Using docker, run
 
@@ -44,24 +44,24 @@ Setup
 
 Perform a database migration, and load fixture data
 
-    docker-compose run --rm web python manage.py migrate
+    docker-compose run --rm web python3 manage.py migrate
 
-    docker-compose run --rm web python manage.py loaddata carnatic_form.json carnatic_raaga.json carnatic_instrument.json carnatic_taala.json data_initial_data.json docserver_groups.json docserver_sourcefiletype.json sites.json hindustani_form.json hindustani_laya.json hindustani_taal.json hindustani_instrument.json hindustani_raag.json makam_form.json makam_instrument.json makam_makam.json makam_usul.json jingju_roletype.json jingju_instrument.json jingju_shengqiangbanshi.json
+    docker-compose run --rm web python3 manage.py loaddata carnatic_form.json carnatic_raaga.json carnatic_instrument.json carnatic_taala.json data_initial_data.json docserver_groups.json docserver_sourcefiletype.json sites.json hindustani_form.json hindustani_laya.json hindustani_taal.json hindustani_instrument.json hindustani_raag.json makam_form.json makam_instrument.json makam_makam.json makam_usul.json jingju_roletype.json jingju_instrument.json jingju_shengqiangbanshi.json
 
 
 Javascript
 -----
 Install npm modules
-    npm install
+    docker-compose run --rm --user `id -u`:`id -g` -e HOME=/tmp web npm install
 
 Build required js packages
-    npm run build
+    docker-compose run --rm --user `id -u`:`id -g` web npm run build
 
 
 Stylesheets
 -----
 Compile less stylesheets
-    sh build-less.sh
+    docker-compose run --rm --user `id -u`:`id -g` web sh build-less.sh
 
 
 Updating Fixtures
@@ -83,6 +83,13 @@ new fixture, too.
 
     fab dumpfixture:carnatic
 
+
+Development
+===========
+To clear the database you can remove the postgres volume:
+
+    docker-compose down
+    docker volume rm dunya_dbvolume
 
 Server configuration
 ====================
