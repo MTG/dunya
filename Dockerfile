@@ -21,6 +21,7 @@ RUN wget -q -O - https://deb.nodesource.com/setup_8.x | bash - \
          build-essential \
          libpython3.5-dev \
          lame \
+      && apt-get remove -y python3-yaml python3-six python3-numpy \
       && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
@@ -31,8 +32,8 @@ RUN wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
 RUN mkdir /code
 WORKDIR /code
 
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.15.2
 ADD requirements.txt /code/
+RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.16.1
 RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements.txt
 
 ADD requirements_dev.txt /code/
