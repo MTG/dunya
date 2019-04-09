@@ -52,15 +52,18 @@ Perform a database migration, and load fixture data
 Javascript
 -----
 Install npm modules
+
     docker-compose run --rm --user `id -u`:`id -g` -e HOME=/tmp web npm install
 
 Build required js packages
+
     docker-compose run --rm --user `id -u`:`id -g` web npm run build
 
 
 Stylesheets
 -----
 Compile less stylesheets
+
     docker-compose run --rm --user `id -u`:`id -g` web sh build-less.sh
 
 
