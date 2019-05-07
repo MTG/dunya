@@ -45,7 +45,7 @@
     {% for recording in recordings %}
 	<div class="col span_1_of_3">
         <a href="recording/{{recording.recording}}">
-        <img width="250px" src="http://coverartarchive.org/release/{{recording.release}}/front-500">
+        <img width="250px" src="https://coverartarchive.org/release/{{recording.release}}/front-500">
         <h1>{{recording.title}}</h1></a>
 	</div>
 	{% if forloop.counter|divisibleby:3 %}</div><div class="section group">{% endif %}
