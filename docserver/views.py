@@ -177,8 +177,9 @@ def download_external(request, uuid, ftype):
     # referrer is dunya, then has_access is true (but we rate-limit)
     referrer = request.META.get("HTTP_REFERER")
     good_referrer = False
-    if referrer and "dunya.compmusic.upf.edu" in referrer:
-        good_referrer = True
+    if referrer:
+        if "dunya.compmusic.upf.edu" in referrer or "dunya.upf.edu" in referrer:
+            good_referrer = True
 
     has_access = util.user_has_access(user, doc, ftype, good_referrer)
     if not has_access:
