@@ -321,9 +321,8 @@ def process_document(documentid, moduleversionid):
     sfiles = document.sourcefiles.filter(file_type=module.source_type)
     if len(sfiles):
         s = sfiles[0]
-        fname = s.fullpath.encode("utf-8")
         starttime = time.time()
-        results = instance.process_document(document.pk, s.pk, document.external_identifier, fname)
+        results = instance.process_document(document.pk, s.pk, document.external_identifier, s.fullpath)
         endtime = time.time()
 
         if results:
