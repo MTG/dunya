@@ -187,7 +187,7 @@ def delete_collection(cid):
     paths = []
     for df in dfs:
         for pn in range(1, df.num_parts + 1):
-            path = f.full_path_for_part(pn)
+            path = df.full_path_for_part(pn)
             paths.append(path)
     for f in paths:
         os.remove(f)
@@ -213,13 +213,16 @@ def _save_file(derivedfile, partnumber, extension, data):
 
     fullname = os.path.join(fdir, fname)
     try:
-        fp = open(fullname, "wb")
+        # json module requires a string file-pointer. Other data could be either a string
+        # or bytes. Convert all strings to bytes and write
         if extension == "json":
-            json.dump(data, fp, cls=NumPyArangeEncoder)
+            with open(fullname, "w") as fp:
+                json.dump(data, fp, cls=NumPyArangeEncoder)
         else:
-            if not isinstance(data, six.string_types):
-                logger.warn("Data is not a string-ish thing. instead it's %s" % type(data))
-            fp.write(data)
+            if isinstance(data, six.string_types):
+                data = data.encode("utf-8")
+            with open(fullname, "wb") as fp:
+                fp.write(data)
         fp.close()
     except OSError:
         logger.warn("Error writing to file %s" % fullname)
