@@ -25,8 +25,8 @@ from andalusian import models
 
 def search(request):
     q = request.GET.get('recording', '')
-    s_mizan = request.GET.get('mizans', '')
-    s_nawba = request.GET.get('nawbas', '')
+    s_mizan = request.GET.get('mizans')
+    s_nawba = request.GET.get('nawbas')
 
     recordings = models.Recording.objects
     if q and q != '':
@@ -34,10 +34,10 @@ def search(request):
         recordings = recordings.filter(works__id__in=ids) \
                      | recordings.filter(title__icontains=q) \
                      | recordings.filter(album__title__icontains=q)
-    if s_nawba and s_nawba != '':
-        recordings = recordings.filter(section__nawba=s_nawba)
-    if s_mizan and s_mizan != '':
-        recordings = recordings.filter(section__mizan=s_mizan)
+    if s_nawba:
+        recordings = recordings.filter(section__nawba__in=s_nawba.split())
+    if s_mizan:
+        recordings = recordings.filter(section__mizan__in=s_mizan.split())
 
     paginator = Paginator(recordings.all(), 25)
     page = request.GET.get('page')
