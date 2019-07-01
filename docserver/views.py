@@ -364,7 +364,10 @@ def worker(request, hostname):
 
     workername = "celery@%s" % hostname
     i = app.control.inspect([workername])
-    tasks = i.active()
+    try:
+        tasks = i.active()
+    except ConnectionResetError:
+        tasks = []
     active = []
     if tasks:
         workertasks = tasks[workername]
@@ -372,7 +375,10 @@ def worker(request, hostname):
             thetask = understand_task(t)
             active.append(thetask)
 
-    reservedtasks = i.reserved()
+    try:
+        reservedtasks = i.reserved()
+    except ConnectionResetError:
+        reservedtasks = []
     reserved = []
     if reservedtasks:
         workerreserved = reservedtasks[workername]
