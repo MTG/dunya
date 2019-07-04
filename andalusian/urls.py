@@ -24,9 +24,9 @@ title_match = r'(?:/(?P<title>[\w-]+))?'
 
 urlpatterns = [
     url(r'^$',
-        TemplateView.as_view(template_name="andalusian/index.html"), name='andalusian-main'),
-    url(r'^info$',
-        TemplateView.as_view(template_name="andalusian/info.html"), name='andalusian-info'),
+        TemplateView.as_view(template_name="andalusian/info.html"), name='andalusian-main'),
+    url(r'^index$',
+        TemplateView.as_view(template_name="andalusian/index.html"), name='andalusian-index'),
     url(r'^search$', views.search, name='andalusian-search'),
     url(r'^searchcomplete$', views.searchcomplete, name='andalusian-searchcomplete'),
     url(r'filters.json$', views.filters, name='andalusian-filters'),
