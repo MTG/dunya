@@ -60,10 +60,17 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         except andalusian.models.Instrument.DoesNotExist:
             return andalusian.models.Instrument.objects.create(name=instname)
 
-    def _add_recording_performance(self, recordingid, artistid, instrument, is_lead):
+    def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
+
+        instr_name = attrs[-1]
+        attrs = attrs[:-1]
+        is_lead = False
+        if "lead" in attrs:
+            is_lead = True
+
+        instrument = self._get_instrument(instr_name)
         if instrument:
             recording = andalusian.models.Recording.objects.get(mbid=recordingid)
             perf = andalusian.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
@@ -84,6 +91,9 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
                     perf.save()
 
     def _apply_tags(self, recording, works, tags):
+        pass
+
+    def _add_image_to_release(self, release, directories):
         pass
 
     def _get_orchestra_performances(self, artistrelationlist):

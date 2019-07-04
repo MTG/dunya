@@ -116,9 +116,12 @@ class ReleaseImporter(object):
 
         self._add_release_artists_as_relationship(release, rel["artist-credit"])
 
-        external_data.import_release_image(release, directories)
+        self._add_image_to_release(release, directories)
         self.imported_releases.append(releaseid)
         return release
+
+    def _add_image_to_release(self, release, directories):
+        external_data.import_release_image(release, directories)
 
     def _add_release_artists_as_relationship(self, release, artist_credit):
         # Can be overwritten to take the release artists and add them
