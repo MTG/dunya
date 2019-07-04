@@ -2,6 +2,7 @@
 {% block title %}Terms and Conditions | {% endblock %}
 
 {% block extra_head %}
+{% load static %}
 <style type="text/css">
 .centering {
   margin-left: auto;
@@ -21,9 +22,43 @@ table{
 
 <div class="centering">
 <h2>Arab-Andalusian Corpus information</h2>
-  <p class="p1">The Arab-Andalusian music is a musical tradition that can be traced back to the 9th century in Al-Andalus, to the muslims and christians living in Moorish Spain . Arab-Andalusian Music is the result of many influences, including Middle-East Arabic classical music, the Hispanic music traditions of the Iberian peninsula, and other classical traditions such as the Gregorian and Byzantine.<p>
-  <p class="p1">The Aarab-Andalusian Music research corpus mainly consists of audio recordings with their corresponding metadata, lyrics (or sanāʾiʿ) and music scores.<p> 
-<h3>Corpus Statistics</h3>
+  <p class="p1">The Arab-Andalusian music is a musical tradition that can be traced back to the 9th century in Al-Andalus,
+    to the muslims and christians living in Moorish Spain . Arab-Andalusian Music is the result of many influences,
+    including Middle-East Arabic classical music, the Hispanic music traditions of the Iberian peninsula, and other
+    classical traditions such as the Gregorian and Byzantine.<p>
+  <img src="{% static 'carnatic/img/example.jpg' %}" class="inline-block-center" width="800" height="500"> </p>
+  <iframe src="https://archive.org/embed/TetouanOrchestra_Studio1970s_QuddamHijazMsharqi" width="800" height="140" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+  <p class="p1">The Arab-Andalusian Music research corpus mainly consists of audio recordings with their corresponding metadata, lyrics (or sanāʾiʿ) and music scores.<p> 
+
+<h3>Access the corpus</h3>
+<h4>Dunya recordings interface:<h4></p>
+
+<a href="{% url 'andalusian-index' %}">SEARCH PAGE</a></p>
+<h4>API</h4>
+    <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">developers page</a>.</p>
+
+    <p class="p1">Disclamer: There might be errors in the data since this is still work in progess, if you find any problem please contact us.<p>
+<h4>External public archives</h4>
+<p class="p1">All the data related to this corpus is openly availabe from this external services:<p>
+<ul>
+  <li>Score: <a href="https://musescore.com/mtg/sets/423121">Musescore</a></li>
+  <li>Audio: <a href="https://archive.org/details/arabandalusian">Internet Archive</a></li>
+  <li>Metadata: <a href="https://musicbrainz.org/collection/142ea0d7-7fdf-4ea5-9b04-219f68023d01">Musicbrainz</a></li>
+  <li>Verses annotations: <a href="https://github.com/MTG/arab-andalusian-music">GitHub</a></li>
+</ul>
+
+<h4>Example Jupyter Notebooks</h4>
+    <p>The following Github repository contains a set of useful Jupyter Notebooks designed to provide a power tool to manage the Arab-Andalusian dataset and its research posibilities: 
+    <a href="https://github.com/MTG/andalusian-corpus-notebooks">Andalusian notebooks</a></li>
+
+    <p>Furthermore, other notebooks related to the dataset are provided. They are examples of experiments run by students and researchers from the MTG:</p>
+  <ul>
+    <li><a href="https://github.com/quantifyingcentones/quantifyingcentones">Patern recognition</a></li>
+    <li><a href="https://github.com/pirulok02/AMPLab-Arab-Andalusian">Study of vibrato</a></li>
+    <li><a href="https://github.com/miguelgcasado/MIR_project">Study of temperamento</a></li>
+  </ul>
+  
+  <h3>Corpus Statistics</h3>
     <p class="p1">
     The CompMusic Andalusian corpus contains <b>156 audio recordings</b> (songs) with transcriptions of <b>11 mizans</b> and <b>13 nawbas</b> played by different orchestras. The following table shows the distribution of the Andalusian music recordings:
     </p>
@@ -42,19 +77,6 @@ table{
       <tr><td>al-Uššāq</td><td>3</td><td>3</td><td>1</td><td>0</td><td>4</td></tr>
     </table>
     <p class="p1">For more information refer to the <a href="http://mtg.upf.edu/node/3028">following publication</a></p>
-
-<h3>Access the corpus</h3>
-<h4>External services</h4>
-<p class="p1">All the data related to this corpus is openly availabe from this external services:<p>
-<ul>
-  <li>Score: <a href="https://musescore.com/mtg/sets/423121">Musescore</a></li>
-  <li>Audio: <a href="https://archive.org/details/arabandalusian">Internet Archive</a></li>
-  <li>Metadata: <a href="https://musicbrainz.org/collection/142ea0d7-7fdf-4ea5-9b04-219f68023d01">Musicbrainz</a></li>
-</ul>
-<h4>API</h4>
-    <p>Dunya offers an API that allows other applications access the collections and the derived data. For more information go to <a href="{% url 'developers' %}">deveopers page</a>.</p>
-
-    <p class="p1">Disclamer: There might be errors in the data since this is still work in progess, if you find any problem please contact us.<p>
 
 <h3>Contact us</h3>
 
