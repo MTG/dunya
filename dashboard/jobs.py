@@ -229,7 +229,7 @@ def _get_musicbrainz_release_for_dir(dirname):
 def _get_mp3_files(files):
     """ Take a list of files and return only the mp3 files """
     # TODO: This should be any audio file, replace with util method
-    return [f for f in files if os.path.splitext(f)[1].lower() == ".mp3"]
+    return [f for f in files if f.startswith("._") is False and ".mp3" in f]
 
 
 def update_collection(collectionid):
