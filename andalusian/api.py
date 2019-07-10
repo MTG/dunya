@@ -66,7 +66,7 @@ class RecordingInnerSerializer(serializers.ModelSerializer):
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name', 'original_name']
+        fields = ['mbid', 'name']
 
 
 class TabInnerSerializer(serializers.ModelSerializer):
@@ -212,7 +212,7 @@ class GenreList(generics.ListAPIView):
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['id', 'name', 'original_name']
+        fields = ['mbid','name']
 
 
 class InstrumentDetail(generics.RetrieveAPIView):
@@ -383,4 +383,3 @@ class LyricDetail(generics.ListAPIView):
     def get_queryset(self):
         mbid = self.kwargs['mbid'] 
         return models.Poem.objects.filter(recordingpoem__recording__mbid=mbid).order_by('recordingpoem__order_number').all()
-

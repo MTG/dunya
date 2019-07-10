@@ -1,8 +1,8 @@
 import collections
-import math
 
-from django.urls import reverse
+import math
 from django.db import models
+from django.urls import reverse
 
 import data.models
 
@@ -278,7 +278,7 @@ class Instrument(AndalusianStyle, data.models.BaseModel):
 
     percussion = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
-    original_name = models.CharField(max_length=50, blank=True)
+    mbid = models.UUIDField(blank=True, null=True)
 
     def __str__(self):
         return self.name
