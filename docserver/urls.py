@@ -19,8 +19,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from docserver import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-external_identifier = r'(?P<external_identifier>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+uuid_match = r'(?P<uuid>[a-f0-9-:]+)'
+external_identifier = r'(?P<external_identifier>[a-f0-9-:]+)'
+# Some external identifiers are combinations of two uuids separated by a :, so we allow more values than a strict uuid
 
 api_patterns = [
     url(r'^collections$', views.CollectionList.as_view(), name='collection-list'),
