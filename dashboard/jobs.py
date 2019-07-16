@@ -14,14 +14,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import print_function
 
 import os
 import traceback
 
 import celery
 import compmusic
+import magic
 
 import data
 import docserver
@@ -29,8 +30,8 @@ import docserver.util
 from dashboard import andalusian_importer
 from dashboard import carnatic_importer
 from dashboard import hindustani_importer
-from dashboard import makam_importer
 from dashboard import jingju_importer
+from dashboard import makam_importer
 from dashboard import models
 from dashboard.log import import_logger
 from dunya.celery import app
@@ -229,7 +230,7 @@ def _get_musicbrainz_release_for_dir(dirname):
 def _get_mp3_files(files):
     """ Take a list of files and return only the mp3 files """
     # TODO: This should be any audio file, replace with util method
-    return [f for f in files if f.startswith("._") is False and ".mp3" in f]
+    return [f for f in files if magic.from_file(f, mime=True) == "audio/mpeg"]
 
 
 def update_collection(collectionid):
@@ -326,7 +327,10 @@ def scan_and_link(collectionid):
         collectionroot += "/"
     found_directories = []
     for root, d, files in os.walk(collectionroot):
-        mp3files = _get_mp3_files(files)
+        root_files = []
+        for f in files:
+            root_files.append(os.path.join(root, f))
+        mp3files = _get_mp3_files(root_files)
         if len(mp3files) > 0:
             found_directories.append(root)
     existing_directories = [c.full_path for c in coll.collectiondirectory_set.all()]
@@ -392,3 +396,4 @@ def _check_existing_directories(coll):
 def delete_collection(collectionpk):
     collection = models.Collection.objects.get(pk=collectionpk)
     collection.delete()
+
