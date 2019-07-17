@@ -217,8 +217,12 @@ def _get_musicbrainz_release_for_dir(dirname):
     are in tags in mp3 files in the given directory.
     """
     release_ids = set()
-    for fname in _get_mp3_files(os.listdir(dirname)):
-        fpath = os.path.join(dirname, fname)
+    mp3files = []
+    for root, d, files in os.walk(dirname):
+        root_files = [os.path.join(root, f) for f in files]
+        mp3files.append(_get_mp3_files(root_files))
+    mp3files = [item for sublist in mp3files for item in sublist]
+    for fpath in mp3files:
         meta = compmusic.file_metadata(fpath)
         if meta:
             rel = meta["meta"]["releaseid"]
@@ -230,7 +234,8 @@ def _get_musicbrainz_release_for_dir(dirname):
 def _get_mp3_files(files):
     """ Take a list of files and return only the mp3 files """
     # TODO: This should be any audio file, replace with util method
-    return [f for f in files if magic.from_file(f, mime=True) == "audio/mpeg"]
+
+    return [f for f in files if os.path.isfile(f) and magic.from_file(f, mime=True) == "audio/mpeg"]
 
 
 def update_collection(collectionid):
@@ -290,7 +295,11 @@ def _match_directory_to_release(collectionid, root):
             cd.musicbrainzrelease = therelease
             cd.save()
 
-            mp3files = _get_mp3_files(os.listdir(root))
+            mp3files = []
+            for root, d, files in os.walk(root):
+                root_files = [os.path.join(root, f) for f in files]
+                mp3files.append(_get_mp3_files(root_files))
+            mp3files = [item for sublist in mp3files for item in sublist]
             for f in mp3files:
                 _create_collectionfile(cd, f)
         except models.MusicbrainzRelease.DoesNotExist:
@@ -327,9 +336,7 @@ def scan_and_link(collectionid):
         collectionroot += "/"
     found_directories = []
     for root, d, files in os.walk(collectionroot):
-        root_files = []
-        for f in files:
-            root_files.append(os.path.join(root, f))
+        root_files = [os.path.join(root, f) for f in files]
         mp3files = _get_mp3_files(root_files)
         if len(mp3files) > 0:
             found_directories.append(root)
@@ -396,4 +403,5 @@ def _check_existing_directories(coll):
 def delete_collection(collectionpk):
     collection = models.Collection.objects.get(pk=collectionpk)
     collection.delete()
+
 
