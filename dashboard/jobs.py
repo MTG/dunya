@@ -234,7 +234,7 @@ def _get_mp3_files(root_dir, files):
     ret = []
     for f in files:
         full_path = os.path.join(root_dir, f)
-        if os.path.isfile(full_path) and magic.from_file(f, mime=True) == "audio/mpeg":
+        if os.path.isfile(full_path) and magic.from_file(full_path, mime=True) == "audio/mpeg":
             ret.append(f)
     return ret
 
