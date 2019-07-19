@@ -217,12 +217,8 @@ def _get_musicbrainz_release_for_dir(dirname):
     are in tags in mp3 files in the given directory.
     """
     release_ids = set()
-    mp3files = []
-    for root, d, files in os.walk(dirname):
-        root_files = [os.path.join(root, f) for f in files]
-        mp3files.append(_get_mp3_files(root_files))
-    mp3files = [item for sublist in mp3files for item in sublist]
-    for fpath in mp3files:
+    for fname in _get_mp3_files(dirname, os.listdir(dirname)):
+        fpath = os.path.join(dirname, fname)
         meta = compmusic.file_metadata(fpath)
         if meta:
             rel = meta["meta"]["releaseid"]
@@ -231,11 +227,16 @@ def _get_musicbrainz_release_for_dir(dirname):
     return list(release_ids)
 
 
-def _get_mp3_files(files):
+def _get_mp3_files(root_dir, files):
     """ Take a list of files and return only the mp3 files """
     # TODO: This should be any audio file, replace with util method
 
-    return [f for f in files if os.path.isfile(f) and magic.from_file(f, mime=True) == "audio/mpeg"]
+    ret = []
+    for f in files:
+        full_path = os.path.join(root_dir, f)
+        if os.path.isfile(full_path) and magic.from_file(f, mime=True) == "audio/mpeg":
+            ret.append(f)
+    return ret
 
 
 def update_collection(collectionid):
@@ -294,12 +295,7 @@ def _match_directory_to_release(collectionid, root):
             therelease = models.MusicbrainzRelease.objects.get(mbid=releaseid, collection=coll)
             cd.musicbrainzrelease = therelease
             cd.save()
-
-            mp3files = []
-            for root, d, files in os.walk(root):
-                root_files = [os.path.join(root, f) for f in files]
-                mp3files.append(_get_mp3_files(root_files))
-            mp3files = [item for sublist in mp3files for item in sublist]
+            mp3files = _get_mp3_files(root, os.listdir(root))
             for f in mp3files:
                 _create_collectionfile(cd, f)
         except models.MusicbrainzRelease.DoesNotExist:
@@ -336,8 +332,7 @@ def scan_and_link(collectionid):
         collectionroot += "/"
     found_directories = []
     for root, d, files in os.walk(collectionroot):
-        root_files = [os.path.join(root, f) for f in files]
-        mp3files = _get_mp3_files(root_files)
+        mp3files = _get_mp3_files(root, files)
         if len(mp3files) > 0:
             found_directories.append(root)
     existing_directories = [c.full_path for c in coll.collectiondirectory_set.all()]
@@ -370,7 +365,7 @@ def _check_existing_directories(coll):
     # remove them, and it's complex to cover all cases. We do this separately
     for cd in coll.collectiondirectory_set.all():
         files = os.listdir(cd.full_path)
-        mp3files = _get_mp3_files(files)
+        mp3files = _get_mp3_files(cd.full_path, files)
         existing_f = cd.collectionfile_set.all()
         existing_names = [f.name for f in existing_f]
 
