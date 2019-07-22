@@ -207,11 +207,11 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _performance_type_to_instrument(self, perf_type, attrs):
         is_lead = False
-        if perf_type == release_importer.RELATION_VOCAL:
+        if perf_type == release_importer.RELATION_RECORDING_VOCAL:
             instr_name = "voice"
             if "lead vocals" in attrs:
                 is_lead = True
-        elif perf_type == release_importer.RELATION_INSTRUMENT:
+        elif perf_type == release_importer.RELATION_RECORDING_INSTRUMENT:
             instr_name = attrs[-1]
             attrs = attrs[:-1]
             if "lead" in attrs:
