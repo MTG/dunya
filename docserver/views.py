@@ -26,7 +26,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms.models import modelformset_factory
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import authentication
@@ -36,6 +36,7 @@ from rest_framework import parsers
 from rest_framework import permissions
 from rest_framework import response
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import BaseSerializer
 from sendfile import sendfile
 
@@ -96,9 +97,12 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
         slug = request.data.get("collection", None)
 
         if not slug:
-            raise Exception("Slug not present in request")
+            raise ValidationError("Slug not present in request")
 
-        collection = get_object_or_404(models.Collection.objects, slug=slug)
+        try:
+            collection = models.Collection.objects.get(slug=slug)
+        except models.Collection.DoesNotExist:
+            raise Http404("Invalid collection slug")
         doc = util.docserver_create_document(collection.collectionid, external_identifier, title)
         serialized = serializers.DocumentSerializer(doc)
         return response.Response(serialized.data, status=status.HTTP_201_CREATED)
