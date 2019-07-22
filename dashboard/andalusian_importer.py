@@ -55,20 +55,29 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         if not instname:
             return None
         instname = instname.lower()
-        try:
-            return andalusian.models.Instrument.objects.get(name__iexact=instname)
-        except andalusian.models.Instrument.DoesNotExist:
-            return andalusian.models.Instrument.objects.create(name=instname)
+        return andalusian.models.Instrument.objects.get(name__iexact=instname)
 
     def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")
         artist = self.add_and_get_artist(artistid)
 
-        instr_name = attrs[-1]
-        attrs = attrs[:-1]
+        # We don't expect to see these two relations here, as we know that all releases in MusicBrainz
+        # for this collection have recording-level relationships.
+        if perf_type in [release_importer.RELATION_RELEASE_VOCAL, release_importer.RELATION_RELEASE_INSTRUMENT]:
+            raise release_importer.ImportFailedException("Found a release-level artist instrument relation on "
+                                                         "recording {} which isn't supported".format(recordingid))
+
         is_lead = False
-        if "lead" in attrs:
-            is_lead = True
+        instr_name = attrs[-1]
+        if perf_type == release_importer.RELATION_RECORDING_VOCAL:
+            instr_name = "voice"
+            if "lead vocals" in attrs:
+                is_lead = True
+        elif perf_type == release_importer.RELATION_RECORDING_INSTRUMENT:
+            instr_name = attrs[-1]
+            attrs = attrs[:-1]
+            if "lead" in attrs:
+                is_lead = True
 
         instrument = self._get_instrument(instr_name)
         if instrument:
@@ -76,19 +85,13 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
             perf = andalusian.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
             perf.save()
 
-    def _add_release_performance(self, releaseid, artistid, instrument, is_lead):
+    def _add_release_performance(self, releasembid, artistid, perf_type, attrs):
+        # release.mbid, artistid, perf_type, attrs
         logger.info("  Adding release performance...")
-        artist = self.add_and_get_artist(artistid)
-        instrument = self._get_instrument(instrument)
-        if instrument:
-            release = andalusian.models.Album.objects.get(mbid=releaseid)
-            # For each recording in the release, see if the relationship
-            # already exists. If not, create it.
-            for rec in release.recordings.all():
-                if not andalusian.models.InstrumentPerformance.objects.filter(
-                   recording=rec, instrument=instrument, performer=artist).exists():
-                    perf = andalusian.models.InstrumentPerformance(recording=rec, instrument=instrument, performer=artist, lead=is_lead)
-                    perf.save()
+
+        release = andalusian.models.Album.objects.get(mbid=releasembid)
+        for rec in release.recordings.all():
+            self._add_recording_performance(rec.mbid, artistid, perf_type, attrs)
 
     def _apply_tags(self, recording, works, tags):
         pass
