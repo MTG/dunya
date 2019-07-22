@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^recording/%s/lyric$' % mbid_match, andalusian.api.LyricDetail.as_view(), name='api-andalusian-lyric-detail'),
 
     url(r'^instrument$', andalusian.api.InstrumentList.as_view(), name='api-andalusian-instrument-list'),
-    url(r'^instrument/(?P<pk>\d+)$', andalusian.api.InstrumentDetail.as_view(), name='api-andalusian-instrument-detail'),
+    url(r'^instrument/%s$' % mbid_match, andalusian.api.InstrumentDetail.as_view(), name='api-andalusian-instrument-detail'),
 
     url(r'^tab$', andalusian.api.TabList.as_view(), name='api-andalusian-tab-list'),
     url(r'^tab/%s$' % uuid_match, andalusian.api.TabDetail.as_view(), name='api-andalusian-tab-detail'),

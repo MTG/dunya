@@ -212,11 +212,11 @@ class GenreList(generics.ListAPIView):
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['mbid','name']
+        fields = ['mbid', 'name']
 
 
 class InstrumentDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = 'mbid'
     queryset = models.Instrument.objects.all()
     serializer_class = InstrumentDetailSerializer
 
@@ -299,7 +299,7 @@ class SectionDetailSerializer(serializers.ModelSerializer):
     nawba = NawbaDetailSerializer()
     mizan = MizanDetailSerializer()
     form = FormDetailSerializer()
-    
+
     class Meta:
         model = models.Section
         fields = ['start_time', 'end_time', 'tab', 'nawba', 'mizan', 'form']
@@ -348,11 +348,11 @@ class PoemDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Poem
         fields = ['text','transliterated_text','title', 'transliterated_title', 'first_words', 'transliterated_first_words']
-    
+
     def get_text_obj(self, ob):
         text = json.loads(ob.text)
         return text
-    
+
     def get_transliterated_text_obj(self, ob):
         text = json.loads(ob.transliterated_text)
         return text
@@ -370,7 +370,7 @@ class PoemList(generics.ListAPIView):
 
 
 class RecordingPoemSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = models.Poem
         fields = ['text', 'transliterated_text', 'title', 'transliterated_title', 'first_words',
@@ -381,5 +381,5 @@ class LyricDetail(generics.ListAPIView):
     serializer_class = PoemDetailSerializer
 
     def get_queryset(self):
-        mbid = self.kwargs['mbid'] 
+        mbid = self.kwargs['mbid']
         return models.Poem.objects.filter(recordingpoem__recording__mbid=mbid).order_by('recordingpoem__order_number').all()
