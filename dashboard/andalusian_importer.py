@@ -55,7 +55,10 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         if not instname:
             return None
         instname = instname.lower()
-        return andalusian.models.Instrument.objects.get(name__iexact=instname)
+        try:
+            return andalusian.models.Instrument.objects.get(name__iexact=instname)
+        except andalusian.models.Instrument.DoesNotExist:
+            raise release_importer.ImportFailedException("Instrument {} not found".format(instname))
 
     def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")
@@ -100,11 +103,16 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         pass
 
     def _get_orchestra_performances(self, artistrelationlist):
+        # TODO: this shares some logic with _add_recording_performance to rename vocals -> voice.
         performances = []
         for perf in artistrelationlist:
             if perf["type"] == "member of band":
                 artistid = perf["target"]
-                insts = [p.replace("lead ", "") for p in perf.get("attribute-list", [])]
+                insts = []
+                for instrument in perf.get("attribute-list", []):
+                    if instrument in ["lead vocals", "vocals"]:
+                        instrument = "voice"
+                    insts.append(instrument)
                 performances.append((artistid, insts))
         return performances
 
