@@ -1,0 +1,123 @@
+[
+{
+  "model": "andalusian.form",
+  "pk": 1,
+  "fields": {
+    "uuid": "7b1a62d7-6491-4218-9cfd-50839b9db3be",
+    "name": "\u0625\u0646\u0634\u0627\u062f",
+    "transliterated_name": "in\u0161\u0101d",
+    "form_type": null,
+    "display_order": 1
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 2,
+  "fields": {
+    "uuid": "717dbf91-86b0-4966-b2e6-b1c0101e8cd2",
+    "name": "\u0627\u0646\u0635\u0631\u0627\u0641",
+    "transliterated_name": "in\u1e63ir\u0101f",
+    "form_type": null,
+    "display_order": 10
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 3,
+  "fields": {
+    "uuid": "88d1e029-44a0-49cc-8450-b3443af3d997",
+    "name": "\u0628\u063a\u064a\u0629",
+    "transliterated_name": "bugia",
+    "form_type": null,
+    "display_order": 2
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 4,
+  "fields": {
+    "uuid": "cf260220-8fcb-44bb-9b24-38404f9f08ac",
+    "name": "\u062a\u0648\u0634\u064a\u0629",
+    "transliterated_name": "taw\u0101\u0161\u012b",
+    "form_type": null,
+    "display_order": 3
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 17,
+  "fields": {
+    "uuid": "b3ee0155-3264-4520-b833-afd6e81bfe0c",
+    "name": "\u0645\u0634\u0627\u0644\u064a\u0629",
+    "transliterated_name": "mi\u0161\u0101lia",
+    "form_type": null,
+    "display_order": 4
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 18,
+  "fields": {
+    "uuid": "48fcd089-f78e-4e01-98ce-1a26bc0e4bea",
+    "name": "\u0645\u0647\u0632\u0648\u0632",
+    "transliterated_name": "mahz\u016bz",
+    "form_type": null,
+    "display_order": 9
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 21,
+  "fields": {
+    "uuid": "be68cbef-ea05-461c-9836-5c1d1bf69c2f",
+    "name": "\u0645\u0648\u0633\u0639",
+    "transliterated_name": "muassa\u2018",
+    "form_type": null,
+    "display_order": 8
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 23,
+  "fields": {
+    "uuid": "aa2c83cd-731c-411a-a3e1-81a08f0487d1",
+    "name": "\u062a\u0642\u0633\u064a\u0645",
+    "transliterated_name": "taqs\u012bm",
+    "form_type": null,
+    "display_order": 5
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 28,
+  "fields": {
+    "uuid": "3fad6111-2a45-4472-9f51-580feabf2648",
+    "name": "\u0635\u0627\u0645\u062a \u0631\u0635\u062f \u0627\u0644\u0630\u064a\u0644",
+    "transliterated_name": "instrumental ra\u1e63d al-\u1e0f\u0101yl",
+    "form_type": null,
+    "display_order": 11
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 29,
+  "fields": {
+    "uuid": "ffa002e6-9823-4a27-a995-805b6f14fd65",
+    "name": "\u0635\u0646\u0639\u0629",
+    "transliterated_name": "\u1e63an`a",
+    "form_type": null,
+    "display_order": 6
+  }
+},
+{
+  "model": "andalusian.form",
+  "pk": 31,
+  "fields": {
+    "uuid": "42240a10-d598-4b41-b63f-ff992163ee74",
+    "name": "\u0645\u0648\u0627\u0644",
+    "transliterated_name": "maww\u0101l",
+    "form_type": null,
+    "display_order": 7
+  }
+}
+]

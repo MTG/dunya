@@ -1,0 +1,202 @@
+[
+{
+  "model": "andalusian.tab",
+  "pk": 1,
+  "fields": {
+    "uuid": "7357bdcb-ef53-4895-9f74-8b07f8902265",
+    "name": "\u0627\u0644\u0627\u0633\u062a\u0647\u0644\u0627\u0644",
+    "transliterated_name": "al-istihl\u0101l",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 2,
+  "fields": {
+    "uuid": "637256f4-5652-4f08-a384-a6de090d886f",
+    "name": "\u0627\u0644\u0627\u0635\u0628\u0647\u0627\u0646",
+    "transliterated_name": "al-i\u1e63bah\u0101n",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 3,
+  "fields": {
+    "uuid": "e3cf6471-3096-4637-b8f3-f5014c651d9c",
+    "name": "\u0627\u0644\u062d\u062c\u0627\u0632 \u0627\u0644\u0643\u0628\u064a\u0631",
+    "transliterated_name": "al-\u1e25i\u0177\u0101z al-kab\u012br",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 4,
+  "fields": {
+    "uuid": "2153d620-13d6-400f-9463-eb2e423d4ce5",
+    "name": "\u0627\u0644\u062d\u062c\u0627\u0632 \u0627\u0644\u0645\u0634\u0631\u0642\u064a",
+    "transliterated_name": "al-\u1e25i\u0177\u0101z al-ma\u0161riq\u012b",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 5,
+  "fields": {
+    "uuid": "f972e499-44d6-4ab5-8cbb-6ca6f3b8c016",
+    "name": "\u0627\u0644\u0631\u0635\u062f",
+    "transliterated_name": "al-ra\u1e63d",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 6,
+  "fields": {
+    "uuid": "8d9fd2e2-b4fc-4746-84b1-2a74d2a7e214",
+    "name": "\u0627\u0644\u0632\u0631\u0643\u0629",
+    "transliterated_name": "al-zerga",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 7,
+  "fields": {
+    "uuid": "734ceed5-7114-4e24-a302-445ea66b18ab",
+    "name": "\u0627\u0644\u0635\u064a\u0643\u0629",
+    "transliterated_name": "al-\u1e63\u012bka",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 8,
+  "fields": {
+    "uuid": "bb240e7c-8af6-46cd-8cc1-3ae3f3f4da5b",
+    "name": "\u0627\u0644\u0639\u0634\u0627\u0642",
+    "transliterated_name": "al-\u2018u\u0161\u0161\u0101q",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 9,
+  "fields": {
+    "uuid": "f2b500c3-ab49-4ec9-a467-81c0cfd854f9",
+    "name": "\u0627\u0644\u0645\u0627\u064a\u0629",
+    "transliterated_name": "al-m\u0101ya",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 10,
+  "fields": {
+    "uuid": "ee5810a0-b86e-436e-9519-90360a1a6db1",
+    "name": "\u0627\u0644\u0645\u0634\u0631\u0642\u064a",
+    "transliterated_name": "al-ma\u0161riqu\u012b",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 11,
+  "fields": {
+    "uuid": "1513395a-4d6d-4ebd-9ed6-fd59d5e35296",
+    "name": "\u0627\u0644\u0646\u0647\u0627\u0648\u0646\u062f",
+    "transliterated_name": "Nahawand",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 12,
+  "fields": {
+    "uuid": "8ec188c1-7d99-4723-b4dc-3552e851ce63",
+    "name": "\u0628\u0648\u0627\u0643\u0631 \u0627\u0644\u0645\u0627\u064a\u0629",
+    "transliterated_name": "baw\u0101kir al-m\u0101ya",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 13,
+  "fields": {
+    "uuid": "064963a0-3d20-47ea-a5dc-4721c7c3610c",
+    "name": "\u062e\u0644\u064a\u0637 \u0627\u0644\u0637\u0628\u0648\u0639",
+    "transliterated_name": "mixed \u1e6dub\u016b\u2018",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 14,
+  "fields": {
+    "uuid": "621a8d67-3c87-445a-905d-aeebb77ea0b8",
+    "name": "\u0631\u0635\u062f \u0627\u0644\u0630\u064a\u0644",
+    "transliterated_name": "ra\u1e63d al-\u1e0f\u0101yl",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 15,
+  "fields": {
+    "uuid": "ffe26195-1c1e-4e66-ad7c-3330bf510828",
+    "name": "\u0631\u0635\u062f \u0627\u0644\u0630\u064a\u0644 \u0645\u063a\u0631\u0628\u064a",
+    "transliterated_name": "Moroccan ra\u1e63d al-\u1e0f\u0101yl",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 16,
+  "fields": {
+    "uuid": "08723de8-ea24-48b0-8a75-01a0e2167576",
+    "name": "\u0631\u0645\u0644 \u0627\u0644\u0645\u0627\u064a\u0629",
+    "transliterated_name": "raml al-m\u0101ya",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 17,
+  "fields": {
+    "uuid": "29732110-5585-4d98-b7f2-1a2a1c97c6d3",
+    "name": "\u0639\u0631\u0627\u0642 \u0627\u0644\u0639\u062c\u0645",
+    "transliterated_name": "\u2018ir\u0101q al-\u2018a\u0177am",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 18,
+  "fields": {
+    "uuid": "a3a56051-5cad-49b0-a5bc-13c0993f3405",
+    "name": "\u063a\u0631\u064a\u0628\u0629 \u0627\u0644\u062d\u0633\u064a\u0646",
+    "transliterated_name": "gar\u012bbat al-\u1e25usayn",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 19,
+  "fields": {
+    "uuid": "50126cbc-7e6e-483f-ab12-0c125ae956aa",
+    "name": "\u0642\u0631\u064a\u0628 \u0625\u0644\u0649 \u0627\u0644\u0627\u0633\u062a\u0647\u0644\u0627\u0644",
+    "transliterated_name": "similar to al-istihl\u0101l",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.tab",
+  "pk": 20,
+  "fields": {
+    "uuid": "32455a7f-cdf8-45ee-82d3-ba0ae25d1c02",
+    "name": "\u0642\u0631\u064a\u0628 \u0625\u0644\u0649 \u0627\u0644\u0645\u0627\u064a\u0629",
+    "transliterated_name": "similar to al-m\u0101ya",
+    "display_order": 0
+  }
+}
+]

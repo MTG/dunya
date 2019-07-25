@@ -1,0 +1,112 @@
+[
+{
+  "model": "andalusian.mizan",
+  "pk": 1,
+  "fields": {
+    "uuid": "a7239c6f-b777-4b0b-ac5a-6743544b84d9",
+    "name": "\u0628\u062f\u0648\u0646",
+    "transliterated_name": "none",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 2,
+  "fields": {
+    "uuid": "8503d17f-c12a-488b-8128-d17623e55e4b",
+    "name": "\u0628\u0633\u064a\u0637",
+    "transliterated_name": "bas\u012b\u1e6d",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 3,
+  "fields": {
+    "uuid": "86e3bdf3-3fbd-4093-95f8-48e7806d9582",
+    "name": "\u0628\u0637\u0627\u064a\u062d\u064a",
+    "transliterated_name": "b\u1e6d\u0101y\u1e25\u012b",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 4,
+  "fields": {
+    "uuid": "c1f420b6-709a-4947-9e74-d38b9ce492c3",
+    "name": "\u062b\u0644\u0627\u062b\u064a",
+    "transliterated_name": "ternary",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 5,
+  "fields": {
+    "uuid": "2ff6238f-d8a8-4946-ae06-91ac0e65cf52",
+    "name": "\u062b\u0646\u0627\u0626\u064a",
+    "transliterated_name": "binary",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 6,
+  "fields": {
+    "uuid": "710f687e-d8db-4482-bc4f-50f4924f9249",
+    "name": "\u062b\u0646\u0627\u0626\u064a \u0648\u0628\u0637\u0627\u064a\u062d\u064a",
+    "transliterated_name": "binary and b\u1e6d\u0101y\u1e25\u012b",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 7,
+  "fields": {
+    "uuid": "b9162fa0-a8c9-4879-bbdd-76eb2c40647b",
+    "name": "\u062d\u0636\u0651\u0627\u0631\u064a",
+    "transliterated_name": "\u1e25add\u0101r\u012b",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 8,
+  "fields": {
+    "uuid": "a0af842c-1c81-4ea5-93f3-dd0e1c15a383",
+    "name": "\u062f\u0631\u062c",
+    "transliterated_name": "dar\u0177",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 9,
+  "fields": {
+    "uuid": "542b0544-3d76-4f0e-8125-e410d49b4865",
+    "name": "\u0632\u0646\u062f\u0627\u0646\u064a \u0648\u0642\u062f\u0627\u0645",
+    "transliterated_name": "zand\u0101n\u012b and qudd\u0101m",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 10,
+  "fields": {
+    "uuid": "a03eada7-4951-47e6-a7e4-1a7ab3ce196e",
+    "name": "\u0642\u0627\u0626\u0645 \u0648\u0646\u0635\u0641",
+    "transliterated_name": "q\u0101\u00b4im wa ni\u1e63f",
+    "display_order": 0
+  }
+},
+{
+  "model": "andalusian.mizan",
+  "pk": 11,
+  "fields": {
+    "uuid": "89c87f9a-4e41-49a3-8d70-385f7ee5f7ba",
+    "name": "\u0642\u062f\u0627\u0645",
+    "transliterated_name": "qudd\u0101m",
+    "display_order": 0
+  }
+}
+]
