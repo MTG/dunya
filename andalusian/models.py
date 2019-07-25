@@ -359,7 +359,7 @@ class Mizan(data.models.BaseModel):
 
 
 class FormType(models.Model):
-    type = models.CharField(max_length=50)
+    type = models.TextField()
 
     def __str__(self):
         return self.type
@@ -370,8 +370,8 @@ class Form(data.models.BaseModel):
         ordering = ['display_order', 'id']
 
     uuid = models.UUIDField(db_index=True, null=True)
-    name = models.CharField(max_length=50)
-    transliterated_name = models.CharField(max_length=50, blank=True)
+    name = models.TextField()
+    transliterated_name = models.TextField()
     form_type = models.ForeignKey(FormType, blank=True, null=True, on_delete=models.CASCADE)
 
     # Set to 1 to force some Form to show at the bottom when listing them
