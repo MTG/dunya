@@ -21,12 +21,6 @@ from rest_framework import serializers
 from andalusian import models
 
 
-class MusicalSchoolInnerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.MusicalSchool
-        fields = ['name', 'transliterated_name']
-
-
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
@@ -106,23 +100,6 @@ class PoemInnerSerializer(serializers.ModelSerializer):
 
 
 # =========== #
-
-class MusicalSchoolDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.MusicalSchool
-        fields = ['id', 'name', 'transliterated_name']
-
-
-class MusicalSchoolDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
-    queryset = models.MusicalSchool.objects.all()
-    serializer_class = MusicalSchoolDetailSerializer
-
-
-class MusicalSchoolList(generics.ListAPIView):
-    queryset = models.MusicalSchool.objects.all()
-    serializer_class = MusicalSchoolInnerSerializer
-
 
 class ArtistDetailSerializer(serializers.ModelSerializer):
     class Meta:

@@ -28,10 +28,8 @@ class FormAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
-admin.site.register(models.MusicalSchool)
 admin.site.register(models.Orchestra, OrchestraAdmin)
 admin.site.register(models.Artist)
-admin.site.register(models.AlbumType)
 admin.site.register(models.AlbumRecording)
 admin.site.register(models.Album)
 admin.site.register(models.Work)
@@ -44,7 +42,6 @@ admin.site.register(models.Tab, TabAdmin)
 admin.site.register(models.Nawba, NawbaAdmin)
 admin.site.register(models.Mizan, MizanAdmin)
 admin.site.register(models.Form, FormAdmin)
-admin.site.register(models.FormType)
 admin.site.register(models.Section)
 admin.site.register(models.Sanaa)
 admin.site.register(models.PoemType)

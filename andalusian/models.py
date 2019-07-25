@@ -25,14 +25,6 @@ class AndalusianStyle(object):
                 }[key]
 
 
-class MusicalSchool(AndalusianStyle, data.models.BaseModel):
-    name = models.CharField(max_length=100)
-    transliterated_name = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Orchestra(AndalusianStyle, data.models.BaseModel):
     class Meta:
         ordering = ['id']
@@ -40,7 +32,6 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
     name = models.CharField(max_length=255)
     transliterated_name = models.CharField(max_length=255, blank=True)
-    school = models.ForeignKey(MusicalSchool, blank=True, null=True, on_delete=models.CASCADE)
     group_members = models.ManyToManyField('Artist', blank=True, related_name='groups', through="OrchestraPerformer")
 
     def __str__(self):
@@ -138,14 +129,6 @@ class ArtistAlias(data.models.ArtistAlias):
     pass
 
 
-class AlbumType(models.Model):
-    type = models.CharField(max_length=255)
-    transliterated_type = models.CharField(max_length=255, blank=True)
-
-    def __str__(self):
-        return self.type
-
-
 class AlbumRecording(models.Model):
     """ Links a album to a recording with an explicit ordering """
     album = models.ForeignKey('Album', on_delete=models.CASCADE)
@@ -169,7 +152,6 @@ class Album(AndalusianStyle, data.models.BaseModel):
     mbid = models.UUIDField(blank=True, null=True)
     title = models.CharField(max_length=255)
     transliterated_title = models.CharField(max_length=255, blank=True)
-    album_type = models.ForeignKey(AlbumType, blank=True, null=True, on_delete=models.CASCADE)
     artists = models.ManyToManyField('Orchestra')
     recordings = models.ManyToManyField('Recording', through="AlbumRecording")
     director = models.ForeignKey('Artist', null=True, on_delete=models.CASCADE)
@@ -358,13 +340,6 @@ class Mizan(data.models.BaseModel):
         return self.name
 
 
-class FormType(models.Model):
-    type = models.TextField()
-
-    def __str__(self):
-        return self.type
-
-
 class Form(data.models.BaseModel):
     class Meta:
         ordering = ['display_order', 'id']
@@ -372,7 +347,6 @@ class Form(data.models.BaseModel):
     uuid = models.UUIDField(db_index=True, null=True)
     name = models.TextField()
     transliterated_name = models.TextField()
-    form_type = models.ForeignKey(FormType, blank=True, null=True, on_delete=models.CASCADE)
 
     # Set to 1 to force some Form to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
