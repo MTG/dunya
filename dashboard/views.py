@@ -18,7 +18,7 @@ import os
 
 import compmusic
 from arabic import arabic_reshaper
-from arabic.ALA_LC_Transliterator import ALA_LC_Transliterator
+from arabic.ArabicTransliterator import ALA_LC_Transliterator
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
@@ -817,7 +817,8 @@ def import_andalusian_elements(request):
             transliterator = ALA_LC_Transliterator()
             vocalizer = TashkeelClass()
             csv_file = form.cleaned_data['csv_file']
-            reader = csv.reader(csv_file.read().splitlines())
+            reader = csv.reader(csv_file.read().decode('utf-8').splitlines())
+            print(reader)
             klass = None
             if form.cleaned_data['elem_type'] == 'tabs':
                 klass = andalusian.models.Tab
@@ -829,12 +830,12 @@ def import_andalusian_elements(request):
                 klass = andalusian.models.Mizan
             if klass:
                 for row in reader:
-                    elem, created = klass.objects.get_or_create(name=row[0].decode('utf8'))
-
-                    voc = vocalizer.tashkeel(row[0].decode('utf8'))
-                    tr = transliterator.do(voc.strip())
-                    elem.transliterated_name = arabic_reshaper.reshape(tr)
-                    elem.save()
+                    if row:
+                        elem, created = klass.objects.get_or_create(name=str(row))
+                        voc = vocalizer.tashkeel(str(row))
+                        tr = transliterator.do(voc.strip())
+                        elem.transliterated_name = arabic_reshaper.reshape(tr)
+                        elem.save()
                 message = "The elements has been successfully loaded"
     else:
         form = forms.CsvAndalusianForm()
