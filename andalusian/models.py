@@ -318,8 +318,8 @@ class Tab(data.models.BaseModel):
         ordering = ['display_order', 'id']
 
     uuid = models.UUIDField(db_index=True, null=True)
-    name = models.CharField(max_length=50)
-    transliterated_name = models.CharField(max_length=50, blank=True)
+    name = models.TextField()
+    transliterated_name = models.TextField()
 
     # Set to 1 to force some Tab to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
@@ -333,8 +333,8 @@ class Nawba(data.models.BaseModel):
         ordering = ['display_order', 'id']
 
     uuid = models.UUIDField(db_index=True, null=True)
-    name = models.CharField(max_length=50, blank=True)
-    transliterated_name = models.CharField(max_length=50, blank=True)
+    name = models.TextField()
+    transliterated_name = models.TextField()
 
     # Set to 1 to force some Nawba to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
@@ -348,8 +348,8 @@ class Mizan(data.models.BaseModel):
         ordering = ['display_order', 'id']
 
     uuid = models.UUIDField(db_index=True, null=True)
-    name = models.CharField(max_length=50, blank=True)
-    transliterated_name = models.CharField(max_length=50, blank=True)
+    name = models.TextField()
+    transliterated_name = models.TextField()
 
     # Set to 1 to force some Mizan to show at the bottom when listing them
     display_order = models.IntegerField(null=False, default=0)
