@@ -226,7 +226,7 @@ class Recording(AndalusianStyle, data.models.BaseModel):
     objects = RecordingManager()
 
     def natural_key(self):
-        return self.mbid
+        return (self.mbid,)
 
     def __str__(self):
         return u"%s" % self.title
