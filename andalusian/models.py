@@ -202,6 +202,11 @@ class RecordingWork(models.Model):
         return u"%s: %s" % (self.sequence, self.work.title)
 
 
+class RecordingManager(models.Manager):
+    def get_by_natural_key(self, mbid):
+        return self.get(mbid=mbid)
+
+
 class Recording(AndalusianStyle, data.models.BaseModel):
     class Meta:
         ordering = ['id']
@@ -217,6 +222,11 @@ class Recording(AndalusianStyle, data.models.BaseModel):
     archive_url = models.CharField(max_length=255)
     musescore_url = models.CharField(max_length=255)
     poems = models.ManyToManyField("Poem", through="RecordingPoem")
+
+    objects = RecordingManager()
+
+    def natural_key(self):
+        return self.mbid
 
     def __str__(self):
         return u"%s" % self.title
