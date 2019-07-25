@@ -818,7 +818,6 @@ def import_andalusian_elements(request):
             vocalizer = TashkeelClass()
             csv_file = form.cleaned_data['csv_file']
             reader = csv.reader(csv_file.read().decode('utf-8').splitlines())
-            print(reader)
             klass = None
             if form.cleaned_data['elem_type'] == 'tabs':
                 klass = andalusian.models.Tab
