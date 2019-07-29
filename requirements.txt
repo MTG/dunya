@@ -17,7 +17,7 @@ cryptography==2.6.1
 cycler==0.10.0
 Cython==0.29.9
 decorator==4.4.0
-Django==2.2.1
+Django==2.2.3
 django-sendfile==0.3.11
 djangorestframework==3.9.4
 dj-database-url==0.5.0
