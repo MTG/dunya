@@ -241,7 +241,7 @@ class SourceFileType(models.Model):
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
 
-    stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES)
+    stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES, blank=False, null=False)
 
     def __str__(self):
         return self.name

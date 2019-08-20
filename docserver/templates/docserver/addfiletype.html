@@ -5,6 +5,7 @@
 
 <ul class="breadcrumbs">
     <li><a href="{% url 'docserver-manager' %}">Module manager</a></li>
+    <li><a href="{% url 'docserver-filetypes' %}">Filetypes</a></li>
     <li>{{mode|capfirst}} Filetype</li>
 </ul>
 
@@ -18,7 +19,9 @@
 
 <h2>{{mode|capfirst}} filetype</h2>
 <form method="post">{% csrf_token %}
-    {{ form.as_p }}
+    <table style="border-spacing: 0.5em; border-collapse: separate;">
+    {{ form.as_table }}
+    </table>
     <input type="submit" value="Submit" />
 </form>
 

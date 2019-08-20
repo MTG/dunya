@@ -35,7 +35,8 @@ class EditCollectionForm(forms.ModelForm):
 class SourceFileTypeForm(forms.ModelForm):
     class Meta:
         model = models.SourceFileType
-        fields = ["slug", "extension", "name", "mimetype"]
+        fields = ["slug", "extension", "name", "mimetype", "stype"]
+        labels = {"stype": "Data type"}
 
     def clean_slug(self):
         slug = self.cleaned_data["slug"]
