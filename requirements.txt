@@ -93,7 +93,7 @@ wrapt==1.11.1
 scikits.audiolab==0.11.0
 uwsgi
 # These are from our private devpi mirror:
-pycompmusic==0.2+32.gfee6220
+pycompmusic==0.2+44.g72b689e
 arabictransliterator==0.3
 tomato==0.13.0.dev1
 git+https://github.com/sertansenturk/seyiranalyzer.git
