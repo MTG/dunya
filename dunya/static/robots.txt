@@ -1,0 +1,5 @@
+User-agent: *
+# This has lots of little pages that don't need to be indexed
+Disallow: /motifdiscovery
+# Files from the API don't need to be indexed
+Disallow: /document
