@@ -24,6 +24,10 @@ from dashboard.log import logger
 
 MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"
 
+WORK_WORK_BASED_ON = "6bb1df6b-57f3-434d-8a39-5dc363d2eb78"
+WORK_URL_SCORE = "0cc8527e-ea40-40dd-b144-3b7588e759bf"
+RECORDING_URL_DOWNLOAD_FOR_FREE = "45d0cbc5-d65b-4e77-bdfd-8a75207cb5c5"
+
 
 class AndalusianReleaseImporter(release_importer.ReleaseImporter):
     _ArtistClass = andalusian.models.Artist
@@ -59,6 +63,75 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
             return andalusian.models.Instrument.objects.get(name__iexact=instname)
         except andalusian.models.Instrument.DoesNotExist:
             raise release_importer.ImportFailedException("Instrument {} not found".format(instname))
+
+    def _get_works_and_score(self, work_mbids):
+        works = []
+        for wid in work_mbids:
+            works.append(compmusic.mb.get_work_by_id(wid, includes=["work-rels", "url-rels"])["work"])
+
+        # TODO: We just assume that the presence of a "url-relation-list" means that this work has a score
+        #       attached to it. It could check the relation type id
+        score_works = [w for w in works if "url-relation-list" in w]
+        normal_works = [w for w in works if "url-relation-list" not in w]
+
+        # These are works related to the recording. There may be more than 1 'based on' work, but at least
+        # one of them must be the score_work_id
+
+        # If the recording has no regular works, return the score
+        if len(score_works) == 1 and len(normal_works) == 0:
+            return score_works[0], []
+        # If the recording has no score, return the regular works (may be empty)
+        elif len(score_works) == 0:
+            return None, normal_works
+
+        # If there is a score work and at least 1 regular work, make sure that the score work is based on
+        # each of the regular works
+        score_work_id = score_works[0]["id"]
+        ok_work_rel = False
+        for w in normal_works:
+            for work_rel in w.get("work-relation-list", []):
+                if work_rel["type-id"] == WORK_WORK_BASED_ON and work_rel["target"] == score_work_id:
+                    ok_work_rel = True
+        assert ok_work_rel is True
+
+        return score_works[0], normal_works
+
+    def _add_works_from_relations(self, work_rel_list):
+        # In andalusian, some works only exist to link to the score. We only want to add the other works
+
+        work_ids = [w["target"] for w in work_rel_list if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE]
+        score_work, works = self._get_works_and_score(work_ids)
+        imported_works = []
+        for work in works:
+            w = self.add_and_get_work(work["id"])
+            imported_works.append(w)
+        return imported_works
+
+    def _add_recording_additional_data(self, recordingid, recording):
+        # Andalusian importer needs to import audio download url (recording-url relation)
+        # and score url (recording-work-url relation)
+
+        mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["work-rels", "url-rels"])
+        mbrec = mbrec["recording"]
+
+        recording_changed = False
+        url_rels = [rel for rel in mbrec.get("url-relation-list", []) if rel["type-id"] == RECORDING_URL_DOWNLOAD_FOR_FREE]
+        if len(url_rels) == 1:
+            url = url_rels[0]["target"]
+            recording.archive_url = url
+            recording_changed = True
+
+        work_rels = mbrec.get("work-relation-list", [])
+        work_ids = [w["target"] for w in work_rels if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE]
+        score_work, works = self._get_works_and_score(work_ids)
+        if score_work:
+            url_rels = [rel for rel in score_work["url-relation-list"] if rel["type-id"] == WORK_URL_SCORE]
+            url = url_rels[0]["target"]
+            recording.musescore_url = url
+            recording_changed = True
+
+        if recording_changed:
+            recording.save()
 
     def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
         logger.info("  Adding recording performance...")

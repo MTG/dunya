@@ -38,6 +38,9 @@ RELATION_RELEASE_VOCAL = "eb10f8a0-0f4c-4dce-aa47-87bcb2bc42f3"
 RELATION_RECORDING_INSTRUMENT = "59054b12-01ac-43ee-a618-285fd397e461"
 RELATION_RELEASE_INSTRUMENT = "67555849-61e5-455b-96e3-29733f0115f5"
 
+RELATION_RECORDING_WORK_PERFORMANCE = "a3005666-a872-32c3-ad06-98af558e99b0"
+
+
 class ReleaseImporter(object):
     def __init__(self, collection):
         """Create a release importer.
@@ -242,6 +245,14 @@ class ReleaseImporter(object):
                 performances.append((artistid, type_id, attrs))
         return performances
 
+    def _add_works_from_relations(self, work_rel_list):
+        works = []
+        for work in work_rel_list:
+            if work["type-id"] == RELATION_RECORDING_WORK_PERFORMANCE:
+                w = self.add_and_get_work(work["target"])
+                works.append(w)
+        return works
+
     def add_and_get_recording(self, recordingid):
         mbrec = compmusic.mb.get_recording_by_id(recordingid, includes=["tags", "work-rels", "artist-rels", "artists"])
         mbrec = mbrec["recording"]
@@ -261,17 +272,13 @@ class ReleaseImporter(object):
                 artistids.append(artistid)
         self._add_recording_artists(rec, artistids)
 
-        works = []
-        for work in mbrec.get("work-relation-list", []):
-            if work["type"] == "performance":
-                w = self.add_and_get_work(work["target"])
-                works.append(w)
+        works = self._add_works_from_relations(mbrec.get("work-relation-list", []))
 
-        tags = mbrec.get("tag-list", [])
         # Join recording and works in a subclass because some models
         # have 1 work per recording and others have many
         self._join_recording_and_works(rec, works)
 
+        tags = mbrec.get("tag-list", [])
         # Sometime we attach tags to works, sometimes to recordings
         self._apply_tags(rec, works, tags)
 
@@ -281,7 +288,21 @@ class ReleaseImporter(object):
             artistid, perf_type, attrs = perf
             self._add_recording_performance(recordingid, artistid, perf_type, attrs)
 
+        self._add_recording_additional_data(recordingid, rec)
+
         return rec
+
+    def _add_recording_additional_data(self, recordingid, recording):
+        pass
+
+    def _join_recording_and_works(self, recording, works):
+        pass
+
+    def _apply_tags(self, recording, works, tags):
+        pass
+
+    def _add_recording_performance(self, recordingid, artistid, perf_type, attrs):
+        pass
 
     def _clear_work_composers(self, work):
         pass
