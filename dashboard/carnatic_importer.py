@@ -207,15 +207,18 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _performance_type_to_instrument(self, perf_type, attrs):
         is_lead = False
-        if perf_type == release_importer.RELATION_RECORDING_VOCAL:
+        if perf_type in [release_importer.RELATION_RECORDING_VOCAL, release_importer.RELATION_RELEASE_VOCAL]:
             instr_name = "voice"
             if "lead vocals" in attrs:
                 is_lead = True
-        elif perf_type == release_importer.RELATION_RECORDING_INSTRUMENT:
+        elif perf_type in [release_importer.RELATION_RECORDING_INSTRUMENT, release_importer.RELATION_RELEASE_INSTRUMENT]:
             instr_name = attrs[-1]
             attrs = attrs[:-1]
             if "lead" in attrs:
                 is_lead = True
+        else:
+            logger.info("   Unknown performance type: {}".format(perf_type))
+            instr_name = None
 
         attributes = " ".join(attrs)
         instrument = self._get_instrument(instr_name)
@@ -230,9 +233,13 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         instrument, attributes, is_lead = self._performance_type_to_instrument(perf_type, attrs)
 
         if instrument:
-            carnatic.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
+            carnatic.models.InstrumentPerformance.objects.get_or_create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
+        else:
+            logger.info("  Got a performance, but no instrument found. recording {} type {} attrs {}".format(recordingid, perf_type, attrs))
 
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
+        """If there is a relationship between a release and artist, apply the relationship to all
+        recordings in the release"""
         logger.info("  Adding concert performance...")
 
         concert = carnatic.models.Concert.objects.get(mbid=releaseid)
