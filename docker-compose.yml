@@ -1,12 +1,14 @@
-version: '2'
+version: '3.7'
 volumes:
   dbvolume:
+  home:
 services:
   db:
-    image: postgres
+    image: postgres:11
     environment:
       POSTGRES_USER: dunya
       POSTGRES_DB: dunya
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - dbvolume:/var/lib/postgresql/data/
     command: postgres -F
@@ -22,12 +24,15 @@ services:
       - RABBITMQ_DEFAULT_VHOST=dunya
   web:
     build: .
-    command: dumb-init python3 manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 0.0.0.0:8000
+    init: true
     volumes:
       - .:/code
       - ./media:/media/
+      - /Users/alastair/Downloads/arab-andalusian:/incoming/andalusian
       - ${DUNYA_DATA}:/incoming
       - ${PYCOMPMUSIC_LOC}:/sources/pycompmusic/
+      - home:/root
     ports:
       - "8000:8000"
     depends_on:
