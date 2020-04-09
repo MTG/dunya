@@ -4,9 +4,6 @@ ENV LANG C.UTF-8
 
 RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 \
-    && chmod +x /usr/local/bin/dumb-init
-
 RUN wget -q -O - https://deb.nodesource.com/setup_12.x | bash - \
       && apt-get install -y --no-install-recommends \
          cmake \
