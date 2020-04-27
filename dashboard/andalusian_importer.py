@@ -78,8 +78,8 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         # one of them must be the score_work_id
 
         # If the recording has no regular works, return the score
-        if len(score_works) == 1 and len(normal_works) == 0:
-            return score_works[0], []
+        if len(score_works)==1 and len(normal_works) == 0:
+            return score_works[ 0],[]
         # If the recording has no score, return the regular works (may be empty)
         elif len(score_works) == 0:
             return None, normal_works
