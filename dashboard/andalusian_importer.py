@@ -97,6 +97,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         return score_works[0], normal_works
 
     def _add_works_from_relations(self, work_rel_list):
+        # test
         # In andalusian, some works only exist to link to the score. We only want to add the other works
 
         work_ids = [w["target"] for w in work_rel_list if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE]
