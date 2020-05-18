@@ -147,7 +147,7 @@ LOGOUT_REDIRECT_URL = 'main'
 # Admins should be in this format:
 # Name;email,Name2;email2
 admin_str = get_env('DUNYA_ADMINS')
-ADMINS = [tuple(s.split(';')) for s in admin_str.split(',')]
+ADMINS = [tuple(s.split(';')) for s in admin_str.split(',') if s]
 
 MANAGERS = []
 
