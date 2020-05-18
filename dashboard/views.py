@@ -354,16 +354,18 @@ def directory(request, dirid):
         fname = os.path.join(full_path, f)
         if compmusic.is_mp3_file(fname):
             data = compmusic.file_metadata(fname)
-            relid = data["meta"]["releaseid"]
-            relname = data["meta"]["release"]
-            aname = data["meta"]["artist"]
-            aid = data["meta"]["artistid"]
-            if relid and relname:
-                releaseids.add(relid)
-                releasename.add(relname)
-            if aname and aid:
-                artistids.add(aid)
-                artistname.add(aname)
+            metadata = data.get("meta")
+            if metadata:
+                relid = metadata.get("releaseid")
+                relname = metadata.get("release")
+                aname = metadata.get("artist")
+                aid = metadata.get("artistid")
+                if relid and relname:
+                    releaseids.add(relid)
+                    releasename.add(relname)
+                if aname and aid:
+                    artistids.add(aid)
+                    artistname.add(aname)
 
     got_release_id = len(releaseids) == 1
     # TODO: This won't work if there are more than 1 lead artist?
