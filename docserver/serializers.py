@@ -27,6 +27,12 @@ class CollectionListSerializer(serializers.ModelSerializer):
         fields = ['name', 'description', 'slug', 'root_directory', 'id']
 
 
+class SourceFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.SourceFile
+        fields = ['document', 'file_type', 'path', 'size']
+
+
 class DocumentSerializer(serializers.ModelSerializer):
     # The slug field isn't part of a SourceFile, but we get it from the filetype
     sourcefiles = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)

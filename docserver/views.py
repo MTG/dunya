@@ -36,7 +36,7 @@ from rest_framework import parsers
 from rest_framework import permissions
 from rest_framework import response
 from rest_framework import status
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, MethodNotAllowed
 from rest_framework.serializers import BaseSerializer
 from sendfile import sendfile
 
@@ -115,12 +115,16 @@ class SourceFileException(Exception):
         self.message = message
 
 
-class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
+class SourceFile(generics.CreateAPIView, generics.UpdateAPIView, generics.RetrieveAPIView):
     parser_classes = (parsers.MultiPartParser,)
     permission_classes = (StaffWritePermission,)
+    serializer_class = serializers.SourceFileSerializer
 
-    def get_serializer_class(self):
-        return BaseSerializer
+    def get_queryset(self):
+        identifier = self.kwargs.get("external_identifier")
+        if identifier:
+            return models.SourceFile.objects.filter(external_identifier=identifier)
+        return models.SourceFile.objects
 
     def _save_file(self, external_identifier, file_type, file):
         try:
@@ -151,6 +155,9 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView):
             retstatus = status.HTTP_200_OK
             data = {'detail': 'updated'}
         return response.Response(data, status=retstatus)
+
+    def get(self, request, external_identifier, file_type):
+        raise MethodNotAllowed("GET")
 
     def create(self, request, external_identifier, file_type):
         file = request.data.get("file")
