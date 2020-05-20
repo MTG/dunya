@@ -5,7 +5,8 @@ import os
 
 from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
-import raven
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 
 def get_env(envname):
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'raven.contrib.django.raven_compat',
     'data',
     'carnatic',
     'dashboard',
@@ -163,10 +163,12 @@ if deploy_env == 'prod':
     SENDFILE_ROOT = '/'
     SENDFILE_URL = '/serve'
 
-    RAVEN_CONFIG = {
-        'dsn': get_check_env('DUNYA_RAVEN_DSN'),
-        'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
-    }
+    SENTRY_DSN = get_check_env('DUNYA_SENTRY_DSN')
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        send_default_pii=True
+    )
     EMAIL_HOST = get_check_env('DUNYA_EMAIL_HOST')
 else:  # development
     ALLOWED_HOSTS = []
