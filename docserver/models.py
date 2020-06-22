@@ -244,7 +244,7 @@ class SourceFileType(models.Model):
     stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES, blank=False, null=False)
 
     def __str__(self):
-        return self.name
+        return "{} ({})".format(self.name, self.slug)
 
     def get_absolute_url(self):
         return reverse("docserver-filetype", args=[self.slug])
