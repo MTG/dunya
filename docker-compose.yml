@@ -16,12 +16,6 @@ services:
   redis:
     image: redis
 
-  rabbitmq:
-    image: rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=dunya
-      - RABBITMQ_DEFAULT_PASS=dunyapassword
-      - RABBITMQ_DEFAULT_VHOST=dunya
   web:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -38,13 +32,12 @@ services:
     depends_on:
       - db
       - redis
-      - rabbitmq
     env_file:
       - environment
   # All celery hosts should listen on a queue of the same name as their host/name (-Q and -n)
   celeryimport:
     build: .
-    command: celery worker --app dunya -l info -Q import,celeryimport -n celeryimport
+    command: celery --app dunya worker -l info -Q import,celeryimport -n celeryimport
     volumes:
       - .:/code
       - ${DUNYA_DATA}:/incoming
@@ -52,12 +45,11 @@ services:
     env_file:
       - environment
     depends_on:
-      - rabbitmq
       - db
       - redis
   celeryprocess:
     build: .
-    command: celery worker --app dunya -l info -Q celery,celeryprocess -n celeryprocess
+    command: celery --app dunya worker -l info -Q celery,celeryprocess -n celeryprocess
     volumes:
       - .:/code
       - ${DUNYA_DATA}:/incoming
@@ -65,6 +57,5 @@ services:
     env_file:
       - environment
     depends_on:
-      - rabbitmq
       - db
       - redis

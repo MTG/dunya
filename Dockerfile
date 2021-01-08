@@ -30,7 +30,7 @@ RUN mkdir /code
 WORKDIR /code
 
 ADD requirements.txt /code/
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.16.4 six
+RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.19.5 six
 RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements.txt
 
 ADD requirements_dev.txt /code/

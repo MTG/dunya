@@ -1,5 +1,5 @@
 {% extends "motifdiscovery/base.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block body %}
     <h2>Seed patterns for recording: {{recording.title}}, release: {{recording.concert_set.all.0.title}}, by {{recording.concert_set.all.0.artists.all.0.name}}</h2>
        

@@ -78,7 +78,7 @@ class SourceFileTest(AbstractFileTest):
 
     @mock.patch('os.makedirs')
     @mock.patch('builtins.open')
-    @override_settings(CELERY_ALWAYS_EAGER=True)
+    @override_settings(task_always_eager=True)
     def test_process_document(self, mock_open, makedir):
         # /tmp/col1/incoming/11/111111/asd2/0.1
         modulepath = "compmusic.extractors.Test2Extractor"

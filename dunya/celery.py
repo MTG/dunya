@@ -8,11 +8,6 @@ from django.conf import settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dunya.settings')
 
 app = Celery('dunya')
-app.config_from_object('django.conf:settings')
+app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(settings.INSTALLED_APPS, related_name='jobs')
 app.autodiscover_tasks(settings.INSTALLED_APPS, related_name='tasks')
-
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))

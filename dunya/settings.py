@@ -243,8 +243,8 @@ WORKER_REDIS_HOST = get_check_env('DUNYA_WORKER_REDIS_HOST')
 
 #  Celery
 
-BROKER_URL = get_check_env('DUNYA_CELERY_BROKER_URL')
-CELERY_RESULT_DBURI = get_check_env('DUNYA_CELERY_RESULT_URL')
+CELERY_BROKER_URL = get_check_env('DUNYA_CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = get_check_env('DUNYA_CELERY_RESULT_URL')
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
@@ -256,8 +256,8 @@ class DunyaRouter(object):
         return {"queue": "celery"}
 
 
-CELERY_ROUTES = (DunyaRouter(), )
-CELERYD_CONCURRENCY = 3
+CELERY_TASK_ROUTES = (DunyaRouter(), )
+CELERY_WORKER_CONCURRENCY = 3
 
 
 # Notification emails (e.g. account activated)
