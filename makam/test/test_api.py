@@ -339,6 +339,15 @@ class MakamTest(ApiTestCase):
         super(MakamTest, self).setUp()
         self.m = models.Makam.objects.create(name="makam", uuid="9c9b77cc-e357-402f-9278-2c5ed49e06b7")
 
+    def test_makam_by_id(self):
+        good_id = self.m.id
+        resp = self.apiclient.get(f"/api/makam/makam/{good_id}")
+        self.assertRedirects(resp, "/api/makam/makam/9c9b77cc-e357-402f-9278-2c5ed49e06b7", status_code=301)
+
+        bad_id = good_id + 1
+        resp = self.apiclient.get(f"/api/makam/makam/{bad_id}")
+        self.assertEqual(404, resp.status_code)
+
     def test_render_makam_detail(self):
         s = api.MakamDetailSerializer(self.m)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
@@ -364,6 +373,15 @@ class FormTest(ApiTestCase):
         super(FormTest, self).setUp()
         self.f = models.Form.objects.create(name="form", uuid="1494b665-8b67-430f-b6e6-efdcd42ddd3f")
 
+    def test_form_by_id(self):
+        good_id = self.f.id
+        resp = self.apiclient.get(f"/api/makam/form/{good_id}")
+        self.assertRedirects(resp, "/api/makam/form/1494b665-8b67-430f-b6e6-efdcd42ddd3f", status_code=301)
+
+        bad_id = good_id + 1
+        resp = self.apiclient.get(f"/api/makam/form/{bad_id}")
+        self.assertEqual(404, resp.status_code)
+
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
@@ -388,6 +406,15 @@ class UsulTest(ApiTestCase):
     def setUp(self):
         super(UsulTest, self).setUp()
         self.u = models.Usul.objects.create(name="usul", uuid="d5e15ee7-e6c3-4148-845c-8e7610c619e9")
+
+    def test_usul_by_id(self):
+        good_id = self.u.id
+        resp = self.apiclient.get(f"/api/makam/usul/{good_id}")
+        self.assertRedirects(resp, "/api/makam/usul/d5e15ee7-e6c3-4148-845c-8e7610c619e9", status_code=301)
+
+        bad_id = good_id + 1
+        resp = self.apiclient.get(f"/api/makam/usul/{bad_id}")
+        self.assertEqual(404, resp.status_code)
 
     def test_render_usul_detail(self):
         s = api.UsulDetailSerializer(self.u)

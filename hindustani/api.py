@@ -17,6 +17,7 @@
 from django.shortcuts import redirect
 from rest_framework import generics
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 
 from data import utils
 from data.models import WithImageMixin
@@ -107,7 +108,7 @@ class TaalDetail(generics.RetrieveAPIView):
 
 
 def taalbyid(request, pk):
-    taal = models.Taal.objects.get(pk=pk)
+    taal = get_object_or_404(models.Taal, pk=pk)
     return redirect('api-hindustani-taal-detail', taal.uuid, permanent=True)
 
 
@@ -135,7 +136,7 @@ class RaagDetail(generics.RetrieveAPIView):
 
 
 def raagbyid(request, pk):
-    raag = models.Raag.objects.get(pk=pk)
+    raag = get_object_or_404(models.Raag, pk=pk)
     return redirect('api-hindustani-raag-detail', raag.uuid, permanent=True)
 
 
@@ -161,7 +162,7 @@ class LayaDetail(generics.RetrieveAPIView):
 
 
 def layabyid(request, pk):
-    laya = models.Laya.objects.get(pk=pk)
+    laya = get_object_or_404(models.Laya, pk=pk)
     return redirect('api-hindustani-laya-detail', laya.uuid, permanent=True)
 
 
@@ -188,7 +189,7 @@ class FormDetail(generics.RetrieveAPIView):
 
 
 def formbyid(request, pk):
-    form = models.Form.objects.get(pk=pk)
+    form = get_object_or_404(models.Form, pk=pk)
     return redirect('api-hindustani-form-detail', form.uuid, permanent=True)
 
 

@@ -429,6 +429,18 @@ class RaagaTest(TestCase):
         models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
 
+        self.apiclient = APIClient()
+        self.apiclient.force_authenticate(user=self.normaluser)
+
+    def test_raaga_by_id(self):
+        good_id = self.raaga.id
+        resp = self.apiclient.get(f"/api/carnatic/raaga/{good_id}")
+        self.assertRedirects(resp, "/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b", status_code=301)
+
+        bad_id = good_id + 1
+        resp = self.apiclient.get(f"/api/carnatic/raaga/{bad_id}")
+        self.assertEqual(404, resp.status_code)
+
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
@@ -440,17 +452,13 @@ class RaagaTest(TestCase):
             self.fail("uuid is not correct/present")
 
     def test_render_raaga_detail(self):
-        client = APIClient()
-        client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
+        response = self.apiclient.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
         data = response.data
         fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_raaga(self):
-        client = APIClient()
-        client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
+        response = self.apiclient.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
 
         data = response.data
         # For now we return the Recordings that are directly related
@@ -484,6 +492,18 @@ class TaalaTest(TestCase):
 
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
 
+        self.apiclient = APIClient()
+        self.apiclient.force_authenticate(user=self.normaluser)
+
+    def test_taala_by_id(self):
+        good_id = self.taala.id
+        resp = self.apiclient.get(f"/api/carnatic/taala/{good_id}")
+        self.assertRedirects(resp, "/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b", status_code=301)
+
+        bad_id = good_id + 1
+        resp = self.apiclient.get(f"/api/carnatic/taala/{bad_id}")
+        self.assertEqual(404, resp.status_code)
+
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
@@ -495,17 +515,13 @@ class TaalaTest(TestCase):
             self.fail("uuid is not correct/present")
 
     def test_render_taala_detail(self):
-        client = APIClient()
-        client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
+        response = self.apiclient.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
         data = response.data
         fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_taala(self):
-        client = APIClient()
-        client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
+        response = self.apiclient.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
 
         data = response.data
         self.assertEqual(1, len(data["recordings"]))

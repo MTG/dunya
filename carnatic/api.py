@@ -17,6 +17,7 @@
 from django.shortcuts import redirect
 from rest_framework import generics
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 
 from carnatic import models
 from data import utils
@@ -116,7 +117,7 @@ class TaalaDetail(generics.RetrieveAPIView):
 
 
 def taalabyid(request, pk):
-    taala = models.Taala.objects.get(pk=pk)
+    taala = get_object_or_404(models.Taala, pk=pk)
     return redirect('api-carnatic-taala-detail', taala.uuid, permanent=True)
 
 
@@ -149,7 +150,7 @@ class RaagaDetail(generics.RetrieveAPIView):
 
 
 def raagabyid(request, pk):
-    raaga = models.Raaga.objects.get(pk=pk)
+    raaga = get_object_or_404(models.Raaga, pk=pk)
     return redirect('api-carnatic-raaga-detail', raaga.uuid, permanent=True)
 
 

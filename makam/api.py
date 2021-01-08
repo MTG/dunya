@@ -18,6 +18,7 @@ from django.http import Http404
 from django.shortcuts import redirect
 from rest_framework import generics
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 
 from data import utils
 from data.models import WithImageMixin
@@ -120,7 +121,7 @@ class MakamDetail(generics.RetrieveAPIView):
 
 
 def makambyid(request, pk):
-    makam = models.Makam.objects.get(pk=pk)
+    makam = get_object_or_404(models.Makam, pk=pk)
     return redirect('api-makam-makam-detail', makam.uuid, permanent=True)
 
 
@@ -163,7 +164,7 @@ class FormDetail(generics.RetrieveAPIView):
 
 
 def formbyid(request, pk):
-    form = models.Form.objects.get(pk=pk)
+    form = get_object_or_404(models.Form, pk=pk)
     return redirect('api-makam-form-detail', form.uuid, permanent=True)
 
 
@@ -189,7 +190,7 @@ class UsulDetail(generics.RetrieveAPIView):
 
 
 def usulbyid(request, pk):
-    usul = models.Usul.objects.get(pk=pk)
+    usul = get_object_or_404(models.Usul, pk=pk)
     return redirect('api-makam-usul-detail', usul.uuid, permanent=True)
 
 
