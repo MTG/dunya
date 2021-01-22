@@ -12,9 +12,6 @@ urlpatterns = [
     url(r'^recording$', jingju.api.RecordingList.as_view(), name='api-jingju-recording-list'),
     url(r'^recording/%s$' % uuid_match, jingju.api.RecordingDetail.as_view(), name='api-jingju-recording-detail'),
 
-    url(r'^recording$', jingju.api.ReleaseList.as_view(), name='api-jingju-release-list'),
-    url(r'^recording/%s$' % uuid_match, jingju.api.ReleaseDetail.as_view(), name='api-jingju-release-detail'),
-
     url(r'^artist$', jingju.api.ArtistList.as_view(), name='api-jingju-artist-list'),
     url(r'^artist/%s$' % uuid_match, jingju.api.ArtistDetail.as_view(), name='api-jingju-artist-detail'),
 
