@@ -1,8 +1,8 @@
-FROM mtgupf/essentia:ubuntu18.04-python3
+FROM mtgupf/essentia:ubuntu20.04-v2.1_beta5
 ENV PYTHONUNBUFFERED 1
 ENV LANG C.UTF-8
 
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget ca-certificates && rm -rf /var/lib/apt/lists/*
 
 RUN wget -q -O - https://deb.nodesource.com/setup_12.x | bash - \
       && apt-get install -y --no-install-recommends \
@@ -16,8 +16,9 @@ RUN wget -q -O - https://deb.nodesource.com/setup_12.x | bash - \
          nodejs \
          libsndfile1-dev \
          build-essential \
-         libpython3.7-dev \
+         libpython3.8-dev \
          lame \
+         libffi-dev \
       && apt-get remove -y python3-yaml python3-six python3-numpy \
       && rm -rf /var/lib/apt/lists/*
 
@@ -30,11 +31,11 @@ RUN mkdir /code
 WORKDIR /code
 
 ADD requirements.txt /code/
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ numpy==1.19.5 six
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements.txt
+RUN pip3 install --no-cache-dir numpy==1.19.5 six
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 ADD requirements_dev.txt /code/
-RUN pip3 install --no-cache-dir -i https://mtg-devpi.sb.upf.edu/asplab/dev/ -r requirements_dev.txt
+RUN pip3 install --no-cache-dir -r requirements_dev.txt
 
 RUN mkdir /sources
 WORKDIR /sources
