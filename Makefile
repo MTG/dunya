@@ -1,8 +1,8 @@
 build:
-	docker build -t mtg-docker.sb.upf.edu/dunya .
+	docker build -t registry.sb.upf.edu/mtg/dunya:latest .
 
 push:
-	docker push mtg-docker.sb.upf.edu/dunya
+	docker push registry.sb.upf.edu/mtg/dunya:latest
 
 all: build push
 
