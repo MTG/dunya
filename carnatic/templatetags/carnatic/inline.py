@@ -25,11 +25,6 @@ register = template.Library()
 
 
 @register.simple_tag
-def url_host_and_path(request, url):
-    return request.build_absolute_uri(url)
-
-
-@register.simple_tag
 def inline_artist(artist):
     if artist:
         return inline_artist_part(artist)
@@ -71,25 +66,8 @@ def inline_composer(composer):
 
 
 @register.simple_tag
-def inline_recording(recording):
-    return format_html(u'<span>{}</span>', recording.title)
-
-
-@register.simple_tag
-def inline_recording_artist(recording):
-    if recording.artist() is not None:
-        return recording.artist().name
-    return "unknown"
-
-
-@register.simple_tag
 def inline_work(work):
     return work.title
-
-
-@register.simple_tag
-def inline_raaga_list(raagas):
-    return mark_safe(u", ".join([inline_raaga(r) for r in raagas]))
 
 
 @register.simple_tag
@@ -101,20 +79,8 @@ def inline_raaga(raaga):
 
 
 @register.simple_tag
-def inline_taala_list(taalas):
-    return mark_safe(u", ".join(inline_taala(t) for t in taalas))
-
-
-@register.simple_tag
 def inline_taala(taala):
     if taala:
         return format_html(u'<span title="{}">{}</span>', taala.common_name.title(), taala.name.title())
     else:
         return '(unknown)'
-
-
-@register.simple_tag
-def inline_instrument(instrument):
-    if not isinstance(instrument, collections.Iterable):
-        instrument = [instrument]
-    return format_html_join(u", ", u'<span>{}</span>', (i.name for i in instrument if i))
