@@ -1,0 +1,16 @@
+@import "../../stylesheets/mixins";
+@import "../../stylesheets/variables";
+
+.MainBody {
+  width: 100%;
+  padding: $bodyVerticalPadding 10px;
+  @include respond-to('medium') {
+    max-height: 100%;
+    overflow-y: auto;
+  };
+}
+
+.MainBody__Item {
+  width: 90%;
+  margin: 0 auto 40px;
+}

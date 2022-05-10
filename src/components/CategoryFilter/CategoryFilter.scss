@@ -1,0 +1,42 @@
+@import "../../stylesheets/variables";
+@import "../../stylesheets/mixins";
+
+.CategoryFilter {
+  color: $orangeDark;
+  border-bottom: 1px solid transparentize($orangeDark, 0.84);
+  text-transform: capitalize;
+  padding-left: $sidebarHorizontalPadding;
+  padding-right: $sidebarHorizontalPadding;
+  &:first-child {
+    border-top: 1px solid transparentize($orangeDark, 0.84);
+  }
+  .fa-plus-circle, .fa-minus-circle {
+    float: right;
+    color: transparentize($orangeDark, 0.84);
+  }
+  &.active {
+    background: white;
+    padding-bottom: 20px;
+    &:last-child {
+      border-bottom: 1px solid transparentize($orangeDark, 0.84);
+    }
+  }
+}
+
+.CategoryFilter__title {
+  font-weight: bold;
+  font-size: 18px;
+  display: block;
+  cursor: pointer;
+  padding: 20px 0;
+  &:focus {
+    outline: 0;
+  }
+}
+
+.CategoryFilter__section-content {
+  &.active {
+    display: block;
+  }
+  display: none;
+}

@@ -1,0 +1,29 @@
+@import "../../stylesheets/variables";
+
+$loadingSize: 80px;
+$borderSize: 8px;
+
+.Loading {
+  width: $loadingSize;
+  height: $loadingSize;
+  margin: 20px auto;
+  border: $borderSize solid $blue;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: loading 5s linear infinite;
+}
+
+$colors: $blue, $green, $yellowRegular, $yellowLight, $orangeRegular;
+// close the $colors loop by adding the initial color as last element
+$loopedColors: join($colors, nth($colors, 1));
+
+@keyframes loading {
+  @for $i from 1 through length($loopedColors) {
+    $percent: ($i - 1) * 100 / length($colors) + '%';
+    #{$percent} {
+      border-color: nth($loopedColors, $i);
+      border-bottom-color: transparent;
+      transform: rotate(#{($i - 1) * 360}deg);
+    }
+  }
+}

@@ -4,7 +4,7 @@ ENV LANG C.UTF-8
 
 RUN apt-get update && apt-get install -y wget ca-certificates && rm -rf /var/lib/apt/lists/*
 
-RUN wget -q -O - https://deb.nodesource.com/setup_12.x | bash - \
+RUN wget -q -O - https://deb.nodesource.com/setup_18.x | bash - \
       && apt-get install -y --no-install-recommends \
          cmake \
          libmad0-dev \

@@ -1,0 +1,39 @@
+@import "../../stylesheets/variables";
+@import "../../stylesheets/mixins";
+
+.AutoComplete {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: white;
+  // let it appear in front of Search button
+  z-index: 1;
+  padding: 10px;
+  list-style: none;
+  @include soft-shadow;
+}
+
+.AutoComplete__entry {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background: $gray2;
+  }
+}
+
+.AutoComplete__entry-category {
+  background: $gray1;
+  border-radius: 20px;
+  font-weight: bold;
+  color: $brownDark;
+  padding: 5px 10px;
+  text-transform: capitalize;
+  margin-left: 10px;
+}
+
+.AutoComplete__entry-matchFor {
+  margin-left: auto;
+}

@@ -7,6 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+import manifest_loader.loaders
 
 
 def get_env(envname):
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'manifest_loader',
     'data',
     'carnatic',
     'dashboard',
@@ -51,7 +53,6 @@ INSTALLED_APPS = [
     'motifdiscovery',
     'andalusian',
     'jingju',
-    'frontend',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +142,22 @@ STATIC_URL = '/static/'
 # collectstatic puts static files here
 STATIC_ROOT = '/static/'
 
+
+class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
+    @staticmethod
+    def get_single_match(manifest, key):
+        return manifest.get("files", {}).get(key, key)
+
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build')
+]
+
+MANIFEST_LOADER = {
+    'manifest_file': 'asset-manifest.json',
+    'loader': CRAManifestLoader
+}
 
 SITE_ID = 1
 
