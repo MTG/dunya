@@ -4,18 +4,19 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Dunya</title>
+    <title>Dunya - Makam</title>
     <meta name="description" content="Dunya search page">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,700" rel="stylesheet">
+    <link href="{% manifest 'main.css' %}" rel="stylesheet">
   </head>
   <body>
-    <div id="app"></div>
+    <div id="root"></div>
       <script>
         window.catalogue = "makam";
         window.username = "{{ user.username }}";
       </script>
-      <script src="{% static 'frontend/bundle.js' %}"></script>
+      <script src="{% manifest 'main.js' %}"></script>
   </body>
 </html>
