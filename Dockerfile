@@ -55,3 +55,4 @@ WORKDIR /code
 # TODO: Could be made part of the frontend build script
 RUN bash build-less.sh
 
+RUN python3 manage.py collectstatic --settings dunya.build_settings
