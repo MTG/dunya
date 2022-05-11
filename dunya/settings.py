@@ -149,7 +149,7 @@ class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
         return manifest.get("files", {}).get(key, key)
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build')
 ]
