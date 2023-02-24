@@ -142,14 +142,13 @@ STATIC_URL = '/static/'
 # collectstatic puts static files here
 STATIC_ROOT = '/static/'
 
-
 class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
     @staticmethod
     def get_single_match(manifest, key):
         return manifest.get("files", {}).get(key, key)
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build')
 ]
@@ -173,6 +172,7 @@ MANAGERS = []
 
 deploy_env = get_check_env('DUNYA_DEPLOY_ENV')
 if deploy_env == 'prod':
+    USE_X_FORWARDED_HOST = True
     # Host 'nginx' is for services inside docker to connect
     # directly to dunya.
     ALLOWED_HOSTS = ['dunya.compmusic.upf.edu', 'dunya.upf.edu', 'dunya.mtg.sb.upf.edu', 'nginx']
@@ -191,7 +191,7 @@ if deploy_env == 'prod':
     )
     EMAIL_HOST = get_check_env('DUNYA_EMAIL_HOST')
 else:  # development
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['localhost', 'aporter.ca.upf.edu', 'web']
     debug = True
     SENDFILE_BACKEND = 'sendfile.backends.development'
 
@@ -201,9 +201,12 @@ else:  # development
 
     INTERNAL_IPS = ['127.0.0.1']
 
-    MIDDLEWARE += [
+    MIDDLEWARE = [
+        'corsheaders.middleware.CorsMiddleware',
         'debug_toolbar.middleware.DebugToolbarMiddleware',
-    ]
+    ] + MIDDLEWARE
+
+    CORS_ORIGIN_ALLOW_ALL = True
 
 DEBUG = debug
 
