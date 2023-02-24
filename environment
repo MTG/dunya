@@ -1,11 +1,11 @@
-DUNYA_NOTIFICATION_FROM=Dunya <alastair.porter@upf.edu>
+DUNYA_NOTIFICATION_FROM="Dunya <alastair.porter@upf.edu>"
 DUNYA_NOTIFICATION_TO=alastair.porter@upf.edu
 
 DUNYA_CELERY_BROKER_URL=redis://redis/0
 DUNYA_CELERY_RESULT_URL=redis://redis/0
 DUNYA_WORKER_REDIS_HOST=redis
 
-DUNYA_ADMINS=Alastair Porter;alastair.porter@upf.edu
+DUNYA_ADMINS="Alastair Porter;alastair.porter@upf.edu"
 
 DUNYA_DEPLOY_ENV=env
 
