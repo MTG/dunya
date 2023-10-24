@@ -1,10 +1,9 @@
-version: '3.7'
 volumes:
   dbvolume:
   home:
 services:
   db:
-    image: postgres:11
+    image: postgres:16
     environment:
       POSTGRES_USER: dunya
       POSTGRES_DB: dunya
@@ -18,6 +17,8 @@ services:
 
   web:
     build: .
+    image: dunya
+    pull_policy: never
     command: python3 manage.py runserver 0.0.0.0:8000
     init: true
     volumes:
@@ -36,7 +37,8 @@ services:
       - environment
   # All celery hosts should listen on a queue of the same name as their host/name (-Q and -n)
   celeryimport:
-    build: .
+    image: dunya
+    pull_policy: never
     command: celery --app dunya worker -l info -Q import,celeryimport -n celeryimport
     volumes:
       - .:/code
@@ -48,7 +50,8 @@ services:
       - db
       - redis
   celeryprocess:
-    build: .
+    image: dunya
+    pull_policy: never
     command: celery --app dunya worker -l info -Q celery,celeryprocess -n celeryprocess
     volumes:
       - .:/code
