@@ -13,13 +13,8 @@
         <meta name="google" content="notranslate" />
         <meta http-equiv="Content-Language" content="en_US" />
 
-        {% if debug %}
-        <link href="{% static 'carnatic/css/font.css' %}" rel="stylesheet" type="text/css">
-        <link href="{% static 'dunya/css/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
-        {% else %}
         <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,800,700,600|Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-        {% endif %}
         <link rel="stylesheet" type="text/css" href="{% static 'carnatic/css/main.css' %}" />
         {% block extra_css %}
         {% endblock %}
