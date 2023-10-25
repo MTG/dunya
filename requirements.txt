@@ -46,7 +46,7 @@ deprecation==2.1.0
     # via eyed3
 dj-database-url==2.1.0
     # via -r requirements.in
-django==3.2.22
+django==4.2.6
     # via
     #   -r requirements.in
     #   dj-database-url
@@ -132,7 +132,6 @@ python-magic==0.4.27
 pytz==2023.3.post1
     # via
     #   -r requirements.in
-    #   django
     #   djangorestframework
 pyyaml==6.0.1
     # via -r requirements.in
@@ -162,7 +161,7 @@ six==1.16.0
     #   python-dateutil
 soupsieve==2.1
     # via beautifulsoup4
-sqlparse==0.3.0
+sqlparse==0.4.4
     # via django
 tomato @ git+https://github.com/sertansenturk/tomato.git@v0.13.0
     # via -r requirements.in
