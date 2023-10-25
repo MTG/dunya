@@ -22,19 +22,15 @@ import hindustani.api
 
 urlpatterns = [
     path('raag', hindustani.api.RaagList.as_view(), name='api-hindustani-raag-list'),
-    path('raag/<int:pk>', hindustani.api.raagbyid, name='api-hindustani-raag-detailbyid'),
     path('raag/<uuid:uuid>', hindustani.api.RaagDetail.as_view(), name='api-hindustani-raag-detail'),
 
     path('taal', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
-    path('taal/<int:pk>', hindustani.api.taalbyid, name='api-hindustani-taal-detailbyid'),
     path('taal/<uuid:uuid>', hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
 
     path('laya', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
-    path('laya/<int:pk>', hindustani.api.layabyid, name='api-hindustani-laya-detailbyid'),
     path('laya/<uuid:uuid>', hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
 
     path('form', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
-    path('form/<int:pk>', hindustani.api.formbyid, name='api-hindustani-form-detailbyid'),
     path('form/<uuid:uuid>', hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
 
     path('instrument', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),

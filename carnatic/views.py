@@ -149,11 +149,6 @@ def filters(request):
     return JsonResponse(ret)
 
 
-def recordingbyid(request, recordingid, title=None):
-    recording = get_object_or_404(Recording, pk=recordingid)
-    return redirect(recording.get_absolute_url(), permanent=True)
-
-
 def recording(request, uuid, title=None):
     recording = get_object_or_404(Recording, mbid=uuid)
 
@@ -252,48 +247,3 @@ def recording(request, uuid, title=None):
            }
 
     return render(request, "carnatic/recording.html", ret)
-
-
-@user_passes_test(dashboard.views.is_staff)
-def formedit(request):
-    concerts = Concert.objects.all().prefetch_related('artists')
-    concerts = sorted(concerts, key=lambda c: sum([r.forms.count() for r in c.recordings.all().prefetch_related('forms')])*1.0/c.recordings.count())
-    ret = {"concerts": concerts}
-    return render(request, "carnatic/formedit.html", ret)
-
-
-@user_passes_test(dashboard.views.is_staff)
-def formconcert(request, uuid):
-    concert = get_object_or_404(Concert, mbid=uuid)
-    forms = Form.objects.all()
-
-    dashrelease = dashboard.models.MusicbrainzRelease.objects.get(mbid=concert.mbid)
-
-    if request.method == "POST":
-        for i, t in enumerate(concert.tracklist()):
-            fname = "form_%s" % i
-            f = request.POST.get(fname)
-            try:
-                f = int(f)
-                if len(t.forms.all()):
-                    # If we already have a form, and it's different
-                    # to the submitted one, remove
-                    form = t.forms.get()
-                    if f != form.id:
-                        t.forms.clear()
-                if len(t.forms.all()) == 0:
-                    form = Form.objects.get(pk=f)
-                    RecordingForm.objects.create(recording=t, form=form, sequence=1)
-
-            except ValueError:
-                # Not set, if we had one, remove it
-                if len(t.forms.all()):
-                    t.forms.clear()
-                # Otherwise, do nothing
-
-    tracks = []
-    for i, t in enumerate(concert.tracklist()):
-        tracks.append((i, t))
-    ret = {"concert": concert, "tracks": tracks,
-           "dashrelease": dashrelease, "forms": forms}
-    return render(request, "carnatic/formconcert.html", ret)

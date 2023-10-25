@@ -116,11 +116,6 @@ class TaalaDetail(generics.RetrieveAPIView):
     serializer_class = TaalaDetailSerializer
 
 
-def taalabyid(request, pk):
-    taala = get_object_or_404(models.Taala, pk=pk)
-    return redirect('api-carnatic-taala-detail', taala.uuid, permanent=True)
-
-
 class RaagaList(generics.ListAPIView):
     queryset = models.Raaga.objects.all()
     serializer_class = RaagaInnerSerializer
@@ -147,11 +142,6 @@ class RaagaDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
     queryset = models.Raaga.objects.all()
     serializer_class = RaagaDetailSerializer
-
-
-def raagabyid(request, pk):
-    raaga = get_object_or_404(models.Raaga, pk=pk)
-    return redirect('api-carnatic-raaga-detail', raaga.uuid, permanent=True)
 
 
 class InstrumentList(generics.ListAPIView):

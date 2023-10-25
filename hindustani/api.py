@@ -107,11 +107,6 @@ class TaalDetail(generics.RetrieveAPIView):
     serializer_class = TaalDetailSerializer
 
 
-def taalbyid(request, pk):
-    taal = get_object_or_404(models.Taal, pk=pk)
-    return redirect('api-hindustani-taal-detail', taal.uuid, permanent=True)
-
-
 class RaagList(generics.ListAPIView):
     queryset = models.Raag.objects.all()
     serializer_class = RaagInnerSerializer
@@ -135,11 +130,6 @@ class RaagDetail(generics.RetrieveAPIView):
     serializer_class = RaagDetailSerializer
 
 
-def raagbyid(request, pk):
-    raag = get_object_or_404(models.Raag, pk=pk)
-    return redirect('api-hindustani-raag-detail', raag.uuid, permanent=True)
-
-
 class LayaList(generics.ListAPIView):
     queryset = models.Laya.objects.all()
     serializer_class = LayaInnerSerializer
@@ -159,11 +149,6 @@ class LayaDetail(generics.RetrieveAPIView):
     lookup_url_kwarg = 'uuid'
     queryset = models.Laya.objects.all()
     serializer_class = LayaDetailSerializer
-
-
-def layabyid(request, pk):
-    laya = get_object_or_404(models.Laya, pk=pk)
-    return redirect('api-hindustani-laya-detail', laya.uuid, permanent=True)
 
 
 class FormList(generics.ListAPIView):
@@ -186,11 +171,6 @@ class FormDetail(generics.RetrieveAPIView):
     lookup_url_kwarg = 'uuid'
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
-
-
-def formbyid(request, pk):
-    form = get_object_or_404(models.Form, pk=pk)
-    return redirect('api-hindustani-form-detail', form.uuid, permanent=True)
 
 
 class InstrumentListSerializer(serializers.ModelSerializer):

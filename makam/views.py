@@ -239,11 +239,6 @@ def recordings_urls(include_img_and_bin=True):
     return ret
 
 
-def recordingbyid(request, recordingid, title=None):
-    recording = get_object_or_404(models.Recording, pk=recordingid)
-    return redirect(recording.get_absolute_url(), permanent=True)
-
-
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
     recording_doc = docserver.models.Document.objects.filter(

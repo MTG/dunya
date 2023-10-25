@@ -24,14 +24,9 @@ urlpatterns = [
     path(r'info',
          TemplateView.as_view(template_name="carnatic/info.html"), name='carnatic-info'),
 
-    path(r'formedit/<uuid:uuid>', views.formconcert, name='carnatic-formconcert'),
-    path(r'formedit', views.formedit, name='carnatic-formedit'),
-
     path(r'searchcomplete', views.searchcomplete, name='carnatic-searchcomplete'),
     path(r'search', views.recordings_search, name='carnatic-search'),
 
-    path(r'recording/<int:recordingid>', views.recordingbyid, name='carnatic-recordingbyid'),
-    path(r'recording/<int:recordingid>/<slug:title>', views.recordingbyid, name='carnatic-recordingbyid'),
     path(r'recording/<uuid:uuid>', views.recording, name='carnatic-recording'),
     path(r'recording/<uuid:uuid>/<slug:title>', views.recording, name='carnatic-recording'),
 

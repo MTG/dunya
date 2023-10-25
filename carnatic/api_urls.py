@@ -21,11 +21,9 @@ import carnatic.api
 
 urlpatterns = [
     path('raaga', carnatic.api.RaagaList.as_view(), name='api-carnatic-raaga-list'),
-    path('raaga/<int:pk>', carnatic.api.raagabyid, name='api-carnatic-raaga-detailid'),
     path('raaga/<uuid:uuid>', carnatic.api.RaagaDetail.as_view(), name='api-carnatic-raaga-detail'),
 
     path('taala', carnatic.api.TaalaList.as_view(), name='api-carnatic-taala-list'),
-    path('taala/<int:pk>', carnatic.api.taalabyid, name='api-carnatic-taala-detailid'),
     path('taala/<uuid:uuid>', carnatic.api.TaalaDetail.as_view(), name='api-carnatic-taala-detail'),
 
     path('instrument', carnatic.api.InstrumentList.as_view(), name='api-carnatic-instrument-list'),

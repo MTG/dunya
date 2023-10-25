@@ -23,15 +23,12 @@ urlpatterns = [
     path('fuzzy', makam.api.fuzzy, name='api-makam-makam-detailbyfuzzy'),
 
     path('form', makam.api.FormList.as_view(), name='api-makam-form-list'),
-    path('form/<int:pk>', makam.api.formbyid, name='api-makam-form-detailbyid'),
     path('form/<uuid:uuid>', makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
 
     path('makam', makam.api.MakamList.as_view(), name='api-makam-makam-list'),
-    path('makam/<int:pk>', makam.api.makambyid, name='api-makam-makam-detailbyid'),
     path('makam/<uuid:uuid>', makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
 
     path('usul', makam.api.UsulList.as_view(), name='api-makam-usul-list'),
-    path('usul/<int:pk>', makam.api.usulbyid, name='api-makam-usul-detailbyid'),
     path('usul/<uuid:uuid>', makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
 
     path('instrument', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),

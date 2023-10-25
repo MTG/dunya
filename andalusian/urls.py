@@ -29,7 +29,5 @@ urlpatterns = [
     path('filters.json', views.filters, name='andalusian-filters'),
     path('recording/<uuid:uuid>', views.recording, name='andalusian-recording'),
     path('recording/<uuid:uuid>/<slug:title>', views.recording, name='andalusian-recording'),
-    path('recording/<int:recordingid>', views.recordingbyid, name='andalusian-recordingbyid'),
-    path('recording/<int:recordingid>/<slug:title>', views.recordingbyid, name='andalusian-recordingbyid'),
 ]
 

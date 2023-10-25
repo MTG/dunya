@@ -26,7 +26,6 @@ urlpatterns = [
 
     path('searchcomplete', views.searchcomplete, name='hindustani-searchcomplete'),
     path('search', views.recordings_search, name='hindustani-search'),
-    path('recording/<int:recordingid>', views.recordingbyid, name='hindustani-recordingbyid'),
     path('recording/<uuid:uuid>', views.recording, name='hindustani-recording'),
     path('recording/<uuid:uuid>/<slug:title>', views.recording, name='hindustani-recording'),
     path('filters.json', views.filters, name='hindustani-filters'),

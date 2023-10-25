@@ -120,11 +120,6 @@ class MakamDetail(generics.RetrieveAPIView):
     serializer_class = MakamDetailSerializer
 
 
-def makambyid(request, pk):
-    makam = get_object_or_404(models.Makam, pk=pk)
-    return redirect('api-makam-makam-detail', makam.uuid, permanent=True)
-
-
 def fuzzy(request):
     qmakam = request.GET.get('makam', None)
     qform = request.GET.get('form', None)
@@ -163,11 +158,6 @@ class FormDetail(generics.RetrieveAPIView):
     serializer_class = FormDetailSerializer
 
 
-def formbyid(request, pk):
-    form = get_object_or_404(models.Form, pk=pk)
-    return redirect('api-makam-form-detail', form.uuid, permanent=True)
-
-
 class UsulList(generics.ListAPIView):
     queryset = models.Usul.objects.all()
     serializer_class = UsulInnerSerializer
@@ -187,11 +177,6 @@ class UsulDetail(generics.RetrieveAPIView):
     lookup_field = 'uuid'
     queryset = models.Usul.objects.all()
     serializer_class = UsulDetailSerializer
-
-
-def usulbyid(request, pk):
-    usul = get_object_or_404(models.Usul, pk=pk)
-    return redirect('api-makam-usul-detail', usul.uuid, permanent=True)
 
 
 class InstrumentListSerializer(serializers.ModelSerializer):

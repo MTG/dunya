@@ -26,8 +26,6 @@ urlpatterns = [
     path(r'stats', TemplateView.as_view(template_name='makam/stats.html'), name='makam-stats'),
     path(r'overview', TemplateView.as_view(template_name='makam/overview.html'), name='makam-overview'),
     path(r'results-stats', TemplateView.as_view(template_name='makam/results_stats.html'), name='makam-res-stats'),
-    path(r'recording/<int:recordingid>', views.recordingbyid, name='makam-recordingbyid'),
-    path(r'recording/<int:recordingid>/<slug:title>', views.recordingbyid, name='makam-recordingbyid'),
     path(r'recording/<uuid:uuid>', views.recording, name='makam-recording'),
     path(r'recording/<uuid:uuid>/<slug:title>', views.recording, name='makam-recording'),
     path(r'download-files/<uuid:uuid>', views.download_derived_files, name='makam-download-derived'),

@@ -72,11 +72,6 @@ def searchcomplete(request):
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
-def recordingbyid(request, recordingid, title=None):
-    recording = get_object_or_404(models.Recording, pk=recordingid)
-    return redirect(recording.get_absolute_url(), permanent=True)
-
-
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
 
