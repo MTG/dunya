@@ -14,29 +14,29 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic import TemplateView
 
 from makam import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-title_match = r'(?:/(?P<title>[\w-]+))?'
-
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='makam/index.html'), name='makam-main'),
-    url(r'^search$', views.recordings_search, name='makam-search'),
-    url(r'^info$', TemplateView.as_view(template_name="makam/info.html"), name='makam-info'),
-    url(r'^stats$', TemplateView.as_view(template_name='makam/stats.html'), name='makam-stats'),
-    url(r'^overview$', TemplateView.as_view(template_name='makam/overview.html'), name='makam-overview'),
-    url(r'^results-stats$', TemplateView.as_view(template_name='makam/results_stats.html'), name='makam-res-stats'),
-    url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='makam-recordingbyid'),
-    url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='makam-recording'),
-    url(r'^download-files/%s%s$' % (uuid_match, title_match),
-        views.download_derived_files, name='makam-download-derived'),
-    url(r'^lyric-align/%s%s$' % (uuid_match, title_match), views.lyric_alignment, name='makam-lyric-alignment'),
-    url(r'^score/%s$' % (uuid_match, ), views.work_score, name='makam-score'),
-    url(r'^symbtr/%s$' % (uuid_match, ), views.symbtr, name='makam-symbtr'),
+    path(r'', TemplateView.as_view(template_name='makam/index.html'), name='makam-main'),
+    path(r'search', views.recordings_search, name='makam-search'),
+    path(r'info', TemplateView.as_view(template_name="makam/info.html"), name='makam-info'),
+    path(r'stats', TemplateView.as_view(template_name='makam/stats.html'), name='makam-stats'),
+    path(r'overview', TemplateView.as_view(template_name='makam/overview.html'), name='makam-overview'),
+    path(r'results-stats', TemplateView.as_view(template_name='makam/results_stats.html'), name='makam-res-stats'),
+    path(r'recording/<int:recordingid>', views.recordingbyid, name='makam-recordingbyid'),
+    path(r'recording/<int:recordingid>/<slug:title>', views.recordingbyid, name='makam-recordingbyid'),
+    path(r'recording/<uuid:uuid>', views.recording, name='makam-recording'),
+    path(r'recording/<uuid:uuid>/<slug:title>', views.recording, name='makam-recording'),
+    path(r'download-files/<uuid:uuid>', views.download_derived_files, name='makam-download-derived'),
+    path(r'download-files/<uuid:uuid>/<slug:title>', views.download_derived_files, name='makam-download-derived'),
+    path(r'lyric-align/<uuid:uuid>', views.lyric_alignment, name='makam-lyric-alignment'),
+    path(r'lyric-align/<uuid:uuid>/<slug:title>', views.lyric_alignment, name='makam-lyric-alignment'),
+    path(r'score/<uuid:uuid>', views.work_score, name='makam-score'),
+    path(r'symbtr/<uuid:uuid>', views.symbtr, name='makam-symbtr'),
 
-    url(r'^searchcomplete$', views.searchcomplete, name='makam-searchcomplete'),
-    url(r'filters.json$', views.filters, name='makam-filters'),
+    path(r'searchcomplete', views.searchcomplete, name='makam-searchcomplete'),
+    path(r'filters.json', views.filters, name='makam-filters'),
 ]

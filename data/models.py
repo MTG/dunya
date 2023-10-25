@@ -149,7 +149,7 @@ class Artist(BaseModel, ImageMixin):
             aname = unidecode.unidecode(self.name)
         else:
             aname = self.name
-        return reverse(viewname, args=[self.mbid, slugify(aname)])
+        return reverse(viewname, args=[str(self.mbid), slugify(aname)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -203,7 +203,7 @@ class Release(BaseModel, ImageMixin):
 
     def get_absolute_url(self):
         viewname = "%s-release" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.title)])
+        return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -245,7 +245,7 @@ class Work(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-work" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.title)])
+        return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/work/%s" % self.mbid
@@ -271,7 +271,7 @@ class Recording(BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-recording" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.title)])
+        return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/recording/%s" % self.mbid

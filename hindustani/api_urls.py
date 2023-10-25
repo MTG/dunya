@@ -14,44 +14,43 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
+
 from rest_framework.urlpatterns import format_suffix_patterns
 
 import hindustani.api
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-
 urlpatterns = [
-    url(r'^raag$', hindustani.api.RaagList.as_view(), name='api-hindustani-raag-list'),
-    url(r'^raag/(?P<pk>\d+)$', hindustani.api.raagbyid, name='api-hindustani-raag-detailbyid'),
-    url(r'^raag/%s$' % (uuid_match, ), hindustani.api.RaagDetail.as_view(), name='api-hindustani-raag-detail'),
+    path('raag', hindustani.api.RaagList.as_view(), name='api-hindustani-raag-list'),
+    path('raag/<int:pk>', hindustani.api.raagbyid, name='api-hindustani-raag-detailbyid'),
+    path('raag/<uuid:uuid>', hindustani.api.RaagDetail.as_view(), name='api-hindustani-raag-detail'),
 
-    url(r'^taal$', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
-    url(r'^taal/(?P<pk>\d+)$', hindustani.api.taalbyid, name='api-hindustani-taal-detailbyid'),
-    url(r'^taal/%s$' % (uuid_match, ), hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
+    path('taal', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
+    path('taal/<int:pk>', hindustani.api.taalbyid, name='api-hindustani-taal-detailbyid'),
+    path('taal/<uuid:uuid>', hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
 
-    url(r'^laya$', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
-    url(r'^laya/(?P<pk>\d+)$', hindustani.api.layabyid, name='api-hindustani-laya-detailbyid'),
-    url(r'^laya/%s$' % (uuid_match, ), hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
+    path('laya', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
+    path('laya/<int:pk>', hindustani.api.layabyid, name='api-hindustani-laya-detailbyid'),
+    path('laya/<uuid:uuid>', hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
 
-    url(r'^form$', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
-    url(r'^form/(?P<pk>\d+)$', hindustani.api.formbyid, name='api-hindustani-form-detailbyid'),
-    url(r'^form/%s$' % (uuid_match, ), hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
+    path('form', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
+    path('form/<int:pk>', hindustani.api.formbyid, name='api-hindustani-form-detailbyid'),
+    path('form/<uuid:uuid>', hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
 
-    url(r'^instrument$', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),
-    url(r'^instrument/%s$' % (uuid_match, ), hindustani.api.InstrumentDetail.as_view(), name='api-hindustani-instrument-detail'),
+    path('instrument', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),
+    path('instrument/<uuid:uuid>', hindustani.api.InstrumentDetail.as_view(), name='api-hindustani-instrument-detail'),
 
-    url(r'^work$', hindustani.api.WorkList.as_view(), name='api-hindustani-work-list'),
-    url(r'^work/%s$' % uuid_match, hindustani.api.WorkDetail.as_view(), name='api-hindustani-work-detail'),
+    path('work', hindustani.api.WorkList.as_view(), name='api-hindustani-work-list'),
+    path('work/<uuid:uuid>', hindustani.api.WorkDetail.as_view(), name='api-hindustani-work-detail'),
 
-    url(r'^recording$', hindustani.api.RecordingList.as_view(), name='api-hindustani-recording-list'),
-    url(r'^recording/%s$' % uuid_match, hindustani.api.RecordingDetail.as_view(), name='api-hindustani-recording-detail'),
+    path('recording', hindustani.api.RecordingList.as_view(), name='api-hindustani-recording-list'),
+    path('recording/<uuid:uuid>', hindustani.api.RecordingDetail.as_view(), name='api-hindustani-recording-detail'),
 
-    url(r'^artist$', hindustani.api.ArtistList.as_view(), name='api-hindustani-artist-list'),
-    url(r'^artist/%s$' % uuid_match, hindustani.api.ArtistDetail.as_view(), name='api-hindustani-artist-detail'),
+    path('artist', hindustani.api.ArtistList.as_view(), name='api-hindustani-artist-list'),
+    path('artist/<uuid:uuid>', hindustani.api.ArtistDetail.as_view(), name='api-hindustani-artist-detail'),
 
-    url(r'^release$', hindustani.api.ReleaseList.as_view(), name='api-hindustani-release-list'),
-    url(r'^release/%s$' % uuid_match, hindustani.api.ReleaseDetail.as_view(), name='api-hindustani-release-detail'),
+    path('release', hindustani.api.ReleaseList.as_view(), name='api-hindustani-release-list'),
+    path('release/<uuid:uuid>', hindustani.api.ReleaseDetail.as_view(), name='api-hindustani-release-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])

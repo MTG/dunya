@@ -39,7 +39,7 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-orchestra" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[str(self.mbid)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -84,7 +84,7 @@ class Artist(AndalusianStyle, data.models.BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-artist" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[str(self.mbid)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/artist/%s" % self.mbid
@@ -161,7 +161,7 @@ class Album(AndalusianStyle, data.models.BaseModel):
 
     def get_absolute_url(self):
         viewname = "%s-album" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid])
+        return reverse(viewname, args=[str(self.mbid)])
 
     def get_musicbrainz_url(self):
         return "http://musicbrainz.org/release/%s" % self.mbid
@@ -258,7 +258,7 @@ class Recording(AndalusianStyle, data.models.BaseModel):
                 "mainArtists": [item for sublist in artists for item in sublist],
                 "name": self.title,
                 "image": image,
-                "linkToRecording": reverse("andalusian-recording", args=[self.mbid]),
+                "linkToRecording": reverse("andalusian-recording", args=[str(self.mbid)]),
                 "collaborators": [],
                 "selectedArtists": ""
         }

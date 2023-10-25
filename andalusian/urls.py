@@ -14,23 +14,22 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import TemplateView
 
 from andalusian import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-title_match = r'(?:/(?P<title>[\w-]+))?'
-
 urlpatterns = [
-    url(r'^$',
-        TemplateView.as_view(template_name="andalusian/index.html"), name='andalusian-main'),
-    url(r'^info$',
-        TemplateView.as_view(template_name="andalusian/info.html"), name='andalusian-info'),
-    url(r'^search$', views.search, name='andalusian-search'),
-    url(r'^searchcomplete$', views.searchcomplete, name='andalusian-searchcomplete'),
-    url(r'filters.json$', views.filters, name='andalusian-filters'),
-    url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='andalusian-recording'),
-    url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='andalusian-recordingbyid'),
+    path('',
+         TemplateView.as_view(template_name="andalusian/index.html"), name='andalusian-main'),
+    path('info',
+         TemplateView.as_view(template_name="andalusian/info.html"), name='andalusian-info'),
+    path('search', views.search, name='andalusian-search'),
+    path('searchcomplete', views.searchcomplete, name='andalusian-searchcomplete'),
+    path('filters.json', views.filters, name='andalusian-filters'),
+    path('recording/<uuid:uuid>', views.recording, name='andalusian-recording'),
+    path('recording/<uuid:uuid>/<slug:title>', views.recording, name='andalusian-recording'),
+    path('recording/<int:recordingid>', views.recordingbyid, name='andalusian-recordingbyid'),
+    path('recording/<int:recordingid>/<slug:title>', views.recordingbyid, name='andalusian-recordingbyid'),
 ]
 

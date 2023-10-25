@@ -14,18 +14,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
 
 from jingju import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-name_match = r'(?:/(?P<name>[\w-]+))?'
-title_match = r'(?:/(?P<title>[\w-]+))?'
-
 urlpatterns = [
-    url(r'^$', views.main, name='jingju-main'),
-    url(r'^recording/%s$' % uuid_match, views.recording,
-        name='jingju-recording'),
-    url(r'^basic-lyric-align/%s%s$' % (uuid_match, title_match),
-            views.basic_lyric_alignment, name='jingju-basic-lyric-alignment'),
+    path('', views.main, name='jingju-main'),
+    path('recording/<uuid:uuid>', views.recording, name='jingju-recording'),
+    path('basic-lyric-align/<uuid:uuid>', views.basic_lyric_alignment, name='jingju-basic-lyric-alignment'),
+    path('basic-lyric-align/<uuid:uuid>/<slug:title>', views.basic_lyric_alignment, name='jingju-basic-lyric-alignment'),
     ]

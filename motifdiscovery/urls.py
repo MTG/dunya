@@ -1,16 +1,14 @@
-from django.conf.urls import url
+from django.urls import path
 
 from motifdiscovery import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-
 urlpatterns = [
-    url(r'^$', views.main, name='motif-main'),
-    url(r'^artists$', views.artists, name='motif-artists'),
-    url(r'^artist/%s$' % uuid_match, views.artist, name='motif-artist'),
-    url(r'^release/%s$' % uuid_match, views.release, name='motif-release'),
-    url(r'^seeds/%s$' % uuid_match, views.seeds, name='motif-seeds'),
-    url(r'^recording/%s$' % uuid_match, views.recinformation, name='motif-recinfo'),
-    url(r'^results/%s/(?P<seedid>[0-9]+)$' % uuid_match, views.results, name='motif-results'),
-    url(r'^segment/(?P<segmentid>[0-9]+).mp3$', views.servesegment, name='motif-segment'),
+    path('', views.main, name='motif-main'),
+    path('artists', views.artists, name='motif-artists'),
+    path('artist/<uuid:uuid>', views.artist, name='motif-artist'),
+    path('release/<uuid:uuid>', views.release, name='motif-release'),
+    path('seeds/<uuid:uuid>', views.seeds, name='motif-seeds'),
+    path('recording/<uuid:uuid>', views.recinformation, name='motif-recinfo'),
+    path('results/<uuid:uuid>/<int:seedid>', views.results, name='motif-results'),
+    path('segment/<int:segmentid>.mp3', views.servesegment, name='motif-segment'),
 ]

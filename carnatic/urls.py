@@ -14,28 +14,26 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import TemplateView
 
 from carnatic import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-name_match = r'(?:/(?P<name>[\w-]+))?'
-title_match = r'(?:/(?P<title>[\w-]+))?'
-
 urlpatterns = [
-    url(r'^$', views.main, name='carnatic-main'),
-    url(r'^info$',
-        TemplateView.as_view(template_name="carnatic/info.html"), name='carnatic-info'),
+    path(r'', views.main, name='carnatic-main'),
+    path(r'info',
+         TemplateView.as_view(template_name="carnatic/info.html"), name='carnatic-info'),
 
-    url(r'^formedit/%s$' % (uuid_match, ), views.formconcert, name='carnatic-formconcert'),
-    url(r'^formedit$', views.formedit, name='carnatic-formedit'),
+    path(r'formedit/<uuid:uuid>', views.formconcert, name='carnatic-formconcert'),
+    path(r'formedit', views.formedit, name='carnatic-formedit'),
 
-    url(r'^searchcomplete$', views.searchcomplete, name='carnatic-searchcomplete'),
-    url(r'^search$', views.recordings_search, name='carnatic-search'),
+    path(r'searchcomplete', views.searchcomplete, name='carnatic-searchcomplete'),
+    path(r'search', views.recordings_search, name='carnatic-search'),
 
-    url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='carnatic-recordingbyid'),
-    url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='carnatic-recording'),
+    path(r'recording/<int:recordingid>', views.recordingbyid, name='carnatic-recordingbyid'),
+    path(r'recording/<int:recordingid>/<slug:title>', views.recordingbyid, name='carnatic-recordingbyid'),
+    path(r'recording/<uuid:uuid>', views.recording, name='carnatic-recording'),
+    path(r'recording/<uuid:uuid>/<slug:title>', views.recording, name='carnatic-recording'),
 
-    url(r'filters.json$', views.filters, name='carnatic-filters'),
+    path(r'filters.json', views.filters, name='carnatic-filters'),
 ]

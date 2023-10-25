@@ -14,48 +14,46 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 import makam.api
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-
 urlpatterns = [
-    url(r'^fuzzy$', makam.api.fuzzy, name='api-makam-makam-detailbyfuzzy'),
+    path('fuzzy', makam.api.fuzzy, name='api-makam-makam-detailbyfuzzy'),
 
-    url(r'^form$', makam.api.FormList.as_view(), name='api-makam-form-list'),
-    url(r'^form/(?P<pk>\d+)$', makam.api.formbyid, name='api-makam-form-detailbyid'),
-    url(r'^form/%s$' % uuid_match, makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
+    path('form', makam.api.FormList.as_view(), name='api-makam-form-list'),
+    path('form/<int:pk>', makam.api.formbyid, name='api-makam-form-detailbyid'),
+    path('form/<uuid:uuid>', makam.api.FormDetail.as_view(), name='api-makam-form-detail'),
 
-    url(r'^makam$', makam.api.MakamList.as_view(), name='api-makam-makam-list'),
-    url(r'^makam/(?P<pk>\d+)$', makam.api.makambyid, name='api-makam-makam-detailbyid'),
-    url(r'^makam/%s$' % uuid_match, makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
+    path('makam', makam.api.MakamList.as_view(), name='api-makam-makam-list'),
+    path('makam/<int:pk>', makam.api.makambyid, name='api-makam-makam-detailbyid'),
+    path('makam/<uuid:uuid>', makam.api.MakamDetail.as_view(), name='api-makam-makam-detail'),
 
-    url(r'^usul$', makam.api.UsulList.as_view(), name='api-makam-usul-list'),
-    url(r'^usul/(?P<pk>\d+)$', makam.api.usulbyid, name='api-makam-usul-detailbyid'),
-    url(r'^usul/%s$' % uuid_match, makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
+    path('usul', makam.api.UsulList.as_view(), name='api-makam-usul-list'),
+    path('usul/<int:pk>', makam.api.usulbyid, name='api-makam-usul-detailbyid'),
+    path('usul/<uuid:uuid>', makam.api.UsulDetail.as_view(), name='api-makam-usul-detail'),
 
-    url(r'^instrument$', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),
-    url(r'^instrument/%s$' % uuid_match, makam.api.InstrumentDetail.as_view(), name='api-makam-instrument-detail'),
+    path('instrument', makam.api.InstrumentList.as_view(), name='api-makam-instrument-list'),
+    path('instrument/<uuid:uuid>', makam.api.InstrumentDetail.as_view(), name='api-makam-instrument-detail'),
 
-    url(r'^work$', makam.api.WorkList.as_view(), name='api-makam-work-list'),
-    url(r'^work/%s$' % uuid_match, makam.api.WorkDetail.as_view(), name='api-makam-work-detail'),
+    path('work', makam.api.WorkList.as_view(), name='api-makam-work-list'),
+    path('work/<uuid:uuid>', makam.api.WorkDetail.as_view(), name='api-makam-work-detail'),
 
-    url(r'^recording$', makam.api.RecordingList.as_view(), name='api-makam-recording-list'),
-    url(r'^recording/%s$' % uuid_match, makam.api.RecordingDetail.as_view(), name='api-makam-recording-detail'),
+    path('recording', makam.api.RecordingList.as_view(), name='api-makam-recording-list'),
+    path('recording/<uuid:uuid>', makam.api.RecordingDetail.as_view(), name='api-makam-recording-detail'),
 
-    url(r'^artist$', makam.api.ArtistList.as_view(), name='api-makam-artist-list'),
-    url(r'^artist/%s$' % uuid_match, makam.api.ArtistDetail.as_view(), name='api-makam-artist-detail'),
+    path('artist', makam.api.ArtistList.as_view(), name='api-makam-artist-list'),
+    path('artist/<uuid:uuid>', makam.api.ArtistDetail.as_view(), name='api-makam-artist-detail'),
 
-    url(r'^composer$', makam.api.ComposerList.as_view(), name='api-makam-composer-list'),
-    url(r'^composer/%s$' % uuid_match, makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
+    path('composer', makam.api.ComposerList.as_view(), name='api-makam-composer-list'),
+    path('composer/<uuid:uuid>', makam.api.ComposerDetail.as_view(), name='api-makam-composer-detail'),
 
-    url(r'^release$', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
-    url(r'^release/%s$' % uuid_match, makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail'),
+    path('release', makam.api.ReleaseList.as_view(), name='api-makam-release-list'),
+    path('release/<uuid:uuid>', makam.api.ReleaseDetail.as_view(), name='api-makam-release-detail'),
 
-    url(r'^symbtr$', makam.api.SymbtrList.as_view(), name='api-makam-symbtr-list'),
-    url(r'^symbtr/%s$' % uuid_match, makam.api.SymbtrDetail.as_view(), name='api-makam-symbtr-detail')
+    path('symbt', makam.api.SymbtrList.as_view(), name='api-makam-symbtr-list'),
+    path('symbtr/<uuid:uuid>', makam.api.SymbtrDetail.as_view(), name='api-makam-symbtr-detail')
 
 ]
 

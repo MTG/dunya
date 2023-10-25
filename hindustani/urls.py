@@ -14,23 +14,20 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import TemplateView
 
 from hindustani import views
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
-name_match = r'(?:/(?P<name>[\w-]+))?'
-title_match = r'(?:/(?P<title>[\w-]+))?'
-
 urlpatterns = [
-    url(r'^$', views.main, name='hindustani-main'),
-    url(r'^info$',
-        TemplateView.as_view(template_name='hindustani/info.html'), name='hindustani-info'),
+    path('', views.main, name='hindustani-main'),
+    path('info',
+         TemplateView.as_view(template_name='hindustani/info.html'), name='hindustani-info'),
 
-    url(r'^searchcomplete$', views.searchcomplete, name='hindustani-searchcomplete'),
-    url(r'^search$', views.recordings_search, name='hindustani-search'),
-    url(r'^recording/(?P<recordingid>\d+)%s$' % (title_match, ), views.recordingbyid, name='hindustani-recordingbyid'),
-    url(r'^recording/%s%s$' % (uuid_match, title_match), views.recording, name='hindustani-recording'),
-    url(r'filters.json$', views.filters, name='hindustani-filters'),
+    path('searchcomplete', views.searchcomplete, name='hindustani-searchcomplete'),
+    path('search', views.recordings_search, name='hindustani-search'),
+    path('recording/<int:recordingid>', views.recordingbyid, name='hindustani-recordingbyid'),
+    path('recording/<uuid:uuid>', views.recording, name='hindustani-recording'),
+    path('recording/<uuid:uuid>/<slug:title>', views.recording, name='hindustani-recording'),
+    path('filters.json', views.filters, name='hindustani-filters'),
 ]

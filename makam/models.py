@@ -211,7 +211,7 @@ class Recording(MakamStyle, data.models.Recording):
             "mainArtists": [item for sublist in artists for item in sublist],
             "name": self.title,
             "image": image,
-            "linkToRecording": reverse("makam-recording", args=[self.mbid]),
+            "linkToRecording": reverse("makam-recording", args=[str(self.mbid)]),
             "collaborators": [],
             "selectedArtists": ""
         }

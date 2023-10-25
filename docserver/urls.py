@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.conf.urls import url
+from django.urls import path, re_path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from docserver import views
@@ -24,35 +24,36 @@ external_identifier = r'(?P<external_identifier>[a-f0-9-:]+)'
 # Some external identifiers are combinations of two uuids separated by a :, so we allow more values than a strict uuid
 
 api_patterns = [
-    url(r'^collections$', views.CollectionList.as_view(), name='collection-list'),
-    url(r'^by-id/%s/(?:add|update)/(?P<file_type>[a-z0-9-]+)$' % external_identifier, views.SourceFile.as_view(), name='ds-add-sourcetype'),
-    url(r'^by-id/%s/(?P<ftype>[a-zA-Z0-9-]+)$' % uuid_match, views.download_external, name='ds-download-external'),
-    url(r'^by-id/%s\.(?P<ftype>mp3)$' % uuid_match, views.download_external, name='ds-download-mp3'),
-    url(r'^by-id/%s$' % external_identifier, views.DocumentDetail.as_view(), name='ds-document-external'),
-    url(r'^(?P<slug>[^/]+)$', views.CollectionDetail.as_view(), name='collection-detail'),
-    url(r'^(?P<slug>[^/]+)/%s$' % external_identifier, views.DocumentDetail.as_view(), name='ds-document')
+    path('collections', views.CollectionList.as_view(), name='collection-list'),
+    re_path(fr'by-id/{external_identifier}/(?:add|update)/(?P<file_type>[a-z0-9-]+)', views.SourceFile.as_view(), name='ds-add-sourcetype'),
+    path('by-id/<uuid:uuid>/<slug:ftype>', views.download_external, name='ds-download-external'),
+    re_path(fr'by-id/{uuid_match}\.(?P<ftype>mp3)', views.download_external, name='ds-download-mp3'),
+    path('by-id/<str:external_identifier>', views.DocumentDetail.as_view(), name='ds-document-external'),
+    path('<slug:slug>', views.CollectionDetail.as_view(), name='collection-detail'),
+    path('<slug:slug>/<str:external_identifier>', views.DocumentDetail.as_view(), name='ds-document')
 ]
 api_patterns = format_suffix_patterns(api_patterns, allowed=['json', 'api'])
 
 urlpatterns = [
-    url(r'^$', views.index),
+    path('', views.index),
     # Essentia management
-    url(r'manager/addmodule', views.addmodule, name='docserver-addmodule'),
-    url(r'manager/(?P<type>(un)?processed)/(?P<slug>[^/]+)/(?P<version>\d+)$', views.collectionversion, name='docserver-collectionversion'),
-    url(r'manager/delete_collection/(?P<slug>[^/]+)$', views.delete_collection, name='docserver-delete-collection'),
-    url(r'manager/delete-derived-files/(?P<slug>[^/]+)/(?P<moduleversion>\d+)$', views.delete_derived_files, name='docserver-delete-derived-files'),
-    url(r'manager/addcollection$', views.addcollection, name='docserver-addcollection'),
-    url(r'manager/collection/(?P<slug>[^/]+)/files$', views.collectionfiles, name='docserver-collectionfiles'),
-    url(r'manager/collection/(?P<slug>[^/]+)$', views.collection, name='docserver-collection'),
-    url(r'manager/collection/(?P<slug>[^/]+)/edit$', views.editcollection, name='docserver-editcollection'),
-    url(r'manager/addfiletype$', views.addfiletype, name='docserver-addfiletype'),
-    url(r'manager/filetypes$', views.filetypes, name='docserver-filetypes'),
-    url(r'manager/filetype/(?P<slug>[^/]+)$', views.filetype, name='docserver-filetype'),
-    url(r'manager/filetype/(?P<slug>[^/]+)/edit$', views.editfiletype, name='docserver-editfiletype'),
-    url(r'manager/collection/(?P<slug>[^/]+)/%s(?:/(?P<version>\d+))?$' % uuid_match, views.file, name='docserver-file'),
-    url(r'manager/module/(?P<module>\d+)$', views.module, name='docserver-module'),
-    url(r'manager/worker/(?P<hostname>[^/]+)$', views.worker, name='docserver-worker'),
-    url(r'manager/workers$', views.workers_status, name='docserver-workers'),
-    url(r'manager/modules$', views.modules_status, name='docserver-modules'),
-    url(r'manager/', views.manager, name='docserver-manager'),
+    path('manager/addmodule', views.addmodule, name='docserver-addmodule'),
+    path('manager/<type>/<slug:slug>/<int:version>', views.collectionversion, name='docserver-collectionversion'),
+    path('manager/delete_collection/<slug:slug>', views.delete_collection, name='docserver-delete-collection'),
+    path('manager/delete-derived-files/<slug:slug>/<int:moduleversion>', views.delete_derived_files, name='docserver-delete-derived-files'),
+    path('manager/addcollection', views.addcollection, name='docserver-addcollection'),
+    path('manager/collection/<slug:slug>/files', views.collectionfiles, name='docserver-collectionfiles'),
+    path('manager/collection/<slug:slug>', views.collection, name='docserver-collection'),
+    path('manager/collection/<slug:slug>/edit', views.editcollection, name='docserver-editcollection'),
+    path('manager/addfiletype', views.addfiletype, name='docserver-addfiletype'),
+    path('manager/filetypes', views.filetypes, name='docserver-filetypes'),
+    path('manager/filetype/<slug:slug>', views.filetype, name='docserver-filetype'),
+    path('manager/filetype/<slug:slug>/edit', views.editfiletype, name='docserver-editfiletype'),
+    path('manager/collection/<slug:slug>/<uuid:uuid>', views.file, name='docserver-file'),
+    path('manager/collection/<slug:slug>/<uuid:uuid>/<int:version>', views.file, name='docserver-file'),
+    path('manager/module/<int:module>', views.module, name='docserver-module'),
+    path('manager/worker/<slug:hostname>', views.worker, name='docserver-worke'),
+    path('manager/workers', views.workers_status, name='docserver-workers'),
+    path('manager/modules', views.modules_status, name='docserver-modules'),
+    path('manager/', views.manager, name='docserver-manager'),
 ] + api_patterns

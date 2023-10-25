@@ -274,7 +274,7 @@ class Concert(CarnaticStyle, data.models.Release):
 
     def get_absolute_url(self):
         viewname = "%s-concert" % (self.get_style(), )
-        return reverse(viewname, args=[self.mbid, slugify(self.title)])
+        return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def tracklist(self):
         """Return an ordered list of recordings in this concert"""
@@ -614,7 +614,7 @@ class Recording(CarnaticStyle, data.models.Recording):
                 "mainArtists": [item for sublist in artists for item in sublist],
                 "name": self.title,
                 "image": image,
-                "linkToRecording": reverse("carnatic-recording", args=[self.mbid]),
+                "linkToRecording": reverse("carnatic-recording", args=[str(self.mbid)]),
                 "collaborators": [],
                 "selectedArtists": ""
         }
