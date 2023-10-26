@@ -198,17 +198,14 @@ else:  # development
     SENDFILE_BACKEND = 'sendfile.backends.development'
 
     # For development this sets up a dummy email server
-    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     EMAIL_FILE_PATH = '/tmp/dunya-messages'
 
     INTERNAL_IPS = ['127.0.0.1']
 
     MIDDLEWARE = [
-        'corsheaders.middleware.CorsMiddleware',
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ] + MIDDLEWARE
-
-    CORS_ORIGIN_ALLOW_ALL = True
 
 DEBUG = debug
 
