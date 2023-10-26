@@ -34,13 +34,9 @@ urlpatterns = [
     path('file/<int:fileid>', views.file, name='dashboard-file'),
     path('accounts', views.accounts, name='dashboard-accounts'),
 
-    path('carnatic/coverart/', statistic_views.carnatic_coverart, name='dashboard-carnatic-coverart'),
-    path('carnatic/releases/', statistic_views.carnatic_releases, name='dashboard-carnatic-releases'),
     path('carnatic/artists/', statistic_views.carnatic_artists, name='dashboard-carnatic-artists'),
     path('carnatic/recordings/', statistic_views.carnatic_recordings, name='dashboard-carnatic-recordings'),
-    path('carnatic/raagataala/', statistic_views.carnatic_raagataala, name='dashboard-carnatic-raagataala'),
     path('carnatic/works/', statistic_views.carnatic_works, name='dashboard-carnatic-works'),
-    path('carnatic/thillana/', statistic_views.carnatic_thillanas, name='dashboard-carnatic-thillanas'),
     path('carnatic/workraagataala/', statistic_views.carnatic_workraagataala, name='dashboard-carnatic-workraagataala'),
     path('carnatic/artists-list/', views.carnatic_artists_list, name='dashboard-carnatic-artists'),
     path('carnatic/artist/<int:artistid>', views.carnatic_artist_desc, name='dashboard-carnatic-artist'),
@@ -53,11 +49,8 @@ urlpatterns = [
     path('carnatic/', statistic_views.carnatic_stats, name='dashboard-carnatic-stats'),
 
 
-    path('hindustani/coverart/', statistic_views.hindustani_coverart, name='dashboard-hindustani-coverart'),
-    path('hindustani/releases/', statistic_views.hindustani_releases, name='dashboard-hindustani-releases'),
     path('hindustani/artists/', statistic_views.hindustani_artists, name='dashboard-hindustani-artists'),
     path('hindustani/recordings/', statistic_views.hindustani_recordings, name='dashboard-hindustani-recordings'),
-    path('hindustani/raagataala/', statistic_views.hindustani_raagtaal, name='dashboard-hindustani-raagtaal'),
     path('hindustani/works/', statistic_views.hindustani_works, name='dashboard-hindustani-works'),
     path('hindustani/artists-list/', views.hindustani_artists_list, name='dashboard-hindustani-artists'),
     path('hindustani/artist/<int:artistid>', views.hindustani_artist_desc, name='dashboard-hindustani-artist'),
@@ -78,11 +71,8 @@ urlpatterns = [
     path('makam/data/symbtr/new', views.makam_symbtr, name='dashboard-makam-symbtrnew'),
     path('makam/data/symbtr', views.makam_symbtrlist, name='dashboard-makam-symbtrlist'),
 
-    path('makam/tags', statistic_views.makam_tags, name='dashboard-makam-tags'),
-    path('makam/recordings', statistic_views.makam_recordings, name='dashboard-makam-recordings'),
     path('makam/works', statistic_views.makam_works, name='dashboard-makam-works'),
     path('makam/artists', statistic_views.makam_artists, name='dashboard-makam-artists'),
-    path('makam/instruments', statistic_views.makam_missing_instruments, name='dashboard-makam-missing-instruments'),
 
     path('makam/', statistic_views.makam_stats, name='dashboard-makam-stats'),
     path('beijing/', statistic_views.beijing_stats, name='dashboard-beijing-stats'),

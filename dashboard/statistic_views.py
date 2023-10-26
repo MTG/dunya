@@ -58,20 +58,6 @@ def carnatic_stats(request):
 
 
 @user_passes_test(views.is_staff)
-def carnatic_releases(request):
-    message = "releases with missing audio files"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
-def carnatic_coverart(request):
-    message = "releases with no cover art on CAA"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
 def carnatic_artists(request):
     artists = carnatic.models.Artist.objects
     bio_counted = artists.annotate(Count('description'))
@@ -123,13 +109,6 @@ def carnatic_recordings(request):
 
 
 @user_passes_test(views.is_staff)
-def carnatic_raagataala(request):
-    message = "recordings with no raaga or taala, and raagas and taalas that couldn't be found in the database"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
 def carnatic_works(request):
     works = carnatic.models.Work.objects
     composer_counted = works.annotate(Count('composers'))
@@ -153,13 +132,6 @@ def carnatic_workraagataala(request):
 
 
 @user_passes_test(views.is_staff)
-def carnatic_thillanas(request):
-    message = "different works called Thillana or tillana"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
 def hindustani_stats(request):
 
     collectionid = compmusic.HINDUSTANI_COLLECTION
@@ -167,21 +139,6 @@ def hindustani_stats(request):
     ret = _common_stats(collectionid)
     # Duration, num lead artists
     return render(request, 'stats/hindustani.html', ret)
-
-
-@user_passes_test(views.is_staff)
-def hindustani_releases(request):
-
-    message = "releases with missing audio files"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
-def hindustani_coverart(request):
-    message = "releases with no cover art on CAA"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
 
 
 @user_passes_test(views.is_staff)
@@ -236,13 +193,6 @@ def hindustani_recordings(request):
 
 
 @user_passes_test(views.is_staff)
-def hindustani_raagtaal(request):
-    message = "recordings with no raag or taal, and raags and taals that couldn't be found in the database"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
 def hindustani_works(request):
     works = hindustani.models.Work.objects
     composer_counted = works.annotate(Count('composers'))
@@ -265,20 +215,6 @@ def makam_stats(request):
 
 
 @user_passes_test(views.is_staff)
-def makam_tags(request):
-    message = "recordings with no makam/form/usul or ones that couldn't be found in the database"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
-def makam_recordings(request):
-    message = "recordings with more than one work, or more than 1 work type"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
-
-
-@user_passes_test(views.is_staff)
 def makam_works(request):
     works = makam.models.Work.objects
     composer_counted = works.annotate(Count('composers'))
@@ -286,13 +222,6 @@ def makam_works(request):
     ret = {"nocomposer": nocomposer,
            "all": works.order_by('title').all()}
     return render(request, 'stats/makam_works.html', ret)
-
-
-@user_passes_test(views.is_staff)
-def makam_missing_instruments(request):
-    message = "Instruments not in the database"
-    ret = {"message": message}
-    return render(request, 'stats/removed.html', ret)
 
 
 @user_passes_test(views.is_staff)
