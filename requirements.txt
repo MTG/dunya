@@ -51,11 +51,11 @@ django==4.2.6
     #   -r requirements.in
     #   dj-database-url
     #   django-manifest-loader
-    #   django-sendfile
+    #   django-sendfile2
     #   djangorestframework
 django-manifest-loader==1.0.0
     # via -r requirements.in
-django-sendfile==0.3.11
+django-sendfile2==0.7.0
     # via -r requirements.in
 djangorestframework==3.14.0
     # via -r requirements.in

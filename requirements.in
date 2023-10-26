@@ -3,7 +3,7 @@ celery~=5.3
 dj-database-url==2.1.0
 Django~=4.2
 django-manifest-loader==1.0.0
-django-sendfile==0.3.11
+django-sendfile2==0.7.0
 djangorestframework~=3.14.0
 eyed3==0.9.7
 filetype==1.2.0
