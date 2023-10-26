@@ -38,7 +38,7 @@ from rest_framework import response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError, MethodNotAllowed
 from rest_framework.serializers import BaseSerializer
-from sendfile import sendfile
+from django_sendfile import sendfile
 
 import dashboard.models
 import docserver

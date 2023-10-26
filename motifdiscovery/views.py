@@ -3,7 +3,7 @@ import os
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from sendfile import sendfile
+from django_sendfile import sendfile
 
 import carnatic.models
 from motifdiscovery import models
