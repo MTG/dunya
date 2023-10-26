@@ -184,7 +184,7 @@ if deploy_env == 'prod':
     debug = False
 
     #  Sendfile, for serving static content
-    SENDFILE_BACKEND = 'django_sendfile.backends.nginx.sendfile'
+    SENDFILE_BACKEND = 'django_sendfile.backends.nginx'
     SENDFILE_ROOT = '/'
     SENDFILE_URL = '/serve'
 
