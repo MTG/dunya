@@ -33,7 +33,7 @@ RUN mkdir /sources
 WORKDIR /sources
 RUN git clone https://github.com/MTG/pycompmusic.git
 WORKDIR /sources/pycompmusic
-RUN pip3 install -e . -t /usr/local/lib/python3.8/dist-packages/
+RUN pip3 install -e . -t /usr/local/lib/python3.11/dist-packages/
 
 
 ADD package.json package-lock.json /code/
