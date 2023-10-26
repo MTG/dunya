@@ -184,7 +184,7 @@ if deploy_env == 'prod':
     debug = False
 
     #  Sendfile, for serving static content
-    SENDFILE_BACKEND = 'sendfile.backends.nginx'
+    SENDFILE_BACKEND = 'django_sendfile.backends.nginx.sendfile'
     SENDFILE_ROOT = '/'
     SENDFILE_URL = '/serve'
 
@@ -198,7 +198,7 @@ if deploy_env == 'prod':
 else:  # development
     ALLOWED_HOSTS = ['localhost', 'aporter.ca.upf.edu', 'web']
     debug = True
-    SENDFILE_BACKEND = 'sendfile.backends.development'
+    SENDFILE_BACKEND = 'django_sendfile.backends.development'
 
     # For development this sets up a dummy email server
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
