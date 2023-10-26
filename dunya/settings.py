@@ -147,7 +147,10 @@ STATIC_ROOT = '/static/'
 class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
     @staticmethod
     def get_single_match(manifest, key):
-        return manifest.get("files", {}).get(key, key)
+        entry = manifest.get("files", {}).get(key, key)
+        if entry.startswith("/"):
+            return entry[1:]
+        return entry
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
