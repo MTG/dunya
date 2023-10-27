@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -142,8 +140,8 @@ def filters(request):
     ret = {"artists": artistlist,
            "concerts": concertlist,
            "instruments": instrumentlist,
-           u"ragas": raagalist,
-           u"talas": taalalist,
+           "ragas": raagalist,
+           "talas": taalalist,
            }
 
     return JsonResponse(ret)

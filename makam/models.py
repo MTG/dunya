@@ -27,7 +27,7 @@ import data.models
 from makam import managers
 
 
-class MakamStyle(object):
+class MakamStyle:
     def get_style(self):
         return "makam"
 
@@ -58,7 +58,7 @@ class Artist(MakamStyle, data.models.Artist):
         counts = collections.Counter(others)
         return [a for a, c in counts.most_common(10)]
 
-    def main_releases(self, collection_ids: Optional[List[str]]=None, permission=False):
+    def main_releases(self, collection_ids: list[str] | None=None, permission=False):
         """ Releases where this artist is named on the cover """
         if not permission:
             permission = ["U"]
@@ -232,7 +232,7 @@ class InstrumentManager(models.Manager):
         if name.startswith("vocal"):
             name = "voice"
 
-        return super(InstrumentManager, self).get(name__iexact=name)
+        return super().get(name__iexact=name)
 
 
 class Instrument(MakamStyle, data.models.Instrument):

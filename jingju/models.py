@@ -4,7 +4,7 @@ import data.models
 from jingju import managers
 
 
-class JingjuStyle(object):
+class JingjuStyle:
     def get_style(self):
         return "jingju"
 

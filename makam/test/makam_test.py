@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 from django.test import TestCase
 
 from makam import models
@@ -16,13 +14,13 @@ class MakamTest(TestCase):
         self.r2.makam.add(self.m)
 
     def test_unaccent_get(self):
-        m = models.Makam.objects.create(name=u"Bûselik")
+        m = models.Makam.objects.create(name="Bûselik")
         ret = models.Makam.objects.unaccent_get("buselik")
         self.assertEqual(m, ret)
 
-        hm = models.Makam.objects.create(name=u"Hicaz Hümayun")
-        hma1 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümayun")
-        hma2 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümâyûn")
+        hm = models.Makam.objects.create(name="Hicaz Hümayun")
+        hma1 = models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümayun")
+        hma2 = models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümâyûn")
 
         hma_all = models.MakamAlias.objects.unaccent_all("hicaz-humayun")
         self.assertEqual(2, hma_all.count())

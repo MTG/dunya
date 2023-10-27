@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import math
 import os
 import subprocess
@@ -115,7 +113,7 @@ def make_segments(file_id):
                 full_path = os.path.join(full_dir, fname)
                 try:
                     os.makedirs(full_dir)
-                except os.error:
+                except OSError:
                     pass
 
                 sframe = int(math.floor(r_start * samplerate))

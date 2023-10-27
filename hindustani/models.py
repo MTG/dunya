@@ -26,7 +26,7 @@ import data.models
 from hindustani import managers
 
 
-class HindustaniStyle(object):
+class HindustaniStyle:
     def get_style(self):
         return "hindustani"
 
@@ -151,7 +151,7 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return ret
 
-    def releases(self, collection_ids: Optional[List[str]]=None, permission=False):
+    def releases(self, collection_ids: list[str] | None=None, permission=False):
         if collection_ids is None:
             collection_ids = []
         if not permission:
@@ -190,7 +190,7 @@ class Artist(HindustaniStyle, data.models.Artist):
 
         return [(artist, list(releases[artist])) for artist, count in c.most_common()]
 
-    def recordings(self, collection_ids: Optional[List[str]]=None, permission=False):
+    def recordings(self, collection_ids: list[str] | None=None, permission=False):
         if collection_ids is None:
             collection_ids = []
         return Recording.objects.with_permissions(collection_ids, permission).filter(

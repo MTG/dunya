@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from __future__ import print_function
 import json
 import os
 import subprocess
@@ -64,7 +63,7 @@ def _write_to_disk(file, filepath):
             for chunk in file.chunks():
                 size += len(chunk)
                 dest.write(chunk)
-    except IOError as e:
+    except OSError as e:
         raise
     return size
 
@@ -191,14 +190,14 @@ def docserver_get_symbtrmu2(documentid):
 def docserver_get_contents(documentid, slug, subtype=None, part=None, version=None):
     try:
         return open(docserver_get_filename(documentid, slug, subtype, part, version), "rb").read()
-    except IOError:
+    except OSError:
         raise exceptions.NoFileException
 
 
 def docserver_get_json(documentid, slug, subtype=None, part=None, version=None):
     try:
         return json.load(open(docserver_get_filename(documentid, slug, subtype, part, version)))
-    except IOError:
+    except OSError:
         raise exceptions.NoFileException
 
 

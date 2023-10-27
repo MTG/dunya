@@ -274,7 +274,7 @@ CELERY_RESULT_BACKEND = get_check_env('DUNYA_CELERY_RESULT_URL')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
-class DunyaRouter(object):
+class DunyaRouter:
     def route_for_task(self, task, *args, **kwargs):
         if task.startswith("dashboard."):
             return {"queue": "import"}

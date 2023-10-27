@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -135,8 +133,8 @@ def filters(request):
     ret = {"artists": artistlist,
            "releases": releaselist,
            "instruments": instrumentlist,
-           u"rags": raaglist,
-           u"tals": taallist,
+           "rags": raaglist,
+           "tals": taallist,
            }
 
     return JsonResponse(ret)
@@ -231,7 +229,7 @@ def recording(request, uuid, title=None):
         nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
-    artists = list(set([v for s in [r.artistnames() for r in releases] for v in s]))
+    artists = list({v for s in [r.artistnames() for r in releases] for v in s})
 
     ret = {"recording": recording,
            "objecttype": "recording",

@@ -2,7 +2,7 @@ import data.models
 from data import utils
 
 
-class ShowBootlegMiddleware(object):
+class ShowBootlegMiddleware:
     """ A middleware to say if the current user is able to see
         restricted releases and recordings.
     """

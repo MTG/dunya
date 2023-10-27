@@ -18,7 +18,7 @@ class AccessRequestTest(TestCase):
         req = AccessRequest.objects.create(user=self.user)
 
         got = AccessRequest.objects.for_user(self.user)
-        self.assertEquals(req, got)
+        self.assertEqual(req, got)
 
     def test_get_access_request_for_user_many(self):
         """If a user has many access requests, return the most recent"""
@@ -27,4 +27,4 @@ class AccessRequestTest(TestCase):
 
         got = AccessRequest.objects.for_user(self.user)
         # most recent
-        self.assertEquals(req1, got)
+        self.assertEqual(req1, got)

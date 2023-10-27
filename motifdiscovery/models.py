@@ -4,7 +4,7 @@ from django.db import models
 
 class MotifManager(models.Manager):
     def get_queryset(self):
-        return super(MotifManager, self).get_queryset().using('motif')
+        return super().get_queryset().using('motif')
 
 
 class File(models.Model):
@@ -41,7 +41,7 @@ class Pattern(models.Model):
     segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return u"File %s (%s - %s) [%s, %s]" % (
+        return "File {} ({} - {}) [{}, {}]".format(
         self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id)
 
 

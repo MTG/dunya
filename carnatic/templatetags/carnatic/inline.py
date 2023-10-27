@@ -38,14 +38,14 @@ def inline_artist_list(artists):
     if len(artists) == 1:
         return inline_artist_part(artists[0])
     elif len(artists) > 1:
-        return mark_safe(u", ".join([inline_artist_part(a) for a in artists]))
+        return mark_safe(", ".join([inline_artist_part(a) for a in artists]))
     else:
-        return u"(unknown)"
+        return "(unknown)"
 
 
 def inline_artist_part(artist):
     if isinstance(artist, carnatic.models.Artist):
-        return format_html(u'<span class="title">{}</span>', artist.name)
+        return format_html('<span class="title">{}</span>', artist.name)
     else:
         return artist.name
 
@@ -57,12 +57,12 @@ def inline_concert(concert, bold=False):
     if bold:
         sb = "<b>"
         eb = "</b>"
-    return format_html(u'<span>%s{}%s</span>' % (sb, eb), concert.title)
+    return format_html('<span>{}{{}}{}</span>'.format(sb, eb), concert.title)
 
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html(u'<span>{}</span>', composer.name)
+    return format_html('<span>{}</span>', composer.name)
 
 
 @register.simple_tag
@@ -73,7 +73,7 @@ def inline_work(work):
 @register.simple_tag
 def inline_raaga(raaga):
     if raaga:
-        return format_html(u'<span title="{}">{}</span>', raaga.common_name.title(), raaga.name.title())
+        return format_html('<span title="{}">{}</span>', raaga.common_name.title(), raaga.name.title())
     else:
         return '(unknown)'
 
@@ -81,6 +81,6 @@ def inline_raaga(raaga):
 @register.simple_tag
 def inline_taala(taala):
     if taala:
-        return format_html(u'<span title="{}">{}</span>', taala.common_name.title(), taala.name.title())
+        return format_html('<span title="{}">{}</span>', taala.common_name.title(), taala.name.title())
     else:
         return '(unknown)'

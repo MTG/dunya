@@ -7,7 +7,7 @@ from django.urls import reverse
 import data.models
 
 
-class AndalusianStyle(object):
+class AndalusianStyle:
 
     def get_style(self):
         return "andalusian"
@@ -375,7 +375,7 @@ class Section(AndalusianStyle, data.models.BaseModel):
     form = models.ForeignKey('Form', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return u"Section of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
+        return "Section of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % \
                (self.recording, self.start_time, self.end_time,
                 self.form, self.mizan, self.tab, self.nawba)
 
@@ -387,7 +387,7 @@ class InstrumentSectionPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __str__(self):
-        return u"%s playing %s on section (%s, %s) of recording %s" % \
+        return "%s playing %s on section (%s, %s) of recording %s" % \
                (self.performer, self.instrument, self.section.start_time, self.section.end_time, self.section.recording)
 
 

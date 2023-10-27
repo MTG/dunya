@@ -58,7 +58,7 @@ class ModuleForm(forms.Form):
     module = forms.CharField()
 
     def __init__(self, *args, **kwargs):
-        super(ModuleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         choices = []
         for checker in models.Collection.objects.all():

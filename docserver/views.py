@@ -73,7 +73,7 @@ class StaffWritePermission(permissions.IsAuthenticated):
         staff members perform POST methods """
 
     def has_permission(self, request, view):
-        perm = super(StaffWritePermission, self).has_permission(request, view)
+        perm = super().has_permission(request, view)
         if request.method == "POST":
             return perm and request.user.is_staff
         else:
@@ -110,7 +110,7 @@ class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
 
 class SourceFileException(Exception):
     def __init__(self, status_code, message):
-        super(SourceFileException, self).__init__(self)
+        super().__init__(self)
         self.status_code = status_code
         self.message = message
 
@@ -144,7 +144,7 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView, generics.Retrie
 
         try:
             sf, created = util.docserver_upload_and_save_file(document.id, sft.id, file)
-        except IOError as e:
+        except OSError as e:
             data = {'detail': 'Cannot write file'}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

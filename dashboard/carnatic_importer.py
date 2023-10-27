@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -154,13 +153,13 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_raaga_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == u'Rāga (Carnatic)':
+            if a['attribute'] == 'Rāga (Carnatic)':
                 return a['value']
         return None
 
     def _get_taala_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == u'Tāla (Carnatic)':
+            if a['attribute'] == 'Tāla (Carnatic)':
                 return a['value']
         return None
 

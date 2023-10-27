@@ -6,7 +6,6 @@
 
 # Delete symbtr mapping
 # Run in a django shell
-from __future__ import print_function
 
 
 def delete_mapping():
@@ -48,7 +47,7 @@ def delete_documents():
                                                                        defaults={"title": symbtr[n]})
         collection.documents.add(doc)
 
-    slugs = [u'symbtrtxt', u'symbtrmidi', u'symbtrpdf', u'symbtrxml', u'symbtrmu2']
+    slugs = ['symbtrtxt', 'symbtrmidi', 'symbtrpdf', 'symbtrxml', 'symbtrmu2']
     sfts = docserver.models.SourceFileType.objects.filter(slug__in=slugs)
     for r in toremove:
         doc = collection.documents.get(external_identifier=r)

@@ -21,7 +21,7 @@ import makam
 
 
 class CollectionReleaseManager(models.Manager):
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(collection__collectionid__in=ids)
@@ -29,7 +29,7 @@ class CollectionReleaseManager(models.Manager):
 
 
 class CollectionRecordingManager(models.Manager):
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(release__collection__collectionid__in=ids)

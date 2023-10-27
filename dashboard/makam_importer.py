@@ -239,19 +239,19 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
 
     def _get_form_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == u'Form (Ottoman, Turkish)':
+            if a['attribute'] == 'Form (Ottoman, Turkish)':
                 return a['value']
         return None
 
     def _get_usul_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == u'Usul (Ottoman, Turkish)':
+            if a['attribute'] == 'Usul (Ottoman, Turkish)':
                 return a['value']
         return None
 
     def _get_makam_mb(self, mb_work):
         for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == u'Makam (Ottoman, Turkish)':
+            if a['attribute'] == 'Makam (Ottoman, Turkish)':
                 return a['value']
         return None
 

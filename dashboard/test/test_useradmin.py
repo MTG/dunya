@@ -18,13 +18,13 @@ class UserAdminTest(TestCase):
     def test_get_new_users_for_approval(self):
         self.client.force_login(self.adminuser)
         res = self.client.get(reverse('dashboard-accounts'))
-        self.assertEquals(2, len(res.context['user_formset']))
+        self.assertEqual(2, len(res.context['user_formset']))
 
     @mock.patch('dashboard.email.email_user_on_account_approval')
     def test_approve_new_account(self, email_mock):
         self.client.force_login(self.adminuser)
 
-        self.assertEquals(2, User.objects.filter(is_active=False).count())
+        self.assertEqual(2, User.objects.filter(is_active=False).count())
 
         data = {'form-TOTAL_FORMS': ['1'],  'submit': ['Approve accounts'],
                 'form-MAX_NUM_FORMS': ['1000'], 'form-1-is_active': ['on'],
@@ -33,8 +33,8 @@ class UserAdminTest(TestCase):
         self.client.post(reverse('dashboard-accounts'), data=data)
 
         email_mock.assert_called_with(mock.ANY, self.newuser1)
-        self.assertEquals(1, User.objects.filter(is_active=False).count())
-        self.assertEquals(self.newuser2, User.objects.filter(is_active=False)[0])
+        self.assertEqual(1, User.objects.filter(is_active=False).count())
+        self.assertEqual(self.newuser2, User.objects.filter(is_active=False)[0])
 
         self.newuser1.refresh_from_db()
         self.assertTrue(self.newuser1.is_active)
@@ -42,7 +42,7 @@ class UserAdminTest(TestCase):
     def test_delete_new_account(self):
         self.client.force_login(self.adminuser)
 
-        self.assertEquals(2, User.objects.filter(is_active=False).count())
+        self.assertEqual(2, User.objects.filter(is_active=False).count())
 
         data = {'form-TOTAL_FORMS': ['1'],  'submit': ['Approve accounts'],
                 'form-MAX_NUM_FORMS': ['1000'], 'form-1-is_active': ['on'],
@@ -50,7 +50,7 @@ class UserAdminTest(TestCase):
                 'form-MIN_NUM_FORMS': ['0'], 'form-0-id': [str(self.newuser1.id)]}
         self.client.post(reverse('dashboard-accounts'), data=data)
 
-        self.assertEquals(1, User.objects.filter(is_superuser=False).count())
+        self.assertEqual(1, User.objects.filter(is_superuser=False).count())
         try:
             self.newuser1.refresh_from_db()
             self.fail('newuser1 should have been deleted')
@@ -65,7 +65,7 @@ class UserAdminTest(TestCase):
 
         self.client.force_login(self.adminuser)
         res = self.client.get(reverse('dashboard-accounts'))
-        self.assertEquals(1, len(res.context['access_formset']))
+        self.assertEqual(1, len(res.context['access_formset']))
 
     @mock.patch('account.services.add_user_to_restricted_group')
     @mock.patch('dashboard.email.email_user_on_access_request_approval')
@@ -88,14 +88,14 @@ class UserAdminTest(TestCase):
         areq2.refresh_from_db()
 
         self.assertTrue(areq1.approved)
-        self.assertEquals(self.adminuser, areq1.processedby)
+        self.assertEqual(self.adminuser, areq1.processedby)
         self.assertIsNotNone(areq1.processeddate)
         self.assertIsNone(areq2.approved)
 
         email_mock.assert_called_with(mock.ANY, self.newuser1, True)
         add_to_group_mock.assert_called_with(self.newuser1)
 
-        self.assertEquals(1, AccessRequest.objects.unapproved().count())
+        self.assertEqual(1, AccessRequest.objects.unapproved().count())
 
     @mock.patch('account.services.add_user_to_restricted_group')
     @mock.patch('dashboard.email.email_user_on_access_request_approval')
@@ -118,11 +118,11 @@ class UserAdminTest(TestCase):
         areq2.refresh_from_db()
 
         self.assertFalse(areq1.approved)
-        self.assertEquals(self.adminuser, areq1.processedby)
+        self.assertEqual(self.adminuser, areq1.processedby)
         self.assertIsNotNone(areq1.processeddate)
         self.assertIsNone(areq2.approved)
 
         email_mock.assert_called_with(mock.ANY, self.newuser1, False)
         add_to_group_mock.assert_called_with(self.newuser1)
 
-        self.assertEquals(1, AccessRequest.objects.unapproved().count())
+        self.assertEqual(1, AccessRequest.objects.unapproved().count())

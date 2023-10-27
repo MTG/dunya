@@ -660,7 +660,7 @@ def makam_symbtrlist(request):
 
 
 def _get_symbtr_sourcetypes():
-    types = [u'symbtrtxt', u'symbtrmidi', u'symbtrpdf', u'symbtrxml', u'symbtrmu2']
+    types = ['symbtrtxt', 'symbtrmidi', 'symbtrpdf', 'symbtrxml', 'symbtrmu2']
     return docserver.models.SourceFileType.objects.filter(slug__in=types)
 
 

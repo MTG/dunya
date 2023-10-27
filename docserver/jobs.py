@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from __future__ import absolute_import
 
 import importlib
 import json
@@ -219,7 +218,7 @@ def _save_file(derivedfile, partnumber, extension, data):
             with open(fullname, "w") as fp:
                 json.dump(data, fp, cls=NumPyArangeEncoder)
         else:
-            if isinstance(data, six.string_types):
+            if isinstance(data, str):
                 data = data.encode("utf-8")
             with open(fullname, "wb") as fp:
                 fp.write(data)

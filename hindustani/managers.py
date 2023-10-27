@@ -75,7 +75,7 @@ class HindustaniInstrumentManager(models.Manager):
 
 
 class HindustaniReleaseManager(models.Manager):
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(collection__collectionid__in=ids)
@@ -83,7 +83,7 @@ class HindustaniReleaseManager(models.Manager):
 
 
 class HindustaniRecordingManager(models.Manager):
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(release__collection__collectionid__in=ids)

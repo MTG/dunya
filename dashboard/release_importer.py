@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from __future__ import print_function
 import compmusic
 import django.utils.timezone
 
@@ -41,7 +40,7 @@ RELATION_RELEASE_INSTRUMENT = "67555849-61e5-455b-96e3-29733f0115f5"
 RELATION_RECORDING_WORK_PERFORMANCE = "a3005666-a872-32c3-ad06-98af558e99b0"
 
 
-class ReleaseImporter(object):
+class ReleaseImporter:
     def __init__(self, collection):
         """Create a release importer.
         Arguments:

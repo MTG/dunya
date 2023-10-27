@@ -28,7 +28,7 @@ class ApiTestCase(TestCase):
 
 class ArtistTest(ApiTestCase):
     def setUp(self):
-        super(ArtistTest, self).setUp()
+        super().setUp()
         self.i = models.Instrument.objects.create(name="Violin")
         self.a1 = models.Artist.objects.create(name="Artist1", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85",
                                                main_instrument=self.i)
@@ -170,7 +170,7 @@ class ArtistTest(ApiTestCase):
 
 class ComposerTest(ApiTestCase):
     def setUp(self):
-        super(ComposerTest, self).setUp()
+        super().setUp()
         self.c = models.Composer.objects.create(name="Composer", mbid="8d61fc81-d3ac-43a3-bbec-dc00162ee87d")
 
     def test_render_composer_inner(self):
@@ -180,7 +180,7 @@ class ComposerTest(ApiTestCase):
 
 class RecordingTest(ApiTestCase):
     def setUp(self):
-        super(RecordingTest, self).setUp()
+        super().setUp()
 
         self.coll1id = str(uuid.uuid4())
         self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
@@ -246,7 +246,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         response = client.get("/api/hindustani/recording", **{'HTTP_DUNYA_COLLECTION': 'not-a-uuid'})
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
 
     def test_recording_list_collection(self):
         """ Staff members will see recordings from restricted collections in
@@ -281,7 +281,7 @@ class RecordingTest(ApiTestCase):
 
 class WorkTest(ApiTestCase):
     def setUp(self):
-        super(WorkTest, self).setUp()
+        super().setUp()
 
         self.coll1id = str(uuid.uuid4())
         self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
@@ -407,7 +407,7 @@ class WorkTest(ApiTestCase):
 
 class RaagTest(ApiTestCase):
     def setUp(self):
-        super(RaagTest, self).setUp()
+        super().setUp()
         self.r = models.Raag.objects.create(name="raag", common_name="raag",
                                             uuid="3cecdb8e-2a54-4833-8049-b3d8060f7e32")
 
@@ -438,7 +438,7 @@ class RaagTest(ApiTestCase):
 
 class TaalTest(ApiTestCase):
     def setUp(self):
-        super(TaalTest, self).setUp()
+        super().setUp()
         self.t = models.Taal.objects.create(name="taal", common_name="taal",
                                             uuid="4f55fa34-5f77-4570-888c-0596cfc8a81a")
 
@@ -469,7 +469,7 @@ class TaalTest(ApiTestCase):
 
 class FormTest(ApiTestCase):
     def setUp(self):
-        super(FormTest, self).setUp()
+        super().setUp()
         self.f = models.Form.objects.create(name="form", common_name="form",
                                             uuid="29847751-350b-4db2-9d18-630769ee2c6c")
 
@@ -500,7 +500,7 @@ class FormTest(ApiTestCase):
 
 class LayaTest(ApiTestCase):
     def setUp(self):
-        super(LayaTest, self).setUp()
+        super().setUp()
         self.l = models.Laya.objects.create(name="laya", common_name="laya",
                                             uuid="e5d56b8c-f791-430a-ac2b-4c75f81a87c5")
 
@@ -531,7 +531,7 @@ class LayaTest(ApiTestCase):
 
 class ReleaseTest(ApiTestCase):
     def setUp(self):
-        super(ReleaseTest, self).setUp()
+        super().setUp()
 
         self.coll1id = str(uuid.uuid4())
         self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
@@ -606,7 +606,7 @@ class ReleaseTest(ApiTestCase):
 
 class InstrumentTest(ApiTestCase):
     def setUp(self):
-        super(InstrumentTest, self).setUp()
+        super().setUp()
         self.instmbid = str(uuid.uuid4())
         self.i = models.Instrument.objects.create(name="inst", id=9, mbid=self.instmbid)
 

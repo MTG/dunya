@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 from django.test import TestCase
 
 from makam import models
@@ -8,7 +6,7 @@ from makam import models
 class FormTest(TestCase):
 
     def test_unaccent_get(self):
-        f = models.Form.objects.create(name=u"Şarkı")
+        f = models.Form.objects.create(name="Şarkı")
         ret = models.Form.objects.unaccent_get("sarki")
         self.assertEqual(f, ret)
 

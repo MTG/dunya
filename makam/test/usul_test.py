@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 from django.test import TestCase
 
 from makam import models
@@ -12,7 +10,7 @@ class UsulTest(TestCase):
         self.w.usul.add(self.u)
 
     def test_unaccent_get(self):
-        u = models.Usul.objects.create(name=u"Çeng-i Harbî")
+        u = models.Usul.objects.create(name="Çeng-i Harbî")
         ret = models.Usul.objects.unaccent_get("ceng-i harbi")
         self.assertEqual(u, ret)
 

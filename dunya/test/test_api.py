@@ -10,14 +10,14 @@ class ApiTest(TestCase):
         get_request = factory.get('/', HTTP_DUNYA_COLLECTION='35671712-f6a8-449d-bad8-c8d7d94c84ba')
 
         uuids = get_collection_ids_from_request_or_error(get_request)
-        self.assertEquals(uuids, ['35671712-f6a8-449d-bad8-c8d7d94c84ba'])
+        self.assertEqual(uuids, ['35671712-f6a8-449d-bad8-c8d7d94c84ba'])
 
     def test_validate_many_uuids(self):
         factory = RequestFactory()
         get_request = factory.get('/', HTTP_DUNYA_COLLECTION='35671712-f6a8-449d-bad8-c8d7d94c84ba,35671712-f6a8-449d-bad8-c8d7d94c84ba')
 
         uuids = get_collection_ids_from_request_or_error(get_request)
-        self.assertEquals(uuids, ['35671712-f6a8-449d-bad8-c8d7d94c84ba', '35671712-f6a8-449d-bad8-c8d7d94c84ba'])
+        self.assertEqual(uuids, ['35671712-f6a8-449d-bad8-c8d7d94c84ba', '35671712-f6a8-449d-bad8-c8d7d94c84ba'])
 
     def test_validate_invalid_uuid(self):
         factory = RequestFactory()

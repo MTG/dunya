@@ -144,7 +144,7 @@ class ArtistTest(ApiTestCase):
 
 class ComposerTest(ApiTestCase):
     def setUp(self):
-        super(ComposerTest, self).setUp()
+        super().setUp()
         self.c = models.Composer.objects.create(name="Composer", mbid="392fa7ab-f87d-4a07-9c83-bd23130e711b")
 
     def test_render_composer_detail(self):
@@ -225,7 +225,7 @@ class ReleaseTest(ApiTestCase):
 
 class RecordingTest(ApiTestCase):
     def setUp(self):
-        super(RecordingTest, self).setUp()
+        super().setUp()
         pass
 
     def test_render_recording_detail(self):
@@ -281,7 +281,7 @@ class RecordingTest(ApiTestCase):
 
 class WorkTest(ApiTestCase):
     def setUp(self):
-        super(WorkTest, self).setUp()
+        super().setUp()
         self.w = models.Work.objects.create(title="work", mbid="5f41f3ed-6c48-403f-ba6c-3e810b58295c")
 
     def test_render_work_detail(self):
@@ -306,7 +306,7 @@ class WorkTest(ApiTestCase):
 
 class InstrumentTest(ApiTestCase):
     def setUp(self):
-        super(InstrumentTest, self).setUp()
+        super().setUp()
         self.uuid = "1f20598b-cf3a-4253-a576-d8025abb47fd"
         self.i1 = models.Instrument.objects.create(pk=3, name="inst1", mbid=self.uuid)
         self.rec1 = models.Recording.objects.create(title="rec1")
@@ -336,7 +336,7 @@ class InstrumentTest(ApiTestCase):
 
 class MakamTest(ApiTestCase):
     def setUp(self):
-        super(MakamTest, self).setUp()
+        super().setUp()
         self.m = models.Makam.objects.create(name="makam", uuid="9c9b77cc-e357-402f-9278-2c5ed49e06b7")
 
     def test_makam_by_id(self):
@@ -370,7 +370,7 @@ class MakamTest(ApiTestCase):
 
 class FormTest(ApiTestCase):
     def setUp(self):
-        super(FormTest, self).setUp()
+        super().setUp()
         self.f = models.Form.objects.create(name="form", uuid="1494b665-8b67-430f-b6e6-efdcd42ddd3f")
 
     def test_form_by_id(self):
@@ -404,7 +404,7 @@ class FormTest(ApiTestCase):
 
 class UsulTest(ApiTestCase):
     def setUp(self):
-        super(UsulTest, self).setUp()
+        super().setUp()
         self.u = models.Usul.objects.create(name="usul", uuid="d5e15ee7-e6c3-4148-845c-8e7610c619e9")
 
     def test_usul_by_id(self):
@@ -438,7 +438,7 @@ class UsulTest(ApiTestCase):
 
 class SymbTrTest(ApiTestCase):
     def setUp(self):
-        super(SymbTrTest, self).setUp()
+        super().setUp()
         self.s = models.SymbTr.objects.create(name="usul", uuid="d5e15ee7-e6c3-4148-4444-8e7610c65555")
 
     def test_render_symbtr_detail(self):

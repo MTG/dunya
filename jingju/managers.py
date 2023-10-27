@@ -6,7 +6,7 @@ from django.db import models
 class CollectionReleaseManager(models.Manager):
     use_for_related_fields = True
 
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(collection__collectionid__in=ids)
@@ -16,7 +16,7 @@ class CollectionReleaseManager(models.Manager):
 class CollectionRecordingManager(models.Manager):
     use_for_related_fields = True
 
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(release__collection__collectionid__in=ids)
@@ -28,7 +28,7 @@ class CollectionRecordingManager(models.Manager):
 class ArtistManager(models.Manager):
     use_for_related_fields = True
 
-    def with_permissions(self, ids: List[str], permission):
+    def with_permissions(self, ids: list[str], permission):
         qs = self.get_queryset()
         if ids:
             qs = qs.filter(recording__release__collection__collectionid__in=ids).distinct()

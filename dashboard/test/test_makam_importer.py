@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import uuid
 
 from django.test import TestCase
@@ -23,9 +22,9 @@ class MakamImporterTest(TestCase):
         self.assertEqual(m, get_m)
 
         # 2 aliases with the same unaccent() representation
-        hm = models.Makam.objects.create(name=u"Hicaz Hümayun", uuid=str(uuid.uuid4()))
-        hma1 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümayun")
-        hma2 = models.MakamAlias.objects.create(makam=hm, name=u"Hicaz-Hümâyûn")
+        hm = models.Makam.objects.create(name="Hicaz Hümayun", uuid=str(uuid.uuid4()))
+        hma1 = models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümayun")
+        hma2 = models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümâyûn")
 
         get_m = self.mi._get_makam("hicaz-humayun")
         self.assertEqual(hm, get_m)

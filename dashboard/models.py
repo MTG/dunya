@@ -32,7 +32,7 @@ class StateCarryingManager(models.Manager):
     def create(self, **kwargs):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
-        if isinstance(self.stateclass, six.string_types):
+        if isinstance(self.stateclass, str):
             db = apps.get_app_config("dashboard")
             cls = db.get_model(self.stateclass)
         else:
@@ -47,7 +47,7 @@ class StateCarryingManager(models.Manager):
     def get_or_create(self, **kwargs):
         if not self.stateclass or not self.linkname:
             raise ValueError("Need stateclass and linkname set in a subclass")
-        if isinstance(self.stateclass, six.string_types):
+        if isinstance(self.stateclass, str):
             db = apps.get_app_config("dashboard")
             cls = db.get_model(self.stateclass)
         else:
@@ -297,7 +297,7 @@ class CollectionDirectory(models.Model):
         return os.path.join(self.collection.audio_directory, self.path)
 
     def __str__(self):
-        return u"From collection %s, release %s, path on disk %s" % (
+        return "From collection {}, release {}, path on disk {}".format(
             self.collection,
             self.musicbrainzrelease, self.path)
 

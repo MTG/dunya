@@ -28,7 +28,7 @@ import data.models
 from carnatic import managers
 
 
-class CarnaticStyle(object):
+class CarnaticStyle:
     def get_style(self):
         return "carnatic"
 
@@ -99,7 +99,7 @@ class Artist(CarnaticStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
-    def collaborating_artists(self, collection_ids: List[str]=False, permission=False):
+    def collaborating_artists(self, collection_ids: list[str]=False, permission=False):
         # Returns [ (collaborating artist, list of concerts, number of restricted concerts) ]
         #   - number of restricted concerts corresponds to the number of concerts not in the given collections
         # Get all concerts
@@ -127,12 +127,12 @@ class Artist(CarnaticStyle, data.models.Artist):
         collaborators = sorted(collaborators, key=lambda c: (len(c[1]) + c[2], len(c[1])), reverse=True)
         return collaborators
 
-    def recordings(self, collection_ids: Optional[List[str]]=None, permission=False):
+    def recordings(self, collection_ids: list[str] | None=None, permission=False):
         if collection_ids is None:
             collection_ids = []
         return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
 
-    def concerts(self, raagas=[], taalas=[], collection_ids: Optional[List[str]]=None, permission=False):
+    def concerts(self, raagas=[], taalas=[], collection_ids: list[str] | None=None, permission=False):
         """ Get all the concerts that this artist performs in
         If `raagas` or `taalas` is set, only show concerts where
         these raagas or taalas were performed.
@@ -317,7 +317,7 @@ class RecordingForm(models.Model):
         ordering = ("sequence", )
 
     def __str__(self):
-        return u"%s, seq %d %s" % (self.recording, self.sequence, self.form)
+        return "%s, seq %d %s" % (self.recording, self.sequence, self.form)
 
 
 class Form(models.Model):
@@ -487,7 +487,7 @@ class RecordingRaaga(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return u"%s, seq %d %s" % (self.recording, self.sequence, self.raaga)
+        return "%s, seq %d %s" % (self.recording, self.sequence, self.raaga)
 
 
 class RecordingTaala(models.Model):
@@ -496,7 +496,7 @@ class RecordingTaala(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return u"%s, seq %d %s" % (self.recording, self.sequence, self.taala)
+        return "%s, seq %d %s" % (self.recording, self.sequence, self.taala)
 
 
 class WorkRaaga(models.Model):
@@ -505,7 +505,7 @@ class WorkRaaga(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return u"%s, seq %d %s" % (self.work, self.sequence, self.raaga)
+        return "%s, seq %d %s" % (self.work, self.sequence, self.raaga)
 
 
 class WorkTaala(models.Model):
@@ -514,7 +514,7 @@ class WorkTaala(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return u"%s, seq %d %s" % (self.work, self.sequence, self.taala)
+        return "%s, seq %d %s" % (self.work, self.sequence, self.taala)
 
 
 class RecordingWork(models.Model):
@@ -523,7 +523,7 @@ class RecordingWork(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return u"%s, seq %d %s" % (self.recording, self.sequence, self.work)
+        return "%s, seq %d %s" % (self.recording, self.sequence, self.work)
 
 
 class Recording(CarnaticStyle, data.models.Recording):

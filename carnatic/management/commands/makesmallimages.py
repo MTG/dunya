@@ -13,7 +13,6 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
-from __future__ import print_function
 
 import os
 from PIL import Image
@@ -44,7 +43,7 @@ class Command(BaseCommand):
 
             img.small_image.save(smallfname, ContentFile(out.getvalue()))
             img.save()
-        except IOError:
+        except OSError:
             pass
 
     def handle(self, *args, **options):

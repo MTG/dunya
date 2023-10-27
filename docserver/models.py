@@ -50,7 +50,7 @@ class Collection(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = slugify(self.name)
-        super(Collection, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse("docserver-collection", args=[self.slug])
@@ -89,7 +89,7 @@ class Document(models.Model):
         return reverse("ds-document-external", args=[self.external_identifier])
 
     def __str__(self):
-        ret = u""
+        ret = ""
         if self.title:
             ret += f"{self.title}"
         if self.external_identifier:

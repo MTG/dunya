@@ -28,26 +28,26 @@ def inline_artist_list(artists):
     if len(artists) == 1:
         return inline_artist_part(artists[0])
     elif len(artists) > 1:
-        return mark_safe(u", ".join([inline_artist_part(a) for a in artists]))
+        return mark_safe(", ".join([inline_artist_part(a) for a in artists]))
     else:
-        return u"(unknown)"
+        return "(unknown)"
 
 
 def inline_artist_part(artist):
     if isinstance(artist, hindustani.models.Artist):
-        return format_html(u'<span class="title">{}</span>', artist.name)
+        return format_html('<span class="title">{}</span>', artist.name)
     else:
         return artist.name
 
 
 @register.simple_tag
 def inline_release(release):
-    return format_html(u'<span>{}</span>', release.title)
+    return format_html('<span>{}</span>', release.title)
 
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html(u'<span>{}</span>', composer.name)
+    return format_html('<span>{}</span>', composer.name)
 
 
 @register.simple_tag
@@ -58,7 +58,7 @@ def inline_work_list(works):
         if w.composers.exists():
             text = mark_safe(f"{text} by {inline_composer(w.composers.all()[0])}")
         allworks.append(text)
-    return mark_safe(u", ".join(allworks))
+    return mark_safe(", ".join(allworks))
 
 
 @register.simple_tag
@@ -68,14 +68,14 @@ def inline_work(work):
 
 @register.simple_tag
 def inline_raag(raag):
-    return format_html(u'<span title="{}">{}</span>', raag.common_name.title(), raag.name.title())
+    return format_html('<span title="{}">{}</span>', raag.common_name.title(), raag.name.title())
 
 
 @register.simple_tag
 def inline_form(form):
-    return format_html(u'<span title="{}">{}</span>', form.common_name.title(), form.name.title())
+    return format_html('<span title="{}">{}</span>', form.common_name.title(), form.name.title())
 
 
 @register.simple_tag
 def inline_taal(taal):
-    return format_html(u'<span title="{}">{}</span>', taal.common_name.title(), taal.name.title())
+    return format_html('<span title="{}">{}</span>', taal.common_name.title(), taal.name.title())
