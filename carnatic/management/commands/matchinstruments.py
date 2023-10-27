@@ -65,11 +65,11 @@ class Command(BaseCommand):
             if not picture and altpicture:
                 picture = altpicture
             if picture:
-                print("downloading picture from %s" % picture)
+                print(f"downloading picture from {picture}")
                 req = requests.get(picture)
                 piccontents = req.content
                 im = data.models.Image()
-                im.image.save("%s.jpg" % i.name, ContentFile(piccontents))
+                im.image.save(f"{i.name}.jpg", ContentFile(piccontents))
                 i.image = im
             if description:
                 if source:

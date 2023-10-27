@@ -22,7 +22,7 @@ def convert_mp3(file_id):
     with transaction.atomic():
         for i, s in enumerate(segments, 1):
             if i % 100 == 0:
-                print("  - [%s]: Done %s/%s" % (file_id, i, numsegs))
+                print(f"  - [{file_id}]: Done {i}/{numsegs}")
             inname = s.segment_path
             inname = inname[:-3] + "wav"
             outname = inname[:-3] + "mp3"
@@ -41,9 +41,9 @@ def fix_segments(file_id):
     thefile = models.File.objects.get(pk=file_id)
     patterns = thefile.pattern_set.all()
     wav_file, wav_created = util.docserver_get_wav_filename(thefile.mbid)
-    print("Making segments for file %s" % thefile)
+    print(f"Making segments for file {thefile}")
     numpat = len(patterns)
-    print("Got %s segments to do" % numpat)
+    print(f"Got {numpat} segments to do")
     wav_in = wave.open(wav_file, 'rb')
     params = wav_in.getparams()
     samplerate = wav_in.getframerate()
@@ -51,14 +51,14 @@ def fix_segments(file_id):
     with transaction.atomic():
         for i, p in enumerate(patterns, 1):
             if i % 100 == 0:
-                print("  - [%s]: Done %s/%s" % (file_id, i, numpat))
+                print(f"  - [{file_id}]: Done {i}/{numpat}")
             r_start = round(p.start_time, 1)
             r_end = round(p.end_time, 1)
             qs = models.Segment.objects.filter(file=thefile, rounded_start=r_start, rounded_end=r_end)
             if qs.exists():
                 start_str = str(r_start)
                 end_str = str(r_end)
-                fname = "%s-%s.wav" % (start_str, end_str)
+                fname = f"{start_str}-{end_str}.wav"
                 dname = start_str[0]
 
                 full_dir = os.path.join(ROOT_DIR, str(thefile.id), dname)
@@ -66,7 +66,7 @@ def fix_segments(file_id):
                 mp3_path = full_path[:-3] + "mp3"
 
                 if os.path.exists(mp3_path) and os.stat(mp3_path).st_size == 0:
-                    print("deleting %s" % mp3_path)
+                    print(f"deleting {mp3_path}")
                     os.unlink(mp3_path)
                     sframe = int(math.floor(r_start * samplerate))
                     eframe = int(math.ceil(r_end * samplerate))
@@ -86,9 +86,9 @@ def make_segments(file_id):
     thefile = models.File.objects.get(pk=file_id)
     patterns = thefile.pattern_set.all()
     wav_file, wav_created = util.docserver_get_wav_filename(thefile.mbid)
-    print("Making segments for file %s" % thefile)
+    print(f"Making segments for file {thefile}")
     numpat = len(patterns)
-    print("Got %s segments to do" % numpat)
+    print(f"Got {numpat} segments to do")
     wav_in = wave.open(wav_file, 'rb')
     params = wav_in.getparams()
     samplerate = wav_in.getframerate()
@@ -96,7 +96,7 @@ def make_segments(file_id):
     with transaction.atomic():
         for i, p in enumerate(patterns, 1):
             if i % 100 == 0:
-                print("  - [%s]: Done %s/%s" % (file_id, i, numpat))
+                print(f"  - [{file_id}]: Done {i}/{numpat}")
             r_start = round(p.start_time, 1)
             r_end = round(p.end_time, 1)
             qs = models.Segment.objects.filter(file=thefile, rounded_start=r_start, rounded_end=r_end)
@@ -108,7 +108,7 @@ def make_segments(file_id):
             else:
                 start_str = str(r_start)
                 end_str = str(r_end)
-                fname = "%s-%s.wav" % (start_str, end_str)
+                fname = f"{start_str}-{end_str}.wav"
                 dname = start_str[0]
 
                 full_dir = os.path.join(ROOT_DIR, str(thefile.id), dname)

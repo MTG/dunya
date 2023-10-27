@@ -97,7 +97,7 @@ class ArtistTest(ApiTestCase):
         self.assertEqual("805a3604-92e6-482f-a0e3-6620c4523d7a", data["releases"][0]["mbid"])
 
         # Even if they ask for restricted collection, only the normal ones
-        collections = "%s, %s" % (self.coll1id, self.coll3id)
+        collections = f"{self.coll1id}, {self.coll3id}"
         response = client.get("/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -114,7 +114,7 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(1, len(data["releases"]))
 
         # or restricted collections too
-        collections = "%s, %s" % (self.coll3id, self.coll1id)
+        collections = f"{self.coll3id}, {self.coll1id}"
         response = client.get("/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -133,7 +133,7 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(1, len(data["releases"]))
 
         # or restricted collections too
-        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get("/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -200,7 +200,7 @@ class ReleaseTest(ApiTestCase):
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
-        collections = "%s, %s" % (self.coll3id, self.coll2id)
+        collections = f"{self.coll3id}, {self.coll2id}"
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
 
@@ -209,7 +209,7 @@ class ReleaseTest(ApiTestCase):
         # A normal user passing a collection over header parameter will still only
         # get 1 release
         client.force_authenticate(user=self.normaluser)
-        collections = "%s, %s" % (self.coll3id, self.coll1id)
+        collections = f"{self.coll3id}, {self.coll1id}"
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
@@ -217,7 +217,7 @@ class ReleaseTest(ApiTestCase):
         # A restricted user using collection header will get the release associated
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
-        collections = "%s, %s, %s" % (self.coll3id, self.coll1id, self.coll2id)
+        collections = f"{self.coll3id}, {self.coll1id}, {self.coll2id}"
         response = client.get("/api/makam/release", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(2, len(data["results"]))
@@ -325,7 +325,7 @@ class InstrumentTest(ApiTestCase):
         self.assertEqual(["mbid", "name"], sorted(data.keys()))
 
     def test_instrument_detail_url(self):
-        resp = self.apiclient.get("/api/makam/instrument/%s" % self.uuid)
+        resp = self.apiclient.get(f"/api/makam/instrument/{self.uuid}")
         self.assertEqual(200, resp.status_code)
 
     def test_instrument_list_url(self):

@@ -84,18 +84,18 @@ class Artist(CarnaticStyle, data.models.Artist):
         siblings = sorted(siblings, key=lambda a: abs((int(a[1].begin[:4]) if a[1].begin else 9999) - ourage))
 
         for g in gurus:
-            ids.append((g.id, "%s is the guru of %s" % (g.name, self.name)))
+            ids.append((g.id, f"{g.name} is the guru of {self.name}"))
             idset.add(g.id)
         for s in students:
             if s.id not in idset:
                 idset.add(s.id)
-                ids.append((s.id, "%s is a student of %s" % (s.name, self.name)))
+                ids.append((s.id, f"{s.name} is a student of {self.name}"))
         for sib in siblings:
             guru = sib[0]
             s = sib[1]
             if s.id not in idset:
                 idset.add(s.id)
-                ids.append((s.id, "%s and %s share the same guru (%s)" % (self.name, s.name, guru.name)))
+                ids.append((s.id, f"{self.name} and {s.name} share the same guru ({guru.name})"))
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
@@ -260,7 +260,7 @@ class ConcertRecording(models.Model):
         ordering = ("track", )
 
     def __str__(self):
-        return u"%s: %s from %s" % (self.track, self.recording, self.concert)
+        return f"{self.track}: {self.recording} from {self.concert}"
 
 
 class Concert(CarnaticStyle, data.models.Release):
@@ -273,7 +273,7 @@ class Concert(CarnaticStyle, data.models.Release):
     collection = models.ForeignKey('data.Collection', blank=True, null=True, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        viewname = "%s-concert" % (self.get_style(), )
+        viewname = f"{self.get_style()}-concert"
         return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def tracklist(self):

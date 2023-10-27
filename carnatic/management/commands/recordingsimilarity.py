@@ -38,7 +38,7 @@ class Command(BaseCommand):
         sim = obj["similar"]
         if not sim:
             return None
-        insert = {"id": "sim_%s" % (mbid,),
+        insert = {"id": f"sim_{mbid}",
                   "similar_s": json.dumps(sim),
                   "mbid_t": mbid,
                   "doctype_s": "recordingsimilarity",
@@ -47,7 +47,7 @@ class Command(BaseCommand):
         return insert
 
     def import_solr(self, module):
-        dirname = "similarity-%s" % module
+        dirname = f"similarity-{module}"
         files = os.listdir(dirname)
         ret = []
         for f in files:
@@ -67,7 +67,7 @@ class Command(BaseCommand):
             try:
                 adata = util.docserver_get_json(a, "normalisedpitch", "normalisedhistogram")
             except util.NoFileException:
-                print("can't find recording %s in docserver" % a)
+                print(f"can't find recording {a} in docserver")
                 self.intonationmap[a] = None
                 return None
             self.intonationmap[a] = adata
@@ -78,7 +78,7 @@ class Command(BaseCommand):
             try:
                 bdata = util.docserver_get_json(b, "normalisedpitch", "normalisedhistogram")
             except util.NoFileException:
-                print("can't find recording %s in docserver" % b)
+                print(f"can't find recording {b} in docserver")
                 return None
             self.intonationmap[b] = bdata
 
@@ -109,7 +109,7 @@ class Command(BaseCommand):
             if distance:
                 sims.append((oid, distance))
         sims = sorted(sims, key=lambda a: a[1])
-        name = "similarity/%s.json" % rid
+        name = f"similarity/{rid}.json"
         ret = {"mbid": rid, "similar": sims}
         json.dump(ret, open(name, "wb"))
 
@@ -123,7 +123,7 @@ class Command(BaseCommand):
                                                                            concert__collection__permission__in=['R',
                                                                                                                 'U']).exclude(
                     pk=rec.pk).distinct()
-                print("Recording %s (%s/%s)" % (rec, i, total))
+                print(f"Recording {rec} ({i}/{total})")
                 self.compute_similarity(rec, otherrecordings)
 
     def compute_matrix_hindustani(self):
@@ -134,7 +134,7 @@ class Command(BaseCommand):
                 raag = rec.raags.get()
                 otherrecordings = hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(
                     pk=rec.pk).distinct()
-                print("Recording %s (%s/%s)" % (rec, i, total))
+                print(f"Recording {rec} ({i}/{total})")
                 self.compute_similarity(rec, otherrecordings)
 
     def handle(self, *args, **options):

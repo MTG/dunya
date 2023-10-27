@@ -89,7 +89,7 @@ def docserver_upload_and_save_file(document_id, sft_id, file):
         print("Error making directory", datadir)
         pass
 
-    filename = "%s-%s.%s" % (mbid, slug, ext)
+    filename = f"{mbid}-{slug}.{ext}"
     filepath = os.path.join(datadir, filename)
 
     size = _write_to_disk(file, filepath)

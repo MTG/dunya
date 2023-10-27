@@ -15,7 +15,7 @@ class File(models.Model):
     hasseed = models.IntegerField()
 
     def __str__(self):
-        return u"%s (%s) [%s]" % (self.filename, self.mbid, self.hasseed)
+        return f"{self.filename} ({self.mbid}) [{self.hasseed}]"
 
 
 class Match(models.Model):
@@ -27,7 +27,7 @@ class Match(models.Model):
     version = models.IntegerField()
 
     def __str__(self):
-        return u"%s, %s (%s) [%s]" % (self.source, self.target, self.distance, self.version)
+        return f"{self.source}, {self.target} ({self.distance}) [{self.version}]"
 
 
 class Pattern(models.Model):
@@ -54,7 +54,7 @@ class Segment(models.Model):
     segment_path = models.CharField(max_length=500)
 
     def __str__(self):
-        return u"segment of %s (%s-%s)" % (self.file, self.rounded_start, self.rounded_end)
+        return f"segment of {self.file} ({self.rounded_start}-{self.rounded_end})"
 
     def get_absolute_url(self):
         return reverse('motif-segment', args=[self.pk])

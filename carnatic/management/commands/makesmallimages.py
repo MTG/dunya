@@ -30,12 +30,12 @@ class Command(BaseCommand):
     def make_small(self, item):
         print(item)
         img = item.image
-        print("  %s" % img)
+        print(f"  {img}")
 
         size = 150, 150
         big = img.image
         fname = os.path.basename(big.name)
-        smallfname = "small_%s" % fname
+        smallfname = f"small_{fname}"
         try:
             pilimage = Image.open(big.path)
             out = six.BytesIO()

@@ -182,21 +182,21 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         try:
             return carnatic.models.Form.objects.fuzzy(form)
         except carnatic.models.Form.DoesNotExist:
-            logger.warn("Cannot find form: %s" % form)
+            logger.warn(f"Cannot find form: {form}")
             return None
 
     def _get_raaga(self, raaganame):
         try:
             return carnatic.models.Raaga.objects.fuzzy(raaganame)
         except carnatic.models.Raaga.DoesNotExist:
-            logger.warn("Cannot find raaga: %s" % raaganame)
+            logger.warn(f"Cannot find raaga: {raaganame}")
             return None
 
     def _get_taala(self, taalaname):
         try:
             return carnatic.models.Taala.objects.fuzzy(taalaname)
         except carnatic.models.Taala.DoesNotExist:
-            logger.warn("Cannot find taala: %s" % taalaname)
+            logger.warn(f"Cannot find taala: {taalaname}")
             return None
 
     def _get_instrument(self, instname):
@@ -217,7 +217,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             if "lead" in attrs:
                 is_lead = True
         else:
-            logger.info("   Unknown performance type: {}".format(perf_type))
+            logger.info(f"   Unknown performance type: {perf_type}")
             instr_name = None
 
         attributes = " ".join(attrs)
@@ -235,7 +235,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         if instrument:
             carnatic.models.InstrumentPerformance.objects.get_or_create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
         else:
-            logger.info("  Got a performance, but no instrument found. recording {} type {} attrs {}".format(recordingid, perf_type, attrs))
+            logger.info(f"  Got a performance, but no instrument found. recording {recordingid} type {perf_type} attrs {attrs}")
 
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         """If there is a relationship between a release and artist, apply the relationship to all

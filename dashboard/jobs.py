@@ -48,8 +48,8 @@ class DunyaTask(celery.Task):
             theobj.add_log_message(einfo)
             theobj.set_state_error()
         except self.ObjectClass.DoesNotExist:
-            classname = "%s.%s" % (self.ObjectClass.__module__, self.ObjectClass.__name__)
-            raise Exception("Cannot find %s object with key %s to add error to" % (classname, args[0]))
+            classname = f"{self.ObjectClass.__module__}.{self.ObjectClass.__name__}"
+            raise Exception(f"Cannot find {classname} object with key {args[0]} to add error to")
         raise exc
 
 
@@ -263,7 +263,7 @@ def update_collection(collectionid):
                 collection=coll,
                 defaults={"title": title, "artist": artist})
         except compmusic.mb.ResponseError:
-            coll.add_log_message("The collection had an entry for %s but I can't find a release with that ID" % relid)
+            coll.add_log_message(f"The collection had an entry for {relid} but I can't find a release with that ID")
 
     for relid in to_remove:
         coll.musicbrainzrelease_set.filter(mbid=relid).delete()

@@ -38,11 +38,11 @@ class Orchestra(AndalusianStyle, data.models.BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        viewname = "%s-orchestra" % (self.get_style(), )
+        viewname = f"{self.get_style()}-orchestra"
         return reverse(viewname, args=[str(self.mbid)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/artist/%s" % self.mbid
+        return f"http://musicbrainz.org/artist/{self.mbid}"
 
     def performers(self):
         IPClass = self.get_object_map("orchestraperformer")
@@ -83,11 +83,11 @@ class Artist(AndalusianStyle, data.models.BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        viewname = "%s-artist" % (self.get_style(), )
+        viewname = f"{self.get_style()}-artist"
         return reverse(viewname, args=[str(self.mbid)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/artist/%s" % self.mbid
+        return f"http://musicbrainz.org/artist/{self.mbid}"
 
     def recordings(self):
         IPClass = self.get_object_map("performance")
@@ -140,7 +140,7 @@ class AlbumRecording(models.Model):
         ordering = ("track", )
 
     def __str__(self):
-        return u"%s: %s from %s" % (self.track, self.recording, self.album)
+        return f"{self.track}: {self.recording} from {self.album}"
 
 
 class Album(AndalusianStyle, data.models.BaseModel):
@@ -160,11 +160,11 @@ class Album(AndalusianStyle, data.models.BaseModel):
         return self.title
 
     def get_absolute_url(self):
-        viewname = "%s-album" % (self.get_style(), )
+        viewname = f"{self.get_style()}-album"
         return reverse(viewname, args=[str(self.mbid)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/release/%s" % self.mbid
+        return f"http://musicbrainz.org/release/{self.mbid}"
 
 
 class Work(AndalusianStyle, data.models.BaseModel):
@@ -199,7 +199,7 @@ class RecordingWork(models.Model):
         ordering = ("sequence", )
 
     def __str__(self):
-        return u"%s: %s" % (self.sequence, self.work.title)
+        return f"{self.sequence}: {self.work.title}"
 
 
 class RecordingManager(models.Manager):
@@ -229,7 +229,7 @@ class Recording(AndalusianStyle, data.models.BaseModel):
         return (self.mbid,)
 
     def __str__(self):
-        return u"%s" % self.title
+        return f"{self.title}"
 
     def performers(self):
         return self.artists.all()
@@ -283,7 +283,7 @@ class InstrumentPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __str__(self):
-        return u"%s playing %s on %s" % (self.performer, self.instrument, self.recording)
+        return f"{self.performer} playing {self.instrument} on {self.recording}"
 
 
 class OrchestraPerformer(models.Model):
@@ -295,13 +295,13 @@ class OrchestraPerformer(models.Model):
     end = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
-        ret = u"%s played %s on %s" % (self.performer, u", ".join([str(i) for i in self.instruments.all()]), self.orchestra)
+        ret = f"{self.performer} played {u', '.join([str(i) for i in self.instruments.all()])} on {self.orchestra}"
         if self.director:
-            ret += u". Moreover, %s acted as the director of this orchestra" % self.performer
+            ret += f". Moreover, {self.performer} acted as the director of this orchestra"
             if self.begin:
-                ret += u" from %s" % self.begin
+                ret += f" from {self.begin}"
             if self.end:
-                ret += u" until %s" % self.end
+                ret += f" until {self.end}"
         return ret
 
 

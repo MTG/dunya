@@ -129,7 +129,7 @@ def index(request):
 
 @user_passes_test(is_staff)
 def headers(request):
-    body = "\n".join(["%s: %s" % (k, v) for k, v in request.META.items()])
+    body = "\n".join([f"{k}: {v}" for k, v in request.META.items()])
     response = HttpResponse(body, content_type="text/plain")
     return response
 
@@ -186,7 +186,7 @@ def delete_collection(request, uuid):
     if request.method == "POST":
         delete = request.POST.get("delete")
         if delete.lower().startswith("yes"):
-            msg = "The collection %s is being deleted" % c.name
+            msg = f"The collection {c.name} is being deleted"
             messages.add_message(request, messages.INFO, msg)
             jobs.delete_collection.delay(c.pk)
             return redirect("dashboard-home")
@@ -400,10 +400,10 @@ def _edit_attributedata(request, data):
 
     ret = {"items": items,
            "entityn": entityname,
-           "entitynpl": "%ss" % entityname,
+           "entitynpl": f"{entityname}s",
            "style": stylename,
            "entityurl": entityurl,
-           "title": "%s editor" % entityname,
+           "title": f"{entityname} editor",
            "common_name": common_name,
            "alias": aliasklass
            }
@@ -412,12 +412,12 @@ def _edit_attributedata(request, data):
         # Add aliases
         if aliasklass:
             for i in items:
-                isadd = request.POST.get("item-%s-alias" % i.id)
+                isadd = request.POST.get(f"item-{i.id}-alias")
                 if isadd is not None:
                     i.aliases.create(name=isadd)
             # Delete alias
             for a in aliasklass.objects.all():
-                isdel = request.POST.get("alias-rm-%s" % a.id)
+                isdel = request.POST.get(f"alias-rm-{a.id}")
                 if isdel is not None:
                     a.delete()
 
@@ -433,7 +433,7 @@ def _edit_attributedata(request, data):
             klass.objects.create(**args)
         # Delete item
         for i in items:
-            isdel = request.POST.get("delete-item-%s" % i.id)
+            isdel = request.POST.get(f"delete-item-{i.id}")
             if isdel is not None:
                 refresh = True
                 i.delete()
@@ -688,7 +688,7 @@ def makam_symbtr(request, uuid=None):
             mbtype = "recording"
         else:
             mbtype = "work"
-        url = "https://musicbrainz.org/%s/%s" % (mbtype, symbtr.uuid)
+        url = f"https://musicbrainz.org/{mbtype}/{symbtr.uuid}"
     else:
         is_taksim = False
         symbtr = None

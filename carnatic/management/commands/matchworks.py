@@ -38,7 +38,7 @@ class Command(BaseCommand):
             taala = row["Taala"]
             lang = row["Language"]
             form = row["Form"]
-            print("work %s" % workname)
+            print(f"work {workname}")
 
             w = models.Work.objects.get(pk=int(id))
             # TODO: Aliases

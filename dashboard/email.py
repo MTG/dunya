@@ -9,7 +9,7 @@ from dunya import settings
 def email_admin_on_new_user(current_site: Site, user):
     """Send an email to site admins when a new user registers an account"""
 
-    subject = 'New user registration - {}'.format(user.username)
+    subject = f'New user registration - {user.username}'
     context = {'username': user.username, 'domain': current_site.domain}
     message = loader.render_to_string('registration/email_notify_admin.html', context)
     from_email = settings.NOTIFICATION_EMAIL_FROM
@@ -29,7 +29,7 @@ def email_user_on_account_approval(current_site: Site, user):
 
 
 def email_admin_on_access_request(current_site: Site, user, justification):
-    subject = 'New restricted acccess request - {}'.format(user.username)
+    subject = f'New restricted acccess request - {user.username}'
     context = {'username': user.username, 'domain': current_site.domain, 'justification': justification}
     message = loader.render_to_string('registration/email_permission_request_notify_admin.html', context)
     from_email = settings.NOTIFICATION_EMAIL_FROM

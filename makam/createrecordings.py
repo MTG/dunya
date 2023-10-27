@@ -45,7 +45,7 @@ def main(path, fake_release_mbid):
                     releases[release] = []
                 releases[release].append(mbid)
             except:
-                print("couldn't find a release for the recording %s" % mbid)
+                print(f"couldn't find a release for the recording {mbid}")
                 continue
     coll = Collection.objects.get(mbid="544f7aec-dba6-440c-943f-103cf344efbb")
     r = makam_importer.MakamReleaseImporter(coll)

@@ -13,29 +13,29 @@ def main(fname):
     for k, d in data.items():
         print(k)
         key = d["key"]["val"].lower()
-        print(" %s" % key)
+        print(f" {key}")
 
-        bname = "data/%s-banshi.csv" % key
-        boutname = "static/jingju/data/%s-banshi.json" % k
+        bname = f"data/{key}-banshi.csv"
+        boutname = f"static/jingju/data/{k}-banshi.json"
         print(" banshi")
         if os.path.exists(bname):
             csvtojson.csvtojson(bname, boutname)
 
-        lname = "data/%s-luogu.csv" % key
-        loutname = "static/jingju/data/%s-luogu.json" % k
+        lname = f"data/{key}-luogu.csv"
+        loutname = f"static/jingju/data/{k}-luogu.json"
         print(" luogu")
         if os.path.exists(lname):
             csvtojson.csvtojson(lname, loutname)
 
-        sname = "data/%s-syllables.csv" % key
-        soutname = "static/jingju/data/%s-lyrics.json" % k
+        sname = f"data/{key}-syllables.csv"
+        soutname = f"static/jingju/data/{k}-lyrics.json"
         print(" syllables")
         if os.path.exists(sname):
             csvtojson.csvtojson(sname, soutname)
 
-        pname = "data/%s-pitch_track.csv" % key
-        poutname = "static/jingju/data/%s-pitch.dat" % k
-        phistoutname = "static/jingju/data/%s-histogram.json" % k
+        pname = f"data/{key}-pitch_track.csv"
+        poutname = f"static/jingju/data/{k}-pitch.dat"
+        phistoutname = f"static/jingju/data/{k}-histogram.json"
         print(" pitch")
         if os.path.exists(pname):
             tonic = d["First degree"]["val"].split(" ")[0]

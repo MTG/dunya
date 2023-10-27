@@ -343,7 +343,7 @@ class WorkTest(ApiTestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        collections = "%s" % self.coll1id
+        collections = f"{self.coll1id}"
         response = client.get("/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -356,7 +356,7 @@ class WorkTest(ApiTestCase):
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        collections = "%s, %s" % (self.coll3id, self.coll1id)
+        collections = f"{self.coll3id}, {self.coll1id}"
         response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -366,19 +366,19 @@ class WorkTest(ApiTestCase):
         client = APIClient()
         client.force_authenticate(user=self.restricteduser)
 
-        collections = "%s" % self.coll1id
+        collections = f"{self.coll1id}"
         response = client.get("/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
-        collections = "%s" % self.coll2id
+        collections = f"{self.coll2id}"
         response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        collections = "%s" % self.coll3id
+        collections = f"{self.coll3id}"
         response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -388,7 +388,7 @@ class WorkTest(ApiTestCase):
         client = APIClient()
         client.force_authenticate(user=self.normaluser)
 
-        collections = "%s" % self.coll1id
+        collections = f"{self.coll1id}"
         response = client.get("/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -398,7 +398,7 @@ class WorkTest(ApiTestCase):
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        collections = "%s, %s, %s" % (str(uuid.uuid4()), self.coll2id, self.coll1id)
+        collections = f"{str(uuid.uuid4())}, {self.coll2id}, {self.coll1id}"
         response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -560,13 +560,13 @@ class ReleaseTest(ApiTestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        collections = "%s" % (self.coll1id,)
+        collections = f"{self.coll1id}"
         response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
-        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
         response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
 
@@ -575,7 +575,7 @@ class ReleaseTest(ApiTestCase):
         # A normal user passing a restricted collection will still only
         # get 1 release
         client.force_authenticate(user=self.normaluser)
-        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
@@ -583,7 +583,7 @@ class ReleaseTest(ApiTestCase):
         # A restricted user passing a restricted collection will still only
         # get 2 release
         client.force_authenticate(user=self.restricteduser)
-        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
         response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(2, len(data["results"]))
@@ -622,5 +622,5 @@ class InstrumentTest(ApiTestCase):
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_instrument_detail_url(self):
-        resp = self.apiclient.get("/api/hindustani/instrument/%s" % self.instmbid)
+        resp = self.apiclient.get(f"/api/hindustani/instrument/{self.instmbid}")
         self.assertEqual(200, resp.status_code)

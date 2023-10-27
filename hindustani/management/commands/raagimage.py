@@ -61,7 +61,7 @@ class Command(BaseCommand):
             entityname = "raaga"
         elif style == "hindustani":
             entityname = "raag"
-        fname = "%s-%s-%s.png" % (style, entityname, raag.common_name.lower().replace(" ", ""))
+        fname = f"{style}-{entityname}-{raag.common_name.lower().replace(' ', '')}.png"
         average.generate_image(fname)
         im = data.models.Image()
         im.image.save(fname, ContentFile(open(fname, "rb").read()))
@@ -80,7 +80,7 @@ class Command(BaseCommand):
         numraagas = len(recmap.keys())
         print("Got", numraagas, "raags")
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
-            print("(%s/%s) %s" % (i, numraagas, raag))
+            print(f"({i}/{numraagas}) {raag}")
             create = True
             if raag.image:
                 if delete:
@@ -110,7 +110,7 @@ class Command(BaseCommand):
         numraagas = len(recmap.keys())
         print("Got", numraagas, "raagas")
         for i, (raaga, recordings) in enumerate(recmap.items(), 1):
-            print("(%s/%s) %s" % (i, numraagas, raaga))
+            print(f"({i}/{numraagas}) {raaga}")
             create = True
             if raaga.image:
                 if delete:

@@ -69,7 +69,7 @@ class Command(BaseCommand):
                 req = requests.get(picture)
                 piccontents = req.content
                 im = data.models.Image()
-                im.image.save("%s.jpg" % i.name, ContentFile(piccontents))
+                im.image.save(f"{i.name}.jpg", ContentFile(piccontents))
                 i.image = im
                 im.save()
             if description:

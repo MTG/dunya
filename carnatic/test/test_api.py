@@ -122,7 +122,7 @@ class ArtistTest(TestCase):
         self.assertEqual(1, len(data["recordings"]))
 
         # or restricted collections too
-        collections = "%s, %s" % (self.coll1id, self.coll3id)
+        collections = f"{self.coll1id}, {self.coll3id}"
         response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -146,7 +146,7 @@ class ArtistTest(TestCase):
         self.assertEqual(1, len(data["recordings"]))
 
         # or restricted collections too
-        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -362,7 +362,7 @@ class WorkTest(TestCase):
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -404,7 +404,7 @@ class WorkTest(TestCase):
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
-        collections = "%s, %s, %s" % (self.coll1id, self.coll3id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll3id}, {self.coll2id}"
         response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
                               **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
@@ -602,7 +602,7 @@ class ConcertTest(TestCase):
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
-        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
 
@@ -611,7 +611,7 @@ class ConcertTest(TestCase):
         # A normal user passing a collection over header parameter will still only
         # get 1 concert
         client.force_authenticate(user=self.normaluser)
-        collections = "%s, %s" % (self.coll1id, self.coll2id)
+        collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
@@ -619,7 +619,7 @@ class ConcertTest(TestCase):
         # A restricted user using will get the concert associated
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
-        collections = "%s, %s, %s" % (self.coll1id, self.coll2id, self.coll3id)
+        collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
         response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
         data = response.data
         self.assertEqual(2, len(data["results"]))

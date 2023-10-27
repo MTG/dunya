@@ -34,7 +34,7 @@ class ImportLogHandler(logging.Handler):
 
         if releaseid:
             release = dashboard.models.MusicbrainzRelease.objects.get(pk=releaseid)
-            message = "%s: %s" % (record.levelname, record.getMessage())
+            message = f"{record.levelname}: {record.getMessage()}"
             release.add_log_message(message)
 
 

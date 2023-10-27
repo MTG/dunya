@@ -182,7 +182,7 @@ def download_external(request, uuid, ftype):
     try:
         doc = models.Document.objects.get(external_identifier=uuid)
     except models.Document.DoesNotExist:
-        return HttpResponseNotFound("Cannot find a document with id %s" % uuid)
+        return HttpResponseNotFound(f"Cannot find a document with id {uuid}")
 
     # if ftype is a sourcetype and it has streamable set, and
     # referrer is dunya, then has_access is true (but we rate-limit)
@@ -285,7 +285,7 @@ def workers_status(request):
     except:
         hosts = None
     workerobs = models.Worker.objects.all()
-    workerkeys = ["celery@%s" % w.hostname for w in workerobs]
+    workerkeys = [f"celery@{w.hostname}" for w in workerobs]
     if hosts:
         hostkeys = hosts.keys()
         workers = list(set(workerkeys) & set(hostkeys))
@@ -373,7 +373,7 @@ def worker(request, hostname):
     except models.Worker.DoesNotExist:
         wk = None
 
-    workername = "celery@%s" % hostname
+    workername = f"celery@{hostname}"
     i = app.control.inspect([workername])
     try:
         tasks = i.active()
@@ -455,7 +455,7 @@ def extractor_modules():
                     module = __import__(modname, fromlist="dummy")
                     for name, ftype in inspect.getmembers(module, inspect.isclass):
                         if issubclass(ftype, extractors.ExtractorModule):
-                            classname = "%s.%s" % (modname, name)
+                            classname = f"{modname}.{name}"
                             if not modules.filter(module=classname).exists():
                                 ret.append(classname)
                 except ImportError:
@@ -538,7 +538,7 @@ def delete_collection(request, slug):
     if request.method == "POST":
         delete = request.POST.get("delete")
         if delete.lower().startswith("yes"):
-            msg = "The collection %s and all its documents are being deleted" % c.name
+            msg = f"The collection {c.name} and all its documents are being deleted"
             messages.add_message(request, messages.INFO, msg)
             jobs.delete_collection.delay(c.pk)
             return redirect("docserver-manager")

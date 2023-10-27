@@ -101,8 +101,8 @@ def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
         ext = sl.replace("symbtr", "")[:3]
         count = len(mbid_file)
         for i, (mbid, name) in enumerate(mbid_file.items(), 1):
-            filename = os.path.join(git_dir, d, "%s.%s" % (name, ext))
-            print("%s) %s/%s: %s (%s)" % (sl, i, count, mbid, name))
+            filename = os.path.join(git_dir, d, f"{name}.{ext}")
+            print(f"{sl}) {i}/{count}: {mbid} ({name})")
             compmusic.dunya.docserver.add_sourcetype(mbid, sl, filename)
             time.sleep(0.1)
 

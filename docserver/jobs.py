@@ -93,9 +93,9 @@ def create_module(modulepath, collections):
     try:
         sourcetype = models.SourceFileType.objects.get_by_slug(instance._sourcetype)
     except models.SourceFileType.DoesNotExist as e:
-        raise Exception("Cannot find source file type '%s'" % instance._sourcetype, e)
+        raise Exception(f"Cannot find source file type '{instance._sourcetype}'", e)
     if models.Module.objects.filter(slug=instance._slug).exists():
-        raise Exception("A module with this slug (%s) already exists" % instance._slug)
+        raise Exception(f"A module with this slug ({instance._slug}) already exists")
 
     module = models.Module.objects.create(
         name=modulepath.rsplit(".", 1)[1],
@@ -118,15 +118,15 @@ def get_latest_module_version(themod_id=None):
     else:
         modules = models.Module.objects.filter(disabled=False)
     for m in modules:
-        logger.info("module %s" % m)
+        logger.info(f"module {m}")
         instance = _get_module_instance_by_path(m.module)
-        logger.info("instance %s" % instance)
+        logger.info(f"instance {instance}")
         if instance:
             if m.disabled:  # if we were disabled and exist again, reenable.
                 m.disabled = False
                 m.save()
             version = instance._version
-            v = "%s" % version
+            v = f"{version}"
 
             versions = m.versions.filter(version=version)
             if not len(versions):
@@ -139,7 +139,7 @@ def get_latest_module_version(themod_id=None):
 @app.task
 def delete_moduleversion(vid):
     version = models.ModuleVersion.objects.get(pk=vid)
-    logger.info("deleting moduleversion %s" % version)
+    logger.info(f"deleting moduleversion {version}")
     files = version.derivedfile_set.all()
     for f in files:
         for pn in range(1, f.num_parts + 1):
@@ -162,7 +162,7 @@ def delete_moduleversion(vid):
 @app.task
 def delete_module(mid):
     module = models.Module.objects.get(pk=mid)
-    logger.info("deleting entire module %s" % module)
+    logger.info(f"deleting entire module {module}")
     for v in module.versions.all():
         delete_moduleversion(v.pk)
     logger.info("done")
@@ -206,7 +206,7 @@ def _save_file(derivedfile, partnumber, extension, data):
     try:
         os.makedirs(fdir)
     except OSError:
-        logger.warn("Error making directory %s" % fdir)
+        logger.warn(f"Error making directory {fdir}")
         pass
 
     fname = derivedfile.filename_for_part(partnumber)
@@ -225,7 +225,7 @@ def _save_file(derivedfile, partnumber, extension, data):
                 fp.write(data)
         fp.close()
     except OSError:
-        logger.warn("Error writing to file %s" % fullname)
+        logger.warn(f"Error writing to file {fullname}")
         logger.warn("Probably a permissions error")
 
 
@@ -251,8 +251,8 @@ def _save_process_results(version, instance, document, worker, results, starttim
             extension = outputdata["extension"]
             mimetype = outputdata["mimetype"]
             multipart = outputdata.get("parts", False)
-            logger.info("data %s (%s)" % (dataslug, type(contents)))
-            logger.info("multiparts %s" % multipart)
+            logger.info(f"data {dataslug} ({type(contents)})")
+            logger.info(f"multiparts {multipart}")
 
             if not multipart:
                 contents = [contents]
@@ -342,17 +342,17 @@ def run_module(moduleid, versionid=None):
 def run_module_on_recordings(moduleid, recids):
     module = models.Module.objects.get(pk=moduleid)
     version = module.get_latest_version()
-    logger.info("running module %s on %s files" % (module, len(recids)))
+    logger.info(f"running module {module} on {len(recids)} files")
     if version:
-        logger.info("version %s %s" % (version, version.pk))
+        logger.info(f"version {version} {version.pk}")
         # All documents that don't already have a derived file for this module version
         docs = models.Document.objects.filter(
             sourcefiles__file_type=module.source_type,
             external_identifier__in=recids,
         ).exclude(derivedfiles__module_version=version)
         for d in docs:
-            logger.info("  document %s" % d)
-            logger.info("  docid %s" % d.pk)
+            logger.info(f"  document {d}")
+            logger.info(f"  docid {d.pk}")
             process_document.delay(d.pk, version.pk)
 
 
@@ -364,9 +364,9 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
         version = module.versions.get(pk=versionid)
     else:
         version = module.get_latest_version()
-    logger.info("running module %s on collection %s" % (module, collection))
+    logger.info(f"running module {module} on collection {collection}")
     if version:
-        logger.info("version %s" % version)
+        logger.info(f"version {version}")
 
         if module.many_files:
             process_collection.delay(collection.pk, version.pk)
@@ -376,7 +376,7 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
                 sourcefiles__file_type=module.source_type,
                 collections=collection).exclude(derivedfiles__module_version=version)
             for i, d in enumerate(docs, 1):
-                logger.info("  document %s/%s - %s" % (i, len(docs), d))
+                logger.info(f"  document {i}/{len(docs)} - {d}")
                 process_document.delay(d.pk, version.pk)
 
 

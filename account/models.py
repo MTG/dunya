@@ -76,4 +76,4 @@ class AccessRequest(models.Model):
         self.processeddate = timezone.now()
 
     def __str__(self):
-        return 'User: {}, Date: {}, approved: {}'.format(self.user, self.requestdate, self.approved)
+        return f'User: {self.user}, Date: {self.requestdate}, approved: {self.approved}'

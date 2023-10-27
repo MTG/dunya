@@ -93,9 +93,9 @@ class Command(BaseCommand):
         sourcefiles = docserver.models.SourceFile.objects.all()
         for i, s in enumerate(sourcefiles):
             if not os.path.exists(s.fullpath):
-                print("%s/%s %s" % (i, len(sourcefiles), s))
+                print(f"{i}/{len(sourcefiles)} {s}")
                 bad.append(s)
-        print("got %s item%s to remove" % (len(bad), "" if len(bad) == 1 else "s"))
+        print(f"got {len(bad)} item{'' if len(bad) == 1 else 's'} to remove")
         if not delete:
             print("Run again with `-d` flag to delete all DerivedFiles associated with these SourceFiles")
         if delete:

@@ -33,7 +33,7 @@ class Recording(JingjuStyle, data.models.BaseModel):
     objects = managers.CollectionRecordingManager()
 
     def __str__(self):
-        return u"%s" % self.title
+        return f"{self.title}"
 
 
 class RecordingInstrumentalist(JingjuStyle, models.Model):
@@ -81,7 +81,7 @@ class RecordingRelease(models.Model):
         ordering = ("track",)
 
     def __str__(self):
-        return u"%s: %s from %s" % (self.track, self.recording, self.release)
+        return f"{self.track}: {self.recording} from {self.release}"
 
 
 class Work(JingjuStyle, data.models.Work):
@@ -94,7 +94,7 @@ class Work(JingjuStyle, data.models.Work):
     play = models.ForeignKey('Play', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return u"%s" % self.title
+        return f"{self.title}"
 
 
 class Release(JingjuStyle, data.models.Release):
@@ -122,7 +122,7 @@ class RoleType(data.models.BaseModel):
     parent = models.ForeignKey('RoleType', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return u"{}: {}/{}".format(self.code, self.name, self.romanisation)
+        return f"{self.code}: {self.name}/{self.romanisation}"
 
 class Play(data.models.BaseModel):
     title = models.CharField(max_length=100)
@@ -149,4 +149,4 @@ class ShengqiangBanshi(data.models.BaseModel):
     romanisation = models.CharField(max_length=100)
 
     def __str__(self):
-        return u"{}: {}/{}".format(self.code, self.name, self.romanisation)
+        return f"{self.code}: {self.name}/{self.romanisation}"

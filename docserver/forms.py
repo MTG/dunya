@@ -72,7 +72,7 @@ class ModuleForm(forms.Form):
         if not instance:
             raise forms.ValidationError("The specified module doesn't exist")
         if models.Module.objects.filter(slug=instance._slug).exists():
-            raise forms.ValidationError("A module with this slug (%s) already exists" % instance._slug)
+            raise forms.ValidationError(f"A module with this slug ({instance._slug}) already exists")
         return modulepath
 
     class Meta:

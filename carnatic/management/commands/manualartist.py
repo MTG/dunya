@@ -38,11 +38,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for did, kid in themap.items():
             a = models.Artist.objects.get(pk=did)
-            print("* got %s %s" % (a.name, a.mbid))
+            print(f"* got {a.name} {a.mbid}")
             imgcontent, bio, wpurl = kutcheris.get_artist_details(kid)
             if bio:
                 print("got bio")
-                u = "http://kutcheris.com/artist.php?id=%s" % kid
+                u = f"http://kutcheris.com/artist.php?id={kid}"
                 sn = data.models.SourceName.objects.get(name="kutcheris.com")
                 source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u,
                                                                            defaults={"title": a.name})
@@ -52,7 +52,7 @@ class Command(BaseCommand):
             if imgcontent:
                 print("got image")
                 im = data.models.Image()
-                im.image.save("%s.jpg" % a.mbid, ContentFile(imgcontent))
+                im.image.save(f"{a.mbid}.jpg", ContentFile(imgcontent))
                 a.image = im
                 a.save()
 
@@ -64,7 +64,7 @@ class Command(BaseCommand):
             for rel in mba.get("url-relation-list", []):
                 if rel["type"] == "wikipedia":
                     wikipedia = rel["target"]
-                    print("got wikipedia url %s" % wikipedia)
+                    print(f"got wikipedia url {wikipedia}")
             theurl = None
             if wikipedia or wpurl:
                 if wikipedia == wpurl:

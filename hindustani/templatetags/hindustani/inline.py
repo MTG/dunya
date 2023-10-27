@@ -56,7 +56,7 @@ def inline_work_list(works):
     for w in works:
         text = inline_work(w)
         if w.composers.exists():
-            text = mark_safe(u"%s by %s" % (text, inline_composer(w.composers.all()[0])))
+            text = mark_safe(f"{text} by {inline_composer(w.composers.all()[0])}")
         allworks.append(text)
     return mark_safe(u", ".join(allworks))
 

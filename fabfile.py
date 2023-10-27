@@ -9,7 +9,7 @@ def test(module=None, keepdb=True):
     if keepdb:
         command += " --keepdb"
     if module:
-        command += " %s" % module
+        command += f" {module}"
     if keepdb:
         print("Keeping DB (if available), run cleantest to recreate schema")
     local(command)
@@ -23,7 +23,7 @@ def dumpfixture(modname):
     redir_base = "%s/fixtures/%s_%%s.json" % (modname, modname)
     if modname == "data":
         redir = redir_base % "initial_data"
-        local("python manage.py dumpdata data.SourceName --indent=4 > %s" % redir)
+        local(f"python manage.py dumpdata data.SourceName --indent=4 > {redir}")
         return
     elif modname == "carnatic":
         tablemap = {"instrument": ["Instrument", "InstrumentAlias"],
@@ -42,21 +42,21 @@ def dumpfixture(modname):
                     "form": ["Form", "FormAlias"],
                     "usul": ["Usul", "UsulAlias"]}
     for filename, tables in tablemap.items():
-        modellist = " ".join(["%s.%s[:]" % (modname, t) for t in tables])
+        modellist = " ".join([f"{modname}.{t}[:]" for t in tables])
         redir = redir_base % filename
-        local("python manage.py makefixture %s --indent=4 > %s" % (modellist, redir))
+        local(f"python manage.py makefixture {modellist} --indent=4 > {redir}")
 
 
 def dumpdata(fname="dunya_data.json"):
     with hide('running', 'status'):
         modules = ["carnatic", "data", "docserver", "account", "auth", "dashboard"]
-        local("python manage.py dumpdata --indent=4 %s > %s" % (" ".join(modules), fname))
-        print("dumped data to %s" % fname)
+        local(f"python manage.py dumpdata --indent=4 {' '.join(modules)} > {fname}")
+        print(f"dumped data to {fname}")
 
 
 def loaddata(fname="dunya_data.json"):
-    print("Loading data from %s" % fname)
+    print(f"Loading data from {fname}")
     if os.path.exists(fname):
-        local("python manage.py loaddata %s" % fname)
+        local(f"python manage.py loaddata {fname}")
     else:
         print(" (missing!)")

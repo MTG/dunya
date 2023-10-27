@@ -195,7 +195,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         # We don't expect to see any release-level performance relationships, so we
         # raise an error to quit the whole import, so that we can fix it
-        raise Exception("Performance relationship found on release %s" % releaseid)
+        raise Exception(f"Performance relationship found on release {releaseid}")
 
     def _clear_work_composers(self, work):
         work.composers.clear()
@@ -209,7 +209,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 rec.analyse = False
                 rec.save()
             artist = self.add_and_get_artist(a)
-            logger.info("  artist: %s" % artist)
+            logger.info(f"  artist: {artist}")
             if not rec.artists.filter(pk=artist.pk).exists():
                 logger.info("  - adding to artist list 2")
                 rec.artists.add(artist)

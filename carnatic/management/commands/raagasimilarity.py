@@ -44,7 +44,7 @@ class Command(BaseCommand):
         sim = obj["similar"]
         if not sim:
             return None
-        insert = {"id": "raagasim_%s" % (mbid, ),
+        insert = {"id": f"raagasim_{mbid}",
                   "similar_s": json.dumps(sim),
                   "rid_t": mbid,
                   "doctype_s": "raagasimilarity",
@@ -85,13 +85,13 @@ class Command(BaseCommand):
             else:
                 distance = recording.kldiv(raagprofile, oprofile)
                 self.distancemap[(rid, oid)] = distance
-            print("distance between %s-%s is %s" % (rid, oid, distance))
+            print(f"distance between {rid}-{oid} is {distance}")
 
             if distance:
                 sims.append((oid, distance))
         sims = [ (i[0], round(i[1], 2)) for i in sims if not decimal.Decimal(i[1]).is_nan() ]
         sims = sorted(sims, key=lambda a: a[1])
-        name = os.path.join(dirname, "%s.json" % rid)
+        name = os.path.join(dirname, f"{rid}.json")
         ret = {"rid": rid, "similar": sims}
         json.dump(ret, open(name, "wb"), indent=2)
 
@@ -130,7 +130,7 @@ class Command(BaseCommand):
         print("Got", numraagas, "raags")
         raagaprofiles = {}
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
-            print("(%s/%s) %s" % (i, numraagas, raag))
+            print(f"({i}/{numraagas}) {raag}")
             profile = self.calc_profile(raag, recordings)
             raagaprofiles[raag] = profile
 
@@ -150,10 +150,10 @@ class Command(BaseCommand):
                 raag = r.raags.get()
                 recmap[raag].append(r)
         numraagas = len(recmap.keys())
-        print("Got %s raags" % numraagas)
+        print(f"Got {numraagas} raags")
         raagaprofiles = {}
         for i, (raag, recordings) in enumerate(recmap.items(), 1):
-            print("(%s/%s) %s" % (i, numraagas, raag))
+            print(f"({i}/{numraagas}) {raag}")
             profile = self.calc_profile(raag, recordings)
             raagaprofiles[raag] = profile
 

@@ -90,7 +90,7 @@ class CollectionState(models.Model):
         return dict(self.STATE_CHOICE)[self.state]
 
     def __str__(self):
-        return u"%s (%s)" % (self.state_name, self.state_date)
+        return f"{self.state_name} ({self.state_date})"
 
 
 class Collection(models.Model):
@@ -106,7 +106,7 @@ class Collection(models.Model):
     do_import = models.BooleanField(default=True)
 
     def __str__(self):
-        return u"%s (%s)" % (self.name, self.id)
+        return f"{self.name} ({self.id})"
 
     @property
     def audio_directory(self):
@@ -183,7 +183,7 @@ class CollectionLogMessage(models.Model):
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
-        return u"%s - %s" % (self.collection.name, self.datetime)
+        return f"{self.collection.name} - {self.datetime}"
 
 
 class MusicbrainzReleaseState(models.Model):
@@ -204,7 +204,7 @@ class MusicbrainzReleaseState(models.Model):
         return dict(self.STATE_CHOICE)[self.state]
 
     def __str__(self):
-        return u"%s (%s)" % (self.state_name, self.state_date)
+        return f"{self.state_name} ({self.state_date})"
 
 
 class MusicbrainzRelease(models.Model):
@@ -221,7 +221,7 @@ class MusicbrainzRelease(models.Model):
     ignore = models.BooleanField(default=False)
 
     def __str__(self):
-        return u"%s (%s)" % (self.title, self.id)
+        return f"{self.title} ({self.id})"
 
     def all_files(self):
         ret = []
@@ -280,7 +280,7 @@ class MusicbrainzReleaseLogMessage(models.Model):
     datetime = models.DateTimeField(default=django.utils.timezone.now)
 
     def __str__(self):
-        return u"%s: %s" % (self.datetime, self.message)
+        return f"{self.datetime}: {self.message}"
 
 
 class CollectionDirectory(models.Model):
@@ -305,7 +305,7 @@ class CollectionDirectory(models.Model):
         if len(self.path) < 60:
             return self.path
         else:
-            return u"%s\u2026%s" % (self.path[:30], self.path[-30:])
+            return f"{self.path[:30]}…{self.path[-30:]}"
 
     def get_absolute_url(self):
         return reverse('dashboard-directory', args=[int(self.id)])
@@ -332,7 +332,7 @@ class CollectionFileState(models.Model):
         return dict(self.STATE_CHOICE)[self.state]
 
     def __str__(self):
-        return u"%s (%s)" % (self.state_name, self.state_date)
+        return f"{self.state_name} ({self.state_date})"
 
 
 class CollectionFile(models.Model):
@@ -362,7 +362,7 @@ class CollectionFile(models.Model):
         return os.path.join(self.directory.path, self.name)
 
     def __str__(self):
-        return u"%s (from %s)" % (self.name, self.directory.musicbrainzrelease)
+        return f"{self.name} (from {self.directory.musicbrainzrelease})"
 
     def update_state(self, state):
         CollectionFileState.objects.create(collectionfile=self, state=state)

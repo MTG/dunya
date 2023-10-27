@@ -43,12 +43,12 @@ class Command(LabelCommand):
         # Check that the serialization format exists; this is a shortcut to
         # avoid collating all the objects and _then_ failing.
         if format not in serializers.get_public_serializer_formats():
-            raise CommandError("Unknown serialization format: %s" % format)
+            raise CommandError(f"Unknown serialization format: {format}")
 
         try:
             serializers.get_serializer(format)
         except KeyError:
-            raise CommandError("Unknown serialization format: %s" % format)
+            raise CommandError(f"Unknown serialization format: {format}")
 
         objects = []
         for model, slice in models:
@@ -63,7 +63,7 @@ class Command(LabelCommand):
                 items = items.order_by(model._meta.pk.attname)
                 objects.extend(items)
             else:
-                raise CommandError("Wrong slice: %s" % slice)
+                raise CommandError(f"Wrong slice: {slice}")
 
         all = objects
         if propagate:
@@ -72,7 +72,7 @@ class Command(LabelCommand):
                 related = []
                 for x in objects:
                     if DEBUG:
-                        print("Adding %s[%s]" % (model_name(x), x.pk))
+                        print(f"Adding {model_name(x)}[{x.pk}]")
                     for f in x.__class__._meta.fields + x.__class__._meta.many_to_many:
                         if isinstance(f, ForeignKey):
                             new = getattr(x, f.name)  # instantiate object
@@ -92,7 +92,7 @@ class Command(LabelCommand):
         except Exception as e:
             if show_traceback:
                 raise
-            raise CommandError("Unable to serialize database: %s" % e)
+            raise CommandError(f"Unable to serialize database: {e}")
 
     def get_models(self):
         return [(m, model_name(m)) for m in django.apps.apps.get_models()]
@@ -111,9 +111,9 @@ class Command(LabelCommand):
             models = [model for model, name in self.get_models()
                       if name.endswith('.' + search) or name == search]
             if not models:
-                raise CommandError("Wrong model: %s" % search)
+                raise CommandError(f"Wrong model: {search}")
             if len(models) > 1:
-                raise CommandError("Ambiguous model name: %s" % search)
+                raise CommandError(f"Ambiguous model name: {search}")
             parsed.append((models[0], slice))
         return self.handle_models(parsed, **options)
 

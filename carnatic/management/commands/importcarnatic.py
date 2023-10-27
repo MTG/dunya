@@ -45,13 +45,13 @@ class Command(BaseCommand):
                 rest = line[1:]
             item, _ = obclass.objects.get_or_create(name=name)
             if has_com and hasattr(item, "common_name"):
-                print("  common_name %s" % tl)
+                print(f"  common_name {tl}")
                 item.common_name = tl
                 item.save()
             if hasattr(obclass, "aliases"):
                 for a in rest:
                     if a:
-                        print("  alias %s" % a)
+                        print(f"  alias {a}")
                         aob = item.aliases.filter(name=a)
                         if aob.count() == 0:
                             print("  - adding")

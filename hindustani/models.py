@@ -216,7 +216,7 @@ class ReleaseRecording(models.Model):
         ordering = ("track",)
 
     def __str__(self):
-        return u"%s: %s from %s" % (self.track, self.recording, self.release)
+        return f"{self.track}: {self.recording} from {self.release}"
 
 
 class Release(HindustaniStyle, data.models.Release):

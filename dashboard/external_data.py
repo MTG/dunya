@@ -31,7 +31,7 @@ def import_artist_kutcheris(a):
         print("Found data on kutcheris.com")
         aid = list(artist.values())[0]
         i, b, u = kutcheris.get_artist_details(aid)
-        u = "http://kutcheris.com/artist.php?id=%s" % aid
+        u = f"http://kutcheris.com/artist.php?id={aid}"
         if b:
             sn = data.models.SourceName.objects.get(name="kutcheris.com")
 
@@ -66,29 +66,29 @@ def import_artist_wikipedia(artist, source):
                 artist.image.delete()
 
         im = data.models.Image()
-        im.image.save("artist-%s.jpg" % artist.mbid, ContentFile(img))
+        im.image.save(f"artist-{artist.mbid}.jpg", ContentFile(img))
         artist.image = im
 
 
 def import_release_image(release, directories=[]):
     if release.image:
-        print("Image for release %s exists, skipping" % release.mbid)
+        print(f"Image for release {release.mbid} exists, skipping")
         return
 
     i = image.get_coverart_from_caa(release.mbid)
     caa = True
     if not i:
         caa = False
-        print("No image on CAA for %s, looking in directory" % release.mbid)
+        print(f"No image on CAA for {release.mbid}, looking in directory")
         i = image.get_coverart_from_directories(directories)
     if i:
         im = data.models.Image()
         if caa:
-            uri = "http://archive.org/details/mbid-%s" % release.mbid
+            uri = f"http://archive.org/details/mbid-{release.mbid}"
             sn = data.models.SourceName.objects.get(name="Cover Art Archive")
             source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=uri, defaults={"title": release.title})
             im.source = source
-        im.image.save("release-%s.jpg" % release.mbid, ContentFile(i))
+        im.image.save(f"release-{release.mbid}.jpg", ContentFile(i))
 
         # If the image is a different size from one that already exists, then
         # replace it. Also remove if we have an item, but can't find the image
@@ -110,4 +110,4 @@ def import_release_image(release, directories=[]):
             release.image = im
             release.save()
     else:
-        print("Can't find an image for %s" % release.mbid)
+        print(f"Can't find an image for {release.mbid}")

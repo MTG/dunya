@@ -143,9 +143,9 @@ def work_score(request, uuid, title=None):
     if len(works):
         work = works[0]
 
-    scoreurl = "/document/by-id/%s/score?v=0.1&subtype=score&part=1" % uuid
-    phraseurl = "/document/by-id/%s/segmentphraseseg?v=0.1&subtype=segments" % uuid
-    indexmapurl = "/document/by-id/%s/score?v=0.1&subtype=indexmap" % uuid
+    scoreurl = f"/document/by-id/{uuid}/score?v=0.1&subtype=score&part=1"
+    phraseurl = f"/document/by-id/{uuid}/segmentphraseseg?v=0.1&subtype=segments"
+    indexmapurl = f"/document/by-id/{uuid}/score?v=0.1&subtype=indexmap"
 
     return render(request, "makam/work_score.html", {
         "work": work,
@@ -371,8 +371,8 @@ def download_derived_files(request, uuid, title=None):
             except docserver.exceptions.NoFileException:
                 pass
 
-    zip_subdir = "derivedfiles_%s" % mbid
-    zip_filename = "%s.zip" % zip_subdir
+    zip_subdir = f"derivedfiles_{mbid}"
+    zip_filename = f"{zip_subdir}.zip"
 
     s = six.BytesIO()
     zf = zipfile.ZipFile(s, "w")
@@ -391,7 +391,7 @@ def download_derived_files(request, uuid, title=None):
     # Grab ZIP file from in-memory, make response with correct MIME-type
     resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
     # ..and correct content-disposition
-    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+    resp['Content-Disposition'] = f'attachment; filename={zip_filename}'
 
     return resp
 
@@ -407,11 +407,11 @@ def symbtr(request, uuid):
     if fmt not in types:
         return HttpResponseBadRequest("Unknown format parameter")
 
-    slug = "symbtr%s" % fmt
+    slug = f"symbtr{fmt}"
     filetype = get_object_or_404(docserver.models.SourceFileType, slug=slug)
-    filename = "%s.%s" % (sym.name, filetype.extension)
+    filename = f"{sym.name}.{filetype.extension}"
     response = docserver.views.download_external(request, uuid, slug)
-    response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
     return response
 

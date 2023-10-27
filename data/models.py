@@ -50,7 +50,7 @@ class Source(models.Model):
     last_updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return u"From %s: %s (%s)" % (self.source_name, self.uri, self.last_updated)
+        return f"From {self.source_name}: {self.uri} ({self.last_updated})"
 
 
 class Description(models.Model):
@@ -60,7 +60,7 @@ class Description(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return u"%s - %s" % (self.source, self.description[:100])
+        return f"{self.source} - {self.description[:100]}"
 
 
 class Image(models.Model):
@@ -70,9 +70,9 @@ class Image(models.Model):
     small_image = models.ImageField(upload_to="images", blank=True, null=True)
 
     def __str__(self):
-        ret = u"%s" % (self.image.name, )
+        ret = f"{self.image.name}"
         if self.source:
-            ret = u"%s from %s" % (ret, self.source.uri)
+            ret = f"{ret} from {self.source.uri}"
         return ret
 
 
@@ -144,7 +144,7 @@ class Artist(BaseModel, ImageMixin):
         return self.name
 
     def get_absolute_url(self):
-        viewname = "%s-artist" % (self.get_style(), )
+        viewname = f"{self.get_style()}-artist"
         if isinstance(self.name, unicode):
             aname = unidecode.unidecode(self.name)
         else:
@@ -152,7 +152,7 @@ class Artist(BaseModel, ImageMixin):
         return reverse(viewname, args=[str(self.mbid), slugify(aname)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/artist/%s" % self.mbid
+        return f"http://musicbrainz.org/artist/{self.mbid}"
 
     def instruments(self):
         InstrumentKlass = self.get_object_map("instrument")
@@ -168,7 +168,7 @@ class ArtistAlias(models.Model):
     locale = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
-        return u"%s (alias for %s)" % (self.alias, self.artist)
+        return f"{self.alias} (alias for {self.artist})"
 
 
 class Release(BaseModel, ImageMixin):
@@ -199,14 +199,14 @@ class Release(BaseModel, ImageMixin):
 
     def __str__(self):
         ret = u", ".join([str(a) for a in self.artists.all()])
-        return u"%s (%s)" % (self.title, ret)
+        return f"{self.title} ({ret})"
 
     def get_absolute_url(self):
-        viewname = "%s-release" % (self.get_style(), )
+        viewname = f"{self.get_style()}-release"
         return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/release/%s" % self.mbid
+        return f"http://musicbrainz.org/release/{self.mbid}"
 
     def artistnames(self):
         return self.artists.all()
@@ -229,7 +229,7 @@ class Collection(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return u"data/%s[%s] (%s)" % (self.name, self.collectionid, self.permission)
+        return f"data/{self.name}[{self.collectionid}] ({self.permission})"
 
 
 class Work(BaseModel):
@@ -244,11 +244,11 @@ class Work(BaseModel):
         return self.title
 
     def get_absolute_url(self):
-        viewname = "%s-work" % (self.get_style(), )
+        viewname = f"{self.get_style()}-work"
         return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/work/%s" % self.mbid
+        return f"http://musicbrainz.org/work/{self.mbid}"
 
     def artists(self):
         ArtistClass = self.get_object_map("artist")
@@ -270,11 +270,11 @@ class Recording(BaseModel):
         return self.title
 
     def get_absolute_url(self):
-        viewname = "%s-recording" % (self.get_style(), )
+        viewname = f"{self.get_style()}-recording"
         return reverse(viewname, args=[str(self.mbid), slugify(self.title)])
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/recording/%s" % self.mbid
+        return f"http://musicbrainz.org/recording/{self.mbid}"
 
     def absolute_mp3_url(self):
         try:
@@ -355,7 +355,7 @@ class Instrument(BaseModel, ImageMixin):
         return self.name
 
     def get_absolute_url(self):
-        viewname = "%s-instrument" % (self.get_style(), )
+        viewname = f"{self.get_style()}-instrument"
         return reverse(viewname, args=[str(self.mbid), slugify(self.name)])
 
     def artists(self):
@@ -373,10 +373,10 @@ class InstrumentPerformance(models.Model):
     attributes = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
-        person = u"%s" % self.artist
+        person = f"{self.artist}"
         if self.instrument:
-            person += u" playing %s" % self.instrument
-        person += u" on %s" % self.recording
+            person += f" playing {self.instrument}"
+        person += f" on {self.recording}"
         return person
 
 
@@ -402,10 +402,10 @@ class Composer(BaseModel, ImageMixin):
         return self.name
 
     def get_musicbrainz_url(self):
-        return "http://musicbrainz.org/composer/%s" % self.mbid
+        return f"http://musicbrainz.org/composer/{self.mbid}"
 
     def get_absolute_url(self):
-        viewname = "%s-composer" % (self.get_style(), )
+        viewname = f"{self.get_style()}-composer"
         if isinstance(self.name, unicode):
             cname = unidecode.unidecode(self.name)
         else:
@@ -426,7 +426,7 @@ class ComposerAlias(models.Model):
     locale = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
-        return u"%s (alias for %s)" % (self.alias, self.composer)
+        return f"{self.alias} (alias for {self.composer})"
 
 
 # This mixin needs to be used with ModelSerializable

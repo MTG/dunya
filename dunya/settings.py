@@ -17,7 +17,7 @@ def get_env(envname):
 def get_check_env(envname):
     var = get_env(envname)
     if not var:
-        raise ImproperlyConfigured("{} is not set".format(envname))
+        raise ImproperlyConfigured(f"{envname} is not set")
     return var
 
 

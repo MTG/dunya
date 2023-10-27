@@ -62,7 +62,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         try:
             return andalusian.models.Instrument.objects.get(name__iexact=instname)
         except andalusian.models.Instrument.DoesNotExist:
-            raise release_importer.ImportFailedException("Instrument {} not found".format(instname))
+            raise release_importer.ImportFailedException(f"Instrument {instname} not found")
 
     def _get_works_and_score(self, work_mbids):
         works = []

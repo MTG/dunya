@@ -126,7 +126,7 @@ class ReleaseRecording(models.Model):
         ordering = ("track",)
 
     def __str__(self):
-        return u"%s: %s from %s" % (self.track, self.recording, self.release)
+        return f"{self.track}: {self.recording} from {self.release}"
 
 
 class RecordingWork(models.Model):
@@ -138,7 +138,7 @@ class RecordingWork(models.Model):
         ordering = ("sequence",)
 
     def __str__(self):
-        return u"%s: %s" % (self.sequence, self.work.title)
+        return f"{self.sequence}: {self.work.title}"
 
 
 class Recording(MakamStyle, data.models.Recording):
@@ -399,4 +399,4 @@ class SymbTr(models.Model):
     uuid = models.UUIDField(db_index=True)
 
     def __str__(self):
-        return u"%s -> %s" % (self.uuid, self.name)
+        return f"{self.uuid} -> {self.name}"

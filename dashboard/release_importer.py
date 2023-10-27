@@ -87,7 +87,7 @@ class ReleaseImporter(object):
         rel = rel["release"]
 
         mbid = rel["id"]
-        logger.info("Adding release %s" % mbid)
+        logger.info(f"Adding release {mbid}")
 
         release = self._create_release_object(rel)
 
@@ -97,7 +97,7 @@ class ReleaseImporter(object):
             if isinstance(a, dict):
                 artistid = a["artist"]["id"]
                 artist = self.add_and_get_release_artist(artistid)
-                logger.info("  artist: %s" % artist)
+                logger.info(f"  artist: {artist}")
                 if not release.artists.filter(pk=artist.pk).exists():
                     logger.info("  - adding to artist list")
                     release.artists.add(artist)
@@ -155,7 +155,7 @@ class ReleaseImporter(object):
             mbid=artistid,
             defaults={"name": mbartist["name"]})
 
-        logger.info("  adding artist/composer %s" % (artistid, ))
+        logger.info(f"  adding artist/composer {artistid}")
         artist.name = mbartist["name"]
         if mbartist.get("type") == "Person":
             artist.artist_type = "P"
@@ -258,7 +258,7 @@ class ReleaseImporter(object):
         mbrec = mbrec["recording"]
 
         rec, created = self._RecordingClass.objects.get_or_create(mbid=recordingid)
-        logger.info("  adding recording %s" % (recordingid,))
+        logger.info(f"  adding recording {recordingid}")
         import_logger.info("importing recording %s", mbrec["title"])
         rec.length = mbrec.get("length")
         rec.title = mbrec["title"]

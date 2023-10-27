@@ -36,7 +36,7 @@ class Command(BaseCommand):
             name = row["artist"]
             bio = row["bio"]
             link = row["link"]
-            print("Artist %s" % name)
+            print(f"Artist {name}")
 
             a = None
             try:
@@ -50,9 +50,9 @@ class Command(BaseCommand):
                     except models.Artist.DoesNotExist:
                         pass
             if a:
-                print("* got %s" % a.mbid)
+                print(f"* got {a.mbid}")
                 thedir = os.path.dirname(fname)
-                photo = os.path.join(thedir, "photos", "%s.jpg" % name)
+                photo = os.path.join(thedir, "photos", f"{name}.jpg")
                 if os.path.exists(photo):
                     if link:
                         sn = data.models.SourceName.objects.get(name="kutcheris.com")
@@ -64,7 +64,7 @@ class Command(BaseCommand):
                     a.description = description
 
                     im = data.models.Image()
-                    im.image.save("%s.jpg" % a.mbid, ContentFile(open(photo, "rb").read()))
+                    im.image.save(f"{a.mbid}.jpg", ContentFile(open(photo, "rb").read()))
                     a.image = im
                     a.save()
 

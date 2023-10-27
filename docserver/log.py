@@ -30,7 +30,7 @@ def _send_item_with_size(key, data, size):
 
 def log_processed_file(worker, recordingid, moduleversion):
     now = datetime.datetime.now()
-    key = "processed-file-%s" % worker
+    key = f"processed-file-{worker}"
     data = {"recording": recordingid,
             "moduleversion": moduleversion,
             "date": now.isoformat(),
@@ -46,7 +46,7 @@ def log_module_action(module, user, action):
         deleteversion
     """
     now = datetime.datetime.now()
-    key = "module-action-%s" % module
+    key = f"module-action-{module}"
     data = {"date": now.isoformat(),
             "action": action}
     data = json.dumps(data)
@@ -56,12 +56,12 @@ def log_module_action(module, user, action):
 def delete_module_action(module):
     """ If a module is deleted, we no longer need all of
     its log messages. """
-    key = "module-action-%s" % module
+    key = f"module-action-{module}"
     redis.delete(key)
 
 
 def get_processed_files(worker):
-    key = "processed-file-%s" % worker
+    key = f"processed-file-{worker}"
     data = redis.lrange(key, 0, -1)
     data = [json.loads(d) for d in data]
     data = sorted(data, key=lambda x: x["date"])
@@ -69,7 +69,7 @@ def get_processed_files(worker):
 
 
 def get_worker_actions(worker):
-    key = "worker-action-%s" % worker
+    key = f"worker-action-{worker}"
     data = redis.lrange(key, 0, -1)
     data = [json.loads(d) for d in data]
     data = sorted(data, key=lambda x: x["date"])
@@ -77,7 +77,7 @@ def get_worker_actions(worker):
 
 
 def get_module_actions(module):
-    key = "module-action-%s" % module
+    key = f"module-action-{module}"
     data = redis.lrange(key, 0, -1)
     data = [json.loads(d) for d in data]
     data = sorted(data, key=lambda x: x["date"])

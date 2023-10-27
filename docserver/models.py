@@ -42,9 +42,9 @@ class Collection(models.Model):
     root_directory = models.CharField(max_length=200)
 
     def __str__(self):
-        desc = u"%s (%s)" % (self.name, self.slug)
+        desc = f"{self.name} ({self.slug})"
         if self.description:
-            desc += u" - %s" % (self.description,)
+            desc += f" - {self.description}"
         return desc
 
     def save(self, *args, **kwargs):
@@ -91,9 +91,9 @@ class Document(models.Model):
     def __str__(self):
         ret = u""
         if self.title:
-            ret += u"%s" % self.title
+            ret += f"{self.title}"
         if self.external_identifier:
-            ret += u" (%s)" % self.external_identifier
+            ret += f" ({self.external_identifier})"
         return ret
 
     def nestedderived(self):
@@ -165,7 +165,7 @@ class Document(models.Model):
         try:
             module = Module.objects.get(slug=slug)
         except Module.DoesNotExist:
-            raise exceptions.NoFileException("Cannot find a module with type %s" % slug)
+            raise exceptions.NoFileException(f"Cannot find a module with type {slug}")
         moduleversions = module.versions
         if version:
             moduleversions = moduleversions.filter(version=version)
@@ -197,7 +197,7 @@ class Document(models.Model):
             derived = dfs.get()
             if derived.outputname != subtype:
                 raise exceptions.NoFileException(
-                    "This module has only one subtype which you must specify (%s)" % (derived.outputname,))
+                    f"This module has only one subtype which you must specify ({derived.outputname})")
             # Select the part.
             # If the file has many parts and ?part is not set then it's an error
             if part:
@@ -244,7 +244,7 @@ class SourceFileType(models.Model):
     stype = models.CharField(max_length=10, choices=FILE_TYPE_CHOICES, blank=False, null=False)
 
     def __str__(self):
-        return "{} ({})".format(self.name, self.slug)
+        return f"{self.name} ({self.slug})"
 
     def get_absolute_url(self):
         return reverse("docserver-filetype", args=[self.slug])
@@ -285,7 +285,7 @@ class SourceFile(models.Model):
         return self.file_type.mimetype
 
     def __str__(self):
-        return u"%s (%s, %s)" % (self.document.title, self.file_type.name, self.path)
+        return f"{self.document.title} ({self.file_type.name}, {self.path})"
 
 
 class DerivedFile(models.Model):
@@ -349,7 +349,7 @@ class DerivedFile(models.Model):
         partslug = self.outputname
         extension = self.extension
 
-        return "%s-%s-%s-%s-%s.%s" % (recordingid, slug, version, partslug, partnumber, extension)
+        return f"{recordingid}-{slug}-{version}-{partslug}-{partnumber}.{extension}"
 
     def get_absolute_url(self, partnumber=None):
         url = reverse(
@@ -357,17 +357,17 @@ class DerivedFile(models.Model):
             args=[self.document.external_identifier, self.module_version.module.slug])
         v = self.module_version.version
         sub = self.outputname
-        url = "%s?v=%s&subtype=%s" % (url, v, sub)
+        url = f"{url}?v={v}&subtype={sub}"
         if partnumber:
             try:
                 partnumber = int(partnumber)
             except ValueError:
                 raise exceptions.NoFileException("Invalid part")
-            url = "%s&part=%s" % (url, partnumber)
+            url = f"{url}&part={partnumber}"
         return url
 
     def __str__(self):
-        return u"%s (%s/%s)" % (self.document.title, self.module_version.module.slug, self.outputname)
+        return f"{self.document.title} ({self.module_version.module.slug}/{self.outputname})"
 
 
 class CollectionPermission(models.Model):
@@ -414,7 +414,7 @@ class Worker(models.Model):
         self.save()
 
     def __str__(self):
-        return u"%s with Essentia %s and Compmusic %s" % (self.hostname, self.essentia, self.pycompmusic)
+        return f"{self.hostname} with Essentia {self.essentia} and Compmusic {self.pycompmusic}"
 
 
 class PyCompmusicVersion(models.Model):
@@ -427,13 +427,13 @@ class PyCompmusicVersion(models.Model):
         return self.sha1[:7]
 
     def get_absolute_url(self):
-        return "https://github.com/MTG/pycompmusic/tree/%s" % self.sha1
+        return f"https://github.com/MTG/pycompmusic/tree/{self.sha1}"
 
     def short_link(self):
-        return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
+        return f"""<a href="{self.get_absolute_url()}">{self.short}</a>"""
 
     def __str__(self):
-        return u"%s" % (self.sha1,)
+        return f"{self.sha1}"
 
 
 class EssentiaVersion(models.Model):
@@ -447,13 +447,13 @@ class EssentiaVersion(models.Model):
         return self.sha1[:7]
 
     def get_absolute_url(self):
-        return "https://github.com/MTG/essentia/tree/%s" % self.sha1
+        return f"https://github.com/MTG/essentia/tree/{self.sha1}"
 
     def short_link(self):
-        return """<a href="%s">%s</a>""" % (self.get_absolute_url(), self.short)
+        return f"""<a href="{self.get_absolute_url()}">{self.short}</a>"""
 
     def __str__(self):
-        return u"%s (%s)" % (self.version, self.sha1)
+        return f"{self.version} ({self.sha1})"
 
 
 class Module(models.Model):
@@ -469,7 +469,7 @@ class Module(models.Model):
     collections = models.ManyToManyField(Collection)
 
     def __str__(self):
-        return u"%s (%s)" % (self.name, self.module)
+        return f"{self.name} ({self.module})"
 
     def processed_files(self):
         latest = self.get_latest_version()
@@ -572,7 +572,7 @@ AND NOT ("docserver_document"."id" IN (
         return row[0]
 
     def __str__(self):
-        return u"v%s for %s" % (self.version, self.module)
+        return f"v{self.version} for {self.module}"
 
 
 class DocumentLogMessage(models.Model):
@@ -593,4 +593,4 @@ class DocumentLogMessage(models.Model):
         return "Traceback (most recent call last)" in self.message
 
     def __str__(self):
-        return u"%s: %s" % (self.datetime, self.message)
+        return f"{self.datetime}: {self.message}"

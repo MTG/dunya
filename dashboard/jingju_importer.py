@@ -52,7 +52,7 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
                 recording.shengqiangbanshi.add(shengqiangbanshi)
                 recording.save()
             except jingju.models.ShengqiangBanshi.DoesNotExist:
-                logger.error("Cannot find sqbs with code {}".format(code))
+                logger.error(f"Cannot find sqbs with code {code}")
                 raise
 
     def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
@@ -99,7 +99,7 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
         for a in artistids:
             # If the artist is [dialogue] the we don't show analysis.
             artist = self.add_and_get_artist(a)
-            logger.info("  artist: %s" % artist)
+            logger.info(f"  artist: {artist}")
             if not rec.performers.filter(pk=artist.pk).exists():
                 rec.performers.add(artist)
 
@@ -138,5 +138,5 @@ class JingjuReleaseImporter(release_importer.ReleaseImporter):
                 role_type = jingju.models.RoleType.objects.get(code=roletypes[0])
                 return role_type
             except jingju.models.RoleType.DoesNotExist:
-                logger.error('cannot find roletype with code {}'.format(roletypes[0]))
+                logger.error(f'cannot find roletype with code {roletypes[0]}')
         return None
