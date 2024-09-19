@@ -4,7 +4,7 @@ ENV LANG C.UTF-8
 
 RUN mkdir -p /etc/apt/keyrings/
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" > /etc/apt/sources.list.d/nodesource.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
          cmake \
@@ -24,16 +24,16 @@ RUN mkdir /code
 WORKDIR /code
 
 ADD requirements.txt /code/
-RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 
 ADD requirements_dev.txt /code/
-RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements_dev.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements_dev.txt
 
 RUN mkdir /sources
 WORKDIR /sources
 RUN git clone https://github.com/MTG/pycompmusic.git
 WORKDIR /sources/pycompmusic
-RUN pip3 install -e . -t /usr/local/lib/python3.11/dist-packages/
+RUN pip install -e . -t /usr/local/lib/python3.11/dist-packages/
 
 
 ADD package.json package-lock.json /code/

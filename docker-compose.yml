@@ -13,7 +13,7 @@ services:
     command: postgres -F
 
   redis:
-    image: redis
+    image: redis:7.2
 
   web:
     build: .
