@@ -66,13 +66,22 @@ body {
     float: left;
 }
 
-.menu li a {
+.menu li a, .menu li button {
     display: block;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     color: black;
 }
+
+.menu li button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+}
+
 .menu{
     float:right;
     margin: 60px 10px;

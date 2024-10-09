@@ -65,7 +65,12 @@
                       {% if user.username != 'guest' %}
                         <li><a class="" id="mainmenu_a" href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
                       {% endif %}
-                      <li><a class="" href="{% url 'account-logout' %}">Logout</a></li>
+                      <li>
+                        <form action="{% url 'account-logout' %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit">Logout</button>
+                        </form>
+                      </li>
                       {% else %}
                       <li><a href="{% url 'account-login' %}">Login</a></li>
                       <li><a href="{% url 'account-register' %}">Register</a></li>

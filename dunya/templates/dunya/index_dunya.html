@@ -27,7 +27,10 @@
                                 <li><a href="{% url 'terms' %}">Legal</a></li>
                                 {% if user.is_authenticated %}
                                 <li><a href="{% url 'account-user-profile' %}">{{ user.username }}</a></li>
-                                <li><a href="{% url 'account-logout' %}">Logout</a></li>
+                                <li><form action="{% url 'account-logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit">Logout</button>
+                                  </form></li>
                                 {% else %}
                                 <li><a href="{% url 'account-register' %}">Register</a></li>
                                 <li><a href="{% url 'account-login' %}">Login</a></li>
