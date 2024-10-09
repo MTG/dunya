@@ -1,6 +1,3 @@
-# Django settings for dunya project.
-
-
 import os
 
 from django.core.exceptions import ImproperlyConfigured
@@ -195,6 +192,10 @@ if deploy_env == 'prod':
         send_default_pii=True
     )
     EMAIL_HOST = get_check_env('DUNYA_EMAIL_HOST')
+
+    HCAPTCHA_SITEKEY = get_env('DUNYA_HCAPTCHA_SITEKEY')
+    HCAPTCHA_SECRET = get_env('DUNYA_HCAPTCHA_SECRET')
+
 else:  # development
     ALLOWED_HOSTS = ['localhost', 'aporter.ca.upf.edu', 'web']
     debug = True
@@ -209,6 +210,11 @@ else:  # development
     MIDDLEWARE = [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ] + MIDDLEWARE
+
+    INSTALLED_APPS = INSTALLED_APPS + ['debug_toolbar']
+
+    HCAPTCHA_SECRET = ''
+    HCAPTCHA_SITEKEY = ''
 
 DEBUG = debug
 

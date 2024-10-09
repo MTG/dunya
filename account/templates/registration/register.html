@@ -9,6 +9,8 @@
     <form method="post" action=".">
         {% csrf_token %}
         {{ form.as_p }}
+        <div class="h-captcha" data-sitekey="{{hcaptcha_site}}"></div>
+        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
         By registering for Dunya you indicate that you agree to our <a href="{% url 'terms' %}">terms and conditions</a>.<br>
         <input type="submit" value="Register" />
     </form>

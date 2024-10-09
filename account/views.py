@@ -15,6 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import datetime
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -55,7 +56,9 @@ def register_page(request):
     else:
         form = forms.RegistrationForm()
 
+    hcaptcha_site = settings.HCAPTCHA_SITEKEY
     ret = {
+        'hcaptcha_site': hcaptcha_site,
         'form': form
     }
     return render(request, 'registration/register.html', ret)
