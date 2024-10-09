@@ -1,9 +1,24 @@
+from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.template import loader
 
-from dunya import settings
+from dunya import gmail, settings
+
+
+def send(subject, message, from_email, recipients):
+    if settings.DEBUG and settings.GMAIL_SEND_EMAIL is False:
+        # We use send_mail locally so that we can use a console/file backend if we want
+        send_mail(subject, message, from_email, recipients, fail_silently=True)
+    else:
+        email = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email=from_email,
+            to=recipients,
+        )
+        gmail.send_message_gmail_api(email)
 
 
 def email_admin_on_new_user(current_site: Site, user):
@@ -14,7 +29,7 @@ def email_admin_on_new_user(current_site: Site, user):
     message = loader.render_to_string('registration/email_notify_admin.html', context)
     from_email = settings.NOTIFICATION_EMAIL_FROM
     recipients = [a for a in settings.NOTIFICATION_EMAIL_TO]
-    send_mail(subject, message, from_email, recipients, fail_silently=True)
+    send(subject, message, from_email, recipients)
 
 
 def email_user_on_account_approval(current_site: Site, user):
@@ -25,7 +40,7 @@ def email_user_on_account_approval(current_site: Site, user):
     message = loader.render_to_string('registration/email_account_activated.html', context)
     from_email = settings.NOTIFICATION_EMAIL_FROM
     recipients = [user.email, ]
-    send_mail(subject, message, from_email, recipients, fail_silently=True)
+    send(subject, message, from_email, recipients)
 
 
 def email_admin_on_access_request(current_site: Site, user, justification):
@@ -34,7 +49,7 @@ def email_admin_on_access_request(current_site: Site, user, justification):
     message = loader.render_to_string('registration/email_permission_request_notify_admin.html', context)
     from_email = settings.NOTIFICATION_EMAIL_FROM
     recipients = [a for a in settings.NOTIFICATION_EMAIL_TO]
-    send_mail(subject, message, from_email, recipients, fail_silently=True)
+    send(subject, message, from_email, recipients)
 
 
 def email_user_on_access_request_approval(current_site: Site, user, approved: bool):
@@ -47,4 +62,4 @@ def email_user_on_access_request_approval(current_site: Site, user, approved: bo
         message = loader.render_to_string('registration/email_permission_request_denied.html', context)
     from_email = settings.NOTIFICATION_EMAIL_FROM
     recipients = [user.email, ]
-    send_mail(subject, message, from_email, recipients, fail_silently=True)
+    send(subject, message, from_email, recipients)

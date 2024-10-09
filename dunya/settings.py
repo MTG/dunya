@@ -194,7 +194,7 @@ if deploy_env == 'prod':
         integrations=[DjangoIntegration()],
         send_default_pii=True
     )
-    EMAIL_HOST = get_check_env('DUNYA_EMAIL_HOST')
+    GMAIL_SEND_EMAIL = True
 else:  # development
     ALLOWED_HOSTS = ['localhost', 'aporter.ca.upf.edu', 'web']
     debug = True
@@ -206,9 +206,14 @@ else:  # development
 
     INTERNAL_IPS = ['127.0.0.1']
 
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
     MIDDLEWARE = [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ] + MIDDLEWARE
+    GMAIL_SEND_EMAIL = True
 
 DEBUG = debug
 

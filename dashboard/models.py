@@ -75,6 +75,12 @@ class MusicbrainzReleaseManager(StateCarryingManager):
     linkname = "musicbrainzrelease"
 
 
+class EmailAuthentication(models.Model):
+    """Holds the gmail API credentials"""
+    credentials = models.JSONField()
+    token = models.JSONField(null=True)
+
+
 class CollectionState(models.Model):
 
     class Meta:

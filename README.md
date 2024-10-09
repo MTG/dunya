@@ -131,3 +131,32 @@ The machines must also listen on the standard `celery` queue for all other work.
 
 One machine must listen on the `import` queue. This is used for processes that run from
 the dashboard.
+
+
+Email
+======
+
+Emails are sent via gmail. We use the google API instead of SMTP because it's faster to send emails.
+Because we send email only via one account, we manually set up the credentials
+using the guide at https://developers.google.com/gmail/api/quickstart/python
+
+
+Sign into gmail with the alastair.porter@upf.edu account and go to
+https://console.cloud.google.com/projectcreate
+
+There is a project called "dunya-email"
+Enable the gmail API for this project, from https://console.cloud.google.com/apis/library?project=dunya-email
+
+Configure the OAuth consent screen
+User type: Internal
+App Name: Dunya
+User support email: alastair.porter@upf.edu
+Application homepage: https://dunya.upf.edu
+Authorized domains: upf.edu
+Developer contact email: alastair.porter@upf.edu
+
+go to Menu > APIs & Services > Credentials
+Create credentials > OAuth client ID
+Application type: Desktop app
+Name: Dunya
+Download the credentials file
