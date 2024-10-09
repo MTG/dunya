@@ -31,6 +31,12 @@ class RegistrationForm(forms.Form):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput())
     password2 = forms.CharField(label='Password (Again)', widget=forms.PasswordInput())
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Email is already taken.")
+        return email
+
     def clean_affiliation(self):
         affiliation = self.cleaned_data['affiliation']
         if affiliation == "":
