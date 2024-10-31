@@ -15,9 +15,11 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import ast
 import datetime
-import importlib
+import importlib.machinery
+import importlib.util
 import inspect
 import json
+import os
 import pkgutil
 
 from dashboard import extractors
@@ -431,27 +433,15 @@ def worker(request, hostname):
     return render(request, 'docserver/worker.html', ret)
 
 
-def get_module_source(modulename):
-    """ Given a module dotted path (string), see how it can be
-    imported (.py or .pyc)
-    returns importlib.util.SOURCE, importlib.util.BYTECODE, or None"""
-    pkgname, modname = modulename.rsplit(".", 1)
-    # easiest way to get the path of the module
-    package = __import__(pkgname, fromlist=["dummy"])
-    spec = importlib.util.find_spec(modname, package.__path__)
-    if spec is None:
-        return None
-    return spec.origin
-
-
 def extractor_modules():
     ret = []
     errors = []
     modules = models.Module.objects
-    for importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "compmusic.extractors."):
+    for importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "dashboard.extractors."):
         if not ispkg:
-            stype = get_module_source(modname)
-            if stype == importlib.util.SOURCE:
+            spec = importlib.util.find_spec(modname)
+            path, ext = os.path.splitext(spec.origin)
+            if ext in importlib.machinery.SOURCE_SUFFIXES:
                 try:
                     module = __import__(modname, fromlist="dummy")
                     for name, ftype in inspect.getmembers(module, inspect.isclass):

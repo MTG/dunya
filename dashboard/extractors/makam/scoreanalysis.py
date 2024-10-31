@@ -1,14 +1,14 @@
 
 from tomato.symbolic.symbtranalyzer import SymbTrAnalyzer
 
-import compmusic
+import dashboard.extractors
 from compmusic import dunya
 from settings import token
 
 dunya.set_token(token)
 
 
-class ScoreAnalysis(compmusic.extractors.ExtractorModule):
+class ScoreAnalysis(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "symbtrtxt"
     _slug = "scoreanalysis"

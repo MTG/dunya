@@ -21,10 +21,10 @@ import socket
 import tempfile
 from subprocess import call
 
-import compmusic.extractors
+import dashboard.extractors
 
 
-class Musicxml2Svg(compmusic.extractors.ExtractorModule):
+class Musicxml2Svg(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "symbtrxml"
     _slug = "svgscore"

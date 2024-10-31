@@ -1,12 +1,9 @@
-import numpy
-import copy
-
-import compmusic.extractors
+import dashboard.extractors
 from tomato.audio.predominantmelody import PredominantMelody
 from tomato.audio.pitchdistribution import PitchDistribution
 from tomato.audio.pitchfilter import PitchFilter
 
-class AndalusianPitch(compmusic.extractors.ExtractorModule):
+class AndalusianPitch(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "andalusianpitch"

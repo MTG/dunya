@@ -22,11 +22,11 @@ import wave
 
 from docserver import util
 
-import compmusic.extractors
+import dashboard.extractors
 from dashboard.extractors.imagelib import wav2png
 
 
-class AudioImages(compmusic.extractors.ExtractorModule):
+class AudioImages(dashboard.extractors.ExtractorModule):
     _version = "0.2"
     _sourcetype = "mp3"
     _slug = "audioimages"

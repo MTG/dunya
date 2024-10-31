@@ -40,10 +40,10 @@ class MelSpectrogramImage(SpectrogramImage):
 class InvMFCCAudioProcessor(AudioProcessor):
     '''
     Compute melbands by inversing the dct of mfcc.
-    Use to visualize mfcc in spectral domain for Lyrics-to-audio alignment: (compmusic.extractors.makam.lyricsalign) 
+    Use to visualize mfcc in spectral domain for Lyrics-to-audio alignment: (dashboard.extractors.makam.lyricsalign)
     Emulates the MFCCs extracted with htk, except for hopsize, depending on logic in
-    compmusic.extractors.imagelib.MelSpectrogramImage.create_wave_images
-    ( see explanation in class PitchExtract Found at: compmusic.extractors.pitch )
+    dashboard.extractors.imagelib.MelSpectrogramImage.create_wave_images
+    ( see explanation in class PitchExtract Found at: dashboard.extractors.pitch )
     '''
     NUM_MFCC_COEFFS = 13
 

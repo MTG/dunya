@@ -28,10 +28,10 @@ import numpy as np
 from seyiranalyzer.audioseyiranalyzer import AudioSeyirAnalyzer
 from tomato.audio.audioanalyzer import AudioAnalyzer
 
-import compmusic.extractors
+import dashboard.extractors
 
 
-class AudioAnalysis(compmusic.extractors.ExtractorModule):
+class AudioAnalysis(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "audioanalysis"

@@ -17,10 +17,10 @@
 import subprocess
 import tempfile
 
-import compmusic.extractors
+import dashboard.extractors
 
 
-class CbrMp3(compmusic.extractors.ExtractorModule):
+class CbrMp3(dashboard.extractors.ExtractorModule):
     """ Convert an mp3 file to a constant bitrate if needed """
     _version = "0.1"
     _sourcetype = "mp3"

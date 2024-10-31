@@ -42,7 +42,7 @@ def _get_module_by_path(modulepath):
 def _get_module_by_slug(slug):
     # Get all files in the module
     fname, dirname, desc = imp.find_module("extractors", compmusic.__path__)
-    modules = set(["compmusic.extractors.%s" % os.path.splitext(module)[0]
+    modules = set(["dashboard.extractors.%s" % os.path.splitext(module)[0]
                    for module in os.listdir(dirname) if module.endswith(".py")])
 
     unloaded = []

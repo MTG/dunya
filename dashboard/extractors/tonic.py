@@ -23,7 +23,7 @@ import numpy as np
 import yaml
 from docserver import util
 
-import compmusic.extractors
+import dashboard.extractors
 from compmusic import dunya
 from compmusic.dunya import carnatic
 from compmusic.dunya import hindustani
@@ -31,7 +31,7 @@ from compmusic.dunya import hindustani
 dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
 
 
-class TonicExtract(compmusic.extractors.ExtractorModule):
+class TonicExtract(dashboard.extractors.ExtractorModule):
     _version = "0.2"
     _sourcetype = "mp3"
     _slug = "tonic"
@@ -45,7 +45,7 @@ class TonicExtract(compmusic.extractors.ExtractorModule):
         return {"tonic": str(tonic)}
 
 
-class CTonicExtract(compmusic.extractors.ExtractorModule):
+class CTonicExtract(dashboard.extractors.ExtractorModule):
     _version = "0.3"
     _sourcetype = "mp3"
     _slug = "ctonic"
@@ -71,7 +71,7 @@ class CTonicExtract(compmusic.extractors.ExtractorModule):
         return {"tonic": str(tonic)}
 
 
-class TonicVote(compmusic.extractors.ExtractorModule):
+class TonicVote(dashboard.extractors.ExtractorModule):
     """ Vote on tonics to filter out small errors by the tonic identification script
     """
     _sourcetype = "mp3"

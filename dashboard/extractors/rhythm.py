@@ -16,11 +16,11 @@
 
 import numpy as np
 
-import compmusic.extractors
+import dashboard.extractors
 import rhythmlib as ap
 
 
-class RhythmExtract(compmusic.extractors.ExtractorModule):
+class RhythmExtract(dashboard.extractors.ExtractorModule):
     _version = "0.3"
     _sourcetype = "mp3"
     _slug = "rhythm"

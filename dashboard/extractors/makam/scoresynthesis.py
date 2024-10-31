@@ -8,14 +8,14 @@ from symbtrsynthesis.adaptivesynthesizer import AdaptiveSynthesizer
 from symbtrsynthesis.musicxmlreader import MusicXMLReader
 
 import compmusic.dunya.conn
-import compmusic.extractors
+import dashboard.extractors
 from compmusic import dunya
 from .settings import token
 
 dunya.set_token(token)
 
 
-class ScoreSynthesis(compmusic.extractors.ExtractorModule):
+class ScoreSynthesis(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "symbtrxml"
     _slug = "synthesis"

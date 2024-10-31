@@ -22,10 +22,10 @@ from docserver import util
 from scipy.ndimage.filters import gaussian_filter
 import io
 
-import compmusic.extractors
+import dashboard.extractors
 
 
-class PitchExtract(compmusic.extractors.ExtractorModule):
+class PitchExtract(dashboard.extractors.ExtractorModule):
     _version = "noguessunv"
     _sourcetype = "mp3"
     _slug = "pitch"
@@ -64,7 +64,7 @@ class PitchExtract(compmusic.extractors.ExtractorModule):
         return {"pitch": thepitch.tolist()}
 
 
-class NormalisedPitchExtract(compmusic.extractors.ExtractorModule):
+class NormalisedPitchExtract(dashboard.extractors.ExtractorModule):
     _abstract = True
     _sourcetype = "mp3"
 

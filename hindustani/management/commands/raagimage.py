@@ -18,7 +18,7 @@ import collections
 import os
 from optparse import make_option
 
-import compmusic.extractors.similaritylib.raaga
+import dashboard.extractors.similaritylib.raaga
 import numpy as np
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand, CommandError
@@ -39,7 +39,7 @@ class Command(BaseCommand):
     )
 
     def calc_profile(self, raag, recordings, style):
-        average = compmusic.extractors.similaritylib.raaga.Raaga(raag.name, "")
+        average = dashboard.extractors.similaritylib.raaga.Raaga(raag.name, "")
         pitches = []
         tonics = []
         for r in recordings:

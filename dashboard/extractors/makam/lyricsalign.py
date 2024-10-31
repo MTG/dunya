@@ -38,7 +38,7 @@ pathAlignmentDur = os.path.join(parentDir, 'AlignmentDuration')
 if pathAlignmentDur not in sys.path:
     sys.path.append(pathAlignmentDur)
 
-import compmusic.extractors
+import dashboard.extractors
 from compmusic import dunya
 from compmusic.dunya import makam
 import tempfile
@@ -62,7 +62,7 @@ else:
 dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
 
 
-class LyricsAlign(compmusic.extractors.ExtractorModule):
+class LyricsAlign(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "lyrics-align"

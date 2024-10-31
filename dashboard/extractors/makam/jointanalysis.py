@@ -25,7 +25,8 @@
 import json
 import struct
 
-import compmusic.extractors.makam.pitch
+import dashboard.extractors
+import dashboard.extractors.makam.pitch
 import numpy as np
 from docserver import util
 from seyiranalyzer.audioseyiranalyzer import AudioSeyirAnalyzer
@@ -39,7 +40,7 @@ import io
 dunya.set_token(token)
 
 
-class JointAnalysis(compmusic.extractors.ExtractorModule):
+class JointAnalysis(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "jointanalysis"
@@ -169,7 +170,7 @@ def to_dict(note_models):
     return ret
 
 
-class TomatoDunyaMakam(compmusic.extractors.ExtractorModule):
+class TomatoDunyaMakam(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "tomatodunya"

@@ -27,14 +27,14 @@ import tempfile
 from docserver import util
 from tomato.symbolic.scoreconverter import ScoreConverter
 
-import compmusic.extractors
+import dashboard.extractors
 from compmusic import dunya
 from settings import token
 
 dunya.set_token(token)
 
 
-class Symbtr2Png(compmusic.extractors.ExtractorModule):
+class Symbtr2Png(dashboard.extractors.ExtractorModule):
     _version = "0.2"
     _sourcetype = "symbtrtxt"
     _slug = "score"

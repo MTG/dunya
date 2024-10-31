@@ -21,6 +21,8 @@ import json
 
 import numpy as np
 import os
+
+import dashboard
 from dashboard.extractors.similaritylib import recording
 from django.core.management.base import BaseCommand
 from scipy.ndimage.filters import gaussian_filter
@@ -93,7 +95,7 @@ class Command(BaseCommand):
         json.dump(ret, open(name, "wb"), indent=2)
 
     def calc_profile(self, raag, recordings):
-        average = compmusic.extractors.similaritylib.raaga.Raaga(raag.name, "")
+        average = dashboard.extractors.similaritylib.raaga.Raaga(raag.name, "")
         pitches = []
         tonics = []
         for r in recordings:

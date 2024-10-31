@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import compmusic.extractors
+import dashboard.extractors
 import subprocess
 
 import tempfile
 import os
 import wave
 
-class Mp3ToWav(compmusic.extractors.ExtractorModule):
+class Mp3ToWav(dashboard.extractors.ExtractorModule):
     _version = "0.5"
     _sourcetype = "mp3"
     _slug = "wav"

@@ -18,10 +18,10 @@ import os
 import subprocess
 import uuid
 
-import compmusic.extractors
+import dashboard.extractors
 
 
-class Mp3ToM4a(compmusic.extractors.ExtractorModule):
+class Mp3ToM4a(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "m4a"

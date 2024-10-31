@@ -1,6 +1,6 @@
 import uuid
 
-import compmusic.extractors
+import dashboard.extractors
 from unittest import mock
 from django.test import TestCase, override_settings
 
@@ -8,7 +8,7 @@ from docserver import jobs
 from docserver import models
 
 
-class TestExtractor(compmusic.extractors.ExtractorModule):
+class TestExtractor(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "asd"
@@ -19,7 +19,7 @@ class TestExtractor(compmusic.extractors.ExtractorModule):
         return {'pitch': '{"test": "0.1"}'}
 
 
-class Test2Extractor(compmusic.extractors.ExtractorModule):
+class Test2Extractor(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "asd2"
@@ -50,7 +50,7 @@ class SourceFileTest(AbstractFileTest):
     @mock.patch('os.makedirs')
     @mock.patch('builtins.open')
     def test_run_module_on_collection(self, mock_open, makedir):
-        modulepath = "compmusic.extractors.TestExtractor"
+        modulepath = "dashboard.extractors.TestExtractor"
         instance = TestExtractor()
         self.get_m.return_value = instance
 
@@ -63,7 +63,7 @@ class SourceFileTest(AbstractFileTest):
     """
     @mock.patch('docserver.log.log_processed_file')
     def test_process_document(self, log):
-        modulepath = "compmusic.extractors.TestExtractor"
+        modulepath = "dashboard.extractors.TestExtractor"
         instance = TestExtractor()
         self.get_m.return_value = instance
 
@@ -81,7 +81,7 @@ class SourceFileTest(AbstractFileTest):
     @override_settings(task_always_eager=True)
     def test_process_document(self, mock_open, makedir):
         # /tmp/col1/incoming/11/111111/asd2/0.1
-        modulepath = "compmusic.extractors.Test2Extractor"
+        modulepath = "dashboard.extractors.Test2Extractor"
         instance = Test2Extractor()
         self.get_m.return_value = instance
 
