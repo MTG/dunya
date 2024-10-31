@@ -16,29 +16,11 @@
 
 import os
 
-from compmusic import image
-from compmusic import kutcheris
-from compmusic import wikipedia
+from dashboard.importer import image
+from dashboard.importer import wikipedia
 from django.core.files.base import ContentFile
 
 import data.models
-
-
-def import_artist_kutcheris(a):
-    artist = kutcheris.search_artist(a.name)
-    if artist:
-        print("Found data on kutcheris.com")
-        aid = list(artist.values())[0]
-        i, b, u = kutcheris.get_artist_details(aid)
-        u = f"http://kutcheris.com/artist.php?id={aid}"
-        if b:
-            sn = data.models.SourceName.objects.get(name="kutcheris.com")
-
-    if b:
-        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=u, defaults={"title": a.name})
-        description = data.models.Description.objects.create(description=b, source=source)
-        a.description = description
-        a.save()
 
 
 def import_artist_wikipedia(artist, source):

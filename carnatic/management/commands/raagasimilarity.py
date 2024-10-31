@@ -19,11 +19,9 @@ import collections
 import decimal
 import json
 
-import compmusic.extractors.similaritylib.raaga
 import numpy as np
 import os
-from compmusic.extractors.similaritylib import recording
-from django.conf import settings
+from dashboard.extractors.similaritylib import recording
 from django.core.management.base import BaseCommand
 from scipy.ndimage.filters import gaussian_filter
 

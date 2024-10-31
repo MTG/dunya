@@ -15,12 +15,12 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import ast
 import datetime
-import imp
+import importlib
 import inspect
 import json
 import pkgutil
 
-from compmusic import extractors
+from dashboard import extractors
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
@@ -434,13 +434,14 @@ def worker(request, hostname):
 def get_module_source(modulename):
     """ Given a module dotted path (string), see how it can be
     imported (.py or .pyc)
-    returns imp.PY_SOURCE, imp.PY_COMPILED, or imp.C_EXTENSION"""
+    returns importlib.util.SOURCE, importlib.util.BYTECODE, or None"""
     pkgname, modname = modulename.rsplit(".", 1)
     # easiest way to get the path of the module
-    package = __import__(pkgname, fromlist="dummy")
-    moddata = imp.find_module(modname, package.__path__)
-    desc = moddata[2]
-    return desc[2]
+    package = __import__(pkgname, fromlist=["dummy"])
+    spec = importlib.util.find_spec(modname, package.__path__)
+    if spec is None:
+        return None
+    return spec.origin
 
 
 def extractor_modules():
@@ -450,7 +451,7 @@ def extractor_modules():
     for importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "compmusic.extractors."):
         if not ispkg:
             stype = get_module_source(modname)
-            if stype == imp.PY_SOURCE:
+            if stype == importlib.util.SOURCE:
                 try:
                     module = __import__(modname, fromlist="dummy")
                     for name, ftype in inspect.getmembers(module, inspect.isclass):

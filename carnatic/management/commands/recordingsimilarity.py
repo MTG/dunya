@@ -18,8 +18,7 @@
 import json
 
 import os
-from compmusic.extractors.similaritylib import recording
-from django.conf import settings
+from dashboard.extractors.similaritylib import recording
 from django.core.management.base import BaseCommand
 
 import carnatic

@@ -130,7 +130,7 @@ def docserver_get_wav_filename(documentid):
         if not os.path.exists(filename):
             raise exceptions.NoFileException("Wave file doesn't exist")
         return filename, False
-    except:  # Error getting file because it's not in the db or it doesn't exist
+    except exceptions.NoFileException:
         print("Error getting file, calculating again")
         mp3filename = docserver_get_filename(documentid, "mp3")
         fp, tmpname = tempfile.mkstemp(".wav")
