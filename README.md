@@ -148,3 +148,13 @@ Create credentials > OAuth client ID
 Application type: Desktop app
 Name: Dunya
 Download the credentials file
+
+
+run `python manage.py generate_gmail_credentials [credentials file]`
+
+It will print an auth url. log in with the user that you want to send emails as and accept.
+It will try and redirect you to a url on localhost, but fail. Copy that url and paste it into
+the prompt, which will then complete the auth.
+
+If this user changes their password, the auth will become invalid and this process will need to
+be followed again.
