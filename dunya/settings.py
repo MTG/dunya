@@ -188,7 +188,7 @@ if deploy_env == "prod":
     sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
     GMAIL_SEND_EMAIL = True
 else:  # development
-    ALLOWED_HOSTS = ["localhost", "aporter.ca.upf.edu", "web"]
+    ALLOWED_HOSTS = ["localhost", "web"]
     debug = True
     SENDFILE_BACKEND = "django_sendfile.backends.development"
 

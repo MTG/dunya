@@ -1,0 +1,59 @@
+name: Unit tests
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_USER: dunya
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest
+        env:
+          DUNYA_SECRET_KEY: this-is-a-test-key-for-github-actions
+          DUNYA_DEPLOY_ENV: dev
+          DUNYA_WORKER_REDIS_HOST: redis
+          DUNYA_CELERY_BROKER_URL: test
+          DUNYA_CELERY_RESULT_URL: test
+          DUNYA_NOTIFICATION_FROM: "test@mtg.upf.edu"
+          DUNYA_NOTIFICATION_TO: "test@mtg.upf.edu"
+          DUNYA_ADMINS: "test;test@mtg.upf.edu"
+          DUNYA_DATABASE_URL: postgres://dunya:mypassword@localhost:5432/dunya
