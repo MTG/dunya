@@ -292,6 +292,7 @@ def desaturate(rgb, amount):
     amount == 1, grey
     """
     luminosity = sum(rgb) / 3.0
+
     def desat(color):
         return color - amount * (color - luminosity)
 
@@ -331,9 +332,7 @@ class WaveformImage(object):
             )
         elif palette == 4:
             background_color = (213, 217, 221)
-            colors = map(
-                partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(30)]
-            )
+            colors = map(partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(30)])
 
         self.image = Image.new("RGB", (image_width, image_height), background_color)
 
