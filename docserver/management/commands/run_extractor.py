@@ -26,6 +26,8 @@ import compmusic
 import numpy as np
 from django.core.management.base import BaseCommand
 
+import dashboard.extractors
+
 logger = logging.getLogger(__name__)
 
 
@@ -36,7 +38,7 @@ def _get_module_by_path(modulepath):
         cls = getattr(package, clsname)
         return cls
     except ImportError:
-        logger.warning("Cannot import the module: %s" % mod)
+        logger.warning("Cannot import the module: %s", mod)
         logger.warning("Try it in a terminal and see what the error is")
 
 
@@ -57,7 +59,7 @@ def _get_module_by_slug(slug):
         try:
             loaded = importlib.import_module(m)
             for name, mod in inspect.getmembers(loaded, inspect.isclass):
-                if issubclass(mod, extractors.ExtractorModule) and name != "ExtractorModule":
+                if issubclass(mod, dashboard.extractors.ExtractorModule) and name != "ExtractorModule":
                     if mod._slug == slug:
                         matching.append(mod)
         except ImportError:
@@ -72,13 +74,13 @@ def _get_module_by_slug(slug):
 
     if len(matching) > 1:
         logger.warning("Found more than one module with the same slug. Slugs must be unique")
-        logger.warning("For slug: %s" % slug)
+        logger.warning("For slug: %s", slug)
         for m in matching:
-            logger.warning("  %s" % m)
+            logger.warning("  %s", m)
     elif len(matching) == 1:
         return matching[0]
     else:
-        logger.warning("Cannot find a module with the slug: %s" % slug)
+        logger.warning("Cannot find a module with the slug: %s", slug)
         logger.warning("Check that you have spelt it correctly")
         if unloaded:
             logger.warning("or that the module it is in can be loaded (is it in one of the above failed modules?)")

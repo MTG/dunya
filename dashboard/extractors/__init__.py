@@ -106,7 +106,7 @@ class ExtractorModule(object):
         never be called publicly """
         self.document_id = docid
         self.logger.set_documentid(docid)
-        self.logger.info("Worker %s" % self.hostname)
+        self.logger.info("Worker %s", self.hostname)
         try:
             return self.run_many(id_fnames)
         except Exception:
@@ -120,7 +120,7 @@ class ExtractorModule(object):
         self.logger.set_documentid(docid)
         self.logger.set_sourcefileid(sourcefileid)
         self.musicbrainz_id = musicbrainzid
-        self.logger.info("Worker %s" % self.hostname)
+        self.logger.info("Worker %s", self.hostname)
         try:
             return self.run(musicbrainzid, fname)
         except Exception:

@@ -17,6 +17,8 @@
 import subprocess
 import tempfile
 
+import eyed3
+
 import dashboard.extractors
 
 

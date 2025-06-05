@@ -127,13 +127,13 @@ def stringDuplicates(term, origTerms, simThresh=0.8, n=100, stripped=False, recu
         l = len(strippedTerms)
 
         similarities = [0] * l
-        for i in xrange(0, l):
+        for i in range(l):
             similarities[i] = similarity(term, strippedTerms[i])
 
         duplicates = []
         if n > l:
             n = l
-        for i in xrange(n):
+        for _ in range(n):
             ind = similarities.index(max(similarities))
             s = similarities.pop(ind)
             term_match = terms.pop(ind)

@@ -28,7 +28,8 @@ class ScoreSynthesis(dashboard.extractors.ExtractorModule):
     @staticmethod
     def get_dataset():
         r = requests.get(
-            "https://raw.githubusercontent.com/MTG/otmm_tuning_intonation_dataset/atli2017synthesis_fma/dataset.json"
+            "https://raw.githubusercontent.com/MTG/otmm_tuning_intonation_dataset/atli2017synthesis_fma/dataset.json",
+            timeout=10,
         )
         return r.json()
 

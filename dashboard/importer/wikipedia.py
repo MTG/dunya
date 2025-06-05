@@ -25,7 +25,7 @@ import requests
 def _make_wp_query(params):
     url = "http://en.wikipedia.org/w/api.php"
     headers = {"User-Agent": "CompMusic-bot (http://compmusic.upf.edu)"}
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.get(url, headers=headers, params=params, timeout=10)
     return json.loads(response.text)
 
 
@@ -62,7 +62,7 @@ def download_image(imgname):
             return None
 
     headers = {"User-Agent": "CompMusic-bot (http://compmusic.upf.edu)"}
-    resp = requests.get(imgurl, headers=headers)
+    resp = requests.get(imgurl, headers=headers, timeout=10)
     return resp.content
 
 

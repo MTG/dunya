@@ -432,7 +432,7 @@ def extractor_modules():
     ret = []
     errors = []
     modules = models.Module.objects
-    for importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "dashboard.extractors."):
+    for _importer, modname, ispkg in pkgutil.walk_packages(extractors.__path__, "dashboard.extractors."):
         if not ispkg:
             spec = importlib.util.find_spec(modname)
             path, ext = os.path.splitext(spec.origin)
@@ -638,7 +638,7 @@ def collectionfiles(request, slug):
 
 
 @user_passes_test(is_staff)
-def collectionversion(request, slug, version, type):
+def collectionversion(request, slug, version, type):  # noqa: A002
     collection = get_object_or_404(models.Collection, slug=slug)
     mversion = get_object_or_404(models.ModuleVersion, pk=version)
     page = request.GET.get("page")

@@ -104,7 +104,7 @@ def compute_fourierCoefficients(s, win, noverlap, f, fs):
             si = (sig * sine_fn).sum()
             x[w, f0] = co + 1j * si
         if not np.mod(f0, 100):
-            logger.info(str(f0) + "/" + str(f.size) + "...")
+            logger.info(f"{f0}/{f.size}...")
     x = x.transpose()
     return x, f, t
 
@@ -334,7 +334,7 @@ def getTempoCurve(tg, tcparams):
             pIndex[jj, i] = fnNow.argmax()
             DP[jj, i] = DP[jj, i] + tg[jj, i]
         if not np.mod(i, 100):
-            logger.info(str(i) + "/" + str(N) + "...")
+            logger.info(f"{i}/{N}...")
     # backtracking now
     tc = np.zeros(N)
     zn = (np.zeros(N)).astype(int)
@@ -531,8 +531,8 @@ def getOnsetFunctions(fname):
         pool.add("features.time", frmTime)
         frameCounter += 1
         if not np.mod(frameCounter, 10000):
-            logger.info(str(frameCounter) + "/" + str(audio.size / params.hop) + "...")
-    logger.info("Total frames processed = " + str(frameCounter))
+            logger.info(f"{frameCounter}/{audio.size / params.hop}...")
+    logger.info(f"Total frames processed = {frameCounter}")
     timeStamps = es.array([pool["features.time"]])
     all_feat = timeStamps
     for bands in range(params.numBands):

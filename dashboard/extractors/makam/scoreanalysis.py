@@ -1,10 +1,10 @@
-from compmusic import dunya
+import compmusic.dunya
 from settings import token
 from tomato.symbolic.symbtranalyzer import SymbTrAnalyzer
 
 import dashboard.extractors
 
-dunya.set_token(token)
+compmusic.dunya.set_token(token)
 
 
 class ScoreAnalysis(dashboard.extractors.ExtractorModule):

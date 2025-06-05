@@ -63,12 +63,18 @@ class Instrument(HindustaniStyle, data.models.Instrument):
             ret.append(("artist", p))
         return ret
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Artist(HindustaniStyle, data.models.Artist):
     class Meta:
         ordering = ["id"]
 
     missing_image = "hindustaniartist.jpg"
+
+    def __str__(self):
+        return f"{self.name}"
 
     def related_items(self):
         """Just the related things. Artist / their instrument"""
@@ -243,6 +249,9 @@ class Release(HindustaniStyle, data.models.Release):
 
     objects = managers.HindustaniReleaseManager()
 
+    def __str__(self):
+        return f"{self.title}"
+
     def tracklist(self):
         """Return an ordered list of recordings in this release"""
         return self.recordings.order_by("releaserecording")
@@ -297,11 +306,17 @@ class RecordingRaag(models.Model):
     raag = models.ForeignKey("Raag", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.raag} in {self.recording}"
+
 
 class RecordingTaal(models.Model):
     recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
     taal = models.ForeignKey("Taal", on_delete=models.CASCADE)
     sequence = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.taal} in {self.recording}"
 
 
 class RecordingLaya(models.Model):
@@ -309,11 +324,17 @@ class RecordingLaya(models.Model):
     laya = models.ForeignKey("Laya", on_delete=models.CASCADE)
     sequence = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.laya} in {self.recording}"
+
 
 class RecordingForm(models.Model):
     recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
     form = models.ForeignKey("Form", on_delete=models.CASCADE)
     sequence = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.form} in {self.recording}"
 
 
 class Recording(HindustaniStyle, data.models.Recording):
@@ -365,6 +386,9 @@ class ComposerAlias(HindustaniStyle, data.models.ComposerAlias):
 class Lyrics(models.Model):
     lyrics = models.CharField(max_length=50)
 
+    def __str__(self):
+        return f"{self.lyrics}"
+
 
 class Work(HindustaniStyle, data.models.Work):
     class Meta:
@@ -382,6 +406,9 @@ class WorkTime(models.Model):
     sequence = models.IntegerField()
     # but its time is optional (we may not have it yet)
     time = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.work} in {self.recording}"
 
 
 class Raag(data.models.BaseModel, data.models.ImageMixin):
@@ -424,7 +451,7 @@ class Raag(data.models.BaseModel, data.models.ImageMixin):
             if a.pk not in artistmap:
                 artistmap[a.pk] = a
         artists = []
-        for aid, count in artistcounter.most_common():
+        for aid, _count in artistcounter.most_common():
             artists.append(artistmap[aid])
         return artists
 
@@ -510,7 +537,7 @@ class Taal(data.models.BaseModel, data.models.ImageMixin):
             if a.pk not in artistmap:
                 artistmap[a.pk] = a
         artists = []
-        for aid, count in artistcounter.most_common():
+        for aid, _count in artistcounter.most_common():
             artists.append(artistmap[aid])
         return artists
 
@@ -632,7 +659,7 @@ class Form(data.models.BaseModel):
             if a.pk not in artistmap:
                 artistmap[a.pk] = a
         artists = []
-        for aid, count in artistcounter.most_common():
+        for aid, _count in artistcounter.most_common():
             artists.append(artistmap[aid])
         return artists
 

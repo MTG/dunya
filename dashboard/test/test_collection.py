@@ -13,7 +13,7 @@ class CollectionTest(TestCase):
     """Test creation and view of new Collections"""
 
     def setUp(self):
-        self.user1 = auth.models.User.objects.create_user("user1", "", "pass1")
+        self.user1 = auth.models.User.objects.create_user("user1", "")
         self.user1.is_staff = True
         self.user1.save()
 
@@ -106,7 +106,7 @@ class CollectionTest(TestCase):
 
     def test_view(self):
         """test the actual creation of the collection objects"""
-        self.client.login(username="user1", password="pass1")
+        self.client.force_login(self.user1)
 
         collid = "55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d"
         data = {"collectionid": collid, "path": "/incoming/carnatic"}

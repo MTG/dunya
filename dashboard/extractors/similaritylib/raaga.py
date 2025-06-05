@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
+# ruff: noqa: S301
 
 from glob import glob
 from os.path import basename
@@ -56,7 +57,7 @@ class Raaga:
 
     def compute_average_hist(self, paths_to_pitch_files, tonics, octave_folded=True, bins=1200):
         pitches = []
-        for i in xrange(len(paths_to_pitch_files)):
+        for i in range(len(paths_to_pitch_files)):
             filepath = paths_to_pitch_files[i]
             data = np.loadtxt(filepath)
 
@@ -64,7 +65,7 @@ class Raaga:
                 raise Exception("Pitch data not received.")
             pitches.append(data)
 
-        compute_average_hist_data(pitches, tonics, octave_folded, bins)
+        self.compute_average_hist_data(pitches, tonics, octave_folded, bins)
 
     def compute_average_hist_data(self, pitches, tonics, octave_folded=True, bins=1200):
         """
@@ -104,7 +105,7 @@ class Raaga:
         return index
 
     def serialize_average_hist(self):
-        pickle.dump(self.average_hist, file(self.path_to_raaga_profiles + "/" + self.name + ".pickle", "w"))
+        pickle.dump(self.average_hist, open(self.path_to_raaga_profiles + "/" + self.name + ".pickle", "w"))
 
     def generate_image(self, filepath, smoothness=7, size=400):
         x = self.average_hist[:, 1]
@@ -116,13 +117,13 @@ class Raaga:
         locs = np.arange(0, 1200, 100)
         labels = ["Sa", "Ri1", "Ri2\nGa1", "Ri3\nGa2", "Ga3", "Ma1", "Ma2", "Pa", "Da1", "Da2\nNi1", "Da3\nNi2", "Ni3"]
         label_map = {}
-        for i in xrange(len(locs)):
+        for i in range(len(locs)):
             label_map[locs[i]] = labels[i]
 
         dobj = pypeaks.Data(x, y, smoothness=7)
         dobj.get_peaks(peak_amp_thresh=6e-04)
         actual_locs = np.sort(dobj.peaks["peaks"][0])
-        for i in xrange(len(actual_locs)):
+        for i in range(len(actual_locs)):
             actual_locs[i] = locs[self.find_nearest_index(locs, actual_locs[i])]
         actual_labels = [label_map[i] for i in actual_locs]
 
@@ -151,7 +152,7 @@ class Raaga:
             self.average_hist = pickle.load(source_path)
 
         for p in all_paths:
-            data = pickle.load(file(p))
+            data = pickle.load(open(p))
             distance = self.kldiv(self.average_hist[:, 0], data[:, 0])
             distances.append([basename(p)[:-7], distance])
 
@@ -178,7 +179,7 @@ if __name__ == "__main__":
     # tonics = [w.tonic(mbid) for mbid in mbids]
     #
     # raaga_mbids = {}
-    # for i in xrange(len(mbids)):
+    # for i in range(len(mbids)):
     #    if tonics[i] is None:
     #        continue
     #
@@ -201,7 +202,7 @@ if __name__ == "__main__":
     import pickle
     from os.path import exists
 
-    raaga_mbids = pickle.load(file("/home/gopal/data/raagaMBIDs.pickle"))
+    raaga_mbids = pickle.load(open("/home/gopal/data/raagaMBIDs.pickle"))
     raaga_mbids.pop("Unknown")
 
     # for r in raaga_mbids.keys():
@@ -222,24 +223,24 @@ if __name__ == "__main__":
         raaga_indices[row[1]] = row[0]
     similarity_map = {}
     raagas = raaga_mbids.keys()
-    for i in xrange(len(raagas)):
+    for i in range(len(raagas)):
         if (
             not exists("/home/gopal/data/features/raagaProfiles/" + raagas[i] + ".pickle")
             or raagas[i] not in raaga_indices.keys()
         ):
             continue
         similarity_map[raagas[i]] = []
-        x = pickle.load(file("/home/gopal/data/features/raagaProfiles/" + raagas[i] + ".pickle"))
+        x = pickle.load(open("/home/gopal/data/features/raagaProfiles/" + raagas[i] + ".pickle"))
         raaga = Raaga(raagas[i], "/home/gopal/data/features/raagaProfiles/")
         raaga.average_hist = x
         res = raaga.similar_raagas(5)
         similarity_map[raaga.name] = res
         print(raaga.name, res)
 
-    pickle.dump(similarity_map, file("/home/gopal/data/features/raagaProfiles/similarity_map.yaml", "w"))
+    pickle.dump(similarity_map, open("/home/gopal/data/features/raagaProfiles/similarity_map.yaml", "w"))
 
     # BLOCK TO GET IMAGES
-    smap = pickle.load(file("/home/gopal/data/features/raagaProfiles/similarity_map.pickle"))
+    smap = pickle.load(open("/home/gopal/data/features/raagaProfiles/similarity_map.pickle"))
     raagas = list(smap["huseni"][:, 0])
     raagas.append("huseni")
     for i in raagas:

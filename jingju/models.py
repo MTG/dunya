@@ -42,6 +42,9 @@ class RecordingInstrumentalist(JingjuStyle, models.Model):
     artist = models.ForeignKey("Artist", on_delete=models.CASCADE)
     instrument = models.ForeignKey("Instrument", on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.recording} - {self.artist} - {self.instrument}"
+
 
 class Artist(data.models.Artist):
     romanisation = models.CharField(max_length=200, blank=True, null=True)
@@ -52,6 +55,9 @@ class Artist(data.models.Artist):
     class Meta:
         ordering = ["id"]
 
+    def __str__(self):
+        return f"{self.name} ({self.romanisation})"
+
 
 class Composer(data.models.Composer):
     alias = models.CharField(max_length=200, blank=True, null=True)
@@ -60,10 +66,16 @@ class Composer(data.models.Composer):
     class Meta:
         ordering = ["id"]
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Instrument(data.models.Instrument):
     class Meta:
         ordering = ["id"]
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class RecordingRelease(models.Model):
@@ -106,6 +118,9 @@ class Release(JingjuStyle, data.models.Release):
     collection = models.ForeignKey("data.Collection", blank=True, null=True, on_delete=models.CASCADE)
     objects = managers.CollectionReleaseManager()
 
+    def __str__(self):
+        return f"{self.title}"
+
 
 class RoleType(data.models.BaseModel):
     class Meta:
@@ -142,6 +157,9 @@ class Score(data.models.BaseModel):
 
     # This shouldn't be a uuidfield (
     uuid = models.UUIDField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class ShengqiangBanshi(data.models.BaseModel):

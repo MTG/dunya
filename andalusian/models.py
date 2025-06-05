@@ -92,7 +92,7 @@ class Artist(AndalusianStyle, data.models.BaseModel):
         recs = [p.recording for p in performances]
         return recs
 
-    def performances(self, tab=[], nawba=[], mizan=[]):
+    def performances(self, tab=None, nawba=None, mizan=None):
         pass
 
     def instruments(self):
@@ -439,3 +439,6 @@ class RecordingPoem(models.Model):
     recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
     poem = models.ForeignKey("Poem", on_delete=models.CASCADE)
     order_number = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.recording} - {self.poem}"

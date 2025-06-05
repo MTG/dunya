@@ -55,7 +55,7 @@ class CTonicExtract(dashboard.extractors.ExtractorModule):
         data_root = "/mnt/compmusic/incoming/derived/annotations"
         mbidfile = os.path.join(data_root, "%s.yaml" % mbid)
         if os.path.exists(mbidfile):
-            ydata = yaml.load(open(mbidfile))
+            ydata = yaml.safe_load(open(mbidfile))
             tonic = ydata.get("tonic", {}).get("votedValue", None)
             return tonic
         return None

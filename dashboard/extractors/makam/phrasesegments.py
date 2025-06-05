@@ -20,12 +20,12 @@ import socket
 import subprocess
 import tempfile
 
-from compmusic import dunya
+import compmusic.dunya
 
 import dashboard.extractors
 from docserver import util
 
-dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
+compmusic.dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
 
 
 class TrainPhraseSeg(dashboard.extractors.ExtractorModule):
@@ -67,7 +67,7 @@ class TrainPhraseSeg(dashboard.extractors.ExtractorModule):
         fp, fldmodel = tempfile.mkstemp(".mat")
         os.close(fp)
 
-        proc = subprocess.Popen(
+        proc = subprocess.Popen(  # noqa: S602
             ["/srv/dunya/phraseSeg trainWrapper %s %s %s" % (files_json, boundstat, fldmodel)],
             stdout=subprocess.PIPE,
             shell=True,
@@ -136,7 +136,7 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
         fp, out_json = tempfile.mkstemp(".json")
         os.close(fp)
 
-        proc = subprocess.Popen(
+        proc = subprocess.Popen(  # noqa: S602
             ["/srv/dunya/phraseSeg segmentWrapper %s %s %s %s" % (boundstat, fldmodel, files_json, out_json)],
             stdout=subprocess.PIPE,
             shell=True,
@@ -160,8 +160,8 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
 
 def get_mbid_names():
     mbid_names = {}
-    dir = os.path.dirname(__file__)
-    with open(os.path.join(dir, "./makams_usuls/training_phrase_names.csv"), "rb") as csvfile:
+    dir_ = os.path.dirname(__file__)
+    with open(os.path.join(dir_, "./makams_usuls/training_phrase_names.csv"), "rb") as csvfile:
         names_reader = csv.reader(csvfile, delimiter=",", quotechar='"')
         for row in names_reader:
             mbid_names[row[1]] = row[0]

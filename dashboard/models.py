@@ -80,6 +80,9 @@ class EmailAuthentication(models.Model):
     credentials = models.JSONField()
     token = models.JSONField(null=True)
 
+    def __str__(self):
+        return f"{self.id}"
+
 
 class CollectionState(models.Model):
     class Meta:

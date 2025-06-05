@@ -18,6 +18,7 @@
 #
 # Dzhambazov, G., & Serra X. (2015).  Modeling of Phoneme Durations for Alignment between Polyphonic Audio and Lyrics.
 #            Sound and Music Computing Conference 2015.
+# ruff: noqa: E402
 
 import logging
 import os
@@ -135,10 +136,10 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
                     musicbrainzid, "joinanalysis", "sections", 1, version="0.2"
                 )
             except dunya.conn.HTTPError:
-                logging.error("section link {} missing".format(musicbrainzid))
+                logging.error("section link %s missing", musicbrainzid)
                 return ret
             if not sectionLinksDict:
-                logging.error("section link {} missing".format(musicbrainzid))
+                logging.error("section link %s missing", musicbrainzid)
                 return ret
 
         try:

@@ -18,6 +18,7 @@ from django.db import models
 from django.db.models import Q
 
 import carnatic.models
+from dashboard.fuzzy import stringDuplicates
 
 
 class CollectionConcertManager(models.Manager):

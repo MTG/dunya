@@ -143,7 +143,7 @@ class Artist(CarnaticStyle, data.models.Artist):
             .distinct()
         )
 
-    def concerts(self, raagas=[], taalas=[], collection_ids: list[str] | None = None, permission=False):
+    def concerts(self, raagas=None, taalas=None, collection_ids: list[str] | None = None, permission=False):
         """Get all the concerts that this artist performs in
         If `raagas` or `taalas` is set, only show concerts where
         these raagas or taalas were performed.
@@ -152,6 +152,10 @@ class Artist(CarnaticStyle, data.models.Artist):
         By defaul permissions are restricted to universal
         accesible collections.
         """
+        if taalas is None:
+            taalas = []
+        if raagas is None:
+            raagas = []
         if not permission:
             permission = ["U"]
         if collection_ids is None:
@@ -177,7 +181,7 @@ class Artist(CarnaticStyle, data.models.Artist):
                     and c.collection.permission in permission
                 ):
                     ret.append(c)
-        for concert, perf in self.performances(raagas, taalas):
+        for concert, _perf in self.performances(raagas, taalas):
             if (
                 concert not in ret
                 and concert.collection
@@ -188,7 +192,11 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
 
-    def performances(self, raagas=[], taalas=[]):
+    def performances(self, raagas=None, taalas=None):
+        if taalas is None:
+            taalas = []
+        if raagas is None:
+            raagas = []
         ReleaseClass = self.get_object_map("release")
         IPClass = self.get_object_map("performance")
         concerts = ReleaseClass.objects.filter(recordings__instrumentperformance__artist=self)
@@ -411,7 +419,7 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
             if a.pk not in artistmap:
                 artistmap[a.pk] = a
         artists = []
-        for aid, count in artistcounter.most_common():
+        for aid, _count in artistcounter.most_common():
             artists.append(artistmap[aid])
         return artists
 
@@ -487,7 +495,7 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
             if a.pk not in artistmap:
                 artistmap[a.pk] = a
         artists = []
-        for aid, count in artistcounter.most_common():
+        for aid, _count in artistcounter.most_common():
             artists.append(artistmap[aid])
         return artists
 
@@ -630,7 +638,7 @@ class Recording(CarnaticStyle, data.models.Recording):
         return list(all_as)
 
     def is_restricted(self):
-        for rel in self.concert_set.filter(collection__permission__in=["S"]).all():
+        for _rel in self.concert_set.filter(collection__permission__in=["S"]).all():
             return True
         return False
 

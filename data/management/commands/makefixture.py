@@ -55,39 +55,39 @@ class Command(LabelCommand):
         )
 
     def handle_models(self, models, **options):
-        format = options.get("format", "json")
+        format_ = options.get("format", "json")
         indent = options.get("indent", None)
         show_traceback = options.get("traceback", False)
         propagate = options.get("propagate", True)
 
         # Check that the serialization format exists; this is a shortcut to
         # avoid collating all the objects and _then_ failing.
-        if format not in serializers.get_public_serializer_formats():
-            raise CommandError(f"Unknown serialization format: {format}")
+        if format_ not in serializers.get_public_serializer_formats():
+            raise CommandError(f"Unknown serialization format: {format_}")
 
         try:
-            serializers.get_serializer(format)
+            serializers.get_serializer(format_)
         except KeyError:
-            raise CommandError(f"Unknown serialization format: {format}")
+            raise CommandError(f"Unknown serialization format: {format_}")
 
         objects = []
-        for model, slice in models:
-            if isinstance(slice, six.string_types):
-                objects.extend(model._default_manager.filter(pk__exact=slice))
-            elif not slice or type(slice) is list:
+        for model, slice_ in models:
+            if isinstance(slice_, six.string_types):
+                objects.extend(model._default_manager.filter(pk__exact=slice_))
+            elif not slice_ or type(slice_) is list:
                 items = model._default_manager.all()
-                if slice and slice[0]:
-                    items = items.filter(pk__gte=slice[0])
-                if slice and slice[1]:
-                    items = items.filter(pk__lt=slice[1])
+                if slice_ and slice_[0]:
+                    items = items.filter(pk__gte=slice_[0])
+                if slice_ and slice_[1]:
+                    items = items.filter(pk__lt=slice_[1])
                 items = items.order_by(model._meta.pk.attname)
                 objects.extend(items)
             else:
-                raise CommandError(f"Wrong slice: {slice}")
+                raise CommandError(f"Wrong slice: {slice_}")
 
-        all = objects
+        all_ = objects
         if propagate:
-            collected = set([(x.__class__, x.pk) for x in all])
+            collected = set([(x.__class__, x.pk) for x in all_])
             while objects:
                 related = []
                 for x in objects:
@@ -105,10 +105,10 @@ class Command(LabelCommand):
                                     collected.add((new.__class__, new.pk))
                                     related.append(new)
                 objects = related
-                all.extend(objects)
+                all_.extend(objects)
 
         try:
-            return serializers.serialize(format, all, indent=indent)
+            return serializers.serialize(format_, all_, indent=indent)
         except Exception as e:
             if show_traceback:
                 raise
@@ -123,17 +123,17 @@ class Command(LabelCommand):
             search, pks = label, ""
             if "[" in label:
                 search, pks = label.split("[", 1)
-            slice = ""
+            slice_ = ""
             if ":" in pks:
-                slice = pks.rstrip("]").split(":", 1)
+                slice_ = pks.rstrip("]").split(":", 1)
             elif pks:
-                slice = pks.rstrip("]")
+                slice_ = pks.rstrip("]")
             models = [model for model, name in self.get_models() if name.endswith("." + search) or name == search]
             if not models:
                 raise CommandError(f"Wrong model: {search}")
             if len(models) > 1:
                 raise CommandError(f"Ambiguous model name: {search}")
-            parsed.append((models[0], slice))
+            parsed.append((models[0], slice_))
         return self.handle_models(parsed, **options)
 
     def list_models(self):

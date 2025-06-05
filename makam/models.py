@@ -286,10 +286,7 @@ class Makam(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        if isinstance(self.name, unicode):
-            mname = unidecode.unidecode(self.name)
-        else:
-            mname = self.name
+        mname = unidecode.unidecode(self.name)
         return reverse("makam-makam", args=[str(self.uuid), slugify(mname)])
 
     def worklist(self):
@@ -323,8 +320,11 @@ class Usul(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        if isinstance(self.name, unicode):
             uname = unidecode.unidecode(self.name)
+            uname = unidecode.unidecode(self.name)
+        else:
+            uname = self.name
+        uname = unidecode.unidecode(self.name)
         else:
             uname = self.name
         return reverse("makam-usul", args=[str(self.uuid), slugify(uname)])
@@ -364,8 +364,11 @@ class Form(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        if isinstance(self.name, unicode):
             fname = unidecode.unidecode(self.name)
+            fname = unidecode.unidecode(self.name)
+        else:
+            fname = self.name
+        fname = unidecode.unidecode(self.name)
         else:
             fname = self.name
         return reverse("makam-form", args=[str(self.uuid), slugify(fname)])

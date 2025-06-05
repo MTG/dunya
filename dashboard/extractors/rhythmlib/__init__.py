@@ -1,2 +1,1 @@
-import parameters as params
-from aksharaPulseTrack import *
+from aksharaPulseTrack import *  # noqa: F403

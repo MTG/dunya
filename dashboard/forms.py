@@ -142,7 +142,7 @@ class AccessRequestApprovalForm(forms.ModelForm):
 class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
-        exclude = ["name", "collectionid"]
+        fields = ["permission"]
 
 
 OPTIONS = (

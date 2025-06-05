@@ -23,14 +23,14 @@
 import os
 import tempfile
 
-from compmusic import dunya
+import compmusic.dunya
 from settings import token
 from tomato.symbolic.scoreconverter import ScoreConverter
 
 import dashboard.extractors
 from docserver import util
 
-dunya.set_token(token)
+compmusic.dunya.set_token(token)
 
 
 class Symbtr2Png(dashboard.extractors.ExtractorModule):

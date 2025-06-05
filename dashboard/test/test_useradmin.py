@@ -11,7 +11,7 @@ class UserAdminTest(TestCase):
     """Test the admin of new users (new user approval and group permissions)"""
 
     def setUp(self):
-        self.adminuser = User.objects.create_superuser("admin", email="admin@example.com", password="password")
+        self.adminuser = User.objects.create_superuser("admin", email="admin@example.com")
         self.newuser1 = User.objects.create_user("userone", email="userone@example.com", is_active=False)
         self.newuser2 = User.objects.create_user("usertwo", email="usertwo@example.com", is_active=False)
 

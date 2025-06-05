@@ -31,12 +31,12 @@ def dameraulevenshtein(seq1, seq2):
     # so we only store those.
     oneago = None
     thisrow = range(1, len(seq2) + 1) + [0]
-    for x in xrange(len(seq1)):
+    for x in range(len(seq1)):
         # Python lists wrap around for negative indices, so put the
         # leftmost column at the *end* of the list. This matches with
         # the zero-indexed strings and saves extra calculation.
         twoago, oneago, thisrow = oneago, thisrow, [0] * len(seq2) + [x + 1]
-        for y in xrange(len(seq2)):
+        for y in range(len(seq2)):
             delcost = oneago[y] + 1
             addcost = thisrow[y - 1] + 1
             subcost = oneago[y - 1] + (seq1[x] != seq2[y])

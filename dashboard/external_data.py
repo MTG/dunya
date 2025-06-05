@@ -38,6 +38,7 @@ def import_artist_wikipedia(artist, source):
             artist.save()
     if img:
         if artist.image:
+            existingimg = artist.image
             if not os.path.exists(artist.image.image.path):
                 artist.image.delete()
             elif artist.image.image.size != len(img):
@@ -50,7 +51,9 @@ def import_artist_wikipedia(artist, source):
         artist.image = im
 
 
-def import_release_image(release, directories=[]):
+def import_release_image(release, directories=None):
+    if directories is None:
+        directories = []
     if release.image:
         print(f"Image for release {release.mbid} exists, skipping")
         return

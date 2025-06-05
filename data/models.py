@@ -142,10 +142,7 @@ class Artist(BaseModel, ImageMixin):
 
     def get_absolute_url(self):
         viewname = f"{self.get_style()}-artist"
-        if isinstance(self.name, unicode):
-            aname = unidecode.unidecode(self.name)
-        else:
-            aname = self.name
+        aname = unidecode.unidecode(self.name)
         return reverse(viewname, args=[str(self.mbid), slugify(aname)])
 
     def get_musicbrainz_url(self):
@@ -408,12 +405,8 @@ class Composer(BaseModel, ImageMixin):
 
     def get_absolute_url(self):
         viewname = f"{self.get_style()}-composer"
-        if isinstance(self.name, unicode):
-            cname = unidecode.unidecode(self.name)
-        else:
-            cname = self.name
         args = [self.mbid]
-        slug = slugify(cname)
+        slug = slugify(unidecode.unidecode(self.name))
         if slug:
             args.append(slug)
         return reverse(viewname, args=args)

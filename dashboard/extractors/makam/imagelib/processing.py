@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+# This file was copied from Freesound.
 #
 # Freesound is (c) MUSIC TECHNOLOGY GROUP, UNIVERSITAT POMPEU FABRA
 #
@@ -24,6 +23,7 @@ import math
 import os
 import re
 import signal
+import subprocess
 from functools import partial
 
 import numpy
@@ -456,17 +456,17 @@ class SpectrogramImage(object):
         # y_min = math.log10(f_min)
         # y_max = math.log10(f_max)
         freqs = numpy.linspace(f_min, f_max, image_height)
-        for i, y in enumerate(range(self.image_height)):
+        for i, _y in enumerate(range(self.image_height)):
             # freq = math.pow(10.0, y_min + y / (image_height - 1.0) *(y_max - y_min))
             freq = freqs[i]
-            bin = freq / 22050.0 * (self.fft_size / 2 + 1)
+            bin_ = freq / 22050.0 * (self.fft_size / 2 + 1)
 
             if (
-                bin < self.fft_size / 2
+                bin_ < self.fft_size / 2
             ):  # make sure less than len(spectrum) -1, because  on draw_spectrum is called spectrum[index + 1]
-                alpha = bin - int(bin)  # how much content of next bin
+                alpha = bin_ - int(bin_)  # how much content of next bin
 
-                self.y_to_bin.append((int(bin), alpha * 255))
+                self.y_to_bin.append((int(bin_), alpha * 255))
 
                 # this is a bit strange, but using image.load()[x,y] = ... is
         # a lot slower than using image.putadata and then rotating the image
@@ -482,7 +482,7 @@ class SpectrogramImage(object):
             self.pixels.append(self.palette[palette_idx])
 
         # if the FFT is too small to fill up the image, fill with black to the top
-        for y in range(len(self.y_to_bin), self.image_height):  # @UnusedVariable
+        for _y in range(len(self.y_to_bin), self.image_height):  # @UnusedVariable
             self.pixels.append(self.palette[0])
 
     def save(self, filename, quality=80):

@@ -388,6 +388,9 @@ class CollectionPermission(models.Model):
     source_type = models.ForeignKey(SourceFileType, on_delete=models.CASCADE)
     streamable = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.collection.name} {self.source_type.name}: {self.permission}"
+
 
 # Essentia management stuff
 
@@ -538,11 +541,9 @@ class ModuleVersion(models.Model):
             return qs.distinct()
 
     def processed_files_count(self):
-        q = """SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d""" % (
-            self.id
-        )
+        q = """SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d"""
         cursor = connection.cursor()
-        cursor.execute(q)
+        cursor.execute(q, (self.id,))
         row = cursor.fetchone()
         return row[0]
 
@@ -560,9 +561,9 @@ WHERE ("docserver_sourcefile"."file_type_id" = %d
 AND "docserver_document_collections"."collection_id" IN (%s)
 AND NOT ("docserver_document"."id" IN (
     SELECT U1."document_id" AS Col1 FROM "docserver_derivedfile" U1 WHERE U1."module_version_id" = %d
-)))""" % (self.module.source_type.id, ", ".join(coll_ids), self.id)
+)))"""
         cursor = connection.cursor()
-        cursor.execute(q)
+        cursor.execute(q, (self.module.source_type.id, ", ".join(coll_ids), self.id))
         row = cursor.fetchone()
         return row[0]
 

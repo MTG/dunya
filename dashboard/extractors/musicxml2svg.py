@@ -39,7 +39,7 @@ class Musicxml2Svg(dashboard.extractors.ExtractorModule):
         call(["/mnt/compmusic/%s/lilypond/usr/bin/musicxml2ly" % server_name, "--no-page-layout", fpath, "-o", tmpfile])
 
         tmp_dir = tempfile.mkdtemp()
-        call(["lilypond", '-dpaper-size="junior-legal"', "-dbackend=svg", "-o%s" % (tmp_dir), tmpfile])
+        call(["lilypond", '-dpaper-size="junior-legal"', "-dbackend=svg", "-o%s" % (tmp_dir), tmpfile])  # noqa: S607
 
         ret = {"score": []}
 

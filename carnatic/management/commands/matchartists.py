@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
         reader = csv.DictReader(open(fname, "rb"))
         for row in reader:
-            id = row["ID"]
+            id_ = row["ID"]
             guru = row["Guru"]
             name = row["Name"]
             place = row["Region of Birth"]
@@ -39,7 +39,7 @@ class Command(BaseCommand):
             if not guru:
                 continue
 
-            a = models.Artist.objects.get(pk=int(id))
+            a = models.Artist.objects.get(pk=int(id_))
             print(f"Artist {name} {a.id}")
             a.gurus.clear()
 

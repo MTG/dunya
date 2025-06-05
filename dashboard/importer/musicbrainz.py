@@ -38,7 +38,7 @@ requests_session.mount("https://musicbrainz.org", HTTPAdapter(max_retries=5))
 
 def ws_ids(xml):
     ids = []
-    tree = etree.fromstring(xml)
+    tree = etree.fromstring(xml)  # noqa: S314
     count = int(list(list(tree)[0])[2].attrib["count"])
     for rel in list(list(list(tree)[0])[2]):
         ids.append(rel.attrib["id"])
@@ -84,7 +84,7 @@ def get_collection_name(collection):
     url = "http://musicbrainz.org/ws/2/collection/%s/releases" % (collection,)
     res = requests_session.get(url, headers=headers)
     res.raise_for_status()
-    tree = etree.fromstring(res.content)
+    tree = etree.fromstring(res.content)  # noqa: S314
     name = list(list(tree)[0])[0]
     return name.text
 

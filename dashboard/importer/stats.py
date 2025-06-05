@@ -17,21 +17,18 @@
 
 import argparse
 import collections
+import logging
 import os
 
 import compmusic.file
 import compmusic.musicbrainz
+import eyed3
 import musicbrainzngs as mb
 
+eyed3.utils.log.log.setLevel(logging.ERROR)
 mb.set_useragent("Dunya", "0.1")
 mb.set_rate_limit(False)
 mb.set_hostname("sitar.s.upf.edu:8090")
-
-import logging
-
-import eyed3
-
-eyed3.utils.log.log.setLevel(logging.ERROR)
 
 
 class Stats(object):
@@ -100,7 +97,7 @@ class Stats(object):
         print("composers", len(self.composers))
         print("lyricists", len(self.lyricists))
         rev = collections.Counter()
-        for k, v in self.work_recording_counts.items():
+        for _k, v in self.work_recording_counts.items():
             rev[v] += 1
         print("recordings-per-work counts")
         print(rev)
@@ -131,7 +128,7 @@ def main(collectionid, colldir):
     duration = 0
 
     num_releases = 0
-    for root, dirs, files in os.walk(colldir):
+    for root, _dirs, files in os.walk(colldir):
         if len(files):
             num_releases += 1
             duration += duration_of_release(root)

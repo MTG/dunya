@@ -338,7 +338,7 @@ def scan_and_link(collectionid):
     if not collectionroot.endswith("/"):
         collectionroot += "/"
     found_directories = []
-    for root, d, files in os.walk(collectionroot):
+    for root, _dirs, files in os.walk(collectionroot):
         mp3files = _get_mp3_files(root, files)
         if len(mp3files) > 0:
             found_directories.append(root)

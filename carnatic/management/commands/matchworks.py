@@ -30,7 +30,7 @@ class Command(BaseCommand):
 
         reader = csv.DictReader(open(fname, "rb"))
         for row in reader:
-            id = row["ID"]
+            id_ = row["ID"]
             workname = row["Work"]
             row["Composer"]
             raaga = row["Raaga"]
@@ -39,7 +39,7 @@ class Command(BaseCommand):
             form = row["Form"]
             print(f"work {workname}")
 
-            w = models.Work.objects.get(pk=int(id))
+            w = models.Work.objects.get(pk=int(id_))
             # TODO: Aliases
             f = models.Form.objects.fuzzy(form)
             w.form = f
