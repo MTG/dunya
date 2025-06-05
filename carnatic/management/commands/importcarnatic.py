@@ -27,8 +27,8 @@ class Command(BaseCommand):
     choices = ["instrument", "raaga", "taala", "region", "form", "language", "school"]
 
     def load(self, fname, obclass, has_com, has_header):
-        """ Load a csv file into a class. If any items are in
-        additional columns then import them as aliases """
+        """Load a csv file into a class. If any items are in
+        additional columns then import them as aliases"""
         fp = open(fname, "rb")
         reader = csv.reader(fp)
         if has_header:

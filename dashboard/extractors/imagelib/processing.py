@@ -50,7 +50,7 @@ class AudioProcessingException(Exception):
 def get_max_level(filename):
     max_value = 0
     buffer_size = 4096
-    audio_file = pysndfile.PySndfile(filename, 'r')
+    audio_file = pysndfile.PySndfile(filename, "r")
     n_samples_left = audio_file.frames()
 
     while n_samples_left:
@@ -84,7 +84,7 @@ class AudioProcessor(object):
     def __init__(self, input_filename, fft_size, window_function=numpy.hanning):
         max_level = get_max_level(input_filename)
 
-        self.audio_file = pysndfile.PySndfile(input_filename, 'r')
+        self.audio_file = pysndfile.PySndfile(input_filename, "r")
         self.fft_size = fft_size
         self.window = window_function(self.fft_size)
         self.spectrum_range = None
@@ -101,8 +101,8 @@ class AudioProcessor(object):
         self.scale = 1.0 / max_level / max_fft if max_level > 0 else 1
 
     def read(self, start, size, resize_if_less=False):
-        """ read size samples starting at start, if resize_if_less is True and less than size
-        samples are read, resize the array to size and fill with zeros """
+        """read size samples starting at start, if resize_if_less is True and less than size
+        samples are read, resize the array to size and fill with zeros"""
 
         # number of zeros to add to start and end of the buffer
         add_to_start = 0
@@ -145,12 +145,12 @@ class AudioProcessor(object):
 
             if add_to_end > 0:
                 samples = numpy.resize(samples, size)
-                samples[size - add_to_end:] = 0
+                samples[size - add_to_end :] = 0
 
         return samples
 
     def spectral_centroid(self, seek_point, spec_range=110.0):
-        """ starting at seek_point read fft_size samples, and calculate the spectral centroid """
+        """starting at seek_point read fft_size samples, and calculate the spectral centroid"""
 
         samples = self.read(seek_point - self.fft_size // 2, self.fft_size, True)
 
@@ -171,19 +171,21 @@ class AudioProcessor(object):
             if self.spectrum_range is None:
                 self.spectrum_range = numpy.arange(length)
 
-            spectral_centroid = (spectrum * self.spectrum_range).sum() / (
-                        energy * (length - 1)) * self.audio_file.samplerate() * 0.5
+            spectral_centroid = (
+                (spectrum * self.spectrum_range).sum() / (energy * (length - 1)) * self.audio_file.samplerate() * 0.5
+            )
 
             # clip > log10 > scale between 0 and 1
             spectral_centroid = (math.log10(self.clip(spectral_centroid, self.lower, self.higher)) - self.lower_log) / (
-                        self.higher_log - self.lower_log)
+                self.higher_log - self.lower_log
+            )
 
         return (spectral_centroid, db_spectrum)
 
     def peaks(self, start_seek, end_seek):
-        """ read all samples between start_seek and end_seek, then find the minimum and maximum peak
+        """read all samples between start_seek and end_seek, then find the minimum and maximum peak
         in that range. Returns that pair in the order they were found. So if min was found first,
-        it returns (min, max) else the other way around. """
+        it returns (min, max) else the other way around."""
 
         # larger blocksizes are faster but take more mem...
         # Aha, Watson, a clue, a tradeof!
@@ -228,10 +230,10 @@ class AudioProcessor(object):
 
 
 def interpolate_colors(colors, flat=False, num_colors=256):
-    """ given a list of colors, create a larger list of colors interpolating
+    """given a list of colors, create a larger list of colors interpolating
     the first one. If flatten is True a list of numers will be returned. If
     False, a list of (r,g,b) tuples. num_colors is the number of colors wanted
-    in the final list """
+    in the final list"""
 
     palette = []
 
@@ -259,9 +261,9 @@ def interpolate_colors(colors, flat=False, num_colors=256):
 
 def desaturate(rgb, amount):
     """
-        desaturate colors by amount
-        amount == 0, no change
-        amount == 1, grey
+    desaturate colors by amount
+    amount == 0, no change
+    amount == 1, grey
     """
     luminosity = sum(rgb) / 3.0
     desat = lambda color: color - amount * (color - luminosity)
@@ -281,25 +283,30 @@ class WaveformImage(object):
 
         if palette == 1:
             background_color = (0, 0, 0)
-            colors = [(50, 0, 200),
-                      (0, 220, 80),
-                      (255, 224, 0),
-                      (255, 70, 0),
-                      ]
+            colors = [
+                (50, 0, 200),
+                (0, 220, 80),
+                (255, 224, 0),
+                (255, 70, 0),
+            ]
         elif palette == 2:
             background_color = (0, 0, 0)
             colors = [self.color_from_value(value / 29.0) for value in range(0, 30)]
         elif palette == 3:
             background_color = (213, 217, 221)
-            colors = map(partial(desaturate, amount=0.7), [
-                (50, 0, 200),
-                (0, 220, 80),
-                (255, 224, 0),
-            ])
+            colors = map(
+                partial(desaturate, amount=0.7),
+                [
+                    (50, 0, 200),
+                    (0, 220, 80),
+                    (255, 224, 0),
+                ],
+            )
         elif palette == 4:
             background_color = (213, 217, 221)
-            colors = map(partial(desaturate, amount=0.8),
-                         [self.color_from_value(value / 29.0) for value in range(0, 30)])
+            colors = map(
+                partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(0, 30)]
+            )
 
         print(f"background_color: {background_color}, width: {image_width}, height: {image_height}")
         self.image = Image.new("RGB", (image_width, image_height), background_color)
@@ -314,12 +321,12 @@ class WaveformImage(object):
         self.pix = self.image.load()
 
     def color_from_value(self, value):
-        """ given a value between 0 and 1, return an (r,g,b) tuple """
+        """given a value between 0 and 1, return an (r,g,b) tuple"""
 
         return ImageColor.getrgb("hsl(%d,%d%%,%d%%)" % (int((1.0 - value) * 360), 80, 50))
 
     def draw_peaks(self, x, peaks, spectral_centroid):
-        """ draw 2 peaks at x using the spectral_centroid for color """
+        """draw 2 peaks at x using the spectral_centroid for color"""
 
         y1 = self.image_height * 0.5 - peaks[0] * (self.image_height - 4) * 0.5
         y2 = self.image_height * 0.5 - peaks[1] * (self.image_height - 4) * 0.5
@@ -336,7 +343,7 @@ class WaveformImage(object):
         self.draw_anti_aliased_pixels(x, y1, y2, line_color)
 
     def draw_anti_aliased_pixels(self, x, y1, y2, color):
-        """ vertical anti-aliasing at y1 and y2 """
+        """vertical anti-aliasing at y1 and y2"""
         y_max = max(y1, y2)
         y_max_int = int(y_max)
         alpha = y_max - y_max_int
@@ -384,7 +391,7 @@ class SpectrogramImage(object):
         self.fft_size = fft_size
 
         self.image = Image.new("RGB", (image_height, image_width))
-        '''
+        """
             colors = [
                 (0, 0, 0),
                 (58/4,68/4,65/4),
@@ -394,7 +401,7 @@ class SpectrogramImage(object):
                 (255,60,30),
                 (255,255,255)
              ]
-             '''
+             """
         # Changed Colormap to dull green
 
         kf = 2
@@ -405,7 +412,7 @@ class SpectrogramImage(object):
             (0, 80 / kf, 0),
             (0, 160 / kf, 0),
             (0, 246 / kf, 0),
-            (0, 254 / kf, 0)
+            (0, 254 / kf, 0),
         ]
 
         self.palette = interpolate_colors(colors)
@@ -435,7 +442,7 @@ class SpectrogramImage(object):
 
     def draw_spectrum(self, x, spectrum):
         # for all frequencies, draw the pixels
-        for (index, alpha) in self.y_to_bin:
+        for index, alpha in self.y_to_bin:
             self.pixels.append(self.palette[int((255.0 - alpha) * spectrum[index] + alpha * spectrum[index + 1])])
 
         # if the FFT is too small to fill up the image, fill with black to the top
@@ -447,8 +454,9 @@ class SpectrogramImage(object):
         self.image.transpose(Image.ROTATE_90).save(filename, quality=quality)
 
 
-def create_wave_images(input_filename, output_filename_w, output_filename_s, image_width, image_height, fft_size,
-                       progress_callback=None):
+def create_wave_images(
+    input_filename, output_filename_w, output_filename_s, image_width, image_height, fft_size, progress_callback=None
+):
     """
     Utility function for creating both wavefile and spectrum images from an audio input file.
     """
@@ -459,7 +467,6 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, ima
     spectrogram = SpectrogramImage(image_width, image_height, fft_size)
 
     for x in range(image_width):
-
         if image_width >= 10:
             if progress_callback and x % (image_width / 10) == 0:
                 progress_callback((x * 100) / image_width)
@@ -509,8 +516,9 @@ def convert_to_pcm(input_filename, output_filename):
     if process.returncode != 0 or not os.path.exists(output_filename):
         if "No space left on device" in stderr + " " + stdout:
             raise NoSpaceLeftException
-        raise AudioProcessingException("failed converting to pcm data:\n" + " ".join(
-            cmd) + "\n" + stderr + "\n" + stdout)
+        raise AudioProcessingException(
+            "failed converting to pcm data:\n" + " ".join(cmd) + "\n" + stderr + "\n" + stdout
+        )
 
     return True
 
@@ -531,8 +539,9 @@ def stereofy_and_find_info(stereofy_executble_path, input_filename, output_filen
     if process.returncode != 0 or not os.path.exists(output_filename):
         if "No space left on device" in stderr + " " + stdout:
             raise NoSpaceLeftException
-        raise AudioProcessingException("failed calling stereofy data:\n" + " ".join(
-            cmd) + "\n" + stderr + "\n" + stdout)
+        raise AudioProcessingException(
+            "failed calling stereofy data:\n" + " ".join(cmd) + "\n" + stderr + "\n" + stdout
+        )
 
     stdout = (stdout + " " + stderr).replace("\n", " ")
 
@@ -607,8 +616,19 @@ def convert_using_ffmpeg(input_filename, output_filename):
     if not os.path.exists(input_filename):
         raise AudioProcessingException("file %s does not exist" % input_filename)
 
-    command = ["ffmpeg", "-y", "-i", input_filename, "-ac", "1", "-acodec", "pcm_s16le", "-ar", "44100",
-               output_filename]
+    command = [
+        "ffmpeg",
+        "-y",
+        "-i",
+        input_filename,
+        "-ac",
+        "1",
+        "-acodec",
+        "pcm_s16le",
+        "-ar",
+        "44100",
+        output_filename,
+    ]
 
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     signal.signal(signal.SIGALRM, alarm_handler)

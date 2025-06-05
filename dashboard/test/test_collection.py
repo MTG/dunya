@@ -108,7 +108,7 @@ class CollectionTest(TestCase):
         self.assertEqual(errormsg, f.errors["__all__"][0])
 
     def test_view(self):
-        """ test the actual creation of the collection objects """
+        """test the actual creation of the collection objects"""
         self.client.login(username="user1", password="pass1")
 
         collid = "55412ad8-1b15-44d5-8dc8-9c3cb0cf9e5d"
@@ -116,7 +116,7 @@ class CollectionTest(TestCase):
 
         mockimport = mock.Mock()
         views.jobs.force_load_and_import_collection = mockimport
-        self.client.post('/dashboard/addcollection', data)
+        self.client.post("/dashboard/addcollection", data)
 
         # dashboard collection
         dashc = models.Collection.objects.get(collectionid=collid)
@@ -126,4 +126,3 @@ class CollectionTest(TestCase):
         # docserver collection
         docc = docserver.models.Collection.objects.get(collectionid=collid)
         self.assertEqual("/incoming/carnatic", docc.root_directory)
-

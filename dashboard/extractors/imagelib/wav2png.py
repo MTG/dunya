@@ -19,22 +19,31 @@
 # Authors:
 #     See AUTHORS file.
 #
-# 03/10/2013: Modified from original code 
+# 03/10/2013: Modified from original code
 
 from .processing import create_wave_images, AudioProcessingException
 import sys
 
+
 def progress_callback(percentage):
     sys.stdout.write(str(percentage) + "% ")
     sys.stdout.flush()
-   
+
     # process all files so the user can use wildcards like *.wav
-    
-def genimages(input_file,output_file_w, output_file_s, options):
-    args = (input_file, output_file_w, output_file_s, options.image_width, options.image_height, options.fft_size, progress_callback)
+
+
+def genimages(input_file, output_file_w, output_file_s, options):
+    args = (
+        input_file,
+        output_file_w,
+        output_file_s,
+        options.image_width,
+        options.image_height,
+        options.fft_size,
+        progress_callback,
+    )
     print("processing file %s:\n\t" % input_file)
     try:
         create_wave_images(*args)
     except AudioProcessingException as e:
         print("Error running wav2png: ", e)
-        

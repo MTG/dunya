@@ -25,7 +25,7 @@ import data
 
 
 class Command(BaseCommand):
-    help = 'Load biographies and images from kutcheris data'
+    help = "Load biographies and images from kutcheris data"
 
     def handle(self, *args, **options):
         fname = args[0]
@@ -55,8 +55,9 @@ class Command(BaseCommand):
                 if os.path.exists(photo):
                     if link:
                         sn = data.models.SourceName.objects.get(name="kutcheris.com")
-                        source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=link,
-                                                                                   defaults={"title": a.name})
+                        source, created = data.models.Source.objects.get_or_create(
+                            source_name=sn, uri=link, defaults={"title": a.name}
+                        )
                     else:
                         source = None
                     description = data.models.Description.objects.create(description=bio, source=source)

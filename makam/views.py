@@ -39,13 +39,13 @@ def makamplayer(request):
 
 def guest_login(request):
     if not request.user.is_authenticated:
-        user = User.objects.get(username='guest')
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        user = User.objects.get(username="guest")
+        user.backend = "django.contrib.auth.backends.ModelBackend"
         login(request, user)
 
 
 def guest_logout(request):
-    if request.user.is_authenticated and request.user.username == 'guest':
+    if request.user.is_authenticated and request.user.username == "guest":
         logout(request)
 
 
@@ -54,30 +54,31 @@ def searchcomplete(request):
     ret = []
     if term:
         suggestions = models.Recording.objects.filter(title__istartswith=term)[:3]
-        ret = [{"category": "recordings", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        ret = [{"category": "recordings", "name": l.title, "mbid": str(l.mbid)} for i, l in enumerate(suggestions, 1)]
         suggestions = models.Artist.objects.filter(name__istartswith=term)[:3]
-        ret += [{"category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in
-                enumerate(suggestions, len(ret))]
+        ret += [
+            {"category": "artists", "name": l.name, "mbid": str(l.mbid)} for i, l in enumerate(suggestions, len(ret))
+        ]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
 def recordings_search(request):
-    q = request.GET.get('recording', '')
+    q = request.GET.get("recording", "")
 
-    s_artist = request.GET.get('composers', '')
-    s_perf = request.GET.get('artists', '')
-    s_form = request.GET.get('forms', '')
-    s_makam = request.GET.get('makams', '')
-    s_usul = request.GET.get('usuls', '')
-    s_work = request.GET.get('works', '')
+    s_artist = request.GET.get("composers", "")
+    s_perf = request.GET.get("artists", "")
+    s_form = request.GET.get("forms", "")
+    s_makam = request.GET.get("makams", "")
+    s_usul = request.GET.get("usuls", "")
+    s_work = request.GET.get("works", "")
 
     recordings = models.Recording.objects
     next_page = None
-    if s_work != '' or s_artist != '' or s_perf != '' or s_form != '' or s_usul != '' or s_makam != '' or q:
+    if s_work != "" or s_artist != "" or s_perf != "" or s_form != "" or s_usul != "" or s_makam != "" or q:
         recordings = get_works(s_work, s_artist, s_form, s_usul, s_makam, s_perf, q)
 
     paginator = Paginator(recordings.all(), 25)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     try:
         recordings = paginator.page(page)
         if recordings.has_next():
@@ -90,48 +91,50 @@ def recordings_search(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         recordings = paginator.page(paginator.num_pages)
-    results = {
-        'results': [item.get_dict() for item in recordings.object_list],
-        "moreResults": next_page
-    }
-    return HttpResponse(json.dumps(results), content_type='application/json')
+    results = {"results": [item.get_dict() for item in recordings.object_list], "moreResults": next_page}
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 
 def get_works(work, artist, form, usul, makam, perf, q, elem=None):
     recordings = models.Recording.objects
-    if q and q != '':
-        ids = list(models.Work.objects.filter(title__unaccent__iexact=q).values_list('pk', flat=True))
-        rel_ids = list(models.Release.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
-        recordings = recordings.filter(works__id__in=ids) | recordings.filter(title__contains=q) | \
-                     recordings.filter(release__id__in=rel_ids)
+    if q and q != "":
+        ids = list(models.Work.objects.filter(title__unaccent__iexact=q).values_list("pk", flat=True))
+        rel_ids = list(models.Release.objects.filter(title__unaccent__icontains=q).values_list("pk", flat=True))
+        recordings = (
+            recordings.filter(works__id__in=ids)
+            | recordings.filter(title__contains=q)
+            | recordings.filter(release__id__in=rel_ids)
+        )
 
     if elem != "artist":
-        if artist and artist != '':
-            recordings = recordings.filter(works__composers__mbid__in=artist.split()) \
-                         | recordings.filter(works__lyricists__mbid__in=artist.split())
+        if artist and artist != "":
+            recordings = recordings.filter(works__composers__mbid__in=artist.split()) | recordings.filter(
+                works__lyricists__mbid__in=artist.split()
+            )
     if elem != "form":
-        if form and form != '':
-            if form == '17':
+        if form and form != "":
+            if form == "17":
                 recordings = recordings.filter(has_gazel=True)
-            if form == '67':
+            if form == "67":
                 recordings = recordings.filter(has_taksim=True)
             else:
                 recordings = recordings.filter(works__form__uuid__in=form.split())
     if elem != "work":
-        if work and work != '':
+        if work and work != "":
             recordings = recordings.filter(works__mbid__in=work.split())
     if elem != "usul":
-        if usul and usul != '':
+        if usul and usul != "":
             recordings = recordings.filter(works__usul__uuid__in=usul.split())
     if elem != "makam":
-        if makam and makam != '':
+        if makam and makam != "":
             recordings = recordings.filter(works__makam__uuid__in=makam.split())
     if elem != "performer":
-        if perf and perf != '':
-            recordings = recordings.filter(instrumentperformance__artist__mbid__in=perf.split()) | \
-                         recordings.filter(release__artists__mbid__in=perf.split())
+        if perf and perf != "":
+            recordings = recordings.filter(instrumentperformance__artist__mbid__in=perf.split()) | recordings.filter(
+                release__artists__mbid__in=perf.split()
+            )
 
-    recordings = recordings.distinct().order_by('title')
+    recordings = recordings.distinct().order_by("title")
     return recordings
 
 
@@ -145,12 +148,16 @@ def work_score(request, uuid, title=None):
     phraseurl = f"/document/by-id/{uuid}/segmentphraseseg?v=0.1&subtype=segments"
     indexmapurl = f"/document/by-id/{uuid}/score?v=0.1&subtype=indexmap"
 
-    return render(request, "makam/work_score.html", {
-        "work": work,
-        "phraseurl": phraseurl,
-        "scoreurl": scoreurl,
-        "indexmapurl": indexmapurl,
-    })
+    return render(
+        request,
+        "makam/work_score.html",
+        {
+            "work": work,
+            "phraseurl": phraseurl,
+            "scoreurl": scoreurl,
+            "indexmapurl": indexmapurl,
+        },
+    )
 
 
 def lyric_alignment(request, uuid, title=None):
@@ -169,8 +176,8 @@ def lyric_alignment(request, uuid, title=None):
 
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
-        min_pitch = max_pitch['min']
-        max_pitch = max_pitch['max']
+        min_pitch = max_pitch["min"]
+        max_pitch = max_pitch["max"]
     except docserver.exceptions.NoFileException:
         max_pitch = None
         min_pitch = None
@@ -197,8 +204,9 @@ def lyric_alignment(request, uuid, title=None):
     for u in urls.keys():
         for option in urls[u]:
             try:
-                success_content = docserver.util.docserver_get_url(mbid, option[0], option[1],
-                                                                   option[2], version=option[3])
+                success_content = docserver.util.docserver_get_url(
+                    mbid, option[0], option[1], option[2], version=option[3]
+                )
                 ret[u] = success_content
                 break
             except docserver.exceptions.NoFileException:
@@ -210,25 +218,25 @@ def lyric_alignment(request, uuid, title=None):
 def recordings_urls(include_img_and_bin=True):
     ret = {
         "notesalignurl": [("jointanalysis", "notes", 1, "0.1")],
-        "pitchtrack": [("jointanalysis", "pitch", 1, "0.1"),
-                       ('audioanalysis', 'pitch', 1, '0.1')],
-        "pitchclass": [('jointanalysis', 'pitch_class_distribution', 1, '0.1'),
-                       ('audioanalysis', 'pitch_class_distribution', 1, '0.1')],
+        "pitchtrack": [("jointanalysis", "pitch", 1, "0.1"), ("audioanalysis", "pitch", 1, "0.1")],
+        "pitchclass": [
+            ("jointanalysis", "pitch_class_distribution", 1, "0.1"),
+            ("audioanalysis", "pitch_class_distribution", 1, "0.1"),
+        ],
         "tempourl": [("jointanalysis", "tempo", 1, "0.1")],
-        "histogramurl": [("jointanalysis", "pitch_distribution", 1, "0.1"),
-                         ("audioanalysis", "pitch_distribution", 1, "0.1")],
-        "notemodelsurl": [("jointanalysis", "note_models", 1, "0.1"),
-                          ("audioanalysis", "note_models", 1, "0.1")],
+        "histogramurl": [
+            ("jointanalysis", "pitch_distribution", 1, "0.1"),
+            ("audioanalysis", "pitch_distribution", 1, "0.1"),
+        ],
+        "notemodelsurl": [("jointanalysis", "note_models", 1, "0.1"), ("audioanalysis", "note_models", 1, "0.1")],
         "sectionsurl": [("jointanalysis", "sections", 1, "0.1")],
-        "tonicurl": [("jointanalysis", "tonic", 1, "0.1"),
-                     ("audioanalysis", "tonic", 1, "0.1")],
+        "tonicurl": [("jointanalysis", "tonic", 1, "0.1"), ("audioanalysis", "tonic", 1, "0.1")],
         "ahenkurl": [("jointanalysis", "transposition", 1, "0.1")],
         "worksurl": [("jointanalysis", "works_intervals", 1, "0.1")],
-        "melodic_progression": [("jointanalysis", "melodic_progression", 1,
-                                 "0.1")],
+        "melodic_progression": [("jointanalysis", "melodic_progression", 1, "0.1")],
         "waveform": [("makamaudioimages", "waveform8", 1, 0.3)],
         "smallimage": [("makamaudioimages", "smallfull", 1, 0.3)],
-        "audiometadata": [("audioanalysis", "metadata", 1, "0.1")]
+        "audiometadata": [("audioanalysis", "metadata", 1, "0.1")],
     }
     if include_img_and_bin:
         ret["spectrogram"] = [("makamaudioimages", "spectrum8", 1, 0.3)]
@@ -240,7 +248,8 @@ def recordings_urls(include_img_and_bin=True):
 def recording(request, uuid, title=None):
     recording = get_object_or_404(models.Recording, mbid=uuid)
     recording_doc = docserver.models.Document.objects.filter(
-        external_identifier=recording.mbid, collections__slug='makam-open')
+        external_identifier=recording.mbid, collections__slug="makam-open"
+    )
     if recording_doc.count():
         guest_login(request)
     else:
@@ -260,15 +269,16 @@ def recording(request, uuid, title=None):
 
     try:
         max_pitch = docserver.util.docserver_get_json(mbid, "tomatodunya", "pitchmax", 1, version="0.1")
-        min_pitch = max_pitch['min']
-        max_pitch = max_pitch['max']
+        min_pitch = max_pitch["min"]
+        max_pitch = max_pitch["max"]
     except docserver.exceptions.NoFileException:
         max_pitch = None
         min_pitch = None
 
     has_score = docserver.models.Document.objects.filter(
-        external_identifier__in=list(recording.works.values_list('mbid', flat=True).all()),
-        sourcefiles__file_type__extension='xml').count()
+        external_identifier__in=list(recording.works.values_list("mbid", flat=True).all()),
+        sourcefiles__file_type__extension="xml",
+    ).count()
 
     ret = {
         "recording": recording,
@@ -284,7 +294,7 @@ def recording(request, uuid, title=None):
         "min_pitch": min_pitch,
         "phraseurl": phraseurl,
         "start_time": start_time,
-        "has_score": has_score
+        "has_score": has_score,
     }
 
     urls = recordings_urls()
@@ -293,19 +303,20 @@ def recording(request, uuid, title=None):
         for option in urls[u]:
             try:
                 curr_option += 1
-                if option[0] not in ('tomatodunya', 'makamaudioimages'):
-                    content = docserver.util.docserver_get_json(mbid, option[0],
-                                                                option[1], option[2], version=option[3])
+                if option[0] not in ("tomatodunya", "makamaudioimages"):
+                    content = docserver.util.docserver_get_json(
+                        mbid, option[0], option[1], option[2], version=option[3]
+                    )
                     if content != None and (len(urls[u]) == curr_option or len(content.keys())):
-                        success_content = docserver.util.docserver_get_url(mbid,
-                                                                           option[0], option[1], option[2],
-                                                                           version=option[3])
+                        success_content = docserver.util.docserver_get_url(
+                            mbid, option[0], option[1], option[2], version=option[3]
+                        )
                         ret[u] = success_content
                         break
                 else:
-                    success_content = docserver.util.docserver_get_url(mbid,
-                                                                       option[0], option[1], option[2],
-                                                                       version=option[3])
+                    success_content = docserver.util.docserver_get_url(
+                        mbid, option[0], option[1], option[2], version=option[3]
+                    )
                     ret[u] = success_content
 
             except docserver.exceptions.NoFileException:
@@ -325,24 +336,26 @@ def download_derived_files(request, uuid, title=None):
     for w in recording.works.all():
         document = docserver.models.Document.objects.filter(external_identifier=w.mbid)
         if len(document) == 1:
-            files = document[0].derivedfiles.filter(outputname='score',
-                                                    module_version__version="0.2")
+            files = document[0].derivedfiles.filter(outputname="score", module_version__version="0.2")
 
             if len(files) == 1:
                 for n in range(files[0].num_parts):
-                    filenames.append((docserver.util.docserver_get_filename(w.mbid,
-                                                                            'score', 'score', n + 1, '0.2'),
-                                      '%s-%s-%d-%d' %
-                                      ('score', 'score', n + 1, 2)))
-            score = document[0].sourcefiles.filter(file_type__extension='xml')
+                    filenames.append(
+                        (
+                            docserver.util.docserver_get_filename(w.mbid, "score", "score", n + 1, "0.2"),
+                            "%s-%s-%d-%d" % ("score", "score", n + 1, 2),
+                        )
+                    )
+            score = document[0].sourcefiles.filter(file_type__extension="xml")
             if len(score) == 1:
-                filenames.append((score[0].fullpath, '%s-%s-%d-%d' %
-                                  ('score', 'score', 1, 2)))
+                filenames.append((score[0].fullpath, "%s-%s-%d-%d" % ("score", "score", 1, 2)))
         try:
-            filenames.append((docserver.util.docserver_get_filename(w.mbid,
-                                                                    'scoreanalysis', 'metadata', 1, '0.1'),
-                              '%s-%s-%d-%d' %
-                              ('scoreanalysis', 'metadata', 1, 1)))
+            filenames.append(
+                (
+                    docserver.util.docserver_get_filename(w.mbid, "scoreanalysis", "metadata", 1, "0.1"),
+                    "%s-%s-%d-%d" % ("scoreanalysis", "metadata", 1, 1),
+                )
+            )
         except docserver.exceptions.NoFileException:
             pass
 
@@ -350,21 +363,29 @@ def download_derived_files(request, uuid, title=None):
     for u in keys:
         for option in urls[u]:
             try:
-                if option[0] in ('tomatodunya', 'makamaudioimages'):
-                    filenames.append((docserver.util.docserver_get_filename(mbid, option[0],
-                                                                            option[1], option[2], version=option[3]),
-                                      '%s-%s-%d-%d' %
-                                      (option[0], option[1], 1, int(float(option[3]) * 10))))
+                if option[0] in ("tomatodunya", "makamaudioimages"):
+                    filenames.append(
+                        (
+                            docserver.util.docserver_get_filename(
+                                mbid, option[0], option[1], option[2], version=option[3]
+                            ),
+                            "%s-%s-%d-%d" % (option[0], option[1], 1, int(float(option[3]) * 10)),
+                        )
+                    )
                     break
-                content = docserver.util.docserver_get_json(mbid, option[0], option[1],
-                                                            option[2], version=option[3])
-                if content and (type(content) is list or
-                                    (len(list(content.keys())) and
-                                         ('pitch' in content or content[list(content.keys())[0]]))):
-                    filenames.append((docserver.util.docserver_get_filename(mbid, option[0],
-                                                                            option[1], option[2], version=option[3]),
-                                      '%s-%s-%d-%d' %
-                                      (option[0], option[1], 1, int(float(option[3]) * 10))))
+                content = docserver.util.docserver_get_json(mbid, option[0], option[1], option[2], version=option[3])
+                if content and (
+                    type(content) is list
+                    or (len(list(content.keys())) and ("pitch" in content or content[list(content.keys())[0]]))
+                ):
+                    filenames.append(
+                        (
+                            docserver.util.docserver_get_filename(
+                                mbid, option[0], option[1], option[2], version=option[3]
+                            ),
+                            "%s-%s-%d-%d" % (option[0], option[1], 1, int(float(option[3]) * 10)),
+                        )
+                    )
                     break
             except docserver.exceptions.NoFileException:
                 pass
@@ -379,8 +400,7 @@ def download_derived_files(request, uuid, title=None):
         filename, file_extension = os.path.splitext(f[0])
         fname = f[1]
         # Replace name fonly for smallfull case
-        zip_path = os.path.join(zip_subdir, fname.replace('smallfull',
-                                                          'melodic_progression') + file_extension)
+        zip_path = os.path.join(zip_subdir, fname.replace("smallfull", "melodic_progression") + file_extension)
 
         # Add file, at correct path
         zf.write(fpath, zip_path)
@@ -389,15 +409,15 @@ def download_derived_files(request, uuid, title=None):
     # Grab ZIP file from in-memory, make response with correct MIME-type
     resp = HttpResponse(s.getvalue(), content_type="application/x-zip-compressed")
     # ..and correct content-disposition
-    resp['Content-Disposition'] = f'attachment; filename={zip_filename}'
+    resp["Content-Disposition"] = f"attachment; filename={zip_filename}"
 
     return resp
 
 
 def symbtr(request, uuid):
-    """ The symbtr view returns the data of this item from
+    """The symbtr view returns the data of this item from
     the docserver, except sets a download hint for the browser
-    and sets the filename to be the symbtr name """
+    and sets the filename to be the symbtr name"""
 
     sym = get_object_or_404(models.SymbTr, uuid=uuid)
     types = ("txt", "midi", "pdf", "xml", "mu2")
@@ -409,15 +429,15 @@ def symbtr(request, uuid):
     filetype = get_object_or_404(docserver.models.SourceFileType, slug=slug)
     filename = f"{sym.name}.{filetype.extension}"
     response = docserver.views.download_external(request, uuid, slug)
-    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
     return response
 
 
 def filters(request):
-    makams = models.Makam.objects.prefetch_related('aliases').distinct()
-    forms = models.Form.objects.prefetch_related('aliases').distinct()
-    usuls = models.Usul.objects.prefetch_related('aliases').distinct()
+    makams = models.Makam.objects.prefetch_related("aliases").distinct()
+    forms = models.Form.objects.prefetch_related("aliases").distinct()
+    usuls = models.Usul.objects.prefetch_related("aliases").distinct()
     composers = models.Composer.objects.all()
     artists = models.Artist.objects.all()
 
@@ -444,15 +464,23 @@ def filters(request):
         cc = []
         ii = []
 
-        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc],
-                           "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt],
-                           "instruments": [str(i.mbid) for i in ii]})
+        artistlist.append(
+            {
+                "name": a.name,
+                "mbid": str(a.mbid),
+                "concerts": [str(c.mbid) for c in cc],
+                "raagas": [str(r.uuid) for r in rr],
+                "taalas": [str(t.uuid) for t in tt],
+                "instruments": [str(i.mbid) for i in ii],
+            }
+        )
 
-    ret = {"artists": artistlist,
-           "makams": makamlist,
-           "forms": formlist,
-           "usuls": usullist,
-           "composers": composerlist,
-           }
+    ret = {
+        "artists": artistlist,
+        "makams": makamlist,
+        "forms": formlist,
+        "usuls": usullist,
+        "composers": composerlist,
+    }
 
     return JsonResponse(ret)

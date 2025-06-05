@@ -1,1 +1,1 @@
-token = "" # Dunya API Token
+token = ""  # Dunya API Token

@@ -52,17 +52,18 @@ def is_staff(user):
 @user_passes_test(is_staff)
 def editcollection(request, uuid):
     collection = get_object_or_404(models.Collection, collectionid=uuid)
-    if request.method == 'POST':
-        data = {'collectionid': uuid,
-                'path': request.POST.get("path"),
-                'do_import': request.POST.get("do_import"),
-                }
+    if request.method == "POST":
+        data = {
+            "collectionid": uuid,
+            "path": request.POST.get("path"),
+            "do_import": request.POST.get("do_import"),
+        }
         form = forms.EditCollectionForm(uuid, data)
         if form.is_valid():
-            coll_id = form.cleaned_data['collectionid']
-            path = form.cleaned_data['path']
-            coll_name = form.cleaned_data['collectionname']
-            do_import = form.cleaned_data['do_import']
+            coll_id = form.cleaned_data["collectionid"]
+            path = form.cleaned_data["path"]
+            coll_name = form.cleaned_data["collectionname"]
+            do_import = form.cleaned_data["do_import"]
 
             if coll_name and coll_name != collection.name:
                 collection.name = coll_name
@@ -75,56 +76,57 @@ def editcollection(request, uuid):
                 doccoll.name = coll_name
             doccoll.root_directory = path
             doccoll.save()
-            return redirect('dashboard-collection', uuid)
+            return redirect("dashboard-collection", uuid)
     else:
-        data = {'collectionid': uuid,
-                'path': collection.root_directory,
-                'do_import': collection.do_import,
-                }
+        data = {
+            "collectionid": uuid,
+            "path": collection.root_directory,
+            "do_import": collection.do_import,
+        }
         form = forms.EditCollectionForm(uuid, data)
-    ret = {'form': form}
-    return render(request, 'dashboard/editcollection.html', ret)
+    ret = {"form": form}
+    return render(request, "dashboard/editcollection.html", ret)
 
 
 @user_passes_test(is_staff)
 def addcollection(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.AddCollectionForm(request.POST)
         if form.is_valid():
             # Import collection id
-            coll_id = form.cleaned_data['collectionid']
-            path = form.cleaned_data['path']
-            coll_name = form.cleaned_data['collectionname']
-            do_import = form.cleaned_data['do_import']
+            coll_id = form.cleaned_data["collectionid"]
+            path = form.cleaned_data["path"]
+            coll_name = form.cleaned_data["collectionname"]
+            do_import = form.cleaned_data["do_import"]
             new_collection = models.Collection.objects.create(
-                collectionid=coll_id, name=coll_name,
-                root_directory=path, do_import=do_import)
+                collectionid=coll_id, name=coll_name, root_directory=path, do_import=do_import
+            )
             docserver_coll, created = docserver.models.Collection.objects.get_or_create(
-                collectionid=coll_id,
-                defaults={"root_directory": path, "name": coll_name})
+                collectionid=coll_id, defaults={"root_directory": path, "name": coll_name}
+            )
             if not created:
                 docserver_coll.root_directory = path
                 docserver_coll.name = coll_name
                 docserver_coll.save()
             data_coll, created = data.models.Collection.objects.get_or_create(
-                collectionid=coll_id,
-                defaults={"name": coll_name})
+                collectionid=coll_id, defaults={"name": coll_name}
+            )
             if not created:
                 data_coll.name = coll_name
                 data_coll.save()
             jobs.force_load_and_import_collection(str(new_collection.collectionid))
-            return redirect('dashboard-home')
+            return redirect("dashboard-home")
     else:
         form = forms.AddCollectionForm()
-    ret = {'form': form}
-    return render(request, 'dashboard/addcollection.html', ret)
+    ret = {"form": form}
+    return render(request, "dashboard/addcollection.html", ret)
 
 
 @user_passes_test(is_staff)
 def index(request):
     collections = models.Collection.objects.all()
-    ret = {'collections': collections}
-    return render(request, 'dashboard/index.html', ret)
+    ret = {"collections": collections}
+    return render(request, "dashboard/index.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -138,17 +140,17 @@ def headers(request):
 def accounts(request):
     """Approve new users, and requests to access restricted data"""
 
-    submit_type = request.POST.get('submit')
+    submit_type = request.POST.get("submit")
     current_site = get_current_site(request)
 
     UserFormSet = modelformset_factory(User, forms.InactiveUserForm, extra=0)
-    if request.method == 'POST' and submit_type == 'Approve accounts':
+    if request.method == "POST" and submit_type == "Approve accounts":
         user_formset = UserFormSet(request.POST, queryset=User.objects.filter(is_active=False))
         if user_formset.is_valid():
             for f in user_formset.forms:
-                user = f.cleaned_data['id']
-                is_active = f.cleaned_data['is_active']
-                delete = f.cleaned_data['delete']
+                user = f.cleaned_data["id"]
+                is_active = f.cleaned_data["is_active"]
+                delete = f.cleaned_data["delete"]
                 if is_active:
                     user.is_active = True
                     user.save()
@@ -159,13 +161,13 @@ def accounts(request):
     user_formset = UserFormSet(queryset=User.objects.filter(is_active=False))
 
     AccessRequestFormSet = modelformset_factory(AccessRequest, AccessRequestApprovalForm, extra=0)
-    if request.method == 'POST' and submit_type == 'Approve requests':
+    if request.method == "POST" and submit_type == "Approve requests":
         access_formset = AccessRequestFormSet(request.POST, queryset=AccessRequest.objects.unapproved())
         for form in access_formset.forms:
             if form.is_valid():
-                access_request = form.cleaned_data['id']
-                decision = form.cleaned_data['decision']
-                approved = decision == 'approve'
+                access_request = form.cleaned_data["id"]
+                decision = form.cleaned_data["decision"]
+                approved = decision == "approve"
 
                 # If a request is approved, the user has to be added to the correct group
                 access_request.approve_or_deny_request(request.user, approved)
@@ -175,8 +177,8 @@ def accounts(request):
                 dashboard.email.email_user_on_access_request_approval(current_site, access_request.user, approved)
 
     access_formset = AccessRequestFormSet(queryset=AccessRequest.objects.unapproved())
-    ret = {'user_formset': user_formset, 'access_formset': access_formset}
-    return render(request, 'dashboard/accounts.html', ret)
+    ret = {"user_formset": user_formset, "access_formset": access_formset}
+    return render(request, "dashboard/accounts.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -194,7 +196,7 @@ def delete_collection(request, uuid):
             return redirect("dashboard-collection", c.collectionid)
 
     ret = {"collection": c}
-    return render(request, 'dashboard/delete_collection.html', ret)
+    return render(request, "dashboard/delete_collection.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -210,35 +212,42 @@ def delete_database_files(request, uuid):
             return redirect("dashboard-collection", c.pk)
 
     ret = {"collection": c}
-    return render(request, 'dashboard/delete_collection_db_files.html', ret)
+    return render(request, "dashboard/delete_collection_db_files.html", ret)
 
 
 @user_passes_test(is_staff)
 def collection(request, uuid):
-    c = get_object_or_404(models.Collection.objects.prefetch_related('collectionstate_set'), collectionid=uuid)
+    c = get_object_or_404(models.Collection.objects.prefetch_related("collectionstate_set"), collectionid=uuid)
 
     forcescan = request.GET.get("forcescan")
     if forcescan is not None:
         jobs.force_load_and_import_collection(str(c.collectionid))
-        return redirect('dashboard-collection', uuid)
+        return redirect("dashboard-collection", uuid)
 
     order = request.GET.get("order")
-    releases = models.MusicbrainzRelease.objects.filter(collection=c) \
-        .prefetch_related('musicbrainzreleasestate_set') \
-        .prefetch_related('collectiondirectory_set') \
-        .prefetch_related('collectiondirectory_set__collectionfile_set')
+    releases = (
+        models.MusicbrainzRelease.objects.filter(collection=c)
+        .prefetch_related("musicbrainzreleasestate_set")
+        .prefetch_related("collectiondirectory_set")
+        .prefetch_related("collectiondirectory_set__collectionfile_set")
+    )
     if order == "date":
+
         def sortkey(rel):
             return rel.get_current_state().state_date
     elif order == "unmatched":
+
         def sortkey(rel):
             return False if rel.matched_paths() else True, rel.get_current_state().state_date
     elif order == "ignored":
+
         def sortkey(rel):
             return rel.ignore
     else:
+
         def sortkey(rel):
             return rel.id
+
     releases = sorted(releases, key=sortkey, reverse=True)
 
     numtotal = len(releases)
@@ -247,15 +256,21 @@ def collection(request, uuid):
     for r in releases:
         if r.all_files():
             nummatched += 1
-            if r.get_current_state().state == 'f':
+            if r.get_current_state().state == "f":
                 numfinished += 1
 
     folders = models.CollectionDirectory.objects.filter(collection=c, musicbrainzrelease__isnull=True)
-    log = models.CollectionLogMessage.objects.filter(collection=c).order_by('-datetime')
-    ret = {"collection": c, "log_messages": log, "releases": releases,
-           "folders": folders,
-           "numtotal": numtotal, "numfinished": numfinished, "nummatched": nummatched}
-    return render(request, 'dashboard/collection.html', ret)
+    log = models.CollectionLogMessage.objects.filter(collection=c).order_by("-datetime")
+    ret = {
+        "collection": c,
+        "log_messages": log,
+        "releases": releases,
+        "folders": folders,
+        "numtotal": numtotal,
+        "numfinished": numfinished,
+        "nummatched": nummatched,
+    }
+    return render(request, "dashboard/collection.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -265,24 +280,24 @@ def release(request, releaseid):
     reimport = request.GET.get("reimport")
     if reimport is not None:
         jobs.import_single_release.delay(release.id)
-        return redirect('dashboard-release', releaseid)
+        return redirect("dashboard-release", releaseid)
 
     delete = request.GET.get("delete")
     if delete is not None:
         collection = release.collection
         release.delete()
-        return redirect('dashboard-collection', collection.collectionid)
+        return redirect("dashboard-collection", collection.collectionid)
 
     ignore = request.GET.get("ignore")
     if ignore is not None:
         release.ignore = True
         release.save()
-        return redirect('dashboard-release', releaseid)
+        return redirect("dashboard-release", releaseid)
     unignore = request.GET.get("unignore")
     if unignore is not None:
         release.ignore = False
         release.save()
-        return redirect('dashboard-release', releaseid)
+        return redirect("dashboard-release", releaseid)
     run = request.GET.get("run")
     if run is not None:
         module = int(run)
@@ -290,15 +305,14 @@ def release(request, releaseid):
         files = models.CollectionFile.objects.filter(directory__musicbrainzrelease=release)
         recids = [r.recordingid for r in files]
         docserver.jobs.run_module_on_recordings(module, recids)
-        return redirect('dashboard-release', releaseid)
+        return redirect("dashboard-release", releaseid)
 
-    files = release.collectiondirectory_set.order_by('path').all()
-    log = release.musicbrainzreleaselogmessage_set.order_by('-datetime').all()
+    files = release.collectiondirectory_set.order_by("path").all()
+    log = release.musicbrainzreleaselogmessage_set.order_by("-datetime").all()
 
     modules = docserver.models.Module.objects.all()
-    ret = {"release": release, "files": files, "log_messages": log,
-           "modules": modules}
-    return render(request, 'dashboard/release.html', ret)
+    ret = {"release": release, "files": files, "log_messages": log, "modules": modules}
+    return render(request, "dashboard/release.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -317,16 +331,13 @@ def file(request, fileid):
         derivedfiles = docsrvdoc.nestedderived()
     except docserver.models.Document.DoesNotExist:
         pass
-    ret = {"file": thefile,
-           "sourcefiles": sourcefiles,
-           "derivedfiles": derivedfiles,
-           "docsrvdoc": docsrvdoc}
-    return render(request, 'dashboard/file.html', ret)
+    ret = {"file": thefile, "sourcefiles": sourcefiles, "derivedfiles": derivedfiles, "docsrvdoc": docsrvdoc}
+    return render(request, "dashboard/file.html", ret)
 
 
 @user_passes_test(is_staff)
 def directory(request, dirid):
-    """ A directory that wasn't matched to a release in the collection.
+    """A directory that wasn't matched to a release in the collection.
     This could be because it has no release tags, or the release isn't in
     the collection.
     We want to group together as much common information as possible, and
@@ -339,7 +350,7 @@ def directory(request, dirid):
         # TODO: Change to celery
         jobs.rematch_unknown_directory(dirid)
         get_object_or_404(models.CollectionDirectory, pk=dirid)
-        return redirect('dashboard-directory', dirid)
+        return redirect("dashboard-directory", dirid)
 
     full_path = directory.full_path
     try:
@@ -376,15 +387,20 @@ def directory(request, dirid):
     else:
         matched_release = None
 
-    ret = {"files": sorted(files), "directory": directory, "got_release_id": got_release_id, "got_artist": got_artist,
-           "matched_release": matched_release}
+    ret = {
+        "files": sorted(files),
+        "directory": directory,
+        "got_release_id": got_release_id,
+        "got_artist": got_artist,
+        "matched_release": matched_release,
+    }
     if got_release_id:
         ret["releasename"] = list(releasename)[0]
         ret["releaseid"] = list(releaseids)[0]
     if got_artist:
         ret["artistname"] = list(artistname)[0]
         ret["artistid"] = list(artistids)[0]
-    return render(request, 'dashboard/directory.html', ret)
+    return render(request, "dashboard/directory.html", ret)
 
 
 def _edit_attributedata(request, data):
@@ -398,17 +414,18 @@ def _edit_attributedata(request, data):
 
     items = klass.objects.all()
 
-    ret = {"items": items,
-           "entityn": entityname,
-           "entitynpl": f"{entityname}s",
-           "style": stylename,
-           "entityurl": entityurl,
-           "title": f"{entityname} editor",
-           "common_name": common_name,
-           "alias": aliasklass
-           }
+    ret = {
+        "items": items,
+        "entityn": entityname,
+        "entitynpl": f"{entityname}s",
+        "style": stylename,
+        "entityurl": entityurl,
+        "title": f"{entityname} editor",
+        "common_name": common_name,
+        "alias": aliasklass,
+    }
 
-    if request.method == 'POST':
+    if request.method == "POST":
         # Add aliases
         if aliasklass:
             for i in items:
@@ -450,63 +467,68 @@ def _edit_attributedata(request, data):
 
 @user_passes_test(is_staff)
 def carnatic_raagas(request):
-    data = {"stylename": "Carnatic",
-            "entityname": "Raaga",
-            "entityurl": "dashboard-carnatic-raagas",
-            "klass": carnatic.models.Raaga,
-            "aliasklass": carnatic.models.RaagaAlias,
-            "template": "dashboard/styletag.html",
-            "common_name": True  # If this attribute has a common_name
-            }
+    data = {
+        "stylename": "Carnatic",
+        "entityname": "Raaga",
+        "entityurl": "dashboard-carnatic-raagas",
+        "klass": carnatic.models.Raaga,
+        "aliasklass": carnatic.models.RaagaAlias,
+        "template": "dashboard/styletag.html",
+        "common_name": True,  # If this attribute has a common_name
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def carnatic_taalas(request):
-    data = {"stylename": "Carnatic",
-            "entityname": "Taala",
-            "entityurl": "dashboard-carnatic-taalas",
-            "klass": carnatic.models.Taala,
-            "aliasklass": carnatic.models.TaalaAlias,
-            "template": "dashboard/styletag.html",
-            "common_name": True  # If this attribute has a common_name
-            }
+    data = {
+        "stylename": "Carnatic",
+        "entityname": "Taala",
+        "entityurl": "dashboard-carnatic-taalas",
+        "klass": carnatic.models.Taala,
+        "aliasklass": carnatic.models.TaalaAlias,
+        "template": "dashboard/styletag.html",
+        "common_name": True,  # If this attribute has a common_name
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def carnatic_instruments(request):
-    data = {"stylename": "Carnatic",
-            "entityname": "Instrument",
-            "entityurl": "dashboard-carnatic-instruments",
-            "klass": carnatic.models.Instrument,
-            "aliasklass": carnatic.models.InstrumentAlias,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Carnatic",
+        "entityname": "Instrument",
+        "entityurl": "dashboard-carnatic-instruments",
+        "klass": carnatic.models.Instrument,
+        "aliasklass": carnatic.models.InstrumentAlias,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def carnatic_forms(request):
-    data = {"stylename": "Carnatic",
-            "entityname": "Form",
-            "entityurl": "dashboard-carnatic-forms",
-            "klass": carnatic.models.Form,
-            "aliasklass": carnatic.models.FormAlias,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Carnatic",
+        "entityname": "Form",
+        "entityurl": "dashboard-carnatic-forms",
+        "klass": carnatic.models.Form,
+        "aliasklass": carnatic.models.FormAlias,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
 
 def carnatic_artists_list(request):
-    data = {"artists": carnatic.models.Artist.objects.order_by('name').filter(dummy=False),
-            "entityurl": "dashboard-carnatic-artist",
-            "template": "dashboard/edit_artist_list.html",
-            }
+    data = {
+        "artists": carnatic.models.Artist.objects.order_by("name").filter(dummy=False),
+        "entityurl": "dashboard-carnatic-artist",
+        "template": "dashboard/edit_artist_list.html",
+    }
     return _edit_artists_list(request, data)
 
 
@@ -518,79 +540,85 @@ def carnatic_artist_desc(request, artistid):
 
 @user_passes_test(is_staff)
 def hindustani_raags(request):
-    data = {"stylename": "Hindustani",
-            "entityname": "Raag",
-            "entityurl": "dashboard-hindustani-raags",
-            "klass": hindustani.models.Raag,
-            "aliasklass": hindustani.models.RaagAlias,
-            "template": "dashboard/styletag.html",
-            "common_name": True  # If this attribute has a common_name
-            }
+    data = {
+        "stylename": "Hindustani",
+        "entityname": "Raag",
+        "entityurl": "dashboard-hindustani-raags",
+        "klass": hindustani.models.Raag,
+        "aliasklass": hindustani.models.RaagAlias,
+        "template": "dashboard/styletag.html",
+        "common_name": True,  # If this attribute has a common_name
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def hindustani_taals(request):
-    data = {"stylename": "Hindustani",
-            "entityname": "Taal",
-            "entityurl": "dashboard-hindustani-taals",
-            "klass": hindustani.models.Taal,
-            "aliasklass": hindustani.models.TaalAlias,
-            "template": "dashboard/styletag.html",
-            "common_name": True  # If this attribute has a common_name
-            }
+    data = {
+        "stylename": "Hindustani",
+        "entityname": "Taal",
+        "entityurl": "dashboard-hindustani-taals",
+        "klass": hindustani.models.Taal,
+        "aliasklass": hindustani.models.TaalAlias,
+        "template": "dashboard/styletag.html",
+        "common_name": True,  # If this attribute has a common_name
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def hindustani_layas(request):
-    data = {"stylename": "Hindustani",
-            "entityname": "Laya",
-            "entityurl": "dashboard-hindustani-layas",
-            "klass": hindustani.models.Laya,
-            "aliasklass": hindustani.models.LayaAlias,
-            "template": "dashboard/styletag.html",
-            "common_name": True  # If this attribute has a common_name
-            }
+    data = {
+        "stylename": "Hindustani",
+        "entityname": "Laya",
+        "entityurl": "dashboard-hindustani-layas",
+        "klass": hindustani.models.Laya,
+        "aliasklass": hindustani.models.LayaAlias,
+        "template": "dashboard/styletag.html",
+        "common_name": True,  # If this attribute has a common_name
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def hindustani_forms(request):
-    data = {"stylename": "Hindustani",
-            "entityname": "Form",
-            "entityurl": "dashboard-hindustani-forms",
-            "klass": hindustani.models.Form,
-            "aliasklass": hindustani.models.FormAlias,
-            "template": "dashboard/styletag.html",
-            "common_name": True  # If this attribute has a common_name
-            }
+    data = {
+        "stylename": "Hindustani",
+        "entityname": "Form",
+        "entityurl": "dashboard-hindustani-forms",
+        "klass": hindustani.models.Form,
+        "aliasklass": hindustani.models.FormAlias,
+        "template": "dashboard/styletag.html",
+        "common_name": True,  # If this attribute has a common_name
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def hindustani_instruments(request):
-    data = {"stylename": "Hindustani",
-            "entityname": "Instrument",
-            "entityurl": "dashboard-hindustani-instruments",
-            "klass": hindustani.models.Instrument,
-            "aliasklass": None,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Hindustani",
+        "entityname": "Instrument",
+        "entityurl": "dashboard-hindustani-instruments",
+        "klass": hindustani.models.Instrument,
+        "aliasklass": None,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def hindustani_artists_list(request):
-    data = {"artists": hindustani.models.Artist.objects.order_by('name').all(),
-            "entityurl": "dashboard-hindustani-artist",
-            "template": "dashboard/edit_artist_list.html",
-            }
+    data = {
+        "artists": hindustani.models.Artist.objects.order_by("name").all(),
+        "entityurl": "dashboard-hindustani-artist",
+        "template": "dashboard/edit_artist_list.html",
+    }
     return _edit_artists_list(request, data)
 
 
@@ -602,52 +630,56 @@ def hindustani_artist_desc(request, artistid):
 
 @user_passes_test(is_staff)
 def makam_makams(request):
-    data = {"stylename": "Makam",
-            "entityname": "Makam",
-            "entityurl": "dashboard-makam-makams",
-            "klass": makam.models.Makam,
-            "aliasklass": makam.models.MakamAlias,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Makam",
+        "entityname": "Makam",
+        "entityurl": "dashboard-makam-makams",
+        "klass": makam.models.Makam,
+        "aliasklass": makam.models.MakamAlias,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def makam_forms(request):
-    data = {"stylename": "Makam",
-            "entityname": "Form",
-            "entityurl": "dashboard-makam-forms",
-            "klass": makam.models.Form,
-            "aliasklass": makam.models.FormAlias,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Makam",
+        "entityname": "Form",
+        "entityurl": "dashboard-makam-forms",
+        "klass": makam.models.Form,
+        "aliasklass": makam.models.FormAlias,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def makam_usuls(request):
-    data = {"stylename": "Makam",
-            "entityname": "Usul",
-            "entityurl": "dashboard-makam-usuls",
-            "klass": makam.models.Usul,
-            "aliasklass": makam.models.UsulAlias,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Makam",
+        "entityname": "Usul",
+        "entityurl": "dashboard-makam-usuls",
+        "klass": makam.models.Usul,
+        "aliasklass": makam.models.UsulAlias,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
 
 @user_passes_test(is_staff)
 def makam_instruments(request):
-    data = {"stylename": "Makam",
-            "entityname": "Instrument",
-            "entityurl": "dashboard-makam-instruments",
-            "klass": makam.models.Instrument,
-            "aliasklass": None,
-            "template": "dashboard/styletag.html",
-            }
+    data = {
+        "stylename": "Makam",
+        "entityname": "Instrument",
+        "entityurl": "dashboard-makam-instruments",
+        "klass": makam.models.Instrument,
+        "aliasklass": None,
+        "template": "dashboard/styletag.html",
+    }
 
     return _edit_attributedata(request, data)
 
@@ -660,29 +692,29 @@ def makam_symbtrlist(request):
 
 
 def _get_symbtr_sourcetypes():
-    types = ['symbtrtxt', 'symbtrmidi', 'symbtrpdf', 'symbtrxml', 'symbtrmu2']
+    types = ["symbtrtxt", "symbtrmidi", "symbtrpdf", "symbtrxml", "symbtrmu2"]
     return docserver.models.SourceFileType.objects.filter(slug__in=types)
 
 
 @user_passes_test(is_staff)
 def makam_symbtr(request, uuid=None):
     """
-      - Add new mapping
-        - Create document if it doesn't exist
-      - Rename mapping
-        - Rename document name  (if not taksim)
-        - If uuid changes, make or get document
-          - Copy symbtr source files from old to new
-          - Delete old document if no other sourcefiles
-      - Upload symbtr file
-        - Get name, copy in, create/get sourcefile, attach to document
+    - Add new mapping
+      - Create document if it doesn't exist
+    - Rename mapping
+      - Rename document name  (if not taksim)
+      - If uuid changes, make or get document
+        - Copy symbtr source files from old to new
+        - Delete old document if no other sourcefiles
+    - Upload symbtr file
+      - Get name, copy in, create/get sourcefile, attach to document
     """
     if uuid:
         symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
         delete = request.GET.get("delete")
         if delete == "1":
             symbtr.delete()
-            return redirect('dashboard-makam-symbtrlist')
+            return redirect("dashboard-makam-symbtrlist")
         is_taksim = "taksim" in symbtr.name
         if is_taksim:
             mbtype = "recording"
@@ -694,13 +726,14 @@ def makam_symbtr(request, uuid=None):
         symbtr = None
         url = ""
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.SymbTrForm(request.POST, instance=symbtr)
         if form.is_valid():
             form.save()
             newuuid = form.instance.uuid
             newdoc, created = docserver.models.Document.objects.get_or_create(
-                external_identifier=newuuid, defaults={"title": form.instance.name})
+                external_identifier=newuuid, defaults={"title": form.instance.name}
+            )
             collection = docserver.models.Collection.objects.get(slug="makam-symbtr")
             docserver.util.docserver_create_document(collection.collectionid, newuuid, form.instance.name)
             if not created and not is_taksim:
@@ -717,7 +750,7 @@ def makam_symbtr(request, uuid=None):
                     olddoc = docserver.models.Document.objects.get(external_identifier=uuid)
                     if olddoc.sourcefiles.count() == 0:
                         olddoc.delete()
-                return redirect('dashboard-makam-symbtr', form.instance.uuid)
+                return redirect("dashboard-makam-symbtr", form.instance.uuid)
             symbtr = get_object_or_404(makam.models.SymbTr, uuid=uuid)
             # If main data form is valid, this one was unused
             symbtrfiles = forms.SymbTrFileForm()
@@ -725,7 +758,7 @@ def makam_symbtr(request, uuid=None):
         symbtrfiles = forms.SymbTrFileForm(request.POST, request.FILES)
         if symbtrfiles.is_valid():
             pref = "symbtr"
-            for f in ['txt', 'midi', 'xml', 'pdf', 'mu2']:
+            for f in ["txt", "midi", "xml", "pdf", "mu2"]:
                 fdata = symbtrfiles.files.get(f)
                 if fdata:
                     stypename = pref + f
@@ -744,28 +777,35 @@ def makam_symbtr(request, uuid=None):
         for s in sfs:
             existing[s.file_type.slug] = s.get_absolute_url
 
-    ret = {"add": uuid is None, "symbtr": symbtr, "url": url, "form": form,
-           "symbtrfiles": symbtrfiles, "existingfiles": existing}
+    ret = {
+        "add": uuid is None,
+        "symbtr": symbtr,
+        "url": url,
+        "form": form,
+        "symbtrfiles": symbtrfiles,
+        "existingfiles": existing,
+    }
     return render(request, "dashboard/makam_symbtr.html", ret)
 
 
 def _edit_artists_list(request, data):
-    """ Generic view to display list of data.Artist """
-    params = {"artists": data["artists"],
-              "entityurl": data["entityurl"],
-              }
+    """Generic view to display list of data.Artist"""
+    params = {
+        "artists": data["artists"],
+        "entityurl": data["entityurl"],
+    }
     return render(request, data["template"], params)
 
 
 def _edit_artist_desc(request, artist, entityurl):
-    """ Generic view for editing a data.Artist """
+    """Generic view for editing a data.Artist"""
 
     resp_msg = ""
     desc = None
     if artist.description is not None:
         desc = artist.description.description
 
-    if request.method == 'POST':
+    if request.method == "POST":
         # Save description
         param_desc = request.POST.get("description", None)
         if param_desc is not None:
@@ -792,15 +832,15 @@ def _edit_artist_desc(request, artist, entityurl):
 
 
 def list_access_collections(request):
-    """ List of data.Collection for edition """
-    params = {"collections": data.models.Collection.objects.order_by('name').all()}
+    """List of data.Collection for edition"""
+    params = {"collections": data.models.Collection.objects.order_by("name").all()}
     return render(request, "dashboard/collections_list.html", params)
 
 
 def edit_access_collections(request, uuid):
     message = ""
     collection = get_object_or_404(data.models.Collection, collectionid=uuid)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.AccessCollectionForm(request.POST, instance=collection)
         if form.is_valid():
             form.save()
@@ -813,21 +853,21 @@ def edit_access_collections(request, uuid):
 
 def import_andalusian_elements(request):
     message = ""
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.CsvAndalusianForm(request.POST, request.FILES)
         if form.is_valid():
             transliterator = ALA_LC_Transliterator()
             vocalizer = TashkeelClass()
-            csv_file = form.cleaned_data['csv_file']
-            reader = csv.reader(csv_file.read().decode('utf-8').splitlines())
+            csv_file = form.cleaned_data["csv_file"]
+            reader = csv.reader(csv_file.read().decode("utf-8").splitlines())
             klass = None
-            if form.cleaned_data['elem_type'] == 'tabs':
+            if form.cleaned_data["elem_type"] == "tabs":
                 klass = andalusian.models.Tab
-            elif form.cleaned_data['elem_type'] == 'nawbas':
+            elif form.cleaned_data["elem_type"] == "nawbas":
                 klass = andalusian.models.Nawba
-            elif form.cleaned_data['elem_type'] == 'forms':
+            elif form.cleaned_data["elem_type"] == "forms":
                 klass = andalusian.models.Form
-            elif form.cleaned_data['elem_type'] == 'mizans':
+            elif form.cleaned_data["elem_type"] == "mizans":
                 klass = andalusian.models.Mizan
             if klass:
                 for row in reader:
@@ -854,24 +894,24 @@ def import_andalusian_score(request):
 
     score = None
     qfiles = docserver.models.SourceFile.objects.filter(
-        document__external_identifier=param_mbid,
-        file_type__slug='symbtrxml')
+        document__external_identifier=param_mbid, file_type__slug="symbtrxml"
+    )
     if len(qfiles) == 1:
         score = qfiles.all()[0]
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.AndalusianScoreForm(request.POST, request.FILES)
         if form.is_valid():
-            sft = docserver.models.SourceFileType.objects.get(slug='symbtrxml')
-            document, created = docserver.models.Document.objects.get_or_create(
-                external_identifier=param_mbid)
+            sft = docserver.models.SourceFileType.objects.get(slug="symbtrxml")
+            document, created = docserver.models.Document.objects.get_or_create(external_identifier=param_mbid)
             if created:
                 collection = docserver.models.Collection.objects.get(
-                    collectionid='142ea0d7-7fdf-4ea5-9b04-219f68023d01')
+                    collectionid="142ea0d7-7fdf-4ea5-9b04-219f68023d01"
+                )
                 document.collections.add(collection)
             sf, created = docserver.util.docserver_upload_and_save_file(
-                document.id,
-                sft.id, form.cleaned_data['score_file'])
-            return redirect('dashboard-home')
+                document.id, sft.id, form.cleaned_data["score_file"]
+            )
+            return redirect("dashboard-home")
     else:
         form = forms.AndalusianScoreForm()
     params = {"score": score, "form": form, "recordings": recordings, "recording": rec}
@@ -880,17 +920,16 @@ def import_andalusian_score(request):
 
 def import_andalusian_catalog(request):
     message = ""
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.CsvAndalusianCatalogForm(request.POST, request.FILES)
         if form.is_valid():
             transliterator = ALA_LC_Transliterator()
             vocalizer = TashkeelClass()
             omited = 0
-            csv_file = form.cleaned_data['csv_file']
+            csv_file = form.cleaned_data["csv_file"]
             reader = csv.reader(csv_file.read().splitlines())
             next(reader)
             for row in reader:
-
                 genre = row[0]
                 rec_mbid = row[11]
                 nawba = row[14]
@@ -901,17 +940,17 @@ def import_andalusian_catalog(request):
                 if rec_mbid:
                     section_start = row[18]
                     section_end = row[19]
-                    genre, created = andalusian.models.Genre.objects.get_or_create(name=genre.decode('utf8'))
+                    genre, created = andalusian.models.Genre.objects.get_or_create(name=genre.decode("utf8"))
                     rec = andalusian.models.Recording.objects.get(mbid=rec_mbid)
-                    sec, created = andalusian.models.Section.objects.get_or_create(recording=rec,
-                                                                                   start_time=section_start,
-                                                                                   end_time=section_end)
-                    tab = andalusian.models.Tab.objects.get(name=tab.decode('utf8'))
-                    form = andalusian.models.Form.objects.get(name=form.decode('utf8'))
-                    nawba = andalusian.models.Nawba.objects.get(name=nawba.decode('utf8'))
-                    mizan = andalusian.models.Mizan.objects.get(name=mizan.decode('utf8'))
+                    sec, created = andalusian.models.Section.objects.get_or_create(
+                        recording=rec, start_time=section_start, end_time=section_end
+                    )
+                    tab = andalusian.models.Tab.objects.get(name=tab.decode("utf8"))
+                    form = andalusian.models.Form.objects.get(name=form.decode("utf8"))
+                    nawba = andalusian.models.Nawba.objects.get(name=nawba.decode("utf8"))
+                    mizan = andalusian.models.Mizan.objects.get(name=mizan.decode("utf8"))
 
-                    voc = vocalizer.tashkeel(row[0].decode('utf8'))
+                    voc = vocalizer.tashkeel(row[0].decode("utf8"))
                     tr = transliterator.do(voc.strip())
                     genre.transliterated_name = arabic_reshaper.reshape(tr)
                     genre.save()

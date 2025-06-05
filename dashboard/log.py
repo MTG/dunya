@@ -41,11 +41,11 @@ class ImportLogHandler(logging.Handler):
 ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
 
-import_base_logger = logging.getLogger('dunya.importer')
+import_base_logger = logging.getLogger("dunya.importer")
 import_base_logger.addHandler(ImportLogHandler())
 import_base_logger.addHandler(ch)
 import_logger = ImportLogAdapter(import_base_logger, {})
 
 
-logger = logging.getLogger('dunya')
+logger = logging.getLogger("dunya")
 logger.addHandler(ch)

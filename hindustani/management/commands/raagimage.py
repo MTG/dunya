@@ -33,9 +33,9 @@ class Command(BaseCommand):
     help = "Calculate mean pitch profile of all raags"
 
     option_list = BaseCommand.option_list + (
-        make_option('-d', action='store_true', dest='delete',
-                    default=False,
-                    help='Delete images for a raag(a) and reimport'),
+        make_option(
+            "-d", action="store_true", dest="delete", default=False, help="Delete images for a raag(a) and reimport"
+        ),
     )
 
     def calc_profile(self, raag, recordings, style):
@@ -132,6 +132,6 @@ class Command(BaseCommand):
         if len(args) == 0:
             raise CommandError("Arguments: [-d] <carnatic|hindustani>")
         if args[0] == "hindustani":
-            self.hindustani(options['delete'])
+            self.hindustani(options["delete"])
         elif args[0] == "carnatic":
-            self.carnatic(options['delete'])
+            self.carnatic(options["delete"])

@@ -37,8 +37,7 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
 
     def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
-            makam.models.ReleaseRecording.objects.create(
-                release=release, recording=recording, track=trackorder)
+            makam.models.ReleaseRecording.objects.create(release=release, recording=recording, track=trackorder)
 
     def _join_recording_and_works(self, recording, works):
         # A makam recording can be of many works. Note that because works
@@ -162,7 +161,11 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             return None
 
     def _performance_type_to_instrument(self, perf_type, attrs):
-        if perf_type in [release_importer.RELATION_ORCHESTRA, release_importer.RELATION_PERFORMER, release_importer.RELATION_VOCAL]:
+        if perf_type in [
+            release_importer.RELATION_ORCHESTRA,
+            release_importer.RELATION_PERFORMER,
+            release_importer.RELATION_VOCAL,
+        ]:
             try:
                 instrument = makam.models.Instrument.objects.get(mbid=perf_type)
             except makam.models.Instrument.DoesNotExist:
@@ -190,7 +193,9 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
         instrument, attributes = self._performance_type_to_instrument(perf_type, attrs)
 
         recording = makam.models.Recording.objects.get(mbid=recordingid)
-        makam.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, attributes=attributes, lead=is_lead)
+        makam.models.InstrumentPerformance.objects.create(
+            recording=recording, instrument=instrument, artist=artist, attributes=attributes, lead=is_lead
+        )
 
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         # We don't expect to see any release-level performance relationships, so we
@@ -215,8 +220,8 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
                 rec.artists.add(artist)
 
     def _add_work_attributes(self, work, mbwork, created):
-        """ Read mb attributes from the webservice query
-        and add them to the object """
+        """Read mb attributes from the webservice query
+        and add them to the object"""
 
         work.form.clear()
         work.usul.clear()
@@ -238,20 +243,19 @@ class MakamReleaseImporter(release_importer.ReleaseImporter):
             work.save()
 
     def _get_form_mb(self, mb_work):
-        for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == 'Form (Ottoman, Turkish)':
-                return a['value']
+        for a in mb_work.get("attribute-list", []):
+            if a["attribute"] == "Form (Ottoman, Turkish)":
+                return a["value"]
         return None
 
     def _get_usul_mb(self, mb_work):
-        for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == 'Usul (Ottoman, Turkish)':
-                return a['value']
+        for a in mb_work.get("attribute-list", []):
+            if a["attribute"] == "Usul (Ottoman, Turkish)":
+                return a["value"]
         return None
 
     def _get_makam_mb(self, mb_work):
-        for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == 'Makam (Ottoman, Turkish)':
-                return a['value']
+        for a in mb_work.get("attribute-list", []):
+            if a["attribute"] == "Makam (Ottoman, Turkish)":
+                return a["value"]
         return None
-

@@ -24,38 +24,40 @@ from docserver import models
 class CollectionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Collection
-        fields = ['name', 'description', 'slug', 'root_directory', 'id']
+        fields = ["name", "description", "slug", "root_directory", "id"]
 
 
 class SourceFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.SourceFile
-        fields = ['document', 'file_type', 'path', 'size']
+        fields = ["document", "file_type", "path", "size"]
 
 
 class DocumentSerializer(serializers.ModelSerializer):
     # The slug field isn't part of a SourceFile, but we get it from the filetype
-    sourcefiles = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
-    derivedfiles = fields.ReadOnlyField(source='derivedmap', read_only=True)
-    collections = serializers.SlugRelatedField(many=True, slug_field='slug', read_only=True)
+    sourcefiles = serializers.SlugRelatedField(many=True, slug_field="slug", read_only=True)
+    derivedfiles = fields.ReadOnlyField(source="derivedmap", read_only=True)
+    collections = serializers.SlugRelatedField(many=True, slug_field="slug", read_only=True)
 
     class Meta:
         model = models.Document
-        fields = ['collections', 'derivedfiles', 'sourcefiles', 'external_identifier', 'title']
+        fields = ["collections", "derivedfiles", "sourcefiles", "external_identifier", "title"]
 
     def create(self, validated_data):
         args = self.context["view"].kwargs
-        collection = validated_data.pop('collection')
+        collection = validated_data.pop("collection")
         get_object_or_404(models.Collection, **collection)
         external = args["external_identifier"]
-        document, created = models.Document.objects.get_or_create(collections=collection, external_identifier=external, defaults=validated_data)
+        document, created = models.Document.objects.get_or_create(
+            collections=collection, external_identifier=external, defaults=validated_data
+        )
         return document
 
 
 class DocumentIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Document
-        fields = ['external_identifier', 'title']
+        fields = ["external_identifier", "title"]
 
 
 class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
@@ -63,4 +65,4 @@ class CollectionDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Collection
-        fields = ['name', 'documents']
+        fields = ["name", "documents"]

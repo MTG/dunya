@@ -27,7 +27,7 @@ from docserver import util
 
 
 class Command(BaseCommand):
-    help = 'Calculate recording similarity between recordings of the same raaga'
+    help = "Calculate recording similarity between recordings of the same raaga"
     intonationmap = {}
     distancemap = {}
 
@@ -36,12 +36,13 @@ class Command(BaseCommand):
         sim = obj["similar"]
         if not sim:
             return None
-        insert = {"id": f"sim_{mbid}",
-                  "similar_s": json.dumps(sim),
-                  "mbid_t": mbid,
-                  "doctype_s": "recordingsimilarity",
-                  "module_s": module
-                  }
+        insert = {
+            "id": f"sim_{mbid}",
+            "similar_s": json.dumps(sim),
+            "mbid_t": mbid,
+            "doctype_s": "recordingsimilarity",
+            "module_s": module,
+        }
         return insert
 
     def import_solr(self, module):
@@ -112,15 +113,18 @@ class Command(BaseCommand):
         json.dump(ret, open(name, "wb"))
 
     def compute_matrix_carnatic(self):
-        recordings = carnatic.models.Recording.objects.filter(concert__collection__permission__in=['R', 'U'])
+        recordings = carnatic.models.Recording.objects.filter(concert__collection__permission__in=["R", "U"])
         total = len(recordings)
         for i, rec in enumerate(recordings, 1):
             raaga = rec.get_raaga()
             if raaga:
-                otherrecordings = carnatic.models.Recording.objects.filter(works__raaga=raaga[0],
-                                                                           concert__collection__permission__in=['R',
-                                                                                                                'U']).exclude(
-                    pk=rec.pk).distinct()
+                otherrecordings = (
+                    carnatic.models.Recording.objects.filter(
+                        works__raaga=raaga[0], concert__collection__permission__in=["R", "U"]
+                    )
+                    .exclude(pk=rec.pk)
+                    .distinct()
+                )
                 print(f"Recording {rec} ({i}/{total})")
                 self.compute_similarity(rec, otherrecordings)
 
@@ -130,8 +134,9 @@ class Command(BaseCommand):
         for i, rec in enumerate(recordings, 1):
             if rec.raags.count() == 1:
                 raag = rec.raags.get()
-                otherrecordings = hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(
-                    pk=rec.pk).distinct()
+                otherrecordings = (
+                    hindustani.models.Recording.objects.filter(raags__in=[raag]).exclude(pk=rec.pk).distinct()
+                )
                 print(f"Recording {rec} ({i}/{total})")
                 self.compute_similarity(rec, otherrecordings)
 

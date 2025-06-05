@@ -32,53 +32,51 @@ import dashboard.email
 
 
 def register_page(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.RegistrationForm(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password1'],
-                email=form.cleaned_data['email'],
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password1"],
+                email=form.cleaned_data["email"],
+                first_name=form.cleaned_data["first_name"],
+                last_name=form.cleaned_data["last_name"],
             )
             user.is_active = False
             user.save()
-            user.userprofile.affiliation = form.cleaned_data['affiliation']
+            user.userprofile.affiliation = form.cleaned_data["affiliation"]
             user.userprofile.save()
 
             # send notification email to admin to review the account
             current_site = get_current_site(request)
             dashboard.email.email_admin_on_new_user(current_site, user)
 
-            return HttpResponseRedirect(reverse('account-register-success'))
+            return HttpResponseRedirect(reverse("account-register-success"))
     else:
         form = forms.RegistrationForm()
 
-    ret = {
-        'form': form
-    }
-    return render(request, 'registration/register.html', ret)
+    ret = {"form": form}
+    return render(request, "registration/register.html", ret)
 
 
 @login_required
 def delete_account(request):
     if request.user.username == "guest":
         raise Http404
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.DeleteAccountForm(request.POST)
         if form.is_valid():
-            delete = form.cleaned_data['delete']
+            delete = form.cleaned_data["delete"]
             if delete:
                 u = request.user
                 logout(request)
                 u.delete()
-                return render(request, 'registration/deleted.html')
+                return render(request, "registration/deleted.html")
     else:
         form = forms.DeleteAccountForm()
 
     ret = {"form": form}
-    return render(request, 'registration/delete.html', ret)
+    return render(request, "registration/delete.html", ret)
 
 
 @login_required
@@ -88,8 +86,12 @@ def user_profile(request):
     user = request.user
     profile = user.userprofile
     token = Token.objects.get(user=request.user)
-    initial = {"email": user.email, "first_name": user.first_name,
-               "last_name": user.last_name, "affiliation": profile.affiliation}
+    initial = {
+        "email": user.email,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "affiliation": profile.affiliation,
+    }
 
     active_request = AccessRequest.objects.for_user(request.user)
     has_access_request = False
@@ -108,21 +110,16 @@ def user_profile(request):
     else:
         form = forms.UserEditForm(initial=initial)
 
-    ret = {
-        'user_profile': user_profile,
-        'token': token.key,
-        'form': form,
-        'has_access_request': has_access_request
-    }
-    return render(request, 'account/user_profile.html', ret)
+    ret = {"user_profile": user_profile, "token": token.key, "form": form, "has_access_request": has_access_request}
+    return render(request, "account/user_profile.html", ret)
 
 
 @login_required
 def access_request(request):
     """Ask for access to restricted datasets"""
-    AccessRequestForm = modelform_factory(AccessRequest, fields=('justification',))
+    AccessRequestForm = modelform_factory(AccessRequest, fields=("justification",))
     current_site = get_current_site(request)
-    profile_url = reverse('account-user-profile')
+    profile_url = reverse("account-user-profile")
 
     if request.user.username == "guest":
         return redirect(profile_url)
@@ -130,23 +127,28 @@ def access_request(request):
     active_request = AccessRequest.objects.for_user(request.user)
     if active_request:
         if active_request.approved is None:
-            messages.add_message(request, messages.INFO, 'You already have a pending access request. You will receive a notification when it is processed.')
+            messages.add_message(
+                request,
+                messages.INFO,
+                "You already have a pending access request. You will receive a notification when it is processed.",
+            )
         return redirect(profile_url)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = AccessRequestForm(request.POST)
         if form.is_valid():
             user_request = form.save(commit=False)
             user_request.user = request.user
             user_request.save()
             dashboard.email.email_admin_on_access_request(current_site, request.user, user_request.justification)
-            messages.add_message(request, messages.INFO, 'Your access request has been received. You will receive a notification when it is processed.')
+            messages.add_message(
+                request,
+                messages.INFO,
+                "Your access request has been received. You will receive a notification when it is processed.",
+            )
             return redirect(profile_url)
     else:
         form = AccessRequestForm()
 
-    ret = {
-        'today': datetime.datetime.now().strftime('%Y-%m-%d'),
-        'form': form
-    }
-    return render(request, 'account/access_request.html', ret)
+    ret = {"today": datetime.datetime.now().strftime("%Y-%m-%d"), "form": form}
+    return render(request, "account/access_request.html", ret)

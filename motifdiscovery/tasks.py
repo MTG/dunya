@@ -42,7 +42,7 @@ def fix_segments(file_id):
     print(f"Making segments for file {thefile}")
     numpat = len(patterns)
     print(f"Got {numpat} segments to do")
-    wav_in = wave.open(wav_file, 'rb')
+    wav_in = wave.open(wav_file, "rb")
     params = wav_in.getparams()
     samplerate = wav_in.getframerate()
 
@@ -71,7 +71,7 @@ def fix_segments(file_id):
                     wav_in.setpos(sframe)
                     frames = wav_in.readframes(eframe - sframe)
 
-                    wav_out = wave.open(full_path, 'wb')
+                    wav_out = wave.open(full_path, "wb")
                     wav_out.setparams(params)
                     wav_out.writeframes(frames)
 
@@ -87,7 +87,7 @@ def make_segments(file_id):
     print(f"Making segments for file {thefile}")
     numpat = len(patterns)
     print(f"Got {numpat} segments to do")
-    wav_in = wave.open(wav_file, 'rb')
+    wav_in = wave.open(wav_file, "rb")
     params = wav_in.getparams()
     samplerate = wav_in.getframerate()
 
@@ -125,11 +125,12 @@ def make_segments(file_id):
                 # args = ["ffmpeg", "-i", wav_file, "-ss", str(r_start), "-t", str((r_end-r_start)), full_path]
                 # proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
                 # proc.communicate()
-                wav_out = wave.open(full_path, 'wb')
+                wav_out = wave.open(full_path, "wb")
                 wav_out.setparams(params)
                 wav_out.writeframes(frames)
-                s = models.Segment.objects.create(file=thefile, rounded_start=r_start, rounded_end=r_end,
-                                                  segment_path=full_path)
+                s = models.Segment.objects.create(
+                    file=thefile, rounded_start=r_start, rounded_end=r_end, segment_path=full_path
+                )
                 p.segment = s
                 p.save()
 

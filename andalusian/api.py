@@ -24,91 +24,92 @@ from andalusian import models
 class ArtistInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'name', 'transliterated_name']
+        fields = ["mbid", "name", "transliterated_name"]
 
 
 class OrchestraInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Orchestra
-        fields = ['mbid', 'name', 'transliterated_name']
+        fields = ["mbid", "name", "transliterated_name"]
 
 
 class WorkInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Work
-        fields = ['mbid', 'title', 'transliterated_title']
+        fields = ["mbid", "title", "transliterated_title"]
 
 
 class AlbumInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Album
-        fields = ['mbid', 'title', 'transliterated_title']
+        fields = ["mbid", "title", "transliterated_title"]
 
 
 class GenreInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Genre
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ["id", "name", "transliterated_name"]
 
 
 class RecordingInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'transliterated_title']
+        fields = ["mbid", "title", "transliterated_title"]
 
 
 class InstrumentInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['mbid', 'name']
+        fields = ["mbid", "name"]
 
 
 class TabInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tab
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class MizanInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mizan
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class NawbaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nawba
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class FormInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class SanaaInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Sanaa
-        fields = ['id', 'title', 'transliterated_title']
+        fields = ["id", "title", "transliterated_title"]
 
 
 class PoemInnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Poem
-        fields = ['id', 'first_words', 'transliterated_first_words']
+        fields = ["id", "first_words", "transliterated_first_words"]
 
 
 # =========== #
 
+
 class ArtistDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Artist
-        fields = ['mbid', 'name', 'transliterated_name']
+        fields = ["mbid", "name", "transliterated_name"]
 
 
 class ArtistDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
+    lookup_field = "mbid"
     queryset = models.Artist.objects.all()
     serializer_class = ArtistDetailSerializer
 
@@ -121,11 +122,11 @@ class ArtistList(generics.ListAPIView):
 class OrchestraDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Orchestra
-        fields = ['mbid', 'name', 'transliterated_name']
+        fields = ["mbid", "name", "transliterated_name"]
 
 
 class OrchestraDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
+    lookup_field = "mbid"
     queryset = models.Orchestra.objects.all()
     serializer_class = OrchestraDetailSerializer
 
@@ -138,11 +139,11 @@ class OrchestraList(generics.ListAPIView):
 class WorkDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Work
-        fields = ['mbid', 'title', 'transliterated_title']
+        fields = ["mbid", "title", "transliterated_title"]
 
 
 class WorkDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
+    lookup_field = "mbid"
     queryset = models.Work.objects.all()
     serializer_class = WorkDetailSerializer
 
@@ -155,11 +156,11 @@ class WorkList(generics.ListAPIView):
 class AlbumDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Album
-        fields = ['mbid', 'title', 'transliterated_title']
+        fields = ["mbid", "title", "transliterated_title"]
 
 
 class AlbumDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
+    lookup_field = "mbid"
     queryset = models.Album.objects.all()
     serializer_class = AlbumDetailSerializer
 
@@ -172,11 +173,11 @@ class AlbumList(generics.ListAPIView):
 class GenreDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Genre
-        fields = ['id', 'name', 'transliterated_name']
+        fields = ["id", "name", "transliterated_name"]
 
 
 class GenreDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     queryset = models.Genre.objects.all()
     serializer_class = GenreDetailSerializer
 
@@ -189,11 +190,11 @@ class GenreList(generics.ListAPIView):
 class InstrumentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Instrument
-        fields = ['mbid', 'name']
+        fields = ["mbid", "name"]
 
 
 class InstrumentDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
+    lookup_field = "mbid"
     queryset = models.Instrument.objects.all()
     serializer_class = InstrumentDetailSerializer
 
@@ -206,11 +207,11 @@ class InstrumentList(generics.ListAPIView):
 class TabDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Tab
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class TabDetail(generics.RetrieveAPIView):
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     queryset = models.Tab.objects.all()
     serializer_class = TabDetailSerializer
 
@@ -223,11 +224,11 @@ class TabList(generics.ListAPIView):
 class MizanDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Mizan
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class MizanDetail(generics.RetrieveAPIView):
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     queryset = models.Mizan.objects.all()
     serializer_class = MizanDetailSerializer
 
@@ -240,11 +241,11 @@ class MizanList(generics.ListAPIView):
 class NawbaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Nawba
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class NawbaDetail(generics.RetrieveAPIView):
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     queryset = models.Nawba.objects.all()
     serializer_class = NawbaDetailSerializer
 
@@ -257,11 +258,11 @@ class NawbaList(generics.ListAPIView):
 class FormDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Form
-        fields = ['uuid', 'name', 'transliterated_name', 'display_order']
+        fields = ["uuid", "name", "transliterated_name", "display_order"]
 
 
 class FormDetail(generics.RetrieveAPIView):
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     queryset = models.Form.objects.all()
     serializer_class = FormDetailSerializer
 
@@ -279,19 +280,19 @@ class SectionDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Section
-        fields = ['start_time', 'end_time', 'tab', 'nawba', 'mizan', 'form']
+        fields = ["start_time", "end_time", "tab", "nawba", "mizan", "form"]
 
 
 class RecordingDetailSerializer(serializers.ModelSerializer):
-    sections = SectionDetailSerializer(source='section_set.all', many=True)
+    sections = SectionDetailSerializer(source="section_set.all", many=True)
 
     class Meta:
         model = models.Recording
-        fields = ['mbid', 'title', 'transliterated_title', 'musescore_url', 'archive_url', 'sections']
+        fields = ["mbid", "title", "transliterated_title", "musescore_url", "archive_url", "sections"]
 
 
 class RecordingDetail(generics.RetrieveAPIView):
-    lookup_field = 'mbid'
+    lookup_field = "mbid"
     queryset = models.Recording.objects.all()
     serializer_class = RecordingDetailSerializer
 
@@ -304,11 +305,11 @@ class RecordingList(generics.ListAPIView):
 class SanaaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Sanaa
-        fields = ['id', 'title', 'transliterated_title']
+        fields = ["id", "title", "transliterated_title"]
 
 
 class SanaaDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     queryset = models.Sanaa.objects.all()
     serializer_class = SanaaDetailSerializer
 
@@ -319,12 +320,19 @@ class SanaaList(generics.ListAPIView):
 
 
 class PoemDetailSerializer(serializers.ModelSerializer):
-    text = serializers.SerializerMethodField('get_text_obj')
-    transliterated_text = serializers.SerializerMethodField('get_transliterated_text_obj')
+    text = serializers.SerializerMethodField("get_text_obj")
+    transliterated_text = serializers.SerializerMethodField("get_transliterated_text_obj")
 
     class Meta:
         model = models.Poem
-        fields = ['text','transliterated_text','title', 'transliterated_title', 'first_words', 'transliterated_first_words']
+        fields = [
+            "text",
+            "transliterated_text",
+            "title",
+            "transliterated_title",
+            "first_words",
+            "transliterated_first_words",
+        ]
 
     def get_text_obj(self, ob):
         text = json.loads(ob.text)
@@ -336,7 +344,7 @@ class PoemDetailSerializer(serializers.ModelSerializer):
 
 
 class PoemDetail(generics.RetrieveAPIView):
-    lookup_field = 'pk'
+    lookup_field = "pk"
     queryset = models.Poem.objects.all()
     serializer_class = PoemDetailSerializer
 
@@ -347,16 +355,25 @@ class PoemList(generics.ListAPIView):
 
 
 class RecordingPoemSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = models.Poem
-        fields = ['text', 'transliterated_text', 'title', 'transliterated_title', 'first_words',
-                  'transliterated_first_words']
+        fields = [
+            "text",
+            "transliterated_text",
+            "title",
+            "transliterated_title",
+            "first_words",
+            "transliterated_first_words",
+        ]
 
 
 class LyricDetail(generics.ListAPIView):
     serializer_class = PoemDetailSerializer
 
     def get_queryset(self):
-        mbid = self.kwargs['mbid']
-        return models.Poem.objects.filter(recordingpoem__recording__mbid=mbid).order_by('recordingpoem__order_number').all()
+        mbid = self.kwargs["mbid"]
+        return (
+            models.Poem.objects.filter(recordingpoem__recording__mbid=mbid)
+            .order_by("recordingpoem__order_number")
+            .all()
+        )

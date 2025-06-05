@@ -33,14 +33,15 @@ class CarnaticStyle:
         return "carnatic"
 
     def get_object_map(self, key):
-        return {"performance": InstrumentPerformance,
-                "release": Concert,
-                "composer": Composer,
-                "artist": Artist,
-                "recording": Recording,
-                "work": Work,
-                "instrument": Instrument
-                }[key]
+        return {
+            "performance": InstrumentPerformance,
+            "release": Concert,
+            "composer": Composer,
+            "artist": Artist,
+            "recording": Recording,
+            "work": Work,
+            "instrument": Instrument,
+        }[key]
 
 
 class GeographicRegion(CarnaticStyle, models.Model):
@@ -52,7 +53,7 @@ class GeographicRegion(CarnaticStyle, models.Model):
 
 class Artist(CarnaticStyle, data.models.Artist):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     # Automatically gets the Artist + the artists' main instrument
     objects = managers.ArtistManager()
@@ -99,7 +100,7 @@ class Artist(CarnaticStyle, data.models.Artist):
 
         return [(Artist.objects.get(pk=pk), desc) for pk, desc in ids]
 
-    def collaborating_artists(self, collection_ids: list[str]=False, permission=False):
+    def collaborating_artists(self, collection_ids: list[str] = False, permission=False):
         # Returns [ (collaborating artist, list of concerts, number of restricted concerts) ]
         #   - number of restricted concerts corresponds to the number of concerts not in the given collections
         # Get all concerts
@@ -111,29 +112,41 @@ class Artist(CarnaticStyle, data.models.Artist):
         c = collections.Counter()
         concerts = collections.defaultdict(set)
         restr_concerts = collections.Counter()
-        for concert in self.concerts(collection_ids=False, permission=['U', 'R', 'S']):
+        for concert in self.concerts(collection_ids=False, permission=["U", "R", "S"]):
             # We always use collections to see if an artist is similar
             # However, if the user can't see collections, we need to say
             # `Artist a performed with b on these concerts and n more`
             for p in concert.performers():
                 if p.id != self.id:
-                    if collection_ids and concert.collection and str(concert.collection.collectionid) in collection_ids and concert.collection.permission in permission:
+                    if (
+                        collection_ids
+                        and concert.collection
+                        and str(concert.collection.collectionid) in collection_ids
+                        and concert.collection.permission in permission
+                    ):
                         concerts[p.id].add(concert)
                     else:
                         restr_concerts[p.id] += 1
                     c[p.id] += 1
 
-        collaborators = [(Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), restr_concerts[pk]) for pk, count in c.most_common()]
+        collaborators = [
+            (Artist.objects.get(pk=pk), sorted(list(concerts[pk]), key=lambda c: c.title), restr_concerts[pk])
+            for pk, count in c.most_common()
+        ]
         collaborators = sorted(collaborators, key=lambda c: (len(c[1]) + c[2], len(c[1])), reverse=True)
         return collaborators
 
-    def recordings(self, collection_ids: list[str] | None=None, permission=False):
+    def recordings(self, collection_ids: list[str] | None = None, permission=False):
         if collection_ids is None:
             collection_ids = []
-        return Recording.objects.with_permissions(collection_ids, permission).filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self)).distinct()
+        return (
+            Recording.objects.with_permissions(collection_ids, permission)
+            .filter(Q(instrumentperformance__artist=self) | Q(concert__artists=self))
+            .distinct()
+        )
 
-    def concerts(self, raagas=[], taalas=[], collection_ids: list[str] | None=None, permission=False):
-        """ Get all the concerts that this artist performs in
+    def concerts(self, raagas=[], taalas=[], collection_ids: list[str] | None = None, permission=False):
+        """Get all the concerts that this artist performs in
         If `raagas` or `taalas` is set, only show concerts where
         these raagas or taalas were performed.
         If collections are received, the concerts are limited to
@@ -149,20 +162,30 @@ class Artist(CarnaticStyle, data.models.Artist):
         ret = []
         concerts = self.primary_concerts.with_permissions(collection_ids, permission)
         if raagas:
-            concerts = concerts.filter(Q(recordings__works__raaga__in=raagas) | Q(recordings__raagas__in=raagas)).distinct()
+            concerts = concerts.filter(
+                Q(recordings__works__raaga__in=raagas) | Q(recordings__raagas__in=raagas)
+            ).distinct()
         if taalas:
-            concerts = concerts.filter(Q(recordings__works__taala__in=taalas) | Q(recordings__taalas__in=taalas)).distinct()
+            concerts = concerts.filter(
+                Q(recordings__works__taala__in=taalas) | Q(recordings__taalas__in=taalas)
+            ).distinct()
         ret.extend(concerts.all())
         for a in self.groups.all():
             for c in a.concerts(raagas, taalas):
-                if c not in ret and c.collection \
-                        and (not collection_ids or str(c.collection.collectionid) in collection_ids) \
-                        and c.collection.permission in permission:
+                if (
+                    c not in ret
+                    and c.collection
+                    and (not collection_ids or str(c.collection.collectionid) in collection_ids)
+                    and c.collection.permission in permission
+                ):
                     ret.append(c)
         for concert, perf in self.performances(raagas, taalas):
-            if concert not in ret and concert.collection \
-                    and (not collection_ids or str(concert.collection.collectionid) in collection_ids) \
-                    and concert.collection.permission in permission:
+            if (
+                concert not in ret
+                and concert.collection
+                and (not collection_ids or str(concert.collection.collectionid) in collection_ids)
+                and concert.collection.permission in permission
+            ):
                 ret.append(concert)
         ret = sorted(ret, key=lambda c: c.year if c.year else 0)
         return ret
@@ -194,12 +217,12 @@ class Artist(CarnaticStyle, data.models.Artist):
 
     def performs_percussion(self):
         """Returns True if the artist's main instrument is
-           a percussion instrument"""
+        a percussion instrument"""
         return self.main_instrument and self.main_instrument.percussion
 
     def performs_lead(self):
         """Returns True if the artist's main instrument is
-           a lead instrument (Vocals or Violin)"""
+        a lead instrument (Vocals or Violin)"""
 
         VIOLIN = "089f123c-0f7d-4105-a64e-49de81ca8fa4"
         VOICE = "d92884b7-ee0c-46d5-96f3-918196ba8c5b"
@@ -208,7 +231,9 @@ class Artist(CarnaticStyle, data.models.Artist):
     def get_performed_taalas(self):
         taalamap = {}
         taalacount = collections.Counter()
-        taalas = Taala.objects.filter(Q(work__recording__concert__artists=self) | Q(work__recording__instrumentperformance__artist=self))
+        taalas = Taala.objects.filter(
+            Q(work__recording__concert__artists=self) | Q(work__recording__instrumentperformance__artist=self)
+        )
         for t in taalas:
             taalacount[t.name] += 1
             if t.name not in taalamap:
@@ -219,7 +244,7 @@ class Artist(CarnaticStyle, data.models.Artist):
         return taalas
 
     def get_performed_raagas(self):
-        """ Get the raaga of recordings that this artist has performed.
+        """Get the raaga of recordings that this artist has performed.
 
         The raaga comes from the work of recordings. Consider If the Artist
         has a specific performance relation to a recording/work or if they
@@ -230,7 +255,9 @@ class Artist(CarnaticStyle, data.models.Artist):
         """
         raagamap = {}
         raagacount = collections.Counter()
-        raagas = Raaga.objects.filter(Q(work__recording__concert__artists=self) | Q(work__recording__instrumentperformance__artist=self))
+        raagas = Raaga.objects.filter(
+            Q(work__recording__concert__artists=self) | Q(work__recording__instrumentperformance__artist=self)
+        )
         for r in raagas:
             raagacount[r.name] += 1
             if r.name not in raagamap:
@@ -246,9 +273,10 @@ class ArtistAlias(CarnaticStyle, data.models.ArtistAlias):
 
 
 class ConcertRecording(models.Model):
-    """ Links a concert to a recording with an explicit ordering """
-    concert = models.ForeignKey('Concert', on_delete=models.CASCADE)
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
+    """Links a concert to a recording with an explicit ordering"""
+
+    concert = models.ForeignKey("Concert", on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
     # The number that the track comes in the concert. Numerical 1-n
     track = models.IntegerField()
     # The disc number. 1-n
@@ -257,7 +285,7 @@ class ConcertRecording(models.Model):
     disctrack = models.IntegerField()
 
     class Meta:
-        ordering = ("track", )
+        ordering = ("track",)
 
     def __str__(self):
         return f"{self.track}: {self.recording} from {self.concert}"
@@ -265,12 +293,12 @@ class ConcertRecording(models.Model):
 
 class Concert(CarnaticStyle, data.models.Release):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
-    recordings = models.ManyToManyField('Recording', through="ConcertRecording")
+    recordings = models.ManyToManyField("Recording", through="ConcertRecording")
 
     objects = managers.CollectionConcertManager()
-    collection = models.ForeignKey('data.Collection', blank=True, null=True, on_delete=models.CASCADE)
+    collection = models.ForeignKey("data.Collection", blank=True, null=True, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
         viewname = f"{self.get_style()}-concert"
@@ -278,15 +306,15 @@ class Concert(CarnaticStyle, data.models.Release):
 
     def tracklist(self):
         """Return an ordered list of recordings in this concert"""
-        return self.recordings.order_by('concertrecording')
+        return self.recordings.order_by("concertrecording")
 
     def instruments_for_artist(self, artist):
-        """ Returns a list of instruments that this
+        """Returns a list of instruments that this
         artist performs on this release."""
         return Instrument.objects.filter(instrumentperformance__artist=artist).distinct()
 
     def performers(self):
-        """ The performers on a release are those who are in the performance
+        """The performers on a release are those who are in the performance
         relations, and the lead artist of the release (listed first)
         """
         ret = self.artists.all()
@@ -306,15 +334,16 @@ class RaagaAlias(models.Model):
 
 
 class RecordingForm(models.Model):
-    """ Links a Form and a Recording with a sequence (if there is more than
-        one form in the recording) """
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
-    form = models.ForeignKey('Form', on_delete=models.CASCADE)
+    """Links a Form and a Recording with a sequence (if there is more than
+    one form in the recording)"""
+
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    form = models.ForeignKey("Form", on_delete=models.CASCADE)
 
     sequence = models.IntegerField()
 
     class Meta:
-        ordering = ("sequence", )
+        ordering = ("sequence",)
 
     def __str__(self):
         return "%s, seq %d %s" % (self.recording, self.sequence, self.form)
@@ -343,14 +372,16 @@ class FormAlias(models.Model):
 
 class Raaga(data.models.BaseModel, data.models.ImageMixin):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     missing_image = "raaga.jpg"
 
     name = models.CharField(max_length=50)
     common_name = models.CharField(max_length=50)
     uuid = models.UUIDField(db_index=True)
-    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
+    image = models.ForeignKey(
+        data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE
+    )
 
     objects = managers.CarnaticRaagaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -363,7 +394,7 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
             slug = slugify(self.common_name)
         else:
             slug = slugify(self.name)
-        return reverse('carnatic-raaga', args=[str(self.uuid), slug])
+        return reverse("carnatic-raaga", args=[str(self.uuid), slug])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -374,7 +405,9 @@ class Raaga(data.models.BaseModel, data.models.ImageMixin):
     def artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(primary_concerts__recordings__works__raaga=self).filter(main_instrument__in=[1, 2])
+        artists = Artist.objects.filter(primary_concerts__recordings__works__raaga=self).filter(
+            main_instrument__in=[1, 2]
+        )
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -410,7 +443,7 @@ class TaalaAlias(models.Model):
 
 class Taala(data.models.BaseModel, data.models.ImageMixin):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     missing_image = "taala.jpg"
 
@@ -418,7 +451,9 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
     common_name = models.CharField(max_length=50)
     num_aksharas = models.IntegerField(null=True)
     uuid = models.UUIDField(db_index=True)
-    image = models.ForeignKey(data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE)
+    image = models.ForeignKey(
+        data.models.Image, blank=True, null=True, related_name="%(app_label)s_%(class)s_image", on_delete=models.CASCADE
+    )
 
     objects = managers.CarnaticTaalaManager()
     fuzzymanager = managers.FuzzySearchManager()
@@ -431,7 +466,7 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
             slug = slugify(self.common_name)
         else:
             slug = slugify(self.name)
-        return reverse('carnatic-taala', args=[str(self.uuid), slug])
+        return reverse("carnatic-taala", args=[str(self.uuid), slug])
 
     def works(self):
         return self.work_set.distinct().all()
@@ -445,7 +480,10 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
     def percussion_artists(self):
         artistmap = {}
         artistcounter = collections.Counter()
-        artists = Artist.objects.filter(Q(instrumentperformance__recording__works__taala=self) & Q(instrumentperformance__instrument__percussion=True))
+        artists = Artist.objects.filter(
+            Q(instrumentperformance__recording__works__taala=self)
+            & Q(instrumentperformance__instrument__percussion=True)
+        )
         for a in artists:
             artistcounter[a.pk] += 1
             if a.pk not in artistmap:
@@ -470,20 +508,20 @@ class Taala(data.models.BaseModel, data.models.ImageMixin):
 
 class Work(CarnaticStyle, data.models.Work):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     # (raaga, taala)
-    raaga = models.ForeignKey('Raaga', blank=True, null=True, on_delete=models.CASCADE)
-    taala = models.ForeignKey('Taala', blank=True, null=True, on_delete=models.CASCADE)
-    form = models.ForeignKey('Form', blank=True, null=True, on_delete=models.CASCADE)
+    raaga = models.ForeignKey("Raaga", blank=True, null=True, on_delete=models.CASCADE)
+    taala = models.ForeignKey("Taala", blank=True, null=True, on_delete=models.CASCADE)
+    form = models.ForeignKey("Form", blank=True, null=True, on_delete=models.CASCADE)
 
     def recordings(self):
         return self.recording_set.all()
 
 
 class RecordingRaaga(models.Model):
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
-    raaga = models.ForeignKey('Raaga', on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    raaga = models.ForeignKey("Raaga", on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -491,8 +529,8 @@ class RecordingRaaga(models.Model):
 
 
 class RecordingTaala(models.Model):
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
-    taala = models.ForeignKey('Taala', on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    taala = models.ForeignKey("Taala", on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -500,8 +538,8 @@ class RecordingTaala(models.Model):
 
 
 class WorkRaaga(models.Model):
-    work = models.ForeignKey('Work', on_delete=models.CASCADE)
-    raaga = models.ForeignKey('Raaga', on_delete=models.CASCADE)
+    work = models.ForeignKey("Work", on_delete=models.CASCADE)
+    raaga = models.ForeignKey("Raaga", on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -509,8 +547,8 @@ class WorkRaaga(models.Model):
 
 
 class WorkTaala(models.Model):
-    work = models.ForeignKey('Work', on_delete=models.CASCADE)
-    taala = models.ForeignKey('Taala', on_delete=models.CASCADE)
+    work = models.ForeignKey("Work", on_delete=models.CASCADE)
+    taala = models.ForeignKey("Taala", on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -518,8 +556,8 @@ class WorkTaala(models.Model):
 
 
 class RecordingWork(models.Model):
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
-    work = models.ForeignKey('Work', on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    work = models.ForeignKey("Work", on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -528,13 +566,13 @@ class RecordingWork(models.Model):
 
 class Recording(CarnaticStyle, data.models.Recording):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
-    works = models.ManyToManyField('Work', through='RecordingWork')
-    forms = models.ManyToManyField('Form', through='RecordingForm')
+    works = models.ManyToManyField("Work", through="RecordingWork")
+    forms = models.ManyToManyField("Form", through="RecordingForm")
 
-    raagas = models.ManyToManyField('Raaga', through='RecordingRaaga')
-    taalas = models.ManyToManyField('Taala', through='RecordingTaala')
+    raagas = models.ManyToManyField("Raaga", through="RecordingRaaga")
+    taalas = models.ManyToManyField("Taala", through="RecordingTaala")
 
     objects = managers.CollectionRecordingManager()
 
@@ -608,15 +646,15 @@ class Recording(CarnaticStyle, data.models.Recording):
             image = concert.image.image.url
         if not image:
             image = "/media/images/noconcert.jpg"
-        artists = Artist.objects.filter(primary_concerts__recordings=self).values_list('name').all()
+        artists = Artist.objects.filter(primary_concerts__recordings=self).values_list("name").all()
         return {
-                "concert": title,
-                "mainArtists": [item for sublist in artists for item in sublist],
-                "name": self.title,
-                "image": image,
-                "linkToRecording": reverse("carnatic-recording", args=[str(self.mbid)]),
-                "collaborators": [],
-                "selectedArtists": ""
+            "concert": title,
+            "mainArtists": [item for sublist in artists for item in sublist],
+            "name": self.title,
+            "image": image,
+            "linkToRecording": reverse("carnatic-recording", args=[str(self.mbid)]),
+            "collaborators": [],
+            "selectedArtists": "",
         }
 
 
@@ -627,7 +665,7 @@ class InstrumentAlias(CarnaticStyle, data.models.InstrumentAlias):
 
 class Instrument(CarnaticStyle, data.models.Instrument):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     fuzzymanager = managers.FuzzySearchManager()
     objects = managers.CarnaticInstrumentManager()
@@ -638,9 +676,9 @@ class Instrument(CarnaticStyle, data.models.Instrument):
         return artists
 
     def performers(self):
-        artists = Artist.objects.filter(
-                instrumentperformance__instrument=self).annotate(
-                num_times=Count('instrumentperformance__instrument'))
+        artists = Artist.objects.filter(instrumentperformance__instrument=self).annotate(
+            num_times=Count("instrumentperformance__instrument")
+        )
 
         artistcount = {}
         ret = []

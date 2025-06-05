@@ -17,7 +17,7 @@ class ApiTestCase(TestCase):
         self.staffuser.is_staff = True
         self.staffuser.save()
 
-        permission = Permission.objects.get(codename='access_restricted')
+        permission = Permission.objects.get(codename="access_restricted")
         self.restricteduser = auth.models.User.objects.create_user("restricteduser")
         self.restricteduser.user_permissions.add(permission)
         self.restricteduser.save()
@@ -30,14 +30,16 @@ class ArtistTest(ApiTestCase):
     def setUp(self):
         super().setUp()
         self.i = models.Instrument.objects.create(name="Violin")
-        self.a1 = models.Artist.objects.create(name="Artist1", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85",
-                                               main_instrument=self.i)
+        self.a1 = models.Artist.objects.create(
+            name="Artist1", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85", main_instrument=self.i
+        )
         self.a2 = models.Artist.objects.create(name="Artist2", main_instrument=self.i)
         self.a3 = models.Artist.objects.create(name="Artist3", main_instrument=self.i)
 
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=self.coll1id,
-                                                          permission="U")
+        self.col1 = data.models.Collection.objects.create(
+            name="collection 1", collectionid=self.coll1id, permission="U"
+        )
         self.rel1 = models.Release.objects.create(collection=self.col1, title="Release1")
         self.r1 = models.Recording.objects.create(title="Recording1")
         models.ReleaseRecording.objects.create(release=self.rel1, recording=self.r1, track=1, disc=1, disctrack=1)
@@ -48,8 +50,9 @@ class ArtistTest(ApiTestCase):
         models.InstrumentPerformance.objects.create(instrument=self.i, artist=self.a3, recording=self.r1)
 
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(name="collection 2", collectionid=self.coll2id,
-                                                          permission="R")
+        self.col2 = data.models.Collection.objects.create(
+            name="collection 2", collectionid=self.coll2id, permission="R"
+        )
         self.rel2 = models.Release.objects.create(collection=self.col2, title="Release2")
         self.r2 = models.Recording.objects.create(title="Recording2")
         self.r3 = models.Recording.objects.create(title="Recording3")
@@ -64,8 +67,9 @@ class ArtistTest(ApiTestCase):
 
         # A release from restricted collection, with a2
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(name="collection 3", collectionid=self.coll3id,
-                                                          permission="S")
+        self.col3 = data.models.Collection.objects.create(
+            name="collection 3", collectionid=self.coll3id, permission="S"
+        )
         self.rel3 = models.Release.objects.create(collection=self.col3, title="Release3")
         self.r4 = models.Recording.objects.create(title="Recording4")
         models.ReleaseRecording.objects.create(release=self.rel3, recording=self.r4, track=1, disc=1, disctrack=1)
@@ -85,10 +89,10 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(200, resp.status_code)
 
     def test_recording_get_artists(self):
-        """ The artists that performed on a recording
-            - Artists with performance relationship on the recording
-            - Artists with perf rel on the release this rec is part of
-            - Primary artists of the release
+        """The artists that performed on a recording
+        - Artists with performance relationship on the recording
+        - Artists with perf rel on the release this rec is part of
+        - Primary artists of the release
         """
         artists = self.r1.all_artists()
         self.assertEqual(3, len(artists))
@@ -100,10 +104,10 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(2, len(artists))
 
     def test_release_get_artists(self):
-        """ Artists who performed on a release
-         - if they are a primary artist
-         - If they're a relationship on the release
-         - If they're a relationship on a track
+        """Artists who performed on a release
+        - if they are a primary artist
+        - If they're a relationship on the release
+        - If they're a relationship on a track
         """
         artists = self.rel1.performers()
         self.assertEqual(3, len(artists))
@@ -112,7 +116,7 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(3, len(artists))
 
     def test_artist_get_releases(self):
-        """ Releasess performed by an artist """
+        """Releasess performed by an artist"""
         c = self.a1.releases()
         self.assertEqual(1, len(c))
         c = self.a2.releases()
@@ -128,7 +132,7 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(2, len(c))
 
     def test_artist_group_get_releases(self):
-        """ If you're in a group, you performed in that group's concerts """
+        """If you're in a group, you performed in that group's concerts"""
         grp = models.Artist.objects.create(name="Group")
         art = models.Artist.objects.create(name="Artist")
         grp.group_members.add(art)
@@ -142,29 +146,29 @@ class ArtistTest(ApiTestCase):
         self.assertEqual(1, len(c))
 
     def test_artist_restr_collection_releases(self):
-        """ If you ask for a restricted collection you get an extra release"""
+        """If you ask for a restricted collection you get an extra release"""
 
         collections = [self.coll1id, self.coll2id, self.coll3id]
-        c = self.a2.releases(collection_ids=collections, permission=['U', 'R', 'S'])
+        c = self.a2.releases(collection_ids=collections, permission=["U", "R", "S"])
         self.assertEqual(3, len(c))
 
     def test_artist_get_recordings(self):
-        """ Recordings performed by an artist
-         - explicit recording relationships
-         - Also if they're a release primary artist or have a rel
+        """Recordings performed by an artist
+        - explicit recording relationships
+        - Also if they're a release primary artist or have a rel
         """
         collections = [self.coll1id, self.coll2id, self.coll3id]
-        recs = self.a1.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
+        recs = self.a1.recordings(collection_ids=collections, permission=["U", "R", "S"])
         self.assertEqual(3, len(recs))
-        recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
+        recs = self.a2.recordings(collection_ids=collections, permission=["U", "R", "S"])
         self.assertEqual(4, len(recs))
         # A3 is not on recording3
-        recs = self.a3.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
+        recs = self.a3.recordings(collection_ids=collections, permission=["U", "R", "S"])
         self.assertEqual(2, len(recs))
 
     def test_artist_collection_recordings(self):
         collections = [self.coll1id, self.coll2id, self.coll3id]
-        recs = self.a2.recordings(collection_ids=collections, permission=['U', 'R', 'S'])
+        recs = self.a2.recordings(collection_ids=collections, permission=["U", "R", "S"])
         self.assertEqual(4, len(recs))
 
 
@@ -175,7 +179,7 @@ class ComposerTest(ApiTestCase):
 
     def test_render_composer_inner(self):
         s = api.ComposerInnerSerializer(self.c)
-        self.assertEqual(['mbid', 'name'], sorted(s.data.keys()))
+        self.assertEqual(["mbid", "name"], sorted(s.data.keys()))
 
 
 class RecordingTest(ApiTestCase):
@@ -183,57 +187,81 @@ class RecordingTest(ApiTestCase):
         super().setUp()
 
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
-                                                          permission="U")
-        self.relnormal = models.Release.objects.create(collection=self.col1, title="somerelease",
-                                                       mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
+        self.col1 = data.models.Collection.objects.create(
+            collectionid=self.coll1id, name="collection 1", permission="U"
+        )
+        self.relnormal = models.Release.objects.create(
+            collection=self.col1, title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81"
+        )
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
 
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="S")
-        self.relstaff = models.Release.objects.create(collection=self.col2, title="somerelease2",
-                                                      mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="S"
+        )
+        self.relstaff = models.Release.objects.create(
+            collection=self.col2, title="somerelease2", mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e"
+        )
 
         self.coll3id = str(uuid.uuid4())  # adf4
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="R")
-        self.relrestr = models.Release.objects.create(collection=self.col3, title="somerelease3",
-                                                      mbid="b5c3a883-67f5-4d01-982f-6c70f3569191")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="R"
+        )
+        self.relrestr = models.Release.objects.create(
+            collection=self.col3, title="somerelease3", mbid="b5c3a883-67f5-4d01-982f-6c70f3569191"
+        )
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
-        self.wrestricted = models.Work.objects.create(title="restricted work",
-                                                      mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
+        self.wrestricted = models.Work.objects.create(
+            title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80"
+        )
         self.wstaff = models.Work.objects.create(title="Work", mbid="7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
 
-        self.rnormal = models.Recording.objects.create(title="normal recording",
-                                                       mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
-        self.rrestricted = models.Recording.objects.create(title="restricted recording",
-                                                           mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
-        self.rstaff = models.Recording.objects.create(title="staff recording",
-                                                      mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        self.rnormal = models.Recording.objects.create(
+            title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971"
+        )
+        self.rrestricted = models.Recording.objects.create(
+            title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
+        self.rstaff = models.Recording.objects.create(
+            title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b"
+        )
 
         models.WorkTime.objects.create(work=self.wnormal, recording=self.rnormal, sequence=1)
         models.WorkTime.objects.create(work=self.wrestricted, recording=self.rrestricted, sequence=1)
         models.WorkTime.objects.create(work=self.wstaff, recording=self.rstaff, sequence=1)
 
-        models.ReleaseRecording.objects.create(release=self.relnormal, recording=self.rnormal, track=1, disc=1,
-                                               disctrack=1)
-        models.ReleaseRecording.objects.create(release=self.relrestr, recording=self.rrestricted, track=1, disc=1,
-                                               disctrack=1)
-        models.ReleaseRecording.objects.create(release=self.relstaff, recording=self.rstaff, track=1, disc=1,
-                                               disctrack=1)
+        models.ReleaseRecording.objects.create(
+            release=self.relnormal, recording=self.rnormal, track=1, disc=1, disctrack=1
+        )
+        models.ReleaseRecording.objects.create(
+            release=self.relrestr, recording=self.rrestricted, track=1, disc=1, disctrack=1
+        )
+        models.ReleaseRecording.objects.create(
+            release=self.relstaff, recording=self.rstaff, track=1, disc=1, disctrack=1
+        )
 
     def test_render_recording_inner(self):
         s = api.RecordingInnerSerializer(self.rnormal)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['mbid', 'title'], sorted(data.keys()))
+        self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/hindustani/recording/dcf14452-e13e-450f-82c2-8ae705a58971")
-        expected = ['album_artists', 'artists', 'forms', 'layas', 'length', 'mbid', 'raags', 'release', 'taals',
-                    'title', 'works']
+        expected = [
+            "album_artists",
+            "artists",
+            "forms",
+            "layas",
+            "length",
+            "mbid",
+            "raags",
+            "release",
+            "taals",
+            "title",
+            "works",
+        ]
         self.assertEqual(expected, sorted(resp.data.keys()))
 
     def test_recording_detail_url(self):
@@ -241,21 +269,21 @@ class RecordingTest(ApiTestCase):
         self.assertEqual(200, resp.status_code)
 
     def test_recording_list_collection_bad_uuid(self):
-        """ Returns error if Dunya-Collection header is invalid """
+        """Returns error if Dunya-Collection header is invalid"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/hindustani/recording", **{'HTTP_DUNYA_COLLECTION': 'not-a-uuid'})
+        response = client.get("/api/hindustani/recording", **{"HTTP_DUNYA_COLLECTION": "not-a-uuid"})
         self.assertEqual(response.status_code, 400)
 
     def test_recording_list_collection(self):
-        """ Staff members will see recordings from restricted collections in
-            this list too """
+        """Staff members will see recordings from restricted collections in
+        this list too"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll1id
-        response = client.get("/api/hindustani/recording", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/hindustani/recording", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/hindustani/recording")
@@ -267,7 +295,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll3id
-        response = client.get("/api/hindustani/recording", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/hindustani/recording", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -284,56 +312,69 @@ class WorkTest(ApiTestCase):
         super().setUp()
 
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
-                                                          permission="U")
-        self.relnormal = models.Release.objects.create(collection=self.col1, title="somerelease",
-                                                       mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
+        self.col1 = data.models.Collection.objects.create(
+            collectionid=self.coll1id, name="collection 1", permission="U"
+        )
+        self.relnormal = models.Release.objects.create(
+            collection=self.col1, title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81"
+        )
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
 
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="S")
-        self.relstaff = models.Release.objects.create(collection=self.col2, title="somerelease2",
-                                                      mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="S"
+        )
+        self.relstaff = models.Release.objects.create(
+            collection=self.col2, title="somerelease2", mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e"
+        )
 
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="R")
-        self.relrestr = models.Release.objects.create(collection=self.col3, title="somerelease3",
-                                                      mbid="b5c3a883-67f5-4d01-982f-6c70f3569191")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="R"
+        )
+        self.relrestr = models.Release.objects.create(
+            collection=self.col3, title="somerelease3", mbid="b5c3a883-67f5-4d01-982f-6c70f3569191"
+        )
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
-        self.wrestricted = models.Work.objects.create(title="restricted work",
-                                                      mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
+        self.wrestricted = models.Work.objects.create(
+            title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80"
+        )
         self.wstaff = models.Work.objects.create(title="Work", mbid="7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
 
-        self.rnormal = models.Recording.objects.create(title="normal recording",
-                                                       mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
-        self.rrestricted = models.Recording.objects.create(title="restricted recording",
-                                                           mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
-        self.rstaff = models.Recording.objects.create(title="staff recording",
-                                                      mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        self.rnormal = models.Recording.objects.create(
+            title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971"
+        )
+        self.rrestricted = models.Recording.objects.create(
+            title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
+        self.rstaff = models.Recording.objects.create(
+            title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b"
+        )
 
         models.WorkTime.objects.create(work=self.wnormal, recording=self.rnormal, sequence=1)
         models.WorkTime.objects.create(work=self.wrestricted, recording=self.rrestricted, sequence=1)
         models.WorkTime.objects.create(work=self.wstaff, recording=self.rstaff, sequence=1)
 
-        models.ReleaseRecording.objects.create(release=self.relnormal, recording=self.rnormal, track=1, disc=1,
-                                               disctrack=1)
-        models.ReleaseRecording.objects.create(release=self.relrestr, recording=self.rrestricted, track=1, disc=1,
-                                               disctrack=1)
-        models.ReleaseRecording.objects.create(release=self.relstaff, recording=self.rstaff, track=1, disc=1,
-                                               disctrack=1)
+        models.ReleaseRecording.objects.create(
+            release=self.relnormal, recording=self.rnormal, track=1, disc=1, disctrack=1
+        )
+        models.ReleaseRecording.objects.create(
+            release=self.relrestr, recording=self.rrestricted, track=1, disc=1, disctrack=1
+        )
+        models.ReleaseRecording.objects.create(
+            release=self.relstaff, recording=self.rstaff, track=1, disc=1, disctrack=1
+        )
 
     def test_render_work_inner(self):
         s = api.WorkInnerSerializer(self.wnormal)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['mbid', 'title'], sorted(data.keys()))
+        self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_render_work_detail(self):
         resp = self.apiclient.get("/api/hindustani/work/7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
-        self.assertEqual(['mbid', 'recordings', 'title'], sorted(resp.data.keys()))
+        self.assertEqual(["mbid", "recordings", "title"], sorted(resp.data.keys()))
 
     def test_work_detail_url(self):
         resp = self.apiclient.get("/api/hindustani/work/7c08c56d-504b-4c42-ac99-1ffaa76f9aa0")
@@ -344,21 +385,24 @@ class WorkTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = f"{self.coll1id}"
-        response = client.get("/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
         # Collection that doesn't exist
         collections = str(uuid.uuid4())
-        response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll3id}, {self.coll1id}"
-        response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -367,20 +411,23 @@ class WorkTest(ApiTestCase):
         client.force_authenticate(user=self.restricteduser)
 
         collections = f"{self.coll1id}"
-        response = client.get("/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
         collections = f"{self.coll2id}"
-        response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll3id}"
-        response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -389,8 +436,9 @@ class WorkTest(ApiTestCase):
         client.force_authenticate(user=self.normaluser)
 
         collections = f"{self.coll1id}"
-        response = client.get("/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -399,8 +447,9 @@ class WorkTest(ApiTestCase):
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{str(uuid.uuid4())}, {self.coll2id}, {self.coll1id}"
-        response = client.get("/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
@@ -408,8 +457,9 @@ class WorkTest(ApiTestCase):
 class RaagTest(ApiTestCase):
     def setUp(self):
         super().setUp()
-        self.r = models.Raag.objects.create(name="raag", common_name="raag",
-                                            uuid="3cecdb8e-2a54-4833-8049-b3d8060f7e32")
+        self.r = models.Raag.objects.create(
+            name="raag", common_name="raag", uuid="3cecdb8e-2a54-4833-8049-b3d8060f7e32"
+        )
 
     def test_raag_by_id(self):
         good_id = self.r.id
@@ -423,12 +473,12 @@ class RaagTest(ApiTestCase):
     def test_render_raag_inner(self):
         s = api.RaagInnerSerializer(self.r)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
+        self.assertEqual(["common_name", "name", "uuid"], sorted(data.keys()))
 
     def test_render_raag_detail(self):
         s = api.RaagDetailSerializer(self.r)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        expected = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid']
+        expected = ["aliases", "artists", "common_name", "composers", "name", "recordings", "uuid"]
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_raag_detail_url(self):
@@ -439,8 +489,9 @@ class RaagTest(ApiTestCase):
 class TaalTest(ApiTestCase):
     def setUp(self):
         super().setUp()
-        self.t = models.Taal.objects.create(name="taal", common_name="taal",
-                                            uuid="4f55fa34-5f77-4570-888c-0596cfc8a81a")
+        self.t = models.Taal.objects.create(
+            name="taal", common_name="taal", uuid="4f55fa34-5f77-4570-888c-0596cfc8a81a"
+        )
 
     def test_taal_by_id(self):
         good_id = self.t.id
@@ -454,12 +505,12 @@ class TaalTest(ApiTestCase):
     def test_render_taal_inner(self):
         s = api.TaalInnerSerializer(self.t)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
+        self.assertEqual(["common_name", "name", "uuid"], sorted(data.keys()))
 
     def test_render_taal_detail(self):
         s = api.TaalDetailSerializer(self.t)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        expected = ['aliases', 'common_name', 'composers', 'name', 'recordings', 'uuid']
+        expected = ["aliases", "common_name", "composers", "name", "recordings", "uuid"]
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_taal_detail_url(self):
@@ -470,8 +521,9 @@ class TaalTest(ApiTestCase):
 class FormTest(ApiTestCase):
     def setUp(self):
         super().setUp()
-        self.f = models.Form.objects.create(name="form", common_name="form",
-                                            uuid="29847751-350b-4db2-9d18-630769ee2c6c")
+        self.f = models.Form.objects.create(
+            name="form", common_name="form", uuid="29847751-350b-4db2-9d18-630769ee2c6c"
+        )
 
     def test_form_by_id(self):
         good_id = self.f.id
@@ -485,12 +537,12 @@ class FormTest(ApiTestCase):
     def test_render_form_inner(self):
         s = api.FormInnerSerializer(self.f)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
+        self.assertEqual(["common_name", "name", "uuid"], sorted(data.keys()))
 
     def test_render_form_detail(self):
         s = api.FormDetailSerializer(self.f)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        expected = ['aliases', 'artists', 'common_name', 'name', 'recordings', 'uuid']
+        expected = ["aliases", "artists", "common_name", "name", "recordings", "uuid"]
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_taal_detail_url(self):
@@ -501,8 +553,9 @@ class FormTest(ApiTestCase):
 class LayaTest(ApiTestCase):
     def setUp(self):
         super().setUp()
-        self.l = models.Laya.objects.create(name="laya", common_name="laya",
-                                            uuid="e5d56b8c-f791-430a-ac2b-4c75f81a87c5")
+        self.l = models.Laya.objects.create(
+            name="laya", common_name="laya", uuid="e5d56b8c-f791-430a-ac2b-4c75f81a87c5"
+        )
 
     def test_laya_by_id(self):
         good_id = self.l.id
@@ -516,12 +569,12 @@ class LayaTest(ApiTestCase):
     def test_render_laya_inner(self):
         s = api.LayaInnerSerializer(self.l)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['common_name', 'name', 'uuid'], sorted(data.keys()))
+        self.assertEqual(["common_name", "name", "uuid"], sorted(data.keys()))
 
     def test_render_laya_detail(self):
         s = api.LayaDetailSerializer(self.l)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        expected = ['aliases', 'common_name', 'name', 'recordings', 'uuid']
+        expected = ["aliases", "common_name", "name", "recordings", "uuid"]
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_laya_detail_url(self):
@@ -534,40 +587,46 @@ class ReleaseTest(ApiTestCase):
         super().setUp()
 
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
-                                                          permission="U")
-        self.r = models.Release.objects.create(collection=self.col1, title="somerelease",
-                                               mbid="c8296944-74f6-4277-94c9-9481d7a8ba81")
+        self.col1 = data.models.Collection.objects.create(
+            collectionid=self.coll1id, name="collection 1", permission="U"
+        )
+        self.r = models.Release.objects.create(
+            collection=self.col1, title="somerelease", mbid="c8296944-74f6-4277-94c9-9481d7a8ba81"
+        )
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
 
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="S")
-        self.r = models.Release.objects.create(collection=self.col2, title="somerelease2",
-                                               mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="S"
+        )
+        self.r = models.Release.objects.create(
+            collection=self.col2, title="somerelease2", mbid="2c7638f6-d172-4dcd-bca7-06f912e0f09e"
+        )
 
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="R")
-        self.r = models.Release.objects.create(collection=self.col3, title="somerelease3",
-                                               mbid="b5c3a883-67f5-4d01-982f-6c70f3569191")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="R"
+        )
+        self.r = models.Release.objects.create(
+            collection=self.col3, title="somerelease3", mbid="b5c3a883-67f5-4d01-982f-6c70f3569191"
+        )
 
     def test_release_list(self):
-        """ Staff members will see all the releases, but
-            regular users only see those associated to
-            unrestricted collections"""
+        """Staff members will see all the releases, but
+        regular users only see those associated to
+        unrestricted collections"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
         collections = f"{self.coll1id}"
-        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
         collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
-        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
 
         self.assertEqual(3, len(data["results"]))
@@ -576,7 +635,7 @@ class ReleaseTest(ApiTestCase):
         # get 1 release
         client.force_authenticate(user=self.normaluser)
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -584,19 +643,19 @@ class ReleaseTest(ApiTestCase):
         # get 2 release
         client.force_authenticate(user=self.restricteduser)
         collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
-        response = client.get("/api/hindustani/release", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(2, len(data["results"]))
 
     def test_render_release_inner(self):
         s = api.ReleaseInnerSerializer(self.r)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['mbid', 'title'], sorted(data.keys()))
+        self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_render_release_detail(self):
         s = api.ReleaseDetailSerializer(self.r)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        expected = ['artists', 'image', 'mbid', 'recordings', 'release_artists', 'title', 'year']
+        expected = ["artists", "image", "mbid", "recordings", "release_artists", "title", "year"]
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_laya_detail_url(self):
@@ -613,12 +672,12 @@ class InstrumentTest(ApiTestCase):
     def test_render_instrument_inner(self):
         s = api.InstrumentInnerSerializer(self.i)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        self.assertEqual(['mbid', 'name'], sorted(data.keys()))
+        self.assertEqual(["mbid", "name"], sorted(data.keys()))
 
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.i)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        expected = ['artists', 'mbid', 'name']
+        expected = ["artists", "mbid", "name"]
         self.assertEqual(expected, sorted(data.keys()))
 
     def test_instrument_detail_url(self):

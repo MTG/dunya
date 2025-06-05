@@ -33,7 +33,7 @@ from docserver import util
 
 
 class Command(BaseCommand):
-    help = 'Calculate distance between mean raaga profiles'
+    help = "Calculate distance between mean raaga profiles"
     intonationmap = {}
     distancemap = {}
     dirname = "raagasimilarity-%s"
@@ -43,12 +43,13 @@ class Command(BaseCommand):
         sim = obj["similar"]
         if not sim:
             return None
-        insert = {"id": f"raagasim_{mbid}",
-                  "similar_s": json.dumps(sim),
-                  "rid_t": mbid,
-                  "doctype_s": "raagasimilarity",
-                  "module_s": module
-                  }
+        insert = {
+            "id": f"raagasim_{mbid}",
+            "similar_s": json.dumps(sim),
+            "rid_t": mbid,
+            "doctype_s": "raagasimilarity",
+            "module_s": module,
+        }
         return insert
 
     def import_solr(self, module):
@@ -88,7 +89,7 @@ class Command(BaseCommand):
 
             if distance:
                 sims.append((oid, distance))
-        sims = [ (i[0], round(i[1], 2)) for i in sims if not decimal.Decimal(i[1]).is_nan() ]
+        sims = [(i[0], round(i[1], 2)) for i in sims if not decimal.Decimal(i[1]).is_nan()]
         sims = sorted(sims, key=lambda a: a[1])
         name = os.path.join(dirname, f"{rid}.json")
         ret = {"rid": rid, "similar": sims}
@@ -119,7 +120,7 @@ class Command(BaseCommand):
         return y.tolist()
 
     def compute_matrix_carnatic(self):
-        recordings = carnatic.models.Recording.objects.filter(concert__collection__permission__in=['R', 'U'])
+        recordings = carnatic.models.Recording.objects.filter(concert__collection__permission__in=["R", "U"])
         recmap = collections.defaultdict(list)
         for r in recordings:
             ra = r.get_raaga()

@@ -1,4 +1,3 @@
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -47,8 +46,8 @@ class Symbtr2Png(dashboard.extractors.ExtractorModule):
         symbtrmu2 = util.docserver_get_symbtrmu2(musicbrainzid)
         print(symbtrmu2)
         symbtr = compmusic.dunya.makam.get_symbtr(musicbrainzid)
-        fname = symbtr['name']
-        finfo = fname.split('/')[-1]
+        fname = symbtr["name"]
+        finfo = fname.split("/")[-1]
 
         fp, tmpxml = tempfile.mkstemp(".xml")
         os.close(fp)
@@ -57,36 +56,43 @@ class Symbtr2Png(dashboard.extractors.ExtractorModule):
         tmp_dir = tempfile.mkdtemp()
 
         # parameters
-        render_metadata = False  # Don't add the metadata stored in MusicXML to Lilypond 
+        render_metadata = False  # Don't add the metadata stored in MusicXML to Lilypond
         # as they're displayed on the left panel in the recording page in Dunya frontend
-        svg_paper_size = 'junior-legal'  # The paper size of the svg output pages
+        svg_paper_size = "junior-legal"  # The paper size of the svg output pages
 
         # instantiate analyzer object
         scoreConverter = ScoreConverter()
 
         xml_output, ly_output, svg_output, txt_ly_mapping = scoreConverter.convert(
-            fpath, symbtrmu2, symbtr_name=finfo, mbid=musicbrainzid,
-            render_metadata=render_metadata, xml_out=tmpxml, ly_out=tmply,
-            svg_out=tmp_dir, svg_paper_size=svg_paper_size)
+            fpath,
+            symbtrmu2,
+            symbtr_name=finfo,
+            mbid=musicbrainzid,
+            render_metadata=render_metadata,
+            xml_out=tmpxml,
+            ly_out=tmply,
+            svg_out=tmp_dir,
+            svg_paper_size=svg_paper_size,
+        )
 
-        ret = {'score': [], 'xmlscore': ''}
+        ret = {"score": [], "xmlscore": ""}
 
         musicxml = open(xml_output)
-        ret['xmlscore'] = musicxml.read()
+        ret["xmlscore"] = musicxml.read()
         musicxml.close()
 
         os.unlink(tmpxml)
-        os.unlink(tmpxml.replace('.xml', '.ly'))
+        os.unlink(tmpxml.replace(".xml", ".ly"))
 
         files = [os.path.join(tmp_dir, f) for f in os.listdir(tmp_dir)]
         files = filter(os.path.isfile, files)
         files.sort(key=lambda x: os.path.getmtime(x))
 
         for f in files:
-            if f.endswith('.svg'):
+            if f.endswith(".svg"):
                 svg_file = open(f)
                 score = svg_file.read()
-                ret['score'].append(score)
+                ret["score"].append(score)
                 svg_file.close()
                 os.remove(f)
         os.rmdir(tmp_dir)

@@ -36,27 +36,28 @@ class TrainPhraseSeg(dashboard.extractors.ExtractorModule):
 
     _output = {
         "boundstat": {"extension": "mat", "mimetype": "application/octet-stream"},
-        "fldmodel": {"extension": "mat", "mimetype": "application/octet-stream"}
+        "fldmodel": {"extension": "mat", "mimetype": "application/octet-stream"},
     }
 
     def run_many(self, id_fnames):
         server_name = socket.gethostname()
         subprocess_env = os.environ.copy()
         subprocess_env["MCR_CACHE_ROOT"] = "/tmp/emptydir"
-        subprocess_env[
-            "LD_LIBRARY_PATH"] = "/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/runtime/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/bin/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/sys/os/glnxa64" % (
-        (server_name,) * 3)
+        subprocess_env["LD_LIBRARY_PATH"] = (
+            "/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/runtime/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/bin/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/sys/os/glnxa64"
+            % ((server_name,) * 3)
+        )
         # subprocess_env["LD_LIBRARY_PATH"] = "/usr/local/MATLAB/MATLAB_Runtime/v85/runtime/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v85/bin/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v85/sys/os/glnxa64/:/usr/local/MATLAB/MATLAB_Runtime/v85/sys/java/jre/glnxa64/jre/lib/amd64/:/usr/local/MATLAB/MATLAB_Runtime/v85/sys/java/jre/glnxa64/jre/lib/amd64/server"
 
         mbid_names = get_mbid_names()
         files = []
         for mbid, fname in id_fnames:
             try:
-                files.append({'path': fname, 'name': mbid_names[mbid]})
+                files.append({"path": fname, "name": mbid_names[mbid]})
             except:
                 pass
         fp, files_json = tempfile.mkstemp(".json")
-        f = open(files_json, 'w')
+        f = open(files_json, "w")
         json.dump(files, f)
         f.close()
         os.close(fp)
@@ -66,8 +67,12 @@ class TrainPhraseSeg(dashboard.extractors.ExtractorModule):
         fp, fldmodel = tempfile.mkstemp(".mat")
         os.close(fp)
 
-        proc = subprocess.Popen(["/srv/dunya/phraseSeg trainWrapper %s %s %s" % (files_json, boundstat, fldmodel)],
-                                stdout=subprocess.PIPE, shell=True, env=subprocess_env)
+        proc = subprocess.Popen(
+            ["/srv/dunya/phraseSeg trainWrapper %s %s %s" % (files_json, boundstat, fldmodel)],
+            stdout=subprocess.PIPE,
+            shell=True,
+            env=subprocess_env,
+        )
 
         (out, err) = proc.communicate()
 
@@ -98,29 +103,32 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
         server_name = socket.gethostname()
         subprocess_env = os.environ.copy()
         subprocess_env["MCR_CACHE_ROOT"] = "/tmp/emptydir"
-        subprocess_env[
-            "LD_LIBRARY_PATH"] = "/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/runtime/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/bin/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/sys/os/glnxa64" % (
-        (server_name,) * 3)
+        subprocess_env["LD_LIBRARY_PATH"] = (
+            "/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/runtime/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/bin/glnxa64:/mnt/compmusic/%s/MATLAB/MATLAB_Compiler_Runtime/v85/sys/os/glnxa64"
+            % ((server_name,) * 3)
+        )
         # subprocess_env["LD_LIBRARY_PATH"] = "/usr/local/MATLAB/MATLAB_Runtime/v85/runtime/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v85/bin/glnxa64:/usr/local/MATLAB/MATLAB_Runtime/v85/sys/os/glnxa64/:/usr/local/MATLAB/MATLAB_Runtime/v85/sys/java/jre/glnxa64/jre/lib/amd64/:/usr/local/MATLAB/MATLAB_Runtime/v85/sys/java/jre/glnxa64/jre/lib/amd64/server"
 
         boundstat, fldmodel = (None, None)
         try:
-            boundstat = util.docserver_get_filename('d2f729b8-cdc5-4019-ae0d-41695b78ee5b', "trainphraseseg",
-                                                    "boundstat", version="0.1")
-            fldmodel = util.docserver_get_filename('d2f729b8-cdc5-4019-ae0d-41695b78ee5b', "trainphraseseg", "fldmodel",
-                                                   version="0.1")
+            boundstat = util.docserver_get_filename(
+                "d2f729b8-cdc5-4019-ae0d-41695b78ee5b", "trainphraseseg", "boundstat", version="0.1"
+            )
+            fldmodel = util.docserver_get_filename(
+                "d2f729b8-cdc5-4019-ae0d-41695b78ee5b", "trainphraseseg", "fldmodel", version="0.1"
+            )
 
             # boundstat = util.docserver_get_filename('31b52b29-be39-4ccb-98f2-2154140920f9', "trainphraseseg", "boundstat", version="0.1")
             # fldmodel = util.docserver_get_filename('31b52b29-be39-4ccb-98f2-2154140920f9', "trainphraseseg", "fldmodel", version="0.1")
         except util.NoFileException:
-            raise Exception('No training files found for recording %s' % musicbrainzid)
+            raise Exception("No training files found for recording %s" % musicbrainzid)
 
         files = []
         symbtr = compmusic.dunya.makam.get_symbtr(musicbrainzid)
-        files.append({'path': fname, 'name': symbtr['name']})
+        files.append({"path": fname, "name": symbtr["name"]})
 
         fp, files_json = tempfile.mkstemp(".json")
-        f = open(files_json, 'w')
+        f = open(files_json, "w")
         json.dump(files, f)
         f.close()
         os.close(fp)
@@ -130,12 +138,15 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
 
         proc = subprocess.Popen(
             ["/srv/dunya/phraseSeg segmentWrapper %s %s %s %s" % (boundstat, fldmodel, files_json, out_json)],
-            stdout=subprocess.PIPE, shell=True, env=subprocess_env)
+            stdout=subprocess.PIPE,
+            shell=True,
+            env=subprocess_env,
+        )
 
         (out, err) = proc.communicate()
         ret = {"segments": []}
 
-        segments_file = open(out_json, 'r')
+        segments_file = open(out_json, "r")
         segments = segments_file.read()
         if segments == "":
             segments = "[]"
@@ -150,8 +161,8 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
 def get_mbid_names():
     mbid_names = {}
     dir = os.path.dirname(__file__)
-    with open(os.path.join(dir, './makams_usuls/training_phrase_names.csv'), 'rb') as csvfile:
-        names_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+    with open(os.path.join(dir, "./makams_usuls/training_phrase_names.csv"), "rb") as csvfile:
+        names_reader = csv.reader(csvfile, delimiter=",", quotechar='"')
         for row in names_reader:
             mbid_names[row[1]] = row[0]
     return mbid_names

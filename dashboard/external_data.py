@@ -34,7 +34,7 @@ def import_artist_wikipedia(artist, source):
         description = data.models.Description.objects.create(description=bio, source=source)
         # We call this with Composers too, which don't have `description_edited`
         # If d_edited is set, never overwrite it.
-        if not getattr(artist, 'description_edited', False):
+        if not getattr(artist, "description_edited", False):
             artist.description = description
             artist.save()
     if img:
@@ -67,7 +67,9 @@ def import_release_image(release, directories=[]):
         if caa:
             uri = f"http://archive.org/details/mbid-{release.mbid}"
             sn = data.models.SourceName.objects.get(name="Cover Art Archive")
-            source, created = data.models.Source.objects.get_or_create(source_name=sn, uri=uri, defaults={"title": release.title})
+            source, created = data.models.Source.objects.get_or_create(
+                source_name=sn, uri=uri, defaults={"title": release.title}
+            )
             im.source = source
         im.image.save(f"release-{release.mbid}.jpg", ContentFile(i))
 

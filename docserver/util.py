@@ -43,23 +43,23 @@ def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
 
 
 def docserver_create_document(collection_id, external_identifier, title):
-    """ Create a document and add it to the specified collection. If the
-        document already exists, add it to the collection.
+    """Create a document and add it to the specified collection. If the
+    document already exists, add it to the collection.
     """
     collection = models.Collection.objects.get(collectionid=collection_id)
     document, created = models.Document.objects.get_or_create(
-        external_identifier=external_identifier,
-        defaults={"title": title})
+        external_identifier=external_identifier, defaults={"title": title}
+    )
     document.collections.add(collection)
     return document
 
 
 def _write_to_disk(file, filepath):
-    """ write the file object `file` to disk at `filepath'"""
+    """write the file object `file` to disk at `filepath'"""
 
     size = 0
     try:
-        with open(filepath, 'wb') as dest:
+        with open(filepath, "wb") as dest:
             for chunk in file.chunks():
                 size += len(chunk)
                 dest.write(chunk)
@@ -97,8 +97,8 @@ def docserver_upload_and_save_file(document_id, sft_id, file):
 
 
 def docserver_add_sourcefile(document_id, sft_id, path):
-    """ Add a file to the given document. If a file with the given filetype
-        already exists for the document just update the path and size. """
+    """Add a file to the given document. If a file with the given filetype
+    already exists for the document just update the path and size."""
     document = models.Document.objects.get(pk=document_id)
     sft = models.SourceFileType.objects.get(pk=sft_id)
 
@@ -106,12 +106,13 @@ def docserver_add_sourcefile(document_id, sft_id, path):
     root_directory = os.path.join(document.get_root_dir(), sft.stype)
     if path.startswith(root_directory):
         # If the path is absolute, remove it
-        path = path[len(root_directory):]
+        path = path[len(root_directory) :]
     if path.startswith("/"):
         path = path[1:]
 
-    sf, created = models.SourceFile.objects.get_or_create(document=document, file_type=sft,
-                                                          defaults={"path": path, "size": size})
+    sf, created = models.SourceFile.objects.get_or_create(
+        document=document, file_type=sft, defaults={"path": path, "size": size}
+    )
     if not created:
         sf.path = path
         sf.size = size
@@ -120,10 +121,10 @@ def docserver_add_sourcefile(document_id, sft_id, path):
 
 
 def docserver_get_wav_filename(documentid):
-    """ Return a tuple (filename, created) containing the filename
-        of a wave file for this document. If created is True, it means
-        the file was generated on demand and you must delete it when
-        you're finished. Otherwise it's from the docserver
+    """Return a tuple (filename, created) containing the filename
+    of a wave file for this document. If created is True, it means
+    the file was generated on demand and you must delete it when
+    you're finished. Otherwise it's from the docserver
     """
     try:
         filename = docserver_get_filename(documentid, "wav", "wave")
@@ -173,7 +174,7 @@ def docserver_get_filename(documentid, slug, subtype=None, part=1, version=None)
 
 def docserver_get_symbtrtxt(documentid):
     try:
-        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug='symbtrtxt')
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug="symbtrtxt")
     except ObjectDoesNotExist:
         return None
     return sf.fullpath
@@ -181,7 +182,7 @@ def docserver_get_symbtrtxt(documentid):
 
 def docserver_get_symbtrmu2(documentid):
     try:
-        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug='symbtrmu2')
+        sf = models.SourceFile.objects.get(document__external_identifier=documentid, file_type__slug="symbtrmu2")
     except ObjectDoesNotExist:
         return None
     return sf.fullpath
@@ -205,7 +206,7 @@ def get_user_permissions(user):
     permission = ["U"]
     if user.is_staff:
         permission = ["S", "R", "U"]
-    elif user.has_perm('docserver.read_restricted'):
+    elif user.has_perm("docserver.read_restricted"):
         permission = ["R", "U"]
     return permission
 
@@ -232,10 +233,12 @@ def user_has_access(user, document, file_type_slug, good_referrer):
         except models.Module.DoesNotExist:
             return False
 
-    has_access = models.CollectionPermission.objects.filter(
-        collection__in=document.collections.all(),
-        source_type=sourcetype,
-        permission__in=user_permissions).count() != 0
+    has_access = (
+        models.CollectionPermission.objects.filter(
+            collection__in=document.collections.all(), source_type=sourcetype, permission__in=user_permissions
+        ).count()
+        != 0
+    )
     return has_access or good_referrer
 
 
@@ -252,9 +255,8 @@ def has_rate_limit(user, document, file_type_slug):
         return False
     try:
         c = models.CollectionPermission.objects.filter(
-            collection__in=document.collections.all(),
-            source_type__slug=file_type_slug,
-            permission__in=user_permissions)
+            collection__in=document.collections.all(), source_type__slug=file_type_slug, permission__in=user_permissions
+        )
         # If all permissions for this user say that the filetype is to be streamed,
         # we limit them. Otherwise if just some a streamable and others are not limited
         # in this way, we don't give them a ratelimit

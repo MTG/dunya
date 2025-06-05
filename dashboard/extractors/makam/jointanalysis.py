@@ -1,4 +1,3 @@
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -72,7 +71,7 @@ class JointAnalysis(dashboard.extractors.ExtractorModule):
             "makam": {},
             "note_models": {},
             "notes": {},
-            "sections": {}
+            "sections": {},
         }
 
         audioAnalyzer = AudioAnalyzer(verbose=True)
@@ -82,40 +81,38 @@ class JointAnalysis(dashboard.extractors.ExtractorModule):
         pitchfile = util.docserver_get_filename(musicbrainzid, "audioanalysis", "pitch", version="0.1")
         audio_pitch = json.load(open(pitchfile))
 
-        output['pitch'] = None
+        output["pitch"] = None
         rec_data = dunya.makam.get_recording(musicbrainzid)
-        for w in rec_data['works']:
-            symbtr_file = util.docserver_get_symbtrtxt(w['mbid'])
+        for w in rec_data["works"]:
+            symbtr_file = util.docserver_get_symbtrtxt(w["mbid"])
             print(symbtr_file)
             if symbtr_file:
-                score_features_file = util.docserver_get_filename(w['mbid'], "scoreanalysis", "metadata", version="0.1")
+                score_features_file = util.docserver_get_filename(w["mbid"], "scoreanalysis", "metadata", version="0.1")
                 score_features = json.load(open(score_features_file))
-                joint_features, features = jointAnalyzer.analyze(
-                    symbtr_file, score_features, fname, audio_pitch)
+                joint_features, features = jointAnalyzer.analyze(symbtr_file, score_features, fname, audio_pitch)
 
                 # redo some steps in audio analysis
-                features = audioAnalyzer.analyze(
-                    metadata=False, pitch=False, **features)
+                features = audioAnalyzer.analyze(metadata=False, pitch=False, **features)
 
                 # get a summary of the analysis
                 summarized_features = jointAnalyzer.summarize(
-                    score_features=score_features, joint_features=joint_features,
-                    score_informed_audio_features=features)
-                audio_pitch = summarized_features['audio'].get('pitch', None)
+                    score_features=score_features, joint_features=joint_features, score_informed_audio_features=features
+                )
+                audio_pitch = summarized_features["audio"].get("pitch", None)
 
-                pitch = summarized_features['audio'].get('pitch', None)
+                pitch = summarized_features["audio"].get("pitch", None)
                 if pitch:
-                    pitch['pitch'] = pitch['pitch'].tolist()
-                melodic_progression = features.get('melodic_progression', None)
-                tonic = features.get('tonic', None)
-                tempo = features.get('tempo', None)
-                pitch_distribution = features.get('pitch_distribution', None)
-                pitch_class_distribution = features.get('pitch_class_distribution', None)
-                transposition = features.get('transposition', None)
-                makam = features.get('makam', None)
-                note_models = features.get('note_models', None)
-                notes = summarized_features['joint'].get('notes', None)
-                sections = summarized_features['joint'].get('sections', None)
+                    pitch["pitch"] = pitch["pitch"].tolist()
+                melodic_progression = features.get("melodic_progression", None)
+                tonic = features.get("tonic", None)
+                tempo = features.get("tempo", None)
+                pitch_distribution = features.get("pitch_distribution", None)
+                pitch_class_distribution = features.get("pitch_class_distribution", None)
+                transposition = features.get("transposition", None)
+                makam = features.get("makam", None)
+                note_models = features.get("note_models", None)
+                notes = summarized_features["joint"].get("notes", None)
+                sections = summarized_features["joint"].get("sections", None)
 
                 if pitch_distribution:
                     pitch_distribution = pitch_distribution.to_dict()
@@ -130,23 +127,23 @@ class JointAnalysis(dashboard.extractors.ExtractorModule):
                     min_interval = 9999
                     max_interval = 0
                     for i in notes:
-                        if i['interval'][0] < min_interval:
-                            min_interval = i['interval'][0]
-                        if i['interval'][1] > max_interval:
-                            max_interval = i['interval'][1]
+                        if i["interval"][0] < min_interval:
+                            min_interval = i["interval"][0]
+                        if i["interval"][1] > max_interval:
+                            max_interval = i["interval"][1]
 
-                    output["works_intervals"][w['mbid']] = {"from": min_interval, "to": max_interval}
+                    output["works_intervals"][w["mbid"]] = {"from": min_interval, "to": max_interval}
                 output["pitch"] = pitch
                 output["melodic_progression"] = melodic_progression
                 output["pitch_distribution"] = pitch_distribution
                 output["pitch_class_distribution"] = pitch_class_distribution
-                output["tempo"][w['mbid']] = tempo
-                output["tonic"][w['mbid']] = tonic
-                output["transposition"][w['mbid']] = transposition
-                output["makam"][w['mbid']] = makam
-                output["note_models"][w['mbid']] = note_models
-                output["notes"][w['mbid']] = notes
-                output["sections"][w['mbid']] = sections
+                output["tempo"][w["mbid"]] = tempo
+                output["tonic"][w["mbid"]] = tonic
+                output["transposition"][w["mbid"]] = transposition
+                output["makam"][w["mbid"]] = makam
+                output["note_models"][w["mbid"]] = note_models
+                output["notes"][w["mbid"]] = notes
+                output["sections"][w["mbid"]] = sections
 
         return output
 
@@ -155,18 +152,18 @@ def to_dict(note_models):
     ret = {}
     for key in note_models.keys():
         ret[key] = note_models[key]
-        if 'distribution' in note_models[key]:
-            distribution = note_models[key]['distribution'].to_dict()
-            ret[key]['distribution'] = distribution
-        if np.isnan(note_models[key]['performed_interval']['value']):
-            ret[key]['performed_interval']['value'] = None
+        if "distribution" in note_models[key]:
+            distribution = note_models[key]["distribution"].to_dict()
+            ret[key]["distribution"] = distribution
+        if np.isnan(note_models[key]["performed_interval"]["value"]):
+            ret[key]["performed_interval"]["value"] = None
         notes = []
-        if 'notes' in note_models[key]:
-            for note in note_models[key]['notes']:
-                if 'PitchTrajectory' in note:
-                    pitch = note['PitchTrajectory'].tolist()
+        if "notes" in note_models[key]:
+            for note in note_models[key]["notes"]:
+                if "PitchTrajectory" in note:
+                    pitch = note["PitchTrajectory"].tolist()
                     notes.append(pitch)
-        ret[key]['notes'] = notes
+        ret[key]["notes"] = notes
     return ret
 
 
@@ -190,33 +187,31 @@ class TomatoDunyaMakam(dashboard.extractors.ExtractorModule):
         joint_pitch = None
         notes = {}
         rec_data = dunya.makam.get_recording(musicbrainzid)
-        for w in rec_data['works']:
-            symbtr_file = util.docserver_get_symbtrtxt(w['mbid'])
+        for w in rec_data["works"]:
+            symbtr_file = util.docserver_get_symbtrtxt(w["mbid"])
             print(symbtr_file)
 
             if symbtr_file:
-                score_features_file = util.docserver_get_filename(w['mbid'], "scoreanalysis", "metadata", version="0.1")
+                score_features_file = util.docserver_get_filename(w["mbid"], "scoreanalysis", "metadata", version="0.1")
                 score_features = json.load(open(score_features_file))
-                joint_features, features = jointAnalyzer.analyze(
-                    symbtr_file, score_features, fname, audio_pitch)
+                joint_features, features = jointAnalyzer.analyze(symbtr_file, score_features, fname, audio_pitch)
 
                 # redo some steps in audio analysis
-                features = audioAnalyzer.analyze(
-                    metadata=False, pitch=False, **features)
+                features = audioAnalyzer.analyze(metadata=False, pitch=False, **features)
 
                 # get a summary of the analysis
                 summarized_features = jointAnalyzer.summarize(
-                    score_features=score_features, joint_features=joint_features,
-                    score_informed_audio_features=features)
+                    score_features=score_features, joint_features=joint_features, score_informed_audio_features=features
+                )
 
-                joint_pitch = summarized_features['audio'].get('pitch', None)
+                joint_pitch = summarized_features["audio"].get("pitch", None)
 
-                notes[w['mbid']] = summarized_features['joint'].get('notes', None)
+                notes[w["mbid"]] = summarized_features["joint"].get("notes", None)
 
         if joint_pitch:
             audio_pitch = joint_pitch
 
-        pitch = [p[1] for p in audio_pitch['pitch']]
+        pitch = [p[1] for p in audio_pitch["pitch"]]
 
         # pitches as bytearray
         packed_pitch = io.BytesIO()
@@ -232,7 +227,7 @@ class TomatoDunyaMakam(dashboard.extractors.ExtractorModule):
                 packed_pitch.write(struct.pack("B", int((p - min_pitch) * 1.0 / (max_pitch - min_pitch) * height)))
 
         output = {}
-        output['pitch'] = packed_pitch.getvalue()
-        output['pitchmax'] = {'max': max_pitch, 'min': min_pitch}
+        output["pitch"] = packed_pitch.getvalue()
+        output["pitchmax"] = {"max": max_pitch, "min": min_pitch}
 
         return output

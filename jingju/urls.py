@@ -19,8 +19,10 @@ from django.urls import path
 from jingju import views
 
 urlpatterns = [
-    path('', views.main, name='jingju-main'),
-    path('recording/<uuid:uuid>', views.recording, name='jingju-recording'),
-    path('basic-lyric-align/<uuid:uuid>', views.basic_lyric_alignment, name='jingju-basic-lyric-alignment'),
-    path('basic-lyric-align/<uuid:uuid>/<slug:title>', views.basic_lyric_alignment, name='jingju-basic-lyric-alignment'),
-    ]
+    path("", views.main, name="jingju-main"),
+    path("recording/<uuid:uuid>", views.recording, name="jingju-recording"),
+    path("basic-lyric-align/<uuid:uuid>", views.basic_lyric_alignment, name="jingju-basic-lyric-alignment"),
+    path(
+        "basic-lyric-align/<uuid:uuid>/<slug:title>", views.basic_lyric_alignment, name="jingju-basic-lyric-alignment"
+    ),
+]

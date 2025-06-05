@@ -58,8 +58,13 @@ class DatabaseLogHandler(logging.Handler):
         if documentid:
             try:
                 doc = models.Document.objects.get(pk=int(documentid))
-                models.DocumentLogMessage.objects.create(document=doc, moduleversion=modv, sourcefile=sourcef,
-                                                         level=record.levelname, message=record.getMessage())
+                models.DocumentLogMessage.objects.create(
+                    document=doc,
+                    moduleversion=modv,
+                    sourcefile=sourcef,
+                    level=record.levelname,
+                    message=record.getMessage(),
+                )
             except models.Document.DoesNotExist:
                 logger.error("no document, can't create a log file")
         else:
@@ -102,16 +107,17 @@ def create_module(modulepath, collections):
         depends=instance._depends,
         many_files=instance._many_files,
         module=modulepath,
-        source_type=sourcetype)
+        source_type=sourcetype,
+    )
     module.collections.add(*collections)
     get_latest_module_version(module.pk)
     return module
 
 
 def get_latest_module_version(themod_id=None):
-    """ Create a new ModuleVersion if this module has been
-        updated.
-        If no argument is given, update all modules. """
+    """Create a new ModuleVersion if this module has been
+    updated.
+    If no argument is given, update all modules."""
     if themod_id:
         modules = models.Module.objects.filter(pk=themod_id)
     else:
@@ -169,7 +175,7 @@ def delete_module(mid):
 
 @app.task
 def delete_collection(cid):
-    """ Delete a collection and all its documents from the docserver.
+    """Delete a collection and all its documents from the docserver.
     Also remove the physical files from all the derivedfiles that
     have been created for the documents.
     """
@@ -257,8 +263,12 @@ def _save_process_results(version, instance, document, worker, results, starttim
                 contents = [contents]
             df, created = models.DerivedFile.objects.get_or_create(
                 document=document,
-                module_version=version, outputname=dataslug, extension=extension,
-                mimetype=mimetype, defaults={'computation_time': total_time, 'num_parts': len(contents)})
+                module_version=version,
+                outputname=dataslug,
+                extension=extension,
+                mimetype=mimetype,
+                defaults={"computation_time": total_time, "num_parts": len(contents)},
+            )
             if not created:
                 df.date = django.utils.timezone.now()
                 df.num_parts = len(contents)
@@ -294,8 +304,8 @@ def process_collection(collectionid, moduleversionid):
     sfiles = models.SourceFile.objects.filter(document__collections=collection, file_type=module.source_type)
 
     document, created = models.Document.objects.get_or_create(
-        title=collection.name,
-        external_identifier=collection.collectionid)
+        title=collection.name, external_identifier=collection.collectionid
+    )
     if created:
         document.collections.add(collection)
 
@@ -372,8 +382,8 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
         else:
             # All documents that don't already have a derived file for this module version
             docs = models.Document.objects.filter(
-                sourcefiles__file_type=module.source_type,
-                collections=collection).exclude(derivedfiles__module_version=version)
+                sourcefiles__file_type=module.source_type, collections=collection
+            ).exclude(derivedfiles__module_version=version)
             for i, d in enumerate(docs, 1):
                 logger.info(f"  document {i}/{len(docs)} - {d}")
                 process_document.delay(d.pk, version.pk)
@@ -382,10 +392,11 @@ def run_module_on_collection(collectionid, moduleid, versionid=None):
 def get_essentia_hash():
     try:
         import essentia
+
         version = essentia.__version__
         sha = essentia.__version_git_sha__
-        if '-g' in sha:
-            sha = sha.rsplit('-g')[-1]
+        if "-g" in sha:
+            sha = sha.rsplit("-g")[-1]
         return version, sha
     except ImportError:
         return None, None
@@ -393,8 +404,9 @@ def get_essentia_hash():
 
 def get_pycompmusic_hash():
     import compmusic._version
+
     version = compmusic._version.get_versions()
-    return version['full-revisionid'], version['date']
+    return version["full-revisionid"], version["date"]
 
 
 @app.task

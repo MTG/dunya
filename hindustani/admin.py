@@ -66,17 +66,23 @@ class RecordingFormInline(admin.TabularInline):
 
 class ArtistAdmin(admin.ModelAdmin):
     inlines = (ArtistAliasInline,)
-    exclude = ('image', 'description')
+    exclude = ("image", "description")
 
 
 class ComposerAdmin(admin.ModelAdmin):
     inlines = (ComposerAliasInline,)
-    exclude = ('image', 'description')
+    exclude = ("image", "description")
 
 
 class RecordingAdmin(admin.ModelAdmin):
-    inlines = (RecordingRaagInline, RecordingTaalInline, RecordingLayaInline, RecordingFormInline, WorkTimeInline,
-               RecordingPerformanceInline)
+    inlines = (
+        RecordingRaagInline,
+        RecordingTaalInline,
+        RecordingLayaInline,
+        RecordingFormInline,
+        WorkTimeInline,
+        RecordingPerformanceInline,
+    )
 
 
 class ReleaseAdmin(admin.ModelAdmin):
@@ -90,7 +96,7 @@ class RaagAliasInline(admin.TabularInline):
 
 class RaagAdmin(admin.ModelAdmin):
     inlines = (RaagAliasInline,)
-    exclude = ('image',)
+    exclude = ("image",)
 
 
 class TaalAliasInline(admin.TabularInline):
@@ -100,7 +106,7 @@ class TaalAliasInline(admin.TabularInline):
 
 class TaalAdmin(admin.ModelAdmin):
     inlines = (TaalAliasInline,)
-    exclude = ('image',)
+    exclude = ("image",)
 
 
 class LayaAliasInline(admin.TabularInline):

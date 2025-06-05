@@ -10,7 +10,7 @@ from docserver import util
 
 class SourceFileTest(TestCase):
     def setUp(self):
-        permission = Permission.objects.get(codename='read_restricted')
+        permission = Permission.objects.get(codename="read_restricted")
         self.nuser = auth.models.User.objects.create_user("normaluser")
 
         self.suser = auth.models.User.objects.create_user("user1", "", "pass1")
@@ -47,22 +47,25 @@ class SourceFileTest(TestCase):
         self.sfile4 = models.SourceFile.objects.create(document=self.doc4, file_type=self.file_type2, size=1000)
         self.sfile5 = models.SourceFile.objects.create(document=self.doc1, file_type=self.file_type2, size=1000)
 
-        models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type,
-                                                   streamable=False)
-        models.CollectionPermission.objects.create(collection=self.col1, permission="U", source_type=self.file_type2,
-                                                   streamable=False)
-        models.CollectionPermission.objects.create(collection=self.col2, permission="R", source_type=self.file_type,
-                                                   streamable=True)
+        models.CollectionPermission.objects.create(
+            collection=self.col1, permission="U", source_type=self.file_type, streamable=False
+        )
+        models.CollectionPermission.objects.create(
+            collection=self.col1, permission="U", source_type=self.file_type2, streamable=False
+        )
+        models.CollectionPermission.objects.create(
+            collection=self.col2, permission="R", source_type=self.file_type, streamable=True
+        )
         # Collection 3 doesn't specify permissions, so it's only staff.
 
-        models.Module.objects.create(slug='svg', source_type=self.file_type)
+        models.Module.objects.create(slug="svg", source_type=self.file_type)
 
     def test_regular_user_access_module(self):
         # Regular user can access module by slug
-        self.assertFalse(util.user_has_access(self.nuser, self.doc2, 'somthing-else', False))
-        self.assertFalse(util.user_has_access(self.nuser, self.doc2, 'somthing-else', True))
-        self.assertTrue(util.user_has_access(self.nuser, self.doc2, 'svg', False))
-        self.assertTrue(util.user_has_access(self.nuser, self.doc2, 'svg', True))
+        self.assertFalse(util.user_has_access(self.nuser, self.doc2, "somthing-else", False))
+        self.assertFalse(util.user_has_access(self.nuser, self.doc2, "somthing-else", True))
+        self.assertTrue(util.user_has_access(self.nuser, self.doc2, "svg", False))
+        self.assertTrue(util.user_has_access(self.nuser, self.doc2, "svg", True))
 
     def test_regular_user_access(self):
         # Regular user can access only mp3 and pdf of collection 1

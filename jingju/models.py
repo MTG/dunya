@@ -15,21 +15,22 @@ class JingjuStyle:
             "artist": Artist,
             "recording": Recording,
             "work": Work,
-            "instrument": Instrument
+            "instrument": Instrument,
         }[key]
 
 
 class Recording(JingjuStyle, data.models.BaseModel):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     title = models.CharField(max_length=200, blank=True, null=True)
     mbid = models.UUIDField(blank=True, null=True)
-    work = models.ForeignKey('Work', null=True, on_delete=models.CASCADE)
-    performers = models.ManyToManyField('Artist')
-    instrumentalists = models.ManyToManyField('Artist', through='RecordingInstrumentalist',
-                                              related_name='instrumentalist')
-    shengqiangbanshi = models.ManyToManyField('ShengqiangBanshi')
+    work = models.ForeignKey("Work", null=True, on_delete=models.CASCADE)
+    performers = models.ManyToManyField("Artist")
+    instrumentalists = models.ManyToManyField(
+        "Artist", through="RecordingInstrumentalist", related_name="instrumentalist"
+    )
+    shengqiangbanshi = models.ManyToManyField("ShengqiangBanshi")
     objects = managers.CollectionRecordingManager()
 
     def __str__(self):
@@ -37,19 +38,19 @@ class Recording(JingjuStyle, data.models.BaseModel):
 
 
 class RecordingInstrumentalist(JingjuStyle, models.Model):
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
-    artist = models.ForeignKey('Artist', on_delete=models.CASCADE)
-    instrument = models.ForeignKey('Instrument', on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    artist = models.ForeignKey("Artist", on_delete=models.CASCADE)
+    instrument = models.ForeignKey("Instrument", on_delete=models.CASCADE)
 
 
 class Artist(data.models.Artist):
     romanisation = models.CharField(max_length=200, blank=True, null=True)
-    role_type = models.ForeignKey('RoleType', blank=True, null=True, on_delete=models.CASCADE)
-    instrument = models.ForeignKey('Instrument', blank=True, null=True, related_name='jingju', on_delete=models.CASCADE)
+    role_type = models.ForeignKey("RoleType", blank=True, null=True, on_delete=models.CASCADE)
+    instrument = models.ForeignKey("Instrument", blank=True, null=True, related_name="jingju", on_delete=models.CASCADE)
     objects = managers.ArtistManager()
 
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
 
 class Composer(data.models.Composer):
@@ -57,17 +58,17 @@ class Composer(data.models.Composer):
     objects = managers.ArtistManager()
 
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
 
 class Instrument(data.models.Instrument):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
 
 class RecordingRelease(models.Model):
-    recording = models.ForeignKey('Recording', on_delete=models.CASCADE)
-    release = models.ForeignKey('Release', on_delete=models.CASCADE)
+    recording = models.ForeignKey("Recording", on_delete=models.CASCADE)
+    release = models.ForeignKey("Release", on_delete=models.CASCADE)
     sequence = models.IntegerField(blank=True, null=True)
 
     # The number that the track comes in the concert. Numerical 1-n
@@ -86,12 +87,12 @@ class RecordingRelease(models.Model):
 
 class Work(JingjuStyle, data.models.Work):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     title = models.CharField(max_length=200, blank=True, null=True)
     mbid = models.UUIDField(blank=True, null=True)
-    score = models.ForeignKey('Score', blank=True, null=True, on_delete=models.CASCADE)
-    play = models.ForeignKey('Play', blank=True, null=True, on_delete=models.CASCADE)
+    score = models.ForeignKey("Score", blank=True, null=True, on_delete=models.CASCADE)
+    play = models.ForeignKey("Play", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.title}"
@@ -99,16 +100,16 @@ class Work(JingjuStyle, data.models.Work):
 
 class Release(JingjuStyle, data.models.Release):
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
-    recordings = models.ManyToManyField('Recording', through='RecordingRelease')
-    collection = models.ForeignKey('data.Collection', blank=True, null=True, on_delete=models.CASCADE)
+    recordings = models.ManyToManyField("Recording", through="RecordingRelease")
+    collection = models.ForeignKey("data.Collection", blank=True, null=True, on_delete=models.CASCADE)
     objects = managers.CollectionReleaseManager()
 
 
 class RoleType(data.models.BaseModel):
     class Meta:
-        ordering = ['code']
+        ordering = ["code"]
 
     # The code used in tags in musicbrainz to identify this roletype (hd00)
     # the first digit specifies a "parent" roletype, and the second digit a subtype.
@@ -119,10 +120,11 @@ class RoleType(data.models.BaseModel):
 
     # The "main" roletype for a more specific one. An artist who performs in a specific roletype
     # by definition performs in the parent roletype
-    parent = models.ForeignKey('RoleType', blank=True, null=True, on_delete=models.CASCADE)
+    parent = models.ForeignKey("RoleType", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.code}: {self.name}/{self.romanisation}"
+
 
 class Play(data.models.BaseModel):
     title = models.CharField(max_length=100)

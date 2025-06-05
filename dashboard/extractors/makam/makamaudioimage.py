@@ -22,7 +22,7 @@ from docserver import util
 
 from .imagelib.audioimages import AudioImages
 
-matplotlib.use('Agg')
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from seyiranalyzer import audioseyiranalyzer
 
@@ -48,22 +48,22 @@ class MakamAudioImage(AudioImages):
         max_pitch = util.docserver_get_filename(musicbrainzid, "tomatodunya", "pitchmax", part=1, version="0.1")
         pitch = json.load(open(max_pitch))
 
-        self._f_min = pitch['min']
-        self._f_max = pitch['max']
+        self._f_min = pitch["min"]
+        self._f_max = pitch["max"]
         ret = super(MakamAudioImage, self).run(musicbrainzid, fname)
 
         try:
             pitchfile = util.docserver_get_filename(musicbrainzid, "jointanalysis", "pitch", part=1, version="0.1")
-            loaded_pitch = json.load(open(pitchfile, 'r'))
+            loaded_pitch = json.load(open(pitchfile, "r"))
             # If pitch extraction from jointanalysis failed then load it from audioanlysis
             if not loaded_pitch:
                 pitchfile = util.docserver_get_filename(musicbrainzid, "audioanalysis", "pitch", part=1, version="0.1")
-                loaded_pitch = json.load(open(pitchfile, 'r'))
+                loaded_pitch = json.load(open(pitchfile, "r"))
         except util.NoFileException:
             pitchfile = util.docserver_get_filename(musicbrainzid, "audioanalysis", "pitch", part=1, version="0.1")
-            loaded_pitch = json.load(open(pitchfile, 'r'))
+            loaded_pitch = json.load(open(pitchfile, "r"))
 
-        pitch = np.array(loaded_pitch['pitch'])
+        pitch = np.array(loaded_pitch["pitch"])
 
         audioSeyirAnalyzer = audioseyiranalyzer.AudioSeyirAnalyzer()
 
@@ -78,51 +78,50 @@ class MakamAudioImage(AudioImages):
 
         seyir_features = audioSeyirAnalyzer.analyze(pitch, frame_dur=frame_dur, hop_ratio=0.5)
 
-        fimage = tempfile.NamedTemporaryFile(mode='w+', suffix=".png")
+        fimage = tempfile.NamedTemporaryFile(mode="w+", suffix=".png")
         plot(seyir_features, fimage.name)
         fimage.flush()
         fileContent = None
-        with open(fimage.name, mode='rb') as file:
+        with open(fimage.name, mode="rb") as file:
             file_content = file.read()
         if not file_content:
             raise Exception("No image generated")
-        ret['smallfull'] = file_content
+        ret["smallfull"] = file_content
 
         return ret
 
 
-def plot(seyir_features, file_location, plot_average_pitch=True, plot_stable_pitches=True,
-         plot_distribution=False):
-    plt.switch_backend('Agg')
+def plot(seyir_features, file_location, plot_average_pitch=True, plot_stable_pitches=True, plot_distribution=False):
+    plt.switch_backend("Agg")
     fig = plt.figure(frameon=False)
     if plot_distribution:
-        time_starts = [sf['time_interval'][0] for sf in seyir_features]
+        time_starts = [sf["time_interval"][0] for sf in seyir_features]
         min_time = min(np.diff(time_starts))
         for sf in seyir_features:
             # plot the distributions through time
-            yy = sf['pitch_distribution'].bins
-            tt = sf['time_interval'][0] + sf['pitch_distribution'].vals * min_time * 2
+            yy = sf["pitch_distribution"].bins
+            tt = sf["time_interval"][0] + sf["pitch_distribution"].vals * min_time * 2
             plt.plot(tt, yy)
 
     for sf in seyir_features:
-        if len(sf['stable_pitches']):
-            t_st = sf['time_interval'][0]
-            max_peak = max([sp['value'] for sp in sf['stable_pitches']])
-            for sp in sf['stable_pitches']:
-                clr = 'r' if sp['value'] == max_peak else 'b'
+        if len(sf["stable_pitches"]):
+            t_st = sf["time_interval"][0]
+            max_peak = max([sp["value"] for sp in sf["stable_pitches"]])
+            for sp in sf["stable_pitches"]:
+                clr = "r" if sp["value"] == max_peak else "b"
                 # map the values from 0-1 to 1-6
-                marker_thickness = sp['value'] * 5 + 1
-                plt.plot(t_st, sp['frequency'], 'o', color=clr, ms=marker_thickness)
+                marker_thickness = sp["value"] * 5 + 1
+                plt.plot(t_st, sp["frequency"], "o", color=clr, ms=marker_thickness)
 
     if plot_average_pitch:
-        tt = [sf['time_interval'][0] for sf in seyir_features]
-        pp = [sf['average_pitch'] for sf in seyir_features]
+        tt = [sf["time_interval"][0] for sf in seyir_features]
+        pp = [sf["average_pitch"] for sf in seyir_features]
 
-        plt.plot(tt, pp, color='k', linewidth=3)
+        plt.plot(tt, pp, color="k", linewidth=3)
 
     fig.set_size_inches(31.25, 2.6)
     fig.set_tight_layout(True)
-    plt.axis('off')
+    plt.axis("off")
     plt.margins(0, 0)
 
-    plt.savefig(file_location, bbox_inches='tight', pad_inches=0)
+    plt.savefig(file_location, bbox_inches="tight", pad_inches=0)

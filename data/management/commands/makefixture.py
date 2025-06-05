@@ -4,6 +4,7 @@
 from __future__ import print_function
 import django.apps
 import six
+
 # v0.1 -- current version
 # known issues:
 # no support for generic relations
@@ -18,27 +19,47 @@ DEBUG = False
 
 
 def model_name(m):
-    module = m.__module__.split('.')[:-1]  # remove .models
+    module = m.__module__.split(".")[:-1]  # remove .models
     return ".".join(module + [m._meta.object_name])
 
 
 class Command(LabelCommand):
-    help = 'Output the contents of the database as a fixture of the given format.'
-    args = 'modelname[pk] or modelname[id1:id2] repeated one or more times'
+    help = "Output the contents of the database as a fixture of the given format."
+    args = "modelname[pk] or modelname[id1:id2] repeated one or more times"
 
     def add_arguments(self, parser):
-        parser.add_argument('--skip-related', default=True, action='store_false', dest='propagate',
-                    help='Specifies if we shall not add related objects.'),
-        parser.add_argument('--format', default='json', dest='format',
-                    help='Specifies the output serialization format for fixtures.'),
-        parser.add_argument('--indent', default=None, dest='indent', type='int',
-                    help='Specifies the indent level to use when pretty-printing output'),
+        (
+            parser.add_argument(
+                "--skip-related",
+                default=True,
+                action="store_false",
+                dest="propagate",
+                help="Specifies if we shall not add related objects.",
+            ),
+        )
+        (
+            parser.add_argument(
+                "--format",
+                default="json",
+                dest="format",
+                help="Specifies the output serialization format for fixtures.",
+            ),
+        )
+        (
+            parser.add_argument(
+                "--indent",
+                default=None,
+                dest="indent",
+                type="int",
+                help="Specifies the indent level to use when pretty-printing output",
+            ),
+        )
 
     def handle_models(self, models, **options):
-        format = options.get('format', 'json')
-        indent = options.get('indent', None)
-        show_traceback = options.get('traceback', False)
-        propagate = options.get('propagate', True)
+        format = options.get("format", "json")
+        indent = options.get("indent", None)
+        show_traceback = options.get("traceback", False)
+        propagate = options.get("propagate", True)
 
         # Check that the serialization format exists; this is a shortcut to
         # avoid collating all the objects and _then_ failing.
@@ -100,16 +121,15 @@ class Command(LabelCommand):
     def handle_label(self, labels, **options):
         parsed = []
         for label in labels:
-            search, pks = label, ''
-            if '[' in label:
-                search, pks = label.split('[', 1)
-            slice = ''
-            if ':' in pks:
-                slice = pks.rstrip(']').split(':', 1)
+            search, pks = label, ""
+            if "[" in label:
+                search, pks = label.split("[", 1)
+            slice = ""
+            if ":" in pks:
+                slice = pks.rstrip("]").split(":", 1)
             elif pks:
-                slice = pks.rstrip(']')
-            models = [model for model, name in self.get_models()
-                      if name.endswith('.' + search) or name == search]
+                slice = pks.rstrip("]")
+            models = [model for model, name in self.get_models() if name.endswith("." + search) or name == search]
             if not models:
                 raise CommandError(f"Wrong model: {search}")
             if len(models) > 1:
@@ -119,7 +139,7 @@ class Command(LabelCommand):
 
     def list_models(self):
         names = [name for _model, name in self.get_models()]
-        raise CommandError('Neither model name nor slice given. Installed model names: \n%s' % ",\n".join(names))
+        raise CommandError("Neither model name nor slice given. Installed model names: \n%s" % ",\n".join(names))
 
     def handle(self, *labels, **options):
         if not labels:
@@ -128,5 +148,5 @@ class Command(LabelCommand):
         output = []
         label_output = self.handle_label(labels, **options)
         if label_output:
-                output.append(label_output)
-        return '\n'.join(output)
+            output.append(label_output)
+        return "\n".join(output)

@@ -37,50 +37,55 @@ def searchcomplete(request):
     ret = []
     if term:
         suggestions = Concert.objects.filter(title__istartswith=term)[:3]
-        ret = [{"category": "concerts", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        ret = [{"category": "concerts", "name": l.title, "mbid": str(l.mbid)} for i, l in enumerate(suggestions, 1)]
         suggestions = Artist.objects.filter(name__istartswith=term)[:3]
-        ret += [{"category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
+        ret += [
+            {"category": "artists", "name": l.name, "mbid": str(l.mbid)} for i, l in enumerate(suggestions, len(ret))
+        ]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
 def recordings_search(request):
-    q = request.GET.get('recording', '')
+    q = request.GET.get("recording", "")
 
-    s_artists = request.GET.get('artists', '')
-    s_concerts = request.GET.get('concerts', '')
-    s_instruments = request.GET.get('instruments', '')
-    s_raga = request.GET.get('ragas', '')
-    s_tala = request.GET.get('talas', '')
+    s_artists = request.GET.get("artists", "")
+    s_concerts = request.GET.get("concerts", "")
+    s_instruments = request.GET.get("instruments", "")
+    s_raga = request.GET.get("ragas", "")
+    s_tala = request.GET.get("talas", "")
 
     recordings = Recording.objects
-    if s_artists != '' or s_concerts != '' or q\
-            or s_instruments != '' or s_raga != '' or s_tala != '':
-        if q and q != '':
-            ids = list(Work.objects.filter(title__unaccent__icontains=q).values_list('pk', flat=True))
-            recordings = recordings.filter(works__id__in=ids)\
-                    | recordings.filter(title__unaccent__icontains=q)\
-                    | recordings.filter(concert__title__unaccent__icontains=q)
+    if s_artists != "" or s_concerts != "" or q or s_instruments != "" or s_raga != "" or s_tala != "":
+        if q and q != "":
+            ids = list(Work.objects.filter(title__unaccent__icontains=q).values_list("pk", flat=True))
+            recordings = (
+                recordings.filter(works__id__in=ids)
+                | recordings.filter(title__unaccent__icontains=q)
+                | recordings.filter(concert__title__unaccent__icontains=q)
+            )
 
-        if s_artists and s_artists != '':
+        if s_artists and s_artists != "":
             artists = s_artists.split()
-            recordings = recordings.filter(works__composers__mbid__in=artists)\
-                    | recordings.filter(works__lyricists__mbid__in=artists)\
-                    | recordings.filter(concert__artists__mbid__in=artists)
+            recordings = (
+                recordings.filter(works__composers__mbid__in=artists)
+                | recordings.filter(works__lyricists__mbid__in=artists)
+                | recordings.filter(concert__artists__mbid__in=artists)
+            )
 
-        if s_concerts and s_concerts != '':
+        if s_concerts and s_concerts != "":
             recordings = recordings.filter(concert__mbid__in=s_concerts.split())
 
-        if s_instruments and s_instruments != '':
+        if s_instruments and s_instruments != "":
             recordings = recordings.filter(instrumentperformance__instrument__mbid__in=s_instruments.split())
 
-        if s_raga and s_raga != '':
+        if s_raga and s_raga != "":
             recordings = recordings.filter(works__raaga__uuid__in=s_raga.split())
 
-        if s_tala and s_tala != '':
+        if s_tala and s_tala != "":
             recordings = recordings.filter(works__taala__uuid__in=s_tala.split())
 
     paginator = Paginator(recordings.all(), 25)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     next_page = None
     try:
         recordings = paginator.page(page)
@@ -94,11 +99,8 @@ def recordings_search(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         recordings = paginator.page(paginator.num_pages)
-    results = {
-            "results": [item.get_dict() for item in recordings.object_list],
-            "moreResults": next_page
-    }
-    return HttpResponse(json.dumps(results), content_type='application/json')
+    results = {"results": [item.get_dict() for item in recordings.object_list], "moreResults": next_page}
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 
 def main(request):
@@ -106,13 +108,12 @@ def main(request):
 
 
 def filters(request):
-
-    taalas = Taala.objects.prefetch_related('aliases').all()
+    taalas = Taala.objects.prefetch_related("aliases").all()
     taalalist = []
     for r in taalas:
         taalalist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
 
-    raagas = Raaga.objects.prefetch_related('aliases').all()
+    raagas = Raaga.objects.prefetch_related("aliases").all()
     raagalist = []
     for r in raagas:
         raagalist.append({"name": r.name, "uuid": str(r.uuid), "aliases": [a.name for a in r.aliases.all()]})
@@ -130,19 +131,29 @@ def filters(request):
         cc = []
         ii = []
 
-        artistlist.append({"name": a.name, "mbid": str(a.mbid), "concerts": [str(c.mbid) for c in cc], "raagas": [str(r.uuid) for r in rr], "taalas": [str(t.uuid) for t in tt], "instruments": [str(i.mbid) for i in ii]})
+        artistlist.append(
+            {
+                "name": a.name,
+                "mbid": str(a.mbid),
+                "concerts": [str(c.mbid) for c in cc],
+                "raagas": [str(r.uuid) for r in rr],
+                "taalas": [str(t.uuid) for t in tt],
+                "instruments": [str(i.mbid) for i in ii],
+            }
+        )
 
     instruments = Instrument.objects.all()
     instrumentlist = []
     for i in instruments:
         instrumentlist.append({"name": i.name, "mbid": str(i.mbid)})
 
-    ret = {"artists": artistlist,
-           "concerts": concertlist,
-           "instruments": instrumentlist,
-           "ragas": raagalist,
-           "talas": taalalist,
-           }
+    ret = {
+        "artists": artistlist,
+        "concerts": concertlist,
+        "instruments": instrumentlist,
+        "ragas": raagalist,
+        "talas": taalalist,
+    }
 
     return JsonResponse(ret)
 
@@ -157,15 +168,21 @@ def recording(request, uuid, title=None):
         raise Http404
 
     try:
-        wave = docserver.util.docserver_get_url(recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE)
+        wave = docserver.util.docserver_get_url(
+            recording.mbid, "audioimages", "waveform32", 1, version=settings.FEAT_VERSION_IMAGE
+        )
     except docserver.exceptions.NoFileException:
         wave = None
     try:
-        spec = docserver.util.docserver_get_url(recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE)
+        spec = docserver.util.docserver_get_url(
+            recording.mbid, "audioimages", "spectrum32", 1, version=settings.FEAT_VERSION_IMAGE
+        )
     except docserver.exceptions.NoFileException:
         spec = None
     try:
-        small = docserver.util.docserver_get_url(recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE)
+        small = docserver.util.docserver_get_url(
+            recording.mbid, "audioimages", "smallfull", version=settings.FEAT_VERSION_IMAGE
+        )
     except docserver.exceptions.NoFileException:
         small = None
     try:
@@ -173,7 +190,9 @@ def recording(request, uuid, title=None):
     except docserver.exceptions.NoFileException:
         audio = None
     try:
-        tonic = docserver.util.docserver_get_contents(recording.mbid, "carnaticvotedtonic", "tonic", version=settings.FEAT_VERSION_TONIC)
+        tonic = docserver.util.docserver_get_contents(
+            recording.mbid, "carnaticvotedtonic", "tonic", version=settings.FEAT_VERSION_TONIC
+        )
         notenames = ["A", "A♯", "B", "C", "C♯", "D", "D♯", "E", "F", "F♯", "G", "G♯"]
         tonic = round(float(tonic), 2)
         thebin = (12 * math.log(tonic / 440.0) / math.log(2)) % 12
@@ -187,21 +206,37 @@ def recording(request, uuid, title=None):
         tonic = None
         tonicname = None
     try:
-        akshara = docserver.util.docserver_get_contents(recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM)
+        akshara = docserver.util.docserver_get_contents(
+            recording.mbid, "rhythm", "aksharaPeriod", version=settings.FEAT_VERSION_RHYTHM
+        )
         akshara = str(round(float(akshara), 3) * 1000)
     except docserver.exceptions.NoFileException:
         akshara = None
 
     try:
-        pitchtrackurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "packedpitch", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
-        histogramurl = docserver.util.docserver_get_url(recording.mbid, "carnaticnormalisedpitch", "drawhistogram", version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH)
+        pitchtrackurl = docserver.util.docserver_get_url(
+            recording.mbid,
+            "carnaticnormalisedpitch",
+            "packedpitch",
+            version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH,
+        )
+        histogramurl = docserver.util.docserver_get_url(
+            recording.mbid,
+            "carnaticnormalisedpitch",
+            "drawhistogram",
+            version=settings.FEAT_VERSION_CARNATIC_NORMALISED_PITCH,
+        )
     except docserver.exceptions.NoFileException:
         pitchtrackurl = ""
         histogramurl = ""
 
     try:
-        rhythmurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM)
-        aksharaurl = docserver.util.docserver_get_url(recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM)
+        rhythmurl = docserver.util.docserver_get_url(
+            recording.mbid, "rhythm", "aksharaTicks", version=settings.FEAT_VERSION_RHYTHM
+        )
+        aksharaurl = docserver.util.docserver_get_url(
+            recording.mbid, "rhythm", "APcurve", version=settings.FEAT_VERSION_RHYTHM
+        )
     except docserver.exceptions.NoFileException:
         rhythmurl = ""
         aksharaurl = ""
@@ -223,25 +258,26 @@ def recording(request, uuid, title=None):
         nextrecording = recordings[recordingpos + 1]
     mbid = recording.mbid
 
-    ret = {"recording": recording,
-           "objecttype": "recording",
-           "objectid": recording.id,
-           "waveform": wave,
-           "spectrogram": spec,
-           "smallimage": small,
-           "audio": audio,
-           "tonic": tonic,
-           "tonicname": tonicname,
-           "akshara": akshara,
-           "mbid": mbid,
-           "nextrecording": nextrecording,
-           "prevrecording": prevrecording,
-           "pitchtrackurl": pitchtrackurl,
-           "histogramurl": histogramurl,
-           "rhythmurl": rhythmurl,
-           "aksharaurl": aksharaurl,
-           "concert": concert,
-           "bootleg": show_restricted,
-           }
+    ret = {
+        "recording": recording,
+        "objecttype": "recording",
+        "objectid": recording.id,
+        "waveform": wave,
+        "spectrogram": spec,
+        "smallimage": small,
+        "audio": audio,
+        "tonic": tonic,
+        "tonicname": tonicname,
+        "akshara": akshara,
+        "mbid": mbid,
+        "nextrecording": nextrecording,
+        "prevrecording": prevrecording,
+        "pitchtrackurl": pitchtrackurl,
+        "histogramurl": histogramurl,
+        "rhythmurl": rhythmurl,
+        "aksharaurl": aksharaurl,
+        "concert": concert,
+        "bootleg": show_restricted,
+    }
 
     return render(request, "carnatic/recording.html", ret)

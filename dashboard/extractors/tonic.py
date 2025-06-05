@@ -72,8 +72,8 @@ class CTonicExtract(dashboard.extractors.ExtractorModule):
 
 
 class TonicVote(dashboard.extractors.ExtractorModule):
-    """ Vote on tonics to filter out small errors by the tonic identification script
-    """
+    """Vote on tonics to filter out small errors by the tonic identification script"""
+
     _sourcetype = "mp3"
 
     _output = {"tonic": {"extension": "dat", "mimetype": "text/plain"}}
@@ -90,7 +90,7 @@ class TonicVote(dashboard.extractors.ExtractorModule):
         return index
 
     def vote(self, artist_tonics, tonic):
-        """ Given a list of (mbid, tonic) tonics for an artist, and another
+        """Given a list of (mbid, tonic) tonics for an artist, and another
         tonic to check, see if this tonic should be moved
         """
         data = np.array(artist_tonics)

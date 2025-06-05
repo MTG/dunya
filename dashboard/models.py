@@ -24,7 +24,7 @@ import six
 
 
 class StateCarryingManager(models.Manager):
-    """ A model manager that also creates a state entry when a
+    """A model manager that also creates a state entry when a
     new object is made. This state object is used to keep track
     of progress on the import.
     """
@@ -77,18 +77,25 @@ class MusicbrainzReleaseManager(StateCarryingManager):
 
 class EmailAuthentication(models.Model):
     """Holds the gmail API credentials"""
+
     credentials = models.JSONField()
     token = models.JSONField(null=True)
 
 
 class CollectionState(models.Model):
-
     class Meta:
-        ordering = ['-state_date']
+        ordering = ["-state_date"]
 
     collection = models.ForeignKey("Collection", on_delete=models.CASCADE)
-    STATE_CHOICE = (('n', 'Not started'), ('s', 'Scanning'), ('d', 'Scanned'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
-    state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
+    STATE_CHOICE = (
+        ("n", "Not started"),
+        ("s", "Scanning"),
+        ("d", "Scanned"),
+        ("i", "Importing"),
+        ("f", "Finished"),
+        ("e", "Error"),
+    )
+    state = models.CharField(max_length=10, choices=STATE_CHOICE, default="n")
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
     @property
@@ -100,7 +107,7 @@ class CollectionState(models.Model):
 
 
 class Collection(models.Model):
-    AUDIO_DIR = 'audio'
+    AUDIO_DIR = "audio"
     objects = CollectionManager()
 
     collectionid = models.UUIDField()
@@ -146,28 +153,28 @@ class Collection(models.Model):
         CollectionState.objects.create(collection=self, state=state)
 
     def set_state_importing(self):
-        self.update_state('i')
+        self.update_state("i")
 
     def set_state_finished(self):
-        self.update_state('f')
+        self.update_state("f")
 
     def set_state_scanning(self):
-        """ Mark this collection as having its importer started. """
-        self.update_state('s')
+        """Mark this collection as having its importer started."""
+        self.update_state("s")
 
     def set_state_scanned(self):
-        self.update_state('d')
+        self.update_state("d")
 
     def set_state_error(self):
-        self.update_state('e')
+        self.update_state("e")
 
     def status_can_finish(self):
-        """ See if this collection's import can finish.
+        """See if this collection's import can finish.
         An import can finish if all its children directories have finished.
         """
         for rel in self.musicbrainzrelease_set.all():
             relstate = rel.get_current_state()
-            if relstate.state != 'f':
+            if relstate.state != "f":
                 return False
         return True
 
@@ -179,10 +186,10 @@ class Collection(models.Model):
 
 
 class CollectionLogMessage(models.Model):
-    """ A message about a collection """
+    """A message about a collection"""
 
     class Meta:
-        ordering = ['-datetime']
+        ordering = ["-datetime"]
 
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     message = models.TextField()
@@ -193,16 +200,16 @@ class CollectionLogMessage(models.Model):
 
 
 class MusicbrainzReleaseState(models.Model):
-    """ Indicates the procesing state of a release. A release has finished
+    """Indicates the procesing state of a release. A release has finished
     processing when all files it is part of have finished.
     """
 
     class Meta:
-        ordering = ['-state_date']
+        ordering = ["-state_date"]
 
     musicbrainzrelease = models.ForeignKey("MusicbrainzRelease", on_delete=models.CASCADE)
-    STATE_CHOICE = (('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
-    state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
+    STATE_CHOICE = (("n", "Not started"), ("i", "Importing"), ("f", "Finished"), ("e", "Error"))
+    state = models.CharField(max_length=10, choices=STATE_CHOICE, default="n")
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
     @property
@@ -215,7 +222,7 @@ class MusicbrainzReleaseState(models.Model):
 
 class MusicbrainzRelease(models.Model):
     class Meta:
-        unique_together = ('mbid', 'collection')
+        unique_together = ("mbid", "collection")
 
     objects = MusicbrainzReleaseManager()
 
@@ -248,19 +255,19 @@ class MusicbrainzRelease(models.Model):
         MusicbrainzReleaseState.objects.create(musicbrainzrelease=self, state=state)
 
     def set_state_importing(self):
-        """ Set the state of the release to 'importing'. Also sets
+        """Set the state of the release to 'importing'. Also sets
         the state of all files that are part of this release
         to importing too
         """
-        self.update_state('i')
+        self.update_state("i")
         for f in CollectionFile.objects.filter(directory__musicbrainzrelease=self):
             f.set_state_importing()
 
     def set_state_finished(self):
-        self.update_state('f')
+        self.update_state("f")
 
     def set_state_error(self):
-        self.update_state('e')
+        self.update_state("e")
 
     def get_current_state(self):
         return self.musicbrainzreleasestate_set.all()[0]
@@ -276,10 +283,10 @@ class MusicbrainzRelease(models.Model):
 
 
 class MusicbrainzReleaseLogMessage(models.Model):
-    """ A message about a MusicbrainzRelease """
+    """A message about a MusicbrainzRelease"""
 
     class Meta:
-        ordering = ['-datetime']
+        ordering = ["-datetime"]
 
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, on_delete=models.CASCADE)
     message = models.TextField()
@@ -290,9 +297,9 @@ class MusicbrainzReleaseLogMessage(models.Model):
 
 
 class CollectionDirectory(models.Model):
-    """ A directory inside the file tree for a collection that has releases
+    """A directory inside the file tree for a collection that has releases
     in it. This usually corresponds to a single CD. This means a MusicbrainzRelease
-    may have more than 1 CollectionDirectory """
+    may have more than 1 CollectionDirectory"""
 
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     musicbrainzrelease = models.ForeignKey(MusicbrainzRelease, blank=True, null=True, on_delete=models.CASCADE)
@@ -304,8 +311,8 @@ class CollectionDirectory(models.Model):
 
     def __str__(self):
         return "From collection {}, release {}, path on disk {}".format(
-            self.collection,
-            self.musicbrainzrelease, self.path)
+            self.collection, self.musicbrainzrelease, self.path
+        )
 
     def short_path(self):
         if len(self.path) < 60:
@@ -314,23 +321,23 @@ class CollectionDirectory(models.Model):
             return f"{self.path[:30]}…{self.path[-30:]}"
 
     def get_absolute_url(self):
-        return reverse('dashboard-directory', args=[int(self.id)])
+        return reverse("dashboard-directory", args=[int(self.id)])
 
     def get_file_list(self):
-        return self.collectionfile_set.order_by('name').all()
+        return self.collectionfile_set.order_by("name").all()
 
 
 class CollectionFileState(models.Model):
-    """ Indicates the processing state of a single file.
+    """Indicates the processing state of a single file.
     a file has finished processing when all `file' consistency
-    checkers have completed (regardless of if they are good or bad). """
+    checkers have completed (regardless of if they are good or bad)."""
 
     class Meta:
-        ordering = ['-state_date']
+        ordering = ["-state_date"]
 
     collectionfile = models.ForeignKey("CollectionFile", on_delete=models.CASCADE)
-    STATE_CHOICE = (('n', 'Not started'), ('i', 'Importing'), ('f', 'Finished'), ('e', 'Error'))
-    state = models.CharField(max_length=10, choices=STATE_CHOICE, default='n')
+    STATE_CHOICE = (("n", "Not started"), ("i", "Importing"), ("f", "Finished"), ("e", "Error"))
+    state = models.CharField(max_length=10, choices=STATE_CHOICE, default="n")
     state_date = models.DateTimeField(default=django.utils.timezone.now)
 
     @property
@@ -342,12 +349,13 @@ class CollectionFileState(models.Model):
 
 
 class CollectionFile(models.Model):
-    """ A single audio file in the collection. A file is part of a
+    """A single audio file in the collection. A file is part of a
     collection directory.
     If the directory is matched to a MusicbrainzRelease, then a CollectionFile
     can also have an optional recordingid set, which references the musicbrainz
     recording id of the file.
     """
+
     objects = CollectionFileManager()
 
     name = models.CharField(max_length=255)
@@ -357,14 +365,12 @@ class CollectionFile(models.Model):
 
     @property
     def path(self):
-        """ Absolute path """
-        return os.path.join(
-            self.directory.collection.audio_directory,
-            self.directory.path, self.name)
+        """Absolute path"""
+        return os.path.join(self.directory.collection.audio_directory, self.directory.path, self.name)
 
     @property
     def relativepath(self):
-        """ Path relative to the collection root """
+        """Path relative to the collection root"""
         return os.path.join(self.directory.path, self.name)
 
     def __str__(self):
@@ -374,13 +380,13 @@ class CollectionFile(models.Model):
         CollectionFileState.objects.create(collectionfile=self, state=state)
 
     def set_state_importing(self):
-        self.update_state('i')
+        self.update_state("i")
 
     def set_state_finished(self):
-        self.update_state('f')
+        self.update_state("f")
 
     def set_state_error(self):
-        self.update_state('e')
+        self.update_state("e")
 
     def get_current_state(self):
         return self.collectionfilestate_set.all()[0]
@@ -392,4 +398,4 @@ class CollectionFile(models.Model):
         return self.collectionfilestate_set.all()[1:]
 
     def get_absolute_url(self):
-        return reverse('dashboard-file', args=[int(self.id)])
+        return reverse("dashboard-file", args=[int(self.id)])

@@ -31,10 +31,7 @@ def _send_item_with_size(key, data, size):
 def log_processed_file(worker, recordingid, moduleversion):
     now = datetime.datetime.now()
     key = f"processed-file-{worker}"
-    data = {"recording": recordingid,
-            "moduleversion": moduleversion,
-            "date": now.isoformat(),
-            "worker": worker}
+    data = {"recording": recordingid, "moduleversion": moduleversion, "date": now.isoformat(), "worker": worker}
     data = json.dumps(data)
     _send_item_with_size(key, data, 5)
 
@@ -47,15 +44,14 @@ def log_module_action(module, user, action):
     """
     now = datetime.datetime.now()
     key = f"module-action-{module}"
-    data = {"date": now.isoformat(),
-            "action": action}
+    data = {"date": now.isoformat(), "action": action}
     data = json.dumps(data)
     _send_item_with_size(key, data, 5)
 
 
 def delete_module_action(module):
-    """ If a module is deleted, we no longer need all of
-    its log messages. """
+    """If a module is deleted, we no longer need all of
+    its log messages."""
     key = f"module-action-{module}"
     redis.delete(key)
 

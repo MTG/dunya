@@ -20,13 +20,11 @@ from django.views.generic.base import TemplateView
 from hindustani import views
 
 urlpatterns = [
-    path('', views.main, name='hindustani-main'),
-    path('info',
-         TemplateView.as_view(template_name='hindustani/info.html'), name='hindustani-info'),
-
-    path('searchcomplete', views.searchcomplete, name='hindustani-searchcomplete'),
-    path('search', views.recordings_search, name='hindustani-search'),
-    path('recording/<uuid:uuid>', views.recording, name='hindustani-recording'),
-    path('recording/<uuid:uuid>/<slug:title>', views.recording, name='hindustani-recording'),
-    path('filters.json', views.filters, name='hindustani-filters'),
+    path("", views.main, name="hindustani-main"),
+    path("info", TemplateView.as_view(template_name="hindustani/info.html"), name="hindustani-info"),
+    path("searchcomplete", views.searchcomplete, name="hindustani-searchcomplete"),
+    path("search", views.recordings_search, name="hindustani-search"),
+    path("recording/<uuid:uuid>", views.recording, name="hindustani-recording"),
+    path("recording/<uuid:uuid>/<slug:title>", views.recording, name="hindustani-recording"),
+    path("filters.json", views.filters, name="hindustani-filters"),
 ]

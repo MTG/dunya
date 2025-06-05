@@ -31,7 +31,7 @@ class Collection(models.Model):
     """A set of related documents"""
 
     class Meta:
-        permissions = (('read_restricted', "Can read files in restricted collections"),)
+        permissions = (("read_restricted", "Can read files in restricted collections"),)
 
     collectionid = models.UUIDField()
     name = models.CharField(max_length=200)
@@ -66,9 +66,10 @@ class Document(models.Model):
     It has a known title and is part of a collection.
     It can have an option title and description
     """
+
     objects = DocumentManager()
 
-    collections = models.ManyToManyField(Collection, related_name='documents')
+    collections = models.ManyToManyField(Collection, related_name="documents")
     title = models.CharField(max_length=500)
     """If the file is known in a different database, the identifier
        for the item."""
@@ -79,7 +80,8 @@ class Document(models.Model):
         for c in self.collections.all():
             if root_directory and root_directory != c.root_directory:
                 raise exceptions.NoRootDirectoryException(
-                    "If a document is in more than one collection they must have the same root_directory")
+                    "If a document is in more than one collection they must have the same root_directory"
+                )
             root_directory = c.root_directory
         if not root_directory:
             raise exceptions.NoRootDirectoryException("This document is in no collection and so has no root directory")
@@ -97,7 +99,7 @@ class Document(models.Model):
         return ret
 
     def nestedderived(self):
-        """Derived files to show on the dashboard """
+        """Derived files to show on the dashboard"""
 
         outputs = collections.defaultdict(list)
         for d in self.derivedfiles.all():
@@ -114,7 +116,7 @@ class Document(models.Model):
         return outputs
 
     def derivedmap(self):
-        """ Derived files for the API.
+        """Derived files for the API.
         returns {"slug": {"part": {"versions", [versions], "extension"...} ]}
 
         This makes an assumption that the number of parts and extension
@@ -124,15 +126,19 @@ class Document(models.Model):
         ret = collections.defaultdict(list)
         derived = self.derivedfiles.all()
         for d in derived:
-            item = {"extension": d.extension, "version": d.module_version.version,
-                    "outputname": d.outputname, "numparts": d.num_parts,
-                    "mimetype": d.mimetype}
+            item = {
+                "extension": d.extension,
+                "version": d.module_version.version,
+                "outputname": d.outputname,
+                "numparts": d.num_parts,
+                "mimetype": d.mimetype,
+            }
             ret[d.module_version.module.slug].append(item)
         newret = {}
         for k, v in ret.items():
             items = collections.defaultdict(list)
             for i in v:
-                name = i['outputname']
+                name = i["outputname"]
                 if name in items:
                     is_last_version = True
                     for curr in items[name]["versions"]:
@@ -141,10 +147,12 @@ class Document(models.Model):
                         items[name]["numparts"] = i["numparts"]
                     items[name]["versions"].append(i["version"])
                 else:
-                    items[name] = {"extension": i["extension"],
-                                   "numparts": i["numparts"],
-                                   "mimetype": i["mimetype"],
-                                   "versions": [i["version"]]}
+                    items[name] = {
+                        "extension": i["extension"],
+                        "numparts": i["numparts"],
+                        "mimetype": i["mimetype"],
+                        "versions": [i["version"]],
+                    }
 
             newret[k] = items
         return newret
@@ -187,7 +195,8 @@ class Document(models.Model):
                 break
         if dfs.count() > 1:
             raise exceptions.TooManyFilesException(
-                "Found more than 1 subtype for this module but you haven't specified what you want")
+                "Found more than 1 subtype for this module but you haven't specified what you want"
+            )
         elif dfs.count() == 1:
             # Double-check if subtypes match. This is to catch the case where we
             # have only one subtype for a type but we don't specify it in the
@@ -197,7 +206,8 @@ class Document(models.Model):
             derived = dfs.get()
             if derived.outputname != subtype:
                 raise exceptions.NoFileException(
-                    f"This module has only one subtype which you must specify ({derived.outputname})")
+                    f"This module has only one subtype which you must specify ({derived.outputname})"
+                )
             # Select the part.
             # If the file has many parts and ?part is not set then it's an error
             if part:
@@ -230,13 +240,14 @@ class FileTypeManager(models.Manager):
 
 class SourceFileType(models.Model):
     FILE_TYPE_CHOICES = (
-        ('audio', 'Audio'),
-        ('data', 'Data'),
+        ("audio", "Audio"),
+        ("data", "Data"),
     )
     objects = FileTypeManager()
 
-    slug = models.SlugField(db_index=True, validators=[
-        RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")])
+    slug = models.SlugField(
+        db_index=True, validators=[RegexValidator(regex="^[a-z0-9-]+$", message="Slug can only contain a-z 0-9 and -")]
+    )
     extension = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
     mimetype = models.CharField(max_length=100)
@@ -254,7 +265,7 @@ class SourceFile(models.Model):
     """An actual file. References a document"""
 
     """The document this file is part of"""
-    document = models.ForeignKey(Document, related_name='sourcefiles', on_delete=models.CASCADE)
+    document = models.ForeignKey(Document, related_name="sourcefiles", on_delete=models.CASCADE)
     """The filetype"""
     file_type = models.ForeignKey(SourceFileType, on_delete=models.CASCADE)
     """The relative path on disk to the file (to the collection root)"""
@@ -269,11 +280,9 @@ class SourceFile(models.Model):
     def slug(self):
         return self.file_type.slug
 
-    def get_absolute_url(self, url_slug='ds-download-external', partnumber=None):
+    def get_absolute_url(self, url_slug="ds-download-external", partnumber=None):
         # partnumber is ignored here, it is added so that the DerivedFile one works
-        return reverse(
-            url_slug,
-            args=[self.document.external_identifier, self.file_type.slug])
+        return reverse(url_slug, args=[self.document.external_identifier, self.file_type.slug])
 
     @property
     def fullpath(self):
@@ -295,7 +304,7 @@ class DerivedFile(models.Model):
         unique_together = ("document", "module_version", "outputname")
 
     """The document this file is part of"""
-    document = models.ForeignKey("Document", related_name='derivedfiles', on_delete=models.CASCADE)
+    document = models.ForeignKey("Document", related_name="derivedfiles", on_delete=models.CASCADE)
 
     # A module could output more than 1 file. The combination of
     # module_version and (outputname/extension) refers to one
@@ -352,9 +361,7 @@ class DerivedFile(models.Model):
         return f"{recordingid}-{slug}-{version}-{partslug}-{partnumber}.{extension}"
 
     def get_absolute_url(self, partnumber=None):
-        url = reverse(
-            "ds-download-external",
-            args=[self.document.external_identifier, self.module_version.module.slug])
+        url = reverse("ds-download-external", args=[self.document.external_identifier, self.module_version.module.slug])
         v = self.module_version.version
         sub = self.outputname
         url = f"{url}?v={v}&subtype={sub}"
@@ -372,17 +379,11 @@ class DerivedFile(models.Model):
 
 class CollectionPermission(models.Model):
     class Meta:
-        permissions = (
-            ("access_restricted_file", "Can see restricted source files"),
-        )
+        permissions = (("access_restricted_file", "Can see restricted source files"),)
 
-    PERMISSIONS = (
-        ('S', 'Staff-only'),
-        ('R', 'Restricted'),
-        ('U', 'Unrestricted')
-    )
+    PERMISSIONS = (("S", "Staff-only"), ("R", "Restricted"), ("U", "Unrestricted"))
 
-    permission = models.CharField(max_length=1, choices=PERMISSIONS, default='S')
+    permission = models.CharField(max_length=1, choices=PERMISSIONS, default="S")
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     source_type = models.ForeignKey(SourceFileType, on_delete=models.CASCADE)
     streamable = models.BooleanField(default=False)
@@ -390,20 +391,17 @@ class CollectionPermission(models.Model):
 
 # Essentia management stuff
 
+
 class Worker(models.Model):
     NEW = "0"
     UPDATING = "1"
     UPDATED = "2"
-    STATE_CHOICES = (
-        (NEW, 'New'),
-        (UPDATING, 'Updating'),
-        (UPDATED, 'Updated')
-    )
+    STATE_CHOICES = ((NEW, "New"), (UPDATING, "Updating"), (UPDATED, "Updated"))
 
     hostname = models.CharField(max_length=200)
     essentia = models.ForeignKey("EssentiaVersion", blank=True, null=True, on_delete=models.CASCADE)
     pycompmusic = models.ForeignKey("PyCompmusicVersion", blank=True, null=True, on_delete=models.CASCADE)
-    state = models.CharField(max_length=1, choices=STATE_CHOICES, default='0')
+    state = models.CharField(max_length=1, choices=STATE_CHOICES, default="0")
 
     def set_state_updating(self):
         self.state = self.UPDATING
@@ -521,9 +519,7 @@ class ModuleVersion(models.Model):
             coll_ids = [c.collectionid for c in collections]
             qs = Document.objects.filter(external_identifier__in=coll_ids)
         else:
-            qs = Document.objects.filter(
-                collections__in=collections,
-                sourcefiles__file_type=self.module.source_type)
+            qs = Document.objects.filter(collections__in=collections, sourcefiles__file_type=self.module.source_type)
         qs = qs.filter(derivedfiles__module_version=self)
 
         return qs.distinct()
@@ -537,15 +533,14 @@ class ModuleVersion(models.Model):
             total = len(collections) - len(self.processed_files(collection))
             return list(range(total))
         else:
-            qs = Document.objects.filter(
-                collections__in=collections,
-                sourcefiles__file_type=self.module.source_type)
+            qs = Document.objects.filter(collections__in=collections, sourcefiles__file_type=self.module.source_type)
             qs = qs.exclude(derivedfiles__module_version=self)
             return qs.distinct()
 
     def processed_files_count(self):
-        q = '''SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d''' % (
-        self.id)
+        q = """SELECT count(distinct document_id) FROM "docserver_derivedfile" WHERE module_version_id = %d""" % (
+            self.id
+        )
         cursor = connection.cursor()
         cursor.execute(q)
         row = cursor.fetchone()
@@ -556,7 +551,7 @@ class ModuleVersion(models.Model):
         if len(collections) == 0:
             return 0
         coll_ids = [str(c.id) for c in collections]
-        q = '''
+        q = """
 SELECT COUNT(DISTINCT "docserver_document"."id")
 FROM "docserver_document"
 INNER JOIN "docserver_sourcefile" ON ( "docserver_document"."id" = "docserver_sourcefile"."document_id" )
@@ -565,7 +560,7 @@ WHERE ("docserver_sourcefile"."file_type_id" = %d
 AND "docserver_document_collections"."collection_id" IN (%s)
 AND NOT ("docserver_document"."id" IN (
     SELECT U1."document_id" AS Col1 FROM "docserver_derivedfile" U1 WHERE U1."module_version_id" = %d
-)))''' % (self.module.source_type.id, ', '.join(coll_ids), self.id)
+)))""" % (self.module.source_type.id, ", ".join(coll_ids), self.id)
         cursor = connection.cursor()
         cursor.execute(q)
         row = cursor.fetchone()
@@ -576,11 +571,11 @@ AND NOT ("docserver_document"."id" IN (
 
 
 class DocumentLogMessage(models.Model):
-    """ A log message about a document. Normally the log message refers to ModuleVersion
-    processing a specific SourceFile, but these can be blank """
+    """A log message about a document. Normally the log message refers to ModuleVersion
+    processing a specific SourceFile, but these can be blank"""
 
     class Meta:
-        ordering = ['-datetime']
+        ordering = ["-datetime"]
 
     document = models.ForeignKey(Document, related_name="logs", on_delete=models.CASCADE)
     moduleversion = models.ForeignKey(ModuleVersion, blank=True, null=True, on_delete=models.CASCADE)

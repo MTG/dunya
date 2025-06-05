@@ -20,35 +20,33 @@ class ScoreSynthesis(dashboard.extractors.ExtractorModule):
     _sourcetype = "symbtrxml"
     _slug = "synthesis"
     _output = {
-        'mp3': {"extension": "mp3", "mimetype": "audio/mp3",
-                "parts": True},
-        'onsets': {"extension": "json", "mimetype": "application/json"}
+        "mp3": {"extension": "mp3", "mimetype": "audio/mp3", "parts": True},
+        "onsets": {"extension": "json", "mimetype": "application/json"},
     }
 
     @staticmethod
     def get_dataset():
         r = requests.get(
-            'https://raw.githubusercontent.com/MTG/otmm_tuning_intonation'
-            '_dataset/atli2017synthesis_fma/dataset.json')
+            "https://raw.githubusercontent.com/MTG/otmm_tuning_intonation_dataset/atli2017synthesis_fma/dataset.json"
+        )
         return r.json()
 
     def run(self, workid, fname):
         # get metadata
-        metadata = json.loads(compmusic.dunya.docserver.file_for_document(
-            workid, 'scoreanalysis', 'metadata'))
-        makam = metadata['makam']['attribute_key']
+        metadata = json.loads(compmusic.dunya.docserver.file_for_document(workid, "scoreanalysis", "metadata"))
+        makam = metadata["makam"]["attribute_key"]
 
         # get symbtr slug
-        symbtr_slug = compmusic.dunya.makam.get_symbtr(workid)['name']
+        symbtr_slug = compmusic.dunya.makam.get_symbtr(workid)["name"]
 
         # read musicxml
-        (measures, makam_dummy, usul, form, time_sigs, keysig, work_title,
-         composer, lyricist, bpm, tnc_sym) = MusicXMLReader.read(fname)
+        (measures, makam_dummy, usul, form, time_sigs, keysig, work_title, composer, lyricist, bpm, tnc_sym) = (
+            MusicXMLReader.read(fname)
+        )
 
         # synthesize according to AEU theory
         mp3s = []
-        audio_temp, onsets = self.synth(bpm, measures, tnc_sym, symbtr_slug,
-                                        None)
+        audio_temp, onsets = self.synth(bpm, measures, tnc_sym, symbtr_slug, None)
         mp3s.append(audio_temp)
 
         # get the recordings in the tuning intonation dataset
@@ -61,24 +59,22 @@ class ScoreSynthesis(dashboard.extractors.ExtractorModule):
                 # get the mbid from the musicbrainz url
                 mbid = os.path.split(recid)[-1]
 
-                audio_temp, onsets = self.synth(
-                    bpm, measures, tnc_sym, symbtr_slug, mbid)
+                audio_temp, onsets = self.synth(bpm, measures, tnc_sym, symbtr_slug, mbid)
                 mp3s.append(audio_temp)
 
-        return {'mp3': mp3s, 'onsets': onsets}
+        return {"mp3": mp3s, "onsets": onsets}
 
     @staticmethod
     def synth(bpm, measures, tnc_sym, work_title, mbid=None):
         try:  # load the tuning
-            stablenotes = json.loads(compmusic.dunya.file_for_document(
-                mbid, 'audioanalysis', 'note_models'))
+            stablenotes = json.loads(compmusic.dunya.file_for_document(mbid, "audioanalysis", "note_models"))
         except dunya.conn.HTTPError:
             stablenotes = None
 
         # synthesize according to the given tuning
         audio_wav, onsets = AdaptiveSynthesizer.synth_from_tuning(
-            measures=measures, bpm=bpm, stable_notes=stablenotes,
-            tonic_sym=tnc_sym, synth_type='karplus', verbose=True)
+            measures=measures, bpm=bpm, stable_notes=stablenotes, tonic_sym=tnc_sym, synth_type="karplus", verbose=True
+        )
 
         # mp3 conversion
         audio_obj = pydub.AudioSegment(data=audio_wav)
@@ -88,12 +84,12 @@ class ScoreSynthesis(dashboard.extractors.ExtractorModule):
 
         # export mp3
         if mbid is None:
-            comment = 'Synth wrt AEU'
+            comment = "Synth wrt AEU"
         else:
-            comment = 'Synth wrt %s' % mbid
+            comment = "Synth wrt %s" % mbid
 
-        tags = {'title': work_title, 'comments': comment}
-        audio_obj.export(tmpname, format='mp3', tags=tags)
+        tags = {"title": work_title, "comments": comment}
+        audio_obj.export(tmpname, format="mp3", tags=tags)
 
         audio = open(tmpname, "rb").read()
         os.unlink(tmpname)

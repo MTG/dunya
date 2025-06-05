@@ -24,7 +24,7 @@ from carnatic import models
 
 
 class Command(BaseCommand):
-    help = 'Make mini versions of all images that are loaded'
+    help = "Make mini versions of all images that are loaded"
 
     def make_small(self, item):
         print(item)

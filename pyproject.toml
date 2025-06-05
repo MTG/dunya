@@ -59,3 +59,8 @@ dev = [
     "pep8==1.7.1",
     "pylint==3.2.3",
 ]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["**/migrations"]

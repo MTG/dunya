@@ -8,7 +8,6 @@ from dashboard import carnatic_importer
 
 
 class CarnaticImporterTest(TestCase):
-
     def setUp(self):
         self.coll1 = data.models.Collection.objects.create(name="A collection", collectionid=uuid.uuid4())
 
@@ -38,10 +37,18 @@ class CarnaticImporterTest(TestCase):
         self.recording2 = models.Recording.objects.create(title="recording2", mbid=self.recording2id)
         self.recording3 = models.Recording.objects.create(title="recording3", mbid=self.recording3id)
 
-        models.ConcertRecording.objects.create(concert=self.concert1, recording=self.recording1, track=1, disc=1, disctrack=1)
-        models.ConcertRecording.objects.create(concert=self.concert2, recording=self.recording1, track=1, disc=1, disctrack=1)
-        models.ConcertRecording.objects.create(concert=self.concert3, recording=self.recording2, track=1, disc=1, disctrack=1)
-        models.ConcertRecording.objects.create(concert=self.concert3, recording=self.recording3, track=2, disc=1, disctrack=2)
+        models.ConcertRecording.objects.create(
+            concert=self.concert1, recording=self.recording1, track=1, disc=1, disctrack=1
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.concert2, recording=self.recording1, track=1, disc=1, disctrack=1
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.concert3, recording=self.recording2, track=1, disc=1, disctrack=1
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.concert3, recording=self.recording3, track=2, disc=1, disctrack=2
+        )
 
         # works
         self.work1id = str(uuid.uuid4())
@@ -54,7 +61,6 @@ class CarnaticImporterTest(TestCase):
         models.RecordingWork.objects.create(recording=self.recording3, work=self.work1, sequence=1)
 
     def test_remove_concert_with_shared_artist(self):
-
         # If you remove concert 2 and 3 then artist 1 should still be here
         # but artist 2 should be deleted
         ri = carnatic_importer.CarnaticReleaseImporter(self.coll1)

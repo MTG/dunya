@@ -48,28 +48,29 @@ class WorkAdmin(admin.ModelAdmin):
 
 
 class ConcertAdmin(admin.ModelAdmin):
-    inlines = (ConcertRecordingInline, )
-    exclude = ('image', )
+    inlines = (ConcertRecordingInline,)
+    exclude = ("image",)
 
 
 class RaagaAdmin(admin.ModelAdmin):
-    exclude = ('image', )
+    exclude = ("image",)
+
 
 class TaalaAdmin(admin.ModelAdmin):
-    exclude = ('image', )
+    exclude = ("image",)
 
 
 class ArtistAdmin(admin.ModelAdmin):
-    inlines = (ArtistAliasInline, )
-    exclude = ('image', 'description')
+    inlines = (ArtistAliasInline,)
+    exclude = ("image", "description")
 
 
 class InstrumentAdmin(admin.ModelAdmin):
-    exclude = ('image', 'description')
+    exclude = ("image", "description")
 
 
 class RecordingAdmin(admin.ModelAdmin):
-    inlines = (InstrumentPerformanceInline, )
+    inlines = (InstrumentPerformanceInline,)
 
 
 admin.site.register(models.GeographicRegion)

@@ -13,45 +13,55 @@ from carnatic import models
 
 
 class ArtistTest(TestCase):
-
     def setUp(self):
         self.a = models.Artist.objects.create(name="Foo", mbid="a484bcbc-c0d9-468a-952c-9938d5811f85")
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
-                                                          permission="U")
+        self.col1 = data.models.Collection.objects.create(
+            collectionid=self.coll1id, name="collection 1", permission="U"
+        )
 
-        self.cnormal = models.Concert.objects.create(collection=self.col1, title="normal concert",
-                                                     mbid="ef317442-1278-4349-8c52-29572fd3e937")
+        self.cnormal = models.Concert.objects.create(
+            collection=self.col1, title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937"
+        )
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="R")
-        self.crestricted = models.Concert.objects.create(collection=self.col2, title="restricted concert",
-                                                         mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="R"
+        )
+        self.crestricted = models.Concert.objects.create(
+            collection=self.col2, title="restricted concert", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b"
+        )
 
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="S")
-        self.cstaff = models.Concert.objects.create(collection=self.col3, title="staff concert",
-                                                    mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="S"
+        )
+        self.cstaff = models.Concert.objects.create(
+            collection=self.col3, title="staff concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734"
+        )
 
         self.cnormal.artists.add(self.a)
         self.cstaff.artists.add(self.a)
         self.crestricted.artists.add(self.a)
 
-        self.rnormal = models.Recording.objects.create(title="normal recording",
-                                                       mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
-        self.rrestricted = models.Recording.objects.create(title="restricted recording",
-                                                           mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording",
-                                                      mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.rnormal = models.Recording.objects.create(
+            title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971"
+        )
+        self.rrestricted = models.Recording.objects.create(
+            title="restricted recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b"
+        )
+        self.rstaff = models.Recording.objects.create(
+            title="staff recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
 
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1,
-                                               disctrack=1)
-        models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1,
-                                               disctrack=1)
+        models.ConcertRecording.objects.create(
+            concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1
+        )
         models.ConcertRecording.objects.create(concert=self.cstaff, recording=self.rstaff, track=1, disc=1, disctrack=1)
 
-        permission = Permission.objects.get(codename='access_restricted')
+        permission = Permission.objects.get(codename="access_restricted")
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.restricteduser = auth.models.User.objects.create_user("restricteduser")
         self.restricteduser.user_permissions.add(permission)
@@ -83,8 +93,9 @@ class ArtistTest(TestCase):
         # With the normal user we only get the unrestricted collection's
         # concerts and recordings
         collections = self.coll1id
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
@@ -93,8 +104,9 @@ class ArtistTest(TestCase):
 
         # Even if they ask for restricted collection, only the normal ones
         collections = self.coll1id
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
@@ -106,8 +118,9 @@ class ArtistTest(TestCase):
 
         # With the normal user we only get the unrestricted collection's
         # concerts and recordings
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': 'not-uuid'})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": "not-uuid"}
+        )
         self.assertEqual(response.status_code, 400)
 
     def test_artist_collections_staff(self):
@@ -115,16 +128,18 @@ class ArtistTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
         collections = self.coll1id
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
 
         # or restricted collections too
         collections = f"{self.coll1id}, {self.coll3id}"
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(2, len(data["concerts"]))
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
@@ -139,16 +154,18 @@ class ArtistTest(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.restricteduser)
         collections = self.coll1id
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
         self.assertEqual(1, len(data["recordings"]))
 
         # or restricted collections too
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(2, len(data["concerts"]))
         self.assertEqual("ef317442-1278-4349-8c52-29572fd3e937", data["concerts"][0]["mbid"])
@@ -171,44 +188,56 @@ class ComposerTest(TestCase):
 class RecordingTest(TestCase):
     def setUp(self):
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
-                                                          permission="U")
-        self.cnormal = models.Concert.objects.create(collection=self.col1, title="normal concert",
-                                                     mbid="ef317442-1278-4349-8c52-29572fd3e937")
+        self.col1 = data.models.Collection.objects.create(
+            collectionid=self.coll1id, name="collection 1", permission="U"
+        )
+        self.cnormal = models.Concert.objects.create(
+            collection=self.col1, title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937"
+        )
 
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="R")
-        self.crestricted = models.Concert.objects.create(collection=self.col2, title="restricted concert",
-                                                         mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="R"
+        )
+        self.crestricted = models.Concert.objects.create(
+            collection=self.col2, title="restricted concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734"
+        )
 
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="S")
-        self.cstaff = models.Concert.objects.create(collection=self.col3, title="staff concert",
-                                                    mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="S"
+        )
+        self.cstaff = models.Concert.objects.create(
+            collection=self.col3, title="staff concert", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b"
+        )
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
-        self.wrestricted = models.Work.objects.create(title="restricted work",
-                                                      mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
-        self.rnormal = models.Recording.objects.create(title="normal recording",
-                                                       mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
+        self.wrestricted = models.Work.objects.create(
+            title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80"
+        )
+        self.rnormal = models.Recording.objects.create(
+            title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971"
+        )
         models.RecordingWork.objects.create(recording=self.rnormal, work=self.wnormal, sequence=1)
-        self.rrestricted = models.Recording.objects.create(title="restricted recording",
-                                                           mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.rrestricted = models.Recording.objects.create(
+            title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
         models.RecordingWork.objects.create(recording=self.rrestricted, work=self.wrestricted, sequence=1)
         self.wstaff = models.Work.objects.create(title="staff work", mbid="91e8db80-e8e1-11e4-a224-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording",
-                                                      mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        self.rstaff = models.Recording.objects.create(
+            title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b"
+        )
         models.RecordingWork.objects.create(recording=self.rstaff, work=self.wstaff, sequence=1)
 
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1,
-                                               disctrack=1)
-        models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1,
-                                               disctrack=1)
+        models.ConcertRecording.objects.create(
+            concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1
+        )
         models.ConcertRecording.objects.create(concert=self.cstaff, recording=self.rstaff, track=1, disc=1, disctrack=1)
 
-        permission = Permission.objects.get(codename='access_restricted')
+        permission = Permission.objects.get(codename="access_restricted")
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.restricteduser = auth.models.User.objects.create_user("restricteduser")
         self.restricteduser.user_permissions.add(permission)
@@ -223,13 +252,13 @@ class RecordingTest(TestCase):
         self.assertEqual(["mbid", "title"], sorted(data.keys()))
 
     def test_recording_list_collection(self):
-        """ Staff members will see recordings from restricted collections in
-            this list too """
+        """Staff members will see recordings from restricted collections in
+        this list too"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll3id
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/recording", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/carnatic/recording")
@@ -241,7 +270,7 @@ class RecordingTest(TestCase):
         client.force_authenticate(user=self.restricteduser)
 
         collections = self.coll2id
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/recording", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -249,7 +278,7 @@ class RecordingTest(TestCase):
         # get 1 recording
         client.force_authenticate(user=self.normaluser)
         collections = self.coll1id
-        response = client.get("/api/carnatic/recording", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/recording", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -259,69 +288,83 @@ class RecordingTest(TestCase):
 
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
-        fields = ['album_artists', 'artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ["album_artists", "artists", "concert", "form", "length", "mbid", "raaga", "taala", "title", "work"]
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_detail_restr_collection(self):
-        """ Only staff can access a recording from restricted collections"""
+        """Only staff can access a recording from restricted collections"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
         response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24")
         data = response.data
         self.assertEqual(200, response.status_code)
-        fields = ['album_artists', 'artists', 'concert', 'form', 'length', 'mbid', 'raaga', 'taala', 'title', 'work']
+        fields = ["album_artists", "artists", "concert", "form", "length", "mbid", "raaga", "taala", "title", "work"]
         self.assertEqual(fields, sorted(data.keys()))
 
         # If we request another collection over the header parameter
         # we get a 404
         client.force_authenticate(user=self.normaluser)
-        response = client.get("/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24",
-                              **{'HTTP_DUNYA_COLLECTION': str(uuid.uuid4())})
+        response = client.get(
+            "/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24",
+            **{"HTTP_DUNYA_COLLECTION": str(uuid.uuid4())},
+        )
         self.assertEqual(404, response.status_code)
 
 
 class WorkTest(TestCase):
     def setUp(self):
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(collectionid=self.coll1id, name="collection 1",
-                                                          permission="U")
+        self.col1 = data.models.Collection.objects.create(
+            collectionid=self.coll1id, name="collection 1", permission="U"
+        )
 
-        self.cnormal = models.Concert.objects.create(collection=self.col1, title="normal concert",
-                                                     mbid="ef317442-1278-4349-8c52-29572fd3e937")
+        self.cnormal = models.Concert.objects.create(
+            collection=self.col1, title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937"
+        )
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="R")
-        self.crestricted = models.Concert.objects.create(collection=self.col2, title="restricted concert",
-                                                         mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="R"
+        )
+        self.crestricted = models.Concert.objects.create(
+            collection=self.col2, title="restricted concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734"
+        )
 
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="S")
-        self.cstaff = models.Concert.objects.create(collection=self.col3, title="staff concert",
-                                                    mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="S"
+        )
+        self.cstaff = models.Concert.objects.create(
+            collection=self.col3, title="staff concert", mbid="663cbe20-e8e1-11e4-9964-0002a5d5c51b"
+        )
 
         self.wnormal = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
-        self.wrestricted = models.Work.objects.create(title="restricted work",
-                                                      mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80")
-        self.rnormal = models.Recording.objects.create(title="normal recording",
-                                                       mbid="dcf14452-e13e-450f-82c2-8ae705a58971")
+        self.wrestricted = models.Work.objects.create(
+            title="restricted work", mbid="b4e100b4-024f-4ed8-8942-9150e99d4c80"
+        )
+        self.rnormal = models.Recording.objects.create(
+            title="normal recording", mbid="dcf14452-e13e-450f-82c2-8ae705a58971"
+        )
         models.RecordingWork.objects.create(recording=self.rnormal, work=self.wnormal, sequence=1)
-        self.rrestricted = models.Recording.objects.create(title="restricted recording",
-                                                           mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.rrestricted = models.Recording.objects.create(
+            title="restricted recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
         models.RecordingWork.objects.create(recording=self.rrestricted, work=self.wrestricted, sequence=1)
         self.wstaff = models.Work.objects.create(title="staff work", mbid="91e8db80-e8e1-11e4-a224-0002a5d5c51b")
-        self.rstaff = models.Recording.objects.create(title="staff recording",
-                                                      mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b")
+        self.rstaff = models.Recording.objects.create(
+            title="staff recording", mbid="b287fe20-e8e1-11e4-bf83-0002a5d5c51b"
+        )
         models.RecordingWork.objects.create(recording=self.rstaff, work=self.wstaff, sequence=1)
 
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1,
-                                               disctrack=1)
-        models.ConcertRecording.objects.create(concert=self.crestricted, recording=self.rrestricted, track=1, disc=1,
-                                               disctrack=1)
+        models.ConcertRecording.objects.create(
+            concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.crestricted, recording=self.rrestricted, track=1, disc=1, disctrack=1
+        )
         models.ConcertRecording.objects.create(concert=self.cstaff, recording=self.rstaff, track=1, disc=1, disctrack=1)
 
-        permission = Permission.objects.get(codename='access_restricted')
+        permission = Permission.objects.get(codename="access_restricted")
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.restricteduser = auth.models.User.objects.create_user("restricteduser")
         self.restricteduser.user_permissions.add(permission)
@@ -342,7 +385,7 @@ class WorkTest(TestCase):
 
         response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b")
         data = response.data
-        fields = ['composers', 'lyricists', 'mbid', 'raagas', 'recordings', 'taalas', 'title']
+        fields = ["composers", "lyricists", "mbid", "raagas", "recordings", "taalas", "title"]
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_work_collection_recordings_staff(self):
@@ -350,21 +393,24 @@ class WorkTest(TestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll1id
-        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
         # unknown id
         collections = str(uuid.uuid4())
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -373,20 +419,23 @@ class WorkTest(TestCase):
         client.force_authenticate(user=self.restricteduser)
 
         collections = self.coll1id
-        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
         collections = self.coll3id
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = self.coll2id
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -395,8 +444,9 @@ class WorkTest(TestCase):
         client.force_authenticate(user=self.normaluser)
 
         collections = self.coll1id
-        response = client.get("/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
@@ -405,27 +455,30 @@ class WorkTest(TestCase):
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll1id}, {self.coll3id}, {self.coll2id}"
-        response = client.get("/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80",
-                              **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get(
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+        )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
 
 class RaagaTest(TestCase):
     def setUp(self):
-        self.raaga = models.Raaga.objects.create(id=1, name="My Raaga", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
+        self.raaga = models.Raaga.objects.create(id=1, name="My Raaga", uuid="d5285bf4-c3c5-454e-a659-fec30075990b")
         self.normaluser = auth.models.User.objects.create_user("normaluser")
-        self.form = models.Form.objects.create(attrfromrecording=True, name='form')
+        self.form = models.Form.objects.create(attrfromrecording=True, name="form")
 
         self.recording = models.Recording.objects.create(title="recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
         models.RecordingRaaga.objects.create(raaga=self.raaga, recording=self.recording)
         models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
 
-        self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
-        self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                                               raaga=self.raaga)
-        self.recording2 = models.Recording.objects.create(title="recording2",
-                                                          mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.form2 = models.Form.objects.create(attrfromrecording=False, name="form")
+        self.work = models.Work.objects.create(
+            title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", raaga=self.raaga
+        )
+        self.recording2 = models.Recording.objects.create(
+            title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
         models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
 
@@ -454,7 +507,7 @@ class RaagaTest(TestCase):
     def test_render_raaga_detail(self):
         response = self.apiclient.get("/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b")
         data = response.data
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
+        fields = ["aliases", "artists", "common_name", "composers", "name", "recordings", "uuid", "works"]
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_raaga(self):
@@ -475,19 +528,21 @@ class RaagaTest(TestCase):
 
 class TaalaTest(TestCase):
     def setUp(self):
-        self.taala = models.Taala.objects.create(id=1, name="My Taala", uuid='d5285bf4-c3c5-454e-a659-fec30075990b')
+        self.taala = models.Taala.objects.create(id=1, name="My Taala", uuid="d5285bf4-c3c5-454e-a659-fec30075990b")
         self.normaluser = auth.models.User.objects.create_user("normaluser")
-        self.form = models.Form.objects.create(attrfromrecording=True, name='form')
+        self.form = models.Form.objects.create(attrfromrecording=True, name="form")
 
         self.recording = models.Recording.objects.create(title="recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
         models.RecordingTaala.objects.create(taala=self.taala, recording=self.recording)
         models.RecordingForm.objects.create(sequence=1, form=self.form, recording=self.recording)
 
-        self.form2 = models.Form.objects.create(attrfromrecording=False, name='form')
-        self.work = models.Work.objects.create(title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b",
-                                               taala=self.taala)
-        self.recording2 = models.Recording.objects.create(title="recording2",
-                                                          mbid="44275e18-0aef-4fa5-9618-b5938cb73a24")
+        self.form2 = models.Form.objects.create(attrfromrecording=False, name="form")
+        self.work = models.Work.objects.create(
+            title="normal work", mbid="7ed898bc-fa11-41ae-b1c9-913d96c40e2b", taala=self.taala
+        )
+        self.recording2 = models.Recording.objects.create(
+            title="recording2", mbid="44275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
         models.RecordingForm.objects.create(sequence=1, form=self.form2, recording=self.recording2)
 
         models.RecordingWork.objects.create(recording=self.recording2, work=self.work, sequence=1)
@@ -517,7 +572,7 @@ class TaalaTest(TestCase):
     def test_render_taala_detail(self):
         response = self.apiclient.get("/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b")
         data = response.data
-        fields = ['aliases', 'artists', 'common_name', 'composers', 'name', 'recordings', 'uuid', 'works']
+        fields = ["aliases", "artists", "common_name", "composers", "name", "recordings", "uuid", "works"]
         self.assertEqual(fields, sorted(data.keys()))
 
     def test_recording_taala(self):
@@ -536,32 +591,40 @@ class TaalaTest(TestCase):
 
 class ConcertTest(TestCase):
     def setUp(self):
-        permission = Permission.objects.get(codename='access_restricted')
+        permission = Permission.objects.get(codename="access_restricted")
         self.coll1id = str(uuid.uuid4())
-        self.col1 = data.models.Collection.objects.create(name="collection 1", collectionid=self.coll1id,
-                                                          permission="U")
-        self.cnormal = models.Concert.objects.create(title="normal concert",
-                                                     mbid="ef317442-1278-4349-8c52-29572fd3e937")
+        self.col1 = data.models.Collection.objects.create(
+            name="collection 1", collectionid=self.coll1id, permission="U"
+        )
+        self.cnormal = models.Concert.objects.create(
+            title="normal concert", mbid="ef317442-1278-4349-8c52-29572fd3e937"
+        )
         self.cnormal.collection = self.col1
         self.cnormal.save()
         self.coll2id = str(uuid.uuid4())
-        self.col2 = data.models.Collection.objects.create(collectionid=self.coll2id, name="collection 2",
-                                                          permission="S")
+        self.col2 = data.models.Collection.objects.create(
+            collectionid=self.coll2id, name="collection 2", permission="S"
+        )
         self.col2.save()
-        self.cbootleg = models.Concert.objects.create(title="bootleg concert",
-                                                      mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734")
+        self.cbootleg = models.Concert.objects.create(
+            title="bootleg concert", mbid="cbe1ba35-8758-4a7d-9811-70bc48f41734"
+        )
         self.cbootleg.collection = self.col2
         self.cbootleg.save()
-        self.rnormal = models.Recording.objects.create(title="normal recording",
-                                                       mbid="34275e18-0aef-4fa5-9618-b5938cb73a24")
-        models.ConcertRecording.objects.create(concert=self.cnormal, recording=self.rnormal, track=1, disc=1,
-                                               disctrack=1)
+        self.rnormal = models.Recording.objects.create(
+            title="normal recording", mbid="34275e18-0aef-4fa5-9618-b5938cb73a24"
+        )
+        models.ConcertRecording.objects.create(
+            concert=self.cnormal, recording=self.rnormal, track=1, disc=1, disctrack=1
+        )
 
         self.coll3id = str(uuid.uuid4())
-        self.col3 = data.models.Collection.objects.create(collectionid=self.coll3id, name="collection 3",
-                                                          permission="R")
-        self.restricted = models.Concert.objects.create(collection=self.col3, title="restricted concert",
-                                                        mbid="abe1ba35-8758-4a7d-9811-70bc48f41734")
+        self.col3 = data.models.Collection.objects.create(
+            collectionid=self.coll3id, name="collection 3", permission="R"
+        )
+        self.restricted = models.Concert.objects.create(
+            collection=self.col3, title="restricted concert", mbid="abe1ba35-8758-4a7d-9811-70bc48f41734"
+        )
 
         self.normaluser = auth.models.User.objects.create_user("normaluser")
         self.restricteduser = auth.models.User.objects.create_user("restricteduser")
@@ -580,30 +643,35 @@ class ConcertTest(TestCase):
     def test_render_concert_detail(self):
         s = api.ConcertDetailSerializer(self.cnormal)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        fields = ['artists', 'concert_artists', 'image', 'mbid', 'recordings', 'title', 'year']
+        fields = ["artists", "concert_artists", "image", "mbid", "recordings", "title", "year"]
         self.assertEqual(fields, sorted(data.keys()))
 
         recordings = data["recordings"]
         self.assertEqual(1, len(recordings))
         r = recordings[0]
-        expected = {"title": "normal recording", "mbid": "34275e18-0aef-4fa5-9618-b5938cb73a24", "disc": 1, "track": 1,
-                    "disctrack": 1}
+        expected = {
+            "title": "normal recording",
+            "mbid": "34275e18-0aef-4fa5-9618-b5938cb73a24",
+            "disc": 1,
+            "track": 1,
+            "disctrack": 1,
+        }
         self.assertEqual(expected, r)
 
     def test_concert_list_collection(self):
-        """ Staff members will see concerts from restricted collections in
-            this list if they ask for them """
+        """Staff members will see concerts from restricted collections in
+        this list if they ask for them"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll1id
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
 
         self.assertEqual(2, len(data["results"]))
@@ -612,7 +680,7 @@ class ConcertTest(TestCase):
         # get 1 concert
         client.force_authenticate(user=self.normaluser)
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -620,12 +688,12 @@ class ConcertTest(TestCase):
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
         collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
-        response = client.get("/api/carnatic/concert", **{'HTTP_DUNYA_COLLECTION': collections})
+        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
         data = response.data
         self.assertEqual(2, len(data["results"]))
 
     def test_concert_detail_collection(self):
-        """ Only staff can access a concert from a restricted collection"""
+        """Only staff can access a concert from a restricted collection"""
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
@@ -649,5 +717,5 @@ class InstrumentTest(TestCase):
     def test_render_instrument_detail(self):
         s = api.InstrumentDetailSerializer(self.inst)
         data = json.loads(JSONRenderer().render(s.data).decode("utf-8"))
-        fields = ['artists', 'mbid', 'name']
+        fields = ["artists", "mbid", "name"]
         self.assertEqual(fields, sorted(data.keys()))

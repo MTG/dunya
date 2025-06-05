@@ -10,13 +10,19 @@ from dashboard import models
 class CollectionTest(TestCase):
     def setUp(self):
         u = str(uuid.uuid4())
-        self.collection = models.Collection.objects.create(collectionid=u, name="Test collection", root_directory="/a/directory")
+        self.collection = models.Collection.objects.create(
+            collectionid=u, name="Test collection", root_directory="/a/directory"
+        )
         self.directory = models.CollectionDirectory.objects.create(collection=self.collection, path="subdir")
 
         self.file1id = str(uuid.uuid4())
-        self.file1 = models.CollectionFile.objects.create(name="one.mp3", directory=self.directory, recordingid=self.file1id)
+        self.file1 = models.CollectionFile.objects.create(
+            name="one.mp3", directory=self.directory, recordingid=self.file1id
+        )
         self.file2id = str(uuid.uuid4())
-        self.file2 = models.CollectionFile.objects.create(name="two.mp3", directory=self.directory, recordingid=self.file2id)
+        self.file2 = models.CollectionFile.objects.create(
+            name="two.mp3", directory=self.directory, recordingid=self.file2id
+        )
 
     @mock.patch("compmusic.file_metadata")
     @mock.patch("os.listdir")
@@ -40,11 +46,14 @@ class CollectionTest(TestCase):
         get_mp3_files.return_value = files
         listdir.return_value = files
 
-        ids = {"/a/directory/audio/subdir/one.mp3": {"meta": {"recordingid": self.file1id}},
-               "/a/directory/audio/subdir/two.mp3": {"meta": {"recordingid": self.file2id}}}
+        ids = {
+            "/a/directory/audio/subdir/one.mp3": {"meta": {"recordingid": self.file1id}},
+            "/a/directory/audio/subdir/two.mp3": {"meta": {"recordingid": self.file2id}},
+        }
 
         def metadata_side(path, *args, **kwargs):
             return ids[path]
+
         meta.side_effect = metadata_side
 
         jobs._check_existing_directories(self.collection)

@@ -1,4 +1,3 @@
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -40,9 +39,9 @@ class Musicxml2Svg(dashboard.extractors.ExtractorModule):
         call(["/mnt/compmusic/%s/lilypond/usr/bin/musicxml2ly" % server_name, "--no-page-layout", fpath, "-o", tmpfile])
 
         tmp_dir = tempfile.mkdtemp()
-        call(["lilypond", '-dpaper-size=\"junior-legal\"', "-dbackend=svg", "-o" "%s" % (tmp_dir), tmpfile])
+        call(["lilypond", '-dpaper-size="junior-legal"', "-dbackend=svg", "-o%s" % (tmp_dir), tmpfile])
 
-        ret = {'score': []}
+        ret = {"score": []}
 
         os.unlink(tmpfile)
 
@@ -52,10 +51,10 @@ class Musicxml2Svg(dashboard.extractors.ExtractorModule):
         files.sort(key=lambda x: os.path.getmtime(x))
 
         for f in files:
-            if f.endswith('.svg'):
+            if f.endswith(".svg"):
                 svg_file = open(f)
                 score = svg_file.read()
-                ret['score'].append(regex.sub(r'<a style="\1" id="l\2-f\3-t\4" from="\3" to="\4">', score))
+                ret["score"].append(regex.sub(r'<a style="\1" id="l\2-f\3-t\4" from="\3" to="\4">', score))
                 svg_file.close()
                 os.remove(f)
         os.rmdir(tmp_dir)

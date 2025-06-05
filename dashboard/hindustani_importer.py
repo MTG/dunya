@@ -35,7 +35,8 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
     def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
             hindustani.models.ReleaseRecording.objects.create(
-                release=release, recording=recording, track=trackorder, disc=mnum, disctrack=tnum)
+                release=release, recording=recording, track=trackorder, disc=mnum, disctrack=tnum
+            )
 
     def _join_recording_and_works(self, recording, works):
         # A hindustani recording can have many works
@@ -201,7 +202,9 @@ class HindustaniReleaseImporter(release_importer.ReleaseImporter):
         instrument, attributes, is_lead = self._performance_type_to_instrument(perf_type, attrs)
 
         if instrument:
-            hindustani.models.InstrumentPerformance.objects.create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
+            hindustani.models.InstrumentPerformance.objects.create(
+                recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes
+            )
 
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         logger.info("  Adding concert performance to all recordings...")

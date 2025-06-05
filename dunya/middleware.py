@@ -3,8 +3,8 @@ from data import utils
 
 
 class ShowBootlegMiddleware:
-    """ A middleware to say if the current user is able to see
-        restricted releases and recordings.
+    """A middleware to say if the current user is able to see
+    restricted releases and recordings.
     """
 
     def __init__(self, get_response):

@@ -29,7 +29,7 @@ class Mp3ToM4a(dashboard.extractors.ExtractorModule):
     _output = {"m4a": {"extension": "m4a", "mimetype": "audio/m4a"}}
 
     def run(self, musicbrainzid, fname):
-        tmpname = '/tmp/%s.m4a' % uuid.uuid4()
+        tmpname = "/tmp/%s.m4a" % uuid.uuid4()
         proclist = ["avconv", "-i", fname, "-map", "0:0", "-strict", "experimental", tmpname]
         p = subprocess.Popen(proclist)
         p.communicate()

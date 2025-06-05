@@ -4,7 +4,9 @@ from makam import models
 
 
 class ReleaseTest(TestCase):
-    fixtures = ["makam_instrument", ]
+    fixtures = [
+        "makam_instrument",
+    ]
 
     def setUp(self):
         self.release = models.Release.objects.create(title="rel")
@@ -51,8 +53,8 @@ class ReleaseTest(TestCase):
         self.assertEqual(2, len(ins))
 
     def test_ordered_recordings(self):
-        """ If recordings are added out of order (e,g, 1, 3, 2) then when getting
-        the list of recordings of a release they will be returned in correct order """
+        """If recordings are added out of order (e,g, 1, 3, 2) then when getting
+        the list of recordings of a release they will be returned in correct order"""
         rel = models.Release.objects.create(title="release")
         rec2 = models.Recording.objects.create(title="recording 2")
         rec1 = models.Recording.objects.create(title="recording 1")

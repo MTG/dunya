@@ -1,4 +1,3 @@
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -25,15 +24,22 @@ import os
 import json
 import logging
 import subprocess
-from fetch_tools import getWork, fetchNoteOnsetFile, \
-    get_section_annotaions_dict, downloadSymbTr, get_section_metadata_dict, \
-    fetch_audio_wav
+from fetch_tools import (
+    getWork,
+    fetchNoteOnsetFile,
+    get_section_annotaions_dict,
+    downloadSymbTr,
+    get_section_metadata_dict,
+    fetch_audio_wav,
+)
 from fetch_tools import ON_SERVER
 
 parentDir = os.path.abspath(
-    os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.pardir, os.path.pardir, os.path.pardir,
-                 os.path.pardir))
-pathAlignmentDur = os.path.join(parentDir, 'AlignmentDuration')
+    os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), os.path.pardir, os.path.pardir, os.path.pardir, os.path.pardir
+    )
+)
+pathAlignmentDur = os.path.join(parentDir, "AlignmentDuration")
 
 if pathAlignmentDur not in sys.path:
     sys.path.append(pathAlignmentDur)
@@ -49,15 +55,15 @@ from align.ParametersAlgo import ParametersAlgo
 ParametersAlgo.FOR_MAKAM = 1
 ParametersAlgo.POLYPHONIC = 1
 ParametersAlgo.WITH_DURATIONS = 1
-ParametersAlgo.DETECTION_TOKEN_LEVEL = 'syllables'
+ParametersAlgo.DETECTION_TOKEN_LEVEL = "syllables"
 WITH_SECTION_ANNOTATIONS = 1
 
 if ON_SERVER:  # run with dunya-web on /srv/dunya
-    PATH_TO_HCOPY = '/srv/htkBuilt/bin/HCopy'
+    PATH_TO_HCOPY = "/srv/htkBuilt/bin/HCopy"
 
 else:
     # run locally for testing
-    PATH_TO_HCOPY = '/usr/local/bin/HCopy'
+    PATH_TO_HCOPY = "/usr/local/bin/HCopy"
 
 dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
 
@@ -82,9 +88,8 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
         self.hasSectionNumberDiscrepancy = False
 
     def run(self, musicbrainzid, fname):
-
         #### output
-        ret = {'alignedLyricsSyllables': {}, 'sectionlinks': {}}
+        ret = {"alignedLyricsSyllables": {}, "sectionlinks": {}}
 
         recIDoutputDir = os.path.join(self.dataOutputDir, musicbrainzid)
         if not os.path.isdir(recIDoutputDir):
@@ -92,38 +97,44 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
 
         w = getWork(musicbrainzid)
 
-        # TODO: mark IDs with second verse symbTr missing and get from a separate reposotory 
+        # TODO: mark IDs with second verse symbTr missing and get from a separate reposotory
         # on dunya server. API might be outdated, as some symbtr names are changed. better use line below
         #         symbtrtxtURI = util.docserver_get_symbtrtxt(w['mbid'])
 
         #  prefer to fetch symbTr directly from github, as Dunya might not be updated with lyrics changes, etc.
-        symbtrtxtURI = downloadSymbTr(w['mbid'], recIDoutputDir, self.hasSecondVerse)
+        symbtrtxtURI = downloadSymbTr(w["mbid"], recIDoutputDir, self.hasSecondVerse)
 
         if not symbtrtxtURI:
-            sys.exit("no symbTr found for work {}".format(w['mbid']))
+            sys.exit("no symbTr found for work {}".format(w["mbid"]))
 
         ############ score section metadata
-        if WITH_SECTION_ANNOTATIONS:  # becasue complying with  score metadata for symbTr1, on which annotations are done
-            dir_ = 'scores/metadata/'
-            sectionMetadataDict = get_section_metadata_dict(w['mbid'], dir_, recIDoutputDir,
-                                                            self.hasSectionNumberDiscrepancy)
+        if (
+            WITH_SECTION_ANNOTATIONS
+        ):  # becasue complying with  score metadata for symbTr1, on which annotations are done
+            dir_ = "scores/metadata/"
+            sectionMetadataDict = get_section_metadata_dict(
+                w["mbid"], dir_, recIDoutputDir, self.hasSectionNumberDiscrepancy
+            )
         else:
-            sectionMetadataDict = dunya.docserver.get_document_as_json(w['mbid'], "metadata", "metadata", 1,
-                                                                       version="0.1")  # NOTE: this is default for note onsets
+            sectionMetadataDict = dunya.docserver.get_document_as_json(
+                w["mbid"], "metadata", "metadata", 1, version="0.1"
+            )  # NOTE: this is default for note onsets
 
         ##################### audio section annotation  or result from section linking
         if WITH_SECTION_ANNOTATIONS:  # because complying with section annotations
             try:
-                dir_ = 'audio_metadata/'
-                sectionLinksDict = get_section_annotaions_dict(musicbrainzid, dir_, self.dataOutputDir,
-                                                               self.hasSectionNumberDiscrepancy)
+                dir_ = "audio_metadata/"
+                sectionLinksDict = get_section_annotaions_dict(
+                    musicbrainzid, dir_, self.dataOutputDir, self.hasSectionNumberDiscrepancy
+                )
             except Exception as e:
                 sys.exit("no section annotations found for audio {} ".format(musicbrainzid))
 
         else:
             try:
-                sectionLinksDict = dunya.docserver.get_document_as_json(musicbrainzid, "joinanalysis", "sections", 1,
-                                                                        version="0.2")
+                sectionLinksDict = dunya.docserver.get_document_as_json(
+                    musicbrainzid, "joinanalysis", "sections", 1, version="0.2"
+                )
             except dunya.conn.HTTPError:
                 logging.error("section link {} missing".format(musicbrainzid))
                 return ret
@@ -132,14 +143,16 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
                 return ret
 
         try:
-            extractedPitch = dunya.docserver.get_document_as_json(musicbrainzid, "jointanalysis", "pitch", 1,
-                                                                  version="0.1")
-            extractedPitch = extractedPitch['pitch']
+            extractedPitch = dunya.docserver.get_document_as_json(
+                musicbrainzid, "jointanalysis", "pitch", 1, version="0.1"
+            )
+            extractedPitch = extractedPitch["pitch"]
         except Exception as e:
             sys.exit("no initialmakampitch series could be downloaded.  ")
 
         if ON_SERVER:
             from docserver import util
+
             wavFileURI, created = util.docserver_get_wav_filename(musicbrainzid)
         #
         else:
@@ -149,23 +162,24 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
         if ParametersAlgo.WITH_ORACLE_ONSETS == 1:
             fetchNoteOnsetFile(musicbrainzid, recIDoutputDir, ParametersAlgo.ANNOTATION_RULES_ONSETS_EXT)
 
-        recording = loadMakamRecording(musicbrainzid, wavFileURIMono, symbtrtxtURI, sectionMetadataDict,
-                                       sectionLinksDict, WITH_SECTION_ANNOTATIONS)
+        recording = loadMakamRecording(
+            musicbrainzid, wavFileURIMono, symbtrtxtURI, sectionMetadataDict, sectionLinksDict, WITH_SECTION_ANNOTATIONS
+        )
         lyricsAligner = LyricsAligner(recording, WITH_SECTION_ANNOTATIONS, PATH_TO_HCOPY)
 
         totalDetectedTokenList, sectionLinksDict = lyricsAligner.alignRecording(extractedPitch, self.dataOutputDir)
         #         lyricsAligner.evalAccuracy()
 
-        ret['alignedLyricsSyllables'] = totalDetectedTokenList
-        ret['sectionlinks'] = sectionLinksDict
+        ret["alignedLyricsSyllables"] = totalDetectedTokenList
+        ret["sectionlinks"] = sectionLinksDict
         print(ret)
         return ret
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     #     if len(sys.argv) != 2:
     #         sys.exit('usage: {} <localpath>')
 
     la = LyricsAlign()
-    la.run('727cff89-392f-4d15-926d-63b2697d7f3f', 'b')
+    la.run("727cff89-392f-4d15-926d-63b2697d7f3f", "b")
 #     la.run('567b6a3c-0f08-42f8-b844-e9affdc9d215','b')

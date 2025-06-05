@@ -21,14 +21,16 @@ import tempfile
 import os
 import wave
 
+
 class Mp3ToWav(dashboard.extractors.ExtractorModule):
     _version = "0.5"
     _sourcetype = "mp3"
     _slug = "wav"
 
-    _output = {"wave": {"extension": "wav", "mimetype": "audio/wave"},
-                  "length": {"extension": "dat", "mimetype": "text/plain"}
-                 }
+    _output = {
+        "wave": {"extension": "wav", "mimetype": "audio/wave"},
+        "length": {"extension": "dat", "mimetype": "text/plain"},
+    }
 
     def run(self, musicbrainzid, fname):
         fp, tmpname = tempfile.mkstemp(".wav")

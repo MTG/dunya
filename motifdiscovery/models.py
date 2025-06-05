@@ -4,7 +4,7 @@ from django.db import models
 
 class MotifManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().using('motif')
+        return super().get_queryset().using("motif")
 
 
 class File(models.Model):
@@ -21,8 +21,8 @@ class File(models.Model):
 class Match(models.Model):
     objects = MotifManager()
 
-    source = models.ForeignKey("Pattern", related_name='match_sources', on_delete=models.CASCADE)
-    target = models.ForeignKey("Pattern", related_name='match_targets', on_delete=models.CASCADE)
+    source = models.ForeignKey("Pattern", related_name="match_sources", on_delete=models.CASCADE)
+    target = models.ForeignKey("Pattern", related_name="match_targets", on_delete=models.CASCADE)
     distance = models.FloatField()
     version = models.IntegerField()
 
@@ -38,11 +38,12 @@ class Pattern(models.Model):
     end_time = models.FloatField()
     pair_id = models.IntegerField(blank=True, null=True)  # ForeignKey to Pattern
     isseed = models.IntegerField()
-    segment = models.ForeignKey("Segment", related_name='patterns', blank=True, null=True, on_delete=models.CASCADE)
+    segment = models.ForeignKey("Segment", related_name="patterns", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "File {} ({} - {}) [{}, {}]".format(
-        self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id)
+            self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id
+        )
 
 
 class Segment(models.Model):
@@ -57,4 +58,4 @@ class Segment(models.Model):
         return f"segment of {self.file} ({self.rounded_start}-{self.rounded_end})"
 
     def get_absolute_url(self):
-        return reverse('motif-segment', args=[self.pk])
+        return reverse("motif-segment", args=[self.pk])

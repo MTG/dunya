@@ -1,7 +1,7 @@
-
 import unittest
 
 from dashboard.importer import tags
+
 
 class MakamTagTest(unittest.TestCase):
     def test_usul(self):
@@ -38,13 +38,13 @@ class MakamTagTest(unittest.TestCase):
         self.assertEqual(True, tags.has_makam(t))
         self.assertEqual((0, "acemaşiran"), tags.parse_makam(t))
 
-        t = u"makam : uşşak"
+        t = "makam : uşşak"
         self.assertEqual(True, tags.has_makam(t))
-        self.assertEqual((0, u"uşşak"), tags.parse_makam(t))
+        self.assertEqual((0, "uşşak"), tags.parse_makam(t))
 
-        t = u"makam 2: bestenigar"
+        t = "makam 2: bestenigar"
         self.assertEqual(True, tags.has_makam(t))
-        self.assertEqual((2, u"bestenigar"), tags.parse_makam(t))
+        self.assertEqual((2, "bestenigar"), tags.parse_makam(t))
 
     def test_form(self):
         t = "form: something"
@@ -137,6 +137,7 @@ class MakamTagTest(unittest.TestCase):
         self.assertTrue("usul" not in g)
         self.assertTrue("form" in g)
 
+
 class CarnaticTagTest(unittest.TestCase):
     def test_raaga(self):
         t = "raaga1 bhairavi"
@@ -158,6 +159,7 @@ class CarnaticTagTest(unittest.TestCase):
     def test_form(self):
         t = "form: keertana (devara nama)"
         self.assertEqual((0, "keertana (devara nama)"), tags.parse_carnatic_form(t))
+
 
 class HindustaniTagTest(unittest.TestCase):
     def test_raag(self):
@@ -187,8 +189,7 @@ class HindustaniTagTest(unittest.TestCase):
         self.assertEqual(True, tags.has_laya(t))
         self.assertEqual((1, "madhya"), tags.parse_laya(t))
 
-
     def test_form(self):
-        t = u"form: Jugalbandī"
+        t = "form: Jugalbandī"
         self.assertEqual(True, tags.has_hindustani_form(t))
-        self.assertEqual((0, u"Jugalbandī"), tags.parse_hindustani_form(t))
+        self.assertEqual((0, "Jugalbandī"), tags.parse_hindustani_form(t))

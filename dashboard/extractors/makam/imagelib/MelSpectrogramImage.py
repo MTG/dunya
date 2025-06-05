@@ -1,28 +1,28 @@
-'''
+"""
 Created on Nov 2, 2016
 
 @author: georgid
-'''
+"""
+
 import essentia
 import essentia.standard as ess
 import numpy as np
 
-from dashboard.extractors.imagelib.processing import SpectrogramImage, \
-    AudioProcessor, WaveformImage
+from dashboard.extractors.imagelib.processing import SpectrogramImage, AudioProcessor, WaveformImage
 
 
 class MelSpectrogramImage(SpectrogramImage):
-    '''
-    Mel Spectrogram as a special case of Spectrogram with fewer spectral bins 
+    """
+    Mel Spectrogram as a special case of Spectrogram with fewer spectral bins
     redefines the ``y_to_bin``
-    to be up until number of  mel-scale bands 
-    
+    to be up until number of  mel-scale bands
 
-    '''
+
+    """
 
     def __init__(self, image_width, image_height, scale_exp, pallete, num_mel_bands):
-        f_min = 0;
-        f_max = 0;
+        f_min = 0
+        f_max = 0
         fft_size = 0  # dummy becasue spectrogram computation done within MFCC in essentia
         SpectrogramImage.__init__(self, image_width, image_height, fft_size, f_min, f_max, scale_exp, pallete)
 
@@ -32,19 +32,22 @@ class MelSpectrogramImage(SpectrogramImage):
         mel_band_bins = np.linspace(0, num_mel_bands, image_height)
         for i in range(len(mel_band_bins)):
             bin_index = mel_band_bins[i]
-            if bin_index < num_mel_bands - 1:  # make sure less than len(spectrum) -1, becasue index + 1 in compmusic.extractors.imagelib.processing.SpectrogramImage.draw_spectrum
+            if (
+                bin_index < num_mel_bands - 1
+            ):  # make sure less than len(spectrum) -1, becasue index + 1 in compmusic.extractors.imagelib.processing.SpectrogramImage.draw_spectrum
                 alpha = bin_index - int(bin_index)  # how much content of next bin_index
                 self.y_to_bin.append((int(bin_index), alpha * 255))
 
 
 class InvMFCCAudioProcessor(AudioProcessor):
-    '''
+    """
     Compute melbands by inversing the dct of mfcc.
     Use to visualize mfcc in spectral domain for Lyrics-to-audio alignment: (dashboard.extractors.makam.lyricsalign)
     Emulates the MFCCs extracted with htk, except for hopsize, depending on logic in
     dashboard.extractors.imagelib.MelSpectrogramImage.create_wave_images
     ( see explanation in class PitchExtract Found at: dashboard.extractors.pitch )
-    '''
+    """
+
     NUM_MFCC_COEFFS = 13
 
     def __init__(self, input_filename, fft_size, numMelBands):
@@ -57,49 +60,52 @@ class InvMFCCAudioProcessor(AudioProcessor):
         self.framesize = 2048  #
         #         self.framesize = 1102 #  default frame size in htk, at rate of 44100
         zeroPadding = fft_size - self.framesize
-        self.w = ess.Windowing(type='hamming',
-                               size=self.framesize,
-                               zeroPadding=zeroPadding,
-                               #                     normalized = False,
-                               zeroPhase=False)
+        self.w = ess.Windowing(
+            type="hamming",
+            size=self.framesize,
+            zeroPadding=zeroPadding,
+            #                     normalized = False,
+            zeroPhase=False,
+        )
 
         spectrumSize = fft_size // 2 + 1
         self.spectrum = ess.Spectrum(size=fft_size)
-        self.mfcc = ess.MFCC(inputSize=spectrumSize,  # htk-like  mfccs
-                             type='magnitude',
-                             warpingFormula='htkMel',
-                             weighting='linear',
-                             highFrequencyBound=8000,
-                             lowFrequencyBound=0,
-                             numberBands=numMelBands,
-                             numberCoefficients=InvMFCCAudioProcessor.NUM_MFCC_COEFFS,
-                             normalize='unit_max',
-                             dctType=3,
-                             logType='log',
-                             liftering=22)
+        self.mfcc = ess.MFCC(
+            inputSize=spectrumSize,  # htk-like  mfccs
+            type="magnitude",
+            warpingFormula="htkMel",
+            weighting="linear",
+            highFrequencyBound=8000,
+            lowFrequencyBound=0,
+            numberBands=numMelBands,
+            numberCoefficients=InvMFCCAudioProcessor.NUM_MFCC_COEFFS,
+            normalize="unit_max",
+            dctType=3,
+            logType="log",
+            liftering=22,
+        )
 
-        self.idct = ess.IDCT(inputSize=InvMFCCAudioProcessor.NUM_MFCC_COEFFS,
-                             outputSize=numMelBands,
-                             dctType=3,
-                             liftering=22)
+        self.idct = ess.IDCT(
+            inputSize=InvMFCCAudioProcessor.NUM_MFCC_COEFFS, outputSize=numMelBands, dctType=3, liftering=22
+        )
 
     def compute_inv_mfcc(self, seek_point, spec_range=110):
-        '''
-        Compute the inverse DCT of MFCC for one frame. 
-        
+        """
+        Compute the inverse DCT of MFCC for one frame.
+
         Parameters
         ----------
         seek_point : int
-            index of audio sample, around which window is centered 
-        spec_range : int 
+            index of audio sample, around which window is centered
+        spec_range : int
             min decibel from which scaling is done
-        
-        Returns 
+
+        Returns
         -------------------------------
         mel_spectrum : array of float32
-            the inverted mfcc to mel spectrum  
-        
-        '''
+            the inverted mfcc to mel spectrum
+
+        """
         samples_frame = self.read(seek_point - self.framesize / 2, self.framesize, True)
 
         samples_frame = essentia.array(samples_frame)
@@ -109,7 +115,6 @@ class InvMFCCAudioProcessor(AudioProcessor):
 
         ### PROBLEM: the range of inv_mfccs_spectrum is -70 to 60, it should be in db.
         #         inv_mfccs_spectrum -= np.max(inv_mfccs_spectrum)
-
 
         spect = self.spectrum(self.w(samples_frame))
 
@@ -121,14 +126,26 @@ class InvMFCCAudioProcessor(AudioProcessor):
         mel_bands_smoothed = np.array(mel_bands_smoothed)
 
         #         db_inv_mfcc_spectrum = ((inv_mfccs_spectrum).clip(-spec_range, 0.0) + spec_range) /spec_range
-        db_mel_bands = ((20 * (np.log10(mel_bands_smoothed + 1e-60))).clip(-spec_range,
-                                                                           0.0) + spec_range) / spec_range  # db  and scale from [- range db ... 0 db] > [0..1]
+        db_mel_bands = (
+            (20 * (np.log10(mel_bands_smoothed + 1e-60))).clip(-spec_range, 0.0) + spec_range
+        ) / spec_range  # db  and scale from [- range db ... 0 db] > [0..1]
         return db_mel_bands
 
 
-def create_wave_images(input_filename, output_filename_w, output_filename_s, output_filename_m, image_width,
-                       image_height, fft_size, progress_callback=None, f_min=None, f_max=None, scale_exp=None,
-                       pallete=None):
+def create_wave_images(
+    input_filename,
+    output_filename_w,
+    output_filename_s,
+    output_filename_m,
+    image_width,
+    image_height,
+    fft_size,
+    progress_callback=None,
+    f_min=None,
+    f_max=None,
+    scale_exp=None,
+    pallete=None,
+):
     """
     Utility function for creating both wavefile and spectrum images from an audio input file.
     """
@@ -142,7 +159,6 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, out
     mel_spectrogram = MelSpectrogramImage(image_width, image_height, scale_exp, pallete, numMelBands)
 
     for x in range(image_width):
-
         if image_width >= 10:
             if progress_callback and x % (image_width / 10) == 0:
                 progress_callback((x * 100) / image_width)
@@ -154,7 +170,8 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, out
         peaks = processor.peaks(seek_point, next_seek_point)
 
         inv_mfcc_spectrum = inv_processor.compute_inv_mfcc(
-            seek_point)  # inv MFCC computation results in a mel spectrogram
+            seek_point
+        )  # inv MFCC computation results in a mel spectrogram
         waveform.draw_peaks(x, peaks, spectral_centroid)
         spectrogram.draw_spectrum(x, db_spectrum)
         mel_spectrogram.draw_spectrum(x, inv_mfcc_spectrum)

@@ -24,7 +24,7 @@ import docserver.models
 
 def rmderived(d):
     """Remove all file parts from a derived file, and then
-       remove the common directory tree in one step"""
+    remove the common directory tree in one step"""
     paths = []
     for p in range(1, d.num_parts + 1):
         paths.append(d.full_path_for_part(p))
@@ -76,14 +76,10 @@ def rmtree(path):
 
 
 class Command(BaseCommand):
-    help = 'Delete derivedfiles for all SourceFile entries with no associated file'
+    help = "Delete derivedfiles for all SourceFile entries with no associated file"
 
     def add_arguments(self, parser):
-        parser.add_argument('-d',
-                            action='store_true',
-                            dest='delete',
-                            default=False,
-                            help='Actually delete items')
+        parser.add_argument("-d", action="store_true", dest="delete", default=False, help="Actually delete items")
 
     def handle(self, *args, **options):
         delete = options["delete"]

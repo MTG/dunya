@@ -36,11 +36,7 @@ class PitchExtract(dashboard.extractors.ExtractorModule):
         # Hop size is 44100*4/900 because our smallest view is 4 seconds long
         # and the image is 900px wide. For 8 seconds, we take every 2,
         # 16 seconds, every 4, and 32 seconds every 8 samples.
-        self.add_settings(HopSize=196,
-                          FrameSize=2048,
-                          BinResolution=10,
-                          GuessUnvoiced=False,
-                          CentsPerBin=1)
+        self.add_settings(HopSize=196, FrameSize=2048, BinResolution=10, GuessUnvoiced=False, CentsPerBin=1)
 
     def run(self, musicbrainzid, fname):
         audioLoader = essentia.standard.EasyLoader(filename=fname)
@@ -48,14 +44,16 @@ class PitchExtract(dashboard.extractors.ExtractorModule):
         sampleRate = monoLoader.paramValue("sampleRate")
         equalLoudness = essentia.standard.EqualLoudness(sampleRate=sampleRate)
         audio = equalLoudness(audioLoader())
-        self.logger.info('Calculating pitch')
-        pitch = essentia.standard.PredominantMelody(hopSize=self.settings.HopSize,
-                                                    frameSize=self.settings.FrameSize,
-                                                    binResolution=self.settings.BinResolution,
-                                                    guessUnvoiced=self.settings.GuessUnvoiced)(audio)
+        self.logger.info("Calculating pitch")
+        pitch = essentia.standard.PredominantMelody(
+            hopSize=self.settings.HopSize,
+            frameSize=self.settings.FrameSize,
+            binResolution=self.settings.BinResolution,
+            guessUnvoiced=self.settings.GuessUnvoiced,
+        )(audio)
 
         pitch = pitch[0]
-        self.logger.info('done')
+        self.logger.info("done")
 
         # generating time stamps (because its equally hopped)
         TStamps = np.array(range(0, len(pitch))) * np.float(self.settings.HopSize) / sampleRate
@@ -68,10 +66,12 @@ class NormalisedPitchExtract(dashboard.extractors.ExtractorModule):
     _abstract = True
     _sourcetype = "mp3"
 
-    _output = {"packedpitch": {"extension": "dat", "mimetype": "application/octet-stream"},
-               "normalisedpitch": {"extension": "json", "mimetype": "application/json"},
-               "normalisedhistogram": {"extension": "json", "mimetype": "application/json"},
-               "drawhistogram": {"extension": "json", "mimetype": "application/json"}}
+    _output = {
+        "packedpitch": {"extension": "dat", "mimetype": "application/octet-stream"},
+        "normalisedpitch": {"extension": "json", "mimetype": "application/json"},
+        "normalisedhistogram": {"extension": "json", "mimetype": "application/json"},
+        "drawhistogram": {"extension": "json", "mimetype": "application/json"},
+    }
 
     def get_histogram(self, pitch, nbins, smoothness=1):
         valid_pitch = [p for p in pitch if p > 0]
@@ -109,10 +109,12 @@ class NormalisedPitchExtract(dashboard.extractors.ExtractorModule):
         simpitch = self.normalise_pitch(nppitch[:, 1], tonic, bpo, max_value)
         simhist = self.get_histogram(simpitch, max_value, 7)
 
-        return {"packedpitch": packed_pitch.getvalue(),
-                "normalisedpitch": drawpitch,
-                "drawhistogram": drawhist,
-                "normalisedhistogram": simhist}
+        return {
+            "packedpitch": packed_pitch.getvalue(),
+            "normalisedpitch": drawpitch,
+            "drawhistogram": drawhist,
+            "normalisedhistogram": simhist,
+        }
 
 
 class HindustaniNormalisedPitchExtract(NormalisedPitchExtract):

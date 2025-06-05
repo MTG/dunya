@@ -37,7 +37,9 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         concert_ids = [a.pk for a in concert_artists]
 
         # Artists who performed an instrument on a recording
-        perf_artists = self._ArtistClass.objects.filter(instrumentperformance__recording__concertrecording__concert__mbid__in=self.imported_releases)
+        perf_artists = self._ArtistClass.objects.filter(
+            instrumentperformance__recording__concertrecording__concert__mbid__in=self.imported_releases
+        )
         perf_ids = [a.pk for a in perf_artists]
 
         artist_ids = list(set(concert_ids + perf_ids))
@@ -54,21 +56,26 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         non_recording.delete()
 
         # Works not part of a recording part of a concert just imported
-        non_work = self._WorkClass.objects.exclude(recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases)
+        non_work = self._WorkClass.objects.exclude(
+            recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases
+        )
         non_work.delete()
 
         # Composers not part of a work not part of a rec, part of concert
-        non_composer = self._ComposerClass.objects.exclude(works__recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases).exclude(lyric_works__recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases)
+        non_composer = self._ComposerClass.objects.exclude(
+            works__recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases
+        ).exclude(lyric_works__recordingwork__recording__concertrecording__concert__mbid__in=self.imported_releases)
         non_composer.delete()
 
     def _link_release_recording(self, concert, recording, trackorder, mnum, tnum):
         if not concert.recordings.filter(pk=recording.pk).exists():
             carnatic.models.ConcertRecording.objects.create(
-                concert=concert, recording=recording, track=trackorder, disc=mnum, disctrack=tnum)
+                concert=concert, recording=recording, track=trackorder, disc=mnum, disctrack=tnum
+            )
 
     def _add_work_attributes(self, work, mbwork, created):
-        """ Read raaga and taala attributes from the webservice query
-        and add them to the object """
+        """Read raaga and taala attributes from the webservice query
+        and add them to the object"""
         work.raaga = None
         work.taala = None
         raaga_attr = self._get_raaga_mb(mbwork)
@@ -98,7 +105,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         noform = False
         forms = recording.forms.all()
         if len(forms) > 1:
-            raise release_importer.ImportFailedException('TODO: Support more than one form per recording')
+            raise release_importer.ImportFailedException("TODO: Support more than one form per recording")
         elif len(forms) < 1:
             form = self._get_form_tag(tags)
             if form:
@@ -152,15 +159,15 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         return None
 
     def _get_raaga_mb(self, mb_work):
-        for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == 'Rāga (Carnatic)':
-                return a['value']
+        for a in mb_work.get("attribute-list", []):
+            if a["attribute"] == "Rāga (Carnatic)":
+                return a["value"]
         return None
 
     def _get_taala_mb(self, mb_work):
-        for a in mb_work.get('attribute-list',[]):
-            if a['attribute'] == 'Tāla (Carnatic)':
-                return a['value']
+        for a in mb_work.get("attribute-list", []):
+            if a["attribute"] == "Tāla (Carnatic)":
+                return a["value"]
         return None
 
     def _get_raaga_tags(self, taglist):
@@ -210,7 +217,10 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             instr_name = "voice"
             if "lead vocals" in attrs:
                 is_lead = True
-        elif perf_type in [release_importer.RELATION_RECORDING_INSTRUMENT, release_importer.RELATION_RELEASE_INSTRUMENT]:
+        elif perf_type in [
+            release_importer.RELATION_RECORDING_INSTRUMENT,
+            release_importer.RELATION_RELEASE_INSTRUMENT,
+        ]:
             instr_name = attrs[-1]
             attrs = attrs[:-1]
             if "lead" in attrs:
@@ -232,9 +242,13 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
         instrument, attributes, is_lead = self._performance_type_to_instrument(perf_type, attrs)
 
         if instrument:
-            carnatic.models.InstrumentPerformance.objects.get_or_create(recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes)
+            carnatic.models.InstrumentPerformance.objects.get_or_create(
+                recording=recording, instrument=instrument, artist=artist, lead=is_lead, attributes=attributes
+            )
         else:
-            logger.info(f"  Got a performance, but no instrument found. recording {recordingid} type {perf_type} attrs {attrs}")
+            logger.info(
+                f"  Got a performance, but no instrument found. recording {recordingid} type {perf_type} attrs {attrs}"
+            )
 
     def _add_release_performance(self, releaseid, artistid, perf_type, attrs):
         """If there is a relationship between a release and artist, apply the relationship to all
@@ -246,7 +260,7 @@ class CarnaticReleaseImporter(release_importer.ReleaseImporter):
             self._add_recording_performance(rec.mbid, artistid, perf_type, attrs)
 
     def _add_release_artists_as_relationship(self, release, artist_credit):
-        """ Convert release artists to lead performers on InstrumentPerformances """
+        """Convert release artists to lead performers on InstrumentPerformances"""
         artists = release.artists.all()
         recordings = release.recordings.all()
         for r in recordings:

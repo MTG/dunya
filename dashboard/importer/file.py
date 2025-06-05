@@ -76,7 +76,7 @@ def mb_recording_id(tag):
 
 
 def file_metadata(fname):
-    """ Get the file metadata for an mp3 file.
+    """Get the file metadata for an mp3 file.
     The argument is expected to be an mp3 file. No checking is done
     """
     # We load the file directly instead of using .load() because
@@ -95,13 +95,15 @@ def file_metadata(fname):
     # TODO: In id3 2.4 it's a \0
     artistid = mb_artist_id(audfile.tag)
     recordingid = mb_recording_id(audfile.tag)
-    return {"file": fname,
-            "duration": duration,
-            "meta": {"artist": artist,
-                     "title": title,
-                     "release": release,
-                     "releaseid": releaseid,
-                     "artistid": artistid,
-                     "recordingid": recordingid
-                     }
-            }
+    return {
+        "file": fname,
+        "duration": duration,
+        "meta": {
+            "artist": artist,
+            "title": title,
+            "release": release,
+            "releaseid": releaseid,
+            "artistid": artistid,
+            "recordingid": recordingid,
+        },
+    }

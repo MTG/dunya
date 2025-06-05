@@ -16,7 +16,7 @@ class TestExtractor(dashboard.extractors.ExtractorModule):
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
     def run_many(self, fname):
-        return {'pitch': '{"test": "0.1"}'}
+        return {"pitch": '{"test": "0.1"}'}
 
 
 class Test2Extractor(dashboard.extractors.ExtractorModule):
@@ -27,14 +27,15 @@ class Test2Extractor(dashboard.extractors.ExtractorModule):
     _output = {"pitch": {"extension": "json", "mimetype": "application/json"}}
 
     def run(self, mb, fname):
-        return {'pitch': '{"test": "0.1"}'}
+        return {"pitch": '{"test": "0.1"}'}
 
 
 class AbstractFileTest(TestCase):
     def setUp(self):
         collid = uuid.uuid4()
-        self.col1 = models.Collection.objects.create(collectionid=collid, name="collection 1", slug="col",
-                                                     root_directory="/tmp/col1")
+        self.col1 = models.Collection.objects.create(
+            collectionid=collid, name="collection 1", slug="col", root_directory="/tmp/col1"
+        )
         self.file_type = models.SourceFileType.objects.create(extension="mp3", name="mp3_file_type", slug="mp3")
         self.doc1 = models.Document.objects.create(title="doc1", external_identifier="111111")
         self.doc1.collections.add(self.col1)
@@ -47,8 +48,8 @@ class AbstractFileTest(TestCase):
 
 
 class SourceFileTest(AbstractFileTest):
-    @mock.patch('os.makedirs')
-    @mock.patch('builtins.open')
+    @mock.patch("os.makedirs")
+    @mock.patch("builtins.open")
     def test_run_module_on_collection(self, mock_open, makedir):
         modulepath = "dashboard.extractors.TestExtractor"
         instance = TestExtractor()
@@ -76,8 +77,8 @@ class SourceFileTest(AbstractFileTest):
         self.assertEqual(len(doc.derivedfiles.all()), 1)
     """
 
-    @mock.patch('os.makedirs')
-    @mock.patch('builtins.open')
+    @mock.patch("os.makedirs")
+    @mock.patch("builtins.open")
     @override_settings(task_always_eager=True)
     def test_process_document(self, mock_open, makedir):
         # /tmp/col1/incoming/11/111111/asd2/0.1

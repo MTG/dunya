@@ -4,7 +4,6 @@ from makam import models
 
 
 class FormTest(TestCase):
-
     def test_unaccent_get(self):
         f = models.Form.objects.create(name="Şarkı")
         ret = models.Form.objects.unaccent_get("sarki")

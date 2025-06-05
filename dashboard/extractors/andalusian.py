@@ -3,6 +3,7 @@ from tomato.audio.predominantmelody import PredominantMelody
 from tomato.audio.pitchdistribution import PitchDistribution
 from tomato.audio.pitchfilter import PitchFilter
 
+
 class AndalusianPitch(dashboard.extractors.ExtractorModule):
     _version = "0.1"
     _sourcetype = "mp3"
@@ -17,19 +18,18 @@ class AndalusianPitch(dashboard.extractors.ExtractorModule):
         predominant_melody = PredominantMelody()
 
         results = predominant_melody.extract(fname)
-        settings = results['settings'] 
-        pitch = results['pitch']
+        settings = results["settings"]
+        pitch = results["pitch"]
 
         # Compute pitch filtered
         pitch_filter = PitchFilter()
-        pitch_filt= pitch_filter.run(pitch)
+        pitch_filt = pitch_filter.run(pitch)
 
         pitch_distribution = PitchDistribution.from_hz_pitch(pitch_filt)
         pitch_distribution.cent_to_hz()
         pitch_distribution = pitch_distribution.vals
 
         # Skip the time stamp and pitch salience and cast pitch values
-        pitch_filt= [int(p[1]) for p in pitch_filt]
+        pitch_filt = [int(p[1]) for p in pitch_filt]
 
         return {"settings": settings, "pitch_filt": pitch_filt, "pitch_distribution": pitch_distribution}
-

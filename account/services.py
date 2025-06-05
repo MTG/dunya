@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 
-RESTRICTED_GROUP_NAME = 'Can view restricted items'
+RESTRICTED_GROUP_NAME = "Can view restricted items"
 
 
 def add_user_to_restricted_group(user: User):

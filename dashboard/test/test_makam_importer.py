@@ -32,4 +32,3 @@ class MakamImporterTest(TestCase):
         # Something that doesn't exist
         get_m = self.mi._get_makam("Not a makam")
         self.assertEqual(None, get_m)
-

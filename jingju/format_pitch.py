@@ -9,6 +9,7 @@ from scipy.ndimage.filters import gaussian_filter
 
 ## Most of this from NormalisePitch in the pitch extractor
 
+
 def interpolatePitchTracks(timeArrIn, pitchArrIn, timeArrOut, SilVal):
     ind = np.where(pitchArrIn <= SilVal)[0]
     pitchArrIn[ind] = SilVal

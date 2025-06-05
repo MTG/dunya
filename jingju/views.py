@@ -95,7 +95,7 @@ def recording(request, uuid):
         "length": length,
         "length_format": length_format(length),
         "meta": recordings[uuid],
-        "drawoctave": drawoctave
+        "drawoctave": drawoctave,
     }
 
     return render(request, "jingju/recording.html", ret)
@@ -106,8 +106,9 @@ def basic_lyric_alignment(request, uuid, title=None):
     recording.title = "碧云天黄花地西风紧” 《西厢记》（崔莺莺）"
     mbid = uuid
     try:
-        lyricsalignurl = docserver.util.docserver_get_url(mbid, "lyrics-align", "alignedLyricsSyllables", 1,
-                                                          version="0.1")
+        lyricsalignurl = docserver.util.docserver_get_url(
+            mbid, "lyrics-align", "alignedLyricsSyllables", 1, version="0.1"
+        )
     except docserver.exceptions.NoFileException:
         lyricsalignurl = None
     try:

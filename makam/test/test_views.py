@@ -12,9 +12,9 @@ class SymbTrTest(TestCase):
         self.test_uuid = "721ae3da-ed63-4ad7-86d9-ac2c9a4ab039"
         self.symbtr = models.SymbTr.objects.create(uuid=self.test_uuid, name="test_symbtr")
 
-    @mock.patch('docserver.views.download_external')
+    @mock.patch("docserver.views.download_external")
     def test_successful(self, download):
-        download.return_value = HttpResponse('ok')
+        download.return_value = HttpResponse("ok")
         sft = docserver.models.SourceFileType.objects.create(slug="symbtrtxt", extension="txt", mimetype="")
 
         resp = self.client.get(f"/makam/symbtr/{self.test_uuid}")
@@ -26,19 +26,21 @@ class SymbTrTest(TestCase):
         resp = self.client.get(f"/makam/symbtr/{self.test_uuid}?format=nono")
         self.assertEqual(resp.status_code, 400)
 
-    @mock.patch('makam.views.get_object_or_404')
+    @mock.patch("makam.views.get_object_or_404")
     def test_format_missing(self, obj404):
         # a type that is valid but doesn't exist for some reason
         obj404.side_effect = [self.symbtr, Http404()]
-        docserver.views.download_external = mock.Mock(return_value=HttpResponse('ok'))
+        docserver.views.download_external = mock.Mock(return_value=HttpResponse("ok"))
         resp = self.client.get(f"/makam/symbtr/{self.test_uuid}?format=pdf")
 
         self.assertEqual(resp.status_code, 404)
-        calls = [mock.call(models.SymbTr, uuid=self.test_uuid),
-                 mock.call(docserver.models.SourceFileType, slug="symbtrpdf")]
+        calls = [
+            mock.call(models.SymbTr, uuid=self.test_uuid),
+            mock.call(docserver.models.SourceFileType, slug="symbtrpdf"),
+        ]
         obj404.assert_has_calls(calls)
 
-    @mock.patch('makam.views.get_object_or_404')
+    @mock.patch("makam.views.get_object_or_404")
     def test_no_symbtr(self, obj404):
         obj404.side_effect = Http404()
         other_uuid = "721ae3da-ed63-4ad7-86d9-ac2c9a4aaaaa"
@@ -47,9 +49,9 @@ class SymbTrTest(TestCase):
         calls = [mock.call(models.SymbTr, uuid=other_uuid)]
         obj404.assert_has_calls(calls)
 
-    @mock.patch('docserver.views.download_external')
+    @mock.patch("docserver.views.download_external")
     def test_no_doc(self, download):
-        download.return_value = HttpResponseNotFound('x')
+        download.return_value = HttpResponseNotFound("x")
         sft = docserver.models.SourceFileType.objects.create(slug="symbtrtxt", extension="txt", mimetype="")
         resp = self.client.get(f"/makam/symbtr/{self.test_uuid}?format=txt")
 

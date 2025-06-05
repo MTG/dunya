@@ -20,15 +20,11 @@ from django.views.generic.base import TemplateView
 from carnatic import views
 
 urlpatterns = [
-    path(r'', views.main, name='carnatic-main'),
-    path(r'info',
-         TemplateView.as_view(template_name="carnatic/info.html"), name='carnatic-info'),
-
-    path(r'searchcomplete', views.searchcomplete, name='carnatic-searchcomplete'),
-    path(r'search', views.recordings_search, name='carnatic-search'),
-
-    path(r'recording/<uuid:uuid>', views.recording, name='carnatic-recording'),
-    path(r'recording/<uuid:uuid>/<slug:title>', views.recording, name='carnatic-recording'),
-
-    path(r'filters.json', views.filters, name='carnatic-filters'),
+    path(r"", views.main, name="carnatic-main"),
+    path(r"info", TemplateView.as_view(template_name="carnatic/info.html"), name="carnatic-info"),
+    path(r"searchcomplete", views.searchcomplete, name="carnatic-searchcomplete"),
+    path(r"search", views.recordings_search, name="carnatic-search"),
+    path(r"recording/<uuid:uuid>", views.recording, name="carnatic-recording"),
+    path(r"recording/<uuid:uuid>/<slug:title>", views.recording, name="carnatic-recording"),
+    path(r"filters.json", views.filters, name="carnatic-filters"),
 ]

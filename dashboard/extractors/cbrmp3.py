@@ -21,7 +21,8 @@ import dashboard.extractors
 
 
 class CbrMp3(dashboard.extractors.ExtractorModule):
-    """ Convert an mp3 file to a constant bitrate if needed """
+    """Convert an mp3 file to a constant bitrate if needed"""
+
     _version = "0.1"
     _sourcetype = "mp3"
     _slug = "cbrmp3"

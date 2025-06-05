@@ -57,12 +57,12 @@ def inline_concert(concert, bold=False):
     if bold:
         sb = "<b>"
         eb = "</b>"
-    return format_html('<span>{}{{}}{}</span>'.format(sb, eb), concert.title)
+    return format_html("<span>{}{{}}{}</span>".format(sb, eb), concert.title)
 
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html('<span>{}</span>', composer.name)
+    return format_html("<span>{}</span>", composer.name)
 
 
 @register.simple_tag
@@ -75,7 +75,7 @@ def inline_raaga(raaga):
     if raaga:
         return format_html('<span title="{}">{}</span>', raaga.common_name.title(), raaga.name.title())
     else:
-        return '(unknown)'
+        return "(unknown)"
 
 
 @register.simple_tag
@@ -83,4 +83,4 @@ def inline_taala(taala):
     if taala:
         return format_html('<span title="{}">{}</span>', taala.common_name.title(), taala.name.title())
     else:
-        return '(unknown)'
+        return "(unknown)"

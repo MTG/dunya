@@ -26,13 +26,14 @@ class Command(BaseCommand):
     help = "Find each artist's main instrument and fill in the field"
 
     def handle(self, *args, **options):
-        if len(args) == 0 or args[0] not in ('carnatic', 'hindustani'):
+        if len(args) == 0 or args[0] not in ("carnatic", "hindustani"):
             raise CommandError("""Missing argument. The argument passed to this
                                 command should be one of \'carnatic\' or
                                 \'hindustani\'""")
-        models = {'carnatic': carnatic_models,
-                  'hindustani': hindustani_models,
-                  }[args[0]]
+        models = {
+            "carnatic": carnatic_models,
+            "hindustani": hindustani_models,
+        }[args[0]]
         artists = models.Artist.objects.all()
         for a in artists:
             counter = collections.Counter()

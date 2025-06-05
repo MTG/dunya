@@ -24,14 +24,16 @@ class RhythmExtract(dashboard.extractors.ExtractorModule):
     _version = "0.3"
     _sourcetype = "mp3"
     _slug = "rhythm"
-    _output = {"sections": {"extension": "json", "mimetype": "application/json"},
-               "aksharaPeriod": {"extension": "json", "mimetype": "application/json"},
-               "aksharaTicks": {"extension": "json", "mimetype": "application/json"},
-               "APcurve": {"extension": "json", "mimetype": "application/json"}}
+    _output = {
+        "sections": {"extension": "json", "mimetype": "application/json"},
+        "aksharaPeriod": {"extension": "json", "mimetype": "application/json"},
+        "aksharaTicks": {"extension": "json", "mimetype": "application/json"},
+        "APcurve": {"extension": "json", "mimetype": "application/json"},
+    }
 
     def run(self, musicbrainzid, fname):
         params = ap.params
-        self.logger.info('Started Processing...')
+        self.logger.info("Started Processing...")
         self.logger.info(fname)
         # Extract Onset functions
         onsFns = ap.getOnsetFunctions(fname)
@@ -63,8 +65,9 @@ class RhythmExtract(dashboard.extractors.ExtractorModule):
         mmpFromTC = ap.getMatraPeriodEstimateFromTC(TCperRaw, params.TCparams)
         TCper, TCcorrFlag = ap.correctOctaveErrors(TCperRaw, mmpFromTC, params.TCparams.octCorrectParam)
         TC = 60.0 / TCper
-        akCandLocs, akCandTs, akCandWts, akCandTransMat = ap.estimateAksharaCandidates(onsTs, onsFn.copy(), TCper, TCts,
-                                                                                       mmpFromTC, params.aksharaParams)
+        akCandLocs, akCandTs, akCandWts, akCandTransMat = ap.estimateAksharaCandidates(
+            onsTs, onsFn.copy(), TCper, TCts, mmpFromTC, params.aksharaParams
+        )
         akCands = params.akCands
         akCands.Locs = akCandLocs
         akCands.ts = akCandTs
@@ -92,8 +95,9 @@ class RhythmExtract(dashboard.extractors.ExtractorModule):
         ticks = np.round(aksharaTimes, params.roundOffLen).tolist()
         ticks = list(set(ticks))
 
-        return {"sections": sections,
-                "aksharaPeriod": np.asscalar(np.round(mmpFromTC, params.roundOffLen)),
-                "aksharaTicks": ticks,
-                "APcurve": APcurve
-                }
+        return {
+            "sections": sections,
+            "aksharaPeriod": np.asscalar(np.round(mmpFromTC, params.roundOffLen)),
+            "aksharaTicks": ticks,
+            "APcurve": APcurve,
+        }

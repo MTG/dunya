@@ -1,5 +1,6 @@
-#taken from http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/
-#License: MIT License
+# taken from http://mwh.geek.nz/2009/04/26/python-damerau-levenshtein-distance/
+# License: MIT License
+
 
 def dameraulevenshtein(seq1, seq2):
     """Calculate the Damerau-Levenshtein distance between sequences.
@@ -41,7 +42,6 @@ def dameraulevenshtein(seq1, seq2):
             subcost = oneago[y - 1] + (seq1[x] != seq2[y])
             thisrow[y] = min(delcost, addcost, subcost)
             # This block deals with transpositions
-            if (x > 0 and y > 0 and seq1[x] == seq2[y - 1]
-                and seq1[x-1] == seq2[y] and seq1[x] != seq2[y]):
+            if x > 0 and y > 0 and seq1[x] == seq2[y - 1] and seq1[x - 1] == seq2[y] and seq1[x] != seq2[y]:
                 thisrow[y] = min(thisrow[y], twoago[y - 2] + 1)
     return thisrow[len(seq2) - 1]

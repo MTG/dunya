@@ -8,7 +8,7 @@ from docserver import util
 
 
 class TestDocument(TestCase):
-    fixtures = ['docserver_sourcefiletype']
+    fixtures = ["docserver_sourcefiletype"]
 
     def setUp(self):
         docid = str(uuid.uuid4())
@@ -24,21 +24,21 @@ class TestDocument(TestCase):
         self.assertEqual(res, sf)
 
     def test_get_file_no_sourcefile(self):
-        """ If the argument is a sourcefiletype, but this document doesn't have a sf of that type"""
+        """If the argument is a sourcefiletype, but this document doesn't have a sf of that type"""
 
         with self.assertRaises(exceptions.NoFileException) as cm:
             res = self.doc.get_file("csv")
         self.assertEqual(str(cm.exception), "Looks like a sourcefile, but I can't find one")
 
     def test_get_derived_slug_no_exist(self):
-        """ A slug that doesn't match any sourcefiletype or moduleslug """
+        """A slug that doesn't match any sourcefiletype or moduleslug"""
 
         with self.assertRaises(exceptions.NoFileException) as cm:
             res = self.doc.get_file("foo")
         self.assertEqual(str(cm.exception), "Cannot find a module with type foo")
 
     def test_get_derived_slug_noversion(self):
-        """ A module has no versions, or doesn't have the version which is asked for """
+        """A module has no versions, or doesn't have the version which is asked for"""
         sft = models.SourceFileType.objects.get(slug="mp3")
 
         module = models.Module.objects.create(slug="derived", source_type=sft)
@@ -62,8 +62,14 @@ class TestDocument(TestCase):
         modver1 = models.ModuleVersion.objects.create(module=module, version="0.1", date_added="2016-12-01T00:01:11+00")
         modver2 = models.ModuleVersion.objects.create(module=module, version="0.2", date_added="2016-12-01T10:20:11+00")
 
-        df = models.DerivedFile.objects.create(document=self.doc, module_version=modver1, outputname="info",
-                                               extension="json", mimetype="text/plain", num_parts=1)
+        df = models.DerivedFile.objects.create(
+            document=self.doc,
+            module_version=modver1,
+            outputname="info",
+            extension="json",
+            mimetype="text/plain",
+            num_parts=1,
+        )
 
         res = self.doc.get_file("derived", "info")
         self.assertEqual(res, df)
@@ -88,8 +94,14 @@ class TestDocument(TestCase):
         module = models.Module.objects.create(slug="derived", source_type=sft)
         modver1 = models.ModuleVersion.objects.create(module=module, version="0.1", date_added="2016-12-01T00:01:11+00")
 
-        df = models.DerivedFile.objects.create(document=self.doc, module_version=modver1, outputname="info",
-                                               extension="json", mimetype="text/plain", num_parts=1)
+        df = models.DerivedFile.objects.create(
+            document=self.doc,
+            module_version=modver1,
+            outputname="info",
+            extension="json",
+            mimetype="text/plain",
+            num_parts=1,
+        )
 
         # if the derived file has only one type, make sure it's explicit otherwise an error is returned
         with self.assertRaises(exceptions.NoFileException) as cm:
@@ -97,13 +109,20 @@ class TestDocument(TestCase):
         self.assertEqual(str(cm.exception), "This module has only one subtype which you must specify (info)")
 
         # if a derived file has multiple outputnames/subtypes, an error if not set
-        df2 = models.DerivedFile.objects.create(document=self.doc, module_version=modver1, outputname="data",
-                                                extension="json", mimetype="text/plain", num_parts=1)
+        df2 = models.DerivedFile.objects.create(
+            document=self.doc,
+            module_version=modver1,
+            outputname="data",
+            extension="json",
+            mimetype="text/plain",
+            num_parts=1,
+        )
 
         with self.assertRaises(exceptions.TooManyFilesException) as cm:
             res = self.doc.get_file("derived")
-        self.assertEqual(str(cm.exception),
-                         "Found more than 1 subtype for this module but you haven't specified what you want")
+        self.assertEqual(
+            str(cm.exception), "Found more than 1 subtype for this module but you haven't specified what you want"
+        )
 
         # ...otherwise return the correct item
         res2 = self.doc.get_file("derived", "info")
@@ -118,8 +137,14 @@ class TestDocument(TestCase):
         module = models.Module.objects.create(slug="derived", source_type=sft)
         modver1 = models.ModuleVersion.objects.create(module=module, version="0.1", date_added="2016-12-01T00:01:11+00")
 
-        df = models.DerivedFile.objects.create(document=self.doc, module_version=modver1, outputname="info",
-                                               extension="json", mimetype="text/plain", num_parts=3)
+        df = models.DerivedFile.objects.create(
+            document=self.doc,
+            module_version=modver1,
+            outputname="info",
+            extension="json",
+            mimetype="text/plain",
+            num_parts=3,
+        )
 
         # If the derived file has multiple parts and part not set, error
         with self.assertRaises(exceptions.TooManyFilesException) as cm:
@@ -137,8 +162,14 @@ class TestDocument(TestCase):
         self.assertEqual(str(cm.exception), "Invalid part")
 
         # derived file which has no parts, error
-        df2 = models.DerivedFile.objects.create(document=self.doc, module_version=modver1, outputname="noparts",
-                                                extension="json", mimetype="text/plain", num_parts=0)
+        df2 = models.DerivedFile.objects.create(
+            document=self.doc,
+            module_version=modver1,
+            outputname="noparts",
+            extension="json",
+            mimetype="text/plain",
+            num_parts=0,
+        )
 
         with self.assertRaises(exceptions.NoFileException) as cm:
             res = self.doc.get_file("derived", "noparts", part="0")
@@ -146,14 +177,18 @@ class TestDocument(TestCase):
 
 
 class TestUrlsAndPaths(TestCase):
-    fixtures = ['docserver_sourcefiletype']
+    fixtures = ["docserver_sourcefiletype"]
 
     def setUp(self):
         docid = "f522f7c6-8299-44e9-889f-063d37526801"
         collid = "7a99e6f3-7d5e-4577-a07d-43605d5b4220"
-        coll = models.Collection.objects.create(collectionid=collid,
-                                                name="Test collection", slug="test-collection", description="",
-                                                root_directory="/collectionroot")
+        coll = models.Collection.objects.create(
+            collectionid=collid,
+            name="Test collection",
+            slug="test-collection",
+            description="",
+            root_directory="/collectionroot",
+        )
         self.doc = models.Document.objects.create(external_identifier=docid)
         self.doc.collections.add(coll)
         sft = models.SourceFileType.objects.get(slug="mp3")
@@ -161,8 +196,14 @@ class TestUrlsAndPaths(TestCase):
 
         module = models.Module.objects.create(slug="derived", source_type=sft)
         modver = models.ModuleVersion.objects.create(module=module, version="0.1", date_added="2016-12-01T00:01:11+00")
-        self.df = models.DerivedFile.objects.create(document=self.doc, module_version=modver, outputname="meta",
-                                                    extension="json", mimetype="text/plain", num_parts=2)
+        self.df = models.DerivedFile.objects.create(
+            document=self.doc,
+            module_version=modver,
+            outputname="meta",
+            extension="json",
+            mimetype="text/plain",
+            num_parts=2,
+        )
 
     def test_sourcefile_absolute_url(self):
         url = self.sf.get_absolute_url()
@@ -177,14 +218,16 @@ class TestUrlsAndPaths(TestCase):
 
     def test_derived_file_absolute_url(self):
         urlder = self.df.get_absolute_url(partnumber=2)
-        self.assertEqual("/document/by-id/f522f7c6-8299-44e9-889f-063d37526801/derived?v=0.1&subtype=meta&part=2",
-                         urlder)
+        self.assertEqual(
+            "/document/by-id/f522f7c6-8299-44e9-889f-063d37526801/derived?v=0.1&subtype=meta&part=2", urlder
+        )
 
     def test_derived_file_path(self):
         pathder = self.df.full_path_for_part(1)
         self.assertEqual(
             "/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/f522f7c6-8299-44e9-889f-063d37526801-derived-0.1-meta-1.json",
-            pathder)
+            pathder,
+        )
 
         with self.assertRaises(exceptions.NoFileException) as cm:
             pathder = self.df.full_path_for_part(3)
@@ -193,4 +236,5 @@ class TestUrlsAndPaths(TestCase):
         pathder2 = util.docserver_get_filename("f522f7c6-8299-44e9-889f-063d37526801", "derived", "meta", "2")
         self.assertEqual(
             "/collectionroot/derived/f5/f522f7c6-8299-44e9-889f-063d37526801/derived/0.1/f522f7c6-8299-44e9-889f-063d37526801-derived-0.1-meta-2.json",
-            pathder2)
+            pathder2,
+        )

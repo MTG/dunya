@@ -11,26 +11,32 @@ class UserAdminTest(TestCase):
     """Test the admin of new users (new user approval and group permissions)"""
 
     def setUp(self):
-        self.adminuser = User.objects.create_superuser('admin', email='admin@example.com', password='password')
-        self.newuser1 = User.objects.create_user('userone', email='userone@example.com', is_active=False)
-        self.newuser2 = User.objects.create_user('usertwo', email='usertwo@example.com', is_active=False)
+        self.adminuser = User.objects.create_superuser("admin", email="admin@example.com", password="password")
+        self.newuser1 = User.objects.create_user("userone", email="userone@example.com", is_active=False)
+        self.newuser2 = User.objects.create_user("usertwo", email="usertwo@example.com", is_active=False)
 
     def test_get_new_users_for_approval(self):
         self.client.force_login(self.adminuser)
-        res = self.client.get(reverse('dashboard-accounts'))
-        self.assertEqual(2, len(res.context['user_formset']))
+        res = self.client.get(reverse("dashboard-accounts"))
+        self.assertEqual(2, len(res.context["user_formset"]))
 
-    @mock.patch('dashboard.email.email_user_on_account_approval')
+    @mock.patch("dashboard.email.email_user_on_account_approval")
     def test_approve_new_account(self, email_mock):
         self.client.force_login(self.adminuser)
 
         self.assertEqual(2, User.objects.filter(is_active=False).count())
 
-        data = {'form-TOTAL_FORMS': ['1'],  'submit': ['Approve accounts'],
-                'form-MAX_NUM_FORMS': ['1000'], 'form-1-is_active': ['on'],
-                'form-0-is_active': ['on'], 'form-INITIAL_FORMS': ['2'],
-                'form-MIN_NUM_FORMS': ['0'], 'form-0-id': [str(self.newuser1.id)]}
-        self.client.post(reverse('dashboard-accounts'), data=data)
+        data = {
+            "form-TOTAL_FORMS": ["1"],
+            "submit": ["Approve accounts"],
+            "form-MAX_NUM_FORMS": ["1000"],
+            "form-1-is_active": ["on"],
+            "form-0-is_active": ["on"],
+            "form-INITIAL_FORMS": ["2"],
+            "form-MIN_NUM_FORMS": ["0"],
+            "form-0-id": [str(self.newuser1.id)],
+        }
+        self.client.post(reverse("dashboard-accounts"), data=data)
 
         email_mock.assert_called_with(mock.ANY, self.newuser1)
         self.assertEqual(1, User.objects.filter(is_active=False).count())
@@ -44,16 +50,22 @@ class UserAdminTest(TestCase):
 
         self.assertEqual(2, User.objects.filter(is_active=False).count())
 
-        data = {'form-TOTAL_FORMS': ['1'],  'submit': ['Approve accounts'],
-                'form-MAX_NUM_FORMS': ['1000'], 'form-1-is_active': ['on'],
-                'form-0-delete': ['on'], 'form-INITIAL_FORMS': ['2'],
-                'form-MIN_NUM_FORMS': ['0'], 'form-0-id': [str(self.newuser1.id)]}
-        self.client.post(reverse('dashboard-accounts'), data=data)
+        data = {
+            "form-TOTAL_FORMS": ["1"],
+            "submit": ["Approve accounts"],
+            "form-MAX_NUM_FORMS": ["1000"],
+            "form-1-is_active": ["on"],
+            "form-0-delete": ["on"],
+            "form-INITIAL_FORMS": ["2"],
+            "form-MIN_NUM_FORMS": ["0"],
+            "form-0-id": [str(self.newuser1.id)],
+        }
+        self.client.post(reverse("dashboard-accounts"), data=data)
 
         self.assertEqual(1, User.objects.filter(is_superuser=False).count())
         try:
             self.newuser1.refresh_from_db()
-            self.fail('newuser1 should have been deleted')
+            self.fail("newuser1 should have been deleted")
         except User.DoesNotExist:
             pass
 
@@ -61,28 +73,35 @@ class UserAdminTest(TestCase):
         self.newuser1.is_active = True
         self.newuser1.save()
 
-        AccessRequest.objects.create(user=self.newuser1, justification='I want to use this site')
+        AccessRequest.objects.create(user=self.newuser1, justification="I want to use this site")
 
         self.client.force_login(self.adminuser)
-        res = self.client.get(reverse('dashboard-accounts'))
-        self.assertEqual(1, len(res.context['access_formset']))
+        res = self.client.get(reverse("dashboard-accounts"))
+        self.assertEqual(1, len(res.context["access_formset"]))
 
-    @mock.patch('account.services.add_user_to_restricted_group')
-    @mock.patch('dashboard.email.email_user_on_access_request_approval')
+    @mock.patch("account.services.add_user_to_restricted_group")
+    @mock.patch("dashboard.email.email_user_on_access_request_approval")
     def test_approve_restricted_access(self, email_mock, add_to_group_mock):
         self.newuser1.is_active = True
         self.newuser1.save()
         self.newuser2.is_active = True
         self.newuser2.save()
 
-        areq1 = AccessRequest.objects.create(user=self.newuser1, justification='I want to use this site')
-        areq2 = AccessRequest.objects.create(user=self.newuser2, justification='I want to use this site')
+        areq1 = AccessRequest.objects.create(user=self.newuser1, justification="I want to use this site")
+        areq2 = AccessRequest.objects.create(user=self.newuser2, justification="I want to use this site")
 
-        data = {'form-TOTAL_FORMS': ['2'], 'form-MAX_NUM_FORMS': ['1000'], 'form-1-id': [str(areq2.id)],
-                'form-0-id': [str(areq1.id)], 'form-MIN_NUM_FORMS': ['0'], 'form-0-decision': ['approve'],
-                'submit': ['Approve requests'], 'form-INITIAL_FORMS': ['2']}
+        data = {
+            "form-TOTAL_FORMS": ["2"],
+            "form-MAX_NUM_FORMS": ["1000"],
+            "form-1-id": [str(areq2.id)],
+            "form-0-id": [str(areq1.id)],
+            "form-MIN_NUM_FORMS": ["0"],
+            "form-0-decision": ["approve"],
+            "submit": ["Approve requests"],
+            "form-INITIAL_FORMS": ["2"],
+        }
         self.client.force_login(self.adminuser)
-        self.client.post(reverse('dashboard-accounts'), data=data)
+        self.client.post(reverse("dashboard-accounts"), data=data)
 
         areq1.refresh_from_db()
         areq2.refresh_from_db()
@@ -97,22 +116,29 @@ class UserAdminTest(TestCase):
 
         self.assertEqual(1, AccessRequest.objects.unapproved().count())
 
-    @mock.patch('account.services.add_user_to_restricted_group')
-    @mock.patch('dashboard.email.email_user_on_access_request_approval')
+    @mock.patch("account.services.add_user_to_restricted_group")
+    @mock.patch("dashboard.email.email_user_on_access_request_approval")
     def test_deny_restricted_access(self, email_mock, add_to_group_mock):
         self.newuser1.is_active = True
         self.newuser1.save()
         self.newuser2.is_active = True
         self.newuser2.save()
 
-        areq1 = AccessRequest.objects.create(user=self.newuser1, justification='I want to use this site')
-        areq2 = AccessRequest.objects.create(user=self.newuser2, justification='I want to use this site')
+        areq1 = AccessRequest.objects.create(user=self.newuser1, justification="I want to use this site")
+        areq2 = AccessRequest.objects.create(user=self.newuser2, justification="I want to use this site")
 
-        data = {'form-TOTAL_FORMS': ['2'], 'form-MAX_NUM_FORMS': ['1000'], 'form-1-id': [str(areq2.id)],
-                'form-0-id': [str(areq1.id)], 'form-MIN_NUM_FORMS': ['0'], 'form-0-decision': ['deny'],
-                'submit': ['Approve requests'], 'form-INITIAL_FORMS': ['2']}
+        data = {
+            "form-TOTAL_FORMS": ["2"],
+            "form-MAX_NUM_FORMS": ["1000"],
+            "form-1-id": [str(areq2.id)],
+            "form-0-id": [str(areq1.id)],
+            "form-MIN_NUM_FORMS": ["0"],
+            "form-0-decision": ["deny"],
+            "submit": ["Approve requests"],
+            "form-INITIAL_FORMS": ["2"],
+        }
         self.client.force_login(self.adminuser)
-        self.client.post(reverse('dashboard-accounts'), data=data)
+        self.client.post(reverse("dashboard-accounts"), data=data)
 
         areq1.refresh_from_db()
         areq2.refresh_from_db()

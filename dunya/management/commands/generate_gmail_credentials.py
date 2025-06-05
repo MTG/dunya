@@ -8,21 +8,20 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 
-SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 
 
 class Command(BaseCommand):
-    """
-    """
+    """ """
 
     def add_arguments(self, parser):
-        parser.add_argument('credentials', help='location of credentials.json file')
+        parser.add_argument("credentials", help="location of credentials.json file")
 
     def handle(self, *args, **options):
         authentication = EmailAuthentication.objects.first()
         if not authentication:
             print("No email authentication credentials exist, creating")
-            credentials = json.load(open(options['credentials'], 'r'))
+            credentials = json.load(open(options["credentials"], "r"))
             authentication = EmailAuthentication.objects.create(credentials=credentials)
 
         if authentication.token:

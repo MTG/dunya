@@ -1,4 +1,3 @@
-
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Dunya
@@ -54,16 +53,16 @@ class AudioAnalysis(dashboard.extractors.ExtractorModule):
         # NOTE: This will take several minutes depending on the performance of your machine
         features = audioAnalyzer.analyze(fname)
 
-        metadata = features.get('metadata', None)
-        pitch = features.get('pitch', None)
-        pitch_filtered = features.get('pitch_filtered', None)
-        melodic_progression = features.get('melodic_progression', None)
-        tonic = features.get('tonic', None)
-        pitch_distribution = features.get('pitch_distribution', None)
-        pitch_class_distribution = features.get('pitch_class_distribution', None)
-        transposition = features.get('transposition', None)
-        note_models = features.get('note_models', None)
-        makam = features.get('makam', None)
+        metadata = features.get("metadata", None)
+        pitch = features.get("pitch", None)
+        pitch_filtered = features.get("pitch_filtered", None)
+        melodic_progression = features.get("melodic_progression", None)
+        tonic = features.get("tonic", None)
+        pitch_distribution = features.get("pitch_distribution", None)
+        pitch_class_distribution = features.get("pitch_class_distribution", None)
+        transposition = features.get("transposition", None)
+        note_models = features.get("note_models", None)
+        makam = features.get("makam", None)
 
         for i in self._output.keys():
             if i not in features:
@@ -78,27 +77,34 @@ class AudioAnalysis(dashboard.extractors.ExtractorModule):
             note_models = to_dict(note_models)
         if melodic_progression:
             AudioSeyirAnalyzer.serialize(melodic_progression)
-        return {"metadata": metadata, "pitch": pitch, "pitch_filtered": pitch_filtered,
-                "melodic_progression": melodic_progression, "tonic": tonic,
-                "pitch_distribution": pitch_distribution,
-                "pitch_class_distribution": pitch_class_distribution,
-                "transposition": transposition, "note_models": note_models, "makam": makam}
+        return {
+            "metadata": metadata,
+            "pitch": pitch,
+            "pitch_filtered": pitch_filtered,
+            "melodic_progression": melodic_progression,
+            "tonic": tonic,
+            "pitch_distribution": pitch_distribution,
+            "pitch_class_distribution": pitch_class_distribution,
+            "transposition": transposition,
+            "note_models": note_models,
+            "makam": makam,
+        }
 
 
 def to_dict(note_models):
     ret = {}
     for key in note_models.keys():
         ret[key] = note_models[key]
-        if 'distribution' in note_models[key]:
-            distribution = note_models[key]['distribution'].to_dict()
-            ret[key]['distribution'] = distribution
-        if np.isnan(note_models[key]['performed_interval']['value']):
-            ret[key]['performed_interval']['value'] = None
+        if "distribution" in note_models[key]:
+            distribution = note_models[key]["distribution"].to_dict()
+            ret[key]["distribution"] = distribution
+        if np.isnan(note_models[key]["performed_interval"]["value"]):
+            ret[key]["performed_interval"]["value"] = None
         notes = []
-        if 'notes' in note_models[key]:
-            for note in note_models[key]['notes']:
-                if 'PitchTrajectory' in note:
-                    pitch = note['PitchTrajectory'].tolist()
+        if "notes" in note_models[key]:
+            for note in note_models[key]["notes"]:
+                if "PitchTrajectory" in note:
+                    pitch = note["PitchTrajectory"].tolist()
                     notes.append(pitch)
-        ret[key]['notes'] = notes
+        ret[key]["notes"] = notes
     return ret

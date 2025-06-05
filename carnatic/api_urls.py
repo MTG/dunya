@@ -20,26 +20,20 @@ from rest_framework.urlpatterns import format_suffix_patterns
 import carnatic.api
 
 urlpatterns = [
-    path('raaga', carnatic.api.RaagaList.as_view(), name='api-carnatic-raaga-list'),
-    path('raaga/<uuid:uuid>', carnatic.api.RaagaDetail.as_view(), name='api-carnatic-raaga-detail'),
-
-    path('taala', carnatic.api.TaalaList.as_view(), name='api-carnatic-taala-list'),
-    path('taala/<uuid:uuid>', carnatic.api.TaalaDetail.as_view(), name='api-carnatic-taala-detail'),
-
-    path('instrument', carnatic.api.InstrumentList.as_view(), name='api-carnatic-instrument-list'),
-    path('instrument/<int:pk>', carnatic.api.InstrumentDetail.as_view(), name='api-carnatic-instrument-detail'),
-
-    path('work', carnatic.api.WorkList.as_view(), name='api-carnatic-work-list'),
-    path('work/<uuid:uuid>', carnatic.api.WorkDetail.as_view(), name='api-carnatic-work-detail'),
-
-    path('recording', carnatic.api.RecordingList.as_view(), name='api-carnatic-recording-list'),
-    path('recording/<uuid:uuid>', carnatic.api.RecordingDetail.as_view(), name='api-carnatic-recording-detail'),
-
-    path('artist', carnatic.api.ArtistList.as_view(), name='api-carnatic-artist-list'),
-    path('artist/<uuid:uuid>', carnatic.api.ArtistDetail.as_view(), name='api-carnatic-artist-detail'),
-
-    path('concert', carnatic.api.ConcertList.as_view(), name='api-carnatic-concert-list'),
-    path('concert/<uuid:uuid>', carnatic.api.ConcertDetail.as_view(), name='api-carnatic-concert-detail')
+    path("raaga", carnatic.api.RaagaList.as_view(), name="api-carnatic-raaga-list"),
+    path("raaga/<uuid:uuid>", carnatic.api.RaagaDetail.as_view(), name="api-carnatic-raaga-detail"),
+    path("taala", carnatic.api.TaalaList.as_view(), name="api-carnatic-taala-list"),
+    path("taala/<uuid:uuid>", carnatic.api.TaalaDetail.as_view(), name="api-carnatic-taala-detail"),
+    path("instrument", carnatic.api.InstrumentList.as_view(), name="api-carnatic-instrument-list"),
+    path("instrument/<int:pk>", carnatic.api.InstrumentDetail.as_view(), name="api-carnatic-instrument-detail"),
+    path("work", carnatic.api.WorkList.as_view(), name="api-carnatic-work-list"),
+    path("work/<uuid:uuid>", carnatic.api.WorkDetail.as_view(), name="api-carnatic-work-detail"),
+    path("recording", carnatic.api.RecordingList.as_view(), name="api-carnatic-recording-list"),
+    path("recording/<uuid:uuid>", carnatic.api.RecordingDetail.as_view(), name="api-carnatic-recording-detail"),
+    path("artist", carnatic.api.ArtistList.as_view(), name="api-carnatic-artist-list"),
+    path("artist/<uuid:uuid>", carnatic.api.ArtistDetail.as_view(), name="api-carnatic-artist-detail"),
+    path("concert", carnatic.api.ConcertList.as_view(), name="api-carnatic-concert-list"),
+    path("concert/<uuid:uuid>", carnatic.api.ConcertDetail.as_view(), name="api-carnatic-concert-detail"),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json", "api"])

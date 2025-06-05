@@ -65,14 +65,14 @@ class CollectionList(generics.ListAPIView):
 
 
 class CollectionDetail(generics.RetrieveAPIView):
-    lookup_field = 'slug'
+    lookup_field = "slug"
     queryset = models.Collection.objects.all()
     serializer_class = serializers.CollectionDetailSerializer
 
 
 class StaffWritePermission(permissions.IsAuthenticated):
-    """ An extension of the IsAuthenticated permission which only lets
-        staff members perform POST methods """
+    """An extension of the IsAuthenticated permission which only lets
+    staff members perform POST methods"""
 
     def has_permission(self, request, view):
         perm = super().has_permission(request, view)
@@ -83,7 +83,7 @@ class StaffWritePermission(permissions.IsAuthenticated):
 
 
 class DocumentDetail(generics.CreateAPIView, generics.RetrieveAPIView):
-    lookup_field = 'external_identifier'
+    lookup_field = "external_identifier"
     serializer_class = serializers.DocumentSerializer
     permission_classes = (StaffWritePermission,)
 
@@ -132,30 +132,30 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView, generics.Retrie
         try:
             document = models.Document.objects.get(external_identifier=external_identifier)
         except models.Document.DoesNotExist:
-            data = {'detail': 'No document with this id'}
+            data = {"detail": "No document with this id"}
             return response.Response(data, status=status.HTTP_404_NOT_FOUND)
         try:
             sft = models.SourceFileType.objects.get(slug=file_type)
         except models.SourceFileType.DoesNotExist:
-            data = {'detail': 'No filetype with this slug'}
+            data = {"detail": "No filetype with this slug"}
             return response.Response(data, status=status.HTTP_404_NOT_FOUND)
 
         if not file:
-            data = {'detail': 'Need exactly one file called "file"'}
+            data = {"detail": 'Need exactly one file called "file"'}
             return response.Response(data, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             sf, created = util.docserver_upload_and_save_file(document.id, sft.id, file)
         except OSError as e:
-            data = {'detail': 'Cannot write file'}
+            data = {"detail": "Cannot write file"}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         if created:
             retstatus = status.HTTP_201_CREATED
-            data = {'detail': 'created'}
+            data = {"detail": "created"}
         else:
             retstatus = status.HTTP_200_OK
-            data = {'detail': 'updated'}
+            data = {"detail": "updated"}
         return response.Response(data, status=retstatus)
 
     def get(self, request, external_identifier, file_type):
@@ -221,7 +221,7 @@ def download_external(request, uuid, ftype):
         # TODO: We should ratelimit mp3 requests, but not any others,
         # so we need a different path for nginx for these ones
         response = sendfile(request, fname, mimetype=mimetype)
-        response['X-Accel-Limit-Rate'] = ratelimit
+        response["X-Accel-Limit-Rate"] = ratelimit
 
         return response
     except docserver.exceptions.TooManyFilesException as e:
@@ -243,44 +243,47 @@ def manager(request):
         # All hosts should listen on a queue named themselves, so that
         # when we register it, we get the data from the correct host
         jobs.register_host.apply_async([register], queue=register)
-        return redirect('docserver-manager')
+        return redirect("docserver-manager")
     if request.method == "POST":
         # Process a module version
         run = request.POST.get("run")
         if run is not None:
             jobs.run_module(int(run))
-            return redirect('docserver-manager')
+            return redirect("docserver-manager")
 
     collections = models.Collection.objects.all()
-    modules = models.Module.objects.order_by('name').all()
+    modules = models.Module.objects.order_by("name").all()
 
     ret = {"collections": collections, "modules": modules}
-    return render(request, 'docserver/manager.html', ret)
+    return render(request, "docserver/manager.html", ret)
 
 
 @user_passes_test(is_staff)
 def modules_status(request):
     modules = []
-    for m in models.Module.objects.all().order_by('name'):
-        modules.append({'disabled': m.disabled,
-                        'abs_url': m.get_absolute_url(),
-                        'name': m.name,
-                        'module': m.module,
-                        'latest_version_number': m.latest_version_number(),
-                        'processed_files': len(m.processed_files()),
-                        'unprocessed_files': len(m.unprocessed_files()),
-                        'pk': m.pk,
-                        'collections': [c.name for c in m.collections.all()]
-                        })
+    for m in models.Module.objects.all().order_by("name"):
+        modules.append(
+            {
+                "disabled": m.disabled,
+                "abs_url": m.get_absolute_url(),
+                "name": m.name,
+                "module": m.module,
+                "latest_version_number": m.latest_version_number(),
+                "processed_files": len(m.processed_files()),
+                "unprocessed_files": len(m.unprocessed_files()),
+                "pk": m.pk,
+                "collections": [c.name for c in m.collections.all()],
+            }
+        )
     ret = {"modules": modules}
-    return HttpResponse(json.dumps(ret), content_type='application/json')
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
 @user_passes_test(is_staff)
 def workers_status(request):
     inspect = app.control.inspect()
-    latestpycm = models.PyCompmusicVersion.objects.order_by('-commit_date').first()
-    latestessentia = models.EssentiaVersion.objects.order_by('-commit_date').first()
+    latestpycm = models.PyCompmusicVersion.objects.order_by("-commit_date").first()
+    latestessentia = models.EssentiaVersion.objects.order_by("-commit_date").first()
 
     try:
         hosts = inspect.active()
@@ -305,17 +308,14 @@ def workers_status(request):
             else:
                 state = "Idle"
             if essentia:
-                e = {'version': essentia.sha1, 'link': essentia.short_link()}
+                e = {"version": essentia.sha1, "link": essentia.short_link()}
             else:
                 e = {}
             if pyc:
-                p = {'version': pyc.sha1, 'link': pyc.short_link()}
+                p = {"version": pyc.sha1, "link": pyc.short_link()}
             else:
                 p = {}
-            neww.append({"host": host,
-                         "number": num_proc,
-                         "state": state,
-                         "worker": {'essentia': e, 'pyc': p}})
+            neww.append({"host": host, "number": num_proc, "state": state, "worker": {"essentia": e, "pyc": p}})
 
         workers = neww
         newworkers = list(set(hostkeys) - set(workerkeys))
@@ -326,10 +326,15 @@ def workers_status(request):
         workers = []
         newworkers = []
         inactiveworkers = [w.split("@")[1] for w in workerkeys]
-    ret = {"workers": workers, "newworkers": newworkers, "inactiveworkers": inactiveworkers,
-           "latestpycm": latestpycm.sha1, "latestessentia": latestessentia.sha1}
+    ret = {
+        "workers": workers,
+        "newworkers": newworkers,
+        "inactiveworkers": inactiveworkers,
+        "latestpycm": latestpycm.sha1,
+        "latestessentia": latestessentia.sha1,
+    }
 
-    return HttpResponse(json.dumps(ret), content_type='application/json')
+    return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
 def understand_task(task):
@@ -415,10 +420,7 @@ def worker(request, hostname):
             collection = models.Collection.objects.get(collectionid=p.get("collection"))
             document = collection.documents.get(external_identifier=p.get("recording"))
             modver = models.ModuleVersion.objects.get(pk=p.get("moduleversion"))
-            recent.append({"document": document,
-                           "collection": collection,
-                           "modulever": modver,
-                           "date": p.get("date")})
+            recent.append({"document": document, "collection": collection, "modulever": modver, "date": p.get("date")})
         except ObjectDoesNotExist:
             pass
 
@@ -428,9 +430,15 @@ def worker(request, hostname):
         date = datetime.datetime.strptime(a["date"], "%Y-%m-%dT%H:%M:%S.%f")
         workerlog.append({"date": date, "action": a["action"]})
 
-    ret = {"worker": wk, "state": state, "active": active,
-           "reserved": reserved, "recent": recent, "workerlog": workerlog}
-    return render(request, 'docserver/worker.html', ret)
+    ret = {
+        "worker": wk,
+        "state": state,
+        "active": active,
+        "reserved": reserved,
+        "recent": recent,
+        "workerlog": workerlog,
+    }
+    return render(request, "docserver/worker.html", ret)
 
 
 def extractor_modules():
@@ -461,15 +469,15 @@ def addmodule(request):
         if form.is_valid():
             module = form.cleaned_data["module"]
             collections = []
-            for i in form.cleaned_data['collections']:
+            for i in form.cleaned_data["collections"]:
                 collections.append(get_object_or_404(models.Collection, pk=int(i)))
             jobs.create_module(module, collections)
-            return redirect('docserver-manager')
+            return redirect("docserver-manager")
     else:
         form = forms.ModuleForm()
     newmodules, errors = extractor_modules()
     ret = {"form": form, "newmodules": newmodules, "errormodules": errors}
-    return render(request, 'docserver/addmodule.html', ret)
+    return render(request, "docserver/addmodule.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -504,22 +512,24 @@ def module(request, module):
         # Scan for a new version
         elif request.POST.get("newversion"):
             jobs.get_latest_module_version(module.pk)
-            return redirect('docserver-module', module.pk)
+            return redirect("docserver-module", module.pk)
         # Process a module (specific version)
         run = request.POST.get("runversion")
         if run is not None:
             jobs.run_module(module.pk, int(run))
-            return redirect('docserver-module', module.pk)
+            return redirect("docserver-module", module.pk)
 
     logmessages = models.DocumentLogMessage.objects.filter(moduleversion__module=module)[:20]
 
-    ret = {"module": module,
-           "versions": versions,
-           "form": form,
-           "confirmversion": confirmversion,
-           "confirmmodule": confirmmodule,
-           "logs": logmessages}
-    return render(request, 'docserver/module.html', ret)
+    ret = {
+        "module": module,
+        "versions": versions,
+        "form": form,
+        "confirmversion": confirmversion,
+        "confirmmodule": confirmmodule,
+        "logs": logmessages,
+    }
+    return render(request, "docserver/module.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -539,14 +549,15 @@ def delete_collection(request, slug):
     modules = models.Module.objects.filter(versions__derivedfile__document_collections=c).distinct()
 
     ret = {"collection": c, "modules": modules}
-    return render(request, 'docserver/delete_collection.html', ret)
+    return render(request, "docserver/delete_collection.html", ret)
 
 
 @user_passes_test(is_staff)
 def addcollection(request):
-    PermissionFormSet = modelformset_factory(models.CollectionPermission,
-                                             fields=("permission", "source_type", "streamable"), extra=2)
-    if request.method == 'POST':
+    PermissionFormSet = modelformset_factory(
+        models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2
+    )
+    if request.method == "POST":
         form = forms.CollectionForm(request.POST)
         permission_form = PermissionFormSet(request.POST)
         if form.is_valid() and permission_form.is_valid():
@@ -555,21 +566,22 @@ def addcollection(request):
             for coll_perm in coll_perms:
                 coll_perm.collection = col
                 coll_perm.save()
-            return redirect('docserver-manager')
+            return redirect("docserver-manager")
     else:
         form = forms.CollectionForm()
         permission_form = PermissionFormSet()
     ret = {"form": form, "permission_form": permission_form, "mode": "add"}
-    return render(request, 'docserver/addcollection.html', ret)
+    return render(request, "docserver/addcollection.html", ret)
 
 
 @user_passes_test(is_staff)
 def editcollection(request, slug):
     coll = get_object_or_404(models.Collection, slug=slug)
     file_types = models.SourceFileType.objects.filter(sourcefile__document__collections=coll).distinct()
-    PermissionFormSet = modelformset_factory(models.CollectionPermission,
-                                             fields=("permission", "source_type", "streamable"), extra=2)
-    if request.method == 'POST':
+    PermissionFormSet = modelformset_factory(
+        models.CollectionPermission, fields=("permission", "source_type", "streamable"), extra=2
+    )
+    if request.method == "POST":
         form = forms.EditCollectionForm(request.POST, instance=coll)
         permission_form = PermissionFormSet(request.POST)
         if form.is_valid() and permission_form.is_valid():
@@ -583,7 +595,7 @@ def editcollection(request, slug):
         form = forms.EditCollectionForm(instance=coll)
         permission_form = PermissionFormSet(queryset=models.CollectionPermission.objects.filter(collection=coll))
     ret = {"form": form, "permission_form": permission_form, "mode": "edit", "file_types": file_types}
-    return render(request, 'docserver/addcollection.html', ret)
+    return render(request, "docserver/addcollection.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -600,7 +612,7 @@ def delete_derived_files(request, slug, moduleversion):
             return redirect("docserver-collection", c.slug)
 
     ret = {"collection": c, "moduleversion": m}
-    return render(request, 'docserver/delete_derived_files.html', ret)
+    return render(request, "docserver/delete_derived_files.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -616,7 +628,7 @@ def collection(request, slug):
             jobs.run_module_on_collection.delay(collection.pk, int(run))
 
     ret = {"collection": collection}
-    return render(request, 'docserver/collection.html', ret)
+    return render(request, "docserver/collection.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -626,7 +638,7 @@ def collectionfiles(request, slug):
     documents = collection.documents.all()
     paginator = Paginator(documents, 50)
 
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     try:
         documents = paginator.page(page)
     except PageNotAnInteger:
@@ -635,20 +647,20 @@ def collectionfiles(request, slug):
         documents = paginator.page(paginator.num_pages)
 
     ret = {"collection": collection, "documents": documents}
-    return render(request, 'docserver/collectionfiles.html', ret)
+    return render(request, "docserver/collectionfiles.html", ret)
 
 
 @user_passes_test(is_staff)
 def collectionversion(request, slug, version, type):
     collection = get_object_or_404(models.Collection, slug=slug)
     mversion = get_object_or_404(models.ModuleVersion, pk=version)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
 
     run = request.GET.get("run")
     if run:
         document = models.Document.objects.get(external_identifier=run)
         jobs.process_document.delay(document.pk, mversion.pk)
-        return redirect('docserver-collectionversion', type, slug, version)
+        return redirect("docserver-collectionversion", type, slug, version)
 
     processedfiles = []
     unprocessedfiles = []
@@ -670,12 +682,14 @@ def collectionversion(request, slug, version, type):
             unprocessedfiles = paginator.page(1)
         except EmptyPage:
             unprocessedfiles = paginator.page(paginator.num_pages)
-    ret = {"collection": collection,
-           "modulever": mversion,
-           "type": type,
-           "unprocessedfiles": unprocessedfiles,
-           "processedfiles": processedfiles}
-    return render(request, 'docserver/collectionversion.html', ret)
+    ret = {
+        "collection": collection,
+        "modulever": mversion,
+        "type": type,
+        "unprocessedfiles": unprocessedfiles,
+        "processedfiles": processedfiles,
+    }
+    return render(request, "docserver/collectionversion.html", ret)
 
 
 @user_passes_test(is_staff)
@@ -688,7 +702,7 @@ def file(request, slug, uuid, version=None):
     if runmodule:
         mversion = models.ModuleVersion.objects.get(pk=runmodule)
         jobs.process_document.delay(doc.pk, mversion.pk)
-        return redirect('docserver-file', slug, uuid, version)
+        return redirect("docserver-file", slug, uuid, version)
 
     derived = doc.derivedfiles.all()
     showderived = False
@@ -701,51 +715,53 @@ def file(request, slug, uuid, version=None):
 
     outputs = doc.nestedderived()
 
-    ret = {"document": doc,
-           "collection": collection,
-           "modulever": version,
-           "outputs": outputs,
-           "modulederived": modulederived,
-           "showderived": showderived}
-    return render(request, 'docserver/file.html', ret)
+    ret = {
+        "document": doc,
+        "collection": collection,
+        "modulever": version,
+        "outputs": outputs,
+        "modulederived": modulederived,
+        "showderived": showderived,
+    }
+    return render(request, "docserver/file.html", ret)
 
 
 @user_passes_test(is_staff)
 def addfiletype(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.SourceFileTypeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('docserver-filetypes')
+            return redirect("docserver-filetypes")
     else:
         form = forms.SourceFileTypeForm()
     ret = {"form": form, "mode": "add"}
-    return render(request, 'docserver/addfiletype.html', ret)
+    return render(request, "docserver/addfiletype.html", ret)
 
 
 @user_passes_test(is_staff)
 def filetypes(request):
     filetypes = models.SourceFileType.objects.all()
     ret = {"filetypes": filetypes}
-    return render(request, 'docserver/filetypes.html', ret)
+    return render(request, "docserver/filetypes.html", ret)
 
 
 @user_passes_test(is_staff)
 def filetype(request, slug):
     ft = get_object_or_404(models.SourceFileType, slug=slug)
     ret = {"filetype": ft}
-    return render(request, 'docserver/filetype.html', ret)
+    return render(request, "docserver/filetype.html", ret)
 
 
 @user_passes_test(is_staff)
 def editfiletype(request, slug):
     ft = get_object_or_404(models.SourceFileType, slug=slug)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = forms.SourceFileTypeForm(request.POST, instance=ft)
         if form.is_valid():
             form.save()
-            return redirect('docserver-filetypes')
+            return redirect("docserver-filetypes")
     else:
         form = forms.SourceFileTypeForm(instance=ft)
     ret = {"form": form, "mode": "edit"}
-    return render(request, 'docserver/addfiletype.html', ret)
+    return render(request, "docserver/addfiletype.html", ret)

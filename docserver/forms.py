@@ -51,7 +51,7 @@ class ModuleEditForm(forms.ModelForm):
     class Meta:
         model = models.Module
         fields = ["collections"]
-        widgets = {'collections': forms.CheckboxSelectMultiple()}
+        widgets = {"collections": forms.CheckboxSelectMultiple()}
 
 
 class ModuleForm(forms.Form):
@@ -64,10 +64,10 @@ class ModuleForm(forms.Form):
         for checker in models.Collection.objects.all():
             choices.append((checker.pk, checker.name))
 
-        self.fields['collections'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=choices)
+        self.fields["collections"] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=choices)
 
     def clean_module(self):
-        modulepath = self.cleaned_data.get('module')
+        modulepath = self.cleaned_data.get("module")
         instance = jobs._get_module_instance_by_path(modulepath)
         if not instance:
             raise forms.ValidationError("The specified module doesn't exist")

@@ -28,19 +28,21 @@ import makam.models
 import account.models
 from dashboard import models
 
-uuid_match = r'(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})'
+uuid_match = r"(?P<uuid>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})"
 
 
 class CollectionForm(forms.Form):
     collectionid = forms.CharField(max_length=100, label="Musicbrainz collection ID")
     path = forms.CharField(max_length=200, label="Path to files on disk")
-    do_import = forms.BooleanField(required=False, label="Import metadata into Dunya (in addition to loading into dashboard)")
+    do_import = forms.BooleanField(
+        required=False, label="Import metadata into Dunya (in addition to loading into dashboard)"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def clean_path(self):
-        pth = self.cleaned_data.get('path')
+        pth = self.cleaned_data.get("path")
         if pth and not os.path.exists(pth):
             raise forms.ValidationError("This path doesn't exist")
         docserver_pth = os.path.join(pth, models.Collection.AUDIO_DIR)
@@ -50,10 +52,9 @@ class CollectionForm(forms.Form):
 
 
 class AddCollectionForm(CollectionForm):
-
     def clean_collectionid(self):
-        """ Check that the collectionid doesn't already exist in the DB """
-        cid = self.cleaned_data.get('collectionid')
+        """Check that the collectionid doesn't already exist in the DB"""
+        cid = self.cleaned_data.get("collectionid")
         if cid:
             if not re.match(uuid_match, cid):
                 raise forms.ValidationError("Collection ID needs to be a UUID")
@@ -64,13 +65,12 @@ class AddCollectionForm(CollectionForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        collectionid = cleaned_data.get('collectionid')
+        collectionid = cleaned_data.get("collectionid")
 
         if collectionid:
-
             try:
                 coll_name = compmusic.musicbrainz.get_collection_name(collectionid)
-                cleaned_data['collectionname'] = coll_name
+                cleaned_data["collectionname"] = coll_name
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 503:
                     raise forms.ValidationError("Error connecting to MusicBrainz, try again shortly")
@@ -86,28 +86,27 @@ class EditCollectionForm(CollectionForm):
     def __init__(self, collectionid, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.collectionid = collectionid
-        self.fields['collectionid'].widget.attrs['readonly'] = True
+        self.fields["collectionid"].widget.attrs["readonly"] = True
 
     def clean(self):
         cleaned_data = super().clean()
         try:
             coll_name = compmusic.musicbrainz.get_collection_name(self.collectionid)
-            cleaned_data['collectionname'] = coll_name
+            cleaned_data["collectionname"] = coll_name
         except OSError:  # Probably an http 500 from MusicBrainz
             # If we had an error, don't worry, we'll just use the old name
-            cleaned_data['collectionname'] = None
+            cleaned_data["collectionname"] = None
 
         return cleaned_data
 
 
 class InactiveUserForm(forms.ModelForm):
-
     delete = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         # Construct a custom Form which includes the affiliation from the user profile
         super().__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
+        instance = getattr(self, "instance", None)
         if instance and instance.pk:
             self.username = instance.username
             self.first_name = instance.first_name
@@ -117,11 +116,10 @@ class InactiveUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['is_active']
+        fields = ["is_active"]
 
 
-ACCESS_REQUEST_DECISION = [('approve', 'Approve'),
-                           ('deny', 'Deny')]
+ACCESS_REQUEST_DECISION = [("approve", "Approve"), ("deny", "Deny")]
 
 
 class AccessRequestApprovalForm(forms.ModelForm):
@@ -130,7 +128,7 @@ class AccessRequestApprovalForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # Construct a custom Form which includes the affiliation from the user profile
         super().__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
+        instance = getattr(self, "instance", None)
         if instance and instance.pk:
             self.username = instance.user.username
             self.affiliation = instance.user.userprofile.affiliation
@@ -138,21 +136,21 @@ class AccessRequestApprovalForm(forms.ModelForm):
 
     class Meta:
         model = account.models.AccessRequest
-        fields = ['id']
+        fields = ["id"]
 
 
 class AccessCollectionForm(forms.ModelForm):
     class Meta:
         model = data.models.Collection
-        exclude = ['name', 'collectionid']
+        exclude = ["name", "collectionid"]
 
 
 OPTIONS = (
-            ("tabs", "Tabs"),
-            ("nawbas", "Nawbas"),
-            ("forms", "Forms"),
-            ("mizans", "Mizans"),
-          )
+    ("tabs", "Tabs"),
+    ("nawbas", "Nawbas"),
+    ("forms", "Forms"),
+    ("mizans", "Mizans"),
+)
 
 
 class CsvAndalusianForm(forms.Form):
@@ -169,7 +167,8 @@ class AndalusianScoreForm(forms.Form):
 
 
 class DashUUIDField(forms.UUIDField):
-    """A UUIDField which returns uuids with dashes """
+    """A UUIDField which returns uuids with dashes"""
+
     def prepare_value(self, value):
         if isinstance(value, uuid.UUID):
             return str(value)
@@ -181,11 +180,11 @@ class SymbTrForm(forms.ModelForm):
 
     class Meta:
         model = makam.models.SymbTr
-        fields = ['name', 'uuid']
+        fields = ["name", "uuid"]
 
     def clean_uuid(self):
-        data = self.cleaned_data['uuid']
-        if 'uuid' in self.changed_data or self.instance.pk is None:
+        data = self.cleaned_data["uuid"]
+        if "uuid" in self.changed_data or self.instance.pk is None:
             # If this is new, or if the uuid has changed, check if
             # there is already an object with this id
             if makam.models.SymbTr.objects.filter(uuid=data).exists():

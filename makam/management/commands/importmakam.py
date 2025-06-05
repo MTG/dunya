@@ -26,8 +26,8 @@ class Command(BaseCommand):
     choices = ["instrument", "form", "makam", "usul"]
 
     def load(self, fname, obclass):
-        """ Load a csv file into a class. If any items are in
-        additional columns then import them as aliases """
+        """Load a csv file into a class. If any items are in
+        additional columns then import them as aliases"""
         fp = open(fname, "rb")
         reader = csv.reader(fp)
         for line in reader:

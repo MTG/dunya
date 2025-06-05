@@ -19,8 +19,9 @@ import logging
 extractor_log = logging.getLogger("extractor")
 adapted_logs = {}
 
+
 class ExtractorAdapter(logging.LoggerAdapter):
-    """ A logging adapter that lets you set the document and sourcefile
+    """A logging adapter that lets you set the document and sourcefile
     being processed.
     You can also pass in `modulename` and `moduleversion` as
     the `extra` parameter (see
@@ -45,9 +46,12 @@ class ExtractorAdapter(logging.LoggerAdapter):
         kwargs["extra"] = extra
         return (msg, kwargs)
 
+
 def get_logger(modulename, moduleversion=None):
     global adapted_logs
     if modulename not in adapted_logs:
         assert moduleversion is not None, "First time getting the logger must include module version"
-        adapted_logs[modulename] = ExtractorAdapter(extractor_log, {"modulename": modulename, "moduleversion": moduleversion})
+        adapted_logs[modulename] = ExtractorAdapter(
+            extractor_log, {"modulename": modulename, "moduleversion": moduleversion}
+        )
     return adapted_logs[modulename]

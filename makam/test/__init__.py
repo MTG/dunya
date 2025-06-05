@@ -1,5 +1,6 @@
 from django.db import connection
 
+
 def setup():
     try:
         cursor = connection.cursor()

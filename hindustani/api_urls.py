@@ -21,32 +21,24 @@ from rest_framework.urlpatterns import format_suffix_patterns
 import hindustani.api
 
 urlpatterns = [
-    path('raag', hindustani.api.RaagList.as_view(), name='api-hindustani-raag-list'),
-    path('raag/<uuid:uuid>', hindustani.api.RaagDetail.as_view(), name='api-hindustani-raag-detail'),
-
-    path('taal', hindustani.api.TaalList.as_view(), name='api-hindustani-taal-list'),
-    path('taal/<uuid:uuid>', hindustani.api.TaalDetail.as_view(), name='api-hindustani-taal-detail'),
-
-    path('laya', hindustani.api.LayaList.as_view(), name='api-hindustani-laya-list'),
-    path('laya/<uuid:uuid>', hindustani.api.LayaDetail.as_view(), name='api-hindustani-laya-detail'),
-
-    path('form', hindustani.api.FormList.as_view(), name='api-hindustani-form-list'),
-    path('form/<uuid:uuid>', hindustani.api.FormDetail.as_view(), name='api-hindustani-form-detail'),
-
-    path('instrument', hindustani.api.InstrumentList.as_view(), name='api-hindustani-instrument-list'),
-    path('instrument/<uuid:uuid>', hindustani.api.InstrumentDetail.as_view(), name='api-hindustani-instrument-detail'),
-
-    path('work', hindustani.api.WorkList.as_view(), name='api-hindustani-work-list'),
-    path('work/<uuid:uuid>', hindustani.api.WorkDetail.as_view(), name='api-hindustani-work-detail'),
-
-    path('recording', hindustani.api.RecordingList.as_view(), name='api-hindustani-recording-list'),
-    path('recording/<uuid:uuid>', hindustani.api.RecordingDetail.as_view(), name='api-hindustani-recording-detail'),
-
-    path('artist', hindustani.api.ArtistList.as_view(), name='api-hindustani-artist-list'),
-    path('artist/<uuid:uuid>', hindustani.api.ArtistDetail.as_view(), name='api-hindustani-artist-detail'),
-
-    path('release', hindustani.api.ReleaseList.as_view(), name='api-hindustani-release-list'),
-    path('release/<uuid:uuid>', hindustani.api.ReleaseDetail.as_view(), name='api-hindustani-release-detail'),
+    path("raag", hindustani.api.RaagList.as_view(), name="api-hindustani-raag-list"),
+    path("raag/<uuid:uuid>", hindustani.api.RaagDetail.as_view(), name="api-hindustani-raag-detail"),
+    path("taal", hindustani.api.TaalList.as_view(), name="api-hindustani-taal-list"),
+    path("taal/<uuid:uuid>", hindustani.api.TaalDetail.as_view(), name="api-hindustani-taal-detail"),
+    path("laya", hindustani.api.LayaList.as_view(), name="api-hindustani-laya-list"),
+    path("laya/<uuid:uuid>", hindustani.api.LayaDetail.as_view(), name="api-hindustani-laya-detail"),
+    path("form", hindustani.api.FormList.as_view(), name="api-hindustani-form-list"),
+    path("form/<uuid:uuid>", hindustani.api.FormDetail.as_view(), name="api-hindustani-form-detail"),
+    path("instrument", hindustani.api.InstrumentList.as_view(), name="api-hindustani-instrument-list"),
+    path("instrument/<uuid:uuid>", hindustani.api.InstrumentDetail.as_view(), name="api-hindustani-instrument-detail"),
+    path("work", hindustani.api.WorkList.as_view(), name="api-hindustani-work-list"),
+    path("work/<uuid:uuid>", hindustani.api.WorkDetail.as_view(), name="api-hindustani-work-detail"),
+    path("recording", hindustani.api.RecordingList.as_view(), name="api-hindustani-recording-list"),
+    path("recording/<uuid:uuid>", hindustani.api.RecordingDetail.as_view(), name="api-hindustani-recording-detail"),
+    path("artist", hindustani.api.ArtistList.as_view(), name="api-hindustani-artist-list"),
+    path("artist/<uuid:uuid>", hindustani.api.ArtistDetail.as_view(), name="api-hindustani-artist-detail"),
+    path("release", hindustani.api.ReleaseList.as_view(), name="api-hindustani-release-list"),
+    path("release/<uuid:uuid>", hindustani.api.ReleaseDetail.as_view(), name="api-hindustani-release-detail"),
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'api'])
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=["json", "api"])

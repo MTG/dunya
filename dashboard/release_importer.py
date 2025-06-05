@@ -82,7 +82,9 @@ class ReleaseImporter:
             print("Release already updated in this import. Not doing it again")
             return self._ReleaseClass.objects.get(mbid=releaseid)
 
-        rel = compmusic.mb.get_release_by_id(releaseid, includes=["artists", "recordings", "artist-rels", "release-groups"])
+        rel = compmusic.mb.get_release_by_id(
+            releaseid, includes=["artists", "recordings", "artist-rels", "release-groups"]
+        )
         rel = rel["release"]
 
         mbid = rel["id"]
@@ -132,7 +134,8 @@ class ReleaseImporter:
 
     def _create_release_object(self, mbrelease):
         release, created = self._ReleaseClass.objects.get_or_create(
-            mbid=mbrelease["id"], defaults={"title": mbrelease["title"]})
+            mbid=mbrelease["id"], defaults={"title": mbrelease["title"]}
+        )
         if "release-group" in mbrelease and "primary-type" in mbrelease["release-group"]:
             release.rel_type = mbrelease["release-group"]["primary-type"]
         if "status" in mbrelease:
@@ -150,9 +153,7 @@ class ReleaseImporter:
     def _create_artist_object(self, ArtistKlass, AliasKlass, mbartist, alias_ref="artist"):
         artistid = mbartist["id"]
 
-        artist, created = ArtistKlass.objects.get_or_create(
-            mbid=artistid,
-            defaults={"name": mbartist["name"]})
+        artist, created = ArtistKlass.objects.get_or_create(mbid=artistid, defaults={"name": mbartist["name"]})
 
         logger.info(f"  adding artist/composer {artistid}")
         artist.name = mbartist["name"]
@@ -227,17 +228,25 @@ class ReleaseImporter:
             return self._ComposerClass.objects.get(mbid=artistid)
 
         mbartist = compmusic.mb.get_artist_by_id(artistid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
-        composer = self._create_artist_object(self._ComposerClass, self._ComposerAliasClass, mbartist, alias_ref="composer")
+        composer = self._create_artist_object(
+            self._ComposerClass, self._ComposerAliasClass, mbartist, alias_ref="composer"
+        )
         self.imported_composers.append(artistid)
         return composer
 
     def _get_artist_performances(self, artistrelationlist):
         performances = []
         for perf in artistrelationlist:
-            if perf["type-id"] in [RELATION_RECORDING_PERFORMER, RELATION_RECORDING_VOCAL,
-                                   RELATION_RECORDING_INSTRUMENT, RELATION_RECORDING_ORCHESTRA,
-                                   RELATION_RELEASE_PERFORMER, RELATION_RELEASE_VOCAL,
-                                   RELATION_RELEASE_INSTRUMENT, RELATION_RELEASE_ORCHESTRA]:
+            if perf["type-id"] in [
+                RELATION_RECORDING_PERFORMER,
+                RELATION_RECORDING_VOCAL,
+                RELATION_RECORDING_INSTRUMENT,
+                RELATION_RECORDING_ORCHESTRA,
+                RELATION_RELEASE_PERFORMER,
+                RELATION_RELEASE_VOCAL,
+                RELATION_RELEASE_INSTRUMENT,
+                RELATION_RELEASE_ORCHESTRA,
+            ]:
                 artistid = perf["target"]
                 attrs = perf.get("attribute-list", [])
                 type_id = perf["type-id"]
@@ -315,9 +324,7 @@ class ReleaseImporter:
     def add_and_get_work(self, workid):
         mbwork = compmusic.mb.get_work_by_id(workid, includes=["artist-rels"])["work"]
         import_logger.info("adding work %s", mbwork["title"])
-        work, created = self._WorkClass.objects.get_or_create(
-            mbid=workid,
-            defaults={"title": mbwork["title"]})
+        work, created = self._WorkClass.objects.get_or_create(mbid=workid, defaults={"title": mbwork["title"]})
 
         work.title = mbwork["title"]
         work.save()

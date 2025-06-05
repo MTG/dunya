@@ -46,16 +46,16 @@ class InstrumentPerformanceInline(admin.TabularInline):
 
 class ArtistAdmin(admin.ModelAdmin):
     inlines = (ArtistAliasInline,)
-    exclude = ('image', 'description')
+    exclude = ("image", "description")
 
 
 class InstrumentAdmin(admin.ModelAdmin):
-    exclude = ('image', 'description')
+    exclude = ("image", "description")
 
 
 class ComposerAdmin(admin.ModelAdmin):
     inlines = (ComposerAliasInline,)
-    exclude = ('image', 'description')
+    exclude = ("image", "description")
 
 
 class RecordingAdmin(admin.ModelAdmin):

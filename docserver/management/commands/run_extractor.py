@@ -28,6 +28,7 @@ import compmusic
 
 logger = logging.getLogger(__name__)
 
+
 def _get_module_by_path(modulepath):
     mod, clsname = modulepath.rsplit(".", 1)
     try:
@@ -42,8 +43,13 @@ def _get_module_by_path(modulepath):
 def _get_module_by_slug(slug):
     # Get all files in the module
     fname, dirname, desc = imp.find_module("extractors", compmusic.__path__)
-    modules = set(["dashboard.extractors.%s" % os.path.splitext(module)[0]
-                   for module in os.listdir(dirname) if module.endswith(".py")])
+    modules = set(
+        [
+            "dashboard.extractors.%s" % os.path.splitext(module)[0]
+            for module in os.listdir(dirname)
+            if module.endswith(".py")
+        ]
+    )
 
     unloaded = []
     matching = []
@@ -59,7 +65,8 @@ def _get_module_by_slug(slug):
 
     if unloaded:
         logger.warn(
-            "Failed to load these modules due to an import error, check that you have all their dependencies installed")
+            "Failed to load these modules due to an import error, check that you have all their dependencies installed"
+        )
         for u in unloaded:
             logger.warn(u)
 
@@ -76,6 +83,7 @@ def _get_module_by_slug(slug):
         if unloaded:
             logger.warn("or that the module it is in can be loaded (is it in one of the above failed modules?)")
         return None
+
 
 def load_module(modulepath):
     if "." in modulepath:
@@ -96,6 +104,7 @@ class NumPyArangeEncoder(json.JSONEncoder):
             return obj.tolist()  # or map(int, obj)
         return json.JSONEncoder.default(self, obj)
 
+
 def save_data(module, data):
     modulemeta = module._output
     mbid = module.musicbrainz_id
@@ -110,7 +119,7 @@ def save_data(module, data):
                 output = json.dumps(d[i], cls=NumPyArangeEncoder)
             else:
                 output = d[i]
-            if isinstance(output,str):
+            if isinstance(output, str):
                 output = output.encode("utf-8")
             open(fname, "wb").write(output)
 
@@ -128,14 +137,13 @@ def run_file(module, filename, mbid=None):
         logging.error("Cannot find a mbid in this file. Use the mbid argument")
 
 
-
 class Command(BaseCommand):
-    help = 'Run a Dunya extractor'
+    help = "Run a Dunya extractor"
 
     def add_arguments(self, parser):
-        parser.add_argument('module', help='python module name of the extractor to run')
-        parser.add_argument('file', help='path to the file to process')
-        parser.add_argument('--mbid', required=False)
+        parser.add_argument("module", help="python module name of the extractor to run")
+        parser.add_argument("file", help="path to the file to process")
+        parser.add_argument("--mbid", required=False)
 
     def handle(self, *args, **options):
         mbid = options["mbid"]

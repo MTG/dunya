@@ -27,14 +27,14 @@ def get_collection_ids_from_request_or_error(request):
     Raises:
         Django Rest Framework ValidationError (HTTP 400) if any of the items in the list are not a UUID"""
 
-    header = request.META.get('HTTP_DUNYA_COLLECTION', None)
+    header = request.META.get("HTTP_DUNYA_COLLECTION", None)
     collection_ids = []
     if header:
-        parts = header.replace(' ', '').split(',')
+        parts = header.replace(" ", "").split(",")
         for p in parts:
             try:
                 uuid.UUID(p)
                 collection_ids.append(p)
             except ValueError:
-                raise ValidationError('Dunya-Collection header is not a UUID or list of UUID')
+                raise ValidationError("Dunya-Collection header is not a UUID or list of UUID")
     return collection_ids

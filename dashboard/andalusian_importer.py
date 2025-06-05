@@ -41,8 +41,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
 
     def _link_release_recording(self, release, recording, trackorder, mnum, tnum):
         if not release.recordings.filter(pk=recording.pk).exists():
-            andalusian.models.AlbumRecording.objects.create(
-                album=release, recording=recording, track=trackorder)
+            andalusian.models.AlbumRecording.objects.create(album=release, recording=recording, track=trackorder)
 
     def _join_recording_and_works(self, recording, works):
         # A andalusian recording can be of many works. Note that because works
@@ -98,7 +97,9 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
     def _add_works_from_relations(self, work_rel_list):
         # In andalusian, some works only exist to link to the score. We only want to add the other works
 
-        work_ids = [w["target"] for w in work_rel_list if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE]
+        work_ids = [
+            w["target"] for w in work_rel_list if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE
+        ]
         score_work, works = self._get_works_and_score(work_ids)
         imported_works = []
         for work in works:
@@ -114,14 +115,18 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         mbrec = mbrec["recording"]
 
         recording_changed = False
-        url_rels = [rel for rel in mbrec.get("url-relation-list", []) if rel["type-id"] == RECORDING_URL_DOWNLOAD_FOR_FREE]
+        url_rels = [
+            rel for rel in mbrec.get("url-relation-list", []) if rel["type-id"] == RECORDING_URL_DOWNLOAD_FOR_FREE
+        ]
         if len(url_rels) == 1:
             url = url_rels[0]["target"]
             recording.archive_url = url
             recording_changed = True
 
         work_rels = mbrec.get("work-relation-list", [])
-        work_ids = [w["target"] for w in work_rels if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE]
+        work_ids = [
+            w["target"] for w in work_rels if w["type-id"] == release_importer.RELATION_RECORDING_WORK_PERFORMANCE
+        ]
         score_work, works = self._get_works_and_score(work_ids)
         if score_work:
             url_rels = [rel for rel in score_work["url-relation-list"] if rel["type-id"] == WORK_URL_SCORE]
@@ -139,8 +144,11 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         # We don't expect to see these two relations here, as we know that all releases in MusicBrainz
         # for this collection have recording-level relationships.
         if perf_type in [release_importer.RELATION_RELEASE_VOCAL, release_importer.RELATION_RELEASE_INSTRUMENT]:
-            raise release_importer.ImportFailedException("Found a release-level artist instrument relation on "
-                                                         "recording {} which isn't supported".format(recordingid))
+            raise release_importer.ImportFailedException(
+                "Found a release-level artist instrument relation on recording {} which isn't supported".format(
+                    recordingid
+                )
+            )
 
         is_lead = False
         instr_name = attrs[-1]
@@ -157,7 +165,9 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         instrument = self._get_instrument(instr_name)
         if instrument:
             recording = andalusian.models.Recording.objects.get(mbid=recordingid)
-            perf = andalusian.models.InstrumentPerformance(recording=recording, instrument=instrument, performer=artist, lead=is_lead)
+            perf = andalusian.models.InstrumentPerformance(
+                recording=recording, instrument=instrument, performer=artist, lead=is_lead
+            )
             perf.save()
 
     def _add_release_performance(self, releasembid, artistid, perf_type, attrs):
@@ -205,14 +215,20 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
             print("Orchestra already updated in this import. Not doing it again")
             return self._OrchestraClass.objects.get(mbid=orchestraid)
 
-        mborchestra = compmusic.mb.get_artist_by_id(orchestraid, includes=["url-rels", "artist-rels", "aliases"])["artist"]
-        orchestra = self._create_artist_object(self._OrchestraClass, self._OrchestraAliasClass, mborchestra, alias_ref="orchestra")
+        mborchestra = compmusic.mb.get_artist_by_id(orchestraid, includes=["url-rels", "artist-rels", "aliases"])[
+            "artist"
+        ]
+        orchestra = self._create_artist_object(
+            self._OrchestraClass, self._OrchestraAliasClass, mborchestra, alias_ref="orchestra"
+        )
 
         orchestra.group_members.clear()
         if mborchestra.get("type") == "Group":
             for artist, instruments in self._get_orchestra_performances(mborchestra.get("artist-relation-list", [])):
                 memberartist = self.add_and_get_artist(artist)
-                op, _ = andalusian.models.OrchestraPerformer.objects.get_or_create(orchestra=orchestra, performer=memberartist)
+                op, _ = andalusian.models.OrchestraPerformer.objects.get_or_create(
+                    orchestra=orchestra, performer=memberartist
+                )
                 for instrument in instruments:
                     inst = self._get_instrument(instrument)
                     op.instruments.add(inst)

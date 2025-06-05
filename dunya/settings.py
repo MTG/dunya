@@ -25,100 +25,100 @@ def get_check_env(envname):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_check_env('DUNYA_SECRET_KEY')
+SECRET_KEY = get_check_env("DUNYA_SECRET_KEY")
 
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.postgres',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'manifest_loader',
-    'data',
-    'carnatic',
-    'dashboard',
-    'docserver',
-    'account',
-    'makam',
-    'dunya',
-    'hindustani',
-    'motifdiscovery',
-    'andalusian',
-    'jingju',
+    "whitenoise.runserver_nostatic",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.postgres",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "manifest_loader",
+    "data",
+    "carnatic",
+    "dashboard",
+    "docserver",
+    "account",
+    "makam",
+    "dunya",
+    "hindustani",
+    "motifdiscovery",
+    "andalusian",
+    "jingju",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Dunya middleware
     # Say if the current user is allowed to see bootleg recordings
-    'dunya.middleware.ShowBootlegMiddleware',
+    "dunya.middleware.ShowBootlegMiddleware",
 ]
 
-ROOT_URLCONF = 'dunya.urls'
+ROOT_URLCONF = "dunya.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'dunya.wsgi.application'
+WSGI_APPLICATION = "dunya.wsgi.application"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-default_url = 'postgres://postgres@db/postgres'
-DATABASES = {'default': dj_database_url.config('DUNYA_DATABASE_URL', default=default_url)}
-if get_env('DUNYA_MOTIF_DB_URL'):
-    DATABASES['motif'] = dj_database_url.config('DUNYA_MOTIF_DB_URL')
+default_url = "postgres://postgres@db/postgres"
+DATABASES = {"default": dj_database_url.config("DUNYA_DATABASE_URL", default=default_url)}
+if get_env("DUNYA_MOTIF_DB_URL"):
+    DATABASES["motif"] = dj_database_url.config("DUNYA_MOTIF_DB_URL")
 
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -126,9 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Europe/Madrid'
+TIME_ZONE = "Europe/Madrid"
 
 USE_I18N = True
 
@@ -139,10 +139,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 # collectstatic puts static files here
-STATIC_ROOT = '/static/'
+STATIC_ROOT = "/static/"
+
 
 class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
     @staticmethod
@@ -154,64 +155,55 @@ class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build')
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "build")]
 
-MANIFEST_LOADER = {
-    'manifest_file': 'asset-manifest.json',
-    'loader': CRAManifestLoader
-}
+MANIFEST_LOADER = {"manifest_file": "asset-manifest.json", "loader": CRAManifestLoader}
 
 SITE_ID = 1
 
-LOGIN_URL = '/user/login/'
-LOGOUT_REDIRECT_URL = 'main'
+LOGIN_URL = "/user/login/"
+LOGOUT_REDIRECT_URL = "main"
 
 # Admins should be in this format:
 # Name;email,Name2;email2
-admin_str = get_env('DUNYA_ADMINS')
-ADMINS = [tuple(s.split(';')) for s in admin_str.split(',') if s]
+admin_str = get_env("DUNYA_ADMINS")
+ADMINS = [tuple(s.split(";")) for s in admin_str.split(",") if s]
 
 MANAGERS = []
 
-deploy_env = get_check_env('DUNYA_DEPLOY_ENV')
-if deploy_env == 'prod':
+deploy_env = get_check_env("DUNYA_DEPLOY_ENV")
+if deploy_env == "prod":
     USE_X_FORWARDED_HOST = True
     # Host 'nginx' is for services inside docker to connect
     # directly to dunya.
-    ALLOWED_HOSTS = ['dunya.compmusic.upf.edu', 'dunya.upf.edu', 'dunya.mtg.sb.upf.edu', 'nginx']
+    ALLOWED_HOSTS = ["dunya.compmusic.upf.edu", "dunya.upf.edu", "dunya.mtg.sb.upf.edu", "nginx"]
     debug = False
 
     #  Sendfile, for serving static content
-    SENDFILE_BACKEND = 'django_sendfile.backends.nginx'
-    SENDFILE_ROOT = '/'
-    SENDFILE_URL = '/serve'
+    SENDFILE_BACKEND = "django_sendfile.backends.nginx"
+    SENDFILE_ROOT = "/"
+    SENDFILE_URL = "/serve"
 
-    SENTRY_DSN = get_check_env('DUNYA_SENTRY_DSN')
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration()],
-        send_default_pii=True
-    )
+    SENTRY_DSN = get_check_env("DUNYA_SENTRY_DSN")
+    sentry_sdk.init(dsn=SENTRY_DSN, integrations=[DjangoIntegration()], send_default_pii=True)
     GMAIL_SEND_EMAIL = True
 else:  # development
-    ALLOWED_HOSTS = ['localhost', 'aporter.ca.upf.edu', 'web']
+    ALLOWED_HOSTS = ["localhost", "aporter.ca.upf.edu", "web"]
     debug = True
-    SENDFILE_BACKEND = 'django_sendfile.backends.development'
+    SENDFILE_BACKEND = "django_sendfile.backends.development"
 
     # For development this sets up a dummy email server
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    EMAIL_FILE_PATH = '/tmp/dunya-messages'
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    EMAIL_FILE_PATH = "/tmp/dunya-messages"
 
-    INTERNAL_IPS = ['127.0.0.1']
+    INTERNAL_IPS = ["127.0.0.1"]
 
     INSTALLED_APPS += [
-        'debug_toolbar',
+        "debug_toolbar",
     ]
 
     MIDDLEWARE = [
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
     ] + MIDDLEWARE
     GMAIL_SEND_EMAIL = True
 
@@ -220,64 +212,59 @@ DEBUG = debug
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/media'
-DERIVED_FOLDER = 'derived'
+MEDIA_ROOT = "/media"
+DERIVED_FOLDER = "derived"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 
 # Header check to see if we are on HTTPS
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Django rest framework
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 100,
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+    "PAGE_SIZE": 100,
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    )
 }
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "handlers": {
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
         }
     },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+    "loggers": {
+        "django.request": {
+            "handlers": ["mail_admins"],
+            "level": "ERROR",
+            "propagate": True,
         },
-    }
+    },
 }
 
 # To store history/log of output from workers
-WORKER_REDIS_HOST = get_check_env('DUNYA_WORKER_REDIS_HOST')
+WORKER_REDIS_HOST = get_check_env("DUNYA_WORKER_REDIS_HOST")
 
 #  Celery
 
-CELERY_BROKER_URL = get_check_env('DUNYA_CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = get_check_env('DUNYA_CELERY_RESULT_URL')
+CELERY_BROKER_URL = get_check_env("DUNYA_CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = get_check_env("DUNYA_CELERY_RESULT_URL")
 
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
 
 class DunyaRouter:
     def route_for_task(self, task, *args, **kwargs):
@@ -286,15 +273,15 @@ class DunyaRouter:
         return {"queue": "celery"}
 
 
-CELERY_TASK_ROUTES = (DunyaRouter(), )
+CELERY_TASK_ROUTES = (DunyaRouter(),)
 CELERY_WORKER_CONCURRENCY = 3
 
 
 # Notification emails (e.g. account activated)
 # Who emails are from
-NOTIFICATION_EMAIL_FROM = get_check_env('DUNYA_NOTIFICATION_FROM')
+NOTIFICATION_EMAIL_FROM = get_check_env("DUNYA_NOTIFICATION_FROM")
 # Who gets system emails (e.g., new user) [list/set]
-NOTIFICATION_EMAIL_TO = get_check_env('DUNYA_NOTIFICATION_TO').split(',')
+NOTIFICATION_EMAIL_TO = get_check_env("DUNYA_NOTIFICATION_TO").split(",")
 
 
 # Fixed versions of extracted features to show on dunya

@@ -42,12 +42,12 @@ def inline_artist_part(artist):
 
 @register.simple_tag
 def inline_release(release):
-    return format_html('<span>{}</span>', release.title)
+    return format_html("<span>{}</span>", release.title)
 
 
 @register.simple_tag
 def inline_composer(composer):
-    return format_html('<span>{}</span>', composer.name)
+    return format_html("<span>{}</span>", composer.name)
 
 
 @register.simple_tag

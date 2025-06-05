@@ -24,23 +24,25 @@ from andalusian import models
 
 
 def search(request):
-    q = request.GET.get('recording', '')
-    s_mizan = request.GET.get('mizans')
-    s_nawba = request.GET.get('nawbas')
+    q = request.GET.get("recording", "")
+    s_mizan = request.GET.get("mizans")
+    s_nawba = request.GET.get("nawbas")
 
     recordings = models.Recording.objects
-    if q and q != '':
-        ids = list(models.Work.objects.filter(title__icontains=q).values_list('pk', flat=True))
-        recordings = recordings.filter(works__id__in=ids) \
-                     | recordings.filter(title__icontains=q) \
-                     | recordings.filter(album__title__icontains=q)
+    if q and q != "":
+        ids = list(models.Work.objects.filter(title__icontains=q).values_list("pk", flat=True))
+        recordings = (
+            recordings.filter(works__id__in=ids)
+            | recordings.filter(title__icontains=q)
+            | recordings.filter(album__title__icontains=q)
+        )
     if s_nawba:
         recordings = recordings.filter(section__nawba__in=s_nawba.split())
     if s_mizan:
         recordings = recordings.filter(section__mizan__in=s_mizan.split())
 
     paginator = Paginator(recordings.all(), 25)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     next_page = None
     try:
         recordings = paginator.page(page)
@@ -54,11 +56,8 @@ def search(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         recordings = paginator.page(paginator.num_pages)
-    results = {
-            "results": [item.get_dict() for item in recordings.object_list],
-            "moreResults": next_page
-    }
-    return HttpResponse(json.dumps(results), content_type='application/json')
+    results = {"results": [item.get_dict() for item in recordings.object_list], "moreResults": next_page}
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 
 def searchcomplete(request):
@@ -66,9 +65,11 @@ def searchcomplete(request):
     ret = []
     if term:
         suggestions = models.Recording.objects.filter(title__istartswith=term)[:3]
-        ret = [{"category": "recordings", "name": l.title, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, 1)]
+        ret = [{"category": "recordings", "name": l.title, "mbid": str(l.mbid)} for i, l in enumerate(suggestions, 1)]
         suggestions = models.Artist.objects.filter(name__istartswith=term)[:3]
-        ret += [{"category": "artists", "name": l.name, 'mbid': str(l.mbid)} for i, l in enumerate(suggestions, len(ret))]
+        ret += [
+            {"category": "artists", "name": l.name, "mbid": str(l.mbid)} for i, l in enumerate(suggestions, len(ret))
+        ]
     return HttpResponse(json.dumps(ret), content_type="application/json")
 
 
@@ -91,16 +92,15 @@ def recording(request, uuid, title=None):
         smallimage = None
 
     ret = {
-         "recording": recording,
-         "audio": audio,
-         "scoreurl": score,
-         "smallimageurl": smallimage,
+        "recording": recording,
+        "audio": audio,
+        "scoreurl": score,
+        "smallimageurl": smallimage,
     }
     return render(request, "andalusian/recording.html", ret)
 
 
 def filters(request):
-
     mizans = models.Mizan.objects.all()
     nawbas = models.Nawba.objects.all()
     artists = models.Artist.objects.all()
@@ -115,7 +115,12 @@ def filters(request):
 
     artistlist = []
     for a in artists:
-        artistlist.append({"name": a.name, "mbid": str(a.mbid), })
+        artistlist.append(
+            {
+                "name": a.name,
+                "mbid": str(a.mbid),
+            }
+        )
 
     ret = {
         "artists": artistlist,
@@ -124,5 +129,3 @@ def filters(request):
     }
 
     return JsonResponse(ret)
-
-

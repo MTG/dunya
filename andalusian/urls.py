@@ -20,14 +20,11 @@ from django.views.generic.base import TemplateView
 from andalusian import views
 
 urlpatterns = [
-    path('',
-         TemplateView.as_view(template_name="andalusian/index.html"), name='andalusian-main'),
-    path('info',
-         TemplateView.as_view(template_name="andalusian/info.html"), name='andalusian-info'),
-    path('search', views.search, name='andalusian-search'),
-    path('searchcomplete', views.searchcomplete, name='andalusian-searchcomplete'),
-    path('filters.json', views.filters, name='andalusian-filters'),
-    path('recording/<uuid:uuid>', views.recording, name='andalusian-recording'),
-    path('recording/<uuid:uuid>/<slug:title>', views.recording, name='andalusian-recording'),
+    path("", TemplateView.as_view(template_name="andalusian/index.html"), name="andalusian-main"),
+    path("info", TemplateView.as_view(template_name="andalusian/info.html"), name="andalusian-info"),
+    path("search", views.search, name="andalusian-search"),
+    path("searchcomplete", views.searchcomplete, name="andalusian-searchcomplete"),
+    path("filters.json", views.filters, name="andalusian-filters"),
+    path("recording/<uuid:uuid>", views.recording, name="andalusian-recording"),
+    path("recording/<uuid:uuid>/<slug:title>", views.recording, name="andalusian-recording"),
 ]
-

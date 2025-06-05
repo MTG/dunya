@@ -32,60 +32,60 @@ relaya = r"\blaya([0-9])?:? ?(.*)\b"
 
 
 def has_carnatic_form(tag):
-    """ Carnatic form tag """
+    """Carnatic form tag"""
     return re.search(recarnaticform, tag) is not None
 
 
 def has_raaga(tag):
-    """ Carnatic raaga tag """
+    """Carnatic raaga tag"""
     return re.search(reraaga, tag) is not None
 
 
 def has_taala(tag):
-    """ Carnatic taala tag """
+    """Carnatic taala tag"""
     return re.search(retaala, tag) is not None
 
 
 def has_raag(tag):
-    """ Hindustani raag tag """
+    """Hindustani raag tag"""
     return re.search(reraag, tag) is not None
 
 
 def has_taal(tag):
-    """ Hindustani taal tag """
+    """Hindustani taal tag"""
     return re.search(retaal, tag) is not None
 
 
 def has_laya(tag):
-    """ Hindustani laya tag """
+    """Hindustani laya tag"""
     return re.search(relaya, tag) is not None
 
 
 def has_section(tag):
-    """ Hindustani section tag """
+    """Hindustani section tag"""
     return re.search(resection, tag) is not None
 
 
 def has_makam(tag):
-    """ Makam tag """
+    """Makam tag"""
     remakam = r"\bmakam([0-9]|\b)"
     return re.search(remakam, tag) is not None
 
 
 def has_usul(tag):
-    """ Makam usul tag """
+    """Makam usul tag"""
     reusul = r"\busul([0-9]|\b)"
     return re.search(reusul, tag) is not None
 
 
 def has_makam_form(tag):
-    """ Makam form """
+    """Makam form"""
     reform = r"\bform([0-9]|\b)"
     return re.search(reform, tag) is not None
 
 
 def has_hindustani_form(tag):
-    """ Hindustani form """
+    """Hindustani form"""
     return re.search(rehindustaniform, tag) is not None
 
 
@@ -167,9 +167,7 @@ def group_makam_tags(makams, forms, usuls):
     makams.sort(key=lambda i: i[0])
     forms.sort(key=lambda i: i[0])
     usuls.sort(key=lambda i: i[0])
-    max_size = max(makams[-1][0] if makams else 0,
-                   forms[-1][0] if forms else 0,
-                   usuls[-1][0] if usuls else 0)
+    max_size = max(makams[-1][0] if makams else 0, forms[-1][0] if forms else 0, usuls[-1][0] if usuls else 0)
 
     ret = []
     for i in range(max_size + 1):

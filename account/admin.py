@@ -9,11 +9,11 @@ from account.models import AccessRequest
 class UserProfileInline(admin.StackedInline):
     model = models.UserProfile
     can_delete = False
-    verbose_name_plural = 'userprofile'
+    verbose_name_plural = "userprofile"
 
 
 class DunyaUserAdmin(UserAdmin):
-    inlines = (UserProfileInline, )
+    inlines = (UserProfileInline,)
 
 
 admin.site.unregister(User)

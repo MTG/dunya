@@ -26,21 +26,27 @@ def dumpfixture(modname):
         local(f"python manage.py dumpdata data.SourceName --indent=4 > {redir}")
         return
     elif modname == "carnatic":
-        tablemap = {"instrument": ["Instrument", "InstrumentAlias"],
-                    "taala": ["Taala", "TaalaAlias"],
-                    "raaga": ["Raaga", "RaagaAlias"],
-                    "form": ["Form", "FormAlias"]}
+        tablemap = {
+            "instrument": ["Instrument", "InstrumentAlias"],
+            "taala": ["Taala", "TaalaAlias"],
+            "raaga": ["Raaga", "RaagaAlias"],
+            "form": ["Form", "FormAlias"],
+        }
     elif modname == "hindustani":
-        tablemap = {"instrument": ["Instrument"],
-                    "taal": ["Taal", "TaalAlias"],
-                    "raag": ["Raag", "RaagAlias"],
-                    "form": ["Form", "FormAlias"],
-                    "laya": ["Laya", "LayaAlias"]}
+        tablemap = {
+            "instrument": ["Instrument"],
+            "taal": ["Taal", "TaalAlias"],
+            "raag": ["Raag", "RaagAlias"],
+            "form": ["Form", "FormAlias"],
+            "laya": ["Laya", "LayaAlias"],
+        }
     elif modname == "makam":
-        tablemap = {"instrument": ["Instrument"],
-                    "makam": ["Makam", "MakamAlias"],
-                    "form": ["Form", "FormAlias"],
-                    "usul": ["Usul", "UsulAlias"]}
+        tablemap = {
+            "instrument": ["Instrument"],
+            "makam": ["Makam", "MakamAlias"],
+            "form": ["Form", "FormAlias"],
+            "usul": ["Usul", "UsulAlias"],
+        }
     for filename, tables in tablemap.items():
         modellist = " ".join([f"{modname}.{t}[:]" for t in tables])
         redir = redir_base % filename
@@ -48,7 +54,7 @@ def dumpfixture(modname):
 
 
 def dumpdata(fname="dunya_data.json"):
-    with hide('running', 'status'):
+    with hide("running", "status"):
         modules = ["carnatic", "data", "docserver", "account", "auth", "dashboard"]
         local(f"python manage.py dumpdata --indent=4 {' '.join(modules)} > {fname}")
         print(f"dumped data to {fname}")

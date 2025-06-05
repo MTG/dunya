@@ -26,7 +26,7 @@ class Settings(dict):
 
 
 class ExtractorModule(object):
-    """ A module that runs on a file and returns an output.
+    """A module that runs on a file and returns an output.
 
     Logging:
     Inside a subclass, use self.logger to log a message.
@@ -91,7 +91,7 @@ class ExtractorModule(object):
             self.redis.set(key, val)
 
     def setup(self):
-        """ Override this if you want to do some pre-setup after
+        """Override this if you want to do some pre-setup after
         the module has been created but before you process each
         document. For example, you might want to run
         self.add_settings(a=1, b=2)
@@ -115,8 +115,8 @@ class ExtractorModule(object):
             raise
 
     def process_document(self, docid, sourcefileid, musicbrainzid, fname):
-        """ Set up some class state and call run. This should
-        never be called publicly """
+        """Set up some class state and call run. This should
+        never be called publicly"""
         self.document_id = docid
         self.logger.set_documentid(docid)
         self.logger.set_sourcefileid(sourcefileid)

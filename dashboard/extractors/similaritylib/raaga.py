@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -223,8 +223,10 @@ if __name__ == "__main__":
     similarity_map = {}
     raagas = raaga_mbids.keys()
     for i in xrange(len(raagas)):
-        if not exists("/home/gopal/data/features/raagaProfiles/" + raagas[i] + ".pickle") or raagas[
-            i] not in raaga_indices.keys():
+        if (
+            not exists("/home/gopal/data/features/raagaProfiles/" + raagas[i] + ".pickle")
+            or raagas[i] not in raaga_indices.keys()
+        ):
             continue
         similarity_map[raagas[i]] = []
         x = pickle.load(file("/home/gopal/data/features/raagaProfiles/" + raagas[i] + ".pickle"))
@@ -234,8 +236,7 @@ if __name__ == "__main__":
         similarity_map[raaga.name] = res
         print(raaga.name, res)
 
-    pickle.dump(similarity_map,
-                file("/home/gopal/data/features/raagaProfiles/similarity_map.yaml", "w"))
+    pickle.dump(similarity_map, file("/home/gopal/data/features/raagaProfiles/similarity_map.yaml", "w"))
 
     # BLOCK TO GET IMAGES
     smap = pickle.load(file("/home/gopal/data/features/raagaProfiles/similarity_map.pickle"))

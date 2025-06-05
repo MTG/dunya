@@ -13,19 +13,19 @@ class OrchestraAdmin(admin.ModelAdmin):
 
 
 class TabAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ("id", "name")
 
 
 class NawbaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ("id", "name")
 
 
 class MizanAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ("id", "name")
 
 
 class FormAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ("id", "name")
 
 
 admin.site.register(models.Orchestra, OrchestraAdmin)

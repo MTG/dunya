@@ -43,7 +43,7 @@ post_save.connect(user_post_save, sender=User)
 
 class AccessRequestManager(models.Manager):
     def for_user(self, user):
-        requests = self.get_queryset().filter(user=user).order_by('-requestdate')
+        requests = self.get_queryset().filter(user=user).order_by("-requestdate")
         if requests.count():
             return requests[0]
         return None
@@ -54,7 +54,7 @@ class AccessRequestManager(models.Manager):
 
 class AccessRequest(models.Model):
     class Meta:
-        ordering = ['requestdate']
+        ordering = ["requestdate"]
 
     objects = AccessRequestManager()
 
@@ -62,7 +62,7 @@ class AccessRequest(models.Model):
     requestdate = models.DateTimeField(default=timezone.now)
     justification = models.TextField()
     approved = models.BooleanField(null=True)
-    processedby = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='access_request_approvals')
+    processedby = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="access_request_approvals")
     processeddate = models.DateTimeField(blank=True, null=True)
 
     def approve_or_deny_request(self, user, approved):
@@ -76,4 +76,4 @@ class AccessRequest(models.Model):
         self.processeddate = timezone.now()
 
     def __str__(self):
-        return f'User: {self.user}, Date: {self.requestdate}, approved: {self.approved}'
+        return f"User: {self.user}, Date: {self.requestdate}, approved: {self.approved}"

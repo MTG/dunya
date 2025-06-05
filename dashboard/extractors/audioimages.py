@@ -1,16 +1,16 @@
 # Copyright 2013,2014 Music Technology Group - Universitat Pompeu Fabra
-# 
+#
 # This file is part of Dunya
-# 
+#
 # Dunya is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
 # Foundation (FSF), either version 3 of the License, or (at your option) any later
 # version.
-# 
+#
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
@@ -33,19 +33,20 @@ class AudioImages(dashboard.extractors.ExtractorModule):
 
     _depends = "wav"
 
-    _output = {"waveform4": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "spectrum4": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "waveform8": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "spectrum8": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "waveform16": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "spectrum16": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "waveform32": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "spectrum32": {"extension": "png", "mimetype": "image/png", "parts": True},
-               "smallfull": {"extension": "png", "mimetype": "image/png"}
-               }
+    _output = {
+        "waveform4": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "spectrum4": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "waveform8": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "spectrum8": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "waveform16": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "spectrum16": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "waveform32": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "spectrum32": {"extension": "png", "mimetype": "image/png", "parts": True},
+        "smallfull": {"extension": "png", "mimetype": "image/png"},
+    }
 
     def make_mini(self, wavfname):
-        smallfulloptions = coll.namedtuple('options', 'image_height fft_size image_width')
+        smallfulloptions = coll.namedtuple("options", "image_height fft_size image_width")
         smallfulloptions.fft_size = 4096
         smallfulloptions.image_height = 65
         smallfulloptions.image_width = 900
@@ -66,7 +67,7 @@ class AudioImages(dashboard.extractors.ExtractorModule):
         panelWidth = 900  # pixels
         panelHeight = 255  # pixels
         zoomlevels = [4, 8, 16, 32]  # seconds
-        options = coll.namedtuple('options', 'image_height fft_size image_width')
+        options = coll.namedtuple("options", "image_height fft_size image_width")
         options.image_height = panelHeight
         options.fft_size = 31
 
@@ -91,7 +92,7 @@ class AudioImages(dashboard.extractors.ExtractorModule):
             sumframes = 0
             while sumframes < totalframes:
                 if sumframes + framesperimage > totalframes:
-                    remaining_frames = (totalframes - sumframes)
+                    remaining_frames = totalframes - sumframes
                     options.image_width = options.image_width * remaining_frames // framesperimage
                 else:
                     remaining_frames = framesperimage

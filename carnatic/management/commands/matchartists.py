@@ -24,7 +24,7 @@ from carnatic import models
 
 class Command(BaseCommand):
     help = "Load vignesh's updates to artists"
-    options = 'artistsheet'
+    options = "artistsheet"
 
     def handle(self, *args, **options):
         fname = args[0]

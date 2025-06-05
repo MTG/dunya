@@ -20,6 +20,7 @@
 
 import os
 
+
 def get_sound_type(input_filename):
     sound_type = os.path.splitext(input_filename.lower())[1].strip(".")
 

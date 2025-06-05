@@ -14,11 +14,11 @@ mb.set_useragent("Dunya", "0.1")
 mb.set_rate_limit(False)
 mb.set_hostname("musicbrainz.org")
 
-'''Script for uploading audio files on Makam collection and creating Recordings:
+"""Script for uploading audio files on Makam collection and creating Recordings:
    take turkish-makam collection
    add new release, use this release when there is no release for the recording
    for each recording create an Recording and then call add_and_get_recording in
-   release_importer.'''
+   release_importer."""
 
 
 def main(path, fake_release_mbid):
@@ -28,15 +28,15 @@ def main(path, fake_release_mbid):
     for i in onlyfiles:
         head, tail = os.path.split(i)
         filename, file_extension = os.path.splitext(i)
-        if file_extension == '.mp3':
+        if file_extension == ".mp3":
             c = eyed3.load(os.path.join(path, i))
             mbid = c.tag.unique_file_ids.get("http://musicbrainz.org").render()[33:]
             try:
                 rel = mb.get_recording_by_id(mbid, includes=["releases"])
                 release = None
-                if len(rel['recording']['release-list']):
+                if len(rel["recording"]["release-list"]):
                     # create release
-                    release = rel['recording']['release-list'][0]['id']
+                    release = rel["recording"]["release-list"][0]["id"]
                 else:
                     release = fake_release_mbid
                     # use *fake* release
@@ -56,4 +56,4 @@ def main(path, fake_release_mbid):
 
 if __name__ == "__main__":
     uuid = uuid.uuid4()
-    main('/home/andres/Downloads/makam-stream/audio', uuid)
+    main("/home/andres/Downloads/makam-stream/audio", uuid)
