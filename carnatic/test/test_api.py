@@ -484,14 +484,10 @@ class RaagaTest(TestCase):
         self.apiclient = APIClient()
         self.apiclient.force_authenticate(user=self.normaluser)
 
-    def test_raaga_by_id(self):
-        good_id = self.raaga.id
-        resp = self.apiclient.get(f"/api/carnatic/raaga/{good_id}")
-        self.assertRedirects(resp, "/api/carnatic/raaga/d5285bf4-c3c5-454e-a659-fec30075990b", status_code=301)
-
-        bad_id = good_id + 1
-        resp = self.apiclient.get(f"/api/carnatic/raaga/{bad_id}")
-        self.assertEqual(404, resp.status_code)
+    def test_raaga_by_uuid(self):
+        resp = self.apiclient.get(f"/api/carnatic/raaga/{self.raaga.uuid}")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(self.raaga.name, resp.data["name"])
 
     def test_render_raaga_inner(self):
         s = api.RaagaInnerSerializer(self.raaga)
@@ -549,14 +545,10 @@ class TaalaTest(TestCase):
         self.apiclient = APIClient()
         self.apiclient.force_authenticate(user=self.normaluser)
 
-    def test_taala_by_id(self):
-        good_id = self.taala.id
-        resp = self.apiclient.get(f"/api/carnatic/taala/{good_id}")
-        self.assertRedirects(resp, "/api/carnatic/taala/d5285bf4-c3c5-454e-a659-fec30075990b", status_code=301)
-
-        bad_id = good_id + 1
-        resp = self.apiclient.get(f"/api/carnatic/taala/{bad_id}")
-        self.assertEqual(404, resp.status_code)
+    def test_taala_by_uuid(self):
+        resp = self.apiclient.get(f"/api/carnatic/taala/{self.taala.uuid}")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(self.taala.name, resp.data["name"])
 
     def test_render_taala_inner(self):
         s = api.TaalaInnerSerializer(self.taala)

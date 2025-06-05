@@ -1,3 +1,4 @@
+import uuid
 from unittest import mock
 
 from django.http import Http404, HttpResponse, HttpResponseNotFound
@@ -10,7 +11,7 @@ from makam import models
 
 class SymbTrTest(TestCase):
     def setUp(self):
-        self.test_uuid = "721ae3da-ed63-4ad7-86d9-ac2c9a4ab039"
+        self.test_uuid = uuid.UUID("721ae3da-ed63-4ad7-86d9-ac2c9a4ab039")
         self.symbtr = models.SymbTr.objects.create(uuid=self.test_uuid, name="test_symbtr")
 
     @mock.patch("docserver.views.download_external")
@@ -44,7 +45,7 @@ class SymbTrTest(TestCase):
     @mock.patch("makam.views.get_object_or_404")
     def test_no_symbtr(self, obj404):
         obj404.side_effect = Http404()
-        other_uuid = "721ae3da-ed63-4ad7-86d9-ac2c9a4aaaaa"
+        other_uuid = uuid.UUID("721ae3da-ed63-4ad7-86d9-ac2c9a4aaaaa")
         resp = self.client.get(f"/makam/symbtr/{other_uuid}")
         self.assertEqual(resp.status_code, 404)
         calls = [mock.call(models.SymbTr, uuid=other_uuid)]

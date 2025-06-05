@@ -60,22 +60,6 @@ class SourceFileTest(AbstractFileTest):
         jobs.process_collection(self.col1.pk, mod.versions.all()[0].pk)
         self.assertEqual(len(models.Document.objects.all()), 2)
 
-    """
-    @mock.patch('docserver.log.log_processed_file')
-    def test_process_document(self, log):
-        modulepath = "dashboard.extractors.TestExtractor"
-        instance = TestExtractor()
-        self.get_m.return_value = instance
-
-        mod = jobs.create_module(modulepath, [self.col1.pk])
-        self.assertEqual(len(models.Module.objects.all()), 1)
-
-        jobs.run_module_on_collection(self.col1.pk, mod.pk)
-
-        doc = models.Document.objects.get(pk=self.col1.pk)
-        self.assertEqual(len(doc.derivedfiles.all()), 1)
-    """
-
     @mock.patch("os.makedirs")
     @mock.patch("builtins.open")
     @override_settings(task_always_eager=True)

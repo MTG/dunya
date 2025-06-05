@@ -219,7 +219,7 @@ class WorkList(generics.ListAPIView):
         q = self.request.GET.get("q", None)
 
         if q:
-            works = works.unaccent_get(q)
+            works = works.filter(title__unaccent__iexact=q)
 
         artist = self.request.GET.get("artist", None)
         form = self.request.GET.get("form", None)

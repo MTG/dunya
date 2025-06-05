@@ -14,8 +14,8 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import damerauLevenshtein as levenshtein
-import lcs
+from . import damerauLevenshtein as levenshtein
+from . import lcs
 
 
 def _stripChars(word, chars):

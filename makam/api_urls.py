@@ -39,7 +39,7 @@ urlpatterns = [
     path("composer/<uuid:uuid>", makam.api.ComposerDetail.as_view(), name="api-makam-composer-detail"),
     path("release", makam.api.ReleaseList.as_view(), name="api-makam-release-list"),
     path("release/<uuid:uuid>", makam.api.ReleaseDetail.as_view(), name="api-makam-release-detail"),
-    path("symbt", makam.api.SymbtrList.as_view(), name="api-makam-symbtr-list"),
+    path("symbtr", makam.api.SymbtrList.as_view(), name="api-makam-symbtr-list"),
     path("symbtr/<uuid:uuid>", makam.api.SymbtrDetail.as_view(), name="api-makam-symbtr-detail"),
 ]
 

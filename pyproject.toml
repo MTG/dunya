@@ -58,6 +58,8 @@ dev = [
     "isort==5.13.2",
     "pep8==1.7.1",
     "pylint==3.2.3",
+    "pytest>=8.4.0",
+    "pytest-django>=4.11.1",
 ]
 
 [tool.ruff]
@@ -78,3 +80,6 @@ extend-exclude = ["**/migrations"]
 # T20: flake8-print
 select = ["A", "B", "E4", "E9", "F", "I", "S", "T10", "DJ", "G", "PIE", "T20"]
 ignore = ["DJ001", "DJ012", "T201", "B904", "G004", "S101", "S105", "S311", "S308", "S603", "S110", "S108"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "dunya.settings"

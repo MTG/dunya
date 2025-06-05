@@ -461,14 +461,10 @@ class RaagTest(ApiTestCase):
             name="raag", common_name="raag", uuid="3cecdb8e-2a54-4833-8049-b3d8060f7e32"
         )
 
-    def test_raag_by_id(self):
-        good_id = self.r.id
-        resp = self.apiclient.get(f"/api/hindustani/raag/{good_id}")
-        self.assertRedirects(resp, "/api/hindustani/raag/3cecdb8e-2a54-4833-8049-b3d8060f7e32", status_code=301)
-
-        bad_id = good_id + 1
-        resp = self.apiclient.get(f"/api/hindustani/raag/{bad_id}")
-        self.assertEqual(404, resp.status_code)
+    def test_raag_by_uuid(self):
+        resp = self.apiclient.get(f"/api/hindustani/raag/{self.r.uuid}")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(self.r.name, resp.data["name"])
 
     def test_render_raag_inner(self):
         s = api.RaagInnerSerializer(self.r)
@@ -493,14 +489,10 @@ class TaalTest(ApiTestCase):
             name="taal", common_name="taal", uuid="4f55fa34-5f77-4570-888c-0596cfc8a81a"
         )
 
-    def test_taal_by_id(self):
-        good_id = self.t.id
-        resp = self.apiclient.get(f"/api/hindustani/taal/{good_id}")
-        self.assertRedirects(resp, "/api/hindustani/taal/4f55fa34-5f77-4570-888c-0596cfc8a81a", status_code=301)
-
-        bad_id = good_id + 1
-        resp = self.apiclient.get(f"/api/hindustani/taal/{bad_id}")
-        self.assertEqual(404, resp.status_code)
+    def test_taal_by_uuid(self):
+        resp = self.apiclient.get(f"/api/hindustani/taal/{self.t.uuid}")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(self.t.name, resp.data["name"])
 
     def test_render_taal_inner(self):
         s = api.TaalInnerSerializer(self.t)
@@ -525,14 +517,10 @@ class FormTest(ApiTestCase):
             name="form", common_name="form", uuid="29847751-350b-4db2-9d18-630769ee2c6c"
         )
 
-    def test_form_by_id(self):
-        good_id = self.f.id
-        resp = self.apiclient.get(f"/api/hindustani/form/{good_id}")
-        self.assertRedirects(resp, "/api/hindustani/form/29847751-350b-4db2-9d18-630769ee2c6c", status_code=301)
-
-        bad_id = good_id + 1
-        resp = self.apiclient.get(f"/api/hindustani/form/{bad_id}")
-        self.assertEqual(404, resp.status_code)
+    def test_form_by_uuid(self):
+        resp = self.apiclient.get(f"/api/hindustani/form/{self.f.uuid}")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(self.f.name, resp.data["name"])
 
     def test_render_form_inner(self):
         s = api.FormInnerSerializer(self.f)
@@ -557,14 +545,10 @@ class LayaTest(ApiTestCase):
             name="laya", common_name="laya", uuid="e5d56b8c-f791-430a-ac2b-4c75f81a87c5"
         )
 
-    def test_laya_by_id(self):
-        good_id = self.l.id
-        resp = self.apiclient.get(f"/api/hindustani/laya/{good_id}")
-        self.assertRedirects(resp, "/api/hindustani/laya/e5d56b8c-f791-430a-ac2b-4c75f81a87c5", status_code=301)
-
-        bad_id = good_id + 1
-        resp = self.apiclient.get(f"/api/hindustani/laya/{bad_id}")
-        self.assertEqual(404, resp.status_code)
+    def test_laya_by_uuid(self):
+        resp = self.apiclient.get(f"/api/hindustani/laya/{self.l.uuid}")
+        self.assertEqual(200, resp.status_code)
+        self.assertEqual(self.l.name, resp.data["name"])
 
     def test_render_laya_inner(self):
         s = api.LayaInnerSerializer(self.l)
