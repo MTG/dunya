@@ -21,8 +21,8 @@ import time
 import unidecode
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.urls import reverse
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 import docserver

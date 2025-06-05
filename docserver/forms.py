@@ -16,8 +16,7 @@
 
 from django import forms
 
-from docserver import jobs
-from docserver import models
+from docserver import jobs, models
 
 
 class CollectionForm(forms.ModelForm):

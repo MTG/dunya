@@ -19,10 +19,10 @@ import os
 
 import django.utils.timezone
 from django.conf import settings
-from django.urls import reverse
 from django.core.validators import RegexValidator
-from django.db import models, connection
+from django.db import connection, models
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 
 from docserver import exceptions
 

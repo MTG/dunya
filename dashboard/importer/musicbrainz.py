@@ -14,13 +14,13 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import musicbrainzngs as mb
-import requests
-from requests.adapters import HTTPAdapter
 import time
 import xml.etree.ElementTree as etree
 
+import musicbrainzngs as mb
+import requests
 from compmusic.log import log
+from requests.adapters import HTTPAdapter
 
 mb.set_useragent("Dunya", "0.1")
 mb.set_rate_limit(False)
@@ -57,7 +57,7 @@ def _get_items_in_collection(collectionid, collectiontype):
             res.raise_for_status()
             count, ids = ws_ids(res.content)
             items.extend(ids)
-        except requests.HTTPError as e:
+        except requests.HTTPError:
             if res.status_code != 503:
                 # if we get ratelimited, sleep and try again.
                 # any other error, re-raise

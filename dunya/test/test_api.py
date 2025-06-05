@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 from rest_framework.exceptions import ValidationError
 
 from dunya.api import get_collection_ids_from_request_or_error

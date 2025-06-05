@@ -14,9 +14,10 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import requests
-import compmusic
 import os
+
+import compmusic
+import requests
 
 AUDIO_FILES = "/home/alastair/audio/carnatic"
 RELEASE_MAP = {}

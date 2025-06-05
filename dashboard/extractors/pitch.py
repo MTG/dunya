@@ -14,15 +14,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
+import io
 import struct
 
 import essentia.standard
 import numpy as np
-from docserver import util
 from scipy.ndimage.filters import gaussian_filter
-import io
 
 import dashboard.extractors
+from docserver import util
 
 
 class PitchExtract(dashboard.extractors.ExtractorModule):
@@ -56,7 +56,7 @@ class PitchExtract(dashboard.extractors.ExtractorModule):
         self.logger.info("done")
 
         # generating time stamps (because its equally hopped)
-        TStamps = np.array(range(0, len(pitch))) * np.float(self.settings.HopSize) / sampleRate
+        TStamps = np.array(range(len(pitch))) * np.float(self.settings.HopSize) / sampleRate
         thepitch = np.array([TStamps, pitch]).transpose()
 
         return {"pitch": thepitch.tolist()}
@@ -75,7 +75,7 @@ class NormalisedPitchExtract(dashboard.extractors.ExtractorModule):
 
     def get_histogram(self, pitch, nbins, smoothness=1):
         valid_pitch = [p for p in pitch if p > 0]
-        bins = [i - 0.5 for i in range(0, nbins + 1)]
+        bins = [i - 0.5 for i in range(nbins + 1)]
         histogram, edges = np.histogram(valid_pitch, bins, density=True)
         smoothed = gaussian_filter(histogram, smoothness)
 

@@ -15,9 +15,8 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import os
 
-from docserver import util
-
 from dashboard.extractors.audioimages import AudioImages
+from docserver import util
 
 
 class SmallAudioImage(AudioImages):

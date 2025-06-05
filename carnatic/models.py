@@ -16,12 +16,10 @@
 
 import collections
 import random
-from typing import List, Optional
 
-from django.urls import reverse
 from django.db import models
-from django.db.models import Count
-from django.db.models import Q
+from django.db.models import Count, Q
+from django.urls import reverse
 from django.utils.text import slugify
 
 import data.models

@@ -15,10 +15,11 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import os
-from PIL import Image
+
+import six
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
-import six
+from PIL import Image
 
 from carnatic import models
 

@@ -25,7 +25,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.forms.models import modelformset_factory
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from mishkal.tashkeel.tashkeel import TashkeelClass
 
 import andalusian.models
@@ -39,9 +39,7 @@ import hindustani.models
 import makam.models
 from account import services
 from account.models import AccessRequest
-from dashboard import forms
-from dashboard import jobs
-from dashboard import models
+from dashboard import forms, jobs, models
 from dashboard.forms import AccessRequestApprovalForm
 
 

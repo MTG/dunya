@@ -19,8 +19,7 @@ import django.utils.timezone
 
 import data.models
 from dashboard import external_data
-from dashboard.log import import_logger
-from dashboard.log import logger
+from dashboard.log import import_logger, logger
 
 RELEASE_TYPE_WIKIPEDIA = "29651736-fa6d-48e4-aadc-a557c6add1cb"
 MEMBER_OF_GROUP = "5be4c609-9afa-4ea0-910b-12ffb71e3821"

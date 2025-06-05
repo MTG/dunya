@@ -18,17 +18,14 @@ import json
 import math
 
 from django.conf import settings
-from django.contrib.auth.decorators import user_passes_test
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, render
 
-import dashboard.models
-import dashboard.views
 import docserver
 import docserver.exceptions
 import docserver.util
-from carnatic.models import Artist, Recording, Concert, Work, Taala, Raaga, Instrument, Form, RecordingForm
+from carnatic.models import Artist, Concert, Instrument, Raaga, Recording, Taala, Work
 from data import utils
 
 

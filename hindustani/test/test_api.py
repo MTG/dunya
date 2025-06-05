@@ -1,14 +1,14 @@
-from django.test import TestCase
-from django.contrib import auth
-from rest_framework.test import APIClient
-from rest_framework.renderers import JSONRenderer
-from django.contrib.auth.models import Permission
-import uuid
 import json
+import uuid
+
+from django.contrib import auth
+from django.contrib.auth.models import Permission
+from django.test import TestCase
+from rest_framework.renderers import JSONRenderer
+from rest_framework.test import APIClient
 
 import data
-from hindustani import models
-from hindustani import api
+from hindustani import api, models
 
 
 class ApiTestCase(TestCase):
@@ -273,7 +273,7 @@ class RecordingTest(ApiTestCase):
         client = APIClient()
         client.force_authenticate(user=self.staffuser)
 
-        response = client.get("/api/hindustani/recording", **{"HTTP_DUNYA_COLLECTION": "not-a-uuid"})
+        response = client.get("/api/hindustani/recording", HTTP_DUNYA_COLLECTION="not-a-uuid")
         self.assertEqual(response.status_code, 400)
 
     def test_recording_list_collection(self):
@@ -283,7 +283,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll1id
-        response = client.get("/api/hindustani/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/hindustani/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/hindustani/recording")
@@ -295,7 +295,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll3id
-        response = client.get("/api/hindustani/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/hindustani/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -386,7 +386,7 @@ class WorkTest(ApiTestCase):
 
         collections = f"{self.coll1id}"
         response = client.get(
-            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -394,14 +394,14 @@ class WorkTest(ApiTestCase):
         # Collection that doesn't exist
         collections = str(uuid.uuid4())
         response = client.get(
-            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll3id}, {self.coll1id}"
         response = client.get(
-            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -412,21 +412,21 @@ class WorkTest(ApiTestCase):
 
         collections = f"{self.coll1id}"
         response = client.get(
-            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
         collections = f"{self.coll2id}"
         response = client.get(
-            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll3id}"
         response = client.get(
-            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -437,7 +437,7 @@ class WorkTest(ApiTestCase):
 
         collections = f"{self.coll1id}"
         response = client.get(
-            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -448,7 +448,7 @@ class WorkTest(ApiTestCase):
 
         collections = f"{str(uuid.uuid4())}, {self.coll2id}, {self.coll1id}"
         response = client.get(
-            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/hindustani/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
@@ -620,13 +620,13 @@ class ReleaseTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = f"{self.coll1id}"
-        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/hindustani/release", HTTP_DUNYA_COLLECTION=collections)
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
         collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
-        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/hindustani/release", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
 
         self.assertEqual(3, len(data["results"]))
@@ -635,7 +635,7 @@ class ReleaseTest(ApiTestCase):
         # get 1 release
         client.force_authenticate(user=self.normaluser)
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/hindustani/release", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -643,7 +643,7 @@ class ReleaseTest(ApiTestCase):
         # get 2 release
         client.force_authenticate(user=self.restricteduser)
         collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
-        response = client.get("/api/hindustani/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/hindustani/release", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(2, len(data["results"]))
 

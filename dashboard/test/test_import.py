@@ -1,10 +1,9 @@
 import uuid
-
 from unittest import mock
+
 from django.test import TestCase
 
-from dashboard import jobs
-from dashboard import models
+from dashboard import jobs, models
 
 
 class CollectionTest(TestCase):

@@ -15,9 +15,9 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import numpy as np
+import rhythmlib as ap
 
 import dashboard.extractors
-import rhythmlib as ap
 
 
 class RhythmExtract(dashboard.extractors.ExtractorModule):
@@ -64,7 +64,7 @@ class RhythmExtract(dashboard.extractors.ExtractorModule):
         TCperRaw = 60.0 / TCRaw
         mmpFromTC = ap.getMatraPeriodEstimateFromTC(TCperRaw, params.TCparams)
         TCper, TCcorrFlag = ap.correctOctaveErrors(TCperRaw, mmpFromTC, params.TCparams.octCorrectParam)
-        TC = 60.0 / TCper
+        60.0 / TCper
         akCandLocs, akCandTs, akCandWts, akCandTransMat = ap.estimateAksharaCandidates(
             onsTs, onsFn.copy(), TCper, TCts, mmpFromTC, params.aksharaParams
         )
@@ -79,7 +79,7 @@ class RhythmExtract(dashboard.extractors.ExtractorModule):
         # Correct for all the offsets now and save to a dictionary
         aksharaTimes = aksharaTimes + offsetTime
         TCts = TCts + offsetTime
-        secStart = np.array([0.0])
+        np.array([0.0])
         sections = {"startTime": 0, "endTime": 0, "label": ""}
         sections["startTime"] = np.round(sectStart, params.roundOffLen)
         sections["endTime"] = np.round(sectEnd, params.roundOffLen)

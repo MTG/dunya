@@ -18,12 +18,12 @@ import collections
 import os
 from optparse import make_option
 
-import dashboard.extractors.similaritylib.raaga
 import numpy as np
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand, CommandError
 
 import carnatic
+import dashboard.extractors.similaritylib.raaga
 import data
 import hindustani
 from docserver import util

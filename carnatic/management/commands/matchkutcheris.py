@@ -14,14 +14,15 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.core.management.base import BaseCommand
-from django.core.files.base import ContentFile
-
 import csv
 import os
 import re
-from carnatic import models
+
+from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
+
 import data
+from carnatic import models
 
 
 class Command(BaseCommand):

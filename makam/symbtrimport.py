@@ -18,6 +18,7 @@ def delete_mapping():
 # Run in a django shell
 def create_mapping():
     import json
+
     import makam.models
 
     data = json.load(open("/srv/SymbTr/symbTr_mbid.json"))
@@ -29,8 +30,9 @@ def create_mapping():
 # Delete symbtr docserver collection, and rm the files
 # Run in a django shell
 def delete_documents():
-    import docserver.models
     import json
+
+    import docserver.models
 
     data = json.load(open("/srv/SymbTr/symbTr_mbid.json"))
 
@@ -87,10 +89,11 @@ def rmtree(path):
 # Create and upload docserver files
 # Run in pycompmusic
 def upload_symbtr(symbtr_file="/home/alastair/SymbTr/symbTr_mbid.json"):
-    import compmusic.dunya.docserver
-    import time
     import json
     import os
+    import time
+
+    import compmusic.dunya.docserver
 
     compmusic.dunya.set_token("")
     git_dir = "/srv/SymbTr"
@@ -132,8 +135,10 @@ def retrive_git_changes():
     Note: This method should be run from django shell."""
     import json
     import os
-    import docserver.models
+
     import git
+
+    import docserver.models
 
     collid = "6d506b76-61ed-46a7-ba92-08df2ecaa6a8"
     git_dir = "/srv/SymbTr"
@@ -159,7 +164,6 @@ def retrive_git_changes():
     g = git.cmd.Git(git_dir)
     differ = g.diff(last, "--name-only").split("\n")
     to_add = []
-    to_remove = []
     for i in differ:
         score = i.split("/")
         if score[0] in dir_slug.keys() and len(score) > 1:

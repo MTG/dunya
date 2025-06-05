@@ -18,9 +18,8 @@ import os
 
 import django.utils.timezone
 from django.apps import apps
-from django.urls import reverse
 from django.db import models
-import six
+from django.urls import reverse
 
 
 class StateCarryingManager(models.Manager):

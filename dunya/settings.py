@@ -3,11 +3,11 @@
 
 import os
 
-from django.core.exceptions import ImproperlyConfigured
 import dj_database_url
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 import manifest_loader.loaders
+import sentry_sdk
+from django.core.exceptions import ImproperlyConfigured
+from sentry_sdk.integrations.django import DjangoIntegration
 
 
 def get_env(envname):

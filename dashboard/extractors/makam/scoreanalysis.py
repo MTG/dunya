@@ -1,8 +1,8 @@
+from compmusic import dunya
+from settings import token
 from tomato.symbolic.symbtranalyzer import SymbTrAnalyzer
 
 import dashboard.extractors
-from compmusic import dunya
-from settings import token
 
 dunya.set_token(token)
 

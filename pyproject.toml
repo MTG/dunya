@@ -64,3 +64,17 @@ dev = [
 line-length = 120
 target-version = "py311"
 extend-exclude = ["**/migrations"]
+
+[tool.ruff.lint]
+# Rules: https://docs.astral.sh/ruff/rules
+# I: import order
+# S: flake8-bandit
+# B: flake8-bugbear
+# A: flake8-builtins
+# T10: flake8-debugger
+# DJ: flake8-django
+# G: flake8-logging-format
+# PIE: flake8-pie
+# T20: flake8-print
+select = ["A", "B", "E4", "E9", "F", "I", "S", "T10", "DJ", "G", "PIE", "T20"]
+ignore = ["DJ001", "DJ012", "T201", "B904", "G004", "S311", "S308", "S603", "S110", "S108"]

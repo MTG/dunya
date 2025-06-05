@@ -2,8 +2,7 @@ import json
 import os
 import sys
 
-from . import csvtojson
-from . import format_pitch
+from . import csvtojson, format_pitch
 
 
 def main(fname):

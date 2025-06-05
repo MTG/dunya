@@ -1,7 +1,8 @@
 from __future__ import print_function
 
-from fabric.api import local, hide
 import os
+
+from fabric.api import hide, local
 
 
 def test(module=None, keepdb=True):

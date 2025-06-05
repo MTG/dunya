@@ -8,8 +8,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.test import APIClient
 
 import data
-from carnatic import api
-from carnatic import models
+from carnatic import api, models
 
 
 class ArtistTest(TestCase):
@@ -94,7 +93,7 @@ class ArtistTest(TestCase):
         # concerts and recordings
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
@@ -105,7 +104,7 @@ class ArtistTest(TestCase):
         # Even if they ask for restricted collection, only the normal ones
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
@@ -119,7 +118,7 @@ class ArtistTest(TestCase):
         # With the normal user we only get the unrestricted collection's
         # concerts and recordings
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": "not-uuid"}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION="not-uuid"
         )
         self.assertEqual(response.status_code, 400)
 
@@ -129,7 +128,7 @@ class ArtistTest(TestCase):
         client.force_authenticate(user=self.staffuser)
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
@@ -138,7 +137,7 @@ class ArtistTest(TestCase):
         # or restricted collections too
         collections = f"{self.coll1id}, {self.coll3id}"
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(2, len(data["concerts"]))
@@ -155,7 +154,7 @@ class ArtistTest(TestCase):
         client.force_authenticate(user=self.restricteduser)
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["concerts"]))
@@ -164,7 +163,7 @@ class ArtistTest(TestCase):
         # or restricted collections too
         collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get(
-            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(2, len(data["concerts"]))
@@ -258,7 +257,7 @@ class RecordingTest(TestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll3id
-        response = client.get("/api/carnatic/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/carnatic/recording")
@@ -270,7 +269,7 @@ class RecordingTest(TestCase):
         client.force_authenticate(user=self.restricteduser)
 
         collections = self.coll2id
-        response = client.get("/api/carnatic/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -278,7 +277,7 @@ class RecordingTest(TestCase):
         # get 1 recording
         client.force_authenticate(user=self.normaluser)
         collections = self.coll1id
-        response = client.get("/api/carnatic/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -307,7 +306,7 @@ class RecordingTest(TestCase):
         client.force_authenticate(user=self.normaluser)
         response = client.get(
             "/api/carnatic/recording/34275e18-0aef-4fa5-9618-b5938cb73a24",
-            **{"HTTP_DUNYA_COLLECTION": str(uuid.uuid4())},
+            HTTP_DUNYA_COLLECTION=str(uuid.uuid4()),
         )
         self.assertEqual(404, response.status_code)
 
@@ -394,7 +393,7 @@ class WorkTest(TestCase):
 
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -402,14 +401,14 @@ class WorkTest(TestCase):
         # unknown id
         collections = str(uuid.uuid4())
         response = client.get(
-            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get(
-            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -420,21 +419,21 @@ class WorkTest(TestCase):
 
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
 
         collections = self.coll3id
         response = client.get(
-            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
 
         collections = self.coll2id
         response = client.get(
-            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -445,7 +444,7 @@ class WorkTest(TestCase):
 
         collections = self.coll1id
         response = client.get(
-            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/7ed898bc-fa11-41ae-b1c9-913d96c40e2b", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["recordings"]))
@@ -456,7 +455,7 @@ class WorkTest(TestCase):
 
         collections = f"{self.coll1id}, {self.coll3id}, {self.coll2id}"
         response = client.get(
-            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/carnatic/work/b4e100b4-024f-4ed8-8942-9150e99d4c80", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(0, len(data["recordings"]))
@@ -665,13 +664,13 @@ class ConcertTest(TestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll1id
-        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/concert", HTTP_DUNYA_COLLECTION=collections)
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/concert", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
 
         self.assertEqual(2, len(data["results"]))
@@ -680,7 +679,7 @@ class ConcertTest(TestCase):
         # get 1 concert
         client.force_authenticate(user=self.normaluser)
         collections = f"{self.coll1id}, {self.coll2id}"
-        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/concert", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -688,7 +687,7 @@ class ConcertTest(TestCase):
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
         collections = f"{self.coll1id}, {self.coll2id}, {self.coll3id}"
-        response = client.get("/api/carnatic/concert", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/carnatic/concert", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(2, len(data["results"]))
 

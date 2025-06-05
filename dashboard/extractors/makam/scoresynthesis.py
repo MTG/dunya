@@ -1,15 +1,16 @@
 import json
 import os
 import tempfile
-import requests
 
+import compmusic.dunya.conn
 import pydub
+import requests
+from compmusic import dunya
 from symbtrsynthesis.adaptivesynthesizer import AdaptiveSynthesizer
 from symbtrsynthesis.musicxmlreader import MusicXMLReader
 
-import compmusic.dunya.conn
 import dashboard.extractors
-from compmusic import dunya
+
 from .settings import token
 
 dunya.set_token(token)

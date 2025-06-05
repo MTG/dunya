@@ -21,14 +21,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.forms import modelform_factory
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from rest_framework.authtoken.models import Token
 
+import dashboard.email
 from account import forms
 from account.models import AccessRequest
-import dashboard.email
 
 
 def register_page(request):

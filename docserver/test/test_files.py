@@ -4,8 +4,7 @@ from django.contrib import auth
 from django.contrib.auth.models import Permission
 from django.test import TestCase
 
-from docserver import models
-from docserver import util
+from docserver import models, util
 
 
 class SourceFileTest(TestCase):

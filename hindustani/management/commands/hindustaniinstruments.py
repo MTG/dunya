@@ -51,7 +51,7 @@ class Command(BaseCommand):
             name = row[2]
             percussion = row[3]
             hidden = row[4]
-            alias = row[5]
+            row[5]
             wikipedia = row[6]
             picture = row[7]
             description = row[8].decode("utf-8")

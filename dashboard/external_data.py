@@ -16,11 +16,10 @@
 
 import os
 
-from dashboard.importer import image
-from dashboard.importer import wikipedia
 from django.core.files.base import ContentFile
 
 import data.models
+from dashboard.importer import image, wikipedia
 
 
 def import_artist_wikipedia(artist, source):

@@ -1,11 +1,10 @@
-import six
 import json
 import struct
 import sys
 
 import numpy as np
+import six
 from scipy.ndimage.filters import gaussian_filter
-
 
 ## Most of this from NormalisePitch in the pitch extractor
 
@@ -30,7 +29,7 @@ def interpolatePitchTracks(timeArrIn, pitchArrIn, timeArrOut, SilVal):
 
 def get_histogram(pitch, nbins, smoothness=1):
     valid_pitch = [p for p in pitch if p > 0]
-    bins = [i - 0.5 for i in range(0, nbins + 1)]
+    bins = [i - 0.5 for i in range(nbins + 1)]
     histogram, edges = np.histogram(valid_pitch, bins, density=True)
     smoothed = gaussian_filter(histogram, smoothness)
 

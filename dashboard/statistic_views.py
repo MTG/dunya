@@ -22,8 +22,7 @@ from django.shortcuts import render
 import carnatic.models
 import hindustani.models
 import makam.models
-from dashboard import models
-from dashboard import views
+from dashboard import models, views
 
 
 def _common_stats(collectionid):

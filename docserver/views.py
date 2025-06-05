@@ -22,34 +22,21 @@ import json
 import os
 import pkgutil
 
-from dashboard import extractors
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.forms.models import modelformset_factory
-from django.http import HttpResponse, Http404
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404, redirect
-from rest_framework import authentication
-from rest_framework import exceptions
-from rest_framework import generics
-from rest_framework import parsers
-from rest_framework import permissions
-from rest_framework import response
-from rest_framework import status
-from rest_framework.exceptions import ValidationError, MethodNotAllowed
-from rest_framework.serializers import BaseSerializer
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseNotFound
+from django.shortcuts import get_object_or_404, redirect, render
 from django_sendfile import sendfile
+from rest_framework import authentication, exceptions, generics, parsers, permissions, response, status
+from rest_framework.exceptions import MethodNotAllowed, ValidationError
 
 import dashboard.models
 import docserver
-from docserver import forms
-from docserver import jobs
-from docserver import log
-from docserver import models
-from docserver import serializers
-from docserver import util
+from dashboard import extractors
+from docserver import forms, jobs, log, models, serializers, util
 from dunya.celery import app
 
 auther = authentication.TokenAuthentication()
@@ -146,7 +133,7 @@ class SourceFile(generics.CreateAPIView, generics.UpdateAPIView, generics.Retrie
 
         try:
             sf, created = util.docserver_upload_and_save_file(document.id, sft.id, file)
-        except OSError as e:
+        except OSError:
             data = {"detail": "Cannot write file"}
             return response.Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

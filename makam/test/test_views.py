@@ -1,5 +1,6 @@
 from unittest import mock
-from django.http import HttpResponseNotFound, Http404, HttpResponse
+
+from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.test import TestCase
 
 import docserver.models
@@ -15,7 +16,7 @@ class SymbTrTest(TestCase):
     @mock.patch("docserver.views.download_external")
     def test_successful(self, download):
         download.return_value = HttpResponse("ok")
-        sft = docserver.models.SourceFileType.objects.create(slug="symbtrtxt", extension="txt", mimetype="")
+        docserver.models.SourceFileType.objects.create(slug="symbtrtxt", extension="txt", mimetype="")
 
         resp = self.client.get(f"/makam/symbtr/{self.test_uuid}")
         download.assert_called_with(mock.ANY, self.test_uuid, "symbtrtxt")
@@ -52,7 +53,7 @@ class SymbTrTest(TestCase):
     @mock.patch("docserver.views.download_external")
     def test_no_doc(self, download):
         download.return_value = HttpResponseNotFound("x")
-        sft = docserver.models.SourceFileType.objects.create(slug="symbtrtxt", extension="txt", mimetype="")
+        docserver.models.SourceFileType.objects.create(slug="symbtrtxt", extension="txt", mimetype="")
         resp = self.client.get(f"/makam/symbtr/{self.test_uuid}?format=txt")
 
         self.assertEqual(resp.status_code, 404)

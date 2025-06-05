@@ -1,12 +1,11 @@
 import json
 
 from django.core.management.base import BaseCommand
-
-from dashboard.models import EmailAuthentication
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+from dashboard.models import EmailAuthentication
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 

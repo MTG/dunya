@@ -10,7 +10,7 @@ class InstrumentTest(TestCase):
 
         rec1 = models.Recording.objects.create(title="rec1")
         rec2 = models.Recording.objects.create(title="rec2")
-        rec3 = models.Recording.objects.create(title="rec3")
+        models.Recording.objects.create(title="rec3")
 
         a1 = models.Artist.objects.create(name="a1")
         a2 = models.Artist.objects.create(name="a2")

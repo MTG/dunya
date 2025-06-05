@@ -15,8 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.shortcuts import get_object_or_404
-from rest_framework import fields
-from rest_framework import serializers
+from rest_framework import fields, serializers
 
 from docserver import models
 

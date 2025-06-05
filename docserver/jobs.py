@@ -23,13 +23,11 @@ import time
 
 import django.utils.timezone
 import numpy as np
-import six
 from django.conf import settings
 from django.db import transaction
 
 from dashboard.log import logger
-from docserver import log
-from docserver import models
+from docserver import log, models
 from dunya.celery import app
 
 
@@ -159,7 +157,6 @@ def delete_moduleversion(vid):
             except OSError:
                 pass  # if the file doesn't exist, not really an error
         f.delete()
-    module = version.module
     version.delete()
     logger.info("done")
 
@@ -212,7 +209,6 @@ def _save_file(derivedfile, partnumber, extension, data):
         os.makedirs(fdir)
     except OSError:
         logger.warn(f"Error making directory {fdir}")
-        pass
 
     fname = derivedfile.filename_for_part(partnumber)
 
@@ -249,7 +245,6 @@ def _get_worker_from_hostname(hostname):
 def _save_process_results(version, instance, document, worker, results, starttime, endtime):
     total_time = int(endtime - starttime)
 
-    module = version.module
     with transaction.atomic():
         for dataslug, contents in results.items():
             outputdata = instance._output[dataslug]

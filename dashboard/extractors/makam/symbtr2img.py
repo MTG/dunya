@@ -23,12 +23,12 @@
 import os
 import tempfile
 
-from docserver import util
+from compmusic import dunya
+from settings import token
 from tomato.symbolic.scoreconverter import ScoreConverter
 
 import dashboard.extractors
-from compmusic import dunya
-from settings import token
+from docserver import util
 
 dunya.set_token(token)
 

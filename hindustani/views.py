@@ -18,9 +18,9 @@ import json
 import math
 
 from django.conf import settings
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render
 
 import docserver.exceptions
 import docserver.util

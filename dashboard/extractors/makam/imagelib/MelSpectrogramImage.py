@@ -8,7 +8,7 @@ import essentia
 import essentia.standard as ess
 import numpy as np
 
-from dashboard.extractors.imagelib.processing import SpectrogramImage, AudioProcessor, WaveformImage
+from dashboard.extractors.imagelib.processing import AudioProcessor, SpectrogramImage, WaveformImage
 
 
 class MelSpectrogramImage(SpectrogramImage):

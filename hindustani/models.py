@@ -15,11 +15,10 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 import collections
-from typing import List, Optional
 
-from django.urls import reverse
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from django.utils.text import slugify
 
 import data.models

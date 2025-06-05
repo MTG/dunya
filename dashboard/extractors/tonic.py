@@ -21,12 +21,11 @@ import subprocess
 import essentia.standard
 import numpy as np
 import yaml
-from docserver import util
+from compmusic import dunya
+from compmusic.dunya import carnatic, hindustani
 
 import dashboard.extractors
-from compmusic import dunya
-from compmusic.dunya import carnatic
-from compmusic.dunya import hindustani
+from docserver import util
 
 dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
 

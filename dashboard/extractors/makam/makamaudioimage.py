@@ -18,6 +18,7 @@ import tempfile
 
 import matplotlib
 import numpy as np
+
 from docserver import util
 
 from .imagelib.audioimages import AudioImages
@@ -81,7 +82,6 @@ class MakamAudioImage(AudioImages):
         fimage = tempfile.NamedTemporaryFile(mode="w+", suffix=".png")
         plot(seyir_features, fimage.name)
         fimage.flush()
-        fileContent = None
         with open(fimage.name, mode="rb") as file:
             file_content = file.read()
         if not file_content:

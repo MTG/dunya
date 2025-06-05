@@ -19,8 +19,8 @@ class MakamTest(TestCase):
         self.assertEqual(m, ret)
 
         hm = models.Makam.objects.create(name="Hicaz Hümayun")
-        hma1 = models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümayun")
-        hma2 = models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümâyûn")
+        models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümayun")
+        models.MakamAlias.objects.create(makam=hm, name="Hicaz-Hümâyûn")
 
         hma_all = models.MakamAlias.objects.unaccent_all("hicaz-humayun")
         self.assertEqual(2, hma_all.count())

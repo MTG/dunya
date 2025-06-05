@@ -8,8 +8,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.test import APIClient
 
 import data
-from makam import api
-from makam import models
+from makam import api, models
 
 
 class ApiTestCase(TestCase):
@@ -96,7 +95,7 @@ class ArtistTest(ApiTestCase):
         # With the normal user we only get the unrestricted collection's releases
         collections = self.coll1id
         response = client.get(
-            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["releases"]))
@@ -105,7 +104,7 @@ class ArtistTest(ApiTestCase):
         # Even if they ask for restricted collection, only the normal ones
         collections = f"{self.coll1id}, {self.coll3id}"
         response = client.get(
-            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["releases"]))
@@ -116,7 +115,7 @@ class ArtistTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
         collections = self.coll1id
         response = client.get(
-            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["releases"]))
@@ -124,7 +123,7 @@ class ArtistTest(ApiTestCase):
         # or restricted collections too
         collections = f"{self.coll3id}, {self.coll1id}"
         response = client.get(
-            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(2, len(data["releases"]))
@@ -137,7 +136,7 @@ class ArtistTest(ApiTestCase):
         client.force_authenticate(user=self.restricteduser)
         collections = self.coll1id
         response = client.get(
-            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(1, len(data["releases"]))
@@ -145,7 +144,7 @@ class ArtistTest(ApiTestCase):
         # or restricted collections too
         collections = f"{self.coll1id}, {self.coll2id}"
         response = client.get(
-            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", **{"HTTP_DUNYA_COLLECTION": collections}
+            "/api/makam/artist/a484bcbc-c0d9-468a-952c-9938d5811f85", HTTP_DUNYA_COLLECTION=collections
         )
         data = response.data
         self.assertEqual(2, len(data["releases"]))
@@ -206,13 +205,13 @@ class ReleaseTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll3id
-        response = client.get("/api/makam/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/release", HTTP_DUNYA_COLLECTION=collections)
 
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
         collections = f"{self.coll3id}, {self.coll2id}"
-        response = client.get("/api/makam/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/release", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
 
         self.assertEqual(2, len(data["results"]))
@@ -221,7 +220,7 @@ class ReleaseTest(ApiTestCase):
         # get 1 release
         client.force_authenticate(user=self.normaluser)
         collections = f"{self.coll3id}, {self.coll1id}"
-        response = client.get("/api/makam/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/release", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -229,7 +228,7 @@ class ReleaseTest(ApiTestCase):
         # with the restricted access collection
         client.force_authenticate(user=self.restricteduser)
         collections = f"{self.coll3id}, {self.coll1id}, {self.coll2id}"
-        response = client.get("/api/makam/release", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/release", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(2, len(data["results"]))
 
@@ -237,7 +236,6 @@ class ReleaseTest(ApiTestCase):
 class RecordingTest(ApiTestCase):
     def setUp(self):
         super().setUp()
-        pass
 
     def test_render_recording_detail(self):
         resp = self.apiclient.get("/api/makam/recording/2a599dee-db7d-48fd-9a34-fd4e1023cfcc")
@@ -267,7 +265,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.staffuser)
 
         collections = self.coll1id
-        response = client.get("/api/makam/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
         response = client.get("/api/makam/recording")
@@ -279,7 +277,7 @@ class RecordingTest(ApiTestCase):
         client.force_authenticate(user=self.restricteduser)
 
         collections = self.coll2id
-        response = client.get("/api/makam/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 
@@ -287,7 +285,7 @@ class RecordingTest(ApiTestCase):
         # get 1 recording
         client.force_authenticate(user=self.normaluser)
         collections = self.coll1id
-        response = client.get("/api/makam/recording", **{"HTTP_DUNYA_COLLECTION": collections})
+        response = client.get("/api/makam/recording", HTTP_DUNYA_COLLECTION=collections)
         data = response.data
         self.assertEqual(1, len(data["results"]))
 

@@ -14,12 +14,12 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import dashboard.extractors
-import subprocess
-
-import tempfile
 import os
+import subprocess
+import tempfile
 import wave
+
+import dashboard.extractors
 
 
 class Mp3ToWav(dashboard.extractors.ExtractorModule):

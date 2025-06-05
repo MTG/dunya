@@ -19,17 +19,17 @@ import argparse
 import collections
 import os
 
-import musicbrainzngs as mb
-
 import compmusic.file
 import compmusic.musicbrainz
+import musicbrainzngs as mb
 
 mb.set_useragent("Dunya", "0.1")
 mb.set_rate_limit(False)
 mb.set_hostname("sitar.s.upf.edu:8090")
 
-import eyed3
 import logging
+
+import eyed3
 
 eyed3.utils.log.log.setLevel(logging.ERROR)
 
@@ -143,7 +143,7 @@ def main(collectionid, colldir):
         print(i, release)
         try:
             stats.stats_for_release(release)
-        except mb.ResponseError as e:
+        except mb.ResponseError:
             print("  error when loading this release")
     stats.print_stats()
 

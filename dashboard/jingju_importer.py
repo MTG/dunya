@@ -1,5 +1,6 @@
-import compmusic
 import re
+
+import compmusic
 
 import jingju.models
 from dashboard import release_importer

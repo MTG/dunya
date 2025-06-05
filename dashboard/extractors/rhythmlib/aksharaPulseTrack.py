@@ -27,11 +27,10 @@ import math
 import essentia as es
 import essentia.standard as ess
 import numpy as np
+import parameters as params
 import scipy.stats as scistats
 
-import parameters as params
 from dashboard.extractors import log
-
 
 # Main things to do
 # 1. Segment audio into alapana and kriti: Look at the Mridangam base
@@ -196,8 +195,6 @@ def findpeaks(x, imode="q", pmode="p", wdTol=5, ampTol=0.1, prominence=3.0):
                 v = np.delete(v, [j])
                 kk = (k[1:] - k[0:-1]) <= wdTol
                 (j,) = kk.nonzero()
-            pass
-        pass
 
         # Also purge peaks with low prominence andind[k] = I small amplitude
         chosenIndices = np.zeros(v.shape)
@@ -239,7 +236,6 @@ def findpeaks(x, imode="q", pmode="p", wdTol=5, ampTol=0.1, prominence=3.0):
     else:  # else for (r.any() and f.any())
         k = np.array([])
         v = np.array([])
-    pass
     if pmode == "v":
         v = -v  # Invert peaks if searching for valleys
     return k, v
@@ -412,9 +408,6 @@ def correctOctaveErrors(x, per, tol):
             else:
                 y[k] = per
                 flag[k] = -1
-            pass
-        pass
-    pass
     return y, flag
 
 
@@ -441,7 +434,6 @@ def estimateAksharaCandidates(tstamps, onsFn, TCper, TCts, medIAI, akParams):
         farAwayParam[closeIndices] = 100.0  # Arbitrarily large
         transMat[k, :] = np.exp(-(farAwayParam - 1) / akParams.decayCoeff) * scistats.norm.pdf(dtVals, 0, 0.1)
         transMat[k, :] = transMat[k, :] / (transMat[k, :]).sum()
-    pass
     akCandLocs = peakLocs
     akCandTs = tPeaks
     akCandWts = peakVals
@@ -474,7 +466,6 @@ def DPSearch(cands, param):
         Ind = scorecands.argmax()
         cumscore[t] = val + cands.Wts[t]
         backlink[t] = timerange[Ind]
-    pass
     # Backtrace
     aksharaLocs = np.array([cumscore.argmax()]).astype(int)
     while (backlink[aksharaLocs[0]] > 0) and (aksharaLocs.size < N):
@@ -536,9 +527,7 @@ def getOnsetFunctions(fname):
             oFn = magFluxBand.sum()
             if math.isnan(oFn):
                 print("NaN found here")
-            pass
             pool.add(poolName + str(bands), oFn)
-        pass
         pool.add("features.time", frmTime)
         frameCounter += 1
         if not np.mod(frameCounter, 10000):
@@ -549,7 +538,6 @@ def getOnsetFunctions(fname):
     for bands in range(params.numBands):
         feat_flux = es.array([pool[poolName + str(bands)]])
         all_feat = np.vstack((all_feat, feat_flux))
-    pass
     return np.transpose(all_feat)
 
 

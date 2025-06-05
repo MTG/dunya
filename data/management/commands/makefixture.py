@@ -2,6 +2,7 @@
 # copied to dunya from https://github.com/ericholscher/django-test-utils
 
 from __future__ import print_function
+
 import django.apps
 import six
 
@@ -10,10 +11,8 @@ import six
 # no support for generic relations
 # no support for one-to-one relations
 from django.core import serializers
-from django.core.management.base import CommandError
-from django.core.management.base import LabelCommand
-from django.db.models.fields.related import ForeignKey
-from django.db.models.fields.related import ManyToManyField
+from django.core.management.base import CommandError, LabelCommand
+from django.db.models.fields.related import ForeignKey, ManyToManyField
 
 DEBUG = False
 
@@ -97,12 +96,12 @@ class Command(LabelCommand):
                     for f in x.__class__._meta.fields + x.__class__._meta.many_to_many:
                         if isinstance(f, ForeignKey):
                             new = getattr(x, f.name)  # instantiate object
-                            if new and not (new.__class__, new.pk) in collected:
+                            if new and (new.__class__, new.pk) not in collected:
                                 collected.add((new.__class__, new.pk))
                                 related.append(new)
                         if isinstance(f, ManyToManyField):
                             for new in getattr(x, f.name).all():
-                                if new and not (new.__class__, new.pk) in collected:
+                                if new and (new.__class__, new.pk) not in collected:
                                     collected.add((new.__class__, new.pk))
                                     related.append(new)
                 objects = related

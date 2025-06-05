@@ -20,10 +20,9 @@ import os
 import tempfile
 import wave
 
-from docserver import util
-
 import dashboard.extractors
 from dashboard.extractors.imagelib import wav2png
+from docserver import util
 
 
 class AudioImages(dashboard.extractors.ExtractorModule):

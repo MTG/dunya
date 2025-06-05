@@ -1,4 +1,3 @@
-import data.models
 from data import utils
 
 

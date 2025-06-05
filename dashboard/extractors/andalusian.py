@@ -1,7 +1,8 @@
-import dashboard.extractors
-from tomato.audio.predominantmelody import PredominantMelody
 from tomato.audio.pitchdistribution import PitchDistribution
 from tomato.audio.pitchfilter import PitchFilter
+from tomato.audio.predominantmelody import PredominantMelody
+
+import dashboard.extractors
 
 
 class AndalusianPitch(dashboard.extractors.ExtractorModule):

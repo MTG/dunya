@@ -18,17 +18,16 @@
 import collections
 import decimal
 import json
-
-import numpy as np
 import os
 
-import dashboard
-from dashboard.extractors.similaritylib import recording
+import numpy as np
 from django.core.management.base import BaseCommand
 from scipy.ndimage.filters import gaussian_filter
 
 import carnatic
+import dashboard
 import hindustani
+from dashboard.extractors.similaritylib import recording
 from docserver import util
 
 

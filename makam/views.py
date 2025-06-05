@@ -17,13 +17,13 @@
 import json
 import os
 import zipfile
-import six
 
+import six
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render
 
 import docserver.exceptions
 import docserver.models
@@ -307,7 +307,7 @@ def recording(request, uuid, title=None):
                     content = docserver.util.docserver_get_json(
                         mbid, option[0], option[1], option[2], version=option[3]
                     )
-                    if content != None and (len(urls[u]) == curr_option or len(content.keys())):
+                    if content is not None and (len(urls[u]) == curr_option or len(content.keys())):
                         success_content = docserver.util.docserver_get_url(
                             mbid, option[0], option[1], option[2], version=option[3]
                         )

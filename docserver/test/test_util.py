@@ -1,11 +1,10 @@
 import uuid
-
 from unittest import mock
+
 import six
 from django.test import TestCase
 
-from docserver import models
-from docserver import util
+from docserver import models, util
 
 
 class UtilTest(TestCase):

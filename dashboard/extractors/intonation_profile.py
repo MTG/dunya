@@ -16,7 +16,7 @@
 
 import intonation
 import numpy as np
-from scipy.stats import variation, skew, kurtosis
+from scipy.stats import kurtosis, skew, variation
 
 
 class IntonationProfile:

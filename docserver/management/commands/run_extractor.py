@@ -19,12 +19,12 @@ import imp
 import importlib
 import inspect
 import json
-import os
 import logging
-from django.core.management.base import BaseCommand
-import numpy as np
+import os
 
 import compmusic
+import numpy as np
+from django.core.management.base import BaseCommand
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +36,8 @@ def _get_module_by_path(modulepath):
         cls = getattr(package, clsname)
         return cls
     except ImportError:
-        logger.warn("Cannot import the module: %s" % mod)
-        logger.warn("Try it in a terminal and see what the error is")
+        logger.warning("Cannot import the module: %s" % mod)
+        logger.warning("Try it in a terminal and see what the error is")
 
 
 def _get_module_by_slug(slug):
@@ -64,24 +64,24 @@ def _get_module_by_slug(slug):
             unloaded.append(m)
 
     if unloaded:
-        logger.warn(
+        logger.warning(
             "Failed to load these modules due to an import error, check that you have all their dependencies installed"
         )
         for u in unloaded:
-            logger.warn(u)
+            logger.warning(u)
 
     if len(matching) > 1:
-        logger.warn("Found more than one module with the same slug. Slugs must be unique")
-        logger.warn("For slug: %s" % slug)
+        logger.warning("Found more than one module with the same slug. Slugs must be unique")
+        logger.warning("For slug: %s" % slug)
         for m in matching:
-            logger.warn("  %s" % m)
+            logger.warning("  %s" % m)
     elif len(matching) == 1:
         return matching[0]
     else:
-        logger.warn("Cannot find a module with the slug: %s" % slug)
-        logger.warn("Check that you have spelt it correctly")
+        logger.warning("Cannot find a module with the slug: %s" % slug)
+        logger.warning("Check that you have spelt it correctly")
         if unloaded:
-            logger.warn("or that the module it is in can be loaded (is it in one of the above failed modules?)")
+            logger.warning("or that the module it is in can be loaded (is it in one of the above failed modules?)")
         return None
 
 

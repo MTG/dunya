@@ -1,10 +1,12 @@
 import base64
 import json
+
 from django.core.mail import EmailMessage
-from dashboard.models import EmailAuthentication
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+
+from dashboard.models import EmailAuthentication
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.send"]
 

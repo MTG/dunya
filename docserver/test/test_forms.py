@@ -1,8 +1,7 @@
 from django.http import QueryDict
 from django.test import TestCase
 
-from docserver import forms
-from docserver import models
+from docserver import forms, models
 
 
 class SourceFileTypeTest(TestCase):
@@ -25,7 +24,7 @@ class SourceFileTypeTest(TestCase):
         self.assertFalse(f.is_valid())
 
     def test_rename_existing_slug(self):
-        sf1 = models.SourceFileType.objects.create(slug="aslug", extension="x", mimetype="x", name="some filetype")
+        models.SourceFileType.objects.create(slug="aslug", extension="x", mimetype="x", name="some filetype")
         sf2 = models.SourceFileType.objects.create(slug="otherslug", extension="x", mimetype="x", name="some filetype")
 
         formdata = "slug=aslug&extension=ext&mimetype=application%2Ffoo&name=thename"

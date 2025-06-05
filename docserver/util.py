@@ -22,8 +22,7 @@ import tempfile
 import compmusic
 from django.core.exceptions import ObjectDoesNotExist
 
-from docserver import exceptions
-from docserver import models
+from docserver import exceptions, models
 
 
 def docserver_add_mp3(collectionid, releaseid, fpath, recordingid):
@@ -63,7 +62,7 @@ def _write_to_disk(file, filepath):
             for chunk in file.chunks():
                 size += len(chunk)
                 dest.write(chunk)
-    except OSError as e:
+    except OSError:
         raise
     return size
 
@@ -86,12 +85,11 @@ def docserver_upload_and_save_file(document_id, sft_id, file):
         os.makedirs(datadir)
     except OSError:
         print("Error making directory", datadir)
-        pass
 
     filename = f"{mbid}-{slug}.{ext}"
     filepath = os.path.join(datadir, filename)
 
-    size = _write_to_disk(file, filepath)
+    _write_to_disk(file, filepath)
 
     return docserver_add_sourcefile(document_id, sft_id, filepath)
 
@@ -228,7 +226,7 @@ def user_has_access(user, document, file_type_slug, good_referrer):
         sourcetype = None
     if not sourcetype:
         try:
-            module = models.Module.objects.get(slug=file_type_slug)
+            models.Module.objects.get(slug=file_type_slug)
             return True
         except models.Module.DoesNotExist:
             return False

@@ -74,7 +74,7 @@ class Raaga:
         The pitch values are expected to be in hertz.
         """
         all_cents = []
-        for data, tonic in zip(pitches, tonics):
+        for data, tonic in zip(pitches, tonics, strict=False):
             # Histogram
             valid_pitch = data[:, 1]
             valid_pitch = [1200 * np.log2(i / tonic) for i in valid_pitch if i > 0]

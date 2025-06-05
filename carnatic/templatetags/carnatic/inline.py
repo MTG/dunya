@@ -14,10 +14,9 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-import collections
 
 from django import template
-from django.utils.html import format_html, format_html_join, mark_safe
+from django.utils.html import format_html, mark_safe
 
 import carnatic
 

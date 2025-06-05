@@ -26,10 +26,9 @@ import re
 import signal
 from functools import partial
 
-import pysndfile
 import numpy
-from PIL import Image, ImageDraw, ImageColor  # @UnresolvedImport
-
+import pysndfile
+from PIL import Image, ImageColor, ImageDraw  # @UnresolvedImport
 
 # from . import get_sound_type
 
@@ -195,7 +194,7 @@ class AudioProcessor(object):
         if energy > 1e-60:
             # calculate the spectral centroid
 
-            if self.spectrum_range == None:
+            if self.spectrum_range is None:
                 self.spectrum_range = numpy.arange(length)
 
             spectral_centroid = (
@@ -293,7 +292,8 @@ def desaturate(rgb, amount):
     amount == 1, grey
     """
     luminosity = sum(rgb) / 3.0
-    desat = lambda color: color - amount * (color - luminosity)
+    def desat(color):
+        return color - amount * (color - luminosity)
 
     return tuple(map(int, map(desat, rgb)))
 
@@ -318,7 +318,7 @@ class WaveformImage(object):
             ]
         elif palette == 2:
             background_color = (0, 0, 0)
-            colors = [self.color_from_value(value / 29.0) for value in range(0, 30)]
+            colors = [self.color_from_value(value / 29.0) for value in range(30)]
         elif palette == 3:
             background_color = (213, 217, 221)
             colors = map(
@@ -332,7 +332,7 @@ class WaveformImage(object):
         elif palette == 4:
             background_color = (213, 217, 221)
             colors = map(
-                partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(0, 30)]
+                partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(30)]
             )
 
         self.image = Image.new("RGB", (image_width, image_height), background_color)
@@ -359,7 +359,7 @@ class WaveformImage(object):
 
         line_color = self.color_lookup[int(spectral_centroid * 255.0)]
 
-        if self.previous_y != None:
+        if self.previous_y is not None:
             self.draw.line([self.previous_x, self.previous_y, x, y1, x, y2], line_color)
         else:
             self.draw.line([x, y1, x, y2], line_color)
@@ -550,22 +550,22 @@ def stereofy_and_find_info(stereofy_executble_path, input_filename, output_filen
 
     duration = 0
     m = re.match(r".*#duration (?P<duration>[\d\.]+).*", stdout)
-    if m != None:
+    if m is not None:
         duration = float(m.group("duration"))
 
     channels = 0
     m = re.match(r".*#channels (?P<channels>\d+).*", stdout)
-    if m != None:
+    if m is not None:
         channels = float(m.group("channels"))
 
     samplerate = 0
     m = re.match(r".*#samplerate (?P<samplerate>\d+).*", stdout)
-    if m != None:
+    if m is not None:
         samplerate = float(m.group("samplerate"))
 
     bitdepth = None
     m = re.match(r".*#bitdepth (?P<bitdepth>\d+).*", stdout)
-    if m != None:
+    if m is not None:
         bitdepth = float(m.group("bitdepth"))
 
     bitrate = (os.path.getsize(input_filename) * 8.0) / 1024.0 / duration if duration > 0 else 0

@@ -16,8 +16,7 @@
 
 from django.urls import path
 
-from dashboard import statistic_views
-from dashboard import views
+from dashboard import statistic_views, views
 
 urlpatterns = [
     path("", views.index, name="dashboard-home"),

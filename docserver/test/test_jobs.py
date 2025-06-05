@@ -1,11 +1,10 @@
 import uuid
-
-import dashboard.extractors
 from unittest import mock
+
 from django.test import TestCase, override_settings
 
-from docserver import jobs
-from docserver import models
+import dashboard.extractors
+from docserver import jobs, models
 
 
 class TestExtractor(dashboard.extractors.ExtractorModule):

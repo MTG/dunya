@@ -14,10 +14,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see http://www.gnu.org/licenses/
 
-from django.shortcuts import redirect
-from rest_framework import generics
-from rest_framework import serializers
-from rest_framework.generics import get_object_or_404
+from rest_framework import generics, serializers
 
 from data import utils
 from data.models import WithImageMixin

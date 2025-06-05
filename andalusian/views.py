@@ -15,9 +15,9 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
 
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, render
 
 import docserver
 from andalusian import models

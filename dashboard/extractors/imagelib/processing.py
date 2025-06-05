@@ -24,11 +24,11 @@ import math
 import os
 import re
 import signal
-from functools import partial
 import subprocess
+from functools import partial
 
-import pysndfile
 import numpy
+import pysndfile
 from PIL import Image, ImageColor, ImageDraw  # @UnresolvedImport
 
 
@@ -266,7 +266,8 @@ def desaturate(rgb, amount):
     amount == 1, grey
     """
     luminosity = sum(rgb) / 3.0
-    desat = lambda color: color - amount * (color - luminosity)
+    def desat(color):
+        return color - amount * (color - luminosity)
 
     return tuple(map(int, map(desat, rgb)))
 
@@ -291,7 +292,7 @@ class WaveformImage(object):
             ]
         elif palette == 2:
             background_color = (0, 0, 0)
-            colors = [self.color_from_value(value / 29.0) for value in range(0, 30)]
+            colors = [self.color_from_value(value / 29.0) for value in range(30)]
         elif palette == 3:
             background_color = (213, 217, 221)
             colors = map(
@@ -305,7 +306,7 @@ class WaveformImage(object):
         elif palette == 4:
             background_color = (213, 217, 221)
             colors = map(
-                partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(0, 30)]
+                partial(desaturate, amount=0.8), [self.color_from_value(value / 29.0) for value in range(30)]
             )
 
         print(f"background_color: {background_color}, width: {image_width}, height: {image_height}")
@@ -333,7 +334,7 @@ class WaveformImage(object):
 
         line_color = self.color_lookup[int(spectral_centroid * 255.0)]
 
-        if self.previous_y != None:
+        if self.previous_y is not None:
             self.draw.line([self.previous_x, self.previous_y, x, y1, x, y2], line_color)
         else:
             self.draw.line([x, y1, x, y2], line_color)
@@ -422,8 +423,8 @@ class SpectrogramImage(object):
         f_min = 100.0
         # f_max = 22050.0		# Changed the range
         f_max = 16000.0
-        y_min = math.log10(f_min)
-        y_max = math.log10(f_max)
+        math.log10(f_min)
+        math.log10(f_max)
         freqs = numpy.linspace(f_min, f_max, image_height)
         for i, y in enumerate(range(self.image_height)):
             # freq = math.pow(10.0, y_min + y / (image_height - 1.0) *(y_max - y_min))
@@ -547,22 +548,22 @@ def stereofy_and_find_info(stereofy_executble_path, input_filename, output_filen
 
     duration = 0
     m = re.match(r".*#duration (?P<duration>[\d\.]+).*", stdout)
-    if m != None:
+    if m is not None:
         duration = float(m.group("duration"))
 
     channels = 0
     m = re.match(r".*#channels (?P<channels>\d+).*", stdout)
-    if m != None:
+    if m is not None:
         channels = float(m.group("channels"))
 
     samplerate = 0
     m = re.match(r".*#samplerate (?P<samplerate>\d+).*", stdout)
-    if m != None:
+    if m is not None:
         samplerate = float(m.group("samplerate"))
 
     bitdepth = None
     m = re.match(r".*#bitdepth (?P<bitdepth>\d+).*", stdout)
-    if m != None:
+    if m is not None:
         bitdepth = float(m.group("bitdepth"))
 
     bitrate = (os.path.getsize(input_filename) * 8.0) / 1024.0 / duration if duration > 0 else 0

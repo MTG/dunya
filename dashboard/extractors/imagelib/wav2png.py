@@ -21,8 +21,9 @@
 #
 # 03/10/2013: Modified from original code
 
-from .processing import create_wave_images, AudioProcessingException
 import sys
+
+from .processing import AudioProcessingException, create_wave_images
 
 
 def progress_callback(percentage):

@@ -49,10 +49,10 @@ class Command(BaseCommand):
         for row in reader:
             name = row[0]
             percussion = row[2]
-            wikipedia = row[4]
+            row[4]
             picture = row[5]
             altpicture = row[6]
-            altsource = row[7]
+            row[7]
             source = row[8]
             description = row[9].decode("utf-8")
 

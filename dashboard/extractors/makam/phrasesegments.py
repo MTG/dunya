@@ -20,10 +20,10 @@ import socket
 import subprocess
 import tempfile
 
-from docserver import util
+from compmusic import dunya
 
 import dashboard.extractors
-from compmusic import dunya
+from docserver import util
 
 dunya.set_token("69ed3d824c4c41f59f0bc853f696a7dd80707779")
 

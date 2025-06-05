@@ -21,20 +21,20 @@
 # International Conference on Audio Technologies for Music and Media, Ankara,
 # Turkey.
 
+import io
 import json
 import struct
 
-import dashboard.extractors
-import dashboard.extractors.makam.pitch
 import numpy as np
-from docserver import util
+from compmusic import dunya
+from settings import token
 from seyiranalyzer.audioseyiranalyzer import AudioSeyirAnalyzer
 from tomato.audio.audioanalyzer import AudioAnalyzer
 from tomato.joint.jointanalyzer import JointAnalyzer
 
-from compmusic import dunya
-from settings import token
-import io
+import dashboard.extractors
+import dashboard.extractors.makam.pitch
+from docserver import util
 
 dunya.set_token(token)
 

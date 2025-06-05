@@ -19,8 +19,7 @@ import compmusic
 import makam
 import makam.models
 from dashboard import release_importer
-from dashboard.log import import_logger
-from dashboard.log import logger
+from dashboard.log import import_logger, logger
 
 DIALOGUE_ARTIST = "314e1c25-dde7-4e4d-b2f4-0a7b9f7c56dc"
 

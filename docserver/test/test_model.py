@@ -2,9 +2,7 @@ import uuid
 
 from django.test import TestCase
 
-from docserver import exceptions
-from docserver import models
-from docserver import util
+from docserver import exceptions, models, util
 
 
 class TestDocument(TestCase):
@@ -27,14 +25,14 @@ class TestDocument(TestCase):
         """If the argument is a sourcefiletype, but this document doesn't have a sf of that type"""
 
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("csv")
+            self.doc.get_file("csv")
         self.assertEqual(str(cm.exception), "Looks like a sourcefile, but I can't find one")
 
     def test_get_derived_slug_no_exist(self):
         """A slug that doesn't match any sourcefiletype or moduleslug"""
 
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("foo")
+            self.doc.get_file("foo")
         self.assertEqual(str(cm.exception), "Cannot find a module with type foo")
 
     def test_get_derived_slug_noversion(self):
@@ -42,16 +40,16 @@ class TestDocument(TestCase):
         sft = models.SourceFileType.objects.get(slug="mp3")
 
         module = models.Module.objects.create(slug="derived", source_type=sft)
-        modver = models.ModuleVersion.objects.create(module=module, version="0.1")
+        models.ModuleVersion.objects.create(module=module, version="0.1")
 
-        noversion = models.Module.objects.create(slug="dernover", source_type=sft)
+        models.Module.objects.create(slug="dernover", source_type=sft)
 
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("derived", version="0.2")
+            self.doc.get_file("derived", version="0.2")
         self.assertEqual(str(cm.exception), "No known versions for this module")
 
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("dernover")
+            self.doc.get_file("dernover")
         self.assertEqual(str(cm.exception), "No known versions for this module")
 
     def test_get_derived_with_version(self):
@@ -60,7 +58,7 @@ class TestDocument(TestCase):
 
         module = models.Module.objects.create(slug="derived", source_type=sft)
         modver1 = models.ModuleVersion.objects.create(module=module, version="0.1", date_added="2016-12-01T00:01:11+00")
-        modver2 = models.ModuleVersion.objects.create(module=module, version="0.2", date_added="2016-12-01T10:20:11+00")
+        models.ModuleVersion.objects.create(module=module, version="0.2", date_added="2016-12-01T10:20:11+00")
 
         df = models.DerivedFile.objects.create(
             document=self.doc,
@@ -80,12 +78,12 @@ class TestDocument(TestCase):
 
         # explicit version which has no derived parts results in an error
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res3 = self.doc.get_file("derived", "info", version="0.2")
+            self.doc.get_file("derived", "info", version="0.2")
         self.assertEqual(str(cm.exception), "No derived files with this type/subtype or version")
 
         # No version, but an unknown subtype
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res3 = self.doc.get_file("derived", "nothing")
+            self.doc.get_file("derived", "nothing")
         self.assertEqual(str(cm.exception), "No derived files with this type/subtype")
 
     def test_get_derived_with_subtype(self):
@@ -105,7 +103,7 @@ class TestDocument(TestCase):
 
         # if the derived file has only one type, make sure it's explicit otherwise an error is returned
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("derived")
+            self.doc.get_file("derived")
         self.assertEqual(str(cm.exception), "This module has only one subtype which you must specify (info)")
 
         # if a derived file has multiple outputnames/subtypes, an error if not set
@@ -119,7 +117,7 @@ class TestDocument(TestCase):
         )
 
         with self.assertRaises(exceptions.TooManyFilesException) as cm:
-            res = self.doc.get_file("derived")
+            self.doc.get_file("derived")
         self.assertEqual(
             str(cm.exception), "Found more than 1 subtype for this module but you haven't specified what you want"
         )
@@ -137,7 +135,7 @@ class TestDocument(TestCase):
         module = models.Module.objects.create(slug="derived", source_type=sft)
         modver1 = models.ModuleVersion.objects.create(module=module, version="0.1", date_added="2016-12-01T00:01:11+00")
 
-        df = models.DerivedFile.objects.create(
+        models.DerivedFile.objects.create(
             document=self.doc,
             module_version=modver1,
             outputname="info",
@@ -148,21 +146,21 @@ class TestDocument(TestCase):
 
         # If the derived file has multiple parts and part not set, error
         with self.assertRaises(exceptions.TooManyFilesException) as cm:
-            res = self.doc.get_file("derived", "info")
+            self.doc.get_file("derived", "info")
         self.assertEqual(str(cm.exception), "Found more than 1 part without part set")
 
         # If part isn't a number, error
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("derived", "info", part="x")
+            self.doc.get_file("derived", "info", part="x")
         self.assertEqual(str(cm.exception), "Invalid part")
 
         # part param is greater than numparts in the file
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("derived", "info", part="6")
+            self.doc.get_file("derived", "info", part="6")
         self.assertEqual(str(cm.exception), "Invalid part")
 
         # derived file which has no parts, error
-        df2 = models.DerivedFile.objects.create(
+        models.DerivedFile.objects.create(
             document=self.doc,
             module_version=modver1,
             outputname="noparts",
@@ -172,7 +170,7 @@ class TestDocument(TestCase):
         )
 
         with self.assertRaises(exceptions.NoFileException) as cm:
-            res = self.doc.get_file("derived", "noparts", part="0")
+            self.doc.get_file("derived", "noparts", part="0")
         self.assertEqual(str(cm.exception), "No parts on this file")
 
 

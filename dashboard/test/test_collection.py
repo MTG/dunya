@@ -4,12 +4,9 @@ import requests
 from django.contrib import auth
 from django.http import QueryDict
 from django.test import TestCase
-import six
 
 import docserver
-from dashboard import forms
-from dashboard import models
-from dashboard import views
+from dashboard import forms, models, views
 
 
 class CollectionTest(TestCase):

@@ -19,20 +19,19 @@
 # Dzhambazov, G., & Serra X. (2015).  Modeling of Phoneme Durations for Alignment between Polyphonic Audio and Lyrics.
 #            Sound and Music Computing Conference 2015.
 
-import sys
-import os
-import json
 import logging
-import subprocess
+import os
+import sys
+
 from fetch_tools import (
-    getWork,
+    ON_SERVER,
+    downloadSymbTr,
+    fetch_audio_wav,
     fetchNoteOnsetFile,
     get_section_annotaions_dict,
-    downloadSymbTr,
     get_section_metadata_dict,
-    fetch_audio_wav,
+    getWork,
 )
-from fetch_tools import ON_SERVER
 
 parentDir = os.path.abspath(
     os.path.join(
@@ -44,13 +43,13 @@ pathAlignmentDur = os.path.join(parentDir, "AlignmentDuration")
 if pathAlignmentDur not in sys.path:
     sys.path.append(pathAlignmentDur)
 
-import dashboard.extractors
-from compmusic import dunya
-from compmusic.dunya import makam
 import tempfile
 
-from align.LyricsAligner import LyricsAligner, stereoToMono, loadMakamRecording
+from align.LyricsAligner import LyricsAligner, loadMakamRecording, stereoToMono
 from align.ParametersAlgo import ParametersAlgo
+from compmusic import dunya
+
+import dashboard.extractors
 
 ParametersAlgo.FOR_MAKAM = 1
 ParametersAlgo.POLYPHONIC = 1
@@ -127,7 +126,7 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
                 sectionLinksDict = get_section_annotaions_dict(
                     musicbrainzid, dir_, self.dataOutputDir, self.hasSectionNumberDiscrepancy
                 )
-            except Exception as e:
+            except Exception:
                 sys.exit("no section annotations found for audio {} ".format(musicbrainzid))
 
         else:
@@ -147,7 +146,7 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
                 musicbrainzid, "jointanalysis", "pitch", 1, version="0.1"
             )
             extractedPitch = extractedPitch["pitch"]
-        except Exception as e:
+        except Exception:
             sys.exit("no initialmakampitch series could be downloaded.  ")
 
         if ON_SERVER:

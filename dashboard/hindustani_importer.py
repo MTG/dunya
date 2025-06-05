@@ -18,8 +18,7 @@ import compmusic
 
 import hindustani.models
 from dashboard import release_importer
-from dashboard.log import import_logger
-from dashboard.log import logger
+from dashboard.log import import_logger, logger
 
 
 class HindustaniReleaseImporter(release_importer.ReleaseImporter):

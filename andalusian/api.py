@@ -15,8 +15,7 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 import json
 
-from rest_framework import generics
-from rest_framework import serializers
+from rest_framework import generics, serializers
 
 from andalusian import models
 

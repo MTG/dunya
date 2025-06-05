@@ -20,8 +20,8 @@ import math
 from django.http import Http404
 from django.shortcuts import render
 
-import docserver.util
 import docserver.exceptions
+import docserver.util
 from makam import models
 
 recordings = None

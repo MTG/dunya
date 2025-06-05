@@ -16,13 +16,13 @@
 
 
 import json
-
 import os
-from dashboard.extractors.similaritylib import recording
+
 from django.core.management.base import BaseCommand
 
 import carnatic
 import hindustani
+from dashboard.extractors.similaritylib import recording
 from docserver import util
 
 

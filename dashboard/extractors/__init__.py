@@ -97,7 +97,6 @@ class ExtractorModule(object):
         self.add_settings(a=1, b=2)
         to set up some global settings.
         """
-        pass
 
     def process_collection(self, docid, id_fnames):
         if not self._many_files:
@@ -132,13 +131,11 @@ class ExtractorModule(object):
         """Overwrite this to process a file. If you need the document ID then it's available at
         self.document_id. There is a logger available at self.logger that is written to the
         docserver database."""
-        pass
 
     def run_many(self, id_fnames):
         """Overwrite this to process many files.
         id_fnames is a list of (musicbrainz_id, filename) tuples.
         There is a logger available at self.logger that is written to the docserver database."""
-        pass
 
     def add_settings(self, **kwargs):
         """Add some global settings"""

@@ -1,9 +1,7 @@
-from rest_framework import generics
-from rest_framework import serializers
+from rest_framework import generics, serializers
 
 from data import utils
 from dunya.api import get_collection_ids_from_request_or_error
-
 from jingju import models
 
 

@@ -32,10 +32,10 @@ class Command(BaseCommand):
         for row in reader:
             id = row["ID"]
             workname = row["Work"]
-            composer = row["Composer"]
+            row["Composer"]
             raaga = row["Raaga"]
             taala = row["Taala"]
-            lang = row["Language"]
+            row["Language"]
             form = row["Form"]
             print(f"work {workname}")
 

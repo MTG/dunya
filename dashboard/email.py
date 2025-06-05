@@ -1,7 +1,5 @@
-from django.core.mail import EmailMessage
 from django.contrib.sites.models import Site
-from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.template import loader
 
 from dunya import gmail, settings

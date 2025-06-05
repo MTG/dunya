@@ -104,7 +104,7 @@ class CarnaticImporterTest(TestCase):
         # by the script. We shouldn't remove them
 
         dummyid = str(uuid.uuid4())
-        a = models.Artist.objects.create(name="dummyartist", mbid=dummyid, dummy=True)
+        models.Artist.objects.create(name="dummyartist", mbid=dummyid, dummy=True)
         ri = carnatic_importer.CarnaticReleaseImporter(self.coll1)
         ri.imported_releases.append(self.concert1id)
         ri.remove_nonimported_items()

@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 from django.urls import path
-
 from rest_framework.urlpatterns import format_suffix_patterns
 
 import hindustani.api
