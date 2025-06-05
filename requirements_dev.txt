@@ -1,7 +1,0 @@
-django-debug-toolbar==4.4.2
-flake8==7.1.0
-ipdb==0.13.13
-ipython~=8.25.0
-isort==5.13.2
-pep8==1.7.1
-pylint==3.2.3

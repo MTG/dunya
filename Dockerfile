@@ -1,6 +1,12 @@
-FROM python:3.11
-ENV PYTHONUNBUFFERED 1
-ENV LANG C.UTF-8
+FROM python:3.11 AS base
+ENV PYTHONUNBUFFERED=1
+ENV LANG=C.UTF-8
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+ENV UV_SYSTEM_PYTHON=1
+ENV UV_PYTHON_DOWNLOADS=never
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN mkdir -p /etc/apt/keyrings/
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
@@ -23,24 +29,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN mkdir /code
 WORKDIR /code
 
-ADD requirements.txt /code/
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
-
-ADD requirements_dev.txt /code/
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements_dev.txt
-
-RUN mkdir /sources
-WORKDIR /sources
-RUN git clone https://github.com/MTG/pycompmusic.git
-WORKDIR /sources/pycompmusic
-RUN pip install -e . -t /usr/local/lib/python3.11/dist-packages/
-
+ADD pyproject.toml uv.lock /code/
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --no-dev --frozen
+ENV PATH=/code/.venv/bin:$PATH
 
 ADD package.json package-lock.json /code/
 WORKDIR /code
 RUN npm install && rm -r ~/.npm
 
 ADD . /code/
+
+FROM base AS dev
+
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --dev --frozen
+
+FROM base AS prod
 
 RUN npm run build
 
