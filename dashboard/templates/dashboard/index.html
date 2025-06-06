@@ -2,131 +2,194 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block wrap %}
-
-<h1>Dunya Dashboard</h1>
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">Dunya Dashboard</h1>
+    </div>
+</div>
 
 {% for message in messages %}
-<div class="alert alert-warning alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span></button>
-      {{message}}
-    </div>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endfor %}
 
-<p><a href="{% url 'dashboard-addcollection' %}">Add collection</a>
+<div class="mb-4">
+    <a href="{% url 'dashboard-addcollection' %}" class="btn btn-primary">Add collection</a>
+</div>
+
 {% if collections %}
-<table class="table"><tr><th>Collection</th><th>Current status</th><th>Last status at</th></tr>
-    {% for c in collections %}
-        <tr><td><a href="{{c.get_absolute_url}}">{{c.name}}</a></td>
-            <td>
-                <span class="{{c.state_colour}}"></span>
-                {{c.get_current_state.state_name}}
-            </td>
-            <td>
-                {{c.get_current_state.state_date}}
-        </td></tr>
-    {% endfor %}
-</table>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Collection</th>
+                <th>Current status</th>
+                <th>Last status at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in collections %}
+            <tr>
+                <td><a href="{{c.get_absolute_url}}" class="text-decoration-none">{{c.name}}</a></td>
+                <td>
+                    <span class="{{c.state_colour}}"></span>
+                    {{c.get_current_state.state_name}}
+                </td>
+                <td>{{c.get_current_state.state_date}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endif %}
 
-<div class="row">
+<div class="row g-4">
     <div class="col-md-6">
-        <h2>User management</h2>
-        <li><a href="{% url 'dashboard-accounts' %}">New accounts</a>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h4">User management</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-accounts' %}" class="text-decoration-none">New accounts</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="col-md-6">
-        <h2>Essentia module management</h2>
-        <li><a href="{% url 'docserver-manager' %}">Manager</a>
-    </div>
-
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <h2>Collections</h2>
-        <li><a href="{% url 'dashboard-access-collections-list' %}">Edit collections access groups</a>
-
-        <h2>Carnatic</h2>
-        <li><a href="{% url 'dashboard-carnatic-stats' %}">Statistics</a>
-
-        <h3>Data management</h3>
-        <li><a href="{% url 'dashboard-carnatic-raagas' %}">Raagas</a>
-        <li><a href="{% url 'dashboard-carnatic-taalas' %}">Taalas</a>
-        <li><a href="{% url 'dashboard-carnatic-instruments' %}">Instruments</a>
-        <li><a href="{% url 'dashboard-carnatic-forms' %}">Forms</a>
-        <li><a href="{% url 'dashboard-carnatic-artists' %}">Edit artist description</a>
-
-        <h3>Reports</h3>
-        <li><a href="{% url 'dashboard-carnatic-releases' %}">Release cleanup</a>
-        <li><a href="{% url 'dashboard-carnatic-coverart' %}">Release coverart cleanup</a>
-        <li><a href="{% url 'dashboard-carnatic-artists' %}">Artist cleanup</a>
-        <li><a href="{% url 'dashboard-carnatic-recordings' %}">Recording cleanup</a>
-        <li><a href="{% url 'dashboard-carnatic-raagataala' %}">Raaga/Taala cleanup</a>
-        <li><a href="{% url 'dashboard-carnatic-works' %}">Work cleanup</a>
-        <li><a href="{% url 'dashboard-carnatic-workraagataala' %}">Works with many attributes</a>
-        <li><a href="{% url 'dashboard-carnatic-thillanas' %}">Thillanas</a>
-
-    </div>
-
-    <div class="col-md-6">
-
-        <h2>Hindustani</h2>
-        <li><a href="{% url 'dashboard-hindustani-stats' %}">Statistics</a>
-
-        <h3>Data management</h3>
-        <li><a href="{% url 'dashboard-hindustani-raags' %}">Raags</a>
-        <li><a href="{% url 'dashboard-hindustani-taals' %}">Taals</a>
-        <li><a href="{% url 'dashboard-hindustani-layas' %}">Layas</a>
-        <li><a href="{% url 'dashboard-hindustani-forms' %}">Forms</a>
-        <li><a href="{% url 'dashboard-hindustani-instruments' %}">Instruments</a>
-        <li><a href="{% url 'dashboard-hindustani-artists' %}">Edit artist description</a>
-
-        <h3>Reports</h3>
-        <li><a href="{% url 'dashboard-hindustani-releases' %}">Release cleanup</a>
-        <li><a href="{% url 'dashboard-hindustani-coverart' %}">Release coverart cleanup</a>
-        <li><a href="{% url 'dashboard-hindustani-artists' %}">Artist cleanup</a>
-        <li><a href="{% url 'dashboard-hindustani-recordings' %}">Recording cleanup</a>
-        <li><a href="{% url 'dashboard-hindustani-raagtaal' %}">Raag/Taal/Form/Laya cleanup</a>
-        <li><a href="{% url 'dashboard-hindustani-works' %}">Work cleanup</a>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h4">Essentia module management</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'docserver-manager' %}" class="text-decoration-none">Manager</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row g-4 mt-2">
     <div class="col-md-6">
-        <h2>Makam</h2>
-        <li><a href="{% url 'dashboard-makam-stats' %}">Statistics</a>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h4">Collections</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-access-collections-list' %}" class="text-decoration-none">Edit collections access groups</a></li>
+                </ul>
 
-        <h3>Data management</h3>
-        <li><a href="{% url 'dashboard-makam-makams' %}">Makams</a>
-        <li><a href="{% url 'dashboard-makam-forms' %}">Forms</a>
-        <li><a href="{% url 'dashboard-makam-usuls' %}">Usuls</a>
-        <li><a href="{% url 'dashboard-makam-instruments' %}">Instruments</a>
-        <li><a href="{% url 'dashboard-makam-symbtrlist' %}">SymbTr</a>
+                <h2 class="card-title h4 mt-4">Carnatic</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-carnatic-stats' %}" class="text-decoration-none">Statistics</a></li>
+                </ul>
 
-        <h3>Reports</h3>
-        <li><a href="{% url 'dashboard-makam-artists' %}">Artist cleanup</a>
-        <li><a href="{% url 'dashboard-makam-recordings' %}">Recording cleanup</a>
-        <li><a href="{% url 'dashboard-makam-tags' %}">Makam/Usul/Form tags</a>
-        <li><a href="{% url 'dashboard-makam-works' %}">Work cleanup</a>
-        <li><a href="{% url 'dashboard-makam-missing-instruments' %}">Instrument cleanup</a>
+                <h3 class="h5 mt-3">Data management</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-carnatic-raagas' %}" class="text-decoration-none">Raagas</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-taalas' %}" class="text-decoration-none">Taalas</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-instruments' %}" class="text-decoration-none">Instruments</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-forms' %}" class="text-decoration-none">Forms</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-artists' %}" class="text-decoration-none">Edit artist description</a></li>
+                </ul>
+
+                <h3 class="h5 mt-3">Reports</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-carnatic-releases' %}" class="text-decoration-none">Release cleanup</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-coverart' %}" class="text-decoration-none">Release coverart cleanup</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-artists' %}" class="text-decoration-none">Artist cleanup</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-recordings' %}" class="text-decoration-none">Recording cleanup</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-raagataala' %}" class="text-decoration-none">Raaga/Taala cleanup</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-works' %}" class="text-decoration-none">Work cleanup</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-workraagataala' %}" class="text-decoration-none">Works with many attributes</a></li>
+                    <li><a href="{% url 'dashboard-carnatic-thillanas' %}" class="text-decoration-none">Thillanas</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="col-md-6">
-        <h2>Other statistics</h2>
-        <li><a href="{% url 'dashboard-beijing-stats' %}">Beijing</a>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h4">Hindustani</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-hindustani-stats' %}" class="text-decoration-none">Statistics</a></li>
+                </ul>
+
+                <h3 class="h5 mt-3">Data management</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-hindustani-raags' %}" class="text-decoration-none">Raags</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-taals' %}" class="text-decoration-none">Taals</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-layas' %}" class="text-decoration-none">Layas</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-forms' %}" class="text-decoration-none">Forms</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-instruments' %}" class="text-decoration-none">Instruments</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-artists' %}" class="text-decoration-none">Edit artist description</a></li>
+                </ul>
+
+                <h3 class="h5 mt-3">Reports</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-hindustani-releases' %}" class="text-decoration-none">Release cleanup</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-coverart' %}" class="text-decoration-none">Release coverart cleanup</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-artists' %}" class="text-decoration-none">Artist cleanup</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-recordings' %}" class="text-decoration-none">Recording cleanup</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-raagtaal' %}" class="text-decoration-none">Raag/Taal/Form/Laya cleanup</a></li>
+                    <li><a href="{% url 'dashboard-hindustani-works' %}" class="text-decoration-none">Work cleanup</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <div class="col-md-6">
-
-        <h2>Arab Andalusian</h2>
-        <li><a href="{% url 'dashboard-andalusian-stats' %}">Statistics</a>
-        <h3>Data management</h3>
-        <li><a href="{% url 'dashboard-andalusian-elements' %}">Load CSV file</a>
-        <li><a href="{% url 'dashboard-andalusian-catalog' %}">Load Catalog CSV file</a>
-        <li><a href="{% url 'dashboard-andalusian-score' %}">Load Score file</a>
-    </div>
-
 </div>
 
+<div class="row g-4 mt-2">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h4">Makam</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-makam-stats' %}" class="text-decoration-none">Statistics</a></li>
+                </ul>
+
+                <h3 class="h5 mt-3">Data management</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-makam-makams' %}" class="text-decoration-none">Makams</a></li>
+                    <li><a href="{% url 'dashboard-makam-forms' %}" class="text-decoration-none">Forms</a></li>
+                    <li><a href="{% url 'dashboard-makam-usuls' %}" class="text-decoration-none">Usuls</a></li>
+                    <li><a href="{% url 'dashboard-makam-instruments' %}" class="text-decoration-none">Instruments</a></li>
+                    <li><a href="{% url 'dashboard-makam-symbtrlist' %}" class="text-decoration-none">SymbTr</a></li>
+                </ul>
+
+                <h3 class="h5 mt-3">Reports</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-makam-artists' %}" class="text-decoration-none">Artist cleanup</a></li>
+                    <li><a href="{% url 'dashboard-makam-recordings' %}" class="text-decoration-none">Recording cleanup</a></li>
+                    <li><a href="{% url 'dashboard-makam-tags' %}" class="text-decoration-none">Makam/Usul/Form tags</a></li>
+                    <li><a href="{% url 'dashboard-makam-works' %}" class="text-decoration-none">Work cleanup</a></li>
+                    <li><a href="{% url 'dashboard-makam-missing-instruments' %}" class="text-decoration-none">Instrument cleanup</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title h4">Other statistics</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-beijing-stats' %}" class="text-decoration-none">Beijing</a></li>
+                </ul>
+
+                <h2 class="card-title h4 mt-4">Arab Andalusian</h2>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-andalusian-stats' %}" class="text-decoration-none">Statistics</a></li>
+                </ul>
+
+                <h3 class="h5 mt-3">Data management</h3>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'dashboard-andalusian-elements' %}" class="text-decoration-none">Load CSV file</a></li>
+                    <li><a href="{% url 'dashboard-andalusian-catalog' %}" class="text-decoration-none">Load Catalog CSV file</a></li>
+                    <li><a href="{% url 'dashboard-andalusian-score' %}" class="text-decoration-none">Load Score file</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -2,11 +2,23 @@
 {% block title %}Add collection{% endblock %}
 
 {% block wrap %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="display-5">Add new collection</h2>
+    </div>
+</div>
 
-<h2>Add new collection</h2>
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-</form>
-
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

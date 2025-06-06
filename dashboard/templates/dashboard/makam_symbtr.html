@@ -6,69 +6,94 @@
 #id_name, #id_uuid {
     width: 350px;
 }
-#datatable td {
-    padding: 5px;
-}
 </style>
 {% endblock %}
 
 {% block wrap %}
+<div class="row mb-4">
+    <div class="col">
+        <a href="{% url 'dashboard-makam-symbtrlist' %}" class="btn btn-outline-secondary">&larr; Back to list</a>
+    </div>
+</div>
 
-<p><a href="{% url 'dashboard-makam-symbtrlist' %}">&larr;Back to list</a></p>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                {% if add %}
+                <h3 class="card-title mb-0">Add SymbTr</h3>
+                {% else %}
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">Symbtr: {{symbtr.name}}</h3>
+                    <a href="?delete=1" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete?')">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if not add %}
+                <p class="mb-4">
+                    MusicBrainz: <a href="{{url}}" target="_blank">{{url}}</a>
+                </p>
+                {% endif %}
 
-{% if add %}
-<h3>Add SymbTr</h3>
-{% else %}
-<h3>Symbtr: {{symbtr.name}}</h3>
-<p><a href="?delete=1" onclick="return confirm('are you sure you want to delete?')">Delete</a></p>
-<p>
-MusicBrainz: <a href="{{url}}">{{url}}</a><br>
-{% endif %}
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table id="datatable">
-{{form.as_table}}
-    </table>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        {{form.as_table}}
+                    </div>
 
-<h2>Files</h2>
+                    <h4 class="mb-3">Files</h4>
 
-    <h4>pdf</h4>
-    {%  if "symbtrpdf" in existingfiles %}
-    <a href="{{existingfiles.symbtrpdf}}">Existing file</a><br>
-    {% endif %}
-    {{ symbtrfiles.pdf }}
+                    <div class="mb-4">
+                        <h5 class="mb-3">PDF</h5>
+                        {% if "symbtrpdf" in existingfiles %}
+                        <a href="{{existingfiles.symbtrpdf}}" class="btn btn-outline-primary btn-sm mb-2">Existing file</a><br>
+                        {% endif %}
+                        {{ symbtrfiles.pdf }}
+                    </div>
 
-    <h4>txt</h4>
-    {%  if "symbtrtxt" in existingfiles %}
-    <a href="{{existingfiles.symbtrtxt}}">Existing file</a><br>
-    {% endif %}
-    {{ symbtrfiles.txt }}
+                    <div class="mb-4">
+                        <h5 class="mb-3">TXT</h5>
+                        {% if "symbtrtxt" in existingfiles %}
+                        <a href="{{existingfiles.symbtrtxt}}" class="btn btn-outline-primary btn-sm mb-2">Existing file</a><br>
+                        {% endif %}
+                        {{ symbtrfiles.txt }}
+                    </div>
 
-    <h4>mu2</h4>
-    {%  if "symbtrmu2" in existingfiles %}
-    <a href="{{existingfiles.symbtrmu2}}">Existing file</a><br>
-    {% endif %}
-    {{ symbtrfiles.mu2 }}
+                    <div class="mb-4">
+                        <h5 class="mb-3">MU2</h5>
+                        {% if "symbtrmu2" in existingfiles %}
+                        <a href="{{existingfiles.symbtrmu2}}" class="btn btn-outline-primary btn-sm mb-2">Existing file</a><br>
+                        {% endif %}
+                        {{ symbtrfiles.mu2 }}
+                    </div>
 
-    <h4>xml</h4>
-    {%  if "symbtrxml" in existingfiles %}
-    <a href="{{existingfiles.symbtrxml}}">Existing file</a><br>
-    {% endif %}
-    {{ symbtrfiles.xml }}
+                    <div class="mb-4">
+                        <h5 class="mb-3">XML</h5>
+                        {% if "symbtrxml" in existingfiles %}
+                        <a href="{{existingfiles.symbtrxml}}" class="btn btn-outline-primary btn-sm mb-2">Existing file</a><br>
+                        {% endif %}
+                        {{ symbtrfiles.xml }}
+                    </div>
 
-    <h4>midi</h4>
-    {%  if "symbtrmidi" in existingfiles %}
-    <a href="{{existingfiles.symbtrmidi}}">Existing file</a><br>
-    {% endif %}
-    {{ symbtrfiles.midi }}
+                    <div class="mb-4">
+                        <h5 class="mb-3">MIDI</h5>
+                        {% if "symbtrmidi" in existingfiles %}
+                        <a href="{{existingfiles.symbtrmidi}}" class="btn btn-outline-primary btn-sm mb-2">Existing file</a><br>
+                        {% endif %}
+                        {{ symbtrfiles.midi }}
+                    </div>
 
-    <p><input type="submit" value="Update and/or upload"></p>
-</form>
+                    <button type="submit" class="btn btn-primary">Update and/or upload</button>
+                </form>
+            </div>
+        </div>
 
-
-
-<p>[<a href="?delete">Delete this symbtr and all associated files</a>]</p>
-
+        <div class="mt-4">
+            <a href="?delete" class="text-danger" onclick="return confirm('Are you sure you want to delete this symbtr and all associated files?')">Delete this symbtr and all associated files</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 

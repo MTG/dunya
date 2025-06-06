@@ -2,24 +2,42 @@
 {% block title %}Edit collection{% endblock %}
 
 {% block wrap %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="display-5">Edit collection</h2>
+    </div>
+</div>
 
-<h2>Edit collection</h2>
-<form method="post">{% csrf_token %}
-    {{ form.non_field_errors }}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
 
-    <p>{{ form.path.errors }}
-    {{ form.path.label_tag }}
-    {{ form.path }}
+                    <div class="mb-3">
+                        {{ form.path.errors }}
+                        <label for="{{ form.path.id_for_label }}" class="form-label">{{ form.path.label }}</label>
+                        {{ form.path }}
+                    </div>
 
-    <p>{{ form.do_import.errors }}
-    {{ form.do_import.label_tag }}
-    {{ form.do_import }}
+                    <div class="mb-3">
+                        {{ form.do_import.errors }}
+                        <label for="{{ form.do_import.id_for_label }}" class="form-label">{{ form.do_import.label }}</label>
+                        {{ form.do_import }}
+                    </div>
 
-    <p>{{ form.checkers.errors }}
-    {{ form.checkers.label_tag }}
-    {{ form.checkers }}
+                    <div class="mb-3">
+                        {{ form.checkers.errors }}
+                        <label for="{{ form.checkers.id_for_label }}" class="form-label">{{ form.checkers.label }}</label>
+                        {{ form.checkers }}
+                    </div>
 
-    <input type="submit" value="Submit" />
-</form>
-
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -2,38 +2,72 @@
 {% block title %}Directory {{directory.short_path}}{% endblock %}
 
 {% block wrap %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Directory</li>
+        <li class="breadcrumb-item"><a href="{{directory.collection.get_absolute_url}}" class="text-decoration-none">{{directory.collection.name}}</a></li>
+        <li class="breadcrumb-item active">{{directory.short_path}}</li>
+    </ol>
+</nav>
 
-<ul class="breadcrumbs">Directory
-    <li><a href="{{directory.collection.get_absolute_url}}">{{directory.collection.name}}</a></li>
-    <li>{{directory.short_path}}</li>
-</ul>
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Info</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">Directory: {{directory.full_path}}</li>
+                    {% if got_release_id %}
+                        <li class="mb-2">Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}" class="text-decoration-none">{{releasename}}</a>
+                        {% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}" class="text-decoration-none">{{artistname}}</a>{% endif %}</li>
+                    {% else %}
+                        <li class="mb-2">This release doesn't have any Musicbrainz tags set.</li>
+                    {% endif %}
+                    {% if matched_release %}
+                        <li class="mb-2">Matched to a release: <a href="{{matched_release.get_absolute_url}}" class="text-decoration-none">{{matched_release.title}}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
 
-<div class="topbox">
-    <div class="topheader">Info</div>
-    <li>Directory: {{directory.full_path}}
-    {% if got_release_id %}
-        <li>Musicbrainz release: <a href="http://musicbrainz.org/release/{{releaseid}}">{{releasename}}</a>
-        {% if got_artist %} by <a href="http://musicbrainz.org/artist/{{artistid}}">{{artistname}}</a>{% endif %}
-    {% else %}
-        <li>This release doesn't have any Musicbrainz tags set.
-    {% endif %}
-    {% if matched_release %}
-    <li>Matched to a release: <a href="{{matched_release.get_absolute_url}}">{{matched_release.title}}</a>
-    {% endif %}
-
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><a href="?rematch" class="text-decoration-none">Rematch directory to releases</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="topbox">
-    <div class="topheader">Actions</div>
-    <li><a href="?rematch">Rematch directory to releases</a>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Files</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in files %}
+                    <tr>
+                        <td>{{f}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
-<table class="table">
-    <tr><th>File</th></tr>
-    {% for f in files %}
-    <tr><td>{{f}}
-    </td></tr>
-    {% endfor %}
-</table>
-
 {% endblock %}

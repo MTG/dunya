@@ -13,10 +13,6 @@ This template is generic to allow editing of raagas, taalas, and instruments
     .add img {
         vertical-align: text-bottom;
     }
-    table td {
-        display: table-cell;
-        vertical-align: top;
-    }
 </style>
 {% endblock %}
 
@@ -35,10 +31,11 @@ This template is generic to allow editing of raagas, taalas, and instruments
             var existing = $("#item-"+rid+"-alias");
             // Can only add 1 alias at a time
             if (existing.length == 0) {
-                var input = $("<input>", 
+                var input = $("<input>",
                     {type: "text",
                         name: "item-"+rid+"-alias",
-                        id: "item-"+rid+"-alias"
+                        id: "item-"+rid+"-alias",
+                        class: "form-control"
                     });
                 if (newname) {
                     input.val(newname);
@@ -59,13 +56,14 @@ This template is generic to allow editing of raagas, taalas, and instruments
                 $(this).parents("td").children(":first").append(li);
                 li.slideDown();
             }
-
         });
+
         $(".alias").hover(function(e) {
             $(this).children(".aliasrm").show();
             }, function(e) {
             $(this).children(".aliasrm").hide();
         });
+
         // When you click "delete" next to an alias
         $(".aliasrm a").click(function(e) {
             var aliasid = $(this).parents("span.alias").data("alias");
@@ -85,66 +83,99 @@ This template is generic to allow editing of raagas, taalas, and instruments
             }
             e.preventDefault();
         });
+
         // When you click a delete checkbox
         $(".delete-item").click(function(e) {
             if ($(this).is(":checked")) {
-                $(this).parents("tr").css("background-color", "red");
+                $(this).parents("tr").addClass("table-danger");
             } else {
-                $(this).parents("tr").css("background-color", "white");
+                $(this).parents("tr").removeClass("table-danger");
             }
         });
     });
-
 </script>
 {% endblock %}
 
 {% block wrap %}
-
-<h2>{{style}} {{entitynpl}}</h2>
-
-{% if newname %}
-<p>Adding new {{entityn}}: {{newname}}
-{% endif %}
-
-<form method="post" action="{% url entityurl %}">
-{% csrf_token %}
-<table style="width:auto" class="table">
-    <tr><th>{{entityn}}</th>
-        {% if common_name %}<th>Common name</th>{% endif %}
-        {% if alias %}<th>Aliases</th>{% endif %}
-        <th><img src="{% static 'dashboard/img/delete.png' %}" /></th></tr>
-    {% for r in items %}
-    <tr><td>
-            <div data-itemid="{{r.id}}">{{r.name}}</div>
-        </td>
-        {% if common_name %}<td>{{r.common_name}}</td>{% endif %}
-        {% if alias %}
-        <td>
-            <ul>
-                {% for a in r.aliases.all %}
-                <li><span class="alias" data-alias="{{a.id}}">{{a.name}}
-                    <span class="aliasrm"><a>[delete]</a></span>
-                </span>
-                {% endfor %}
-            </ul>
-            <span class="add" data-itemid="{{r.id}}">Add alias <img src="/static/dashboard/img/add.png"/></span>
-        </td>
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="display-5">{{style}} {{entitynpl}}</h2>
+        {% if newname %}
+        <p class="lead">Adding new {{entityn}}: {{newname}}</p>
         {% endif %}
-        <td>
-            <span class="delete"><input type="checkbox" name="delete-item-{{r.id}}" class="delete-item"></span>
-        </td>
-    </tr>
-    {% endfor %}
-    <tr>
-        <td>Add {{entityn}}<br>
-            <input type="text" id="newname" name="newname" {% if newname %} value="{{newname}}"{% endif %}>
-        </td>
-        {% if common_name %}
-        <td>Common name<br><input type="text" id="newcommon" name="newcommon" {% if newcommon %}value="{{newcommon}}"{% endif %}></td>
-        {% endif %}<td></td><td></td>
-    </tr>
-</table>
-<input type="submit" name="submit" value="Send edits"/>
-</form>
+    </div>
+</div>
 
+<div class="card">
+    <div class="card-body">
+        <form method="post" action="{% url entityurl %}">
+            {% csrf_token %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{entityn}}</th>
+                            {% if common_name %}<th>Common name</th>{% endif %}
+                            {% if alias %}<th>Aliases</th>{% endif %}
+                            <th><img src="{% static 'dashboard/img/delete.png' %}" /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in items %}
+                        <tr>
+                            <td>
+                                <div data-itemid="{{r.id}}">{{r.name}}</div>
+                            </td>
+                            {% if common_name %}
+                            <td>{{r.common_name}}</td>
+                            {% endif %}
+                            {% if alias %}
+                            <td>
+                                <ul class="list-unstyled mb-2">
+                                    {% for a in r.aliases.all %}
+                                    <li>
+                                        <span class="alias" data-alias="{{a.id}}">
+                                            {{a.name}}
+                                            <span class="aliasrm"><a href="#" class="text-danger">[delete]</a></span>
+                                        </span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <span class="add" data-itemid="{{r.id}}">
+                                    Add alias <img src="/static/dashboard/img/add.png" class="ms-1"/>
+                                </span>
+                            </td>
+                            {% endif %}
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" name="delete-item-{{r.id}}" class="form-check-input delete-item">
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>
+                                <div class="mb-3">
+                                    <label class="form-label">Add {{entityn}}</label>
+                                    <input type="text" id="newname" name="newname" class="form-control" {% if newname %} value="{{newname}}"{% endif %}>
+                                </div>
+                            </td>
+                            {% if common_name %}
+                            <td>
+                                <div class="mb-3">
+                                    <label class="form-label">Common name</label>
+                                    <input type="text" id="newcommon" name="newcommon" class="form-control" {% if newcommon %}value="{{newcommon}}"{% endif %}>
+                                </div>
+                            </td>
+                            {% endif %}
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary">Send edits</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

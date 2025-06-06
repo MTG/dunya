@@ -3,18 +3,30 @@
 {% block title %}Load CSV file{% endblock %}
 
 {% block wrap %}
+<div class="row">
+    <div class="col-md-6">
+        {% if message %}
+        <div class="alert alert-info mb-4">
+            {{ message }}
+        </div>
+        {% endif %}
 
-
-
-{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
-
-<h3>Load CSV file</h3>
-
-<form method="post" action="{% url 'dashboard-andalusian-elements' %}" enctype="multipart/form-data">
-        {{ form }}
-        {% csrf_token %}
-    <input type="submit" value="Save">
-</form>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Load CSV file</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'dashboard-andalusian-elements' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 

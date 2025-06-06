@@ -2,20 +2,36 @@
 {% block title %}Edit Collection{% endblock %}
 
 {% block wrap %}
-<ol class="breadcrumbs">
-    <li><a href="{% url "dashboard-access-collections-list" %}">Collections</a></li>
-</ol>
-{% if message %}<div class="topbox"><li>{{ message }}</li></div>{% endif %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard-access-collections-list' %}" class="text-decoration-none">Collections</a></li>
+    </ol>
+</nav>
 
-<h1>Edit Collection {{ collection.name }}</h1>
+{% if message %}
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">Edit Collection {{ collection.name }}</h1>
+    </div>
+</div>
 
-<form method="post" action="{% url "dashboard-access-collections-edit" collection.collectionid %}">
-{% csrf_token %}
-{{form}}
-<br>
-    <input type="submit" name="submit" value="Update"/>
-</form>
-
-
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{% url 'dashboard-access-collections-edit' collection.collectionid %}">
+                    {% csrf_token %}
+                    {{form}}
+                    <button type="submit" name="submit" class="btn btn-primary mt-3">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

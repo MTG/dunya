@@ -2,27 +2,47 @@
 {% block title %}Edit Artist{% endblock %}
 
 {% block wrap %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">Edit Artist Description</h1>
+        <p class="lead">Select the Artist to change current description.</p>
+    </div>
+</div>
 
-<h1>Edit Artist Description</h1>
-<p>Select the Artist to change current description.</p>
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Artist navigation">
+        {% regroup artists by name|slice:":1" as letter_list %}
+        {% for letter in letter_list %}
+            <a href="#anchor-{{ letter.grouper }}" class="btn btn-outline-primary">{{ letter.grouper }}</a>
+        {% endfor %}
+    </div>
+</div>
 
-{% regroup artists by name|slice:":1" as letter_list %}
-{% for letter in letter_list %}
-    <a href="#anchor-{{ letter.grouper }}">{{ letter.grouper }}</a>
-{% endfor %}
+<div class="row">
+    <div class="col">
+        <h2 class="h3 mb-4">Artists</h2>
+    </div>
+</div>
 
-
-<h2>Artist</h2>
 <div class="row">
     {% for letter in letter_list %}
-        <div class="col-md-6"> 
-            <a name="anchor-{{ letter.grouper }}"></a>
-            <h3>{{ letter.grouper }}</h3>    
-            {% for item in letter.list %}
-                <li><a href="{%url entityurl item.id %}">{{item.name}}</a></li>
-            {% endfor %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <a name="anchor-{{ letter.grouper }}"></a>
+                    <h3 class="card-title h4">{{ letter.grouper }}</h3>
+                    <ul class="list-unstyled">
+                        {% for item in letter.list %}
+                            <li class="mb-2">
+                                <a href="{%url entityurl item.id %}" class="text-decoration-none">
+                                    {{item.name}}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     {% endfor %}
 </div>
-
 {% endblock %}

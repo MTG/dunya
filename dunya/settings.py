@@ -1,7 +1,7 @@
 # Django settings for dunya project.
 
-
 import os
+from pathlib import Path
 
 import dj_database_url
 import manifest_loader.loaders
@@ -21,8 +21,8 @@ def get_check_env(envname):
     return var
 
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_check_env("DUNYA_SECRET_KEY")
@@ -142,7 +142,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # collectstatic puts static files here
-STATIC_ROOT = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
@@ -154,8 +154,16 @@ class CRAManifestLoader(manifest_loader.loaders.DefaultLoader):
         return entry
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "build")]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 MANIFEST_LOADER = {"manifest_file": "asset-manifest.json", "loader": CRAManifestLoader}
 

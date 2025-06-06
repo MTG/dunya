@@ -2,12 +2,28 @@
 {% block title %}Symbtr{% endblock %}
 
 {% block wrap %}
-<h1>SymbTr</h1>
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5">SymbTr</h1>
+    </div>
+    <div class="col text-end">
+        <a href="{% url 'dashboard-makam-symbtrnew' %}" class="btn btn-primary">Add new</a>
+    </div>
+</div>
 
-<p><a href="{% url 'dashboard-makam-symbtrnew' %}">Add new</a></p>
-
-{% for s in symbtr %}
-<li><a href="{% url 'dashboard-makam-symbtr' s.uuid %}">{{s.name}}</a>
-{% endfor %}
-
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for s in symbtr %}
+                    <li class="list-group-item">
+                        <a href="{% url 'dashboard-makam-symbtr' s.uuid %}">{{s.name}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

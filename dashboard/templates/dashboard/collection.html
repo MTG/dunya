@@ -17,77 +17,130 @@
 {% endblock %}
 
 {% block wrap %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Collection</li>
+        <li class="breadcrumb-item active">{{collection.name}} <small>(<a href="{% url 'dashboard-editcollection' collection.collectionid %}" class="text-decoration-none">edit</a>)</small></li>
+    </ol>
+</nav>
 
+<h3 class="mb-4">Releases</h3>
 
-<ol class="breadcrumbs">Collection
-    <li>{{collection.name}} <small>(<a href="{% url 'dashboard-editcollection' collection.collectionid %}">edit</a>)</small></li>
-</ol>
-
-<h3>Releases</h3>
-
-<div class="topbox">
-    <div class="topheader">Info</div>
-    <li>Root: {{collection.root_directory}}
-</div>
-
-<div class="topbox">
-    <div class="topheader">Actions</div>
-    <li><a href="?forcescan">Scan and reimport all existing data</a>
-    <li><a href="{% url 'dashboard-delete-collection-db-files' collection.collectionid %}">Delete Related Files and Directory from Database</a>
-    <li><a href="{% url 'dashboard-delete-collection' collection.collectionid %}">Delete collection</a>
-    <p>
-    <li><a href="?order=unmatched">Order by unmatched releases first</a>
-    <li><a href="?order=date">Order by last imported date</a>
-    <li><a href="?order=ignored">Order by ignored</a>
-</div>
-
-<div class="topbox">
-    <div class="topheader">Current State</div>
-    {{collection.get_current_state.state_name}} ({{collection.get_current_state.state_date|timesince}} ago)<br>
-    Number of releases matched to audio: {{nummatched}}/{{numtotal}}<br>
-    Number of releases imported: {{numfinished}}/{{nummatched}}
-    {% if collection.has_previous_state %}
-    <div id="morestate">
-        <span id="statehandle"><a href="">Show old states</a></span>
-            <div id="statebox">
-                {% for s in collection.get_previous_states %}
-                <li>{{s.state_name}} ({{s.state_date|timesince}} ago)
-                {% endfor %}
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Info</h5>
             </div>
+            <div class="card-body">
+                <p class="card-text">Root: {{collection.root_directory}}</p>
+            </div>
+        </div>
     </div>
-    {% endif %}
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="?forcescan" class="text-decoration-none">Scan and reimport all existing data</a></li>
+                    <li class="mb-2"><a href="{% url 'dashboard-delete-collection-db-files' collection.collectionid %}" class="text-decoration-none">Delete Related Files and Directory from Database</a></li>
+                    <li class="mb-2"><a href="{% url 'dashboard-delete-collection' collection.collectionid %}" class="text-decoration-none">Delete collection</a></li>
+                    <li class="mb-2"><a href="?order=unmatched" class="text-decoration-none">Order by unmatched releases first</a></li>
+                    <li class="mb-2"><a href="?order=date" class="text-decoration-none">Order by last imported date</a></li>
+                    <li class="mb-2"><a href="?order=ignored" class="text-decoration-none">Order by ignored</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Current State</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    {{collection.get_current_state.state_name}} ({{collection.get_current_state.state_date|timesince}} ago)<br>
+                    Number of releases matched to audio: {{nummatched}}/{{numtotal}}<br>
+                    Number of releases imported: {{numfinished}}/{{nummatched}}
+                </p>
+                {% if collection.has_previous_state %}
+                <div class="accordion" id="stateAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#stateCollapse" aria-expanded="false" aria-controls="stateCollapse">
+                                Show old states
+                            </button>
+                        </h2>
+                        <div id="stateCollapse" class="accordion-collapse collapse" data-bs-parent="#stateAccordion">
+                            <div class="accordion-body">
+                                <ul class="list-unstyled">
+                                    {% for s in collection.get_previous_states %}
+                                    <li>{{s.state_name}} ({{s.state_date|timesince}} ago)</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 
-<table class="collection-list table"><tr>
-        <th class="release">Release</th>
-        <th class="path">Matched path</th>
-        <th class="status">Current status</th>
-    </tr>
-{% for r in releases %}
-<tr><td><a href="{{r.get_absolute_url}}">
-            {% if r.artist %}{{r.artist}}<br>{% endif %}
-            {{r.title}}</a>
-        {% if r.ignore %}(ignored){% endif %}
-    </td>
+<div class="table-responsive mb-4">
+    <table class="collection-list table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="release">Release</th>
+                <th class="path">Matched path</th>
+                <th class="status">Current status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in releases %}
+            <tr>
+                <td>
+                    <a href="{{r.get_absolute_url}}" class="text-decoration-none">
+                        {% if r.artist %}{{r.artist}}<br>{% endif %}
+                        {{r.title}}
+                    </a>
+                    {% if r.ignore %}<span class="badge bg-secondary">ignored</span>{% endif %}
+                </td>
+                <td>
+                    {% for p in r.matched_paths %}
+                    {{p}}
+                    {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{r.get_current_state.state_name}} ({{r.get_current_state.state_date|timesince}} ago)</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-            <td>
-                {% for p in r.matched_paths %}
-                {{p}}
-                {% if not forloop.last %}, {% endif %}
-                {% endfor %}
-        </td>
-        <td>{{r.get_current_state.state_name}} ({{r.get_current_state.state_date|timesince}} ago)</td>
-    </tr>
-{% endfor %}
-</table>
-
-<h4>Folders with unknown releases</h4>
-<table class="table table-condensed"><tr><th>Folder</th></tr>
-    {% for f in folders %}
-    <tr><td><a href="{{f.get_absolute_url}}">{{f.path}}<a></td></tr>
-    {% endfor %}
-</table>
+<h4 class="mb-3">Folders with unknown releases</h4>
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Folder</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in folders %}
+            <tr>
+                <td><a href="{{f.get_absolute_url}}" class="text-decoration-none">{{f.path}}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% include "dashboard/log.html" with logs=log_messages %}
-
 {% endblock %}
