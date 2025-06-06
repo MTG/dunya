@@ -52,7 +52,9 @@ class Command(BaseCommand):
             flow = InstalledAppFlow.from_client_config(
                 authentication.credentials, SCOPES, redirect_uri="http://localhost:8080/"
             )
-            url, code = flow.authorization_url()
+            auth_url, code = flow.authorization_url()
+            print("Visit this url and authorize the app")
+            print(auth_url)
             url = input("Enter the URL you were redirected to: ")
             url = url.replace("http", "https")
             flow.fetch_token(authorization_response=url)
