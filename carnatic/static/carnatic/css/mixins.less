@@ -24,10 +24,10 @@
 }
 
 .animate (){
-    -webkit-transition: all 0 ease 0; 
-    -moz-transition: all 0 ease 0; 
-    -o-transition: all 0 ease 0; 
-    transition:all 0 ease 0; 
+    -webkit-transition: all 0 ease 0;
+    -moz-transition: all 0 ease 0;
+    -o-transition: all 0 ease 0;
+    transition:all 0 ease 0;
 }
 
 .rounded (@radius: 5px) {
@@ -38,17 +38,17 @@
   border-radius: @radius;
 }
 
-.arrowBase() {  
-    width: 0; 
-    height: 0; 
+.arrowBase() {
+    width: 0;
+    height: 0;
     position: relative;
     &:after {
         position: absolute;
         content:"";
         top:-@size/(1.1);
         left:-@size;
-        width: 0; 
-        height: 0; 
+        width: 0;
+        height: 0;
     }
 }
 .arrow(@size: 5px){
@@ -59,7 +59,7 @@
     &:after {
         border-top: @size/(1.1) solid transparent;
         border-bottom: @size/(1.1) solid transparent;
-        border-left: @size/(1.1) solid red;    
+        border-left: @size/(1.1) solid red;
     }
 }
 
@@ -67,8 +67,8 @@
   box-shadow: 1px 1px 8px #666;
 }
 .boxesCloth() {
-    .rounded;
-    .shadow;
+    .rounded();
+    .shadow();
     padding: 10px;
     background: url("../img/cloth_alike.png") 0 0 repeat;
 }
