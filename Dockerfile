@@ -50,4 +50,4 @@ RUN npm run build
 # TODO: Could be made part of the frontend build script
 RUN bash build-less.sh
 
-RUN python manage.py collectstatic --settings dunya.build_settings
+RUN python manage.py collectstatic --settings dunya.build_settings --no-input
