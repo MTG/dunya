@@ -155,6 +155,7 @@ def accounts(request):
                     dashboard.email.email_user_on_account_approval(current_site, user)
                 elif delete:
                     user.delete()
+            return redirect("dashboard-accounts")
 
     user_formset = UserFormSet(queryset=User.objects.filter(is_active=False))
 
@@ -173,6 +174,7 @@ def accounts(request):
 
                 services.add_user_to_restricted_group(access_request.user)
                 dashboard.email.email_user_on_access_request_approval(current_site, access_request.user, approved)
+            return redirect("dashboard-accounts")
 
     access_formset = AccessRequestFormSet(queryset=AccessRequest.objects.unapproved())
     ret = {"user_formset": user_formset, "access_formset": access_formset}
