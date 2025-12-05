@@ -6,7 +6,7 @@ ENV UV_LINK_MODE=copy
 ENV UV_SYSTEM_PYTHON=1
 ENV UV_PYTHON_DOWNLOADS=never
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.9.15 /uv /uvx /bin/
 
 RUN mkdir -p /etc/apt/keyrings/
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
