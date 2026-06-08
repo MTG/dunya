@@ -262,8 +262,23 @@ LOGGING = {
     },
 }
 
-# To store history/log of output from workers
+# Redis runs as a single server (host from DUNYA_WORKER_REDIS_HOST, also embedded in
+# the celery URLs below). Each concern gets its own DB so they can be inspected and
+# flushed independently. The DB layout is an app-internal decision, not per-deployment
+# config, so the numbers are fixed here rather than passed via env:
+#   0  celery result backend  (DUNYA_CELERY_RESULT_URL)
+#   1  celery broker          (DUNYA_CELERY_BROKER_URL)
+#   2  worker output logs + extractor key/value cache  (WORKER_REDIS_DB, below)
+#   3  django cache           (CACHES, below)
 WORKER_REDIS_HOST = get_check_env("DUNYA_WORKER_REDIS_HOST")
+WORKER_REDIS_DB = 2
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{WORKER_REDIS_HOST}/3",
+    }
+}
 
 #  Celery
 

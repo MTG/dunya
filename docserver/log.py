@@ -20,7 +20,7 @@ import json
 import redis
 from django.conf import settings
 
-redis = redis.StrictRedis(host=settings.WORKER_REDIS_HOST)
+redis = redis.StrictRedis(host=settings.WORKER_REDIS_HOST, db=settings.WORKER_REDIS_DB)
 
 
 def _send_item_with_size(key, data, size):

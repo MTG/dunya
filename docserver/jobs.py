@@ -78,7 +78,7 @@ def _get_module_instance_by_path(modulepath):
     args = {}
     try:
         redis_host = settings.WORKER_REDIS_HOST
-        args = {"redis_host": redis_host}
+        args = {"redis_host": redis_host, "redis_db": settings.WORKER_REDIS_DB}
     except AttributeError:
         pass
     # try:

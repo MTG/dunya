@@ -78,7 +78,9 @@ class ExtractorModule(object):
         self.setup()
         self.redis = None
         if "redis_host" in self.settings:
-            self.redis = redis.StrictRedis(host=self.settings["redis_host"])
+            self.redis = redis.StrictRedis(
+                host=self.settings["redis_host"], db=self.settings.get("redis_db", 0)
+            )
         # This cache is used for a single process when redis is not installed
 
     def get_key(self, k):
