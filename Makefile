@@ -1,5 +1,5 @@
 build:
-	docker build -t registry.sb.upf.edu/mtg/dunya:latest .
+	docker build --platform linux/amd64 -t registry.sb.upf.edu/mtg/dunya:latest .
 
 push:
 	docker push registry.sb.upf.edu/mtg/dunya:latest
