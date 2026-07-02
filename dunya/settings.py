@@ -185,6 +185,11 @@ if deploy_env == "prod":
     # Host 'nginx' is for services inside docker to connect
     # directly to dunya.
     ALLOWED_HOSTS = ["dunya.compmusic.upf.edu", "dunya.upf.edu", "dunya.mtg.sb.upf.edu", "nginx"]
+    CSRF_TRUSTED_ORIGINS = [
+        "https://dunya.compmusic.upf.edu",
+        "https://dunya.upf.edu",
+        "https://dunya.mtg.sb.upf.edu",
+    ]
     debug = False
 
     #  Sendfile, for serving static content
