@@ -132,8 +132,6 @@ TIME_ZONE = "Europe/Madrid"
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
@@ -161,7 +159,10 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        # Default (non-manifest) storage for development and tests, where
+        # collectstatic hasn't run and no staticfiles manifest exists.
+        # Production overrides this with the whitenoise manifest backend below.
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
@@ -191,6 +192,10 @@ if deploy_env == "prod":
         "https://dunya.mtg.sb.upf.edu",
     ]
     debug = False
+
+    # Serve hashed/compressed static files using the manifest produced by
+    # collectstatic during the docker image build (see dunya/build_settings.py).
+    STORAGES["staticfiles"]["BACKEND"] = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
     #  Sendfile, for serving static content
     SENDFILE_BACKEND = "django_sendfile.backends.nginx"

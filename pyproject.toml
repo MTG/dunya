@@ -3,28 +3,29 @@ name = "dunya"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
     "arabictransliterator",
     "beautifulsoup4==4.15.0",
-    "celery~=5.4.0",
-    "dj-database-url==2.1.0",
-    "django~=4.2",
+    "celery~=5.6.0",
+    "dj-database-url==3.1.2",
+    "django~=5.2",
     "django-manifest-loader==1.0.0",
     "django-sendfile2==0.7.2",
-    "djangorestframework~=3.15.0",
-    "essentia==2.1b6.dev1110 ; sys_platform == 'linux'",
+    "djangorestframework~=3.17.0",
+    "essentia==2.1b6.dev1389 ; sys_platform == 'linux'",
     "eyed3~=0.9.7",
     "filetype==1.2.0",
     "google-api-python-client~=2.94.0",
     "google-auth-httplib2~=0.1.0",
     "google-auth-oauthlib~=1.0.0",
     "levenshtein>=0.27.1",
-    "matplotlib~=3.9.0",
+    # tomato requires matplotlib <3.10; 3.9.2 is the first with py3.13 wheels
+    "matplotlib~=3.9.2",
     "musicbrainzngs==0.7.1",
     "mwparserfromhell==0.5.4",
     "networkx==2.3",
-    "numpy~=1.26.0",
+    "numpy~=2.2",
     "pillow~=12.3.0",
     "psycopg2-binary==2.9.12",
     "pycompmusic",
@@ -34,7 +35,7 @@ dependencies = [
     "pyyaml==6.0.3",
     "redis~=5.0.6",
     "requests~=2.32",
-    "scipy==1.13.1",
+    "scipy~=1.15",
     "sentry-sdk~=2.8",
     "seyiranalyzer",
     "tomato",
@@ -42,6 +43,13 @@ dependencies = [
     "uwsgi==2.0.31",
     "whitenoise~=6.12.0",
 ]
+
+[tool.uv]
+# tomato pins pandas~=1.5, which has no python 3.13 wheels and predates numpy 2.
+# The only tomato module using pandas (symbolic/symbtr/extras/txt.py) relies on
+# DataFrame.ix, removed in pandas 1.0, so it is broken under any installable
+# version; the modules dunya imports don't use pandas at all.
+override-dependencies = ["pandas~=2.3"]
 
 [tool.uv.sources]
 pycompmusic = { git = "https://github.com/mtg/pycompmusic.git", rev = "72b689e" }
@@ -51,7 +59,7 @@ seyiranalyzer = { git = "https://github.com/sertansenturk/seyiranalyzer.git", re
 
 [dependency-groups]
 dev = [
-    "django-debug-toolbar==4.4.2",
+    "django-debug-toolbar~=7.0",
     "ipdb==0.13.13",
     "ipython~=8.25.0",
     "pytest>=8.4.0",
@@ -60,7 +68,7 @@ dev = [
 
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py313"
 extend-exclude = ["**/migrations"]
 
 [tool.ruff.lint]

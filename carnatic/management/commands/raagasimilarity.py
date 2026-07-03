@@ -22,7 +22,7 @@ import os
 
 import numpy as np
 from django.core.management.base import BaseCommand
-from scipy.ndimage.filters import gaussian_filter
+from scipy.ndimage import gaussian_filter
 
 import carnatic
 import dashboard

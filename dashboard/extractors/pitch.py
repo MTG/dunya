@@ -19,7 +19,7 @@ import struct
 
 import essentia.standard
 import numpy as np
-from scipy.ndimage.filters import gaussian_filter
+from scipy.ndimage import gaussian_filter
 
 import dashboard.extractors
 from docserver import util
@@ -56,7 +56,7 @@ class PitchExtract(dashboard.extractors.ExtractorModule):
         self.logger.info("done")
 
         # generating time stamps (because its equally hopped)
-        TStamps = np.array(range(len(pitch))) * np.float(self.settings.HopSize) / sampleRate
+        TStamps = np.array(range(len(pitch))) * float(self.settings.HopSize) / sampleRate
         thepitch = np.array([TStamps, pitch]).transpose()
 
         return {"pitch": thepitch.tolist()}

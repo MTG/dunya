@@ -21,7 +21,7 @@ from os.path import basename
 import matplotlib.pyplot as plt
 import numpy as np
 import pypeaks
-from scipy.ndimage.filters import gaussian_filter
+from scipy.ndimage import gaussian_filter
 
 
 class Raaga:
@@ -46,10 +46,10 @@ class Raaga:
         # if max(sum(A), sum(B)) > 1+eps:
         #   print(max(sum(A), sum(B)))
         #   print("Probabilities do not sum to 1.")
-        #   return np.NaN
+        #   return np.nan
         if x.size != y.size:
             print("Arguments are of different length.")
-            return np.NaN
+            return np.nan
         return (np.dot(x, np.log2(x) - np.log2(y)) + np.dot(y, np.log2(y) - np.log2(x))) / 2.0
 
     def load_average_hist(self):

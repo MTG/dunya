@@ -19,6 +19,9 @@ services:
     build:
       context: .
       target: dev
+    # essentia only publishes x86_64 wheels, so the image must be amd64
+    # everywhere (same as the Makefile's production build).
+    platform: linux/amd64
     image: dunya
     pull_policy: never
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -40,6 +43,7 @@ services:
   # All celery hosts should listen on a queue of the same name as their host/name (-Q and -n)
   celeryimport:
     image: dunya
+    platform: linux/amd64
     pull_policy: never
     command: celery --app dunya worker -l info -Q import,celeryimport -n celeryimport
     volumes:
@@ -53,6 +57,7 @@ services:
       - redis
   celeryprocess:
     image: dunya
+    platform: linux/amd64
     pull_policy: never
     command: celery --app dunya worker -l info -Q celery,celeryprocess -n celeryprocess
     volumes:

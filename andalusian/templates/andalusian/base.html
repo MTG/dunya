@@ -109,7 +109,10 @@
                     <div id="usermenuoptions">
                         <div id="userArrow"></div>
                         <h3>Hi <b>{{ user.username }}!</b></h3>
-                        <a href="{% url 'account-logout' %}?next={% firstof request.path|safe '/' %}">Logout</a>
+                        <form action="{% url 'account-logout' %}?next={% firstof request.path|safe '/' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
                     </div>
 
             {% else %}

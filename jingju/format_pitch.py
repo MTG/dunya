@@ -4,7 +4,7 @@ import sys
 
 import numpy as np
 import six
-from scipy.ndimage.filters import gaussian_filter
+from scipy.ndimage import gaussian_filter
 
 ## Most of this from NormalisePitch in the pitch extractor
 
