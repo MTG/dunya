@@ -30,7 +30,9 @@ RUN mkdir /code
 WORKDIR /code
 
 ADD pyproject.toml uv.lock /code/
-RUN --mount=type=cache,target=/root/.cache/uv uv sync --no-dev --frozen
+# uv's cache can hand back a uwsgi binary compiled against a different python
+# version, which then dies at startup (astral-sh/uv#12463) — always rebuild it.
+RUN --mount=type=cache,target=/root/.cache/uv uv cache clean uwsgi && uv sync --no-dev --frozen
 ENV PATH=/code/.venv/bin:$PATH
 
 ADD package.json package-lock.json /code/
