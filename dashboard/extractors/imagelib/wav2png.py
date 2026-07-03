@@ -43,7 +43,7 @@ def genimages(input_file, output_file_w, output_file_s, options):
         options.fft_size,
         progress_callback,
     )
-    print("processing file %s:\n\t" % input_file)
+    print(f"processing file {input_file}:\n\t")
     try:
         create_wave_images(*args)
     except AudioProcessingException as e:

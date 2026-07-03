@@ -88,7 +88,7 @@ class ScoreSynthesis(dashboard.extractors.ExtractorModule):
         if mbid is None:
             comment = "Synth wrt AEU"
         else:
-            comment = "Synth wrt %s" % mbid
+            comment = f"Synth wrt {mbid}"
 
         tags = {"title": work_title, "comments": comment}
         audio_obj.export(tmpname, format="mp3", tags=tags)

@@ -78,7 +78,7 @@ class Image(models.Model):
         return ret
 
 
-class ImageMixin(object):
+class ImageMixin:
     def has_image(self):
         return self.image is not None
 
@@ -284,9 +284,9 @@ class Recording(BaseModel):
         minutes = math.floor(minutes - hours * 60)
         seconds = math.floor(numsecs - hours * 3600 - minutes * 60)
         if hours:
-            val = "%02d:%02d:%02d" % (hours, minutes, seconds)
+            val = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
         else:
-            val = "%02d:%02d" % (minutes, seconds)
+            val = f"{minutes:02d}:{seconds:02d}"
 
         return val
 
@@ -427,7 +427,7 @@ class ComposerAlias(models.Model):
 
 # This mixin needs to be used with ModelSerializable
 # to generate the image absolute url
-class WithImageMixin(object):
+class WithImageMixin:
     def get_image_abs_url(self, ob):
         str_ret = "http://"
         request = self.context.get("request", None)

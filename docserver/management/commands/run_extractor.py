@@ -15,7 +15,6 @@
 # this program.  If not, see http://www.gnu.org/licenses/
 
 
-import imp
 import importlib
 import inspect
 import json
@@ -23,6 +22,7 @@ import logging
 import os
 
 import compmusic
+import imp
 import numpy as np
 from django.core.management.base import BaseCommand
 
@@ -47,7 +47,7 @@ def _get_module_by_slug(slug):
     fname, dirname, desc = imp.find_module("extractors", compmusic.__path__)
     modules = set(
         [
-            "dashboard.extractors.%s" % os.path.splitext(module)[0]
+            f"dashboard.extractors.{os.path.splitext(module)[0]}"
             for module in os.listdir(dirname)
             if module.endswith(".py")
         ]
@@ -115,8 +115,8 @@ def save_data(module, data):
         if modulemeta[key].get("parts", False) is False:
             d = [d]
         for i in range(len(d)):
-            fname = "%s-%s-%s.%s" % (mbid, key, i, ext)
-            print("Writing output for type %s to %s" % (key, fname))
+            fname = f"{mbid}-{key}-{i}.{ext}"
+            print(f"Writing output for type {key} to {fname}")
             if modulemeta[key]["mimetype"] == "application/json":
                 output = json.dumps(d[i], cls=NumPyArangeEncoder)
             else:

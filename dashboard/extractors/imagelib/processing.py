@@ -74,7 +74,7 @@ def get_max_level(filename):
     return max_value
 
 
-class AudioProcessor(object):
+class AudioProcessor:
     """
     The audio processor processes chunks of audio an calculates the spectrac centroid and the peak
     samples in that chunk of audio.
@@ -272,7 +272,7 @@ def desaturate(rgb, amount):
     return tuple(map(int, map(desat, rgb)))
 
 
-class WaveformImage(object):
+class WaveformImage:
     """
     Given peaks and spectral centroids from the AudioProcessor, this class will construct
     a wavefile image which can be saved as PNG.
@@ -322,7 +322,7 @@ class WaveformImage(object):
     def color_from_value(self, value):
         """given a value between 0 and 1, return an (r,g,b) tuple"""
 
-        return ImageColor.getrgb("hsl(%d,%d%%,%d%%)" % (int((1.0 - value) * 360), 80, 50))
+        return ImageColor.getrgb(f"hsl({int((1.0 - value) * 360)},80%,50%)")
 
     def draw_peaks(self, x, peaks, spectral_centroid):
         """draw 2 peaks at x using the spectral_centroid for color"""
@@ -378,7 +378,7 @@ class WaveformImage(object):
         self.image.save(filename)
 
 
-class SpectrogramImage(object):
+class SpectrogramImage:
     """
     Given spectra from the AudioProcessor, this class will construct a wavefile image which
     can be saved as PNG.
@@ -496,7 +496,7 @@ def convert_to_pcm(input_filename, output_filename):
     """
 
     if not os.path.exists(input_filename):
-        raise AudioProcessingException("file %s does not exist" % input_filename)
+        raise AudioProcessingException(f"file {input_filename} does not exist")
 
     sound_type = get_sound_type(input_filename)
 
@@ -528,7 +528,7 @@ def stereofy_and_find_info(stereofy_executble_path, input_filename, output_filen
     """
 
     if not os.path.exists(input_filename):
-        raise AudioProcessingException("file %s does not exist" % input_filename)
+        raise AudioProcessingException(f"file {input_filename} does not exist")
 
     cmd = [stereofy_executble_path, "--input", input_filename, "--output", output_filename]
 
@@ -575,7 +575,7 @@ def convert_to_mp3(input_filename, output_filename, quality=70):
     """
 
     if not os.path.exists(input_filename):
-        raise AudioProcessingException("file %s does not exist" % input_filename)
+        raise AudioProcessingException(f"file {input_filename} does not exist")
 
     command = ["lame", "--silent", "--abr", str(quality), input_filename, output_filename]
 
@@ -592,7 +592,7 @@ def convert_to_ogg(input_filename, output_filename, quality=1):
     """
 
     if not os.path.exists(input_filename):
-        raise AudioProcessingException("file %s does not exist" % input_filename)
+        raise AudioProcessingException(f"file {input_filename} does not exist")
 
     command = ["oggenc", "-q", str(quality), input_filename, "-o", output_filename]
 
@@ -613,7 +613,7 @@ def convert_using_ffmpeg(input_filename, output_filename):
         raise AudioProcessingException("timeout while waiting for ffmpeg")
 
     if not os.path.exists(input_filename):
-        raise AudioProcessingException("file %s does not exist" % input_filename)
+        raise AudioProcessingException(f"file {input_filename} does not exist")
 
     command = [
         "ffmpeg",

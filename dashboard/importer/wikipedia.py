@@ -52,7 +52,7 @@ def download_image(imgname):
             "action": "query",
             "prop": "imageinfo",
             "iiprop": "url",
-            "titles": "File:%s" % imgname,
+            "titles": f"File:{imgname}",
         }
         data = _make_wp_query(args)
         imgurl = list(data["query"]["pages"].values())[0]

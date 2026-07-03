@@ -83,8 +83,8 @@ class AudioImages(dashboard.extractors.ExtractorModule):
             # We want this many frames per file at this zoom level.
             framesperimage = framerate * zoom
 
-            wfname = "waveform%s" % zoom
-            specname = "spectrum%s" % zoom
+            wfname = f"waveform{zoom}"
+            specname = f"spectrum{zoom}"
             wfdata = []
             specdata = []
 

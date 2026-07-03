@@ -66,9 +66,9 @@ class AudioAnalysis(dashboard.extractors.ExtractorModule):
 
         for i in self._output.keys():
             if i not in features:
-                warnings.warn("The output %s is missing from the audio analysis" % i, stacklevel=2)
+                warnings.warn(f"The output {i} is missing from the audio analysis", stacklevel=2)
         if set(features.keys()) != set(self._output.keys()):
-            warnings.warn("Output mismatch on audio analysis %s" % features.keys(), stacklevel=2)
+            warnings.warn(f"Output mismatch on audio analysis {features.keys()}", stacklevel=2)
         if pitch_distribution:
             pitch_distribution = pitch_distribution.to_dict()
         if pitch_class_distribution:

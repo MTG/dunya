@@ -343,17 +343,17 @@ def download_derived_files(request, uuid, title=None):
                     filenames.append(
                         (
                             docserver.util.docserver_get_filename(w.mbid, "score", "score", n + 1, "0.2"),
-                            "%s-%s-%d-%d" % ("score", "score", n + 1, 2),
+                            f"score-score-{n + 1}-2",
                         )
                     )
             score = document[0].sourcefiles.filter(file_type__extension="xml")
             if len(score) == 1:
-                filenames.append((score[0].fullpath, "%s-%s-%d-%d" % ("score", "score", 1, 2)))
+                filenames.append((score[0].fullpath, "score-score-1-2"))
         try:
             filenames.append(
                 (
                     docserver.util.docserver_get_filename(w.mbid, "scoreanalysis", "metadata", 1, "0.1"),
-                    "%s-%s-%d-%d" % ("scoreanalysis", "metadata", 1, 1),
+                    "scoreanalysis-metadata-1-1",
                 )
             )
         except docserver.exceptions.NoFileException:
@@ -369,7 +369,7 @@ def download_derived_files(request, uuid, title=None):
                             docserver.util.docserver_get_filename(
                                 mbid, option[0], option[1], option[2], version=option[3]
                             ),
-                            "%s-%s-%d-%d" % (option[0], option[1], 1, int(float(option[3]) * 10)),
+                            f"{option[0]}-{option[1]}-1-{int(float(option[3]) * 10)}",
                         )
                     )
                     break
@@ -383,7 +383,7 @@ def download_derived_files(request, uuid, title=None):
                             docserver.util.docserver_get_filename(
                                 mbid, option[0], option[1], option[2], version=option[3]
                             ),
-                            "%s-%s-%d-%d" % (option[0], option[1], 1, int(float(option[3]) * 10)),
+                            f"{option[0]}-{option[1]}-1-{int(float(option[3]) * 10)}",
                         )
                     )
                     break

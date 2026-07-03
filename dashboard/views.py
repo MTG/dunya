@@ -970,7 +970,7 @@ def import_andalusian_catalog(request):
                     omited += 1
             message = "The elements has been successfully loaded"
             if omited:
-                message += "(%d rows omited)" % omited
+                message += f"({omited} rows omited)"
     else:
         form = forms.CsvAndalusianCatalogForm()
     params = {"form": form, "message": message}

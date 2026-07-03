@@ -22,7 +22,7 @@ class Command(BaseCommand):
         do_auth = True
         if not authentication:
             print("No email authentication credentials exist, creating")
-            credentials = json.load(open(options["credentials"], "r"))
+            credentials = json.load(open(options["credentials"]))
             authentication = EmailAuthentication.objects.create(credentials=credentials)
 
         if authentication.token:

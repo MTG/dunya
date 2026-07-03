@@ -239,9 +239,9 @@ class Recording(AndalusianStyle, data.models.BaseModel):
         minutes = math.floor(minutes - hours * 60)
         seconds = math.floor(numsecs - hours * 3600 - minutes * 60)
         if hours:
-            val = "%02d:%02d:%02d" % (hours, minutes, seconds)
+            val = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
         else:
-            val = "%02d:%02d" % (minutes, seconds)
+            val = f"{minutes:02d}:{seconds:02d}"
         return val
 
     def get_dict(self):
@@ -373,15 +373,7 @@ class Section(AndalusianStyle, data.models.BaseModel):
     form = models.ForeignKey("Form", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Section of %s (from %s to %s), a %s from mizan %s of tab' %s, nawba %s" % (
-            self.recording,
-            self.start_time,
-            self.end_time,
-            self.form,
-            self.mizan,
-            self.tab,
-            self.nawba,
-        )
+        return f"Section of {self.recording} (from {self.start_time} to {self.end_time}), a {self.form} from mizan {self.mizan} of tab' {self.tab}, nawba {self.nawba}"
 
 
 class InstrumentSectionPerformance(models.Model):
@@ -391,13 +383,7 @@ class InstrumentSectionPerformance(models.Model):
     lead = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%s playing %s on section (%s, %s) of recording %s" % (
-            self.performer,
-            self.instrument,
-            self.section.start_time,
-            self.section.end_time,
-            self.section.recording,
-        )
+        return f"{self.performer} playing {self.instrument} on section ({self.section.start_time}, {self.section.end_time}) of recording {self.section.recording}"
 
 
 class Sanaa(data.models.BaseModel):

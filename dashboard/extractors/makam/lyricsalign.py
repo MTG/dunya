@@ -78,7 +78,7 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
     }
 
     def __init__(self, dataDir=None, hasSecondVerseProblem=None, hasSectionNumberDiscrepancy=None, **kwargs):
-        super(LyricsAlign, self).__init__()
+        super().__init__()
         #         self.dataOutputDir = dataOutputDir
         #         self.hasSecondVerseProblem = hasSecondVerseProblem
         #         self.hasSectionNumberDiscrepancy = hasSectionNumberDiscrepancy
@@ -128,7 +128,7 @@ class LyricsAlign(dashboard.extractors.ExtractorModule):
                     musicbrainzid, dir_, self.dataOutputDir, self.hasSectionNumberDiscrepancy
                 )
             except Exception:
-                sys.exit("no section annotations found for audio {} ".format(musicbrainzid))
+                sys.exit(f"no section annotations found for audio {musicbrainzid} ")
 
         else:
             try:

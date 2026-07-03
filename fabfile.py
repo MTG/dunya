@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import os
 
 from fabric.api import hide, local
@@ -21,7 +19,7 @@ def cleantest(module=None):
 
 
 def dumpfixture(modname):
-    redir_base = "%s/fixtures/%s_%%s.json" % (modname, modname)
+    redir_base = f"{modname}/fixtures/{modname}_%s.json"
     if modname == "data":
         redir = redir_base % "initial_data"
         local(f"python manage.py dumpdata data.SourceName --indent=4 > {redir}")

@@ -82,7 +82,8 @@ extend-exclude = ["**/migrations"]
 # G: flake8-logging-format
 # PIE: flake8-pie
 # T20: flake8-print
-select = ["A", "B", "E4", "E9", "F", "I", "S", "T10", "DJ", "G", "PIE", "T20"]
+# UP: pyupgrade
+select = ["A", "B", "E4", "E9", "F", "I", "S", "T10", "DJ", "G", "PIE", "T20", "UP"]
 ignore = ["DJ001", "DJ012", "T201", "B904", "G004", "S101", "S105", "S311", "S308", "S603", "S110", "S108"]
 
 [tool.pytest.ini_options]

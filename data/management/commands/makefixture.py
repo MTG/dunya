@@ -1,7 +1,6 @@
 # From http://www.djangosnippets.org/snippets/918/
 # copied to dunya from https://github.com/ericholscher/django-test-utils
 
-from __future__ import print_function
 
 import django.apps
 import six
@@ -138,7 +137,7 @@ class Command(LabelCommand):
 
     def list_models(self):
         names = [name for _model, name in self.get_models()]
-        raise CommandError("Neither model name nor slice given. Installed model names: \n%s" % ",\n".join(names))
+        raise CommandError("Neither model name nor slice given. Installed model names: \n{}".format(",\n".join(names)))
 
     def handle(self, *labels, **options):
         if not labels:

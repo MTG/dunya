@@ -41,9 +41,7 @@ class Pattern(models.Model):
     segment = models.ForeignKey("Segment", related_name="patterns", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "File {} ({} - {}) [{}, {}]".format(
-            self.file.mbid, self.start_time, self.end_time, self.isseed, self.pair_id
-        )
+        return f"File {self.file.mbid} ({self.start_time} - {self.end_time}) [{self.isseed}, {self.pair_id}]"
 
 
 class Segment(models.Model):

@@ -26,7 +26,7 @@ class Settings(dict):
     __getattr__ = dict.__getitem__
 
 
-class ExtractorModule(object):
+class ExtractorModule:
     """A module that runs on a file and returns an output.
 
     Logging:
@@ -78,23 +78,21 @@ class ExtractorModule(object):
         self.setup()
         self.redis = None
         if "redis_host" in self.settings:
-            self.redis = redis.StrictRedis(
-                host=self.settings["redis_host"], db=self.settings.get("redis_db", 0)
-            )
+            self.redis = redis.StrictRedis(host=self.settings["redis_host"], db=self.settings.get("redis_db", 0))
         # This cache is used for a single process when redis is not installed
 
     def get_key(self, k):
         if self.redis is None:
             warnings.warn("Redis not configured, returning None", stacklevel=2)
             return None
-        key = "%s-%s-%s" % (self._slug, self._version, k)
+        key = f"{self._slug}-{self._version}-{k}"
         return self.redis.get(key)
 
     def set_key(self, k, val, timeout=None):
         if self.redis is None:
             warnings.warn("Redis not configured, skipping set_key", stacklevel=2)
             return
-        key = "%s-%s-%s" % (self._slug, self._version, k)
+        key = f"{self._slug}-{self._version}-{k}"
         if timeout:
             self.redis.setex(key, timeout, val)
         else:

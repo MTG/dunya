@@ -145,9 +145,7 @@ class AndalusianReleaseImporter(release_importer.ReleaseImporter):
         # for this collection have recording-level relationships.
         if perf_type in [release_importer.RELATION_RELEASE_VOCAL, release_importer.RELATION_RELEASE_INSTRUMENT]:
             raise release_importer.ImportFailedException(
-                "Found a release-level artist instrument relation on recording {} which isn't supported".format(
-                    recordingid
-                )
+                f"Found a release-level artist instrument relation on recording {recordingid} which isn't supported"
             )
 
         is_lead = False

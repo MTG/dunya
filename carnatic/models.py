@@ -352,7 +352,7 @@ class RecordingForm(models.Model):
         ordering = ("sequence",)
 
     def __str__(self):
-        return "%s, seq %d %s" % (self.recording, self.sequence, self.form)
+        return f"{self.recording}, seq {self.sequence} {self.form}"
 
 
 class Form(models.Model):
@@ -531,7 +531,7 @@ class RecordingRaaga(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s, seq %d %s" % (self.recording, self.sequence, self.raaga)
+        return f"{self.recording}, seq {self.sequence} {self.raaga}"
 
 
 class RecordingTaala(models.Model):
@@ -540,7 +540,7 @@ class RecordingTaala(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s, seq %d %s" % (self.recording, self.sequence, self.taala)
+        return f"{self.recording}, seq {self.sequence} {self.taala}"
 
 
 class WorkRaaga(models.Model):
@@ -549,7 +549,7 @@ class WorkRaaga(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s, seq %d %s" % (self.work, self.sequence, self.raaga)
+        return f"{self.work}, seq {self.sequence} {self.raaga}"
 
 
 class WorkTaala(models.Model):
@@ -558,7 +558,7 @@ class WorkTaala(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s, seq %d %s" % (self.work, self.sequence, self.taala)
+        return f"{self.work}, seq {self.sequence} {self.taala}"
 
 
 class RecordingWork(models.Model):
@@ -567,7 +567,7 @@ class RecordingWork(models.Model):
     sequence = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return "%s, seq %d %s" % (self.recording, self.sequence, self.work)
+        return f"{self.recording}, seq {self.sequence} {self.work}"
 
 
 class Recording(CarnaticStyle, data.models.Recording):

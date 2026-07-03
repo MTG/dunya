@@ -382,7 +382,7 @@ def isScaleRelated(a, b, tol):
         temp = a
         a = b
         b = temp
-    if abs((round(a / b) - (a / b))) < tol:
+    if abs(round(a / b) - (a / b)) < tol:
         return True
     else:
         return False

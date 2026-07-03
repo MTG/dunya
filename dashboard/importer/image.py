@@ -39,7 +39,7 @@ def get_coverart_from_directories(directories=None):
 
 def get_coverart_from_caa(releaseid):
     """Get the cover art inside a file, otherwise try on CAA"""
-    url = "https://coverartarchive.org/release/%s/front" % releaseid
+    url = f"https://coverartarchive.org/release/{releaseid}/front"
     r = requests.get(url, timeout=10)
     if r.status_code == 200:
         return r.content

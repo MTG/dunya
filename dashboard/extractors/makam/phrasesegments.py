@@ -68,7 +68,7 @@ class TrainPhraseSeg(dashboard.extractors.ExtractorModule):
         os.close(fp)
 
         proc = subprocess.Popen(  # noqa: S602
-            ["/srv/dunya/phraseSeg trainWrapper %s %s %s" % (files_json, boundstat, fldmodel)],
+            [f"/srv/dunya/phraseSeg trainWrapper {files_json} {boundstat} {fldmodel}"],
             stdout=subprocess.PIPE,
             shell=True,
             env=subprocess_env,
@@ -121,7 +121,7 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
             # boundstat = util.docserver_get_filename('31b52b29-be39-4ccb-98f2-2154140920f9', "trainphraseseg", "boundstat", version="0.1")
             # fldmodel = util.docserver_get_filename('31b52b29-be39-4ccb-98f2-2154140920f9', "trainphraseseg", "fldmodel", version="0.1")
         except util.NoFileException:
-            raise Exception("No training files found for recording %s" % musicbrainzid)
+            raise Exception(f"No training files found for recording {musicbrainzid}")
 
         files = []
         symbtr = compmusic.dunya.makam.get_symbtr(musicbrainzid)
@@ -137,7 +137,7 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
         os.close(fp)
 
         proc = subprocess.Popen(  # noqa: S602
-            ["/srv/dunya/phraseSeg segmentWrapper %s %s %s %s" % (boundstat, fldmodel, files_json, out_json)],
+            [f"/srv/dunya/phraseSeg segmentWrapper {boundstat} {fldmodel} {files_json} {out_json}"],
             stdout=subprocess.PIPE,
             shell=True,
             env=subprocess_env,
@@ -146,7 +146,7 @@ class SegmentPhraseSeg(dashboard.extractors.ExtractorModule):
         (out, err) = proc.communicate()
         ret = {"segments": []}
 
-        segments_file = open(out_json, "r")
+        segments_file = open(out_json)
         segments = segments_file.read()
         if segments == "":
             segments = "[]"

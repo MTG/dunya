@@ -31,7 +31,7 @@ mb.set_rate_limit(False)
 mb.set_hostname("sitar.s.upf.edu:8090")
 
 
-class Stats(object):
+class Stats:
     # How many recordings are done for each work
     # key is workid
     work_recording_counts = collections.Counter()
@@ -119,8 +119,8 @@ def format_seconds(secs):
     hours = secs / 60 / 60
     ret = ""
     if hours > 0:
-        ret += "%d:" % hours
-    ret += "%d:%d" % (minutes, seconds)
+        ret += f"{int(hours)}:"
+    ret += f"{int(minutes)}:{int(seconds)}"
     return ret
 
 

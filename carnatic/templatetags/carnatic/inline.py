@@ -56,7 +56,7 @@ def inline_concert(concert, bold=False):
     if bold:
         sb = "<b>"
         eb = "</b>"
-    return format_html("<span>{}{{}}{}</span>".format(sb, eb), concert.title)
+    return format_html(f"<span>{sb}{{}}{eb}</span>", concert.title)
 
 
 @register.simple_tag

@@ -52,7 +52,7 @@ def _get_items_in_collection(collectionid, collectiontype):
     while offset < count:
         try:
             log.debug("offset", offset)
-            url = "https://musicbrainz.org/ws/2/collection/%s/%s?offset=%d" % (collectionid, collectiontype, offset)
+            url = f"https://musicbrainz.org/ws/2/collection/{collectionid}/{collectiontype}?offset={offset}"
             res = requests_session.get(url, headers=headers)
             res.raise_for_status()
             count, ids = ws_ids(res.content)
@@ -81,7 +81,7 @@ def get_works_in_collection(collection):
 
 def get_collection_name(collection):
     """Get the name of a collection"""
-    url = "http://musicbrainz.org/ws/2/collection/%s/releases" % (collection,)
+    url = f"http://musicbrainz.org/ws/2/collection/{collection}/releases"
     res = requests_session.get(url, headers=headers)
     res.raise_for_status()
     tree = etree.fromstring(res.content)  # noqa: S314

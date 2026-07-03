@@ -312,9 +312,7 @@ class CollectionDirectory(models.Model):
         return os.path.join(self.collection.audio_directory, self.path)
 
     def __str__(self):
-        return "From collection {}, release {}, path on disk {}".format(
-            self.collection, self.musicbrainzrelease, self.path
-        )
+        return f"From collection {self.collection}, release {self.musicbrainzrelease}, path on disk {self.path}"
 
     def short_path(self):
         if len(self.path) < 60:

@@ -33,13 +33,13 @@ class Musicxml2Svg(dashboard.extractors.ExtractorModule):
 
     def run(self, musicbrainzid, fpath):
         temp_name = next(tempfile._get_candidate_names())
-        tmpfile = "/tmp/%s.ly" % temp_name
+        tmpfile = f"/tmp/{temp_name}.ly"
 
         server_name = socket.gethostname()
-        call(["/mnt/compmusic/%s/lilypond/usr/bin/musicxml2ly" % server_name, "--no-page-layout", fpath, "-o", tmpfile])
+        call([f"/mnt/compmusic/{server_name}/lilypond/usr/bin/musicxml2ly", "--no-page-layout", fpath, "-o", tmpfile])
 
         tmp_dir = tempfile.mkdtemp()
-        call(["lilypond", '-dpaper-size="junior-legal"', "-dbackend=svg", "-o%s" % (tmp_dir), tmpfile])  # noqa: S607
+        call(["lilypond", '-dpaper-size="junior-legal"', "-dbackend=svg", f"-o{tmp_dir}", tmpfile])  # noqa: S607
 
         ret = {"score": []}
 

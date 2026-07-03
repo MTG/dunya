@@ -53,7 +53,7 @@ class CTonicExtract(dashboard.extractors.ExtractorModule):
 
     def get_from_file(self, mbid):
         data_root = "/mnt/compmusic/incoming/derived/annotations"
-        mbidfile = os.path.join(data_root, "%s.yaml" % mbid)
+        mbidfile = os.path.join(data_root, f"{mbid}.yaml")
         if os.path.exists(mbidfile):
             ydata = yaml.safe_load(open(mbidfile))
             tonic = ydata.get("tonic", {}).get("votedValue", None)
@@ -120,7 +120,7 @@ class TonicVote(dashboard.extractors.ExtractorModule):
         return None
 
     def get_tonics_for_artist(self, artistid):
-        key = "artist-tonics-%s" % artistid
+        key = f"artist-tonics-{artistid}"
         tonics = self.get_key(key)
         if tonics:
             return json.loads(tonics)

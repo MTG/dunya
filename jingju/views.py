@@ -46,9 +46,9 @@ def length_format(length):
     minutes = math.floor(minutes - hours * 60)
     seconds = math.floor(numsecs - hours * 3600 - minutes * 60)
     if hours:
-        val = "%02d:%02d:%02d" % (hours, minutes, seconds)
+        val = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
     else:
-        val = "%02d:%02d" % (minutes, seconds)
+        val = f"{minutes:02d}:{seconds:02d}"
 
     return val
 
